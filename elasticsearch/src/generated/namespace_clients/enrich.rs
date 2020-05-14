@@ -1,31 +1,40 @@
+/*
+ * Licensed to Elasticsearch B.V. under one or more contributor
+ * license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright
+ * ownership. Elasticsearch B.V. licenses this file to you under
+ * the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 // -----------------------------------------------
-// ███╗   ██╗ ██████╗ ████████╗██╗ ██████╗███████╗
-// ████╗  ██║██╔═══██╗╚══██╔══╝██║██╔════╝██╔════╝
-// ██╔██╗ ██║██║   ██║   ██║   ██║██║     █████╗
-// ██║╚██╗██║██║   ██║   ██║   ██║██║     ██╔══╝
-// ██║ ╚████║╚██████╔╝   ██║   ██║╚██████╗███████╗
-// ╚═╝  ╚═══╝ ╚═════╝    ╚═╝   ╚═╝ ╚═════╝╚══════╝
-// -----------------------------------------------
-//
-// This file is generated,
-// Please do not edit it manually.
-// Run the following in the root of the repo:
+// This file is generated, Please do not edit it manually.
+// Run the following in the root of the repo to regenerate:
 //
 // cargo run -p api_generator
-//
 // -----------------------------------------------
-#[allow(unused_imports)]
+#![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
-        request::{Body, JsonBody, NdBody},
+        request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         Method,
     },
     params::*,
 };
+use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
@@ -39,9 +48,10 @@ impl<'b> EnrichDeletePolicyParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             EnrichDeletePolicyParts::Name(ref name) => {
-                let mut p = String::with_capacity(16usize + name.len());
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_name.len());
                 p.push_str("/_enrich/policy/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
@@ -155,9 +165,10 @@ impl<'b> EnrichExecutePolicyParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             EnrichExecutePolicyParts::Name(ref name) => {
-                let mut p = String::with_capacity(25usize + name.len());
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(25usize + encoded_name.len());
                 p.push_str("/_enrich/policy/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.push_str("/_execute");
                 p.into()
             }
@@ -308,9 +319,11 @@ impl<'b> EnrichGetPolicyParts<'b> {
         match self {
             EnrichGetPolicyParts::Name(ref name) => {
                 let name_str = name.join(",");
-                let mut p = String::with_capacity(16usize + name_str.len());
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_name.len());
                 p.push_str("/_enrich/policy/");
-                p.push_str(name_str.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
             EnrichGetPolicyParts::None => "/_enrich/policy/".into(),
@@ -425,9 +438,10 @@ impl<'b> EnrichPutPolicyParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             EnrichPutPolicyParts::Name(ref name) => {
-                let mut p = String::with_capacity(16usize + name.len());
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_name.len());
                 p.push_str("/_enrich/policy/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }

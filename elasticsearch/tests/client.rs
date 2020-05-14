@@ -1,18 +1,38 @@
+/*
+ * Licensed to Elasticsearch B.V. under one or more contributor
+ * license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright
+ * ownership. Elasticsearch B.V. licenses this file to you under
+ * the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 pub mod common;
 use common::*;
 
 use elasticsearch::{
-    http::headers::{HeaderValue, X_OPAQUE_ID},
+    http::{
+        headers::{
+            HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE, DEFAULT_ACCEPT,
+            DEFAULT_CONTENT_TYPE, X_OPAQUE_ID,
+        },
+        StatusCode,
+    },
     params::TrackTotalHits,
     SearchParts,
 };
 
 use crate::common::client::index_documents;
-use elasticsearch::http::headers::{
-    HeaderMap, HeaderName, ACCEPT, CONTENT_TYPE, DEFAULT_ACCEPT, DEFAULT_CONTENT_TYPE,
-};
 use hyper::Method;
-use reqwest::StatusCode;
 use serde_json::{json, Value};
 
 #[tokio::test]
@@ -178,7 +198,25 @@ async fn search_with_body() -> Result<(), failure::Error> {
         .send()
         .await?;
 
+    let expected_url = {
+        let mut addr = client::cluster_addr();
+        if !addr.ends_with('/') {
+            addr.push('/');
+        }
+        let mut url = url::Url::parse(addr.as_str())?;
+        url.set_username("").unwrap();
+        url.set_password(None).unwrap();
+        url.join("_search?allow_no_indices=true")?
+    };
+
+    match response.content_length() {
+        Some(c) => assert!(c > 0),
+        None => (),
+    };
+
+    assert_eq!(response.url(), &expected_url);
     assert_eq!(response.status_code(), StatusCode::OK);
+    assert_eq!(response.method(), elasticsearch::http::Method::Post);
     let response_body = response.json::<Value>().await?;
     assert!(response_body["took"].as_i64().is_some());
 
@@ -197,6 +235,7 @@ async fn search_with_no_body() -> Result<(), failure::Error> {
         .await?;
 
     assert_eq!(response.status_code(), StatusCode::OK);
+    assert_eq!(response.method(), elasticsearch::http::Method::Get);
     let response_body = response.json::<Value>().await?;
     assert!(response_body["took"].as_i64().is_some());
 

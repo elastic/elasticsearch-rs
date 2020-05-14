@@ -1,31 +1,40 @@
+/*
+ * Licensed to Elasticsearch B.V. under one or more contributor
+ * license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright
+ * ownership. Elasticsearch B.V. licenses this file to you under
+ * the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 // -----------------------------------------------
-// ███╗   ██╗ ██████╗ ████████╗██╗ ██████╗███████╗
-// ████╗  ██║██╔═══██╗╚══██╔══╝██║██╔════╝██╔════╝
-// ██╔██╗ ██║██║   ██║   ██║   ██║██║     █████╗
-// ██║╚██╗██║██║   ██║   ██║   ██║██║     ██╔══╝
-// ██║ ╚████║╚██████╔╝   ██║   ██║╚██████╗███████╗
-// ╚═╝  ╚═══╝ ╚═════╝    ╚═╝   ╚═╝ ╚═════╝╚══════╝
-// -----------------------------------------------
-//
-// This file is generated,
-// Please do not edit it manually.
-// Run the following in the root of the repo:
+// This file is generated, Please do not edit it manually.
+// Run the following in the root of the repo to regenerate:
 //
 // cargo run -p api_generator
-//
 // -----------------------------------------------
-#[allow(unused_imports)]
+#![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
-        request::{Body, JsonBody, NdBody},
+        request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         Method,
     },
     params::*,
 };
+use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
@@ -41,19 +50,27 @@ impl<'b> WatcherAckWatchParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             WatcherAckWatchParts::WatchId(ref watch_id) => {
-                let mut p = String::with_capacity(21usize + watch_id.len());
+                let encoded_watch_id: Cow<str> =
+                    percent_encode(watch_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(21usize + encoded_watch_id.len());
                 p.push_str("/_watcher/watch/");
-                p.push_str(watch_id.as_ref());
+                p.push_str(encoded_watch_id.as_ref());
                 p.push_str("/_ack");
                 p.into()
             }
             WatcherAckWatchParts::WatchIdActionId(ref watch_id, ref action_id) => {
                 let action_id_str = action_id.join(",");
-                let mut p = String::with_capacity(22usize + watch_id.len() + action_id_str.len());
+                let encoded_watch_id: Cow<str> =
+                    percent_encode(watch_id.as_bytes(), PARTS_ENCODED).into();
+                let encoded_action_id: Cow<str> =
+                    percent_encode(action_id_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    22usize + encoded_watch_id.len() + encoded_action_id.len(),
+                );
                 p.push_str("/_watcher/watch/");
-                p.push_str(watch_id.as_ref());
+                p.push_str(encoded_watch_id.as_ref());
                 p.push_str("/_ack/");
-                p.push_str(action_id_str.as_ref());
+                p.push_str(encoded_action_id.as_ref());
                 p.into()
             }
         }
@@ -189,9 +206,11 @@ impl<'b> WatcherActivateWatchParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             WatcherActivateWatchParts::WatchId(ref watch_id) => {
-                let mut p = String::with_capacity(26usize + watch_id.len());
+                let encoded_watch_id: Cow<str> =
+                    percent_encode(watch_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(26usize + encoded_watch_id.len());
                 p.push_str("/_watcher/watch/");
-                p.push_str(watch_id.as_ref());
+                p.push_str(encoded_watch_id.as_ref());
                 p.push_str("/_activate");
                 p.into()
             }
@@ -328,9 +347,11 @@ impl<'b> WatcherDeactivateWatchParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             WatcherDeactivateWatchParts::WatchId(ref watch_id) => {
-                let mut p = String::with_capacity(28usize + watch_id.len());
+                let encoded_watch_id: Cow<str> =
+                    percent_encode(watch_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(28usize + encoded_watch_id.len());
                 p.push_str("/_watcher/watch/");
-                p.push_str(watch_id.as_ref());
+                p.push_str(encoded_watch_id.as_ref());
                 p.push_str("/_deactivate");
                 p.into()
             }
@@ -467,9 +488,10 @@ impl<'b> WatcherDeleteWatchParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             WatcherDeleteWatchParts::Id(ref id) => {
-                let mut p = String::with_capacity(16usize + id.len());
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_id.len());
                 p.push_str("/_watcher/watch/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
         }
@@ -585,9 +607,10 @@ impl<'b> WatcherExecuteWatchParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             WatcherExecuteWatchParts::Id(ref id) => {
-                let mut p = String::with_capacity(25usize + id.len());
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(25usize + encoded_id.len());
                 p.push_str("/_watcher/watch/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.push_str("/_execute");
                 p.into()
             }
@@ -736,9 +759,10 @@ impl<'b> WatcherGetWatchParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             WatcherGetWatchParts::Id(ref id) => {
-                let mut p = String::with_capacity(16usize + id.len());
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_id.len());
                 p.push_str("/_watcher/watch/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
         }
@@ -852,9 +876,10 @@ impl<'b> WatcherPutWatchParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             WatcherPutWatchParts::Id(ref id) => {
-                let mut p = String::with_capacity(16usize + id.len());
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_id.len());
                 p.push_str("/_watcher/watch/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
         }
@@ -1171,9 +1196,11 @@ impl<'b> WatcherStatsParts<'b> {
             WatcherStatsParts::None => "/_watcher/stats".into(),
             WatcherStatsParts::Metric(ref metric) => {
                 let metric_str = metric.join(",");
-                let mut p = String::with_capacity(16usize + metric_str.len());
+                let encoded_metric: Cow<str> =
+                    percent_encode(metric_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_metric.len());
                 p.push_str("/_watcher/stats/");
-                p.push_str(metric_str.as_ref());
+                p.push_str(encoded_metric.as_ref());
                 p.into()
             }
         }

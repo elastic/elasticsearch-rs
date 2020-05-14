@@ -1,3 +1,21 @@
+/*
+ * Licensed to Elasticsearch B.V. under one or more contributor
+ * license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright
+ * ownership. Elasticsearch B.V. licenses this file to you under
+ * the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 //! Official Rust client for [Elasticsearch](https://www.elastic.co/products/elasticsearch)
 //!
 //! `Elasticsearch` is an official Rust client for Elasticsearch, providing an efficient asynchronous
@@ -385,6 +403,13 @@ pub mod tests {
         let parts = SearchParts::Index(&["index-1", "index-2"]);
         let url = parts.url();
         assert_eq!(url, "/index-1,index-2/_search");
+    }
+
+    #[test]
+    fn percent_encode_characters() {
+        let parts = SearchParts::Index(&[" !\"#$%&'\\()*+,-./:;<=>?@[\\]^_`{|}~"]);
+        let url = parts.url();
+        assert_eq!(url, "/%20%21%22%23%24%25%26%27%5C%28%29*%2B,-.%2F%3A%3B%3C%3D%3E%3F%40%5B%5C%5D%5E_%60%7B%7C%7D%7E/_search");
     }
 
     #[test]

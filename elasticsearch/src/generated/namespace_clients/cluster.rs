@@ -1,31 +1,40 @@
+/*
+ * Licensed to Elasticsearch B.V. under one or more contributor
+ * license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright
+ * ownership. Elasticsearch B.V. licenses this file to you under
+ * the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 // -----------------------------------------------
-// ███╗   ██╗ ██████╗ ████████╗██╗ ██████╗███████╗
-// ████╗  ██║██╔═══██╗╚══██╔══╝██║██╔════╝██╔════╝
-// ██╔██╗ ██║██║   ██║   ██║   ██║██║     █████╗
-// ██║╚██╗██║██║   ██║   ██║   ██║██║     ██╔══╝
-// ██║ ╚████║╚██████╔╝   ██║   ██║╚██████╗███████╗
-// ╚═╝  ╚═══╝ ╚═════╝    ╚═╝   ╚═╝ ╚═════╝╚══════╝
-// -----------------------------------------------
-//
-// This file is generated,
-// Please do not edit it manually.
-// Run the following in the root of the repo:
+// This file is generated, Please do not edit it manually.
+// Run the following in the root of the repo to regenerate:
 //
 // cargo run -p api_generator
-//
 // -----------------------------------------------
-#[allow(unused_imports)]
+#![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
-        request::{Body, JsonBody, NdBody},
+        request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         Method,
     },
     params::*,
 };
+use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
@@ -352,9 +361,11 @@ impl<'b> ClusterHealthParts<'b> {
             ClusterHealthParts::None => "/_cluster/health".into(),
             ClusterHealthParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(17usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(17usize + encoded_index.len());
                 p.push_str("/_cluster/health/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.into()
             }
         }
@@ -1197,19 +1208,26 @@ impl<'b> ClusterStateParts<'b> {
             ClusterStateParts::None => "/_cluster/state".into(),
             ClusterStateParts::Metric(ref metric) => {
                 let metric_str = metric.join(",");
-                let mut p = String::with_capacity(16usize + metric_str.len());
+                let encoded_metric: Cow<str> =
+                    percent_encode(metric_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_metric.len());
                 p.push_str("/_cluster/state/");
-                p.push_str(metric_str.as_ref());
+                p.push_str(encoded_metric.as_ref());
                 p.into()
             }
             ClusterStateParts::MetricIndex(ref metric, ref index) => {
                 let metric_str = metric.join(",");
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(17usize + metric_str.len() + index_str.len());
+                let encoded_metric: Cow<str> =
+                    percent_encode(metric_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(17usize + encoded_metric.len() + encoded_index.len());
                 p.push_str("/_cluster/state/");
-                p.push_str(metric_str.as_ref());
+                p.push_str(encoded_metric.as_ref());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.into()
             }
         }
@@ -1410,9 +1428,11 @@ impl<'b> ClusterStatsParts<'b> {
             ClusterStatsParts::None => "/_cluster/stats".into(),
             ClusterStatsParts::NodeId(ref node_id) => {
                 let node_id_str = node_id.join(",");
-                let mut p = String::with_capacity(22usize + node_id_str.len());
+                let encoded_node_id: Cow<str> =
+                    percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(22usize + encoded_node_id.len());
                 p.push_str("/_cluster/stats/nodes/");
-                p.push_str(node_id_str.as_ref());
+                p.push_str(encoded_node_id.as_ref());
                 p.into()
             }
         }

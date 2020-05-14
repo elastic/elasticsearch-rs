@@ -1,3 +1,21 @@
+/*
+ * Licensed to Elasticsearch B.V. under one or more contributor
+ * license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright
+ * ownership. Elasticsearch B.V. licenses this file to you under
+ * the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 /* Some types from or based on types from elastic: https://github.com/elastic-rs/elastic
  *
  * Licensed under Apache 2.0: https://github.com/elastic-rs/elastic/blob/51298dd64278f34d2db911bd1a35eb757c336198/LICENSE-APACHE
@@ -14,7 +32,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 use crate::generator::code_gen::url::url_builder::{IntoExpr, UrlBuilder};
 use crate::generator::{code_gen::*, ApiEndpoint, Path};
 use inflector::Inflector;
@@ -389,20 +406,23 @@ mod tests {
                         SearchParts::None => "/_search".into(),
                         SearchParts::Index(ref index) => {
                             let index_str = index.join(",");
-                            let mut p = String::with_capacity(9usize + index_str.len());
+                            let encoded_index: Cow<str> = percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                            let mut p = String::with_capacity(9usize + encoded_index.len());
                             p.push_str("/");
-                            p.push_str(index_str.as_ref());
+                            p.push_str(encoded_index.as_ref());
                             p.push_str("/_search");
                             p.into()
                         }
                         SearchParts::IndexType(ref index, ref ty) => {
                             let index_str = index.join(",");
                             let ty_str = ty.join(",");
-                            let mut p = String::with_capacity(10usize + index_str.len() + ty_str.len());
+                            let encoded_index: Cow<str> = percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                            let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
+                            let mut p = String::with_capacity(10usize + encoded_index.len() + encoded_ty.len());
                             p.push_str("/");
-                            p.push_str(index_str.as_ref());
+                            p.push_str(encoded_index.as_ref());
                             p.push_str("/");
-                            p.push_str(ty_str.as_ref());
+                            p.push_str(encoded_ty.as_ref());
                             p.push_str("/_search");
                             p.into()
                         }

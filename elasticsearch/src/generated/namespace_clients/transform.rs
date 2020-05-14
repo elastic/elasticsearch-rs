@@ -1,31 +1,40 @@
+/*
+ * Licensed to Elasticsearch B.V. under one or more contributor
+ * license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright
+ * ownership. Elasticsearch B.V. licenses this file to you under
+ * the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 // -----------------------------------------------
-// ███╗   ██╗ ██████╗ ████████╗██╗ ██████╗███████╗
-// ████╗  ██║██╔═══██╗╚══██╔══╝██║██╔════╝██╔════╝
-// ██╔██╗ ██║██║   ██║   ██║   ██║██║     █████╗
-// ██║╚██╗██║██║   ██║   ██║   ██║██║     ██╔══╝
-// ██║ ╚████║╚██████╔╝   ██║   ██║╚██████╗███████╗
-// ╚═╝  ╚═══╝ ╚═════╝    ╚═╝   ╚═╝ ╚═════╝╚══════╝
-// -----------------------------------------------
-//
-// This file is generated,
-// Please do not edit it manually.
-// Run the following in the root of the repo:
+// This file is generated, Please do not edit it manually.
+// Run the following in the root of the repo to regenerate:
 //
 // cargo run -p api_generator
-//
 // -----------------------------------------------
-#[allow(unused_imports)]
+#![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
-        request::{Body, JsonBody, NdBody},
+        request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         Method,
     },
     params::*,
 };
+use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
@@ -39,9 +48,11 @@ impl<'b> TransformDeleteTransformParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             TransformDeleteTransformParts::TransformId(ref transform_id) => {
-                let mut p = String::with_capacity(12usize + transform_id.len());
+                let encoded_transform_id: Cow<str> =
+                    percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(12usize + encoded_transform_id.len());
                 p.push_str("/_transform/");
-                p.push_str(transform_id.as_ref());
+                p.push_str(encoded_transform_id.as_ref());
                 p.into()
             }
         }
@@ -167,9 +178,11 @@ impl<'b> TransformGetTransformParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             TransformGetTransformParts::TransformId(ref transform_id) => {
-                let mut p = String::with_capacity(12usize + transform_id.len());
+                let encoded_transform_id: Cow<str> =
+                    percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(12usize + encoded_transform_id.len());
                 p.push_str("/_transform/");
-                p.push_str(transform_id.as_ref());
+                p.push_str(encoded_transform_id.as_ref());
                 p.into()
             }
             TransformGetTransformParts::None => "/_transform".into(),
@@ -314,9 +327,11 @@ impl<'b> TransformGetTransformStatsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             TransformGetTransformStatsParts::TransformId(ref transform_id) => {
-                let mut p = String::with_capacity(19usize + transform_id.len());
+                let encoded_transform_id: Cow<str> =
+                    percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(19usize + encoded_transform_id.len());
                 p.push_str("/_transform/");
-                p.push_str(transform_id.as_ref());
+                p.push_str(encoded_transform_id.as_ref());
                 p.push_str("/_stats");
                 p.into()
             }
@@ -594,9 +609,11 @@ impl<'b> TransformPutTransformParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             TransformPutTransformParts::TransformId(ref transform_id) => {
-                let mut p = String::with_capacity(12usize + transform_id.len());
+                let encoded_transform_id: Cow<str> =
+                    percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(12usize + encoded_transform_id.len());
                 p.push_str("/_transform/");
-                p.push_str(transform_id.as_ref());
+                p.push_str(encoded_transform_id.as_ref());
                 p.into()
             }
         }
@@ -743,9 +760,11 @@ impl<'b> TransformStartTransformParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             TransformStartTransformParts::TransformId(ref transform_id) => {
-                let mut p = String::with_capacity(19usize + transform_id.len());
+                let encoded_transform_id: Cow<str> =
+                    percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(19usize + encoded_transform_id.len());
                 p.push_str("/_transform/");
-                p.push_str(transform_id.as_ref());
+                p.push_str(encoded_transform_id.as_ref());
                 p.push_str("/_start");
                 p.into()
             }
@@ -893,9 +912,11 @@ impl<'b> TransformStopTransformParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             TransformStopTransformParts::TransformId(ref transform_id) => {
-                let mut p = String::with_capacity(18usize + transform_id.len());
+                let encoded_transform_id: Cow<str> =
+                    percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(18usize + encoded_transform_id.len());
                 p.push_str("/_transform/");
-                p.push_str(transform_id.as_ref());
+                p.push_str(encoded_transform_id.as_ref());
                 p.push_str("/_stop");
                 p.into()
             }
@@ -1087,9 +1108,11 @@ impl<'b> TransformUpdateTransformParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             TransformUpdateTransformParts::TransformId(ref transform_id) => {
-                let mut p = String::with_capacity(20usize + transform_id.len());
+                let encoded_transform_id: Cow<str> =
+                    percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(20usize + encoded_transform_id.len());
                 p.push_str("/_transform/");
-                p.push_str(transform_id.as_ref());
+                p.push_str(encoded_transform_id.as_ref());
                 p.push_str("/_update");
                 p.into()
             }

@@ -1,31 +1,40 @@
+/*
+ * Licensed to Elasticsearch B.V. under one or more contributor
+ * license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright
+ * ownership. Elasticsearch B.V. licenses this file to you under
+ * the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 // -----------------------------------------------
-// ███╗   ██╗ ██████╗ ████████╗██╗ ██████╗███████╗
-// ████╗  ██║██╔═══██╗╚══██╔══╝██║██╔════╝██╔════╝
-// ██╔██╗ ██║██║   ██║   ██║   ██║██║     █████╗
-// ██║╚██╗██║██║   ██║   ██║   ██║██║     ██╔══╝
-// ██║ ╚████║╚██████╔╝   ██║   ██║╚██████╗███████╗
-// ╚═╝  ╚═══╝ ╚═════╝    ╚═╝   ╚═╝ ╚═════╝╚══════╝
-// -----------------------------------------------
-//
-// This file is generated,
-// Please do not edit it manually.
-// Run the following in the root of the repo:
+// This file is generated, Please do not edit it manually.
+// Run the following in the root of the repo to regenerate:
 //
 // cargo run -p api_generator
-//
 // -----------------------------------------------
-#[allow(unused_imports)]
+#![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
-        request::{Body, JsonBody, NdBody},
+        request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         Method,
     },
     params::*,
 };
+use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
@@ -39,9 +48,11 @@ impl<'b> SnapshotCleanupRepositoryParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SnapshotCleanupRepositoryParts::Repository(ref repository) => {
-                let mut p = String::with_capacity(20usize + repository.len());
+                let encoded_repository: Cow<str> =
+                    percent_encode(repository.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(20usize + encoded_repository.len());
                 p.push_str("/_snapshot/");
-                p.push_str(repository.as_ref());
+                p.push_str(encoded_repository.as_ref());
                 p.push_str("/_cleanup");
                 p.into()
             }
@@ -200,11 +211,17 @@ impl<'b> SnapshotCreateParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SnapshotCreateParts::RepositorySnapshot(ref repository, ref snapshot) => {
-                let mut p = String::with_capacity(12usize + repository.len() + snapshot.len());
+                let encoded_repository: Cow<str> =
+                    percent_encode(repository.as_bytes(), PARTS_ENCODED).into();
+                let encoded_snapshot: Cow<str> =
+                    percent_encode(snapshot.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    12usize + encoded_repository.len() + encoded_snapshot.len(),
+                );
                 p.push_str("/_snapshot/");
-                p.push_str(repository.as_ref());
+                p.push_str(encoded_repository.as_ref());
                 p.push_str("/");
-                p.push_str(snapshot.as_ref());
+                p.push_str(encoded_snapshot.as_ref());
                 p.into()
             }
         }
@@ -362,9 +379,11 @@ impl<'b> SnapshotCreateRepositoryParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SnapshotCreateRepositoryParts::Repository(ref repository) => {
-                let mut p = String::with_capacity(11usize + repository.len());
+                let encoded_repository: Cow<str> =
+                    percent_encode(repository.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_repository.len());
                 p.push_str("/_snapshot/");
-                p.push_str(repository.as_ref());
+                p.push_str(encoded_repository.as_ref());
                 p.into()
             }
         }
@@ -533,11 +552,17 @@ impl<'b> SnapshotDeleteParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SnapshotDeleteParts::RepositorySnapshot(ref repository, ref snapshot) => {
-                let mut p = String::with_capacity(12usize + repository.len() + snapshot.len());
+                let encoded_repository: Cow<str> =
+                    percent_encode(repository.as_bytes(), PARTS_ENCODED).into();
+                let encoded_snapshot: Cow<str> =
+                    percent_encode(snapshot.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    12usize + encoded_repository.len() + encoded_snapshot.len(),
+                );
                 p.push_str("/_snapshot/");
-                p.push_str(repository.as_ref());
+                p.push_str(encoded_repository.as_ref());
                 p.push_str("/");
-                p.push_str(snapshot.as_ref());
+                p.push_str(encoded_snapshot.as_ref());
                 p.into()
             }
         }
@@ -662,9 +687,11 @@ impl<'b> SnapshotDeleteRepositoryParts<'b> {
         match self {
             SnapshotDeleteRepositoryParts::Repository(ref repository) => {
                 let repository_str = repository.join(",");
-                let mut p = String::with_capacity(11usize + repository_str.len());
+                let encoded_repository: Cow<str> =
+                    percent_encode(repository_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_repository.len());
                 p.push_str("/_snapshot/");
-                p.push_str(repository_str.as_ref());
+                p.push_str(encoded_repository.as_ref());
                 p.into()
             }
         }
@@ -799,11 +826,17 @@ impl<'b> SnapshotGetParts<'b> {
         match self {
             SnapshotGetParts::RepositorySnapshot(ref repository, ref snapshot) => {
                 let snapshot_str = snapshot.join(",");
-                let mut p = String::with_capacity(12usize + repository.len() + snapshot_str.len());
+                let encoded_repository: Cow<str> =
+                    percent_encode(repository.as_bytes(), PARTS_ENCODED).into();
+                let encoded_snapshot: Cow<str> =
+                    percent_encode(snapshot_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    12usize + encoded_repository.len() + encoded_snapshot.len(),
+                );
                 p.push_str("/_snapshot/");
-                p.push_str(repository.as_ref());
+                p.push_str(encoded_repository.as_ref());
                 p.push_str("/");
-                p.push_str(snapshot_str.as_ref());
+                p.push_str(encoded_snapshot.as_ref());
                 p.into()
             }
         }
@@ -951,9 +984,11 @@ impl<'b> SnapshotGetRepositoryParts<'b> {
             SnapshotGetRepositoryParts::None => "/_snapshot".into(),
             SnapshotGetRepositoryParts::Repository(ref repository) => {
                 let repository_str = repository.join(",");
-                let mut p = String::with_capacity(11usize + repository_str.len());
+                let encoded_repository: Cow<str> =
+                    percent_encode(repository_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_repository.len());
                 p.push_str("/_snapshot/");
-                p.push_str(repository_str.as_ref());
+                p.push_str(encoded_repository.as_ref());
                 p.into()
             }
         }
@@ -1087,11 +1122,17 @@ impl<'b> SnapshotRestoreParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SnapshotRestoreParts::RepositorySnapshot(ref repository, ref snapshot) => {
-                let mut p = String::with_capacity(21usize + repository.len() + snapshot.len());
+                let encoded_repository: Cow<str> =
+                    percent_encode(repository.as_bytes(), PARTS_ENCODED).into();
+                let encoded_snapshot: Cow<str> =
+                    percent_encode(snapshot.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    21usize + encoded_repository.len() + encoded_snapshot.len(),
+                );
                 p.push_str("/_snapshot/");
-                p.push_str(repository.as_ref());
+                p.push_str(encoded_repository.as_ref());
                 p.push_str("/");
-                p.push_str(snapshot.as_ref());
+                p.push_str(encoded_snapshot.as_ref());
                 p.push_str("/_restore");
                 p.into()
             }
@@ -1255,19 +1296,27 @@ impl<'b> SnapshotStatusParts<'b> {
         match self {
             SnapshotStatusParts::None => "/_snapshot/_status".into(),
             SnapshotStatusParts::Repository(ref repository) => {
-                let mut p = String::with_capacity(19usize + repository.len());
+                let encoded_repository: Cow<str> =
+                    percent_encode(repository.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(19usize + encoded_repository.len());
                 p.push_str("/_snapshot/");
-                p.push_str(repository.as_ref());
+                p.push_str(encoded_repository.as_ref());
                 p.push_str("/_status");
                 p.into()
             }
             SnapshotStatusParts::RepositorySnapshot(ref repository, ref snapshot) => {
                 let snapshot_str = snapshot.join(",");
-                let mut p = String::with_capacity(20usize + repository.len() + snapshot_str.len());
+                let encoded_repository: Cow<str> =
+                    percent_encode(repository.as_bytes(), PARTS_ENCODED).into();
+                let encoded_snapshot: Cow<str> =
+                    percent_encode(snapshot_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    20usize + encoded_repository.len() + encoded_snapshot.len(),
+                );
                 p.push_str("/_snapshot/");
-                p.push_str(repository.as_ref());
+                p.push_str(encoded_repository.as_ref());
                 p.push_str("/");
-                p.push_str(snapshot_str.as_ref());
+                p.push_str(encoded_snapshot.as_ref());
                 p.push_str("/_status");
                 p.into()
             }
@@ -1402,9 +1451,11 @@ impl<'b> SnapshotVerifyRepositoryParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SnapshotVerifyRepositoryParts::Repository(ref repository) => {
-                let mut p = String::with_capacity(19usize + repository.len());
+                let encoded_repository: Cow<str> =
+                    percent_encode(repository.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(19usize + encoded_repository.len());
                 p.push_str("/_snapshot/");
-                p.push_str(repository.as_ref());
+                p.push_str(encoded_repository.as_ref());
                 p.push_str("/_verify");
                 p.into()
             }

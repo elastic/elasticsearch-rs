@@ -1,31 +1,40 @@
+/*
+ * Licensed to Elasticsearch B.V. under one or more contributor
+ * license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright
+ * ownership. Elasticsearch B.V. licenses this file to you under
+ * the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 // -----------------------------------------------
-// ███╗   ██╗ ██████╗ ████████╗██╗ ██████╗███████╗
-// ████╗  ██║██╔═══██╗╚══██╔══╝██║██╔════╝██╔════╝
-// ██╔██╗ ██║██║   ██║   ██║   ██║██║     █████╗
-// ██║╚██╗██║██║   ██║   ██║   ██║██║     ██╔══╝
-// ██║ ╚████║╚██████╔╝   ██║   ██║╚██████╗███████╗
-// ╚═╝  ╚═══╝ ╚═════╝    ╚═╝   ╚═╝ ╚═════╝╚══════╝
-// -----------------------------------------------
-//
-// This file is generated,
-// Please do not edit it manually.
-// Run the following in the root of the repo:
+// This file is generated, Please do not edit it manually.
+// Run the following in the root of the repo to regenerate:
 //
 // cargo run -p api_generator
-//
 // -----------------------------------------------
-#[allow(unused_imports)]
+#![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
-        request::{Body, JsonBody, NdBody},
+        request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         Method,
     },
     params::*,
 };
+use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
@@ -39,9 +48,10 @@ impl<'b> CcrDeleteAutoFollowPatternParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CcrDeleteAutoFollowPatternParts::Name(ref name) => {
-                let mut p = String::with_capacity(18usize + name.len());
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(18usize + encoded_name.len());
                 p.push_str("/_ccr/auto_follow/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
@@ -155,9 +165,11 @@ impl<'b> CcrFollowParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CcrFollowParts::Index(ref index) => {
-                let mut p = String::with_capacity(13usize + index.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(13usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_ccr/follow");
                 p.into()
             }
@@ -306,9 +318,11 @@ impl<'b> CcrFollowInfoParts<'b> {
         match self {
             CcrFollowInfoParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(11usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_ccr/info");
                 p.into()
             }
@@ -424,9 +438,11 @@ impl<'b> CcrFollowStatsParts<'b> {
         match self {
             CcrFollowStatsParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(12usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(12usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_ccr/stats");
                 p.into()
             }
@@ -541,9 +557,11 @@ impl<'b> CcrForgetFollowerParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CcrForgetFollowerParts::Index(ref index) => {
-                let mut p = String::with_capacity(22usize + index.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(22usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_ccr/forget_follower");
                 p.into()
             }
@@ -683,9 +701,10 @@ impl<'b> CcrGetAutoFollowPatternParts<'b> {
         match self {
             CcrGetAutoFollowPatternParts::None => "/_ccr/auto_follow".into(),
             CcrGetAutoFollowPatternParts::Name(ref name) => {
-                let mut p = String::with_capacity(18usize + name.len());
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(18usize + encoded_name.len());
                 p.push_str("/_ccr/auto_follow/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
@@ -799,9 +818,10 @@ impl<'b> CcrPauseAutoFollowPatternParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CcrPauseAutoFollowPatternParts::Name(ref name) => {
-                let mut p = String::with_capacity(24usize + name.len());
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(24usize + encoded_name.len());
                 p.push_str("/_ccr/auto_follow/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.push_str("/pause");
                 p.into()
             }
@@ -938,9 +958,11 @@ impl<'b> CcrPauseFollowParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CcrPauseFollowParts::Index(ref index) => {
-                let mut p = String::with_capacity(19usize + index.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(19usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_ccr/pause_follow");
                 p.into()
             }
@@ -1077,9 +1099,10 @@ impl<'b> CcrPutAutoFollowPatternParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CcrPutAutoFollowPatternParts::Name(ref name) => {
-                let mut p = String::with_capacity(18usize + name.len());
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(18usize + encoded_name.len());
                 p.push_str("/_ccr/auto_follow/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
@@ -1215,9 +1238,10 @@ impl<'b> CcrResumeAutoFollowPatternParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CcrResumeAutoFollowPatternParts::Name(ref name) => {
-                let mut p = String::with_capacity(25usize + name.len());
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(25usize + encoded_name.len());
                 p.push_str("/_ccr/auto_follow/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.push_str("/resume");
                 p.into()
             }
@@ -1354,9 +1378,11 @@ impl<'b> CcrResumeFollowParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CcrResumeFollowParts::Index(ref index) => {
-                let mut p = String::with_capacity(20usize + index.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(20usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_ccr/resume_follow");
                 p.into()
             }
@@ -1604,9 +1630,11 @@ impl<'b> CcrUnfollowParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CcrUnfollowParts::Index(ref index) => {
-                let mut p = String::with_capacity(15usize + index.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(15usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_ccr/unfollow");
                 p.into()
             }

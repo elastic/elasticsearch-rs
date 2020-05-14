@@ -1,31 +1,40 @@
+/*
+ * Licensed to Elasticsearch B.V. under one or more contributor
+ * license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright
+ * ownership. Elasticsearch B.V. licenses this file to you under
+ * the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 // -----------------------------------------------
-// ███╗   ██╗ ██████╗ ████████╗██╗ ██████╗███████╗
-// ████╗  ██║██╔═══██╗╚══██╔══╝██║██╔════╝██╔════╝
-// ██╔██╗ ██║██║   ██║   ██║   ██║██║     █████╗
-// ██║╚██╗██║██║   ██║   ██║   ██║██║     ██╔══╝
-// ██║ ╚████║╚██████╔╝   ██║   ██║╚██████╗███████╗
-// ╚═╝  ╚═══╝ ╚═════╝    ╚═╝   ╚═╝ ╚═════╝╚══════╝
-// -----------------------------------------------
-//
-// This file is generated,
-// Please do not edit it manually.
-// Run the following in the root of the repo:
+// This file is generated, Please do not edit it manually.
+// Run the following in the root of the repo to regenerate:
 //
 // cargo run -p api_generator
-//
 // -----------------------------------------------
-#[allow(unused_imports)]
+#![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
-        request::{Body, JsonBody, NdBody},
+        request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         Method,
     },
     params::*,
 };
+use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
@@ -44,18 +53,23 @@ impl<'b> BulkParts<'b> {
         match self {
             BulkParts::None => "/_bulk".into(),
             BulkParts::Index(ref index) => {
-                let mut p = String::with_capacity(7usize + index.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(7usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_bulk");
                 p.into()
             }
             BulkParts::IndexType(ref index, ref ty) => {
-                let mut p = String::with_capacity(8usize + index.len() + ty.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(8usize + encoded_index.len() + encoded_ty.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_bulk");
                 p.into()
             }
@@ -304,9 +318,11 @@ impl<'b> ClearScrollParts<'b> {
             ClearScrollParts::None => "/_search/scroll".into(),
             ClearScrollParts::ScrollId(ref scroll_id) => {
                 let scroll_id_str = scroll_id.join(",");
-                let mut p = String::with_capacity(16usize + scroll_id_str.len());
+                let encoded_scroll_id: Cow<str> =
+                    percent_encode(scroll_id_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_scroll_id.len());
                 p.push_str("/_search/scroll/");
-                p.push_str(scroll_id_str.as_ref());
+                p.push_str(encoded_scroll_id.as_ref());
                 p.into()
             }
         }
@@ -448,20 +464,25 @@ impl<'b> CountParts<'b> {
             CountParts::None => "/_count".into(),
             CountParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(8usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(8usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_count");
                 p.into()
             }
             CountParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
-                let mut p = String::with_capacity(9usize + index_str.len() + ty_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(9usize + encoded_index.len() + encoded_ty.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty_str.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_count");
                 p.into()
             }
@@ -763,21 +784,30 @@ impl<'b> CreateParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CreateParts::IndexId(ref index, ref id) => {
-                let mut p = String::with_capacity(10usize + index.len() + id.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(10usize + encoded_index.len() + encoded_id.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_create/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
             CreateParts::IndexTypeId(ref index, ref ty, ref id) => {
-                let mut p = String::with_capacity(11usize + index.len() + ty.len() + id.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    11usize + encoded_index.len() + encoded_ty.len() + encoded_id.len(),
+                );
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.push_str("/_create");
                 p.into()
             }
@@ -993,21 +1023,30 @@ impl<'b> DeleteParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             DeleteParts::IndexId(ref index, ref id) => {
-                let mut p = String::with_capacity(7usize + index.len() + id.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(7usize + encoded_index.len() + encoded_id.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_doc/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
             DeleteParts::IndexTypeId(ref index, ref ty, ref id) => {
-                let mut p = String::with_capacity(3usize + index.len() + ty.len() + id.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    3usize + encoded_index.len() + encoded_ty.len() + encoded_id.len(),
+                );
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
         }
@@ -1204,20 +1243,25 @@ impl<'b> DeleteByQueryParts<'b> {
         match self {
             DeleteByQueryParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(18usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(18usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_delete_by_query");
                 p.into()
             }
             DeleteByQueryParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
-                let mut p = String::with_capacity(19usize + index_str.len() + ty_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(19usize + encoded_index.len() + encoded_ty.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty_str.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_delete_by_query");
                 p.into()
             }
@@ -1732,9 +1776,11 @@ impl<'b> DeleteByQueryRethrottleParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             DeleteByQueryRethrottleParts::TaskId(ref task_id) => {
-                let mut p = String::with_capacity(30usize + task_id.len());
+                let encoded_task_id: Cow<str> =
+                    percent_encode(task_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(30usize + encoded_task_id.len());
                 p.push_str("/_delete_by_query/");
-                p.push_str(task_id.as_ref());
+                p.push_str(encoded_task_id.as_ref());
                 p.push_str("/_rethrottle");
                 p.into()
             }
@@ -1882,9 +1928,10 @@ impl<'b> DeleteScriptParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             DeleteScriptParts::Id(ref id) => {
-                let mut p = String::with_capacity(10usize + id.len());
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(10usize + encoded_id.len());
                 p.push_str("/_scripts/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
         }
@@ -2020,21 +2067,30 @@ impl<'b> ExistsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             ExistsParts::IndexId(ref index, ref id) => {
-                let mut p = String::with_capacity(7usize + index.len() + id.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(7usize + encoded_index.len() + encoded_id.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_doc/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
             ExistsParts::IndexTypeId(ref index, ref ty, ref id) => {
-                let mut p = String::with_capacity(3usize + index.len() + ty.len() + id.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    3usize + encoded_index.len() + encoded_ty.len() + encoded_id.len(),
+                );
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
         }
@@ -2262,21 +2318,30 @@ impl<'b> ExistsSourceParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             ExistsSourceParts::IndexId(ref index, ref id) => {
-                let mut p = String::with_capacity(10usize + index.len() + id.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(10usize + encoded_index.len() + encoded_id.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_source/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
             ExistsSourceParts::IndexTypeId(ref index, ref ty, ref id) => {
-                let mut p = String::with_capacity(11usize + index.len() + ty.len() + id.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    11usize + encoded_index.len() + encoded_ty.len() + encoded_id.len(),
+                );
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.push_str("/_source");
                 p.into()
             }
@@ -2492,21 +2557,30 @@ impl<'b> ExplainParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             ExplainParts::IndexId(ref index, ref id) => {
-                let mut p = String::with_capacity(11usize + index.len() + id.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_index.len() + encoded_id.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_explain/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
             ExplainParts::IndexTypeId(ref index, ref ty, ref id) => {
-                let mut p = String::with_capacity(12usize + index.len() + ty.len() + id.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    12usize + encoded_index.len() + encoded_ty.len() + encoded_id.len(),
+                );
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.push_str("/_explain");
                 p.into()
             }
@@ -2794,9 +2868,11 @@ impl<'b> FieldCapsParts<'b> {
             FieldCapsParts::None => "/_field_caps".into(),
             FieldCapsParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(13usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(13usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_field_caps");
                 p.into()
             }
@@ -2996,21 +3072,30 @@ impl<'b> GetParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             GetParts::IndexId(ref index, ref id) => {
-                let mut p = String::with_capacity(7usize + index.len() + id.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(7usize + encoded_index.len() + encoded_id.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_doc/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
             GetParts::IndexTypeId(ref index, ref ty, ref id) => {
-                let mut p = String::with_capacity(3usize + index.len() + ty.len() + id.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    3usize + encoded_index.len() + encoded_ty.len() + encoded_id.len(),
+                );
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
         }
@@ -3236,9 +3321,10 @@ impl<'b> GetScriptParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             GetScriptParts::Id(ref id) => {
-                let mut p = String::with_capacity(10usize + id.len());
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(10usize + encoded_id.len());
                 p.push_str("/_scripts/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
         }
@@ -3364,21 +3450,30 @@ impl<'b> GetSourceParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             GetSourceParts::IndexId(ref index, ref id) => {
-                let mut p = String::with_capacity(10usize + index.len() + id.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(10usize + encoded_index.len() + encoded_id.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_source/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
             GetSourceParts::IndexTypeId(ref index, ref ty, ref id) => {
-                let mut p = String::with_capacity(11usize + index.len() + ty.len() + id.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    11usize + encoded_index.len() + encoded_ty.len() + encoded_id.len(),
+                );
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.push_str("/_source");
                 p.into()
             }
@@ -3598,36 +3693,50 @@ impl<'b> IndexParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             IndexParts::IndexId(ref index, ref id) => {
-                let mut p = String::with_capacity(7usize + index.len() + id.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(7usize + encoded_index.len() + encoded_id.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_doc/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
             IndexParts::Index(ref index) => {
-                let mut p = String::with_capacity(6usize + index.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(6usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_doc");
                 p.into()
             }
             IndexParts::IndexType(ref index, ref ty) => {
-                let mut p = String::with_capacity(2usize + index.len() + ty.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(2usize + encoded_index.len() + encoded_ty.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.into()
             }
             IndexParts::IndexTypeId(ref index, ref ty, ref id) => {
-                let mut p = String::with_capacity(3usize + index.len() + ty.len() + id.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    3usize + encoded_index.len() + encoded_ty.len() + encoded_id.len(),
+                );
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
         }
@@ -3989,18 +4098,23 @@ impl<'b> MgetParts<'b> {
         match self {
             MgetParts::None => "/_mget".into(),
             MgetParts::Index(ref index) => {
-                let mut p = String::with_capacity(7usize + index.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(7usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_mget");
                 p.into()
             }
             MgetParts::IndexType(ref index, ref ty) => {
-                let mut p = String::with_capacity(8usize + index.len() + ty.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(8usize + encoded_index.len() + encoded_ty.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_mget");
                 p.into()
             }
@@ -4246,20 +4360,25 @@ impl<'b> MsearchParts<'b> {
             MsearchParts::None => "/_msearch".into(),
             MsearchParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(10usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(10usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_msearch");
                 p.into()
             }
             MsearchParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
-                let mut p = String::with_capacity(11usize + index_str.len() + ty_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_index.len() + encoded_ty.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty_str.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_msearch");
                 p.into()
             }
@@ -4482,20 +4601,25 @@ impl<'b> MsearchTemplateParts<'b> {
             MsearchTemplateParts::None => "/_msearch/template".into(),
             MsearchTemplateParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(19usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(19usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_msearch/template");
                 p.into()
             }
             MsearchTemplateParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
-                let mut p = String::with_capacity(20usize + index_str.len() + ty_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(20usize + encoded_index.len() + encoded_ty.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty_str.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_msearch/template");
                 p.into()
             }
@@ -4695,18 +4819,23 @@ impl<'b> MtermvectorsParts<'b> {
         match self {
             MtermvectorsParts::None => "/_mtermvectors".into(),
             MtermvectorsParts::Index(ref index) => {
-                let mut p = String::with_capacity(15usize + index.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(15usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_mtermvectors");
                 p.into()
             }
             MtermvectorsParts::IndexType(ref index, ref ty) => {
-                let mut p = String::with_capacity(16usize + index.len() + ty.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_index.len() + encoded_ty.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_mtermvectors");
                 p.into()
             }
@@ -5091,17 +5220,22 @@ impl<'b> PutScriptParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             PutScriptParts::Id(ref id) => {
-                let mut p = String::with_capacity(10usize + id.len());
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(10usize + encoded_id.len());
                 p.push_str("/_scripts/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
             PutScriptParts::IdContext(ref id, ref context) => {
-                let mut p = String::with_capacity(11usize + id.len() + context.len());
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let encoded_context: Cow<str> =
+                    percent_encode(context.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(11usize + encoded_id.len() + encoded_context.len());
                 p.push_str("/_scripts/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.push_str("/");
-                p.push_str(context.as_ref());
+                p.push_str(encoded_context.as_ref());
                 p.into()
             }
         }
@@ -5491,9 +5625,11 @@ impl<'b> ReindexRethrottleParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             ReindexRethrottleParts::TaskId(ref task_id) => {
-                let mut p = String::with_capacity(22usize + task_id.len());
+                let encoded_task_id: Cow<str> =
+                    percent_encode(task_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(22usize + encoded_task_id.len());
                 p.push_str("/_reindex/");
-                p.push_str(task_id.as_ref());
+                p.push_str(encoded_task_id.as_ref());
                 p.push_str("/_rethrottle");
                 p.into()
             }
@@ -5644,9 +5780,10 @@ impl<'b> RenderSearchTemplateParts<'b> {
         match self {
             RenderSearchTemplateParts::None => "/_render/template".into(),
             RenderSearchTemplateParts::Id(ref id) => {
-                let mut p = String::with_capacity(18usize + id.len());
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(18usize + encoded_id.len());
                 p.push_str("/_render/template/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
         }
@@ -5788,9 +5925,11 @@ impl<'b> ScrollParts<'b> {
         match self {
             ScrollParts::None => "/_search/scroll".into(),
             ScrollParts::ScrollId(ref scroll_id) => {
-                let mut p = String::with_capacity(16usize + scroll_id.len());
+                let encoded_scroll_id: Cow<str> =
+                    percent_encode(scroll_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_scroll_id.len());
                 p.push_str("/_search/scroll/");
-                p.push_str(scroll_id.as_ref());
+                p.push_str(encoded_scroll_id.as_ref());
                 p.into()
             }
         }
@@ -5968,20 +6107,25 @@ impl<'b> SearchParts<'b> {
             SearchParts::None => "/_search".into(),
             SearchParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(9usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(9usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_search");
                 p.into()
             }
             SearchParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
-                let mut p = String::with_capacity(10usize + index_str.len() + ty_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(10usize + encoded_index.len() + encoded_ty.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty_str.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_search");
                 p.into()
             }
@@ -6608,9 +6752,11 @@ impl<'b> SearchShardsParts<'b> {
             SearchShardsParts::None => "/_search_shards".into(),
             SearchShardsParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(16usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_search_shards");
                 p.into()
             }
@@ -6825,20 +6971,25 @@ impl<'b> SearchTemplateParts<'b> {
             SearchTemplateParts::None => "/_search/template".into(),
             SearchTemplateParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(18usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(18usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_search/template");
                 p.into()
             }
             SearchTemplateParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
-                let mut p = String::with_capacity(19usize + index_str.len() + ty_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(19usize + encoded_index.len() + encoded_ty.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty_str.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_search/template");
                 p.into()
             }
@@ -7133,37 +7284,51 @@ impl<'b> TermvectorsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             TermvectorsParts::IndexId(ref index, ref id) => {
-                let mut p = String::with_capacity(15usize + index.len() + id.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(15usize + encoded_index.len() + encoded_id.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_termvectors/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
             TermvectorsParts::Index(ref index) => {
-                let mut p = String::with_capacity(14usize + index.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(14usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_termvectors");
                 p.into()
             }
             TermvectorsParts::IndexTypeId(ref index, ref ty, ref id) => {
-                let mut p = String::with_capacity(16usize + index.len() + ty.len() + id.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    16usize + encoded_index.len() + encoded_ty.len() + encoded_id.len(),
+                );
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.push_str("/_termvectors");
                 p.into()
             }
             TermvectorsParts::IndexType(ref index, ref ty) => {
-                let mut p = String::with_capacity(15usize + index.len() + ty.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(15usize + encoded_index.len() + encoded_ty.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_termvectors");
                 p.into()
             }
@@ -7426,21 +7591,30 @@ impl<'b> UpdateParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             UpdateParts::IndexId(ref index, ref id) => {
-                let mut p = String::with_capacity(10usize + index.len() + id.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(10usize + encoded_index.len() + encoded_id.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_update/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
             UpdateParts::IndexTypeId(ref index, ref ty, ref id) => {
-                let mut p = String::with_capacity(11usize + index.len() + ty.len() + id.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    11usize + encoded_index.len() + encoded_ty.len() + encoded_id.len(),
+                );
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.push_str("/_update");
                 p.into()
             }
@@ -7710,20 +7884,25 @@ impl<'b> UpdateByQueryParts<'b> {
         match self {
             UpdateByQueryParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(18usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(18usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_update_by_query");
                 p.into()
             }
             UpdateByQueryParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
-                let mut p = String::with_capacity(19usize + index_str.len() + ty_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(19usize + encoded_index.len() + encoded_ty.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty_str.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_update_by_query");
                 p.into()
             }
@@ -8260,9 +8439,11 @@ impl<'b> UpdateByQueryRethrottleParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             UpdateByQueryRethrottleParts::TaskId(ref task_id) => {
-                let mut p = String::with_capacity(30usize + task_id.len());
+                let encoded_task_id: Cow<str> =
+                    percent_encode(task_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(30usize + encoded_task_id.len());
                 p.push_str("/_update_by_query/");
-                p.push_str(task_id.as_ref());
+                p.push_str(encoded_task_id.as_ref());
                 p.push_str("/_rethrottle");
                 p.into()
             }

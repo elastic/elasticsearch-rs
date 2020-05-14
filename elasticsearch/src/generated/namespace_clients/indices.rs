@@ -1,31 +1,40 @@
+/*
+ * Licensed to Elasticsearch B.V. under one or more contributor
+ * license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright
+ * ownership. Elasticsearch B.V. licenses this file to you under
+ * the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 // -----------------------------------------------
-// ███╗   ██╗ ██████╗ ████████╗██╗ ██████╗███████╗
-// ████╗  ██║██╔═══██╗╚══██╔══╝██║██╔════╝██╔════╝
-// ██╔██╗ ██║██║   ██║   ██║   ██║██║     █████╗
-// ██║╚██╗██║██║   ██║   ██║   ██║██║     ██╔══╝
-// ██║ ╚████║╚██████╔╝   ██║   ██║╚██████╗███████╗
-// ╚═╝  ╚═══╝ ╚═════╝    ╚═╝   ╚═╝ ╚═════╝╚══════╝
-// -----------------------------------------------
-//
-// This file is generated,
-// Please do not edit it manually.
-// Run the following in the root of the repo:
+// This file is generated, Please do not edit it manually.
+// Run the following in the root of the repo to regenerate:
 //
 // cargo run -p api_generator
-//
 // -----------------------------------------------
-#[allow(unused_imports)]
+#![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
-        request::{Body, JsonBody, NdBody},
+        request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         Method,
     },
     params::*,
 };
+use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
@@ -42,9 +51,11 @@ impl<'b> IndicesAnalyzeParts<'b> {
         match self {
             IndicesAnalyzeParts::None => "/_analyze".into(),
             IndicesAnalyzeParts::Index(ref index) => {
-                let mut p = String::with_capacity(10usize + index.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(10usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_analyze");
                 p.into()
             }
@@ -199,9 +210,11 @@ impl<'b> IndicesClearCacheParts<'b> {
             IndicesClearCacheParts::None => "/_cache/clear".into(),
             IndicesClearCacheParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(14usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(14usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_cache/clear");
                 p.into()
             }
@@ -429,11 +442,16 @@ impl<'b> IndicesCloneParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             IndicesCloneParts::IndexTarget(ref index, ref target) => {
-                let mut p = String::with_capacity(9usize + index.len() + target.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_target: Cow<str> =
+                    percent_encode(target.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(9usize + encoded_index.len() + encoded_target.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_clone/");
-                p.push_str(target.as_ref());
+                p.push_str(encoded_target.as_ref());
                 p.into()
             }
         }
@@ -603,9 +621,11 @@ impl<'b> IndicesCloseParts<'b> {
         match self {
             IndicesCloseParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(8usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(8usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_close");
                 p.into()
             }
@@ -811,9 +831,11 @@ impl<'b> IndicesCreateParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             IndicesCreateParts::Index(ref index) => {
-                let mut p = String::with_capacity(1usize + index.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(1usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.into()
             }
         }
@@ -994,9 +1016,11 @@ impl<'b> IndicesDeleteParts<'b> {
         match self {
             IndicesDeleteParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(1usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(1usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.into()
             }
         }
@@ -1165,11 +1189,16 @@ impl<'b> IndicesDeleteAliasParts<'b> {
             IndicesDeleteAliasParts::IndexName(ref index, ref name) => {
                 let index_str = index.join(",");
                 let name_str = name.join(",");
-                let mut p = String::with_capacity(9usize + index_str.len() + name_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(9usize + encoded_index.len() + encoded_name.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_alias/");
-                p.push_str(name_str.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
@@ -1303,9 +1332,10 @@ impl<'b> IndicesDeleteTemplateParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             IndicesDeleteTemplateParts::Name(ref name) => {
-                let mut p = String::with_capacity(11usize + name.len());
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_name.len());
                 p.push_str("/_template/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
@@ -1440,9 +1470,11 @@ impl<'b> IndicesExistsParts<'b> {
         match self {
             IndicesExistsParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(1usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(1usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.into()
             }
         }
@@ -1622,19 +1654,26 @@ impl<'b> IndicesExistsAliasParts<'b> {
         match self {
             IndicesExistsAliasParts::Name(ref name) => {
                 let name_str = name.join(",");
-                let mut p = String::with_capacity(8usize + name_str.len());
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(8usize + encoded_name.len());
                 p.push_str("/_alias/");
-                p.push_str(name_str.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
             IndicesExistsAliasParts::IndexName(ref index, ref name) => {
                 let index_str = index.join(",");
                 let name_str = name.join(",");
-                let mut p = String::with_capacity(9usize + index_str.len() + name_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(9usize + encoded_index.len() + encoded_name.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_alias/");
-                p.push_str(name_str.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
@@ -1792,9 +1831,11 @@ impl<'b> IndicesExistsTemplateParts<'b> {
         match self {
             IndicesExistsTemplateParts::Name(ref name) => {
                 let name_str = name.join(",");
-                let mut p = String::with_capacity(11usize + name_str.len());
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_name.len());
                 p.push_str("/_template/");
-                p.push_str(name_str.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
@@ -1940,11 +1981,14 @@ impl<'b> IndicesExistsTypeParts<'b> {
             IndicesExistsTypeParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
-                let mut p = String::with_capacity(11usize + index_str.len() + ty_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_index.len() + encoded_ty.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_mapping/");
-                p.push_str(ty_str.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.into()
             }
         }
@@ -2105,9 +2149,11 @@ impl<'b> IndicesFlushParts<'b> {
             IndicesFlushParts::None => "/_flush".into(),
             IndicesFlushParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(8usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(8usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_flush");
                 p.into()
             }
@@ -2309,9 +2355,11 @@ impl<'b> IndicesFlushSyncedParts<'b> {
             IndicesFlushSyncedParts::None => "/_flush/synced".into(),
             IndicesFlushSyncedParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(15usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(15usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_flush/synced");
                 p.into()
             }
@@ -2491,9 +2539,11 @@ impl<'b> IndicesForcemergeParts<'b> {
             IndicesForcemergeParts::None => "/_forcemerge".into(),
             IndicesForcemergeParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(13usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(13usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_forcemerge");
                 p.into()
             }
@@ -2699,9 +2749,11 @@ impl<'b> IndicesFreezeParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             IndicesFreezeParts::Index(ref index) => {
-                let mut p = String::with_capacity(9usize + index.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(9usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_freeze");
                 p.into()
             }
@@ -2908,9 +2960,11 @@ impl<'b> IndicesGetParts<'b> {
         match self {
             IndicesGetParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(1usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(1usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.into()
             }
         }
@@ -3115,26 +3169,35 @@ impl<'b> IndicesGetAliasParts<'b> {
             IndicesGetAliasParts::None => "/_alias".into(),
             IndicesGetAliasParts::Name(ref name) => {
                 let name_str = name.join(",");
-                let mut p = String::with_capacity(8usize + name_str.len());
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(8usize + encoded_name.len());
                 p.push_str("/_alias/");
-                p.push_str(name_str.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
             IndicesGetAliasParts::IndexName(ref index, ref name) => {
                 let index_str = index.join(",");
                 let name_str = name.join(",");
-                let mut p = String::with_capacity(9usize + index_str.len() + name_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(9usize + encoded_index.len() + encoded_name.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_alias/");
-                p.push_str(name_str.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
             IndicesGetAliasParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(8usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(8usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_alias");
                 p.into()
             }
@@ -3299,44 +3362,60 @@ impl<'b> IndicesGetFieldMappingParts<'b> {
         match self {
             IndicesGetFieldMappingParts::Fields(ref fields) => {
                 let fields_str = fields.join(",");
-                let mut p = String::with_capacity(16usize + fields_str.len());
+                let encoded_fields: Cow<str> =
+                    percent_encode(fields_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_fields.len());
                 p.push_str("/_mapping/field/");
-                p.push_str(fields_str.as_ref());
+                p.push_str(encoded_fields.as_ref());
                 p.into()
             }
             IndicesGetFieldMappingParts::IndexFields(ref index, ref fields) => {
                 let index_str = index.join(",");
                 let fields_str = fields.join(",");
-                let mut p = String::with_capacity(17usize + index_str.len() + fields_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_fields: Cow<str> =
+                    percent_encode(fields_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(17usize + encoded_index.len() + encoded_fields.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_mapping/field/");
-                p.push_str(fields_str.as_ref());
+                p.push_str(encoded_fields.as_ref());
                 p.into()
             }
             IndicesGetFieldMappingParts::TypeFields(ref ty, ref fields) => {
                 let ty_str = ty.join(",");
                 let fields_str = fields.join(",");
-                let mut p = String::with_capacity(17usize + ty_str.len() + fields_str.len());
+                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_fields: Cow<str> =
+                    percent_encode(fields_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(17usize + encoded_ty.len() + encoded_fields.len());
                 p.push_str("/_mapping/");
-                p.push_str(ty_str.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/field/");
-                p.push_str(fields_str.as_ref());
+                p.push_str(encoded_fields.as_ref());
                 p.into()
             }
             IndicesGetFieldMappingParts::IndexTypeFields(ref index, ref ty, ref fields) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
                 let fields_str = fields.join(",");
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_fields: Cow<str> =
+                    percent_encode(fields_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
-                    18usize + index_str.len() + ty_str.len() + fields_str.len(),
+                    18usize + encoded_index.len() + encoded_ty.len() + encoded_fields.len(),
                 );
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_mapping/");
-                p.push_str(ty_str.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/field/");
-                p.push_str(fields_str.as_ref());
+                p.push_str(encoded_fields.as_ref());
                 p.into()
             }
         }
@@ -3521,27 +3600,33 @@ impl<'b> IndicesGetMappingParts<'b> {
             IndicesGetMappingParts::None => "/_mapping".into(),
             IndicesGetMappingParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(10usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(10usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_mapping");
                 p.into()
             }
             IndicesGetMappingParts::Type(ref ty) => {
                 let ty_str = ty.join(",");
-                let mut p = String::with_capacity(10usize + ty_str.len());
+                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(10usize + encoded_ty.len());
                 p.push_str("/_mapping/");
-                p.push_str(ty_str.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.into()
             }
             IndicesGetMappingParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
-                let mut p = String::with_capacity(11usize + index_str.len() + ty_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_index.len() + encoded_ty.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_mapping/");
-                p.push_str(ty_str.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.into()
             }
         }
@@ -3726,27 +3811,36 @@ impl<'b> IndicesGetSettingsParts<'b> {
             IndicesGetSettingsParts::None => "/_settings".into(),
             IndicesGetSettingsParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(11usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_settings");
                 p.into()
             }
             IndicesGetSettingsParts::IndexName(ref index, ref name) => {
                 let index_str = index.join(",");
                 let name_str = name.join(",");
-                let mut p = String::with_capacity(12usize + index_str.len() + name_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(12usize + encoded_index.len() + encoded_name.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_settings/");
-                p.push_str(name_str.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
             IndicesGetSettingsParts::Name(ref name) => {
                 let name_str = name.join(",");
-                let mut p = String::with_capacity(11usize + name_str.len());
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_name.len());
                 p.push_str("/_settings/");
-                p.push_str(name_str.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
@@ -3937,9 +4031,11 @@ impl<'b> IndicesGetTemplateParts<'b> {
             IndicesGetTemplateParts::None => "/_template".into(),
             IndicesGetTemplateParts::Name(ref name) => {
                 let name_str = name.join(",");
-                let mut p = String::with_capacity(11usize + name_str.len());
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_name.len());
                 p.push_str("/_template/");
-                p.push_str(name_str.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
@@ -4097,9 +4193,11 @@ impl<'b> IndicesGetUpgradeParts<'b> {
             IndicesGetUpgradeParts::None => "/_upgrade".into(),
             IndicesGetUpgradeParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(10usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(10usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_upgrade");
                 p.into()
             }
@@ -4248,9 +4346,11 @@ impl<'b> IndicesOpenParts<'b> {
         match self {
             IndicesOpenParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(7usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(7usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_open");
                 p.into()
             }
@@ -4457,11 +4557,15 @@ impl<'b> IndicesPutAliasParts<'b> {
         match self {
             IndicesPutAliasParts::IndexName(ref index, ref name) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(9usize + index_str.len() + name.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(9usize + encoded_index.len() + encoded_name.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_alias/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
@@ -4624,26 +4728,32 @@ impl<'b> IndicesPutMappingParts<'b> {
         match self {
             IndicesPutMappingParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(10usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(10usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_mapping");
                 p.into()
             }
             IndicesPutMappingParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(11usize + index_str.len() + ty.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_index.len() + encoded_ty.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_mapping");
                 p.into()
             }
             IndicesPutMappingParts::Type(ref ty) => {
-                let mut p = String::with_capacity(11usize + ty.len());
+                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_ty.len());
                 p.push_str("/_mappings/");
-                p.push_str(ty.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.into()
             }
         }
@@ -4852,9 +4962,11 @@ impl<'b> IndicesPutSettingsParts<'b> {
             IndicesPutSettingsParts::None => "/_settings".into(),
             IndicesPutSettingsParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(11usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_settings");
                 p.into()
             }
@@ -5071,9 +5183,10 @@ impl<'b> IndicesPutTemplateParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             IndicesPutTemplateParts::Name(ref name) => {
-                let mut p = String::with_capacity(11usize + name.len());
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_name.len());
                 p.push_str("/_template/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
@@ -5257,9 +5370,11 @@ impl<'b> IndicesRecoveryParts<'b> {
             IndicesRecoveryParts::None => "/_recovery".into(),
             IndicesRecoveryParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(11usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_recovery");
                 p.into()
             }
@@ -5398,9 +5513,11 @@ impl<'b> IndicesRefreshParts<'b> {
             IndicesRefreshParts::None => "/_refresh".into(),
             IndicesRefreshParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(10usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(10usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_refresh");
                 p.into()
             }
@@ -5577,9 +5694,11 @@ impl<'b> IndicesReloadSearchAnalyzersParts<'b> {
         match self {
             IndicesReloadSearchAnalyzersParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(26usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(26usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_reload_search_analyzers");
                 p.into()
             }
@@ -5757,18 +5876,25 @@ impl<'b> IndicesRolloverParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             IndicesRolloverParts::Alias(ref alias) => {
-                let mut p = String::with_capacity(11usize + alias.len());
+                let encoded_alias: Cow<str> =
+                    percent_encode(alias.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_alias.len());
                 p.push_str("/");
-                p.push_str(alias.as_ref());
+                p.push_str(encoded_alias.as_ref());
                 p.push_str("/_rollover");
                 p.into()
             }
             IndicesRolloverParts::AliasNewIndex(ref alias, ref new_index) => {
-                let mut p = String::with_capacity(12usize + alias.len() + new_index.len());
+                let encoded_alias: Cow<str> =
+                    percent_encode(alias.as_bytes(), PARTS_ENCODED).into();
+                let encoded_new_index: Cow<str> =
+                    percent_encode(new_index.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(12usize + encoded_alias.len() + encoded_new_index.len());
                 p.push_str("/");
-                p.push_str(alias.as_ref());
+                p.push_str(encoded_alias.as_ref());
                 p.push_str("/_rollover/");
-                p.push_str(new_index.as_ref());
+                p.push_str(encoded_new_index.as_ref());
                 p.into()
             }
         }
@@ -5963,9 +6089,11 @@ impl<'b> IndicesSegmentsParts<'b> {
             IndicesSegmentsParts::None => "/_segments".into(),
             IndicesSegmentsParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(11usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_segments");
                 p.into()
             }
@@ -6127,9 +6255,11 @@ impl<'b> IndicesShardStoresParts<'b> {
             IndicesShardStoresParts::None => "/_shard_stores".into(),
             IndicesShardStoresParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(15usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(15usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_shard_stores");
                 p.into()
             }
@@ -6287,11 +6417,16 @@ impl<'b> IndicesShrinkParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             IndicesShrinkParts::IndexTarget(ref index, ref target) => {
-                let mut p = String::with_capacity(10usize + index.len() + target.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_target: Cow<str> =
+                    percent_encode(target.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(10usize + encoded_index.len() + encoded_target.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_shrink/");
-                p.push_str(target.as_ref());
+                p.push_str(encoded_target.as_ref());
                 p.into()
             }
         }
@@ -6471,11 +6606,16 @@ impl<'b> IndicesSplitParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             IndicesSplitParts::IndexTarget(ref index, ref target) => {
-                let mut p = String::with_capacity(9usize + index.len() + target.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_target: Cow<str> =
+                    percent_encode(target.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(9usize + encoded_index.len() + encoded_target.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_split/");
-                p.push_str(target.as_ref());
+                p.push_str(encoded_target.as_ref());
                 p.into()
             }
         }
@@ -6663,27 +6803,36 @@ impl<'b> IndicesStatsParts<'b> {
             IndicesStatsParts::None => "/_stats".into(),
             IndicesStatsParts::Metric(ref metric) => {
                 let metric_str = metric.join(",");
-                let mut p = String::with_capacity(8usize + metric_str.len());
+                let encoded_metric: Cow<str> =
+                    percent_encode(metric_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(8usize + encoded_metric.len());
                 p.push_str("/_stats/");
-                p.push_str(metric_str.as_ref());
+                p.push_str(encoded_metric.as_ref());
                 p.into()
             }
             IndicesStatsParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(8usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(8usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_stats");
                 p.into()
             }
             IndicesStatsParts::IndexMetric(ref index, ref metric) => {
                 let index_str = index.join(",");
                 let metric_str = metric.join(",");
-                let mut p = String::with_capacity(9usize + index_str.len() + metric_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_metric: Cow<str> =
+                    percent_encode(metric_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(9usize + encoded_index.len() + encoded_metric.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_stats/");
-                p.push_str(metric_str.as_ref());
+                p.push_str(encoded_metric.as_ref());
                 p.into()
             }
         }
@@ -6906,9 +7055,11 @@ impl<'b> IndicesUnfreezeParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             IndicesUnfreezeParts::Index(ref index) => {
-                let mut p = String::with_capacity(11usize + index.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_unfreeze");
                 p.into()
             }
@@ -7273,9 +7424,11 @@ impl<'b> IndicesUpgradeParts<'b> {
             IndicesUpgradeParts::None => "/_upgrade".into(),
             IndicesUpgradeParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(10usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(10usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_upgrade");
                 p.into()
             }
@@ -7476,20 +7629,25 @@ impl<'b> IndicesValidateQueryParts<'b> {
             IndicesValidateQueryParts::None => "/_validate/query".into(),
             IndicesValidateQueryParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(17usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(17usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_validate/query");
                 p.into()
             }
             IndicesValidateQueryParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
-                let mut p = String::with_capacity(18usize + index_str.len() + ty_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(18usize + encoded_index.len() + encoded_ty.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/");
-                p.push_str(ty_str.as_ref());
+                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_validate/query");
                 p.into()
             }
