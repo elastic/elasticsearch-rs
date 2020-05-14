@@ -3,7 +3,16 @@
 use crate::error::Error;
 use bytes::buf::BufMutExt;
 use bytes::{BufMut, Bytes, BytesMut};
+use percent_encoding::AsciiSet;
 use serde::Serialize;
+
+// similar to percent-encoding's NON_ALPHANUMERIC AsciiSet, but with some characters removed
+pub(crate) const PARTS_ENCODED: &AsciiSet = &percent_encoding::NON_ALPHANUMERIC
+    .remove(b'_')
+    .remove(b'-')
+    .remove(b'.')
+    .remove(b',')
+    .remove(b'*');
 
 /// Body of an API call.
 ///
@@ -11,11 +20,11 @@ use serde::Serialize;
 /// expect JSON, however, there are some APIs that expect newline-delimited JSON (NDJSON).
 /// The [Body] trait allows modelling different API body implementations.
 pub trait Body {
-    /// An existing immutable buffer that can be used to avoid writing
+    /// An existing immutable buffer that can be used to avoid
     /// having to write to another buffer that will then be written to the request stream.
     ///
     /// If this method returns `Some`, the bytes must be the same as
-    /// those that would be written by `write`.
+    /// those that would be written by [Body::write].
     fn bytes(&self) -> Option<Bytes> {
         None
     }

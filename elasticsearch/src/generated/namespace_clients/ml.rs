@@ -14,18 +14,19 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-#[allow(unused_imports)]
+#![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
-        request::{Body, JsonBody, NdBody},
+        request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         Method,
     },
     params::*,
 };
+use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
@@ -39,9 +40,11 @@ impl<'b> MlCloseJobParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlCloseJobParts::JobId(ref job_id) => {
-                let mut p = String::with_capacity(30usize + job_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(30usize + encoded_job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.push_str("/_close");
                 p.into()
             }
@@ -211,9 +214,11 @@ impl<'b> MlDeleteCalendarParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlDeleteCalendarParts::CalendarId(ref calendar_id) => {
-                let mut p = String::with_capacity(15usize + calendar_id.len());
+                let encoded_calendar_id: Cow<str> =
+                    percent_encode(calendar_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(15usize + encoded_calendar_id.len());
                 p.push_str("/_ml/calendars/");
-                p.push_str(calendar_id.as_ref());
+                p.push_str(encoded_calendar_id.as_ref());
                 p.into()
             }
         }
@@ -327,11 +332,17 @@ impl<'b> MlDeleteCalendarEventParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlDeleteCalendarEventParts::CalendarIdEventId(ref calendar_id, ref event_id) => {
-                let mut p = String::with_capacity(23usize + calendar_id.len() + event_id.len());
+                let encoded_calendar_id: Cow<str> =
+                    percent_encode(calendar_id.as_bytes(), PARTS_ENCODED).into();
+                let encoded_event_id: Cow<str> =
+                    percent_encode(event_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    23usize + encoded_calendar_id.len() + encoded_event_id.len(),
+                );
                 p.push_str("/_ml/calendars/");
-                p.push_str(calendar_id.as_ref());
+                p.push_str(encoded_calendar_id.as_ref());
                 p.push_str("/events/");
-                p.push_str(event_id.as_ref());
+                p.push_str(encoded_event_id.as_ref());
                 p.into()
             }
         }
@@ -445,11 +456,17 @@ impl<'b> MlDeleteCalendarJobParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlDeleteCalendarJobParts::CalendarIdJobId(ref calendar_id, ref job_id) => {
-                let mut p = String::with_capacity(21usize + calendar_id.len() + job_id.len());
+                let encoded_calendar_id: Cow<str> =
+                    percent_encode(calendar_id.as_bytes(), PARTS_ENCODED).into();
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    21usize + encoded_calendar_id.len() + encoded_job_id.len(),
+                );
                 p.push_str("/_ml/calendars/");
-                p.push_str(calendar_id.as_ref());
+                p.push_str(encoded_calendar_id.as_ref());
                 p.push_str("/jobs/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.into()
             }
         }
@@ -563,9 +580,11 @@ impl<'b> MlDeleteDatafeedParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlDeleteDatafeedParts::DatafeedId(ref datafeed_id) => {
-                let mut p = String::with_capacity(15usize + datafeed_id.len());
+                let encoded_datafeed_id: Cow<str> =
+                    percent_encode(datafeed_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(15usize + encoded_datafeed_id.len());
                 p.push_str("/_ml/datafeeds/");
-                p.push_str(datafeed_id.as_ref());
+                p.push_str(encoded_datafeed_id.as_ref());
                 p.into()
             }
         }
@@ -800,9 +819,11 @@ impl<'b> MlDeleteFilterParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlDeleteFilterParts::FilterId(ref filter_id) => {
-                let mut p = String::with_capacity(13usize + filter_id.len());
+                let encoded_filter_id: Cow<str> =
+                    percent_encode(filter_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(13usize + encoded_filter_id.len());
                 p.push_str("/_ml/filters/");
-                p.push_str(filter_id.as_ref());
+                p.push_str(encoded_filter_id.as_ref());
                 p.into()
             }
         }
@@ -918,18 +939,26 @@ impl<'b> MlDeleteForecastParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlDeleteForecastParts::JobId(ref job_id) => {
-                let mut p = String::with_capacity(33usize + job_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(33usize + encoded_job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.push_str("/_forecast");
                 p.into()
             }
             MlDeleteForecastParts::JobIdForecastId(ref job_id, ref forecast_id) => {
-                let mut p = String::with_capacity(34usize + job_id.len() + forecast_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let encoded_forecast_id: Cow<str> =
+                    percent_encode(forecast_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    34usize + encoded_job_id.len() + encoded_forecast_id.len(),
+                );
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.push_str("/_forecast/");
-                p.push_str(forecast_id.as_ref());
+                p.push_str(encoded_forecast_id.as_ref());
                 p.into()
             }
         }
@@ -1063,9 +1092,11 @@ impl<'b> MlDeleteJobParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlDeleteJobParts::JobId(ref job_id) => {
-                let mut p = String::with_capacity(23usize + job_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(23usize + encoded_job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.into()
             }
         }
@@ -1199,11 +1230,17 @@ impl<'b> MlDeleteModelSnapshotParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlDeleteModelSnapshotParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
-                let mut p = String::with_capacity(40usize + job_id.len() + snapshot_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let encoded_snapshot_id: Cow<str> =
+                    percent_encode(snapshot_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    40usize + encoded_job_id.len() + encoded_snapshot_id.len(),
+                );
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.push_str("/model_snapshots/");
-                p.push_str(snapshot_id.as_ref());
+                p.push_str(encoded_snapshot_id.as_ref());
                 p.into()
             }
         }
@@ -1452,9 +1489,11 @@ impl<'b> MlFlushJobParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlFlushJobParts::JobId(ref job_id) => {
-                let mut p = String::with_capacity(30usize + job_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(30usize + encoded_job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.push_str("/_flush");
                 p.into()
             }
@@ -1646,9 +1685,11 @@ impl<'b> MlForecastParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlForecastParts::JobId(ref job_id) => {
-                let mut p = String::with_capacity(33usize + job_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(33usize + encoded_job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.push_str("/_forecast");
                 p.into()
             }
@@ -1809,17 +1850,24 @@ impl<'b> MlGetBucketsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlGetBucketsParts::JobIdTimestamp(ref job_id, ref timestamp) => {
-                let mut p = String::with_capacity(40usize + job_id.len() + timestamp.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let encoded_timestamp: Cow<str> =
+                    percent_encode(timestamp.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(40usize + encoded_job_id.len() + encoded_timestamp.len());
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.push_str("/results/buckets/");
-                p.push_str(timestamp.as_ref());
+                p.push_str(encoded_timestamp.as_ref());
                 p.into()
             }
             MlGetBucketsParts::JobId(ref job_id) => {
-                let mut p = String::with_capacity(39usize + job_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(39usize + encoded_job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.push_str("/results/buckets");
                 p.into()
             }
@@ -2058,9 +2106,11 @@ impl<'b> MlGetCalendarEventsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlGetCalendarEventsParts::CalendarId(ref calendar_id) => {
-                let mut p = String::with_capacity(22usize + calendar_id.len());
+                let encoded_calendar_id: Cow<str> =
+                    percent_encode(calendar_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(22usize + encoded_calendar_id.len());
                 p.push_str("/_ml/calendars/");
-                p.push_str(calendar_id.as_ref());
+                p.push_str(encoded_calendar_id.as_ref());
                 p.push_str("/events");
                 p.into()
             }
@@ -2228,9 +2278,11 @@ impl<'b> MlGetCalendarsParts<'b> {
         match self {
             MlGetCalendarsParts::None => "/_ml/calendars".into(),
             MlGetCalendarsParts::CalendarId(ref calendar_id) => {
-                let mut p = String::with_capacity(15usize + calendar_id.len());
+                let encoded_calendar_id: Cow<str> =
+                    percent_encode(calendar_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(15usize + encoded_calendar_id.len());
                 p.push_str("/_ml/calendars/");
-                p.push_str(calendar_id.as_ref());
+                p.push_str(encoded_calendar_id.as_ref());
                 p.into()
             }
         }
@@ -2394,17 +2446,25 @@ impl<'b> MlGetCategoriesParts<'b> {
         match self {
             MlGetCategoriesParts::JobIdCategoryId(ref job_id, ref category_id) => {
                 let category_id_str = category_id.to_string();
-                let mut p = String::with_capacity(43usize + job_id.len() + category_id_str.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let encoded_category_id: Cow<str> =
+                    percent_encode(category_id_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    43usize + encoded_job_id.len() + encoded_category_id.len(),
+                );
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.push_str("/results/categories/");
-                p.push_str(category_id_str.as_ref());
+                p.push_str(encoded_category_id.as_ref());
                 p.into()
             }
             MlGetCategoriesParts::JobId(ref job_id) => {
-                let mut p = String::with_capacity(43usize + job_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(43usize + encoded_job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.push_str("/results/categories/");
                 p.into()
             }
@@ -2568,9 +2628,11 @@ impl<'b> MlGetDatafeedStatsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlGetDatafeedStatsParts::DatafeedId(ref datafeed_id) => {
-                let mut p = String::with_capacity(22usize + datafeed_id.len());
+                let encoded_datafeed_id: Cow<str> =
+                    percent_encode(datafeed_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(22usize + encoded_datafeed_id.len());
                 p.push_str("/_ml/datafeeds/");
-                p.push_str(datafeed_id.as_ref());
+                p.push_str(encoded_datafeed_id.as_ref());
                 p.push_str("/_stats");
                 p.into()
             }
@@ -2698,9 +2760,11 @@ impl<'b> MlGetDatafeedsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlGetDatafeedsParts::DatafeedId(ref datafeed_id) => {
-                let mut p = String::with_capacity(15usize + datafeed_id.len());
+                let encoded_datafeed_id: Cow<str> =
+                    percent_encode(datafeed_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(15usize + encoded_datafeed_id.len());
                 p.push_str("/_ml/datafeeds/");
-                p.push_str(datafeed_id.as_ref());
+                p.push_str(encoded_datafeed_id.as_ref());
                 p.into()
             }
             MlGetDatafeedsParts::None => "/_ml/datafeeds".into(),
@@ -2828,9 +2892,11 @@ impl<'b> MlGetFiltersParts<'b> {
         match self {
             MlGetFiltersParts::None => "/_ml/filters".into(),
             MlGetFiltersParts::FilterId(ref filter_id) => {
-                let mut p = String::with_capacity(13usize + filter_id.len());
+                let encoded_filter_id: Cow<str> =
+                    percent_encode(filter_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(13usize + encoded_filter_id.len());
                 p.push_str("/_ml/filters/");
-                p.push_str(filter_id.as_ref());
+                p.push_str(encoded_filter_id.as_ref());
                 p.into()
             }
         }
@@ -2964,9 +3030,11 @@ impl<'b> MlGetInfluencersParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlGetInfluencersParts::JobId(ref job_id) => {
-                let mut p = String::with_capacity(43usize + job_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(43usize + encoded_job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.push_str("/results/influencers");
                 p.into()
             }
@@ -3197,9 +3265,11 @@ impl<'b> MlGetJobStatsParts<'b> {
         match self {
             MlGetJobStatsParts::None => "/_ml/anomaly_detectors/_stats".into(),
             MlGetJobStatsParts::JobId(ref job_id) => {
-                let mut p = String::with_capacity(30usize + job_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(30usize + encoded_job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.push_str("/_stats");
                 p.into()
             }
@@ -3326,9 +3396,11 @@ impl<'b> MlGetJobsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlGetJobsParts::JobId(ref job_id) => {
-                let mut p = String::with_capacity(23usize + job_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(23usize + encoded_job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.into()
             }
             MlGetJobsParts::None => "/_ml/anomaly_detectors".into(),
@@ -3455,17 +3527,25 @@ impl<'b> MlGetModelSnapshotsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlGetModelSnapshotsParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
-                let mut p = String::with_capacity(40usize + job_id.len() + snapshot_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let encoded_snapshot_id: Cow<str> =
+                    percent_encode(snapshot_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    40usize + encoded_job_id.len() + encoded_snapshot_id.len(),
+                );
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.push_str("/model_snapshots/");
-                p.push_str(snapshot_id.as_ref());
+                p.push_str(encoded_snapshot_id.as_ref());
                 p.into()
             }
             MlGetModelSnapshotsParts::JobId(ref job_id) => {
-                let mut p = String::with_capacity(39usize + job_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(39usize + encoded_job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.push_str("/model_snapshots");
                 p.into()
             }
@@ -3671,9 +3751,11 @@ impl<'b> MlGetOverallBucketsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlGetOverallBucketsParts::JobId(ref job_id) => {
-                let mut p = String::with_capacity(47usize + job_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(47usize + encoded_job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.push_str("/results/overall_buckets");
                 p.into()
             }
@@ -3890,9 +3972,11 @@ impl<'b> MlGetRecordsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlGetRecordsParts::JobId(ref job_id) => {
-                let mut p = String::with_capacity(39usize + job_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(39usize + encoded_job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.push_str("/results/records");
                 p.into()
             }
@@ -4231,9 +4315,11 @@ impl<'b> MlOpenJobParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlOpenJobParts::JobId(ref job_id) => {
-                let mut p = String::with_capacity(29usize + job_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(29usize + encoded_job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.push_str("/_open");
                 p.into()
             }
@@ -4370,9 +4456,11 @@ impl<'b> MlPostCalendarEventsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlPostCalendarEventsParts::CalendarId(ref calendar_id) => {
-                let mut p = String::with_capacity(22usize + calendar_id.len());
+                let encoded_calendar_id: Cow<str> =
+                    percent_encode(calendar_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(22usize + encoded_calendar_id.len());
                 p.push_str("/_ml/calendars/");
-                p.push_str(calendar_id.as_ref());
+                p.push_str(encoded_calendar_id.as_ref());
                 p.push_str("/events");
                 p.into()
             }
@@ -4509,9 +4597,11 @@ impl<'b> MlPostDataParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlPostDataParts::JobId(ref job_id) => {
-                let mut p = String::with_capacity(29usize + job_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(29usize + encoded_job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.push_str("/_data");
                 p.into()
             }
@@ -4670,9 +4760,11 @@ impl<'b> MlPreviewDatafeedParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlPreviewDatafeedParts::DatafeedId(ref datafeed_id) => {
-                let mut p = String::with_capacity(24usize + datafeed_id.len());
+                let encoded_datafeed_id: Cow<str> =
+                    percent_encode(datafeed_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(24usize + encoded_datafeed_id.len());
                 p.push_str("/_ml/datafeeds/");
-                p.push_str(datafeed_id.as_ref());
+                p.push_str(encoded_datafeed_id.as_ref());
                 p.push_str("/_preview");
                 p.into()
             }
@@ -4787,9 +4879,11 @@ impl<'b> MlPutCalendarParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlPutCalendarParts::CalendarId(ref calendar_id) => {
-                let mut p = String::with_capacity(15usize + calendar_id.len());
+                let encoded_calendar_id: Cow<str> =
+                    percent_encode(calendar_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(15usize + encoded_calendar_id.len());
                 p.push_str("/_ml/calendars/");
-                p.push_str(calendar_id.as_ref());
+                p.push_str(encoded_calendar_id.as_ref());
                 p.into()
             }
         }
@@ -4925,11 +5019,17 @@ impl<'b> MlPutCalendarJobParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlPutCalendarJobParts::CalendarIdJobId(ref calendar_id, ref job_id) => {
-                let mut p = String::with_capacity(21usize + calendar_id.len() + job_id.len());
+                let encoded_calendar_id: Cow<str> =
+                    percent_encode(calendar_id.as_bytes(), PARTS_ENCODED).into();
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    21usize + encoded_calendar_id.len() + encoded_job_id.len(),
+                );
                 p.push_str("/_ml/calendars/");
-                p.push_str(calendar_id.as_ref());
+                p.push_str(encoded_calendar_id.as_ref());
                 p.push_str("/jobs/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.into()
             }
         }
@@ -5065,9 +5165,11 @@ impl<'b> MlPutDatafeedParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlPutDatafeedParts::DatafeedId(ref datafeed_id) => {
-                let mut p = String::with_capacity(15usize + datafeed_id.len());
+                let encoded_datafeed_id: Cow<str> =
+                    percent_encode(datafeed_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(15usize + encoded_datafeed_id.len());
                 p.push_str("/_ml/datafeeds/");
-                p.push_str(datafeed_id.as_ref());
+                p.push_str(encoded_datafeed_id.as_ref());
                 p.into()
             }
         }
@@ -5247,9 +5349,11 @@ impl<'b> MlPutFilterParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlPutFilterParts::FilterId(ref filter_id) => {
-                let mut p = String::with_capacity(13usize + filter_id.len());
+                let encoded_filter_id: Cow<str> =
+                    percent_encode(filter_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(13usize + encoded_filter_id.len());
                 p.push_str("/_ml/filters/");
-                p.push_str(filter_id.as_ref());
+                p.push_str(encoded_filter_id.as_ref());
                 p.into()
             }
         }
@@ -5385,9 +5489,11 @@ impl<'b> MlPutJobParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlPutJobParts::JobId(ref job_id) => {
-                let mut p = String::with_capacity(23usize + job_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(23usize + encoded_job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.into()
             }
         }
@@ -5523,11 +5629,17 @@ impl<'b> MlRevertModelSnapshotParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlRevertModelSnapshotParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
-                let mut p = String::with_capacity(48usize + job_id.len() + snapshot_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let encoded_snapshot_id: Cow<str> =
+                    percent_encode(snapshot_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    48usize + encoded_job_id.len() + encoded_snapshot_id.len(),
+                );
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.push_str("/model_snapshots/");
-                p.push_str(snapshot_id.as_ref());
+                p.push_str(encoded_snapshot_id.as_ref());
                 p.push_str("/_revert");
                 p.into()
             }
@@ -5830,9 +5942,11 @@ impl<'b> MlStartDatafeedParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlStartDatafeedParts::DatafeedId(ref datafeed_id) => {
-                let mut p = String::with_capacity(22usize + datafeed_id.len());
+                let encoded_datafeed_id: Cow<str> =
+                    percent_encode(datafeed_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(22usize + encoded_datafeed_id.len());
                 p.push_str("/_ml/datafeeds/");
-                p.push_str(datafeed_id.as_ref());
+                p.push_str(encoded_datafeed_id.as_ref());
                 p.push_str("/_start");
                 p.into()
             }
@@ -6002,9 +6116,11 @@ impl<'b> MlStopDatafeedParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlStopDatafeedParts::DatafeedId(ref datafeed_id) => {
-                let mut p = String::with_capacity(21usize + datafeed_id.len());
+                let encoded_datafeed_id: Cow<str> =
+                    percent_encode(datafeed_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(21usize + encoded_datafeed_id.len());
                 p.push_str("/_ml/datafeeds/");
-                p.push_str(datafeed_id.as_ref());
+                p.push_str(encoded_datafeed_id.as_ref());
                 p.push_str("/_stop");
                 p.into()
             }
@@ -6174,9 +6290,11 @@ impl<'b> MlUpdateDatafeedParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlUpdateDatafeedParts::DatafeedId(ref datafeed_id) => {
-                let mut p = String::with_capacity(23usize + datafeed_id.len());
+                let encoded_datafeed_id: Cow<str> =
+                    percent_encode(datafeed_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(23usize + encoded_datafeed_id.len());
                 p.push_str("/_ml/datafeeds/");
-                p.push_str(datafeed_id.as_ref());
+                p.push_str(encoded_datafeed_id.as_ref());
                 p.push_str("/_update");
                 p.into()
             }
@@ -6357,9 +6475,11 @@ impl<'b> MlUpdateFilterParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlUpdateFilterParts::FilterId(ref filter_id) => {
-                let mut p = String::with_capacity(21usize + filter_id.len());
+                let encoded_filter_id: Cow<str> =
+                    percent_encode(filter_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(21usize + encoded_filter_id.len());
                 p.push_str("/_ml/filters/");
-                p.push_str(filter_id.as_ref());
+                p.push_str(encoded_filter_id.as_ref());
                 p.push_str("/_update");
                 p.into()
             }
@@ -6496,9 +6616,11 @@ impl<'b> MlUpdateJobParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlUpdateJobParts::JobId(ref job_id) => {
-                let mut p = String::with_capacity(31usize + job_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(31usize + encoded_job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.push_str("/_update");
                 p.into()
             }
@@ -6635,11 +6757,17 @@ impl<'b> MlUpdateModelSnapshotParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlUpdateModelSnapshotParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
-                let mut p = String::with_capacity(48usize + job_id.len() + snapshot_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let encoded_snapshot_id: Cow<str> =
+                    percent_encode(snapshot_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    48usize + encoded_job_id.len() + encoded_snapshot_id.len(),
+                );
                 p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.push_str("/model_snapshots/");
-                p.push_str(snapshot_id.as_ref());
+                p.push_str(encoded_snapshot_id.as_ref());
                 p.push_str("/_update");
                 p.into()
             }

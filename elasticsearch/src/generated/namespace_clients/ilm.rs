@@ -14,18 +14,19 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-#[allow(unused_imports)]
+#![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
-        request::{Body, JsonBody, NdBody},
+        request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         Method,
     },
     params::*,
 };
+use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
@@ -39,9 +40,11 @@ impl<'b> IlmDeleteLifecycleParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             IlmDeleteLifecycleParts::Policy(ref policy) => {
-                let mut p = String::with_capacity(13usize + policy.len());
+                let encoded_policy: Cow<str> =
+                    percent_encode(policy.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(13usize + encoded_policy.len());
                 p.push_str("/_ilm/policy/");
-                p.push_str(policy.as_ref());
+                p.push_str(encoded_policy.as_ref());
                 p.into()
             }
         }
@@ -155,9 +158,11 @@ impl<'b> IlmExplainLifecycleParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             IlmExplainLifecycleParts::Index(ref index) => {
-                let mut p = String::with_capacity(14usize + index.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(14usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_ilm/explain");
                 p.into()
             }
@@ -294,9 +299,11 @@ impl<'b> IlmGetLifecycleParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             IlmGetLifecycleParts::Policy(ref policy) => {
-                let mut p = String::with_capacity(13usize + policy.len());
+                let encoded_policy: Cow<str> =
+                    percent_encode(policy.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(13usize + encoded_policy.len());
                 p.push_str("/_ilm/policy/");
-                p.push_str(policy.as_ref());
+                p.push_str(encoded_policy.as_ref());
                 p.into()
             }
             IlmGetLifecycleParts::None => "/_ilm/policy".into(),
@@ -522,9 +529,11 @@ impl<'b> IlmMoveToStepParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             IlmMoveToStepParts::Index(ref index) => {
-                let mut p = String::with_capacity(11usize + index.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_index.len());
                 p.push_str("/_ilm/move/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.into()
             }
         }
@@ -660,9 +669,11 @@ impl<'b> IlmPutLifecycleParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             IlmPutLifecycleParts::Policy(ref policy) => {
-                let mut p = String::with_capacity(13usize + policy.len());
+                let encoded_policy: Cow<str> =
+                    percent_encode(policy.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(13usize + encoded_policy.len());
                 p.push_str("/_ilm/policy/");
-                p.push_str(policy.as_ref());
+                p.push_str(encoded_policy.as_ref());
                 p.into()
             }
         }
@@ -798,9 +809,11 @@ impl<'b> IlmRemovePolicyParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             IlmRemovePolicyParts::Index(ref index) => {
-                let mut p = String::with_capacity(13usize + index.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(13usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_ilm/remove");
                 p.into()
             }
@@ -937,9 +950,11 @@ impl<'b> IlmRetryParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             IlmRetryParts::Index(ref index) => {
-                let mut p = String::with_capacity(12usize + index.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(12usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_ilm/retry");
                 p.into()
             }

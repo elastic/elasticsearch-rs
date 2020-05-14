@@ -14,18 +14,19 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-#[allow(unused_imports)]
+#![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
-        request::{Body, JsonBody, NdBody},
+        request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         Method,
     },
     params::*,
 };
+use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
@@ -152,9 +153,11 @@ impl<'b> SecurityChangePasswordParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SecurityChangePasswordParts::Username(ref username) => {
-                let mut p = String::with_capacity(26usize + username.len());
+                let encoded_username: Cow<str> =
+                    percent_encode(username.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(26usize + encoded_username.len());
                 p.push_str("/_security/user/");
-                p.push_str(username.as_ref());
+                p.push_str(encoded_username.as_ref());
                 p.push_str("/_password");
                 p.into()
             }
@@ -304,9 +307,11 @@ impl<'b> SecurityClearCachedRealmsParts<'b> {
         match self {
             SecurityClearCachedRealmsParts::Realms(ref realms) => {
                 let realms_str = realms.join(",");
-                let mut p = String::with_capacity(30usize + realms_str.len());
+                let encoded_realms: Cow<str> =
+                    percent_encode(realms_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(30usize + encoded_realms.len());
                 p.push_str("/_security/realm/");
-                p.push_str(realms_str.as_ref());
+                p.push_str(encoded_realms.as_ref());
                 p.push_str("/_clear_cache");
                 p.into()
             }
@@ -458,9 +463,11 @@ impl<'b> SecurityClearCachedRolesParts<'b> {
         match self {
             SecurityClearCachedRolesParts::Name(ref name) => {
                 let name_str = name.join(",");
-                let mut p = String::with_capacity(29usize + name_str.len());
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(29usize + encoded_name.len());
                 p.push_str("/_security/role/");
-                p.push_str(name_str.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.push_str("/_clear_cache");
                 p.into()
             }
@@ -741,11 +748,15 @@ impl<'b> SecurityDeletePrivilegesParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SecurityDeletePrivilegesParts::ApplicationName(ref application, ref name) => {
-                let mut p = String::with_capacity(22usize + application.len() + name.len());
+                let encoded_application: Cow<str> =
+                    percent_encode(application.as_bytes(), PARTS_ENCODED).into();
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(22usize + encoded_application.len() + encoded_name.len());
                 p.push_str("/_security/privilege/");
-                p.push_str(application.as_ref());
+                p.push_str(encoded_application.as_ref());
                 p.push_str("/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
@@ -869,9 +880,10 @@ impl<'b> SecurityDeleteRoleParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SecurityDeleteRoleParts::Name(ref name) => {
-                let mut p = String::with_capacity(16usize + name.len());
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_name.len());
                 p.push_str("/_security/role/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
@@ -995,9 +1007,10 @@ impl<'b> SecurityDeleteRoleMappingParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SecurityDeleteRoleMappingParts::Name(ref name) => {
-                let mut p = String::with_capacity(24usize + name.len());
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(24usize + encoded_name.len());
                 p.push_str("/_security/role_mapping/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
@@ -1121,9 +1134,11 @@ impl<'b> SecurityDeleteUserParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SecurityDeleteUserParts::Username(ref username) => {
-                let mut p = String::with_capacity(16usize + username.len());
+                let encoded_username: Cow<str> =
+                    percent_encode(username.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_username.len());
                 p.push_str("/_security/user/");
-                p.push_str(username.as_ref());
+                p.push_str(encoded_username.as_ref());
                 p.into()
             }
         }
@@ -1247,9 +1262,11 @@ impl<'b> SecurityDisableUserParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SecurityDisableUserParts::Username(ref username) => {
-                let mut p = String::with_capacity(25usize + username.len());
+                let encoded_username: Cow<str> =
+                    percent_encode(username.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(25usize + encoded_username.len());
                 p.push_str("/_security/user/");
-                p.push_str(username.as_ref());
+                p.push_str(encoded_username.as_ref());
                 p.push_str("/_disable");
                 p.into()
             }
@@ -1397,9 +1414,11 @@ impl<'b> SecurityEnableUserParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SecurityEnableUserParts::Username(ref username) => {
-                let mut p = String::with_capacity(24usize + username.len());
+                let encoded_username: Cow<str> =
+                    percent_encode(username.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(24usize + encoded_username.len());
                 p.push_str("/_security/user/");
-                p.push_str(username.as_ref());
+                p.push_str(encoded_username.as_ref());
                 p.push_str("/_enable");
                 p.into()
             }
@@ -1824,17 +1843,23 @@ impl<'b> SecurityGetPrivilegesParts<'b> {
         match self {
             SecurityGetPrivilegesParts::None => "/_security/privilege".into(),
             SecurityGetPrivilegesParts::Application(ref application) => {
-                let mut p = String::with_capacity(21usize + application.len());
+                let encoded_application: Cow<str> =
+                    percent_encode(application.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(21usize + encoded_application.len());
                 p.push_str("/_security/privilege/");
-                p.push_str(application.as_ref());
+                p.push_str(encoded_application.as_ref());
                 p.into()
             }
             SecurityGetPrivilegesParts::ApplicationName(ref application, ref name) => {
-                let mut p = String::with_capacity(22usize + application.len() + name.len());
+                let encoded_application: Cow<str> =
+                    percent_encode(application.as_bytes(), PARTS_ENCODED).into();
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(22usize + encoded_application.len() + encoded_name.len());
                 p.push_str("/_security/privilege/");
-                p.push_str(application.as_ref());
+                p.push_str(encoded_application.as_ref());
                 p.push_str("/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
@@ -1950,9 +1975,10 @@ impl<'b> SecurityGetRoleParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SecurityGetRoleParts::Name(ref name) => {
-                let mut p = String::with_capacity(16usize + name.len());
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_name.len());
                 p.push_str("/_security/role/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
             SecurityGetRoleParts::None => "/_security/role".into(),
@@ -2069,9 +2095,10 @@ impl<'b> SecurityGetRoleMappingParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SecurityGetRoleMappingParts::Name(ref name) => {
-                let mut p = String::with_capacity(24usize + name.len());
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(24usize + encoded_name.len());
                 p.push_str("/_security/role_mapping/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
             SecurityGetRoleMappingParts::None => "/_security/role_mapping".into(),
@@ -2322,9 +2349,11 @@ impl<'b> SecurityGetUserParts<'b> {
         match self {
             SecurityGetUserParts::Username(ref username) => {
                 let username_str = username.join(",");
-                let mut p = String::with_capacity(16usize + username_str.len());
+                let encoded_username: Cow<str> =
+                    percent_encode(username_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_username.len());
                 p.push_str("/_security/user/");
-                p.push_str(username_str.as_ref());
+                p.push_str(encoded_username.as_ref());
                 p.into()
             }
             SecurityGetUserParts::None => "/_security/user".into(),
@@ -2553,9 +2582,10 @@ impl<'b> SecurityHasPrivilegesParts<'b> {
         match self {
             SecurityHasPrivilegesParts::None => "/_security/user/_has_privileges".into(),
             SecurityHasPrivilegesParts::User(ref user) => {
-                let mut p = String::with_capacity(32usize + user.len());
+                let encoded_user: Cow<str> = percent_encode(user.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(32usize + encoded_user.len());
                 p.push_str("/_security/user/");
-                p.push_str(user.as_ref());
+                p.push_str(encoded_user.as_ref());
                 p.push_str("/_has_privileges");
                 p.into()
             }
@@ -3105,9 +3135,10 @@ impl<'b> SecurityPutRoleParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SecurityPutRoleParts::Name(ref name) => {
-                let mut p = String::with_capacity(16usize + name.len());
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_name.len());
                 p.push_str("/_security/role/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
@@ -3254,9 +3285,10 @@ impl<'b> SecurityPutRoleMappingParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SecurityPutRoleMappingParts::Name(ref name) => {
-                let mut p = String::with_capacity(24usize + name.len());
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(24usize + encoded_name.len());
                 p.push_str("/_security/role_mapping/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
@@ -3403,9 +3435,11 @@ impl<'b> SecurityPutUserParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SecurityPutUserParts::Username(ref username) => {
-                let mut p = String::with_capacity(16usize + username.len());
+                let encoded_username: Cow<str> =
+                    percent_encode(username.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_username.len());
                 p.push_str("/_security/user/");
-                p.push_str(username.as_ref());
+                p.push_str(encoded_username.as_ref());
                 p.into()
             }
         }

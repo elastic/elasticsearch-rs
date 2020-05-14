@@ -14,18 +14,19 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-#[allow(unused_imports)]
+#![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
-        request::{Body, JsonBody, NdBody},
+        request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         Method,
     },
     params::*,
 };
+use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
@@ -39,9 +40,11 @@ impl<'b> SlmDeleteLifecycleParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SlmDeleteLifecycleParts::PolicyId(ref policy_id) => {
-                let mut p = String::with_capacity(13usize + policy_id.len());
+                let encoded_policy_id: Cow<str> =
+                    percent_encode(policy_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(13usize + encoded_policy_id.len());
                 p.push_str("/_slm/policy/");
-                p.push_str(policy_id.as_ref());
+                p.push_str(encoded_policy_id.as_ref());
                 p.into()
             }
         }
@@ -155,9 +158,11 @@ impl<'b> SlmExecuteLifecycleParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SlmExecuteLifecycleParts::PolicyId(ref policy_id) => {
-                let mut p = String::with_capacity(22usize + policy_id.len());
+                let encoded_policy_id: Cow<str> =
+                    percent_encode(policy_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(22usize + encoded_policy_id.len());
                 p.push_str("/_slm/policy/");
-                p.push_str(policy_id.as_ref());
+                p.push_str(encoded_policy_id.as_ref());
                 p.push_str("/_execute");
                 p.into()
             }
@@ -430,9 +435,11 @@ impl<'b> SlmGetLifecycleParts<'b> {
         match self {
             SlmGetLifecycleParts::PolicyId(ref policy_id) => {
                 let policy_id_str = policy_id.join(",");
-                let mut p = String::with_capacity(13usize + policy_id_str.len());
+                let encoded_policy_id: Cow<str> =
+                    percent_encode(policy_id_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(13usize + encoded_policy_id.len());
                 p.push_str("/_slm/policy/");
-                p.push_str(policy_id_str.as_ref());
+                p.push_str(encoded_policy_id.as_ref());
                 p.into()
             }
             SlmGetLifecycleParts::None => "/_slm/policy".into(),
@@ -769,9 +776,11 @@ impl<'b> SlmPutLifecycleParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SlmPutLifecycleParts::PolicyId(ref policy_id) => {
-                let mut p = String::with_capacity(13usize + policy_id.len());
+                let encoded_policy_id: Cow<str> =
+                    percent_encode(policy_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(13usize + encoded_policy_id.len());
                 p.push_str("/_slm/policy/");
-                p.push_str(policy_id.as_ref());
+                p.push_str(encoded_policy_id.as_ref());
                 p.into()
             }
         }

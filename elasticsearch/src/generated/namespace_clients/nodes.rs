@@ -14,18 +14,19 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-#[allow(unused_imports)]
+#![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
-        request::{Body, JsonBody, NdBody},
+        request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         Method,
     },
     params::*,
 };
+use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
@@ -43,9 +44,11 @@ impl<'b> NodesHotThreadsParts<'b> {
             NodesHotThreadsParts::None => "/_nodes/hot_threads".into(),
             NodesHotThreadsParts::NodeId(ref node_id) => {
                 let node_id_str = node_id.join(",");
-                let mut p = String::with_capacity(20usize + node_id_str.len());
+                let encoded_node_id: Cow<str> =
+                    percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(20usize + encoded_node_id.len());
                 p.push_str("/_nodes/");
-                p.push_str(node_id_str.as_ref());
+                p.push_str(encoded_node_id.as_ref());
                 p.push_str("/hot_threads");
                 p.into()
             }
@@ -228,26 +231,35 @@ impl<'b> NodesInfoParts<'b> {
             NodesInfoParts::None => "/_nodes".into(),
             NodesInfoParts::NodeId(ref node_id) => {
                 let node_id_str = node_id.join(",");
-                let mut p = String::with_capacity(8usize + node_id_str.len());
+                let encoded_node_id: Cow<str> =
+                    percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(8usize + encoded_node_id.len());
                 p.push_str("/_nodes/");
-                p.push_str(node_id_str.as_ref());
+                p.push_str(encoded_node_id.as_ref());
                 p.into()
             }
             NodesInfoParts::Metric(ref metric) => {
                 let metric_str = metric.join(",");
-                let mut p = String::with_capacity(8usize + metric_str.len());
+                let encoded_metric: Cow<str> =
+                    percent_encode(metric_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(8usize + encoded_metric.len());
                 p.push_str("/_nodes/");
-                p.push_str(metric_str.as_ref());
+                p.push_str(encoded_metric.as_ref());
                 p.into()
             }
             NodesInfoParts::NodeIdMetric(ref node_id, ref metric) => {
                 let node_id_str = node_id.join(",");
                 let metric_str = metric.join(",");
-                let mut p = String::with_capacity(9usize + node_id_str.len() + metric_str.len());
+                let encoded_node_id: Cow<str> =
+                    percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_metric: Cow<str> =
+                    percent_encode(metric_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(9usize + encoded_node_id.len() + encoded_metric.len());
                 p.push_str("/_nodes/");
-                p.push_str(node_id_str.as_ref());
+                p.push_str(encoded_node_id.as_ref());
                 p.push_str("/");
-                p.push_str(metric_str.as_ref());
+                p.push_str(encoded_metric.as_ref());
                 p.into()
             }
         }
@@ -385,9 +397,11 @@ impl<'b> NodesReloadSecureSettingsParts<'b> {
             NodesReloadSecureSettingsParts::None => "/_nodes/reload_secure_settings".into(),
             NodesReloadSecureSettingsParts::NodeId(ref node_id) => {
                 let node_id_str = node_id.join(",");
-                let mut p = String::with_capacity(31usize + node_id_str.len());
+                let encoded_node_id: Cow<str> =
+                    percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(31usize + encoded_node_id.len());
                 p.push_str("/_nodes/");
-                p.push_str(node_id_str.as_ref());
+                p.push_str(encoded_node_id.as_ref());
                 p.push_str("/reload_secure_settings");
                 p.into()
             }
@@ -547,53 +561,76 @@ impl<'b> NodesStatsParts<'b> {
             NodesStatsParts::None => "/_nodes/stats".into(),
             NodesStatsParts::NodeId(ref node_id) => {
                 let node_id_str = node_id.join(",");
-                let mut p = String::with_capacity(14usize + node_id_str.len());
+                let encoded_node_id: Cow<str> =
+                    percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(14usize + encoded_node_id.len());
                 p.push_str("/_nodes/");
-                p.push_str(node_id_str.as_ref());
+                p.push_str(encoded_node_id.as_ref());
                 p.push_str("/stats");
                 p.into()
             }
             NodesStatsParts::Metric(ref metric) => {
                 let metric_str = metric.join(",");
-                let mut p = String::with_capacity(14usize + metric_str.len());
+                let encoded_metric: Cow<str> =
+                    percent_encode(metric_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(14usize + encoded_metric.len());
                 p.push_str("/_nodes/stats/");
-                p.push_str(metric_str.as_ref());
+                p.push_str(encoded_metric.as_ref());
                 p.into()
             }
             NodesStatsParts::NodeIdMetric(ref node_id, ref metric) => {
                 let node_id_str = node_id.join(",");
                 let metric_str = metric.join(",");
-                let mut p = String::with_capacity(15usize + node_id_str.len() + metric_str.len());
+                let encoded_node_id: Cow<str> =
+                    percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_metric: Cow<str> =
+                    percent_encode(metric_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(15usize + encoded_node_id.len() + encoded_metric.len());
                 p.push_str("/_nodes/");
-                p.push_str(node_id_str.as_ref());
+                p.push_str(encoded_node_id.as_ref());
                 p.push_str("/stats/");
-                p.push_str(metric_str.as_ref());
+                p.push_str(encoded_metric.as_ref());
                 p.into()
             }
             NodesStatsParts::MetricIndexMetric(ref metric, ref index_metric) => {
                 let metric_str = metric.join(",");
                 let index_metric_str = index_metric.join(",");
-                let mut p =
-                    String::with_capacity(15usize + metric_str.len() + index_metric_str.len());
+                let encoded_metric: Cow<str> =
+                    percent_encode(metric_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_index_metric: Cow<str> =
+                    percent_encode(index_metric_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    15usize + encoded_metric.len() + encoded_index_metric.len(),
+                );
                 p.push_str("/_nodes/stats/");
-                p.push_str(metric_str.as_ref());
+                p.push_str(encoded_metric.as_ref());
                 p.push_str("/");
-                p.push_str(index_metric_str.as_ref());
+                p.push_str(encoded_index_metric.as_ref());
                 p.into()
             }
             NodesStatsParts::NodeIdMetricIndexMetric(ref node_id, ref metric, ref index_metric) => {
                 let node_id_str = node_id.join(",");
                 let metric_str = metric.join(",");
                 let index_metric_str = index_metric.join(",");
+                let encoded_node_id: Cow<str> =
+                    percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_metric: Cow<str> =
+                    percent_encode(metric_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_index_metric: Cow<str> =
+                    percent_encode(index_metric_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
-                    16usize + node_id_str.len() + metric_str.len() + index_metric_str.len(),
+                    16usize
+                        + encoded_node_id.len()
+                        + encoded_metric.len()
+                        + encoded_index_metric.len(),
                 );
                 p.push_str("/_nodes/");
-                p.push_str(node_id_str.as_ref());
+                p.push_str(encoded_node_id.as_ref());
                 p.push_str("/stats/");
-                p.push_str(metric_str.as_ref());
+                p.push_str(encoded_metric.as_ref());
                 p.push_str("/");
-                p.push_str(index_metric_str.as_ref());
+                p.push_str(encoded_index_metric.as_ref());
                 p.into()
             }
         }
@@ -801,27 +838,36 @@ impl<'b> NodesUsageParts<'b> {
             NodesUsageParts::None => "/_nodes/usage".into(),
             NodesUsageParts::NodeId(ref node_id) => {
                 let node_id_str = node_id.join(",");
-                let mut p = String::with_capacity(14usize + node_id_str.len());
+                let encoded_node_id: Cow<str> =
+                    percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(14usize + encoded_node_id.len());
                 p.push_str("/_nodes/");
-                p.push_str(node_id_str.as_ref());
+                p.push_str(encoded_node_id.as_ref());
                 p.push_str("/usage");
                 p.into()
             }
             NodesUsageParts::Metric(ref metric) => {
                 let metric_str = metric.join(",");
-                let mut p = String::with_capacity(14usize + metric_str.len());
+                let encoded_metric: Cow<str> =
+                    percent_encode(metric_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(14usize + encoded_metric.len());
                 p.push_str("/_nodes/usage/");
-                p.push_str(metric_str.as_ref());
+                p.push_str(encoded_metric.as_ref());
                 p.into()
             }
             NodesUsageParts::NodeIdMetric(ref node_id, ref metric) => {
                 let node_id_str = node_id.join(",");
                 let metric_str = metric.join(",");
-                let mut p = String::with_capacity(15usize + node_id_str.len() + metric_str.len());
+                let encoded_node_id: Cow<str> =
+                    percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_metric: Cow<str> =
+                    percent_encode(metric_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(15usize + encoded_node_id.len() + encoded_metric.len());
                 p.push_str("/_nodes/");
-                p.push_str(node_id_str.as_ref());
+                p.push_str(encoded_node_id.as_ref());
                 p.push_str("/usage/");
-                p.push_str(metric_str.as_ref());
+                p.push_str(encoded_metric.as_ref());
                 p.into()
             }
         }
