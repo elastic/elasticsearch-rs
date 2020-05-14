@@ -5,7 +5,7 @@
 [Docs]: https://docs.rs/elasticsearch/badge.svg
 [docs.rs]: https://docs.rs/elasticsearch
 [Apache-2 licensed]: https://img.shields.io/crates/l/elasticsearch.svg
-[license]: ./LICENSE
+[license]: ./LICENSE.txt
 
 Official Rust Client for [Elasticsearch](https://github.com/elastic/elasticsearch).
 
@@ -246,4 +246,4 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 ## License
 
-This is free software, licensed under [The Apache License Version 2.0.](LICENSE).
+This is free software, licensed under [The Apache License Version 2.0.](LICENSE.txt).
