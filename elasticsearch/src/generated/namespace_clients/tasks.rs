@@ -14,18 +14,19 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-#[allow(unused_imports)]
+#![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
-        request::{Body, JsonBody, NdBody},
+        request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         Method,
     },
     params::*,
 };
+use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
@@ -42,9 +43,11 @@ impl<'b> TasksCancelParts<'b> {
         match self {
             TasksCancelParts::None => "/_tasks/_cancel".into(),
             TasksCancelParts::TaskId(ref task_id) => {
-                let mut p = String::with_capacity(16usize + task_id.len());
+                let encoded_task_id: Cow<str> =
+                    percent_encode(task_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_task_id.len());
                 p.push_str("/_tasks/");
-                p.push_str(task_id.as_ref());
+                p.push_str(encoded_task_id.as_ref());
                 p.push_str("/_cancel");
                 p.into()
             }
@@ -217,9 +220,11 @@ impl<'b> TasksGetParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             TasksGetParts::TaskId(ref task_id) => {
-                let mut p = String::with_capacity(8usize + task_id.len());
+                let encoded_task_id: Cow<str> =
+                    percent_encode(task_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(8usize + encoded_task_id.len());
                 p.push_str("/_tasks/");
-                p.push_str(task_id.as_ref());
+                p.push_str(encoded_task_id.as_ref());
                 p.into()
             }
         }

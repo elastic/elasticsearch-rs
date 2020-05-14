@@ -12,7 +12,7 @@ use std::str;
 /// use declarations common across builders
 pub fn use_declarations() -> Tokens {
     quote!(
-        #[allow(unused_imports)]
+        #![allow(unused_imports)]
         use crate::{
             client::{Elasticsearch},
             params::*,
@@ -20,11 +20,12 @@ pub fn use_declarations() -> Tokens {
             http::{
                 headers::{HeaderName, HeaderMap, HeaderValue, CONTENT_TYPE, ACCEPT},
                 Method,
-                request::{Body, NdBody, JsonBody},
+                request::{Body, NdBody, JsonBody, PARTS_ENCODED},
                 response::Response,
             },
         };
         use std::borrow::Cow;
+        use percent_encoding::percent_encode;
         use serde::Serialize;
     )
 }
