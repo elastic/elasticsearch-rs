@@ -2,17 +2,19 @@ pub mod common;
 use common::*;
 
 use elasticsearch::{
-    http::headers::{HeaderValue, X_OPAQUE_ID},
+    http::{
+        headers::{
+            HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE, DEFAULT_ACCEPT,
+            DEFAULT_CONTENT_TYPE, X_OPAQUE_ID,
+        },
+        StatusCode,
+    },
     params::TrackTotalHits,
     SearchParts,
 };
 
 use crate::common::client::index_documents;
-use elasticsearch::http::headers::{
-    HeaderMap, HeaderName, ACCEPT, CONTENT_TYPE, DEFAULT_ACCEPT, DEFAULT_CONTENT_TYPE,
-};
 use hyper::Method;
-use reqwest::StatusCode;
 use serde_json::{json, Value};
 
 #[tokio::test]
@@ -37,9 +39,10 @@ async fn default_header() -> Result<(), failure::Error> {
         http::Response::default()
     });
 
-    let builder = client::create_builder(format!("http://{}", server.addr()).as_ref())
-        .header(HeaderName::from_static(X_OPAQUE_ID),
-                HeaderValue::from_static("foo"));
+    let builder = client::create_builder(format!("http://{}", server.addr()).as_ref()).header(
+        HeaderName::from_static(X_OPAQUE_ID),
+        HeaderValue::from_static("foo"),
+    );
 
     let client = client::create(builder);
     let _response = client.ping().send().await?;
@@ -54,15 +57,20 @@ async fn override_default_header() -> Result<(), failure::Error> {
         http::Response::default()
     });
 
-    let builder = client::create_builder(format!("http://{}", server.addr()).as_ref())
-        .header(HeaderName::from_static(X_OPAQUE_ID),
-                HeaderValue::from_static("foo"));
+    let builder = client::create_builder(format!("http://{}", server.addr()).as_ref()).header(
+        HeaderName::from_static(X_OPAQUE_ID),
+        HeaderValue::from_static("foo"),
+    );
 
     let client = client::create(builder);
-    let _response = client.ping()
-        .header(HeaderName::from_static(X_OPAQUE_ID),
-                HeaderValue::from_static("bar"))
-        .send().await?;
+    let _response = client
+        .ping()
+        .header(
+            HeaderName::from_static(X_OPAQUE_ID),
+            HeaderValue::from_static("bar"),
+        )
+        .send()
+        .await?;
 
     Ok(())
 }
@@ -93,7 +101,7 @@ async fn deprecation_warning_headers() -> Result<(), failure::Error> {
     let _ = index_documents(&client).await?;
     let response = client
         .search(SearchParts::None)
-        .body(json!{
+        .body(json! {
             {
               "aggs": {
                 "titles": {
@@ -125,7 +133,9 @@ async fn deprecation_warning_headers() -> Result<(), failure::Error> {
 
     let warnings = response.warning_headers().collect::<Vec<&str>>();
     assert!(warnings.len() > 0);
-    assert!(warnings.iter().any(|&w| w.contains("Deprecated aggregation order key")));
+    assert!(warnings
+        .iter()
+        .any(|&w| w.contains("Deprecated aggregation order key")));
 
     Ok(())
 }
@@ -170,7 +180,25 @@ async fn search_with_body() -> Result<(), failure::Error> {
         .send()
         .await?;
 
+    let expected_url = {
+        let mut addr = client::cluster_addr();
+        if !addr.ends_with('/') {
+            addr.push('/');
+        }
+        let mut url = url::Url::parse(addr.as_str())?;
+        url.set_username("").unwrap();
+        url.set_password(None).unwrap();
+        url.join("_search?allow_no_indices=true")?
+    };
+
+    match response.content_length() {
+        Some(c) => assert!(c > 0),
+        None => (),
+    };
+
+    assert_eq!(response.url(), &expected_url);
     assert_eq!(response.status_code(), StatusCode::OK);
+    assert_eq!(response.method(), elasticsearch::http::Method::Post);
     let response_body = response.json::<Value>().await?;
     assert!(response_body["took"].as_i64().is_some());
 
@@ -189,6 +217,7 @@ async fn search_with_no_body() -> Result<(), failure::Error> {
         .await?;
 
     assert_eq!(response.status_code(), StatusCode::OK);
+    assert_eq!(response.method(), elasticsearch::http::Method::Get);
     let response_body = response.json::<Value>().await?;
     assert!(response_body["took"].as_i64().is_some());
 
