@@ -4,6 +4,7 @@ version = "7.7.0-alpha.1"
 description = "Generates source code for elasticsearch package, from the Elasticsearch REST API specs"
 authors = ["Elastic and Contributors"]
 edition = "2018"
+license = "Apache-2.0"
 publish = false
 
 [dependencies]
