@@ -14,18 +14,19 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-#[allow(unused_imports)]
+#![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
-        request::{Body, JsonBody, NdBody},
+        request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         Method,
     },
     params::*,
 };
+use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
@@ -43,9 +44,11 @@ impl<'b> CatAliasesParts<'b> {
             CatAliasesParts::None => "/_cat/aliases".into(),
             CatAliasesParts::Name(ref name) => {
                 let name_str = name.join(",");
-                let mut p = String::with_capacity(14usize + name_str.len());
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(14usize + encoded_name.len());
                 p.push_str("/_cat/aliases/");
-                p.push_str(name_str.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
@@ -235,9 +238,11 @@ impl<'b> CatAllocationParts<'b> {
             CatAllocationParts::None => "/_cat/allocation".into(),
             CatAllocationParts::NodeId(ref node_id) => {
                 let node_id_str = node_id.join(",");
-                let mut p = String::with_capacity(17usize + node_id_str.len());
+                let encoded_node_id: Cow<str> =
+                    percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(17usize + encoded_node_id.len());
                 p.push_str("/_cat/allocation/");
-                p.push_str(node_id_str.as_ref());
+                p.push_str(encoded_node_id.as_ref());
                 p.into()
             }
         }
@@ -437,9 +442,11 @@ impl<'b> CatCountParts<'b> {
             CatCountParts::None => "/_cat/count".into(),
             CatCountParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(12usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(12usize + encoded_index.len());
                 p.push_str("/_cat/count/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.into()
             }
         }
@@ -609,9 +616,11 @@ impl<'b> CatFielddataParts<'b> {
             CatFielddataParts::None => "/_cat/fielddata".into(),
             CatFielddataParts::Fields(ref fields) => {
                 let fields_str = fields.join(",");
-                let mut p = String::with_capacity(16usize + fields_str.len());
+                let encoded_fields: Cow<str> =
+                    percent_encode(fields_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_fields.len());
                 p.push_str("/_cat/fielddata/");
-                p.push_str(fields_str.as_ref());
+                p.push_str(encoded_fields.as_ref());
                 p.into()
             }
         }
@@ -1117,9 +1126,11 @@ impl<'b> CatIndicesParts<'b> {
             CatIndicesParts::None => "/_cat/indices".into(),
             CatIndicesParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(14usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(14usize + encoded_index.len());
                 p.push_str("/_cat/indices/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.into()
             }
         }
@@ -1551,9 +1562,10 @@ impl<'b> CatMlDataFrameAnalyticsParts<'b> {
         match self {
             CatMlDataFrameAnalyticsParts::None => "/_cat/ml/data_frame/analytics".into(),
             CatMlDataFrameAnalyticsParts::Id(ref id) => {
-                let mut p = String::with_capacity(30usize + id.len());
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(30usize + encoded_id.len());
                 p.push_str("/_cat/ml/data_frame/analytics/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
         }
@@ -1752,9 +1764,11 @@ impl<'b> CatMlDatafeedsParts<'b> {
         match self {
             CatMlDatafeedsParts::None => "/_cat/ml/datafeeds".into(),
             CatMlDatafeedsParts::DatafeedId(ref datafeed_id) => {
-                let mut p = String::with_capacity(19usize + datafeed_id.len());
+                let encoded_datafeed_id: Cow<str> =
+                    percent_encode(datafeed_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(19usize + encoded_datafeed_id.len());
                 p.push_str("/_cat/ml/datafeeds/");
-                p.push_str(datafeed_id.as_ref());
+                p.push_str(encoded_datafeed_id.as_ref());
                 p.into()
             }
         }
@@ -1943,9 +1957,11 @@ impl<'b> CatMlJobsParts<'b> {
         match self {
             CatMlJobsParts::None => "/_cat/ml/anomaly_detectors".into(),
             CatMlJobsParts::JobId(ref job_id) => {
-                let mut p = String::with_capacity(27usize + job_id.len());
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(27usize + encoded_job_id.len());
                 p.push_str("/_cat/ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
+                p.push_str(encoded_job_id.as_ref());
                 p.into()
             }
         }
@@ -2144,9 +2160,11 @@ impl<'b> CatMlTrainedModelsParts<'b> {
         match self {
             CatMlTrainedModelsParts::None => "/_cat/ml/trained_models".into(),
             CatMlTrainedModelsParts::ModelId(ref model_id) => {
-                let mut p = String::with_capacity(24usize + model_id.len());
+                let encoded_model_id: Cow<str> =
+                    percent_encode(model_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(24usize + encoded_model_id.len());
                 p.push_str("/_cat/ml/trained_models/");
-                p.push_str(model_id.as_ref());
+                p.push_str(encoded_model_id.as_ref());
                 p.into()
             }
         }
@@ -3138,9 +3156,11 @@ impl<'b> CatRecoveryParts<'b> {
             CatRecoveryParts::None => "/_cat/recovery".into(),
             CatRecoveryParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(15usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(15usize + encoded_index.len());
                 p.push_str("/_cat/recovery/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.into()
             }
         }
@@ -3543,9 +3563,11 @@ impl<'b> CatSegmentsParts<'b> {
             CatSegmentsParts::None => "/_cat/segments".into(),
             CatSegmentsParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(15usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(15usize + encoded_index.len());
                 p.push_str("/_cat/segments/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.into()
             }
         }
@@ -3725,9 +3747,11 @@ impl<'b> CatShardsParts<'b> {
             CatShardsParts::None => "/_cat/shards".into(),
             CatShardsParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(13usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(13usize + encoded_index.len());
                 p.push_str("/_cat/shards/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.into()
             }
         }
@@ -3937,9 +3961,11 @@ impl<'b> CatSnapshotsParts<'b> {
             CatSnapshotsParts::None => "/_cat/snapshots".into(),
             CatSnapshotsParts::Repository(ref repository) => {
                 let repository_str = repository.join(",");
-                let mut p = String::with_capacity(16usize + repository_str.len());
+                let encoded_repository: Cow<str> =
+                    percent_encode(repository_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_repository.len());
                 p.push_str("/_cat/snapshots/");
-                p.push_str(repository_str.as_ref());
+                p.push_str(encoded_repository.as_ref());
                 p.into()
             }
         }
@@ -4357,9 +4383,10 @@ impl<'b> CatTemplatesParts<'b> {
         match self {
             CatTemplatesParts::None => "/_cat/templates".into(),
             CatTemplatesParts::Name(ref name) => {
-                let mut p = String::with_capacity(16usize + name.len());
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_name.len());
                 p.push_str("/_cat/templates/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
@@ -4549,9 +4576,11 @@ impl<'b> CatThreadPoolParts<'b> {
             CatThreadPoolParts::None => "/_cat/thread_pool".into(),
             CatThreadPoolParts::ThreadPoolPatterns(ref thread_pool_patterns) => {
                 let thread_pool_patterns_str = thread_pool_patterns.join(",");
-                let mut p = String::with_capacity(18usize + thread_pool_patterns_str.len());
+                let encoded_thread_pool_patterns: Cow<str> =
+                    percent_encode(thread_pool_patterns_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(18usize + encoded_thread_pool_patterns.len());
                 p.push_str("/_cat/thread_pool/");
-                p.push_str(thread_pool_patterns_str.as_ref());
+                p.push_str(encoded_thread_pool_patterns.as_ref());
                 p.into()
             }
         }
@@ -4750,9 +4779,11 @@ impl<'b> CatTransformsParts<'b> {
         match self {
             CatTransformsParts::None => "/_cat/transforms".into(),
             CatTransformsParts::TransformId(ref transform_id) => {
-                let mut p = String::with_capacity(17usize + transform_id.len());
+                let encoded_transform_id: Cow<str> =
+                    percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(17usize + encoded_transform_id.len());
                 p.push_str("/_cat/transforms/");
-                p.push_str(transform_id.as_ref());
+                p.push_str(encoded_transform_id.as_ref());
                 p.into()
             }
         }

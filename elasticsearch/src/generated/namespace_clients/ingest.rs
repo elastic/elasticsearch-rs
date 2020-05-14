@@ -14,18 +14,19 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-#[allow(unused_imports)]
+#![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
-        request::{Body, JsonBody, NdBody},
+        request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         Method,
     },
     params::*,
 };
+use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
@@ -39,9 +40,10 @@ impl<'b> IngestDeletePipelineParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             IngestDeletePipelineParts::Id(ref id) => {
-                let mut p = String::with_capacity(18usize + id.len());
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(18usize + encoded_id.len());
                 p.push_str("/_ingest/pipeline/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
         }
@@ -178,9 +180,10 @@ impl<'b> IngestGetPipelineParts<'b> {
         match self {
             IngestGetPipelineParts::None => "/_ingest/pipeline".into(),
             IngestGetPipelineParts::Id(ref id) => {
-                let mut p = String::with_capacity(18usize + id.len());
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(18usize + encoded_id.len());
                 p.push_str("/_ingest/pipeline/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
         }
@@ -415,9 +418,10 @@ impl<'b> IngestPutPipelineParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             IngestPutPipelineParts::Id(ref id) => {
-                let mut p = String::with_capacity(18usize + id.len());
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(18usize + encoded_id.len());
                 p.push_str("/_ingest/pipeline/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
         }
@@ -578,9 +582,10 @@ impl<'b> IngestSimulateParts<'b> {
         match self {
             IngestSimulateParts::None => "/_ingest/pipeline/_simulate".into(),
             IngestSimulateParts::Id(ref id) => {
-                let mut p = String::with_capacity(28usize + id.len());
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(28usize + encoded_id.len());
                 p.push_str("/_ingest/pipeline/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.push_str("/_simulate");
                 p.into()
             }

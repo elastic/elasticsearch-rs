@@ -14,18 +14,19 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-#[allow(unused_imports)]
+#![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
-        request::{Body, JsonBody, NdBody},
+        request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         Method,
     },
     params::*,
 };
+use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
@@ -42,9 +43,11 @@ impl<'b> MigrationDeprecationsParts<'b> {
         match self {
             MigrationDeprecationsParts::None => "/_migration/deprecations".into(),
             MigrationDeprecationsParts::Index(ref index) => {
-                let mut p = String::with_capacity(25usize + index.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(25usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_migration/deprecations");
                 p.into()
             }

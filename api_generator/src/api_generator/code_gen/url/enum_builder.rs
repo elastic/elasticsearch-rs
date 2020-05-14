@@ -388,20 +388,23 @@ mod tests {
                         SearchParts::None => "/_search".into(),
                         SearchParts::Index(ref index) => {
                             let index_str = index.join(",");
-                            let mut p = String::with_capacity(9usize + index_str.len());
+                            let encoded_index: Cow<str> = percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                            let mut p = String::with_capacity(9usize + encoded_index.len());
                             p.push_str("/");
-                            p.push_str(index_str.as_ref());
+                            p.push_str(encoded_index.as_ref());
                             p.push_str("/_search");
                             p.into()
                         }
                         SearchParts::IndexType(ref index, ref ty) => {
                             let index_str = index.join(",");
                             let ty_str = ty.join(",");
-                            let mut p = String::with_capacity(10usize + index_str.len() + ty_str.len());
+                            let encoded_index: Cow<str> = percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                            let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
+                            let mut p = String::with_capacity(10usize + encoded_index.len() + encoded_ty.len());
                             p.push_str("/");
-                            p.push_str(index_str.as_ref());
+                            p.push_str(encoded_index.as_ref());
                             p.push_str("/");
-                            p.push_str(ty_str.as_ref());
+                            p.push_str(encoded_ty.as_ref());
                             p.push_str("/_search");
                             p.into()
                         }
