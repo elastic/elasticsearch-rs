@@ -5,27 +5,9 @@ use super::{ok_or_accumulate, Step};
 use crate::step::clean_regex;
 use api_generator::generator::{Api, ApiEndpoint, TypeKind};
 use itertools::Itertools;
-use regex::Regex;
 use std::collections::BTreeMap;
 use yaml_rust::{Yaml, YamlEmitter};
-
-lazy_static! {
-    // replace usages of "$.*" with the captured value
-    static ref SET_REGEX: Regex =
-        Regex::new(r#""\$(.*?)""#).unwrap();
-
-    // replace usages of ${.*} with the captured value
-    static ref SET_QUOTED_DELIMITED_REGEX: Regex =
-        Regex::new(r#""\$\{(.*?)\}""#).unwrap();
-
-    // replace usages of ${.*} with the captured value
-    static ref SET_DELIMITED_REGEX: Regex =
-        Regex::new(r#"\$\{(.*?)\}"#).unwrap();
-
-    // include i64 suffix on whole numbers
-    static ref INT_REGEX: Regex =
-        regex::Regex::new(r"(:\s?)(\d+?)([,\s?|\s*?}])").unwrap();
-}
+use crate::regex::*;
 
 /// A catch expression on a do step
 pub struct Catch(String);
@@ -795,29 +777,6 @@ impl ApiCall {
         }
     }
 
-    /// Replaces a "set" step value with a variable
-    fn replace_set_quoted_delimited<S: AsRef<str>>(s: S) -> String {
-        SET_QUOTED_DELIMITED_REGEX.replace_all(s.as_ref(), "$1").into_owned()
-    }
-
-    /// Replaces a "set" step value with a variable
-    fn replace_set_delimited<S: AsRef<str>>(s: S) -> String {
-        SET_DELIMITED_REGEX.replace_all(s.as_ref(), "$1").into_owned()
-    }
-
-    /// Replaces a "set" step value with a variable
-    fn replace_set<S: AsRef<str>>(s: S) -> String {
-        SET_REGEX.replace_all(s.as_ref(), "$1").into_owned()
-    }
-
-    /// Replaces all integers in a string to suffix with i64, to ensure that numbers
-    /// larger than i32 will be handled correctly when passed to json! macro
-    fn replace_i64<S: AsRef<str>>(s: S) -> String {
-        INT_REGEX
-            .replace_all(s.as_ref(), "${1}${2}i64${3}")
-            .into_owned()
-    }
-
     /// Creates the body function call from a YAML value.
     ///
     /// When reading a body from the YAML test, it'll be converted to a Yaml variant,
@@ -827,10 +786,10 @@ impl ApiCall {
         match v {
             Yaml::String(s) => {
                 let json = {
-                    let mut json = Self::replace_set_quoted_delimited(s);
-                    json = Self::replace_set_delimited(json);
-                    json = Self::replace_set(json);
-                    Self::replace_i64(json)
+                    let mut json = replace_set_quoted_delimited(s);
+                    json = replace_set_delimited(json);
+                    json = replace_set(json);
+                    replace_i64(json)
                 };
                 if endpoint.supports_nd_body() {
                     // a newline delimited API body may be expressed
@@ -875,16 +834,16 @@ impl ApiCall {
                         .map(|value| {
                             let mut json = serde_json::to_string(&value).unwrap();
                             if value.is_string() {
-                                json = Self::replace_set_quoted_delimited(json);
-                                json = Self::replace_set_delimited(json);
-                                json = Self::replace_set(&json);
+                                json = replace_set_quoted_delimited(json);
+                                json = replace_set_delimited(json);
+                                json = replace_set(&json);
                                 let ident = syn::Ident::from(json);
                                 quote!(#ident)
                             } else {
-                                json = Self::replace_set_quoted_delimited(json);
-                                json = Self::replace_set_delimited(json);
-                                json = Self::replace_set(json);
-                                json = Self::replace_i64(json);
+                                json = replace_set_quoted_delimited(json);
+                                json = replace_set_delimited(json);
+                                json = replace_set(json);
+                                json = replace_i64(json);
                                 let ident = syn::Ident::from(json);
                                 quote!(JsonBody::from(json!(#ident)))
                             }
@@ -894,10 +853,10 @@ impl ApiCall {
                 } else {
                     let value: serde_json::Value = serde_yaml::from_str(&s).unwrap();
                     let mut json = serde_json::to_string_pretty(&value).unwrap();
-                    json = Self::replace_set_quoted_delimited(json);
-                    json = Self::replace_set_delimited(json);
-                    json = Self::replace_set(json);
-                    json = Self::replace_i64(json);
+                    json = replace_set_quoted_delimited(json);
+                    json = replace_set_delimited(json);
+                    json = replace_set(json);
+                    json = replace_i64(json);
                     let ident = syn::Ident::from(json);
 
                     Some(quote!(.body(json!{#ident})))
