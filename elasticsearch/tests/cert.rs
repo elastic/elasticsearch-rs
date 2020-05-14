@@ -19,7 +19,7 @@ fn expected_error_message() -> String {
         let os = os_type::current_platform();
         match os.os_type {
             OSType::OSX => "The certificate was not trusted".to_string(),
-            _ => "unable to get local issuer certificate".to_string()
+            _ => "unable to get local issuer certificate".to_string(),
         }
     }
 }
@@ -96,31 +96,27 @@ async fn full_certificate_validation() -> Result<(), failure::Error> {
     let result = client.ping().send().await;
     let os_type = os_type::current_platform();
     match os_type.os_type {
-        OSType::OSX => {
-            match result {
-                Ok(_) => Ok(()),
-                Err(e) => Err(failure::err_msg(e.to_string())),
+        OSType::OSX => match result {
+            Ok(_) => Ok(()),
+            Err(e) => Err(failure::err_msg(e.to_string())),
+        },
+        _ => match result {
+            Ok(response) => Err(failure::err_msg(format!(
+                "Expected error but response was {}",
+                response.status_code()
+            ))),
+            Err(e) => {
+                let expected = expected_error_message();
+                let actual = e.to_string();
+                assert!(
+                    actual.contains(&expected),
+                    "Expected error message to contain '{}' but was '{}'",
+                    expected,
+                    actual
+                );
+                Ok(())
             }
         },
-        _ => {
-            match result {
-                Ok(response) => Err(failure::err_msg(format!(
-                    "Expected error but response was {}",
-                    response.status_code()
-                ))),
-                Err(e) => {
-                    let expected = expected_error_message();
-                    let actual = e.to_string();
-                    assert!(
-                        actual.contains(&expected),
-                        "Expected error message to contain '{}' but was '{}'",
-                        expected,
-                        actual
-                    );
-                    Ok(())
-                }
-            }
-        }
     }
 }
 
@@ -148,31 +144,27 @@ async fn certificate_certificate_validation() -> Result<(), failure::Error> {
     let result = client.ping().send().await;
     let os_type = os_type::current_platform();
     match os_type.os_type {
-        OSType::OSX => {
-            match result {
-                Ok(_) => Ok(()),
-                Err(e) => Err(failure::err_msg(e.to_string())),
+        OSType::OSX => match result {
+            Ok(_) => Ok(()),
+            Err(e) => Err(failure::err_msg(e.to_string())),
+        },
+        _ => match result {
+            Ok(response) => Err(failure::err_msg(format!(
+                "Expected error but response was {}",
+                response.status_code()
+            ))),
+            Err(e) => {
+                let expected = expected_error_message();
+                let actual = e.to_string();
+                assert!(
+                    actual.contains(&expected),
+                    "Expected error message to contain '{}' but was '{}'",
+                    expected,
+                    actual
+                );
+                Ok(())
             }
         },
-        _ => {
-            match result {
-                Ok(response) => Err(failure::err_msg(format!(
-                    "Expected error but response was {}",
-                    response.status_code()
-                ))),
-                Err(e) => {
-                    let expected = expected_error_message();
-                    let actual = e.to_string();
-                    assert!(
-                        actual.contains(&expected),
-                        "Expected error message to contain '{}' but was '{}'",
-                        expected,
-                        actual
-                    );
-                    Ok(())
-                }
-            }
-        }
     }
 }
 
