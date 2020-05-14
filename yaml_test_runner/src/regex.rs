@@ -1,5 +1,5 @@
 use lazy_static;
-use regex::Regex;
+use regex::{Regex, Captures};
 
 lazy_static! {
     // replace usages of "$.*" with the captured value
@@ -38,6 +38,11 @@ pub fn replace_set<S: AsRef<str>>(s: S) -> String {
 /// larger than i32 will be handled correctly when passed to json! macro
 pub fn replace_i64<S: AsRef<str>>(s: S) -> String {
     INT_REGEX
-        .replace_all(s.as_ref(), "${1}${2}i64${3}")
+        .replace_all(s.as_ref(), |c: &Captures| {
+            match &c[2].parse::<i64>() {
+                Ok(i) if *i > i32::max_value() as i64 => format!("{}{}i64{}", &c[1], &c[2], &c[3]),
+                _ => format!("{}", &c[0])
+            }
+        })
         .into_owned()
 }
