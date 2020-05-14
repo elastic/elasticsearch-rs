@@ -122,7 +122,8 @@ impl<'a> YamlTests<'a> {
                 use elasticsearch::*;
                 use elasticsearch::http::{
                     headers::{HeaderName, HeaderValue},
-                    request::JsonBody
+                    request::JsonBody,
+                    Method,
                 };
                 use elasticsearch::params::*;
                 #(#directives)*
@@ -143,17 +144,7 @@ impl<'a> YamlTests<'a> {
     pub fn read_response(read_response: bool, tokens: &mut Tokens) -> bool {
         if !read_response {
             tokens.append(quote! {
-                let (text, json) = {
-                    let is_json = response.content_type().starts_with("application/json");
-                    let text = response.text().await?;
-                    let json = if is_json {
-                        serde_json::from_slice::<Value>(text.as_ref())?
-                    } else {
-                        Value::Null
-                    };
-
-                    (text, json)
-                };
+                let (method, status_code, text, json) = util::read_response(response).await?;
             });
         }
 
@@ -168,11 +159,8 @@ impl<'a> YamlTests<'a> {
             let components = test_file_path
                 .components()
                 .filter_map(|c| match c {
-                    Component::Prefix(_) => None,
-                    Component::RootDir => None,
-                    Component::CurDir => None,
-                    Component::ParentDir => None,
                     Component::Normal(n) => Some(n.to_string_lossy().into_owned()),
+                    _ => None,
                 })
                 .collect::<Vec<String>>();
 
