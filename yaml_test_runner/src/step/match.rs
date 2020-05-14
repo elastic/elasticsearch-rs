@@ -1,7 +1,7 @@
 use super::Step;
 use crate::step::{clean_regex, Expr};
 use quote::{ToTokens, Tokens};
-use yaml_rust::Yaml;
+use yaml_rust::{Yaml, YamlEmitter};
 
 pub struct Match {
     pub expr: Expr,
@@ -91,7 +91,7 @@ impl ToTokens for Match {
             }
             Yaml::Integer(i) => {
                 if self.expr.is_body() {
-                    panic!("match on $body with integer");
+                    panic!("match on $body with i64");
                 } else {
                     let ident = syn::Ident::from(expr.as_str());
                     tokens.append(quote! {
@@ -106,8 +106,93 @@ impl ToTokens for Match {
                     });
                 }
             }
-            // TODO: handle hashes, etc.
-            _ => {}
+            Yaml::Real(r) => {
+                let f = r.parse::<f64>().unwrap();
+                if self.expr.is_body() {
+                    panic!("match on $body with f64");
+                } else {
+                    let ident = syn::Ident::from(expr.as_str());
+                    tokens.append(quote! {
+                        assert_eq!(
+                            json#ident.as_f64().unwrap(),
+                            #f,
+                            "expected value at {} to be {} but was {}",
+                            #expr,
+                            #f,
+                            json#ident.as_f64().unwrap()
+                        );
+                    });
+                }
+            }
+            Yaml::Null => {
+                if self.expr.is_body() {
+                    tokens.append(quote! {
+                        assert!(text.is_empty(), "expected response to be null (empty) but was {}", &text);
+                    });
+                } else {
+                    let ident = syn::Ident::from(expr.as_str());
+                    tokens.append(quote! {
+                        assert!(
+                            json#ident.is_null(),
+                            "expected value at {} to be null but was {}",
+                            #expr,
+                            json#ident.to_string(),
+                        );
+                    });
+                }
+            }
+            Yaml::Boolean(b) => {
+                if self.expr.is_body() {
+                    panic!("match on $body with bool");
+                } else {
+                    let ident = syn::Ident::from(expr.as_str());
+                    tokens.append(quote! {
+                        assert_eq!(
+                            json#ident.as_bool().unwrap(),
+                            #b,
+                            "expected value at {} to be {} but was {}",
+                            #expr,
+                            #b,
+                            json#ident.as_bool().unwrap(),
+                        );
+                    });
+                }
+            }
+            yaml if yaml.is_array() || yaml.as_hash().is_some() => {
+                let mut s = String::new();
+                {
+                    let mut emitter = YamlEmitter::new(&mut s);
+                    emitter.dump(yaml).unwrap();
+                }
+
+                let value: serde_json::Value = serde_yaml::from_str(&s).unwrap();
+                let json = syn::Ident::from(value.to_string());
+
+                if self.expr.is_body() {
+                    tokens.append(quote! {
+                        assert_eq!(
+                            json,
+                            json!(#json),
+                            "expected response to be {} but was {}",
+                            json!(#json).to_string(),
+                            json.to_string());
+                    });
+                } else {
+                    let ident = syn::Ident::from(expr.as_str());
+                    tokens.append(quote! {
+                        assert_eq!(
+                            json#ident,
+                            json!(#json),
+                            "expected value at {} to be {} but was {}",
+                            #expr,
+                            json!(#json).to_string(),
+                            json#ident.to_string());
+                    });
+                }
+            }
+            yaml => {
+                panic!("Bad yaml value {:?}", &yaml);
+            }
         }
     }
 }
