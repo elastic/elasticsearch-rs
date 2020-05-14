@@ -1,3 +1,8 @@
+# Skip file of features and tests to skip.
+# This is used at compilation time, when compiling tests from the YAML tests, to not generate tests that match
+# on name or features defined below that should be skipped. Accordingly, changing values in this file requires
+# recompiling tests in order for the changes to take effect.
+
 # features not yet implemented
 features:
   - node_selector
@@ -5,4 +10,6 @@ features:
 # tests to skip generating and compiling a test for.
 # Take the form of the generated path e.g.
 # generated::xpack::security::hidden_index::_13_security_tokens_read::tests::test_get_security_tokens_index_metadata
-tests: []
+tests:
+  # this test returns the CA cert before the cert, so always fails
+  - generated::xpack::ssl::_10_basic::tests::test_get_ssl_certificates
