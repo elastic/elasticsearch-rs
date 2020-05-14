@@ -14,18 +14,19 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-#[allow(unused_imports)]
+#![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
-        request::{Body, JsonBody, NdBody},
+        request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         Method,
     },
     params::*,
 };
+use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
@@ -39,9 +40,10 @@ impl<'b> EnrichDeletePolicyParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             EnrichDeletePolicyParts::Name(ref name) => {
-                let mut p = String::with_capacity(16usize + name.len());
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_name.len());
                 p.push_str("/_enrich/policy/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
@@ -155,9 +157,10 @@ impl<'b> EnrichExecutePolicyParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             EnrichExecutePolicyParts::Name(ref name) => {
-                let mut p = String::with_capacity(25usize + name.len());
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(25usize + encoded_name.len());
                 p.push_str("/_enrich/policy/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.push_str("/_execute");
                 p.into()
             }
@@ -308,9 +311,11 @@ impl<'b> EnrichGetPolicyParts<'b> {
         match self {
             EnrichGetPolicyParts::Name(ref name) => {
                 let name_str = name.join(",");
-                let mut p = String::with_capacity(16usize + name_str.len());
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_name.len());
                 p.push_str("/_enrich/policy/");
-                p.push_str(name_str.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
             EnrichGetPolicyParts::None => "/_enrich/policy/".into(),
@@ -425,9 +430,10 @@ impl<'b> EnrichPutPolicyParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             EnrichPutPolicyParts::Name(ref name) => {
-                let mut p = String::with_capacity(16usize + name.len());
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_name.len());
                 p.push_str("/_enrich/policy/");
-                p.push_str(name.as_ref());
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }

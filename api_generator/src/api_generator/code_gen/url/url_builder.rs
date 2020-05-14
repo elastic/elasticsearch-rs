@@ -153,24 +153,28 @@ impl<'a> UrlBuilder<'a> {
 
     /// Build the AST for an allocated url from the path literals and params.
     fn build_owned(self) -> syn::Block {
-        let lit_len_expr = Self::literal_length_expr(&self.path);
+
 
         // collection of let {name}_str = [self.]{name}.[join(",")|to_string()];
         let let_params_exprs = Self::let_parameters_exprs(&self.path, &self.parts);
 
-        let mut params_len_exprs = Self::parameter_length_exprs(&self.path, self.parts);
-
-        let mut len_exprs = vec![lit_len_expr];
-        len_exprs.append(&mut params_len_exprs);
-        let len_expr = Self::summed_length_expr(len_exprs);
+        let mut let_encoded_params_exprs = Self::let_encoded_exprs(&self.path, &self.parts);
 
         let url_ident = ident("p");
+        let len_expr = {
+            let lit_len_expr = Self::literal_length_expr(&self.path);
+            let mut params_len_exprs = Self::parameter_length_exprs(&self.path);
+            let mut len_exprs = vec![lit_len_expr];
+            len_exprs.append(&mut params_len_exprs);
+            Self::summed_length_expr(len_exprs)
+        };
         let let_stmt = Self::let_p_stmt(url_ident.clone(), len_expr);
 
-        let mut push_stmts = Self::push_str_stmts(url_ident.clone(), &self.path, self.parts);
+        let mut push_stmts = Self::push_str_stmts(url_ident.clone(), &self.path);
         let return_expr = syn::Stmt::Expr(Box::new(parse_expr(quote!(#url_ident.into()))));
 
         let mut stmts = let_params_exprs;
+        stmts.append(&mut let_encoded_params_exprs);
         stmts.push(let_stmt);
         stmts.append(&mut push_stmts);
         stmts.push(return_expr);
@@ -206,6 +210,55 @@ impl<'a> UrlBuilder<'a> {
         syn::ExprKind::Lit(syn::Lit::Int(len as u64, syn::IntTy::Usize)).into()
     }
 
+    /// Creates the AST for a let expression to percent encode path parts
+    fn let_encoded_exprs(
+        url: &[PathPart<'a>],
+        parts: &BTreeMap<String, Type>,
+    ) -> Vec<syn::Stmt> {
+        url.iter()
+            .filter_map(|p| match *p {
+                PathPart::Param(p) => {
+                    let name = valid_name(p);
+                    let path_expr = match &parts[p].ty {
+                        TypeKind::String => path_none(name).into_expr(),
+                        _ => path_none(format!("{}_str", name).as_str()).into_expr()
+                    };
+
+                    let encoded_ident = ident(format!("encoded_{}", name));
+                    let percent_encode_call: syn::Expr = syn::ExprKind::Call(
+                        Box::new(path_none("percent_encode").into_expr()),
+                        vec![
+                            syn::ExprKind::MethodCall(
+                                ident("as_bytes"),
+                                vec![],
+                                vec![path_expr]
+                            ).into(),
+                            path_none("PARTS_ENCODED").into_expr()
+                        ],
+                    ).into();
+
+                    let into_call: syn::Expr = syn::ExprKind::MethodCall(
+                        ident("into"),
+                        vec![],
+                        vec![percent_encode_call]
+                    ).into();
+
+                    Some(syn::Stmt::Local(Box::new(syn::Local {
+                        pat: Box::new(syn::Pat::Ident(
+                            syn::BindingMode::ByValue(syn::Mutability::Immutable),
+                            encoded_ident,
+                            None,
+                        )),
+                        ty: Some(Box::new(ty_path("Cow", vec![], vec![ty("str")]))),
+                        init: Some(Box::new(into_call)),
+                        attrs: vec![],
+                    })))
+                }
+                _ => None,
+            })
+            .collect()
+    }
+
     /// Creates the AST for a let expression for path parts
     fn let_parameters_exprs(
         url: &[PathPart<'a>],
@@ -216,8 +269,7 @@ impl<'a> UrlBuilder<'a> {
                 PathPart::Param(p) => {
                     let name = valid_name(p);
                     let name_ident = ident(&name);
-                    let k = p.to_string();
-                    let ty = &parts[&k].ty;
+                    let ty = &parts[p].ty;
 
                     // don't generate an assignment expression for strings
                     if ty == &TypeKind::String {
@@ -279,21 +331,16 @@ impl<'a> UrlBuilder<'a> {
     /// Get an expression to find the number of chars in each parameter part for the url.
     fn parameter_length_exprs(
         url: &[PathPart<'a>],
-        parts: &BTreeMap<String, Type>,
     ) -> Vec<syn::Expr> {
         url.iter()
             .filter_map(|p| match *p {
                 PathPart::Param(p) => {
-                    let name = match parts[&p.to_string()].ty {
-                        TypeKind::String => valid_name(p).into(),
-                        // handle lists and enums
-                        _ => format!("{}_str", valid_name(p)),
-                    };
+                    let name = format!("encoded_{}", valid_name(p));
                     Some(
                         syn::ExprKind::MethodCall(
                             ident("len"),
                             vec![],
-                            vec![syn::ExprKind::Path(None, path_none(name.as_ref())).into()],
+                            vec![path_none(name.as_ref()).into_expr()],
                         )
                         .into(),
                     )
@@ -351,8 +398,7 @@ impl<'a> UrlBuilder<'a> {
     /// Get a list of statements that append each part to a `String` in order.
     fn push_str_stmts(
         url_ident: syn::Ident,
-        url: &[PathPart<'a>],
-        parts: &BTreeMap<String, Type>,
+        url: &[PathPart<'a>]
     ) -> Vec<syn::Stmt> {
         url.iter()
             .map(|p| match *p {
@@ -361,11 +407,7 @@ impl<'a> UrlBuilder<'a> {
                     syn::Stmt::Semi(Box::new(parse_expr(quote!(#url_ident.push_str(#lit)))))
                 }
                 PathPart::Param(p) => {
-                    let name = match parts[&p.to_string()].ty {
-                        TypeKind::String => valid_name(p).into(),
-                        // handle lists and enums
-                        _ => format!("{}_str", valid_name(p)),
-                    };
+                    let name = format!("encoded_{}", valid_name(p));
                     let ident = ident(name);
                     syn::Stmt::Semi(Box::new(parse_expr(
                         quote!(#url_ident.push_str(#ident.as_ref())),

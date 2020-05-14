@@ -14,18 +14,19 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-#[allow(unused_imports)]
+#![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
-        request::{Body, JsonBody, NdBody},
+        request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         Method,
     },
     params::*,
 };
+use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
@@ -39,9 +40,10 @@ impl<'b> AsyncSearchDeleteParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             AsyncSearchDeleteParts::Id(ref id) => {
-                let mut p = String::with_capacity(15usize + id.len());
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(15usize + encoded_id.len());
                 p.push_str("/_async_search/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
         }
@@ -155,9 +157,10 @@ impl<'b> AsyncSearchGetParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             AsyncSearchGetParts::Id(ref id) => {
-                let mut p = String::with_capacity(15usize + id.len());
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(15usize + encoded_id.len());
                 p.push_str("/_async_search/");
-                p.push_str(id.as_ref());
+                p.push_str(encoded_id.as_ref());
                 p.into()
             }
         }
@@ -305,9 +308,11 @@ impl<'b> AsyncSearchSubmitParts<'b> {
             AsyncSearchSubmitParts::None => "/_async_search".into(),
             AsyncSearchSubmitParts::Index(ref index) => {
                 let index_str = index.join(",");
-                let mut p = String::with_capacity(15usize + index_str.len());
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(15usize + encoded_index.len());
                 p.push_str("/");
-                p.push_str(index_str.as_ref());
+                p.push_str(encoded_index.as_ref());
                 p.push_str("/_async_search");
                 p.into()
             }
