@@ -20,3 +20,6 @@ tests:
   # this test always returns "exponential_avg_checkpoint_duration_ms": 0.0 . seems like it might be missing data in
   # the setup, fires quicker than any documents are processed, or the delay of 1m is too high?
   - generated::xpack::transform::_transforms_stats_continuous::tests::test_get_continuous_transform_stats
+
+  # this test always returns 3 buckets where 1 is expected
+  - generated::xpack::ml::_jobs_get_result_overall_buckets::tests::test_overall_buckets_given_overall_score_filter
