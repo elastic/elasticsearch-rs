@@ -117,20 +117,11 @@ impl Do {
             c.to_tokens(tokens);
         } else {
             match &self.api_call.ignore {
-                Some(i) => {
-                    tokens.append(quote! {
-                        assert!(
-                            response.status_code().is_success() || response.status_code().as_u16() == #i,
-                            "expected response to be successful or {} but was {}",
-                            #i,
-                            response.status_code().as_u16());
-                    });
-                }
+                Some(i) => tokens.append(quote! {
+                    assert_response_success_or!(response, #i);
+                }),
                 None => tokens.append(quote! {
-                    assert!(
-                        response.status_code().is_success(),
-                        "expected response to be successful but was {}",
-                        response.status_code().as_u16());
+                    assert_response_success!(response);
                 }),
             }
         }

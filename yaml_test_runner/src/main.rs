@@ -1,6 +1,8 @@
 // TODO: remove when implementation is more complete.
 #![allow(dead_code)]
 
+pub mod macros;
+
 #[macro_use]
 extern crate log;
 extern crate simple_logger;
