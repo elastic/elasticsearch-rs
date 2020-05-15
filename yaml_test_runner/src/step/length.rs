@@ -44,15 +44,13 @@ impl ToTokens for Length {
 
         if self.expr.is_body() {
             tokens.append(quote! {
-                let len = util::len_from_value(&json)?;
-                assert_eq!(#len, len);
+                assert_length!(&json, #len);
             });
         } else {
             let expr = self.expr.expression();
             let ident = syn::Ident::from(expr);
             tokens.append(quote! {
-                let len = util::len_from_value(&json#ident)?;
-                assert_eq!(#len, len);
+                assert_length!(&json#ident, #len);
             });
         }
     }

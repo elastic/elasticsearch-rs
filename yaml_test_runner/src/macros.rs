@@ -69,3 +69,31 @@ macro_rules! assert_regex_match {
         );
     }};
 }
+
+/// Asserts that the length of a [serde_json::Value] type matches the expected length.
+/// A length is calculated from the value based on the variant e.g.
+/// - string length
+/// - array length
+/// - number of keys in object
+/// - numeric value
+#[macro_export]
+macro_rules! assert_length {
+    ($expr:expr, $len:expr) => {{
+        let len = match $expr {
+            Value::Number(n) => n.as_i64().unwrap() as usize,
+            Value::String(s) => s.len(),
+            Value::Array(a) => a.len(),
+            Value::Object(o) => o.len(),
+            v => panic!("Cannot get length from {:?}", v)
+        };
+
+        assert_eq!(
+            $len,
+            len,
+            "expected value {} to have length {} but was {}",
+            stringify!($expr),
+            $len,
+            len
+        );
+    }};
+}
