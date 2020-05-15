@@ -71,14 +71,8 @@ impl ToTokens for Match {
                     panic!("match on $body with i64");
                 } else {
                     let ident = syn::Ident::from(expr.as_str());
-                    // handle the case where the YAML test asserts a match against an integer value
-                    // but a floating point value is returned from Elasticsearch
                     tokens.append(quote! {
-                        if json#ident.is_i64() {
-                            assert_match!(json#ident, #i);
-                        } else {
-                            assert_match!(json#ident, #i as f64);
-                        }
+                        assert_numeric_match!(json#ident, #i);
                     });
                 }
             }

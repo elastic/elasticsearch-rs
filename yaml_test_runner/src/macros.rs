@@ -33,6 +33,19 @@ macro_rules! assert_match {
     }};
 }
 
+/// handle the case where the YAML test asserts a match against an integer value
+/// but a floating point value is returned from Elasticsearch
+#[macro_export]
+macro_rules! assert_numeric_match {
+    ($expected:expr, $actual:expr) => {{
+        if $expected.is_i64() {
+            assert_match!($expected, $actual);
+        } else {
+            assert_match!($expected, $actual as f64);
+        }
+    }};
+}
+
 #[macro_export]
 macro_rules! assert_null {
     ($expected:expr) => {{
@@ -40,6 +53,7 @@ macro_rules! assert_null {
     }};
 }
 
+/// Asserts that the first string value matches the second string regular expression
 #[macro_export]
 macro_rules! assert_regex_match {
     ($expected:expr, $regex:expr) => {{
