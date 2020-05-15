@@ -23,3 +23,6 @@ tests:
 
   # this test always returns 3 buckets where 1 is expected
   - generated::xpack::ml::_jobs_get_result_overall_buckets::tests::test_overall_buckets_given_overall_score_filter
+
+  # this test fails because it can't access snapshot to restore it
+  - generated::xpack::snapshot::_10_basic::tests::create_a_source_only_snapshot_and_then_restore_it
