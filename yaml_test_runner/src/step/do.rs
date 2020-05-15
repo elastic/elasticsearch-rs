@@ -2,12 +2,12 @@ use inflector::Inflector;
 use quote::{ToTokens, Tokens};
 
 use super::{ok_or_accumulate, Step};
+use crate::regex::*;
 use crate::step::clean_regex;
 use api_generator::generator::{Api, ApiEndpoint, TypeKind};
 use itertools::Itertools;
 use std::collections::BTreeMap;
 use yaml_rust::{Yaml, YamlEmitter};
-use crate::regex::*;
 
 /// A catch expression on a do step
 pub struct Catch(String);
@@ -25,7 +25,7 @@ impl ToTokens for Catch {
                 assert_eq!(
                     response.status_code().as_u16(),
                     #status_code,
-                    "Expected status code {} but was {}", #status_code, response.status_code().as_u16());
+                    "expected response status code to be {} but was {}", #status_code, response.status_code().as_u16());
             });
         }
 
@@ -67,6 +67,7 @@ impl ToTokens for Catch {
 pub struct Do {
     api_call: ApiCall,
     warnings: Vec<String>,
+    allowed_warnings: Vec<String>,
     catch: Option<Catch>,
 }
 
@@ -84,23 +85,54 @@ impl From<Do> for Step {
 
 impl Do {
     pub fn to_tokens(&self, mut read_response: bool, tokens: &mut Tokens) -> bool {
-        // TODO: Add in warnings
         self.api_call.to_tokens(tokens);
+
+        // only assert that there are no warnings if expected warnings is empty and not allowing warnings
+        if !self.warnings.is_empty() {
+            tokens.append(quote! {
+                let warnings: Vec<&str> = response.warning_headers().collect();
+            });
+            for warning in &self.warnings {
+                tokens.append(quote! {
+                    assert!(
+                        warnings.iter().any(|w| w.contains(#warning)),
+                        "expected warnings to contain '{}' but did not",
+                        #warning);
+                });
+            }
+        } else if !self.allowed_warnings.is_empty() {
+            tokens.append(quote! {
+                let warnings: Vec<&str> = response.warning_headers().collect();
+                assert!(warnings.is_empty(), "expected warnings to be empty but found {:?}", &warnings);
+            });
+        }
 
         if let Some(c) = &self.catch {
             if !read_response && c.needs_response_body() {
                 read_response = true;
                 tokens.append(quote! {
-                    let is_json = response.content_type().starts_with("application/json");
-                    let text = response.text().await?;
-                    let json : Value = if is_json {
-                        serde_json::from_slice(text.as_ref())?
-                    } else {
-                        Value::Null
-                    };
+                    let (method, status_code, text, json) = util::read_response(response).await?;
                 });
             }
             c.to_tokens(tokens);
+        } else {
+            match &self.api_call.ignore {
+                Some(i) => {
+                    tokens.append(quote! {
+                        assert!(
+                            response.status_code().is_success() || response.status_code().as_u16() == #i,
+                            "expected response to be successful or {} but was {}",
+                            #i,
+                            response.status_code().as_u16());
+                    });
+                }
+                None => tokens.append(quote! {
+                    assert!(
+                        response.status_code().is_success(),
+                        "expected response to be successful but was {}",
+                        response.status_code().as_u16());
+                }),
+            }
         }
 
         read_response
@@ -114,7 +146,14 @@ impl Do {
         let mut call: Option<(&str, &Yaml)> = None;
         let mut headers = BTreeMap::new();
         let mut warnings: Vec<String> = Vec::new();
+        let mut allowed_warnings: Vec<String> = Vec::new();
         let mut catch = None;
+
+        fn to_string_vec(v: &Yaml) -> Vec<String> {
+            v.as_vec()
+                .map(|a| a.iter().map(|y| y.as_str().unwrap().to_string()).collect())
+                .unwrap()
+        }
 
         let results: Vec<Result<(), failure::Error>> = hash
             .iter()
@@ -148,10 +187,11 @@ impl Do {
                         Ok(())
                     }
                     "warnings" => {
-                        warnings = v
-                            .as_vec()
-                            .map(|a| a.iter().map(|y| y.as_str().unwrap().to_string()).collect())
-                            .unwrap();
+                        warnings = to_string_vec(v);
+                        Ok(())
+                    }
+                    "allowed_warnings" => {
+                        allowed_warnings = to_string_vec(v);
                         Ok(())
                     }
                     api_call => {
@@ -174,6 +214,7 @@ impl Do {
             api_call,
             catch,
             warnings,
+            allowed_warnings,
         })
     }
 
@@ -190,7 +231,7 @@ pub struct ApiCall {
     params: Option<Tokens>,
     headers: BTreeMap<String, String>,
     body: Option<Tokens>,
-    ignore: Option<i64>,
+    ignore: Option<u16>,
 }
 
 impl ToTokens for ApiCall {
@@ -250,24 +291,24 @@ impl ApiCall {
         let mut parts: Vec<(&str, &Yaml)> = vec![];
         let mut params: Vec<(&str, &Yaml)> = vec![];
         let mut body: Option<Tokens> = None;
-        let mut ignore: Option<i64> = None;
+        let mut ignore: Option<u16> = None;
 
         // work out what's a URL part and what's a param in the supplied
         // arguments for the API call
         for (k, v) in hash.iter() {
-            let key = k.as_str().unwrap();
-            if endpoint.params.contains_key(key) || api.common_params.contains_key(key) {
-                params.push((key, v));
-            } else if key == "body" {
-                body = Self::generate_body(endpoint, v);
-            } else if key == "ignore" {
-                ignore = match v.as_i64() {
-                    Some(i) => Some(i),
-                    // handle ignore as an array of i64
-                    None => v.as_vec().unwrap()[0].as_i64(),
+            match k.as_str().unwrap() {
+                "body" => body = Self::generate_body(endpoint, v),
+                "ignore" => {
+                    ignore = match v.as_i64() {
+                        Some(i) => Some(i as u16),
+                        // handle ignore as an array of i64
+                        None => Some(v.as_vec().unwrap()[0].as_i64().unwrap() as u16),
+                    }
                 }
-            } else {
-                parts.push((key, v));
+                key if endpoint.params.contains_key(key) || api.common_params.contains_key(key) => {
+                    params.push((key, v))
+                }
+                key => parts.push((key, v)),
             }
         }
 
@@ -587,9 +628,7 @@ impl ApiCall {
         //
         // Also, short circuit for tests where the only parts specified are null
         // e.g. security API test. It seems these should simply omit the value though...
-        if parts.is_empty() || parts
-            .iter()
-            .all(|(_, v)| v.is_null()) {
+        if parts.is_empty() || parts.iter().all(|(_, v)| v.is_null()) {
             let param_counts = endpoint
                 .url
                 .paths
@@ -709,8 +748,6 @@ impl ApiCall {
                                     let set_value = Self::from_set_value(s);
                                     Ok(quote! { #set_value.as_str().unwrap() })
                                 } else {
-
-
                                     Ok(quote! { #s })
                                 }
                             }
