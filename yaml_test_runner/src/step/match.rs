@@ -37,37 +37,17 @@ impl ToTokens for Match {
             Yaml::String(s) => {
                 if s.starts_with('/') {
                     let s = clean_regex(s);
-
                     if self.expr.is_body() {
                         tokens.append(quote! {
-                            let regex = regex::RegexBuilder::new(#s)
-                                .ignore_whitespace(true)
-                                .build()?;
-                            assert!(
-                                regex.is_match(&text),
-                                "expected $body:\n\n{}\n\nto match regex:\n\n{}",
-                                &text,
-                                #s
-                            );
+                            assert_regex_match!(&text, #s);
                         });
                     } else {
                         let ident = syn::Ident::from(expr.as_str());
                         tokens.append(quote! {
-                            let regex = regex::RegexBuilder::new(#s)
-                                .ignore_whitespace(true)
-                                .build()?;
-                            assert!(
-                                regex.is_match(json#ident.as_str().unwrap()),
-                                "expected value at {}:\n\n{}\n\nto match regex:\n\n{}",
-                                #expr,
-                                json#ident.as_str().unwrap(),
-                                #s
-                            );
+                            assert_regex_match!(json#ident.as_str().unwrap(), #s);
                         });
                     }
                 } else {
-                    let ident = syn::Ident::from(expr.as_str());
-
                     // handle set values
                     let t = if s.starts_with('$') {
                         let t = s
@@ -80,15 +60,9 @@ impl ToTokens for Match {
                         quote! { #s }
                     };
 
+                    let ident = syn::Ident::from(expr.as_str());
                     tokens.append(quote! {
-                        assert_eq!(
-                            json#ident.as_str().unwrap(),
-                            #t,
-                            "expected value at {} to be {} but was {}",
-                            #expr,
-                            #t,
-                            json#ident.as_str().unwrap()
-                        );
+                        assert_match!(json#ident, #t);
                     })
                 }
             }
@@ -100,23 +74,10 @@ impl ToTokens for Match {
                     // handle the case where the YAML test asserts a match against an integer value
                     // but a floating point value is returned from Elasticsearch
                     tokens.append(quote! {
-                        match json#ident.as_i64() {
-                            Some(i) => assert_eq!(
-                                i,
-                                #i,
-                                "expected value at {} to be {} but was {}",
-                                #expr,
-                                #i,
-                                i
-                            ),
-                            None => assert_eq!(
-                                json#ident.as_f64().unwrap(),
-                                #i as f64,
-                                "expected value at {} to be {} but was {}",
-                                #expr,
-                                #i as f64,
-                                json#ident.as_f64().unwrap()
-                            )
+                        if json#ident.is_i64() {
+                            assert_match!(json#ident, #i);
+                        } else {
+                            assert_match!(json#ident, #i as f64);
                         }
                     });
                 }
@@ -128,14 +89,7 @@ impl ToTokens for Match {
                 } else {
                     let ident = syn::Ident::from(expr.as_str());
                     tokens.append(quote! {
-                        assert_eq!(
-                            json#ident.as_f64().unwrap(),
-                            #f,
-                            "expected value at {} to be {} but was {}",
-                            #expr,
-                            #f,
-                            json#ident.as_f64().unwrap()
-                        );
+                        assert_match!(json#ident, #f);
                     });
                 }
             }
@@ -147,12 +101,7 @@ impl ToTokens for Match {
                 } else {
                     let ident = syn::Ident::from(expr.as_str());
                     tokens.append(quote! {
-                        assert!(
-                            json#ident.is_null(),
-                            "expected value at {} to be null but was {}",
-                            #expr,
-                            json#ident.to_string(),
-                        );
+                        assert_null!(json#ident);
                     });
                 }
             }
@@ -162,14 +111,7 @@ impl ToTokens for Match {
                 } else {
                     let ident = syn::Ident::from(expr.as_str());
                     tokens.append(quote! {
-                        assert_eq!(
-                            json#ident.as_bool().unwrap(),
-                            #b,
-                            "expected value at {} to be {} but was {}",
-                            #expr,
-                            #b,
-                            json#ident.as_bool().unwrap(),
-                        );
+                        assert_match!(json#ident, #b);
                     });
                 }
             }
@@ -185,23 +127,12 @@ impl ToTokens for Match {
 
                 if self.expr.is_body() {
                     tokens.append(quote! {
-                        assert_eq!(
-                            json,
-                            json!(#json),
-                            "expected response to be {} but was {}",
-                            json!(#json).to_string(),
-                            json.to_string());
+                        assert_match!(json, #json);
                     });
                 } else {
                     let ident = syn::Ident::from(expr.as_str());
                     tokens.append(quote! {
-                        assert_eq!(
-                            json#ident,
-                            json!(#json),
-                            "expected value at {} to be {} but was {}",
-                            #expr,
-                            json!(#json).to_string(),
-                            json#ident.to_string());
+                        assert_match!(json#ident, #json);
                     });
                 }
             }
