@@ -1,5 +1,5 @@
+use elasticsearch::http::{response::Response, Method, StatusCode};
 use serde_json::Value;
-use elasticsearch::http::{Method, StatusCode, response::Response};
 
 pub fn len_from_value(value: &Value) -> Result<usize, failure::Error> {
     match value {
@@ -11,7 +11,9 @@ pub fn len_from_value(value: &Value) -> Result<usize, failure::Error> {
     }
 }
 
-pub async fn read_response(response: Response) -> Result<(Method, StatusCode, String, Value), failure::Error> {
+pub async fn read_response(
+    response: Response,
+) -> Result<(Method, StatusCode, String, Value), failure::Error> {
     let is_json = response.content_type().starts_with("application/json");
     let method = response.method();
     let status_code = response.status_code();

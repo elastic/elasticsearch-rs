@@ -1,5 +1,5 @@
 // needed for quote!
-#![recursion_limit="256"]
+#![recursion_limit = "256"]
 
 #[macro_use]
 extern crate lazy_static;

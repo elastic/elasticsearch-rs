@@ -22,7 +22,10 @@ impl Match {
 
         let (k, v) = hash.iter().next().unwrap();
         let expr = k.as_str().unwrap().trim();
-        Ok(Match { expr: expr.into(), value: v.clone() })
+        Ok(Match {
+            expr: expr.into(),
+            value: v.clone(),
+        })
     }
 }
 

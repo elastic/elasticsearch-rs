@@ -2,23 +2,23 @@ use api_generator::generator::Api;
 use std::fmt::Write;
 use yaml_rust::Yaml;
 
+mod comparison;
 mod r#do;
+mod is_false;
+mod is_true;
 mod length;
 mod r#match;
 mod set;
 mod skip;
 mod transform_and_set;
-mod is_true;
-mod is_false;
-mod comparison;
+pub use comparison::{Comparison, OPERATORS};
+pub use is_false::*;
+pub use is_true::*;
 pub use length::*;
 pub use r#do::*;
 pub use r#match::*;
 pub use set::*;
 pub use skip::*;
-pub use is_true::*;
-pub use is_false::*;
-pub use comparison::{Comparison, OPERATORS};
 pub use transform_and_set::*;
 
 pub fn parse_steps(api: &Api, steps: &[Yaml]) -> Result<Vec<Step>, failure::Error> {
@@ -85,7 +85,7 @@ pub fn parse_steps(api: &Api, steps: &[Yaml]) -> Result<Vec<Step>, failure::Erro
 /// An expression to apply to the response. Can be the whole body ($body) or an
 /// indexer expression into a JSON response.
 pub struct Expr {
-    expr: String
+    expr: String,
 }
 
 impl From<&str> for Expr {
@@ -162,7 +162,11 @@ impl Expr {
                 } else if s.as_str() == "_arbitrary_key_" {
                     // handle _arbitrary_key_.
                     // wrap in Value::String to allow uniform unwrapping in subsequent steps
-                    write!(expr, ".as_object().unwrap().iter().next().map(|(k, _)| json!(k)).unwrap()").unwrap();
+                    write!(
+                        expr,
+                        ".as_object().unwrap().iter().next().map(|(k, _)| json!(k)).unwrap()"
+                    )
+                    .unwrap();
                 } else {
                     write!(expr, "[\"{}\"]", s).unwrap();
                 }

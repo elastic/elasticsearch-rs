@@ -16,13 +16,11 @@ impl From<IsTrue> for Step {
 
 impl IsTrue {
     pub fn try_parse(yaml: &Yaml) -> Result<IsTrue, failure::Error> {
-        let expr = yaml
-            .as_str()
-            .ok_or_else(|| failure::err_msg(format!("expected string key but found {:?}", &yaml)))?;
+        let expr = yaml.as_str().ok_or_else(|| {
+            failure::err_msg(format!("expected string key but found {:?}", &yaml))
+        })?;
 
-        Ok(IsTrue {
-            expr: expr.into(),
-        })
+        Ok(IsTrue { expr: expr.into() })
     }
 }
 

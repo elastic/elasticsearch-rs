@@ -104,7 +104,7 @@ impl Response {
     /// Gets the request URL
     pub fn url(&self) -> &Url {
         self.0.url()
-}
+    }
 
     /// Gets the Deprecation warning response headers
     ///

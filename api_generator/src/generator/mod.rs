@@ -147,9 +147,9 @@ impl<'de> Deserialize<'de> for TypeKind {
         D: Deserializer<'de>,
     {
         let value = String::deserialize(deserializer)?;
-            Ok(TypeKind::from(value.as_str()))
-        }
+        Ok(TypeKind::from(value.as_str()))
     }
+}
 
 impl From<&str> for TypeKind {
     fn from(s: &str) -> Self {
@@ -173,9 +173,9 @@ impl From<&str> for TypeKind {
                 } else {
                     let union = Box::new((TypeKind::from(values[0]), TypeKind::from(values[1])));
                     TypeKind::Union(union)
+                }
+            }
         }
-    }
-}
     }
 }
 
@@ -248,8 +248,8 @@ impl DocumentationUrlString {
                             .replace(
                                 "/master",
                                 format!("/{}.{}", VERSION.major, VERSION.minor).as_str(),
-                                )
-                                .as_str(),
+                            )
+                            .as_str(),
                     );
                 } else if u.path().contains("/current") {
                     u.set_path(
@@ -257,8 +257,8 @@ impl DocumentationUrlString {
                             .replace(
                                 "/current",
                                 format!("/{}.{}", VERSION.major, VERSION.minor).as_str(),
-                                )
-                                .as_str(),
+                            )
+                            .as_str(),
                     );
                 }
                 u.into_string()

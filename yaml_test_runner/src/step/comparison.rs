@@ -1,7 +1,7 @@
 use quote::{ToTokens, Tokens};
 
 use super::Step;
-use crate::step::{Expr};
+use crate::step::Expr;
 use yaml_rust::Yaml;
 
 pub const OPERATORS: [&'static str; 4] = ["lt", "lte", "gt", "gte"];
@@ -25,14 +25,14 @@ impl Comparison {
             .ok_or_else(|| failure::err_msg(format!("expected hash but found {:?}", yaml)))?;
 
         let (k, v) = hash.iter().next().unwrap();
-        let expr = k.as_str().ok_or_else(|| {
-            failure::err_msg(format!("expected string key but found {:?}", k))
-        })?;
+        let expr = k
+            .as_str()
+            .ok_or_else(|| failure::err_msg(format!("expected string key but found {:?}", k)))?;
 
         Ok(Comparison {
             expr: expr.into(),
             value: v.clone(),
-            op: op.into()
+            op: op.into(),
         })
     }
 
@@ -69,7 +69,7 @@ impl ToTokens for Comparison {
             "lt" => "<",
             "gt" => ">",
             "gte" => ">=",
-            n => panic!("unsupported op {}", n)
+            n => panic!("unsupported op {}", n),
         };
 
         match self.value.as_i64() {
@@ -80,14 +80,16 @@ impl ToTokens for Comparison {
                     match self.value.as_str() {
                         // handle "set" values
                         Some(s) if s.starts_with('$') => {
-                            let s = s.trim_start_matches('$')
+                            let s = s
+                                .trim_start_matches('$')
                                 .trim_start_matches('{')
                                 .trim_end_matches('}');
                             let expr_ident = syn::Ident::from(expr.as_str());
                             let ident = syn::Ident::from(s);
                             let op_ident = syn::Ident::from(op);
                             let message = "Expected value at {} to be numeric but is {}";
-                            let comparison_message = "Expected value at {} to be {:?} {}, but is {}";
+                            let comparison_message =
+                                "Expected value at {} to be {:?} {}, but is {}";
                             tokens.append(quote! {
                                 match &json#expr_ident {
                                     Value::Number(n) => {
@@ -109,7 +111,7 @@ impl ToTokens for Comparison {
                         _ => panic!("Expected i64 or f64 but found {:?}", &self.value),
                     }
                 }
-            }
+            },
         }
     }
 }

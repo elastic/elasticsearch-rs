@@ -170,8 +170,6 @@ impl<'a> UrlBuilder<'a> {
 
     /// Build the AST for an allocated url from the path literals and params.
     fn build_owned(self) -> syn::Block {
-
-
         // collection of let {name}_str = [self.]{name}.[join(",")|to_string()];
         let let_params_exprs = Self::let_parameters_exprs(&self.path, &self.parts);
 
@@ -181,8 +179,8 @@ impl<'a> UrlBuilder<'a> {
         let len_expr = {
             let lit_len_expr = Self::literal_length_expr(&self.path);
             let mut params_len_exprs = Self::parameter_length_exprs(&self.path);
-        let mut len_exprs = vec![lit_len_expr];
-        len_exprs.append(&mut params_len_exprs);
+            let mut len_exprs = vec![lit_len_expr];
+            len_exprs.append(&mut params_len_exprs);
             Self::summed_length_expr(len_exprs)
         };
         let let_stmt = Self::let_p_stmt(url_ident.clone(), len_expr);
@@ -228,37 +226,30 @@ impl<'a> UrlBuilder<'a> {
     }
 
     /// Creates the AST for a let expression to percent encode path parts
-    fn let_encoded_exprs(
-        url: &[PathPart<'a>],
-        parts: &BTreeMap<String, Type>,
-    ) -> Vec<syn::Stmt> {
+    fn let_encoded_exprs(url: &[PathPart<'a>], parts: &BTreeMap<String, Type>) -> Vec<syn::Stmt> {
         url.iter()
             .filter_map(|p| match *p {
                 PathPart::Param(p) => {
                     let name = valid_name(p);
                     let path_expr = match &parts[p].ty {
                         TypeKind::String => path_none(name).into_expr(),
-                        _ => path_none(format!("{}_str", name).as_str()).into_expr()
+                        _ => path_none(format!("{}_str", name).as_str()).into_expr(),
                     };
 
                     let encoded_ident = ident(format!("encoded_{}", name));
                     let percent_encode_call: syn::Expr = syn::ExprKind::Call(
                         Box::new(path_none("percent_encode").into_expr()),
                         vec![
-                            syn::ExprKind::MethodCall(
-                                ident("as_bytes"),
-                                vec![],
-                                vec![path_expr]
-                            ).into(),
-                            path_none("PARTS_ENCODED").into_expr()
+                            syn::ExprKind::MethodCall(ident("as_bytes"), vec![], vec![path_expr])
+                                .into(),
+                            path_none("PARTS_ENCODED").into_expr(),
                         ],
-                    ).into();
+                    )
+                    .into();
 
-                    let into_call: syn::Expr = syn::ExprKind::MethodCall(
-                        ident("into"),
-                        vec![],
-                        vec![percent_encode_call]
-                    ).into();
+                    let into_call: syn::Expr =
+                        syn::ExprKind::MethodCall(ident("into"), vec![], vec![percent_encode_call])
+                            .into();
 
                     Some(syn::Stmt::Local(Box::new(syn::Local {
                         pat: Box::new(syn::Pat::Ident(
@@ -346,9 +337,7 @@ impl<'a> UrlBuilder<'a> {
     }
 
     /// Get an expression to find the number of chars in each parameter part for the url.
-    fn parameter_length_exprs(
-        url: &[PathPart<'a>],
-    ) -> Vec<syn::Expr> {
+    fn parameter_length_exprs(url: &[PathPart<'a>]) -> Vec<syn::Expr> {
         url.iter()
             .filter_map(|p| match *p {
                 PathPart::Param(p) => {
@@ -413,10 +402,7 @@ impl<'a> UrlBuilder<'a> {
     }
 
     /// Get a list of statements that append each part to a `String` in order.
-    fn push_str_stmts(
-        url_ident: syn::Ident,
-        url: &[PathPart<'a>]
-    ) -> Vec<syn::Stmt> {
+    fn push_str_stmts(url_ident: syn::Ident, url: &[PathPart<'a>]) -> Vec<syn::Stmt> {
         url.iter()
             .map(|p| match *p {
                 PathPart::Literal(p) => {

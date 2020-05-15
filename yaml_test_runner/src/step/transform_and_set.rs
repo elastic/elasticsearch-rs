@@ -43,7 +43,7 @@ impl From<&str> for Transformation {
                     let name = format!("transform::{}", value.as_str().to_snake_case());
                     function = Some(name);
                     value = String::new();
-                },
+                }
                 ',' | ')' => {
                     let expr = value.trim();
                     exprs.push(Expr::new(expr));
