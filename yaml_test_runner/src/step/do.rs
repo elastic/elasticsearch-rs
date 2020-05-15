@@ -115,15 +115,13 @@ impl Do {
                 });
             }
             c.to_tokens(tokens);
-        } else {
-            match &self.api_call.ignore {
-                Some(i) => tokens.append(quote! {
+        }
+
+        match &self.api_call.ignore {
+            Some(i) => tokens.append(quote! {
                     assert_response_success_or!(response, #i);
                 }),
-                None => tokens.append(quote! {
-                    assert_response_success!(response);
-                }),
-            }
+            None => (),
         }
 
         read_response

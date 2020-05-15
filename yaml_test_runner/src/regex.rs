@@ -6,7 +6,7 @@ lazy_static! {
     pub static ref SET_REGEX: Regex =
         Regex::new(r#""\$(.*?)""#).unwrap();
 
-    // replace usages of ${.*} with the captured value
+    // replace usages of "${.*}" with the captured value
     pub static ref SET_QUOTED_DELIMITED_REGEX: Regex =
         Regex::new(r#""\$\{(.*?)\}""#).unwrap();
 
