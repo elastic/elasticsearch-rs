@@ -14,9 +14,11 @@ lazy_static! {
     pub static ref SET_DELIMITED_REGEX: Regex =
         Regex::new(r#"\$\{(.*?)\}"#).unwrap();
 
-    // include i64 suffix on whole numbers
+    // include i64 suffix on whole numbers larger than i32
+    // will match on numbers with 10 or more digits, with the replace
+    // call testing against i32::max_value
     pub static ref INT_REGEX: Regex =
-        regex::Regex::new(r"(:\s?)(\d+?)([,\s?|\s*?}])").unwrap();
+        regex::Regex::new(r"([,:\[{]\s*)(\d{10,}?)(\s*[,}\]])").unwrap();
 }
 
 /// Replaces a "set" step value with a variable
