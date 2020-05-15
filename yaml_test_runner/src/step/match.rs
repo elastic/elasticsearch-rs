@@ -2,6 +2,7 @@ use super::Step;
 use crate::step::{clean_regex, Expr};
 use quote::{ToTokens, Tokens};
 use yaml_rust::{Yaml, YamlEmitter};
+use crate::regex::*;
 
 pub struct Match {
     pub expr: Expr,
@@ -117,9 +118,17 @@ impl ToTokens for Match {
                 }
 
                 let value: serde_json::Value = serde_yaml::from_str(&s).unwrap();
-                let json = syn::Ident::from(value.to_string());
 
-                if self.expr.is_body() {
+                let json = {
+                    let mut json = value.to_string();
+                    json = replace_set_quoted_delimited(json);
+                    json = replace_set_delimited(json);
+                    json = replace_set(json);
+                    json = replace_i64(json);
+                    syn::Ident::from(json)
+                };
+
+                if self.expr.is_body() || self.expr.is_empty() {
                     tokens.append(quote! {
                         assert_match!(json, #json);
                     });
