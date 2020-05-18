@@ -1,5 +1,3 @@
-#![allow(unused_macros)]
-
 /// Asserts that a [Response] has a status code >=200 and <300
 #[macro_export]
 macro_rules! assert_response_success {

@@ -117,6 +117,7 @@ impl<'a> YamlTests<'a> {
 
         quote! {
             #![allow(unused_imports, unused_variables)]
+            use crate::common::{client, macros, transform, util};
             use elasticsearch::*;
             use elasticsearch::http::{
                 headers::{HeaderName, HeaderValue},
@@ -127,10 +128,6 @@ impl<'a> YamlTests<'a> {
             #(#directives)*
             use ::regex;
             use serde_json::{json, Value};
-            use yaml_test_runner::client;
-            use yaml_test_runner::transform;
-            use yaml_test_runner::util;
-            use yaml_test_runner::*;
 
             #setup_fn
             #teardown_fn
@@ -477,14 +474,22 @@ fn write_mod_files(generated_dir: &PathBuf) -> Result<(), failure::Error> {
             let file_type = entry.file_type().unwrap();
             let path = entry.path();
             let name = path.file_stem().unwrap().to_string_lossy();
-            if name.into_owned() != "mod" {
+
+            let is_tests_common_dir =
+                name.as_ref() == "common" && path.parent().unwrap().file_name().unwrap() == "tests";
+
+            if name.as_ref() != "mod" {
+                if is_tests_common_dir {
+                    mods.push("#[macro_use]".to_string());
+                }
+
                 mods.push(format!(
                     "pub mod {};",
                     path.file_stem().unwrap().to_string_lossy()
                 ));
             }
 
-            if file_type.is_dir() {
+            if file_type.is_dir() && !is_tests_common_dir {
                 write_mod_files(&entry.path())?;
             }
         }

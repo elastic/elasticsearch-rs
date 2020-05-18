@@ -34,12 +34,13 @@ fn cluster_addr() -> String {
     }
 }
 
+/// Determines if Fiddler.exe proxy process is running
 fn running_proxy() -> bool {
     let system = sysinfo::System::new();
     !system.get_process_by_name("Fiddler").is_empty()
 }
 
-/// create a client to use in tests
+/// Creates a client to use in tests
 pub fn create() -> Elasticsearch {
     let mut url = Url::parse(cluster_addr().as_ref()).unwrap();
 

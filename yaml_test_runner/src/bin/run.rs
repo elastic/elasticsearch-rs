@@ -103,9 +103,25 @@ fn main() -> Result<(), failure::Error> {
 
     let api = api_generator::generator::read_api(branch, &rest_specs_dir)?;
 
-    // delete existing generated files first
+    // delete everything under the generated_dir except common dir
     if generated_dir.exists() {
-        fs::remove_dir_all(&generated_dir)?;
+        let entries = fs::read_dir(&generated_dir)?;
+        for entry in entries {
+            if let Ok(e) = entry {
+                match e.file_type() {
+                    Ok(f) => {
+                        if e.file_name() != "common" {
+                            if f.is_dir() {
+                                fs::remove_dir_all(e.path())?;
+                            } else if f.is_file() {
+                                fs::remove_file(e.path())?;
+                            }
+                        }
+                    },
+                    Err(_) => ()
+                };
+            }
+        }
     }
 
     generator::generate_tests_from_yaml(
