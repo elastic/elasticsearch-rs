@@ -1,6 +1,7 @@
 #![allow(unused_macros)]
 #![macro_use]
 
+/// Asserts that a [Response] has a status code >=200 and <300
 #[macro_export]
 macro_rules! assert_response_success {
     ($response:ident) => {{
@@ -12,6 +13,7 @@ macro_rules! assert_response_success {
     }};
 }
 
+/// Asserts that a [Response] has a status code >=200 and <300 or matches the passed status
 #[macro_export]
 macro_rules! assert_response_success_or {
     ($response:ident, $status:expr) => {{
@@ -25,6 +27,31 @@ macro_rules! assert_response_success_or {
 }
 
 #[macro_export]
+macro_rules! assert_status_code {
+    ($status_code:expr, $expected:expr) => {{
+        assert_eq!(
+            $expected,
+            $status_code.as_u16(),
+            "expected status code to be {} but was {}",
+            $expected,
+            $status_code.as_u16()
+        );
+    }};
+}
+
+#[macro_export]
+macro_rules! assert_request_status_code {
+    ($status_code:expr) => {{
+        let status_code = $status_code.as_u16();
+        assert!(
+            status_code >= 400 && status_code < 600,
+            "expected status code in range 400-599 but was {}", status_code);
+    }};
+}
+
+/// Asserts that the passed [serde_json::Value] matches the second argument.
+/// The second argument is converted to a [serde_json::Value] using the `json!` macro
+#[macro_export]
 macro_rules! assert_match {
     ($expected:expr, $($actual:tt)+) => {{
         assert_eq!($expected, json!($($actual)+),
@@ -33,7 +60,8 @@ macro_rules! assert_match {
     }};
 }
 
-/// handle the case where the YAML test asserts a match against an integer value
+/// Asserts that the passed [serde_json::Value] matches the expected numeric value.
+/// This handles the case where a YAML test asserts a match against an integer value
 /// but a floating point value is returned from Elasticsearch
 #[macro_export]
 macro_rules! assert_numeric_match {
@@ -46,6 +74,7 @@ macro_rules! assert_numeric_match {
     }};
 }
 
+/// Asserts that a [serde_json::Value] is null.
 #[macro_export]
 macro_rules! assert_null {
     ($expected:expr) => {{
@@ -70,7 +99,7 @@ macro_rules! assert_regex_match {
     }};
 }
 
-/// Asserts that the length of a [serde_json::Value] type matches the expected length.
+/// Asserts that the length of a [serde_json::Value] matches the expected length.
 /// A length is calculated from the value based on the variant e.g.
 /// - string length
 /// - array length

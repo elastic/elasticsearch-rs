@@ -189,12 +189,7 @@ async fn wait_for_yellow_status(client: &Elasticsearch) -> Result<(), Error> {
         .send()
         .await?;
 
-    assert!(
-        cluster_health.status_code().is_success(),
-        "cluster health returned {}",
-        cluster_health.status_code().as_u16()
-    );
-
+    assert_response_success!(cluster_health);
     Ok(())
 }
 
@@ -210,12 +205,7 @@ async fn delete_indices(client: &Elasticsearch) -> Result<(), Error> {
         .send()
         .await?;
 
-    assert!(
-        delete_response.status_code().is_success(),
-        "deleting indices returned {}",
-        delete_response.status_code().as_u16()
-    );
-
+    assert_response_success!(delete_response);
     Ok(())
 }
 

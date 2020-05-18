@@ -82,7 +82,7 @@ pub fn parse_steps(api: &Api, steps: &[Yaml]) -> Result<Vec<Step>, failure::Erro
     Ok(parsed_steps)
 }
 
-/// An expression to apply to the response. Can be the whole body ($body) or an
+/// An expression to apply to the response. Can be the whole body ($body or "") or an
 /// indexer expression into a JSON response.
 pub struct Expr {
     expr: String,

@@ -22,10 +22,7 @@ impl ToTokens for Catch {
     fn to_tokens(&self, tokens: &mut Tokens) {
         fn http_status_code(status_code: u16, tokens: &mut Tokens) {
             tokens.append(quote! {
-                assert_eq!(
-                    response.status_code().as_u16(),
-                    #status_code,
-                    "expected response status code to be {} but was {}", #status_code, response.status_code().as_u16());
+                assert_status_code!(response.status_code(), #status_code);
             });
         }
 
@@ -38,10 +35,7 @@ impl ToTokens for Catch {
             "conflict" => http_status_code(409, tokens),
             "request" => {
                 tokens.append(quote! {
-                    let status_code = response.status_code().as_u16();
-                    assert!(
-                        status_code >= 400 && status_code < 600,
-                        "Expected status code 400-599 but was {}", response.status_code().as_u16());
+                    assert_request_status_code!(response.status_code());
                 });
             }
             "unavailable" => http_status_code(503, tokens),
@@ -51,13 +45,7 @@ impl ToTokens for Catch {
             s => {
                 let t = clean_regex(s);
                 tokens.append(quote! {
-                    let catch_regex = regex::Regex::new(#t)?;
-                    assert!(
-                        catch_regex.is_match(&text),
-                        "expected text:\n\n{}\n\nto match regex:\n\n{}",
-                        &text,
-                        #s
-                    );
+                    assert_regex_match!(&text, #t);
                 });
             }
         }
@@ -96,8 +84,9 @@ impl Do {
                 tokens.append(quote! {
                     assert!(
                         warnings.iter().any(|w| w.contains(#warning)),
-                        "expected warnings to contain '{}' but did not",
-                        #warning);
+                        "expected warnings to contain '{}' but contained {:?}",
+                        #warning,
+                        &warnings);
                 });
             }
         } else if !self.allowed_warnings.is_empty() {
