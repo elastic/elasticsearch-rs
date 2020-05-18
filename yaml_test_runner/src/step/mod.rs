@@ -222,10 +222,7 @@ pub fn ok_or_accumulate<T>(
     }
 }
 
-// trim the enclosing forward slashes and
-// 1. replace escaped forward slashes (not needed after trimming forward slashes)
-// 2. replace escaped colons and hashes (not supported by regex crate)
-// TODO: create wrapper struct
+// cleans up a regex as specified in YAML to one that will work with the regex crate.
 pub fn clean_regex<S: AsRef<str>>(s: S) -> String {
     s.as_ref()
         .trim()
@@ -235,4 +232,5 @@ pub fn clean_regex<S: AsRef<str>>(s: S) -> String {
         .replace("\\#", "#")
         .replace("\\%", "%")
         .replace("\\'", "'")
+        .replace("\\`", "`")
 }
