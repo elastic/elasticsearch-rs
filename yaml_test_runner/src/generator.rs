@@ -116,27 +116,25 @@ impl<'a> YamlTests<'a> {
             .collect();
 
         quote! {
-            #[allow(unused_imports, unused_variables)]
-            #[cfg(test)]
-            pub mod tests {
-                use elasticsearch::*;
-                use elasticsearch::http::{
-                    headers::{HeaderName, HeaderValue},
-                    request::JsonBody,
-                    Method,
-                };
-                use elasticsearch::params::*;
-                #(#directives)*
-                use regex;
-                use serde_json::Value;
-                use crate::client;
-                use crate::transform;
-                use crate::util;
+            #![allow(unused_imports, unused_variables)]
+            use elasticsearch::*;
+            use elasticsearch::http::{
+                headers::{HeaderName, HeaderValue},
+                request::JsonBody,
+                Method,
+            };
+            use elasticsearch::params::*;
+            #(#directives)*
+            use ::regex;
+            use serde_json::{json, Value};
+            use yaml_test_runner::client;
+            use yaml_test_runner::transform;
+            use yaml_test_runner::util;
+            use yaml_test_runner::*;
 
-                #setup_fn
-                #teardown_fn
-                #(#tests)*
-            }
+            #setup_fn
+            #teardown_fn
+            #(#tests)*
         }
     }
 

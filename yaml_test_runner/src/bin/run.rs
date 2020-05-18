@@ -1,38 +1,15 @@
-// TODO: remove when implementation is more complete.
-#![allow(dead_code)]
-
-pub mod macros;
-
 #[macro_use]
 extern crate log;
 extern crate simple_logger;
-#[macro_use]
-extern crate lazy_static;
-#[macro_use]
-extern crate quote;
 extern crate api_generator;
-#[macro_use]
-#[cfg(test)]
-extern crate serde_json;
 
-use crate::generator::TestSuite;
 use clap::{App, Arg};
 use log::Level;
 use std::fs;
 use std::path::PathBuf;
 use std::process::exit;
 
-mod generator;
-mod github;
-pub mod step;
-
-#[cfg(test)]
-mod generated;
-
-pub mod client;
-pub mod regex;
-pub mod transform;
-pub mod util;
+use yaml_test_runner::{generator::{self, TestSuite}, github};
 
 fn main() -> Result<(), failure::Error> {
     simple_logger::init_with_level(Level::Info).unwrap();
@@ -98,8 +75,8 @@ fn main() -> Result<(), failure::Error> {
     let token = matches.value_of("token").expect("missing 'token' argument");
     let path = matches.value_of("path").expect("missing 'path' argument");
     let rest_specs_dir = PathBuf::from(path);
-    let download_dir = PathBuf::from("./yaml_test_runner/yaml");
-    let generated_dir = PathBuf::from("./yaml_test_runner/src/generated");
+    let download_dir = PathBuf::from(format!("./{}/yaml", env!("CARGO_PKG_NAME")));
+    let generated_dir = PathBuf::from(format!("./{}/tests", env!("CARGO_PKG_NAME")));
 
     github::download_test_suites(token, branch, &download_dir)?;
 

@@ -1,5 +1,4 @@
 #![allow(unused_macros)]
-#![macro_use]
 
 /// Asserts that a [Response] has a status code >=200 and <300
 #[macro_export]
@@ -82,12 +81,24 @@ macro_rules! assert_null {
     }};
 }
 
-/// Asserts that the first string value matches the second string regular expression
+/// Asserts that the first string value matches the second string regular expression. An optional
+/// third bool argument ignores pattern whitespace.
 #[macro_export]
 macro_rules! assert_regex_match {
     ($expected:expr, $regex:expr) => {{
         let regex = regex::RegexBuilder::new($regex)
-            .ignore_whitespace(true)
+            .build()?;
+        assert!(
+            regex.is_match($expected),
+            "expected value {} to match regex\n\n{}\n\nbut was\n\n{}",
+            stringify!($expected),
+            $regex,
+            $expected
+        );
+    }};
+    ($expected:expr, $regex:expr, $ignore_whitespace:expr) => {{
+        let regex = regex::RegexBuilder::new($regex)
+            .ignore_whitespace($ignore_whitespace)
             .build()?;
         assert!(
             regex.is_match($expected),
@@ -124,5 +135,35 @@ macro_rules! assert_length {
             $len,
             len
         );
+    }};
+}
+
+/// Asserts that the expression is "false" i.e. `0`, `false`, `undefined`, `null` or `""`
+#[macro_export]
+macro_rules! assert_is_false {
+    ($expr:expr) => {{
+        let expr_string = stringify!($expr);
+        match $expr {
+            Value::Null => {},
+            Value::Bool(b) => assert_eq!(*b, false, "expected value at {} to be false but was {}", expr_string, b),
+            Value::Number(n) => assert_eq!(n.as_f64().unwrap(), 0.0, "expected value at {} to be false (0) but was {}", expr_string, n.as_f64().unwrap()),
+            Value::String(s) => assert!(s.is_empty(), "expected value at {} to be false (empty) but was {}", expr_string, &s),
+            v => assert!(false, "expected value at {} to be false but was {:?}", expr_string, &v),
+        }
+    }};
+}
+
+/// Asserts that the expression is "true" i.e. not `0`, `false`, `undefined`, `null` or `""`
+#[macro_export]
+macro_rules! assert_is_true {
+    ($expr:expr) => {{
+        let expr_string = stringify!($expr);
+        match $expr {
+            Value::Null => assert!(false, "expected value at {} to be true (not null) but was null", expr_string),
+            Value::Bool(b) => assert!(*b, "expected value at {} to be true but was false", expr_string),
+            Value::Number(n) => assert_ne!(n.as_f64().unwrap(), 0.0, "expected value at {} to be true (not 0) but was {}", expr_string, n.as_f64().unwrap()),
+            Value::String(s) => assert!(!s.is_empty(), "expected value at {} to be true (not empty) but was {}", expr_string, &s),
+            v => {},
+        }
     }};
 }

@@ -6,6 +6,7 @@ use inflector::Inflector;
 use yaml_rust::Yaml;
 
 pub struct Transformation {
+    #[allow(dead_code)]
     raw: String,
     function: String,
     exprs: Vec<Expr>,

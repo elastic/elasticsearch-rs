@@ -40,12 +40,12 @@ impl ToTokens for Match {
                     let s = clean_regex(s);
                     if self.expr.is_body() {
                         tokens.append(quote! {
-                            assert_regex_match!(&text, #s);
+                            assert_regex_match!(&text, #s, true);
                         });
                     } else {
                         let ident = syn::Ident::from(expr.as_str());
                         tokens.append(quote! {
-                            assert_regex_match!(json#ident.as_str().unwrap(), #s);
+                            assert_regex_match!(json#ident.as_str().unwrap(), #s, true);
                         });
                     }
                 } else {

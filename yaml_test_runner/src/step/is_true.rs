@@ -38,13 +38,7 @@ impl ToTokens for IsTrue {
             let expr = self.expr.expression();
             let ident = syn::Ident::from(expr.as_str());
             tokens.append(quote! {
-                match &json#ident {
-                    Value::Null => assert!(false, "expected value at {} to be true (not null) but was null", #expr),
-                    Value::Bool(b) => assert!(*b, "expected value at {} to be true but was false", #expr),
-                    Value::Number(n) => assert_ne!(n.as_f64().unwrap(), 0.0, "expected value at {} to be true (not 0) but was {}", #expr, n.as_f64().unwrap()),
-                    Value::String(s) => assert!(!s.is_empty(), "expected value at {} to be true (not empty) but was {}", #expr, &s),
-                    v => {},
-                }
+                assert_is_true!(&json#ident);
             });
         }
     }
