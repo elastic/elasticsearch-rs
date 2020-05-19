@@ -49,22 +49,26 @@ impl ToTokens for Match {
                         });
                     }
                 } else {
-                    // handle set values
-                    let t = if s.starts_with('$') {
-                        let t = s
-                            .trim_start_matches('$')
-                            .trim_start_matches('{')
-                            .trim_end_matches('}');
-                        let ident = syn::Ident::from(t);
-                        quote! { #ident.as_str().unwrap() }
-                    } else {
-                        quote! { #s }
-                    };
-
                     let ident = syn::Ident::from(expr.as_str());
-                    tokens.append(quote! {
-                        assert_match!(json#ident, #t);
-                    })
+
+                    // handle set values
+                    if s.starts_with('$') {
+                        let t = {
+                            let s = s
+                                .trim_start_matches('$')
+                                .trim_start_matches('{')
+                                .trim_end_matches('}');
+                            syn::Ident::from(s)
+                        };
+
+                        tokens.append(quote! {
+                            assert_match!(json#ident, json!(#t));
+                        });
+                    } else {
+                        tokens.append(quote! {
+                            assert_match!(json#ident, json!(#s));
+                        })
+                    };
                 }
             }
             Yaml::Integer(i) => {
@@ -84,7 +88,7 @@ impl ToTokens for Match {
                 } else {
                     let ident = syn::Ident::from(expr.as_str());
                     tokens.append(quote! {
-                        assert_match!(json#ident, #f);
+                        assert_match!(json#ident, json!(#f));
                     });
                 }
             }
@@ -106,7 +110,7 @@ impl ToTokens for Match {
                 } else {
                     let ident = syn::Ident::from(expr.as_str());
                     tokens.append(quote! {
-                        assert_match!(json#ident, #b);
+                        assert_match!(json#ident, json!(#b));
                     });
                 }
             }
@@ -130,12 +134,12 @@ impl ToTokens for Match {
 
                 if self.expr.is_body() || self.expr.is_empty() {
                     tokens.append(quote! {
-                        assert_match!(json, #json);
+                        assert_match!(json, json!(#json));
                     });
                 } else {
                     let ident = syn::Ident::from(expr.as_str());
                     tokens.append(quote! {
-                        assert_match!(json#ident, #json);
+                        assert_match!(json#ident, json!(#json));
                     });
                 }
             }

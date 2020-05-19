@@ -50,9 +50,9 @@ macro_rules! assert_request_status_code {
 /// The second argument is converted to a [serde_json::Value] using the `json!` macro
 #[macro_export]
 macro_rules! assert_match {
-    ($expected:expr, $($actual:tt)+) => {{
-        assert_eq!($expected, json!($($actual)+),
-            "expected value {} to match {:?} but was {:?}", stringify!($expected), json!($($actual)+), $expected
+    ($expected:expr, $actual:expr) => {{
+        assert_eq!($expected, $actual,
+            "expected value {} to match {:?} but was {:?}", stringify!($expected), $actual, $expected
         );
     }};
 }
