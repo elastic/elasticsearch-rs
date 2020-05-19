@@ -42,7 +42,9 @@ macro_rules! assert_request_status_code {
         let status_code = $status_code.as_u16();
         assert!(
             status_code >= 400 && status_code < 600,
-            "expected status code in range 400-599 but was {}", status_code);
+            "expected status code in range 400-599 but was {}",
+            status_code
+        );
     }};
 }
 
@@ -51,8 +53,13 @@ macro_rules! assert_request_status_code {
 #[macro_export]
 macro_rules! assert_match {
     ($expected:expr, $actual:expr) => {{
-        assert_eq!($expected, $actual,
-            "expected value {} to match {:?} but was {:?}", stringify!($expected), $actual, $expected
+        assert_eq!(
+            $expected,
+            $actual,
+            "expected value {} to match {:?} but was {:?}",
+            stringify!($expected),
+            $actual,
+            $expected
         );
     }};
 }
@@ -75,7 +82,12 @@ macro_rules! assert_numeric_match {
 #[macro_export]
 macro_rules! assert_null {
     ($expected:expr) => {{
-        assert!($expected.is_null(), "expected value {} to be null but was {:?}", stringify!($expected), $expected);
+        assert!(
+            $expected.is_null(),
+            "expected value {} to be null but was {:?}",
+            stringify!($expected),
+            $expected
+        );
     }};
 }
 
@@ -84,8 +96,7 @@ macro_rules! assert_null {
 #[macro_export]
 macro_rules! assert_regex_match {
     ($expected:expr, $regex:expr) => {{
-        let regex = regex::RegexBuilder::new($regex)
-            .build()?;
+        let regex = regex::RegexBuilder::new($regex).build()?;
         assert!(
             regex.is_match($expected),
             "expected value {} to match regex\n\n{}\n\nbut was\n\n{}",
@@ -122,7 +133,7 @@ macro_rules! assert_length {
             Value::String(s) => s.len(),
             Value::Array(a) => a.len(),
             Value::Object(o) => o.len(),
-            v => panic!("Cannot get length from {:?}", v)
+            v => panic!("Cannot get length from {:?}", v),
         };
 
         assert_eq!(
@@ -142,11 +153,30 @@ macro_rules! assert_is_false {
     ($expr:expr) => {{
         let expr_string = stringify!($expr);
         match $expr {
-            Value::Null => {},
-            Value::Bool(b) => assert_eq!(*b, false, "expected value at {} to be false but was {}", expr_string, b),
-            Value::Number(n) => assert_eq!(n.as_f64().unwrap(), 0.0, "expected value at {} to be false (0) but was {}", expr_string, n.as_f64().unwrap()),
-            Value::String(s) => assert!(s.is_empty(), "expected value at {} to be false (empty) but was {}", expr_string, &s),
-            v => assert!(false, "expected value at {} to be false but was {:?}", expr_string, &v),
+            Value::Null => {}
+            Value::Bool(b) => assert_eq!(
+                *b, false,
+                "expected value at {} to be false but was {}",
+                expr_string, b
+            ),
+            Value::Number(n) => assert_eq!(
+                n.as_f64().unwrap(),
+                0.0,
+                "expected value at {} to be false (0) but was {}",
+                expr_string,
+                n.as_f64().unwrap()
+            ),
+            Value::String(s) => assert!(
+                s.is_empty(),
+                "expected value at {} to be false (empty) but was {}",
+                expr_string,
+                &s
+            ),
+            v => assert!(
+                false,
+                "expected value at {} to be false but was {:?}",
+                expr_string, &v
+            ),
         }
     }};
 }
@@ -157,11 +187,30 @@ macro_rules! assert_is_true {
     ($expr:expr) => {{
         let expr_string = stringify!($expr);
         match $expr {
-            Value::Null => assert!(false, "expected value at {} to be true (not null) but was null", expr_string),
-            Value::Bool(b) => assert!(*b, "expected value at {} to be true but was false", expr_string),
-            Value::Number(n) => assert_ne!(n.as_f64().unwrap(), 0.0, "expected value at {} to be true (not 0) but was {}", expr_string, n.as_f64().unwrap()),
-            Value::String(s) => assert!(!s.is_empty(), "expected value at {} to be true (not empty) but was {}", expr_string, &s),
-            v => {},
+            Value::Null => assert!(
+                false,
+                "expected value at {} to be true (not null) but was null",
+                expr_string
+            ),
+            Value::Bool(b) => assert!(
+                *b,
+                "expected value at {} to be true but was false",
+                expr_string
+            ),
+            Value::Number(n) => assert_ne!(
+                n.as_f64().unwrap(),
+                0.0,
+                "expected value at {} to be true (not 0) but was {}",
+                expr_string,
+                n.as_f64().unwrap()
+            ),
+            Value::String(s) => assert!(
+                !s.is_empty(),
+                "expected value at {} to be true (not empty) but was {}",
+                expr_string,
+                &s
+            ),
+            v => {}
         }
     }};
 }
@@ -174,7 +223,8 @@ macro_rules! assert_warnings_contain {
             $warnings.iter().any(|w| w.contains($expected)),
             "expected warnings to contain '{}' but contained {:?}",
             $expected,
-            &$warnings);
+            &$warnings
+        );
     }};
 }
 
@@ -182,7 +232,10 @@ macro_rules! assert_warnings_contain {
 #[macro_export]
 macro_rules! assert_warnings_is_empty {
     ($warnings:expr) => {{
-        assert!($warnings.is_empty(), "expected warnings to be empty but found {:?}", &$warnings);
+        assert!(
+            $warnings.is_empty(),
+            "expected warnings to be empty but found {:?}",
+            &$warnings
+        );
     }};
 }
-

@@ -1,8 +1,8 @@
 use super::Step;
+use crate::regex::*;
 use crate::step::{clean_regex, Expr};
 use quote::{ToTokens, Tokens};
 use yaml_rust::{Yaml, YamlEmitter};
-use crate::regex::*;
 
 pub struct Match {
     pub expr: Expr,

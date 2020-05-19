@@ -3,17 +3,17 @@ use quote::{ToTokens, Tokens};
 
 use crate::step::*;
 use api_generator::generator::Api;
+use path_slash::PathExt;
 use regex::Regex;
 use semver::Version;
 use serde::Deserialize;
-use std::collections::{HashSet, BTreeMap};
+use std::borrow::Borrow;
+use std::collections::{BTreeMap, HashSet};
 use std::fs;
 use std::fs::{File, OpenOptions};
 use std::io::Write;
 use std::path::{Component, Path, PathBuf};
 use yaml_rust::{Yaml, YamlLoader};
-use std::borrow::Borrow;
-use path_slash::PathExt;
 
 /// The test suite to compile
 #[derive(Debug, PartialEq)]
@@ -151,14 +151,13 @@ impl<'a> YamlTests<'a> {
 
     /// Whether the test should be skipped
     fn skip_test(&self, name: &str) -> bool {
-
         if self.skip.tests.contains_key(self.path.as_str()) {
             let tests = self.skip.tests.get(self.path.as_str());
 
             return match tests {
                 Some(t) => t.contains(name.to_string().borrow()),
-                None => true
-            }
+                None => true,
+            };
         }
 
         false
@@ -396,7 +395,8 @@ pub fn generate_tests_from_yaml(
                     if &test_suite != suite {
                         info!(
                             "skipping {}. compiling tests for {:?}",
-                            relative_path.to_slash_lossy(), suite
+                            relative_path.to_slash_lossy(),
+                            suite
                         );
                         continue;
                     }
@@ -455,7 +455,9 @@ pub fn generate_tests_from_yaml(
                     //if there has been an Err in any step of the yaml test file, don't create a test for it
                     match ok_or_accumulate(&results, 1) {
                         Ok(_) => write_test_file(test, relative_path, generated_dir)?,
-                        Err(e) => info!("skipping {} because\n{}", relative_path.to_slash_lossy(), e),
+                        Err(e) => {
+                            info!("skipping {} because\n{}", relative_path.to_slash_lossy(), e)
+                        }
                     }
                 }
             }

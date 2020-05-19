@@ -12,6 +12,6 @@ extern crate quote;
 extern crate api_generator;
 
 pub mod generator;
-pub mod step;
 pub mod github;
 pub mod regex;
+pub mod step;

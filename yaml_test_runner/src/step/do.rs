@@ -104,8 +104,8 @@ impl Do {
 
         match &self.api_call.ignore {
             Some(i) => tokens.append(quote! {
-                    assert_response_success_or!(response, #i);
-                }),
+                assert_response_success_or!(response, #i);
+            }),
             None => (),
         }
 
