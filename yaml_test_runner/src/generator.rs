@@ -175,17 +175,18 @@ impl<'a> YamlTests<'a> {
         self.tests
             .iter()
             .map(|test_fn| {
-                let name = test_fn.unique_name(&mut seen_names);
-                if self.skip_test(test_fn.name()) {
+                let name = test_fn.name();
+                let unique_name = test_fn.unique_name(&mut seen_names);
+                if self.skip_test(name) {
                     info!(
-                        "skipping '{}' in {} because it's included in skip.yml",
-                        &name,
+                        r#"skipping "{}" in {} because it's included in skip.yml"#,
+                        name,
                         self.path,
                     );
                     return None;
                 }
 
-                let fn_name = syn::Ident::from(name.as_str());
+                let fn_name = syn::Ident::from(unique_name.as_str());
                 let mut body = Tokens::new();
                 let mut skip = Option::<&Skip>::None;
                 let mut read_response = false;
@@ -195,8 +196,8 @@ impl<'a> YamlTests<'a> {
                         Step::Skip(s) => {
                             skip = if s.skip_version(self.version) {
                                 info!(
-                                    "skipping '{}' in {} because version '{}' is met. {}",
-                                    &name,
+                                    r#"skipping "{}" in {} because version "{}" is met. {}"#,
+                                    name,
                                     &self.path,
                                     s.version(),
                                     s.reason()
@@ -204,8 +205,8 @@ impl<'a> YamlTests<'a> {
                                 Some(s)
                             } else if s.skip_features(&self.skip.features) {
                                 info!(
-                                    "skipping '{}' in {} because it needs features '{:?}' which are currently not implemented",
-                                    &name,
+                                    r#"skipping "{}" in {} because it needs features "{:?}" which are currently not implemented"#,
+                                    name,
                                     &self.path,
                                     s.features()
                                 );
