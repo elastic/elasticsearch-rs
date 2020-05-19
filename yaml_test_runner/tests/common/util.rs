@@ -1,26 +1,22 @@
 use elasticsearch::http::{response::Response, Method, StatusCode};
 use serde_json::Value;
 
-pub fn len_from_value(value: &Value) -> Result<usize, failure::Error> {
-    match value {
-        Value::Number(n) => Ok(n.as_i64().unwrap() as usize),
-        Value::String(s) => Ok(s.len()),
-        Value::Array(a) => Ok(a.len()),
-        Value::Object(o) => Ok(o.len()),
-        v => Err(failure::err_msg(format!("Cannot get length from {:?}", v))),
-    }
-}
-
+/// Reads the response from Elasticsearch, returning the method, status code, text response,
+/// and the response parsed from json or yaml
 pub async fn read_response(
     response: Response,
 ) -> Result<(Method, StatusCode, String, Value), failure::Error> {
     let is_json = response.content_type().starts_with("application/json");
+    let is_yaml = response.content_type().starts_with("application/yaml");
     let method = response.method();
     let status_code = response.status_code();
     let text = response.text().await?;
     let json = if is_json && !text.is_empty() {
         serde_json::from_slice::<Value>(text.as_ref())?
-    } else {
+    } else if is_yaml && !text.is_empty() {
+        serde_yaml::from_slice::<Value>(text.as_ref())?
+    }
+     else {
         Value::Null
     };
 
