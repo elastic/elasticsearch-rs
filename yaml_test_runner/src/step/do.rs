@@ -82,17 +82,13 @@ impl Do {
             });
             for warning in &self.warnings {
                 tokens.append(quote! {
-                    assert!(
-                        warnings.iter().any(|w| w.contains(#warning)),
-                        "expected warnings to contain '{}' but contained {:?}",
-                        #warning,
-                        &warnings);
+                    assert_warnings_contain!(warnings, #warning);
                 });
             }
         } else if !self.allowed_warnings.is_empty() {
             tokens.append(quote! {
                 let warnings: Vec<&str> = response.warning_headers().collect();
-                assert!(warnings.is_empty(), "expected warnings to be empty but found {:?}", &warnings);
+                assert_warnings_is_empty!(warnings);
             });
         }
 

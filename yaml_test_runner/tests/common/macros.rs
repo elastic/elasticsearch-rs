@@ -165,3 +165,24 @@ macro_rules! assert_is_true {
         }
     }};
 }
+
+/// Asserts that the deprecation warnings contain a given value
+#[macro_export]
+macro_rules! assert_warnings_contain {
+    ($warnings:expr, $expected:expr) => {{
+        assert!(
+            $warnings.iter().any(|w| w.contains($expected)),
+            "expected warnings to contain '{}' but contained {:?}",
+            $expected,
+            &$warnings);
+    }};
+}
+
+/// Asserts that the deprecation warnings are empty
+#[macro_export]
+macro_rules! assert_warnings_is_empty {
+    ($warnings:expr) => {{
+        assert!($warnings.is_empty(), "expected warnings to be empty but found {:?}", &$warnings);
+    }};
+}
+
