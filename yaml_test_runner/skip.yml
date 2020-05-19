@@ -10,19 +10,29 @@ features:
   - stash_path_replace
   - embedded_stash_key
 
-# tests to skip generating and compiling a test for.
-# Take the form of the generated path e.g.
-# generated::xpack::security::hidden_index::_13_security_tokens_read::tests::test_get_security_tokens_index_metadata
+# tests to skip generating and compiling a test for
 tests:
-  # this test returns the CA cert before the cert, so always fails
-  - generated::xpack::ssl::_10_basic::tests::test_get_ssl_certificates
+  xpack/ssl/10_basic.yml:
+    # this test returns the CA cert before the cert, so always fails
+    - "Test get SSL certificates"
 
-  # this test always returns "exponential_avg_checkpoint_duration_ms": 0.0 . seems like it might be missing data in
-  # the setup, fires quicker than any documents are processed, or the delay of 1m is too high?
-  - generated::xpack::transform::_transforms_stats_continuous::tests::test_get_continuous_transform_stats
+  xpack/transform/transforms_stats_continuous.yml:
+    # this test always returns "exponential_avg_checkpoint_duration_ms": 0.0 . seems like it might be missing data in
+    # the setup, fires quicker than any documents are processed, or the delay of 1m is too high?
+    - "Test get continuous transform stats"
 
-  # this test always returns 3 buckets where 1 is expected
-  - generated::xpack::ml::_jobs_get_result_overall_buckets::tests::test_overall_buckets_given_overall_score_filter
+  xpack/ml/jobs_get_result_overall_buckets.yml:
+    # this test always returns 3 buckets where 1 is expected
+    - "Test overall buckets given overall_score filter"
 
-  # this test fails because it can't access snapshot to restore it
-  - generated::xpack::snapshot::_10_basic::tests::create_a_source_only_snapshot_and_then_restore_it
+  xpack/snapshot/10_basic.yml:
+    # this test fails because it can't access snapshot to restore it
+    - "Create a source only snapshot and then restore it"
+
+  oss/cat.aliases/10_basic.yml:
+    # this test fails as the regex needs a \n before the ending $
+    - "Multiple alias names"
+
+  oss/cat.indices/10_basic.yml:
+    # this test fails as the regex needs a \n before the ending $
+    - "Test cat indices using health status"

@@ -12,11 +12,10 @@ pub async fn read_response(
     let status_code = response.status_code();
     let text = response.text().await?;
     let json = if is_json && !text.is_empty() {
-        serde_json::from_slice::<Value>(text.as_ref())?
+        serde_json::from_str::<Value>(text.as_ref())?
     } else if is_yaml && !text.is_empty() {
-        serde_yaml::from_slice::<Value>(text.as_ref())?
-    }
-     else {
+        serde_yaml::from_str::<Value>(text.as_ref())?
+    } else {
         Value::Null
     };
 
