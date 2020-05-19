@@ -87,9 +87,9 @@ impl ToTokens for Comparison {
                             let expr_ident = syn::Ident::from(expr.as_str());
                             let ident = syn::Ident::from(s);
                             let op_ident = syn::Ident::from(op);
-                            let message = "Expected value at {} to be numeric but is {}";
+                            let message = "Expected value at {} to be numeric but was {}";
                             let comparison_message =
-                                "Expected value at {} to be {:?} {}, but is {}";
+                                "Expected value at {} to be {:?} {}, but was {}";
                             tokens.append(quote! {
                                 match &json#expr_ident {
                                     Value::Number(n) => {
