@@ -37,19 +37,19 @@ tests:
     # this test fails as the regex needs a \n before the ending $
     - "Test cat indices using health status"
 
-  oss/indices_shard_stores/10_basic.yml:
+  oss/indices.shard_stores/10_basic.yml:
     # uses number as a key into object. serde_json::Value expects a string key
     - "basic index test"
     - "multiple indices test"
 
-  oss/indices_flush/10_basic.yml:
+  oss/indices.flush/10_basic.yml:
     # uses number as a key into object. serde_json::Value expects a string key
     - "Index synced flush rest test"
 
-  oss/indices_segments/10_basic.yml:
+  oss/indices.segments/10_basic.yml:
     # uses number as a key into object. serde_json::Value expects a string key
     - "basic segments test"
 
-  oss/indices_stats/12_level.yml:
+  oss/indices.stats/12_level.yml:
     # uses number as a key into object. serde_json::Value expects a string key
     - "Level - shards"
