@@ -4,7 +4,7 @@ use super::Step;
 use crate::step::Expr;
 use yaml_rust::Yaml;
 
-pub const OPERATORS: [&'static str; 4] = ["lt", "lte", "gt", "gte"];
+pub const OPERATORS: [&str; 4] = ["lt", "lte", "gt", "gte"];
 
 pub struct Comparison {
     pub(crate) expr: Expr,

@@ -108,18 +108,15 @@ fn main() -> Result<(), failure::Error> {
         let entries = fs::read_dir(&generated_dir)?;
         for entry in entries {
             if let Ok(e) = entry {
-                match e.file_type() {
-                    Ok(f) => {
-                        if e.file_name() != "common" {
-                            if f.is_dir() {
-                                fs::remove_dir_all(e.path())?;
-                            } else if f.is_file() {
-                                fs::remove_file(e.path())?;
-                            }
+                if let Ok(f) = e.file_type() {
+                    if e.file_name() != "common" {
+                        if f.is_dir() {
+                            fs::remove_dir_all(e.path())?;
+                        } else if f.is_file() {
+                            fs::remove_file(e.path())?;
                         }
-                    },
-                    Err(_) => ()
-                };
+                    }
+                }
             }
         }
     }

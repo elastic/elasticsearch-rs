@@ -34,8 +34,7 @@ impl From<&str> for Transformation {
         let mut function = None;
         let mut exprs = Vec::new();
         let mut value = String::new();
-        let mut chars = t.chars();
-        while let Some(ch) = chars.next() {
+        for ch in t.chars() {
             match ch {
                 '#' => {
                     continue;
