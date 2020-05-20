@@ -239,3 +239,47 @@ macro_rules! assert_warnings_is_empty {
         );
     }};
 }
+
+/// Asserts that the comparison is true
+#[macro_export]
+macro_rules! assert_comparison {
+    ($expr:expr, $($comparison:tt)+) => {{
+        match $expr {
+            Value::Number(n) => {
+                match n.as_i64() {
+                    Some(i) => assert!(i $($comparison)+ as i64, "Expected value {} to be {} but was {}", stringify!($expr), stringify!($($comparison)+ as i64), i),
+                    None => match n.as_f64() {
+                        Some(f) => assert!(f $($comparison)+ as f64, "Expected value {} to be {} but was {}", stringify!($expr), stringify!($($comparison)+ as f64), f),
+                        None => match n.as_u64() {
+                            Some(u) => assert!(u $($comparison)+ as u64, "Expected value {} to be {} but was {}", stringify!($expr), stringify!($($comparison)+ as u64), u),
+                            None => assert!(false, "Expected value {} to be numeric but was {:?}", stringify!($expr), &n)
+                        }
+                    }
+                }
+            }
+            v => assert!(false, "Expected value {} to be numeric but was {:?}", stringify!($expr), &v),
+        }
+    }};
+}
+
+/// Asserts that the comparison is true when comparing against a "set" value
+#[macro_export]
+macro_rules! assert_comparison_from_set_value {
+    ($expr:expr, $($comparison:tt)+) => {{
+        match $expr {
+            Value::Number(n) => {
+                match n.as_i64() {
+                    Some(i) => assert!(i $($comparison)+.as_i64().unwrap(), "Expected value {} to be {} but was {}", stringify!($expr), stringify!($($comparison)+.as_i64().unwrap()), i),
+                    None => match n.as_f64() {
+                        Some(f) => assert!(f $($comparison)+.as_f64().unwrap(), "Expected value {} to be {} but was {}", stringify!($expr), stringify!($($comparison)+.as_f64().unwrap()), f),
+                        None => match n.as_u64() {
+                            Some(u) => assert!(u $($comparison)+.as_u64().unwrap(), "Expected value {} to be {} but was {}", stringify!($expr), stringify!($($comparison)+.as_u64().unwrap()), u),
+                            None => assert!(false, "Expected value {} to be numeric but was {:?}", stringify!($expr), &n)
+                        }
+                    }
+                }
+            }
+            v => assert!(false, "Expected value {} to be numeric but was {:?}", stringify!($expr), &v),
+        }
+    }};
+}
