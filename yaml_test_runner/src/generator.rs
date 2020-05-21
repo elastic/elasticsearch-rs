@@ -16,11 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-use inflector::Inflector;
-use quote::{ToTokens, Tokens};
 use crate::step::*;
 use api_generator::generator::Api;
+use inflector::Inflector;
 use path_slash::PathExt;
+use quote::{ToTokens, Tokens};
 use regex::Regex;
 use semver::Version;
 use serde::Deserialize;
@@ -546,10 +546,7 @@ fn test_file_path(relative_path: &Path) -> Result<PathBuf, failure::Error> {
     let file_name = relative.file_name().unwrap().to_string_lossy().into_owned();
     // modules can't start with a number so prefix with underscore
     if file_name.starts_with(char::is_numeric) {
-        relative.set_file_name(format!(
-            "_{}",
-            file_name
-        ));
+        relative.set_file_name(format!("_{}", file_name));
     }
 
     Ok(relative)

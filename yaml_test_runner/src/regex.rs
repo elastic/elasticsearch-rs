@@ -17,7 +17,6 @@
  * under the License.
  */
 use ::regex::{Captures, Regex};
-use lazy_static;
 
 lazy_static! {
     // replace usages of "$.*" with the captured value

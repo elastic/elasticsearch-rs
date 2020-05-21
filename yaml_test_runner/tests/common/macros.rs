@@ -307,7 +307,12 @@ macro_rules! assert_comparison_from_set_value {
 macro_rules! assert_contains {
     ($expr:expr, $value:expr) => {{
         if !$expr.is_array() {
-            assert!(false, "expected {} to be an array but was {:?}", stringify!($expr), &$expr);
+            assert!(
+                false,
+                "expected {} to be an array but was {:?}",
+                stringify!($expr),
+                &$expr
+            );
         }
 
         let arr = $expr.as_array().unwrap();
@@ -318,20 +323,25 @@ macro_rules! assert_contains {
         if $value.is_object() {
             let vv = $value.clone();
             let o = vv.as_object().unwrap();
-            assert!(arr.iter()
-                .filter_map(serde_json::Value::as_object)
-                .any(|ao| o.iter().all(|(key, value)| ao.get(key).map_or(false, |v| *value == *v))),
+            assert!(
+                arr.iter()
+                    .filter_map(serde_json::Value::as_object)
+                    .any(|ao| o
+                        .iter()
+                        .all(|(key, value)| ao.get(key).map_or(false, |v| *value == *v))),
                 "expected value {} to contain {:?} but contained {:?}",
                 stringify!($expr),
                 &vv,
-                &arr);
+                &arr
+            );
         } else {
             assert!(
                 arr.contains(&$value),
                 "expected value {} to contain {:?} but contained {:?}",
                 stringify!($expr),
                 &$value,
-                &arr);
+                &arr
+            );
         }
     }};
 }

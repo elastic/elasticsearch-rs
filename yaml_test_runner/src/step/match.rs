@@ -17,7 +17,7 @@
  * under the License.
  */
 use super::Step;
-use crate::step::{clean_regex, Expr, json_string_from_yaml};
+use crate::step::{clean_regex, json_string_from_yaml, Expr};
 use quote::{ToTokens, Tokens};
 use yaml_rust::Yaml;
 

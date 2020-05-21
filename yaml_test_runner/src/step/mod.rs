@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+use crate::regex::*;
 use api_generator::generator::Api;
 use std::fmt::Write;
 use yaml_rust::{Yaml, YamlEmitter};
-use crate::regex::*;
 
 mod comparison;
 mod contains;

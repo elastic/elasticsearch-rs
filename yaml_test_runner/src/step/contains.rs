@@ -19,7 +19,7 @@
 use quote::{ToTokens, Tokens};
 
 use super::Step;
-use crate::step::{Expr, json_string_from_yaml};
+use crate::step::{json_string_from_yaml, Expr};
 use yaml_rust::Yaml;
 
 pub struct Contains {
@@ -59,22 +59,22 @@ impl ToTokens for Contains {
                 tokens.append(quote! {
                     assert_contains!(json#ident, json!(#f));
                 });
-            },
+            }
             Yaml::Integer(i) => {
                 tokens.append(quote! {
                     assert_contains!(json#ident, json!(#i));
                 });
-            },
+            }
             Yaml::String(s) => {
                 tokens.append(quote! {
                     assert_contains!(json#ident, json!(#s));
                 });
-            },
+            }
             Yaml::Boolean(b) => {
                 tokens.append(quote! {
                     assert_contains!(json#ident, json!(#b));
                 });
-            },
+            }
             yaml if yaml.is_array() || yaml.as_hash().is_some() => {
                 let json = {
                     let s = json_string_from_yaml(yaml);
@@ -84,7 +84,7 @@ impl ToTokens for Contains {
                 tokens.append(quote! {
                     assert_contains!(json#ident, json!(#json));
                 });
-            },
+            }
             yaml => {
                 panic!("Bad yaml value {:?}", &yaml);
             }
