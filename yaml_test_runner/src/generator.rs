@@ -204,29 +204,29 @@ impl<'a> YamlTests<'a> {
 
                 let fn_name = syn::Ident::from(unique_name.as_str());
                 let mut body = Tokens::new();
-                let mut skip = Option::<&Skip>::None;
+                let mut skip : Option<String> = None;
                 let mut read_response = false;
 
                 for step in &test_fn.steps {
                     match step {
                         Step::Skip(s) => {
                             skip = if s.skip_version(self.version) {
-                                info!(
+                                let m = format!(
                                     r#"skipping "{}" in {} because version "{}" is met. {}"#,
                                     name,
                                     &self.path,
                                     s.version(),
                                     s.reason()
                                 );
-                                Some(s)
+                                Some(m)
                             } else if s.skip_features(&self.skip.features) {
-                                info!(
+                                let m = format!(
                                     r#"skipping "{}" in {} because it needs features "{:?}" which are currently not implemented"#,
                                     name,
                                     &self.path,
                                     s.features()
                                 );
-                                Some(s)
+                                Some(m)
                             } else {
                                 None
                             }
@@ -270,7 +270,10 @@ impl<'a> YamlTests<'a> {
                 }
 
                 match skip {
-                    Some(_) => None,
+                    Some(s) => {
+                        info!("{}", s);
+                        None
+                    },
                     None => Some(quote! {
                         #[tokio::test]
                         async fn #fn_name() -> Result<(), failure::Error> {
