@@ -521,16 +521,19 @@ fn test_file_path(relative_path: &Path) -> Result<PathBuf, failure::Error> {
     // directories and files will form the module names so ensure they're valid module names
     let clean: String = relative
         .to_string_lossy()
-        .into_owned()
         .replace(".", "_")
         .replace("-", "_");
 
     relative = PathBuf::from(clean);
+
+    let file_name = relative.file_name().unwrap().to_string_lossy().into_owned();
     // modules can't start with a number so prefix with underscore
-    relative.set_file_name(format!(
-        "_{}",
-        &relative.file_name().unwrap().to_string_lossy().into_owned()
-    ));
+    if file_name.starts_with(char::is_numeric) {
+        relative.set_file_name(format!(
+            "_{}",
+            file_name
+        ));
+    }
 
     Ok(relative)
 }
