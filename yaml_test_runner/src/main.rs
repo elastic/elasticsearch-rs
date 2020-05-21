@@ -1,6 +1,11 @@
+extern crate api_generator;
+#[macro_use]
+extern crate lazy_static;
 #[macro_use]
 extern crate log;
-extern crate api_generator;
+#[macro_use]
+extern crate quote;
+
 extern crate simple_logger;
 
 use clap::{App, Arg};
@@ -9,10 +14,12 @@ use std::fs;
 use std::path::PathBuf;
 use std::process::exit;
 
-use yaml_test_runner::{
-    generator::{self, TestSuite},
-    github,
-};
+mod generator;
+mod github;
+mod regex;
+mod step;
+
+use generator::TestSuite;
 
 fn main() -> Result<(), failure::Error> {
     simple_logger::init_with_level(Level::Info).unwrap();
