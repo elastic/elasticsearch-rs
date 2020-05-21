@@ -119,7 +119,7 @@ impl<'a> YamlTests<'a> {
             .collect();
 
         quote! {
-            #![allow(unused_imports, unused_variables)]
+            #![allow(unused_imports, unused_variables, dead_code)]
             use crate::common::{client, macros, transform, util};
             use elasticsearch::*;
             use elasticsearch::http::{
@@ -238,6 +238,10 @@ impl<'a> YamlTests<'a> {
                             f.to_tokens(&mut body);
                         },
                         Step::Comparison(c) => {
+                            read_response = Self::read_response(read_response,&mut body);
+                            c.to_tokens(&mut body);
+                        },
+                        Step::Contains(c) => {
                             read_response = Self::read_response(read_response,&mut body);
                             c.to_tokens(&mut body);
                         },

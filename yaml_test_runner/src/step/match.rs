@@ -1,8 +1,7 @@
 use super::Step;
-use crate::regex::*;
-use crate::step::{clean_regex, Expr};
+use crate::step::{clean_regex, Expr, json_string_from_yaml};
 use quote::{ToTokens, Tokens};
-use yaml_rust::{Yaml, YamlEmitter};
+use yaml_rust::Yaml;
 
 pub struct Match {
     pub expr: Expr,
@@ -115,21 +114,9 @@ impl ToTokens for Match {
                 }
             }
             yaml if yaml.is_array() || yaml.as_hash().is_some() => {
-                let mut s = String::new();
-                {
-                    let mut emitter = YamlEmitter::new(&mut s);
-                    emitter.dump(yaml).unwrap();
-                }
-
-                let value: serde_json::Value = serde_yaml::from_str(&s).unwrap();
-
                 let json = {
-                    let mut json = value.to_string();
-                    json = replace_set_quoted_delimited(json);
-                    json = replace_set_delimited(json);
-                    json = replace_set(json);
-                    json = replace_i64(json);
-                    syn::Ident::from(json)
+                    let s = json_string_from_yaml(yaml);
+                    syn::Ident::from(s)
                 };
 
                 if self.expr.is_body() || self.expr.is_empty() {

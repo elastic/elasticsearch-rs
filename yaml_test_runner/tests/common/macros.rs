@@ -283,3 +283,37 @@ macro_rules! assert_comparison_from_set_value {
         }
     }};
 }
+
+/// Asserts that the passed [serde_json::Value::Array] contains the second argument.
+#[macro_export]
+macro_rules! assert_contains {
+    ($expr:expr, $value:expr) => {{
+        if !$expr.is_array() {
+            assert!(false, "expected {} to be an array but was {:?}", stringify!($expr), &$expr);
+        }
+
+        let arr = $expr.as_array().unwrap();
+
+        // when dealing with a serde_json::Value::Object, the $value may only be a partial object
+        // such that equality can't be used. In this case, we need to assert that there is one
+        // object in the array that has all the keys and values of $value
+        if $value.is_object() {
+            let vv = $value.clone();
+            let o = vv.as_object().unwrap();
+            assert!(arr.iter()
+                .filter_map(serde_json::Value::as_object)
+                .any(|ao| o.iter().all(|(key, value)| ao.get(key).map_or(false, |v| *value == *v))),
+                "expected value {} to contain {:?} but contained {:?}",
+                stringify!($expr),
+                &vv,
+                &arr);
+        } else {
+            assert!(
+                arr.contains(&$value),
+                "expected value {} to contain {:?} but contained {:?}",
+                stringify!($expr),
+                &$value,
+                &arr);
+        }
+    }};
+}

@@ -1,8 +1,10 @@
 use api_generator::generator::Api;
 use std::fmt::Write;
-use yaml_rust::Yaml;
+use yaml_rust::{Yaml, YamlEmitter};
+use crate::regex::*;
 
 mod comparison;
+mod contains;
 mod r#do;
 mod is_false;
 mod is_true;
@@ -12,6 +14,7 @@ mod set;
 mod skip;
 mod transform_and_set;
 pub use comparison::{Comparison, OPERATORS};
+pub use contains::*;
 pub use is_false::*;
 pub use is_true::*;
 pub use length::*;
@@ -26,12 +29,12 @@ pub fn parse_steps(api: &Api, steps: &[Yaml]) -> Result<Vec<Step>, failure::Erro
     for step in steps {
         let hash = step
             .as_hash()
-            .ok_or_else(|| failure::err_msg(format!("Expected hash but found {:?}", step)))?;
+            .ok_or_else(|| failure::err_msg(format!("expected hash but found {:?}", step)))?;
 
         let (key, value) = {
             let (k, yaml) = hash.iter().next().unwrap();
             let key = k.as_str().ok_or_else(|| {
-                failure::err_msg(format!("Expected string key but found {:?}", k))
+                failure::err_msg(format!("expected string key but found {:?}", k))
             })?;
 
             (key, yaml)
@@ -58,7 +61,10 @@ pub fn parse_steps(api: &Api, steps: &[Yaml]) -> Result<Vec<Step>, failure::Erro
                 let m = Match::try_parse(value)?;
                 parsed_steps.push(m.into());
             }
-            "contains" => {}
+            "contains" => {
+                let c = Contains::try_parse(value)?;
+                parsed_steps.push(c.into());
+            }
             "is_true" => {
                 let e = IsTrue::try_parse(value)?;
                 parsed_steps.push(e.into())
@@ -186,6 +192,7 @@ pub enum Step {
     IsTrue(IsTrue),
     IsFalse(IsFalse),
     Comparison(Comparison),
+    Contains(Contains),
     TransformAndSet(TransformAndSet),
 }
 
@@ -222,7 +229,7 @@ pub fn ok_or_accumulate<T>(
     }
 }
 
-// cleans up a regex as specified in YAML to one that will work with the regex crate.
+/// cleans up a regex as specified in YAML to one that will work with the regex crate.
 pub fn clean_regex<S: AsRef<str>>(s: S) -> String {
     s.as_ref()
         .trim()
@@ -233,4 +240,21 @@ pub fn clean_regex<S: AsRef<str>>(s: S) -> String {
         .replace("\\%", "%")
         .replace("\\'", "'")
         .replace("\\`", "`")
+}
+
+pub fn json_string_from_yaml(yaml: &Yaml) -> String {
+    let mut s = String::new();
+    {
+        let mut emitter = YamlEmitter::new(&mut s);
+        emitter.dump(yaml).unwrap();
+    }
+
+    let value: serde_json::Value = serde_yaml::from_str(&s).unwrap();
+
+    let mut json = value.to_string();
+    json = replace_set_quoted_delimited(json);
+    json = replace_set_delimited(json);
+    json = replace_set(json);
+    json = replace_i64(json);
+    json
 }

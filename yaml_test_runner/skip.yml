@@ -6,7 +6,6 @@
 # features not yet implemented
 features:
   - node_selector
-  - contains
   - stash_path_replace
   - embedded_stash_key
 
