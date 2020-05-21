@@ -16,16 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-use inflector::Inflector;
-use quote::{ToTokens, Tokens};
-
 use super::{ok_or_accumulate, Step};
 use crate::regex::*;
-use crate::step::clean_regex;
 use api_generator::generator::{Api, ApiEndpoint, TypeKind};
+use inflector::Inflector;
 use itertools::Itertools;
+use quote::{ToTokens, Tokens};
 use std::collections::BTreeMap;
 use yaml_rust::{Yaml, YamlEmitter};
+use crate::regex::clean_regex;
 
 /// A catch expression on a do step
 pub struct Catch(String);
@@ -151,7 +150,7 @@ impl Do {
             .iter()
             .map(|(k, v)| {
                 let key = k.as_str().ok_or_else(|| {
-                    failure::err_msg(format!("expected string key but found {:?}", k))
+                    failure::err_msg(format!("expected string but found {:?}", k))
                 })?;
 
                 match key {
@@ -161,10 +160,10 @@ impl Do {
                         })?;
                         for (hk, hv) in hash.iter() {
                             let h = hk.as_str().ok_or_else(|| {
-                                failure::err_msg(format!("expected str but found {:?}", hk))
+                                failure::err_msg(format!("expected string but found {:?}", hk))
                             })?;
                             let v = hv.as_str().ok_or_else(|| {
-                                failure::err_msg(format!("expected str but found {:?}", hv))
+                                failure::err_msg(format!("expected string but found {:?}", hv))
                             })?;
                             headers.insert(h.into(), v.into());
                         }
@@ -174,10 +173,7 @@ impl Do {
                         catch = v.as_str().map(|s| Catch(s.to_string()));
                         Ok(())
                     }
-                    "node_selector" => {
-                        // TODO: implement
-                        Ok(())
-                    }
+                    "node_selector" => Ok(()),
                     "warnings" => {
                         warnings = to_string_vec(v);
                         Ok(())
@@ -194,12 +190,12 @@ impl Do {
             })
             .collect();
 
-        ok_or_accumulate(&results, 0)?;
+        ok_or_accumulate(&results)?;
 
         let (call, value) = call.ok_or_else(|| failure::err_msg("no API found in do"))?;
         let endpoint = api
             .endpoint_for_api_call(call)
-            .ok_or_else(|| failure::err_msg(format!("no API found for '{}'", call)))?;
+            .ok_or_else(|| failure::err_msg(format!(r#"no API found for "{}""#, call)))?;
         let api_call = ApiCall::try_from(api, endpoint, value, headers)?;
 
         Ok(Do {
@@ -349,7 +345,7 @@ impl ApiCall {
                 syn::Ident::from("Unspecified")
             } else {
                 return Err(failure::err_msg(format!(
-                    "Unhandled empty value for {}",
+                    "unhandled empty value for {}",
                     &e
                 )));
             }
@@ -377,7 +373,7 @@ impl ApiCall {
                         Some(t) => Ok(t),
                         None => match api.common_params.get(*n) {
                             Some(t) => Ok(t),
-                            None => Err(failure::err_msg(format!("No param found for {}", n))),
+                            None => Err(failure::err_msg(format!(r#"no param found for "{}""#, n))),
                         },
                     }?;
 
@@ -399,7 +395,7 @@ impl ApiCall {
                                             .map(|e| Self::generate_enum(n, e, &ty.options))
                                             .collect();
 
-                                        match ok_or_accumulate(&idents, 0) {
+                                        match ok_or_accumulate(&idents) {
                                             Ok(_) => {
                                                 let idents: Vec<Tokens> = idents
                                                     .into_iter()
@@ -426,16 +422,25 @@ impl ApiCall {
                                     })
                                 }
                                 TypeKind::Boolean => {
-                                    let b = s.parse::<bool>()?;
-                                    tokens.append(quote! {
-                                        .#param_ident(#b)
-                                    });
+                                    match s.parse::<bool>() {
+                                        Ok(b) => tokens.append(quote! {
+                                            .#param_ident(#b)
+                                        }),
+                                        Err(e) => {
+                                            return Err(failure::err_msg(format!(r#"cannot parse bool from "{}" for param "{}", {}"#, s, n, e.to_string())))
+                                        }
+                                    }
+
                                 }
                                 TypeKind::Double => {
-                                    let f = s.parse::<f64>()?;
-                                    tokens.append(quote! {
-                                        .#param_ident(#f)
-                                    });
+                                    match s.parse::<f64>() {
+                                        Ok(f) => tokens.append(quote! {
+                                            .#param_ident(#f)
+                                        }),
+                                        Err(e) => {
+                                            return Err(failure::err_msg(format!(r#"cannot parse f64 from "{}" for param "{}", {}"#, s, n, e.to_string())))
+                                        }
+                                    }
                                 }
                                 TypeKind::Integer => {
                                     if is_set_value {
@@ -444,10 +449,14 @@ impl ApiCall {
                                            .#param_ident(#set_value.as_i64().unwrap() as i32)
                                         });
                                     } else {
-                                        let i = s.parse::<i32>()?;
-                                        tokens.append(quote! {
-                                            .#param_ident(#i)
-                                        });
+                                        match s.parse::<i32>() {
+                                            Ok(i) => tokens.append(quote! {
+                                                .#param_ident(#i)
+                                            }),
+                                            Err(e) => {
+                                                return Err(failure::err_msg(format!(r#"cannot parse i32 from "{}" for param "{}", {}"#, s, n, e.to_string())))
+                                            }
+                                        }
                                     }
                                 }
                                 TypeKind::Number | TypeKind::Long => {
@@ -540,7 +549,7 @@ impl ApiCall {
                                 .map(|i| match i {
                                     Yaml::String(s) => Ok(s),
                                     y => Err(failure::err_msg(format!(
-                                        "Unsupported array value {:?}",
+                                        "unsupported array value {:?}",
                                         y
                                     ))),
                                 })
@@ -553,7 +562,7 @@ impl ApiCall {
                                     .map(|s| Self::generate_enum(n, s.as_str(), &ty.options))
                                     .collect();
 
-                                match ok_or_accumulate(&result, 0) {
+                                match ok_or_accumulate(&result) {
                                     Ok(_) => {
                                         let result: Vec<Tokens> =
                                             result.into_iter().filter_map(Result::ok).collect();
@@ -570,7 +579,13 @@ impl ApiCall {
                                 });
                             }
                         }
-                        _ => println!("Unsupported value {:?}", v),
+                        Yaml::Real(r) => {
+                            let f = r.parse::<f64>()?;
+                            tokens.append(quote! {
+                                .#param_ident(#f)
+                            });
+                        }
+                        _ => println!("unsupported value {:?} for param {}", v, n),
                     }
                 }
 
@@ -599,7 +614,6 @@ impl ApiCall {
                     .as_str(),
             );
             let replacement = SET_DELIMITED_REGEX.replace_all(s, "{}");
-            // wrap in Value::String so that generated .as_str().unwrap() logic works the same for both branches
             quote! { Value::String(format!(#replacement, #token.as_str().unwrap())) }
         }
     }
@@ -631,7 +645,7 @@ impl ApiCall {
             // check there's actually a None value
             if !param_counts.contains(&0) {
                 return Err(failure::err_msg(format!(
-                    "No path for '{}' API with no URL parts",
+                    r#"no path for "{}" API with no url parts"#,
                     api_call
                 )));
             }
@@ -679,7 +693,7 @@ impl ApiCall {
         }
         .ok_or_else(|| {
             failure::err_msg(format!(
-                "No path for '{}' API with URL parts {:?}",
+                r#"no path for "{}" API with url parts {:?}"#,
                 &api_call, parts
             ))
         })?;
@@ -696,7 +710,8 @@ impl ApiCall {
 
         let part_tokens: Vec<Result<Tokens, failure::Error>> = parts
             .iter()
-            // don't rely on URL parts being ordered in the yaml test
+            // don't rely on URL parts being ordered in the yaml test in the same order as specified
+            // in the REST spec.
             .sorted_by(|(p, _), (p2, _)| {
                 let f = path_parts.iter().position(|x| x == p).unwrap();
                 let s = path_parts.iter().position(|x| x == p2).unwrap();
@@ -704,7 +719,7 @@ impl ApiCall {
             })
             .map(|(p, v)| {
                 let ty = path.parts.get(*p).ok_or_else(|| {
-                    failure::err_msg(format!("No URL part found for {} in {}", p, &path.path))
+                    failure::err_msg(format!(r#"no url part found for "{}" in {}"#, p, &path.path))
                 })?;
 
                 match v {
@@ -763,13 +778,13 @@ impl ApiCall {
                             .map(|i| match i {
                                 Yaml::String(s) => Ok(s),
                                 y => Err(failure::err_msg(format!(
-                                    "Unsupported array value {:?}",
+                                    "unsupported array value {:?}",
                                     y
                                 ))),
                             })
                             .collect();
 
-                        match ok_or_accumulate(&result, 0) {
+                        match ok_or_accumulate(&result) {
                             Ok(_) => {
                                 let result: Vec<_> =
                                     result.into_iter().filter_map(Result::ok).collect();
@@ -789,12 +804,12 @@ impl ApiCall {
                             Err(e) => Err(failure::err_msg(e)),
                         }
                     }
-                    _ => Err(failure::err_msg(format!("Unsupported value {:?}", v))),
+                    _ => Err(failure::err_msg(format!("unsupported value {:?}", v))),
                 }
             })
             .collect();
 
-        match ok_or_accumulate(&part_tokens, 0) {
+        match ok_or_accumulate(&part_tokens) {
             Ok(_) => {
                 let part_tokens: Vec<Tokens> =
                     part_tokens.into_iter().filter_map(Result::ok).collect();
@@ -816,9 +831,7 @@ impl ApiCall {
             Yaml::Null => None,
             Yaml::String(s) => {
                 let json = {
-                    let mut json = replace_set_quoted_delimited(s);
-                    json = replace_set_delimited(json);
-                    json = replace_set(json);
+                    let json = replace_set(s);
                     replace_i64(json)
                 };
                 if endpoint.supports_nd_body() {
@@ -828,7 +841,7 @@ impl ApiCall {
                     // empty or a more-indented line (using >)
                     // see https://yaml.org/spec/1.2/spec.html#id2760844
                     //
-                    // need to trim the trailing newline to differentiate...
+                    // need to trim the trailing newline to be able to differentiate...
                     let contains_newlines = json.trim_end_matches('\n').contains('\n');
                     let split = if contains_newlines {
                         json.split('\n').collect::<Vec<_>>()
@@ -864,14 +877,10 @@ impl ApiCall {
                         .map(|value| {
                             let mut json = serde_json::to_string(&value).unwrap();
                             if value.is_string() {
-                                json = replace_set_quoted_delimited(json);
-                                json = replace_set_delimited(json);
                                 json = replace_set(&json);
                                 let ident = syn::Ident::from(json);
                                 quote!(#ident)
                             } else {
-                                json = replace_set_quoted_delimited(json);
-                                json = replace_set_delimited(json);
                                 json = replace_set(json);
                                 json = replace_i64(json);
                                 let ident = syn::Ident::from(json);
@@ -883,8 +892,6 @@ impl ApiCall {
                 } else {
                     let value: serde_json::Value = serde_yaml::from_str(&s).unwrap();
                     let mut json = serde_json::to_string_pretty(&value).unwrap();
-                    json = replace_set_quoted_delimited(json);
-                    json = replace_set_delimited(json);
                     json = replace_set(json);
                     json = replace_i64(json);
                     let ident = syn::Ident::from(json);

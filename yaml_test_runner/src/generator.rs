@@ -430,7 +430,7 @@ pub fn generate_tests_from_yaml(
                     // a yaml test can contain multiple yaml docs, so use yaml_rust to parse
                     let result = YamlLoader::load_from_str(&yaml);
                     if result.is_err() {
-                        info!(
+                        error!(
                             "skipping {}. cannot read as Yaml struct: {}",
                             relative_path.to_slash_lossy(),
                             result.err().unwrap().to_string()
@@ -477,10 +477,10 @@ pub fn generate_tests_from_yaml(
                         .collect();
 
                     //if there has been an Err in any step of the yaml test file, don't create a test for it
-                    match ok_or_accumulate(&results, 1) {
+                    match ok_or_accumulate(&results) {
                         Ok(_) => write_test_file(test, relative_path, generated_dir)?,
                         Err(e) => {
-                            info!("skipping {} because\n{}", relative_path.to_slash_lossy(), e)
+                            info!("skipping {} because {}", relative_path.to_slash_lossy(), e)
                         }
                     }
                 }

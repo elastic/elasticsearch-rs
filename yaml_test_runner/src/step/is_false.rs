@@ -16,10 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-use quote::{ToTokens, Tokens};
-
 use super::Step;
 use crate::step::Expr;
+use quote::{ToTokens, Tokens};
 use yaml_rust::Yaml;
 
 pub struct IsFalse {
@@ -44,7 +43,7 @@ impl IsFalse {
 
 impl ToTokens for IsFalse {
     fn to_tokens(&self, tokens: &mut Tokens) {
-        if self.expr.is_empty() {
+        if self.expr.is_body() {
             tokens.append(quote! {
                 assert!(text.is_empty(), "expected value to be empty but was {}", &text);
             });

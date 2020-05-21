@@ -17,9 +17,10 @@
  * under the License.
  */
 use super::Step;
-use crate::step::{clean_regex, json_string_from_yaml, Expr};
+use crate::step::{json_string_from_yaml, Expr};
 use quote::{ToTokens, Tokens};
 use yaml_rust::Yaml;
+use crate::regex::clean_regex;
 
 pub struct Match {
     pub expr: Expr,
@@ -137,7 +138,7 @@ impl ToTokens for Match {
                     syn::Ident::from(s)
                 };
 
-                if self.expr.is_body() || self.expr.is_empty() {
+                if self.expr.is_body() {
                     tokens.append(quote! {
                         assert_match!(json, json!(#json));
                     });

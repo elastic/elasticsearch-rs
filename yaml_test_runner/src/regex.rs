@@ -38,22 +38,27 @@ lazy_static! {
         regex::Regex::new(r"([,:\[{]\s*)(\d{10,}?)(\s*[,}\]])").unwrap();
 }
 
-/// Replaces a "set" step value with a variable
-pub fn replace_set_quoted_delimited<S: AsRef<str>>(s: S) -> String {
-    SET_QUOTED_DELIMITED_REGEX
-        .replace_all(s.as_ref(), "$1")
-        .into_owned()
-}
-
-/// Replaces a "set" step value with a variable
-pub fn replace_set_delimited<S: AsRef<str>>(s: S) -> String {
-    SET_DELIMITED_REGEX
-        .replace_all(s.as_ref(), "$1")
-        .into_owned()
+/// cleans up a regex as specified in YAML to one that will work with the regex crate.
+pub fn clean_regex<S: AsRef<str>>(s: S) -> String {
+    s.as_ref()
+        .trim()
+        .trim_matches('/')
+        .replace("\\/", "/")
+        .replace("\\:", ":")
+        .replace("\\#", "#")
+        .replace("\\%", "%")
+        .replace("\\'", "'")
+        .replace("\\`", "`")
 }
 
 /// Replaces a "set" step value with a variable
 pub fn replace_set<S: AsRef<str>>(s: S) -> String {
+    let mut s = SET_QUOTED_DELIMITED_REGEX
+        .replace_all(s.as_ref(), "$1").into_owned();
+
+    s = SET_DELIMITED_REGEX
+        .replace_all(s.as_ref(), "$1").into_owned();
+
     SET_REGEX.replace_all(s.as_ref(), "$1").into_owned()
 }
 

@@ -123,15 +123,9 @@ impl Expr {
         Self { expr: expr.into() }
     }
 
-    /// Whether the expression is empty. Used in is_true and is_false
-    /// to represent the body
-    pub fn is_empty(&self) -> bool {
-        self.expr.is_empty()
-    }
-
-    /// Whether the expression is "$body"
+    /// Whether the expression is "$body" or "", which are both used to express the whole body
     pub fn is_body(&self) -> bool {
-        Self::is_string_body(&self.expr)
+        Self::is_string_body(&self.expr) || self.expr.is_empty()
     }
 
     fn is_string_body(s: &str) -> bool {
@@ -177,7 +171,7 @@ impl Expr {
                 } else if s.chars().all(char::is_numeric) {
                     write!(expr, "[{}]", s).unwrap();
                 } else if s.starts_with('$') {
-                    // handle set values
+                    // handle "set" values
                     let t = s
                         .trim_start_matches('$')
                         .trim_start_matches('{')
@@ -227,8 +221,7 @@ impl Step {
 /// Checks whether there are any Errs in the collection, and accumulates them into one
 /// error message if there are.
 pub fn ok_or_accumulate<T>(
-    results: &[Result<T, failure::Error>],
-    indent: usize,
+    results: &[Result<T, failure::Error>]
 ) -> Result<(), failure::Error> {
     let errs = results
         .iter()
@@ -237,27 +230,14 @@ pub fn ok_or_accumulate<T>(
     if errs.is_empty() {
         Ok(())
     } else {
-        let msg = errs
+        let mut msgs = errs
             .iter()
-            .map(|e| format!("{}{}", "  ".to_string().repeat(indent), e.to_string()))
-            .collect::<Vec<_>>()
-            .join("\n");
-
-        Err(failure::err_msg(msg))
+            .map(|e| e.to_string())
+            .collect::<Vec<_>>();
+        msgs.sort();
+        msgs.dedup_by(|a, b | a == b);
+        Err(failure::err_msg(msgs.join(", ")))
     }
-}
-
-/// cleans up a regex as specified in YAML to one that will work with the regex crate.
-pub fn clean_regex<S: AsRef<str>>(s: S) -> String {
-    s.as_ref()
-        .trim()
-        .trim_matches('/')
-        .replace("\\/", "/")
-        .replace("\\:", ":")
-        .replace("\\#", "#")
-        .replace("\\%", "%")
-        .replace("\\'", "'")
-        .replace("\\`", "`")
 }
 
 pub fn json_string_from_yaml(yaml: &Yaml) -> String {
@@ -270,8 +250,6 @@ pub fn json_string_from_yaml(yaml: &Yaml) -> String {
     let value: serde_json::Value = serde_yaml::from_str(&s).unwrap();
 
     let mut json = value.to_string();
-    json = replace_set_quoted_delimited(json);
-    json = replace_set_delimited(json);
     json = replace_set(json);
     json = replace_i64(json);
     json

@@ -16,10 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-use quote::{ToTokens, Tokens};
-
 use super::Step;
 use crate::step::{json_string_from_yaml, Expr};
+use quote::{ToTokens, Tokens};
 use yaml_rust::Yaml;
 
 pub struct Contains {

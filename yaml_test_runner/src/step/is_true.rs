@@ -43,7 +43,7 @@ impl IsTrue {
 
 impl ToTokens for IsTrue {
     fn to_tokens(&self, tokens: &mut Tokens) {
-        if self.expr.is_empty() {
+        if self.expr.is_body() {
             // for a HEAD request, the body is expected to be empty, so check the status code instead.
             tokens.append(quote! {
                 match method {
