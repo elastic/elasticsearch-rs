@@ -8,3 +8,4 @@ Cargo.lock
 yaml_test_runner/yaml/
 yaml_test_runner/tests/oss
 yaml_test_runner/tests/xpack
+yaml_test_runner/tests/mod.rs
