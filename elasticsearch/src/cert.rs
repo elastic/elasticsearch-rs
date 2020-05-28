@@ -16,8 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-//! Certificate components
-pub use reqwest::Certificate;
+
+use crate::error::Error;
+use std::{
+    io::{BufRead, BufReader, Cursor},
+    ops::Deref,
+    vec,
+};
 
 /// Validation applied to a SSL/TLS certificate, to establish a HTTPS connection.
 ///
@@ -181,4 +186,89 @@ pub enum CertificateValidation {
     /// careful consideration. It is primarily intended as a temporary diagnostic mechanism when
     /// attempting to resolve TLS errors, and **its use on production clusters is strongly discouraged**.
     None,
+}
+
+/// Start marker for PEM encoded certificates.
+const BEGIN_CERTIFICATE: &str = "-----BEGIN CERTIFICATE-----";
+
+/// End marker for PEM encoded certificates.
+const END_CERTIFICATE: &str = "-----END CERTIFICATE-----";
+
+/// Represents a server X509 certificate chain.
+pub struct Certificate(Vec<reqwest::Certificate>);
+
+impl Certificate {
+    /// Create a `Certificate` chain from PEM encoded certificates.
+    ///
+    /// The `pem` input data may contain one or more PEM encoded CA certificates.
+    ///
+    /// # Optional
+    /// This requires the `native-tls`, or `rustls-tls` feature to be enabled.
+    #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+    pub fn from_pem(pem: &[u8]) -> Result<Self, Error> {
+        let reader = BufReader::new(Cursor::new(pem));
+
+        // Split the PEM cert into parts without validating the
+        // contents as this will be done by the
+        // `reqwest::Certificate::from_pem` call itself.
+        let mut certs = Vec::new();
+        let mut cert = Vec::new();
+        let mut begin = false;
+        for line in reader.lines() {
+            let line = line?;
+            match line.as_ref() {
+                BEGIN_CERTIFICATE if !begin => {
+                    begin = true;
+                    cert.push(line);
+                }
+                END_CERTIFICATE if begin => {
+                    begin = false;
+                    cert.push(line);
+                    certs.push(reqwest::Certificate::from_pem(cert.join("\n").as_bytes())?);
+                    cert = Vec::new();
+                }
+                _ if begin => cert.push(line),
+                _ => {}
+            }
+        }
+
+        if certs.is_empty() {
+            Err(Error::lib(
+                "could not find PEM certificate in input data".to_string(),
+            ))
+        } else {
+            Ok(Self(certs))
+        }
+    }
+
+    /// Create a `Certificate` from a binary DER encoded certificate.
+    ///
+    /// # Optional
+    /// This requires the `native-tls`, or `rustls-tls` feature to be enabled.
+    #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+    pub fn from_der(der: &[u8]) -> Result<Self, Error> {
+        Ok(Self(vec![reqwest::Certificate::from_der(der)?]))
+    }
+
+    /// Append a `Certificate` to the chain.
+    pub fn append(&mut self, mut cert: Self) {
+        self.0.append(&mut cert.0);
+    }
+}
+
+impl IntoIterator for Certificate {
+    type Item = reqwest::Certificate;
+    type IntoIter = vec::IntoIter<Self::Item>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.into_iter()
+    }
+}
+
+impl Deref for Certificate {
+    type Target = Vec<reqwest::Certificate>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
 }
