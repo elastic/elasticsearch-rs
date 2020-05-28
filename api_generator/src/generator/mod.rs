@@ -16,9 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-use crate::api_generator::code_gen::url::url_builder::PathString;
+use crate::generator::code_gen::url::url_builder::PathString;
 use rustfmt_nightly::{Config, Edition, EmitMode, Input, Session};
-use serde::{Deserialize, Deserializer};
+use serde::{
+    de::{MapAccess, Visitor},
+    Deserialize, Deserializer,
+};
 use serde_json::Value;
 use std::{
     collections::{BTreeMap, HashSet},
@@ -26,18 +29,21 @@ use std::{
     fs::{self, File, OpenOptions},
     hash::{Hash, Hasher},
     io::{prelude::*, Read},
+    marker::PhantomData,
     path::PathBuf,
+    str::FromStr,
 };
 
 #[cfg(test)]
 use quote::{ToTokens, Tokens};
 use semver::Version;
-use serde::de::{Error, MapAccess, Visitor};
-use std::marker::PhantomData;
-use std::str::FromStr;
 use void::Void;
 
-mod code_gen;
+pub mod code_gen;
+
+lazy_static! {
+    static ref VERSION: Version = semver::Version::parse(env!("CARGO_PKG_VERSION")).unwrap();
+}
 
 /// A complete API specification parsed from the REST API specs
 pub struct Api {
@@ -50,6 +56,24 @@ pub struct Api {
     pub namespaces: BTreeMap<String, BTreeMap<String, ApiEndpoint>>,
     /// enums in parameters
     pub enums: Vec<ApiEnum>,
+}
+
+impl Api {
+    /// Find the right ApiEndpoint from the REST API specs for the API call
+    /// defined in the YAML test.
+    ///
+    /// The REST API specs model only the stable APIs
+    /// currently, so no endpoint will be found for experimental or beta APIs
+    pub fn endpoint_for_api_call(&self, api_call: &str) -> Option<&ApiEndpoint> {
+        let api_call_path: Vec<&str> = api_call.split('.').collect();
+        match api_call_path.len() {
+            1 => self.root.get(api_call_path[0]),
+            _ => match self.namespaces.get(api_call_path[0]) {
+                Some(namespace) => namespace.get(api_call_path[1]),
+                None => None,
+            },
+        }
+    }
 }
 
 /// A HTTP method in the REST API spec
@@ -101,7 +125,7 @@ pub struct Type {
 /// The type of the param or part
 #[derive(Debug, PartialEq, Clone)]
 pub enum TypeKind {
-    None,
+    Unknown(String),
     List,
     Enum,
     String,
@@ -123,20 +147,7 @@ impl<'de> Deserialize<'de> for TypeKind {
         D: Deserializer<'de>,
     {
         let value = String::deserialize(deserializer)?;
-        if value.contains('|') {
-            let values: Vec<&str> = value.split('|').collect();
-
-            if values.len() > 2 {
-                Err(D::Error::custom(
-                    "TypeKind union contains more than two values",
-                ))
-            } else {
-                let union = Box::new((TypeKind::from(values[0]), TypeKind::from(values[1])));
-                Ok(TypeKind::Union(union))
-            }
-        } else {
-            Ok(TypeKind::from(value.as_str()))
-        }
+        Ok(TypeKind::from(value.as_str()))
     }
 }
 
@@ -155,14 +166,22 @@ impl From<&str> for TypeKind {
             "long" => TypeKind::Long,
             "date" => TypeKind::Date,
             "time" => TypeKind::Time,
-            n => panic!("unknown typekind {}", n),
+            n => {
+                let values: Vec<&str> = n.split('|').collect();
+                if values.len() != 2 {
+                    TypeKind::Unknown(n.to_string())
+                } else {
+                    let union = Box::new((TypeKind::from(values[0]), TypeKind::from(values[1])));
+                    TypeKind::Union(union)
+                }
+            }
         }
     }
 }
 
 impl Default for TypeKind {
     fn default() -> Self {
-        TypeKind::None
+        TypeKind::Unknown("".to_string())
     }
 }
 
@@ -186,7 +205,7 @@ pub struct Path {
 /// The URL components of an API endpoint
 #[derive(Debug, PartialEq, Deserialize, Clone)]
 pub struct Url {
-    paths: Vec<Path>,
+    pub paths: Vec<Path>,
 }
 
 /// Body of an API endpoint
@@ -195,11 +214,6 @@ pub struct Body {
     pub description: Option<String>,
     pub required: Option<bool>,
     pub serialize: Option<String>,
-}
-
-lazy_static! {
-    static ref MAJOR_MINOR_VERSION: Version =
-        semver::Version::parse(env!("CARGO_PKG_VERSION")).unwrap();
 }
 
 /// Wraps the URL string to replace master or current in URL path with the
@@ -233,11 +247,7 @@ impl DocumentationUrlString {
                         u.path()
                             .replace(
                                 "/master",
-                                format!(
-                                    "/{}.{}",
-                                    MAJOR_MINOR_VERSION.major, MAJOR_MINOR_VERSION.minor
-                                )
-                                .as_str(),
+                                format!("/{}.{}", VERSION.major, VERSION.minor).as_str(),
                             )
                             .as_str(),
                     );
@@ -246,11 +256,7 @@ impl DocumentationUrlString {
                         u.path()
                             .replace(
                                 "/current",
-                                format!(
-                                    "/{}.{}",
-                                    MAJOR_MINOR_VERSION.major, MAJOR_MINOR_VERSION.minor
-                                )
-                                .as_str(),
+                                format!("/{}.{}", VERSION.major, VERSION.minor).as_str(),
                             )
                             .as_str(),
                     );
@@ -332,13 +338,14 @@ where
 /// An API endpoint defined in the REST API specs
 #[derive(Debug, PartialEq, Deserialize, Clone)]
 pub struct ApiEndpoint {
+    pub full_name: Option<String>,
     #[serde(deserialize_with = "string_or_struct")]
     documentation: Documentation,
-    stability: String,
-    url: Url,
+    pub stability: String,
+    pub url: Url,
     #[serde(default = "BTreeMap::new")]
-    params: BTreeMap<String, Type>,
-    body: Option<Body>,
+    pub params: BTreeMap<String, Type>,
+    pub body: Option<Body>,
 }
 
 impl ApiEndpoint {
@@ -495,7 +502,7 @@ fn write_file(input: String, dir: &PathBuf, file: &str) -> Result<(), failure::E
 }
 
 /// Reads Api from a directory of REST Api specs
-fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error> {
+pub fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error> {
     let paths = fs::read_dir(download_dir)?;
     let mut namespaces = BTreeMap::new();
     let mut enums: HashSet<ApiEnum> = HashSet::new();
@@ -509,7 +516,7 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error>
 
         if name
             .unwrap()
-            .map(|name| !name.starts_with('_'))
+            .map(|name| name.ends_with(".json") && !name.starts_with('_'))
             .unwrap_or(true)
         {
             let mut file = File::open(&path)?;
@@ -598,6 +605,7 @@ where
 
     // get the first (and only) endpoint name and endpoint body
     let mut first_endpoint = endpoint.into_iter().next().unwrap();
+    first_endpoint.1.full_name = Some(first_endpoint.0.clone());
 
     // sort the HTTP methods so that we can easily pattern match on them later
     for path in first_endpoint.1.url.paths.iter_mut() {
@@ -621,7 +629,7 @@ where
 
 /// formats tokens using rustfmt
 /// https://github.com/bcmyers/num-format/blob/b7a99480b8087924d291887b13d8c38b7ce43a36/num-format-dev/src/rustfmt.rs
-fn rust_fmt<S>(module: S) -> Result<String, failure::Error>
+pub fn rust_fmt<S>(module: S) -> Result<String, failure::Error>
 where
     S: Into<String>,
 {

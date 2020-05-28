@@ -16,36 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+extern crate api_generator;
 extern crate dialoguer;
 
-#[macro_use]
-extern crate lazy_static;
-
-#[macro_use]
-extern crate quote;
-
+use api_generator::{generator, rest_spec};
 use dialoguer::Input;
 use std::path::PathBuf;
 use std::{
     fs::{self, File},
     io::Write,
-    path::Path,
 };
 
-mod api_generator;
-mod error;
-mod rest_spec;
-
-fn main() {
+fn main() -> Result<(), failure::Error> {
     // This must be run from the src root directory, with cargo run -p api_generator
-    let download_dir = fs::canonicalize(PathBuf::from("./api_generator/rest_specs")).unwrap();
-    let generated_dir = fs::canonicalize(PathBuf::from("./elasticsearch/src/generated")).unwrap();
-    let last_downloaded_version = "./api_generator/last_downloaded_version";
+    let download_dir = fs::canonicalize(PathBuf::from("./api_generator/rest_specs"))?;
+    let generated_dir = fs::canonicalize(PathBuf::from("./elasticsearch/src/generated"))?;
+    let last_downloaded_version =
+        PathBuf::from("./api_generator/rest_specs/last_downloaded_version");
 
     let mut download_specs = false;
     let mut answer = String::new();
-    let default_branch = if Path::new(last_downloaded_version).exists() {
-        fs::read_to_string(last_downloaded_version).expect("Could not read branch into string")
+    let default_branch = if last_downloaded_version.exists() {
+        fs::read_to_string(&last_downloaded_version)?
     } else {
         String::from("master")
     };
@@ -76,13 +68,9 @@ fn main() {
             .interact()
             .unwrap();
 
-        fs::remove_dir_all(&download_dir).unwrap();
-        rest_spec::download_specs(&branch, &download_dir);
-
-        File::create(last_downloaded_version)
-            .expect("failed to create last_downloaded_version file")
-            .write_all(branch.as_bytes())
-            .expect("unable to write branch to last_downloaded_version file");
+        fs::remove_dir_all(&download_dir)?;
+        rest_spec::download_specs(&branch, &download_dir)?;
+        File::create(&last_downloaded_version)?.write_all(branch.as_bytes())?;
     }
 
     // only offer to generate if there are downloaded specs
@@ -109,12 +97,13 @@ fn main() {
         if generate_code {
             // delete existing generated files if the exist
             if generated_dir.exists() {
-                fs::remove_dir_all(&generated_dir).unwrap();
+                fs::remove_dir_all(&generated_dir)?;
             }
 
-            fs::create_dir_all(&generated_dir).unwrap();
-
-            api_generator::generate(&branch, &download_dir, &generated_dir).unwrap();
+            fs::create_dir_all(&generated_dir)?;
+            generator::generate(&branch, &download_dir, &generated_dir)?;
         }
     }
+
+    Ok(())
 }

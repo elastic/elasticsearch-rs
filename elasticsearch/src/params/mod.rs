@@ -39,6 +39,18 @@ pub enum TrackTotalHits {
     Count(i64),
 }
 
+impl From<bool> for TrackTotalHits {
+    fn from(b: bool) -> Self {
+        TrackTotalHits::Track(b)
+    }
+}
+
+impl From<i64> for TrackTotalHits {
+    fn from(i: i64) -> Self {
+        TrackTotalHits::Count(i)
+    }
+}
+
 /// Control how the `_source` field is returned with every hit.
 ///
 /// By default operations return the contents of the `_source` field
