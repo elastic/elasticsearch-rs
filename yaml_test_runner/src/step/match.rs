@@ -17,10 +17,10 @@
  * under the License.
  */
 use super::Step;
+use crate::regex::clean_regex;
 use crate::step::{json_string_from_yaml, Expr};
 use quote::{ToTokens, Tokens};
 use yaml_rust::Yaml;
-use crate::regex::clean_regex;
 
 pub struct Match {
     pub expr: Expr,

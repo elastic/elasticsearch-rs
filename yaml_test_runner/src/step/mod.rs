@@ -220,9 +220,7 @@ impl Step {
 
 /// Checks whether there are any Errs in the collection, and accumulates them into one
 /// error message if there are.
-pub fn ok_or_accumulate<T>(
-    results: &[Result<T, failure::Error>]
-) -> Result<(), failure::Error> {
+pub fn ok_or_accumulate<T>(results: &[Result<T, failure::Error>]) -> Result<(), failure::Error> {
     let errs = results
         .iter()
         .filter_map(|r| r.as_ref().err())
@@ -230,12 +228,9 @@ pub fn ok_or_accumulate<T>(
     if errs.is_empty() {
         Ok(())
     } else {
-        let mut msgs = errs
-            .iter()
-            .map(|e| e.to_string())
-            .collect::<Vec<_>>();
+        let mut msgs = errs.iter().map(|e| e.to_string()).collect::<Vec<_>>();
         msgs.sort();
-        msgs.dedup_by(|a, b | a == b);
+        msgs.dedup_by(|a, b| a == b);
         Err(failure::err_msg(msgs.join(", ")))
     }
 }

@@ -54,10 +54,12 @@ pub fn clean_regex<S: AsRef<str>>(s: S) -> String {
 /// Replaces a "set" step value with a variable
 pub fn replace_set<S: AsRef<str>>(s: S) -> String {
     let mut s = SET_QUOTED_DELIMITED_REGEX
-        .replace_all(s.as_ref(), "$1").into_owned();
+        .replace_all(s.as_ref(), "$1")
+        .into_owned();
 
     s = SET_DELIMITED_REGEX
-        .replace_all(s.as_ref(), "$1").into_owned();
+        .replace_all(s.as_ref(), "$1")
+        .into_owned();
 
     SET_REGEX.replace_all(s.as_ref(), "$1").into_owned()
 }

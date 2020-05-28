@@ -17,6 +17,7 @@
  * under the License.
  */
 use super::{ok_or_accumulate, Step};
+use crate::regex::clean_regex;
 use crate::regex::*;
 use api_generator::generator::{Api, ApiEndpoint, TypeKind};
 use inflector::Inflector;
@@ -24,7 +25,6 @@ use itertools::Itertools;
 use quote::{ToTokens, Tokens};
 use std::collections::BTreeMap;
 use yaml_rust::{Yaml, YamlEmitter};
-use crate::regex::clean_regex;
 
 /// A catch expression on a do step
 pub struct Catch(String);
@@ -421,27 +421,32 @@ impl ApiCall {
                                         .#param_ident(&[#(#values),*])
                                     })
                                 }
-                                TypeKind::Boolean => {
-                                    match s.parse::<bool>() {
-                                        Ok(b) => tokens.append(quote! {
-                                            .#param_ident(#b)
-                                        }),
-                                        Err(e) => {
-                                            return Err(failure::err_msg(format!(r#"cannot parse bool from "{}" for param "{}", {}"#, s, n, e.to_string())))
-                                        }
+                                TypeKind::Boolean => match s.parse::<bool>() {
+                                    Ok(b) => tokens.append(quote! {
+                                        .#param_ident(#b)
+                                    }),
+                                    Err(e) => {
+                                        return Err(failure::err_msg(format!(
+                                            r#"cannot parse bool from "{}" for param "{}", {}"#,
+                                            s,
+                                            n,
+                                            e.to_string()
+                                        )))
                                     }
-
-                                }
-                                TypeKind::Double => {
-                                    match s.parse::<f64>() {
-                                        Ok(f) => tokens.append(quote! {
-                                            .#param_ident(#f)
-                                        }),
-                                        Err(e) => {
-                                            return Err(failure::err_msg(format!(r#"cannot parse f64 from "{}" for param "{}", {}"#, s, n, e.to_string())))
-                                        }
+                                },
+                                TypeKind::Double => match s.parse::<f64>() {
+                                    Ok(f) => tokens.append(quote! {
+                                        .#param_ident(#f)
+                                    }),
+                                    Err(e) => {
+                                        return Err(failure::err_msg(format!(
+                                            r#"cannot parse f64 from "{}" for param "{}", {}"#,
+                                            s,
+                                            n,
+                                            e.to_string()
+                                        )))
                                     }
-                                }
+                                },
                                 TypeKind::Integer => {
                                     if is_set_value {
                                         let set_value = Self::from_set_value(s);
@@ -454,7 +459,12 @@ impl ApiCall {
                                                 .#param_ident(#i)
                                             }),
                                             Err(e) => {
-                                                return Err(failure::err_msg(format!(r#"cannot parse i32 from "{}" for param "{}", {}"#, s, n, e.to_string())))
+                                                return Err(failure::err_msg(format!(
+                                                    r#"cannot parse i32 from "{}" for param "{}", {}"#,
+                                                    s,
+                                                    n,
+                                                    e.to_string()
+                                                )))
                                             }
                                         }
                                     }
@@ -719,7 +729,10 @@ impl ApiCall {
             })
             .map(|(p, v)| {
                 let ty = path.parts.get(*p).ok_or_else(|| {
-                    failure::err_msg(format!(r#"no url part found for "{}" in {}"#, p, &path.path))
+                    failure::err_msg(format!(
+                        r#"no url part found for "{}" in {}"#,
+                        p, &path.path
+                    ))
                 })?;
 
                 match v {

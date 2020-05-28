@@ -18,6 +18,8 @@
  */
 use elasticsearch::cat::{CatSnapshotsParts, CatTemplatesParts};
 use elasticsearch::cluster::ClusterHealthParts;
+use elasticsearch::http::response::Response;
+use elasticsearch::http::{Method, StatusCode};
 use elasticsearch::ilm::IlmRemovePolicyParts;
 use elasticsearch::indices::{IndicesDeleteParts, IndicesDeleteTemplateParts, IndicesRefreshParts};
 use elasticsearch::ml::{
@@ -41,13 +43,11 @@ use elasticsearch::{
     http::transport::{SingleNodeConnectionPool, TransportBuilder},
     Elasticsearch, Error, DEFAULT_ADDRESS,
 };
+use once_cell::sync::Lazy;
 use serde_json::{json, Value};
+use std::ops::Deref;
 use sysinfo::SystemExt;
 use url::Url;
-use once_cell::sync::Lazy;
-use std::ops::Deref;
-use elasticsearch::http::response::Response;
-use elasticsearch::http::{Method, StatusCode};
 
 fn cluster_addr() -> String {
     match std::env::var("ES_TEST_SERVER") {
@@ -134,7 +134,7 @@ pub async fn read_response(
 
 /// general setup step for an OSS yaml test
 pub async fn general_oss_setup() -> Result<(), Error> {
-    let client= get();
+    let client = get();
     delete_indices(client).await?;
     delete_templates(client).await?;
 
