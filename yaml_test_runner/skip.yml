@@ -1,0 +1,54 @@
+# Skip file of features and tests to skip.
+# This is used at compilation time, when compiling tests from the YAML tests, to not generate tests that match
+# on name or features defined below that should be skipped. Accordingly, changing values in this file requires
+# recompiling tests in order for the changes to take effect.
+
+# features not yet implemented
+features:
+  - node_selector
+  - stash_path_replace
+  - embedded_stash_key
+
+# tests to skip generating and compiling a test for
+tests:
+  xpack/ssl/10_basic.yml:
+    # this test returns the CA cert before the cert, so always fails
+    - "Test get SSL certificates"
+
+  xpack/transform/transforms_stats_continuous.yml:
+    # this test always returns "exponential_avg_checkpoint_duration_ms": 0.0 . seems like it might be missing data in
+    # the setup, fires quicker than any documents are processed, or the delay of 1m is too high?
+    - "Test get continuous transform stats"
+
+  xpack/ml/jobs_get_result_overall_buckets.yml:
+    # this test always returns 3 buckets where 1 is expected
+    - "Test overall buckets given overall_score filter"
+
+  xpack/snapshot/10_basic.yml:
+    # this test fails because it can't access snapshot to restore it
+    - "Create a source only snapshot and then restore it"
+
+  oss/cat.aliases/10_basic.yml:
+    # this test fails as the regex needs a \n before the ending $
+    - "Multiple alias names"
+
+  oss/cat.indices/10_basic.yml:
+    # this test fails as the regex needs a \n before the ending $
+    - "Test cat indices using health status"
+
+  oss/indices.shard_stores/10_basic.yml:
+    # uses number as a key into object. serde_json::Value expects a string key
+    - "basic index test"
+    - "multiple indices test"
+
+  oss/indices.flush/10_basic.yml:
+    # uses number as a key into object. serde_json::Value expects a string key
+    - "Index synced flush rest test"
+
+  oss/indices.segments/10_basic.yml:
+    # uses number as a key into object. serde_json::Value expects a string key
+    - "basic segments test"
+
+  oss/indices.stats/12_level.yml:
+    # uses number as a key into object. serde_json::Value expects a string key
+    - "Level - shards"

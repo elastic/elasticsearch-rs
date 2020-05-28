@@ -345,7 +345,7 @@ pub struct AsyncSearchSubmit<'a, 'b, B> {
     df: Option<&'b str>,
     docvalue_fields: Option<&'b [&'b str]>,
     error_trace: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
+    expand_wildcards: Option<&'b [ExpandWildcards]>,
     explain: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     from: Option<i64>,
@@ -560,7 +560,7 @@ where
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
         self.expand_wildcards = Some(expand_wildcards);
         self
     }
@@ -715,8 +715,8 @@ where
         self
     }
     #[doc = "Indicate if the number of documents that match the query should be tracked"]
-    pub fn track_total_hits(mut self, track_total_hits: TrackTotalHits) -> Self {
-        self.track_total_hits = Some(track_total_hits);
+    pub fn track_total_hits<T: Into<TrackTotalHits>>(mut self, track_total_hits: T) -> Self {
+        self.track_total_hits = Some(track_total_hits.into());
         self
     }
     #[doc = "Specify whether aggregation and suggester names should be prefixed by their respective types in the response"]
@@ -779,8 +779,11 @@ where
                 docvalue_fields: Option<&'b [&'b str]>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
-                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
+                expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(rename = "explain")]
                 explain: Option<bool>,
                 #[serde(
