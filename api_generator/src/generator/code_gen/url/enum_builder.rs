@@ -32,8 +32,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-use crate::api_generator::code_gen::url::url_builder::{IntoExpr, UrlBuilder};
-use crate::api_generator::{code_gen::*, ApiEndpoint, Path};
+use crate::generator::code_gen::url::url_builder::{IntoExpr, UrlBuilder};
+use crate::generator::{code_gen::*, ApiEndpoint, Path};
 use inflector::Inflector;
 
 /// Builder for request url parts enum
@@ -139,7 +139,7 @@ impl<'a> EnumBuilder<'a> {
                             ident: None,
                             vis: syn::Visibility::Inherited,
                             attrs: vec![],
-                            ty: typekind_to_ty(p, ty, true),
+                            ty: typekind_to_ty(p, ty, true, false),
                         }
                     })
                     .collect(),
@@ -306,15 +306,16 @@ mod tests {
     #![cfg_attr(rustfmt, rustfmt_skip)]
 
     use super::*;
-    use crate::api_generator::{Url, Path, HttpMethod, Body, Deprecated, Type, TypeKind, Documentation, ast_eq};
+    use crate::generator::{Url, Path, HttpMethod, Body, Deprecated, Type, TypeKind, Documentation, ast_eq};
     use std::collections::BTreeMap;
-    use crate::api_generator::code_gen::url::url_builder::PathString;
+    use crate::generator::code_gen::url::url_builder::PathString;
 
     #[test]
     fn generate_parts_enum_from_endpoint() {
         let endpoint = (
             "search".to_string(),
             ApiEndpoint {
+                full_name: Some("search".to_string()),
                 documentation: Documentation {
                     description: None,
                     url: None,

@@ -55,7 +55,7 @@ struct RestApiSpec {
     links: Links,
 }
 
-pub fn download_specs(branch: &str, download_dir: &PathBuf) {
+pub fn download_specs(branch: &str, download_dir: &PathBuf) -> Result<(), failure::Error> {
     let spec_urls = [
         ("core".to_string(), "https://api.github.com/repos/elastic/elasticsearch/contents/rest-api-spec/src/main/resources/rest-api-spec/api".to_string()),
         ("xpack".to_string(), "https://api.github.com/repos/elastic/elasticsearch/contents/x-pack/plugin/src/test/resources/rest-api-spec/api".to_string())];
@@ -72,13 +72,15 @@ pub fn download_specs(branch: &str, download_dir: &PathBuf) {
         })
         .collect();
 
-    fs::create_dir_all(download_dir).unwrap();
+    fs::create_dir_all(download_dir)?;
     for spec in specs {
-        download_endpoints(&spec, &download_dir);
+        download_endpoints(&spec, &download_dir)?;
     }
+
+    Ok(())
 }
 
-fn download_endpoints(spec: &GitHubSpec, download_dir: &PathBuf) {
+fn download_endpoints(spec: &GitHubSpec, download_dir: &PathBuf) -> Result<(), failure::Error> {
     let client = reqwest::blocking::ClientBuilder::new()
         .user_agent(concat!("RustApiGenerator/", env!("CARGO_PKG_VERSION")))
         .build()
@@ -89,4 +91,5 @@ fn download_endpoints(spec: &GitHubSpec, download_dir: &PathBuf) {
     println!("Downloading {} specs from {}", spec.dir, spec.branch);
     download_specs_to_dir(client, rest_api_specs.as_slice(), download_dir).unwrap();
     println!("Done downloading {} specs from {}", spec.dir, spec.branch);
+    Ok(())
 }

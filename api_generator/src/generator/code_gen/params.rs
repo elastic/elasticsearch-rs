@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-use crate::api_generator::*;
+use crate::generator::*;
 use inflector::Inflector;
 use quote::Tokens;
 use regex::Regex;
