@@ -120,8 +120,8 @@ impl<'a> YamlTests<'a> {
         let (setup_fn, setup_call) = Self::generate_fixture(&self.setup);
         let (teardown_fn, teardown_call) = Self::generate_fixture(&self.teardown);
         let general_setup_call = match self.suite {
-            TestSuite::Oss => quote!(client::general_oss_setup(&client).await?;),
-            TestSuite::XPack => quote!(client::general_xpack_setup(&client).await?;),
+            TestSuite::Oss => quote!(client::general_oss_setup().await?;),
+            TestSuite::XPack => quote!(client::general_xpack_setup().await?;),
         };
 
         let tests = self.fn_impls(general_setup_call, setup_call, teardown_call);
@@ -137,7 +137,7 @@ impl<'a> YamlTests<'a> {
 
         quote! {
             #![allow(unused_imports, unused_variables, dead_code)]
-            use crate::common::{client, macros, transform, util};
+            use crate::common::{client, macros, transform};
             use elasticsearch::*;
             use elasticsearch::http::{
                 headers::{HeaderName, HeaderValue},
@@ -159,7 +159,7 @@ impl<'a> YamlTests<'a> {
     pub fn read_response(read_response: bool, tokens: &mut Tokens) -> bool {
         if !read_response {
             tokens.append(quote! {
-                let (method, status_code, text, json) = util::read_response(response).await?;
+                let (method, status_code, text, json) = client::read_response(response).await?;
             });
         }
 
@@ -277,7 +277,7 @@ impl<'a> YamlTests<'a> {
                     None => Some(quote! {
                         #[tokio::test]
                         async fn #fn_name() -> Result<(), failure::Error> {
-                            let client = client::create();
+                            let client = client::get();
                             #general_setup_call
                             #setup_call
                             #body

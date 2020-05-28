@@ -113,7 +113,7 @@ impl Do {
             if !read_response && c.needs_response_body() {
                 read_response = true;
                 tokens.append(quote! {
-                    let (method, status_code, text, json) = util::read_response(response).await?;
+                    let (method, status_code, text, json) = client::read_response(response).await?;
                 });
             }
             c.to_tokens(tokens);

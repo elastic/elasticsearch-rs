@@ -44,6 +44,10 @@ use elasticsearch::{
 use serde_json::{json, Value};
 use sysinfo::SystemExt;
 use url::Url;
+use once_cell::sync::Lazy;
+use std::ops::Deref;
+use elasticsearch::http::response::Response;
+use elasticsearch::http::{Method, StatusCode};
 
 fn cluster_addr() -> String {
     match std::env::var("ES_TEST_SERVER") {
@@ -58,8 +62,7 @@ fn running_proxy() -> bool {
     !system.get_process_by_name("Fiddler").is_empty()
 }
 
-/// Creates a client to use in tests
-pub fn create() -> Elasticsearch {
+static GLOBAL_CLIENT: Lazy<Elasticsearch> = Lazy::new(|| {
     let mut url = Url::parse(cluster_addr().as_ref()).unwrap();
 
     // if the url is https and specifies a username and password, remove from the url and set credentials
@@ -101,10 +104,37 @@ pub fn create() -> Elasticsearch {
 
     let transport = builder.build().unwrap();
     Elasticsearch::new(transport)
+});
+
+/// Gets the client to use in tests
+pub fn get() -> &'static Elasticsearch {
+    GLOBAL_CLIENT.deref()
+}
+
+/// Reads the response from Elasticsearch, returning the method, status code, text response,
+/// and the response parsed from json or yaml
+pub async fn read_response(
+    response: Response,
+) -> Result<(Method, StatusCode, String, Value), failure::Error> {
+    let is_json = response.content_type().starts_with("application/json");
+    let is_yaml = response.content_type().starts_with("application/yaml");
+    let method = response.method();
+    let status_code = response.status_code();
+    let text = response.text().await?;
+    let json = if is_json && !text.is_empty() {
+        serde_json::from_str::<Value>(text.as_ref())?
+    } else if is_yaml && !text.is_empty() {
+        serde_yaml::from_str::<Value>(text.as_ref())?
+    } else {
+        Value::Null
+    };
+
+    Ok((method, status_code, text, json))
 }
 
 /// general setup step for an OSS yaml test
-pub async fn general_oss_setup(client: &Elasticsearch) -> Result<(), Error> {
+pub async fn general_oss_setup() -> Result<(), Error> {
+    let client= get();
     delete_indices(client).await?;
     delete_templates(client).await?;
 
@@ -145,7 +175,8 @@ pub async fn general_oss_setup(client: &Elasticsearch) -> Result<(), Error> {
 }
 
 /// general setup step for an xpack yaml test
-pub async fn general_xpack_setup(client: &Elasticsearch) -> Result<(), Error> {
+pub async fn general_xpack_setup() -> Result<(), Error> {
+    let client = get();
     delete_templates(client).await?;
 
     let _delete_watch_response = client
