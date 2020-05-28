@@ -216,10 +216,17 @@ impl TransportBuilder {
             client_builder = match v {
                 CertificateValidation::Default => client_builder,
                 #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
-                CertificateValidation::Full(c) => client_builder.add_root_certificate(c),
+                CertificateValidation::Full(chain) => {
+                    chain.into_iter().fold(client_builder, |client_builder, c| {
+                        client_builder.add_root_certificate(c)
+                    })
+                }
                 #[cfg(feature = "native-tls")]
-                CertificateValidation::Certificate(c) => client_builder
-                    .add_root_certificate(c)
+                CertificateValidation::Certificate(chain) => chain
+                    .into_iter()
+                    .fold(client_builder, |client_builder, c| {
+                        client_builder.add_root_certificate(c)
+                    })
                     .danger_accept_invalid_hostnames(true),
                 CertificateValidation::None => client_builder.danger_accept_invalid_certs(true),
             }

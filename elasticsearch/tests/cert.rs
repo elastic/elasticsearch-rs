@@ -27,6 +27,7 @@ use os_type::OSType;
 // TODO: These tests require a cluster configured with Security. Figure out best way to surface this e.g. test category, naming convention, etc.
 
 static CA_CERT: &[u8] = include_bytes!("../../.ci/certs/ca.crt");
+static CA_CHAIN_CERT: &[u8] = include_bytes!("../../.ci/certs/ca-chain.crt");
 static TESTNODE_SAN_CERT: &[u8] = include_bytes!("../../.ci/certs/testnode_san.crt");
 static TESTNODE_CERT: &[u8] = include_bytes!("../../.ci/certs/testnode.crt");
 
@@ -83,6 +84,20 @@ async fn none_certificate_validation() -> Result<(), failure::Error> {
 #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
 async fn full_certificate_ca_validation() -> Result<(), failure::Error> {
     let cert = Certificate::from_pem(CA_CERT)?;
+    let builder =
+        client::create_default_builder().cert_validation(CertificateValidation::Full(cert));
+    let client = client::create(builder);
+    let _response = client.ping().send().await?;
+    Ok(())
+}
+
+/// Try to load a certificate chain.
+#[tokio::test]
+#[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+async fn full_certificate_ca_chain_validation() -> Result<(), failure::Error> {
+    let mut cert = Certificate::from_pem(CA_CHAIN_CERT)?;
+    cert.append(Certificate::from_pem(CA_CERT)?);
+    assert_eq!(cert.len(), 3, "expected three certificates in CA chain");
     let builder =
         client::create_default_builder().cert_validation(CertificateValidation::Full(cert));
     let client = client::create(builder);
