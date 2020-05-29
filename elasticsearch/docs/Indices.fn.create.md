@@ -2,7 +2,7 @@
 
 Create an index with a mapping
 
-```rust,norun
+```rust,no_run
 # use elasticsearch::{Elasticsearch, Error, indices::IndicesCreateParts};
 # use serde_json::{json, Value};
 # async fn doc() -> Result<(), Box<dyn std::error::Error>> {
