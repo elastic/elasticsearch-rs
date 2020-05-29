@@ -77,13 +77,13 @@
 //! to take a dependency on `tokio` in order to use the client. For example, in Cargo.toml, you may
 //! need the following dependency
 //!
-//! ```toml,norun
+//! ```toml,no_run
 //! tokio = { version = "*", features = ["full"] }
 //! ```
 //!
 //! and to attribute async main function with `#[tokio::main]`
 //!
-//! ```rust,norun
+//! ```rust,no_run
 //! #[tokio::main]
 //! async fn main() -> Result<(), Box<dyn std::error::Error>> {
 //!     // your code ...
@@ -93,7 +93,7 @@
 //!
 //! and attribute test functions with `#[tokio::test]`
 //!
-//! ```rust,norun
+//! ```rust,no_run
 //! #[tokio::test]
 //! async fn my_test() -> Result<(), Box<dyn std::error::Error>> {
 //!     // your code ...

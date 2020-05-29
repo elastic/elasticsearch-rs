@@ -4,7 +4,7 @@ To initiate a scroll, make search API call with a specified `scroll` timeout,
 then fetch the next set of hits using the `_scroll_id` returned in
 the response. Once no more hits are returned, clear the scroll.
 
-```rust,norun
+```rust,no_run
 # use elasticsearch::{Elasticsearch, Error, SearchParts, ScrollParts, ClearScrollParts};
 # use serde_json::{json, Value};
 # async fn doc() -> Result<(), Box<dyn std::error::Error>> {

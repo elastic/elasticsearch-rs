@@ -60,7 +60,7 @@ The `quote` and `syn` crates help
     - Asynchronous only
     - Control API invariants through arguments on API function. For example
     
-      ```norun
+      ```no_run
       client.delete_script(DeleteScriptParts::Id("script_id"))
           .send()
           .await?;
