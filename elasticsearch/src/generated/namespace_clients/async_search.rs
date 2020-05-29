@@ -58,7 +58,7 @@ impl<'b> AsyncSearchDeleteParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Async Search Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/async-search.html)\n\nDeletes an async search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
+#[doc = "Builder for the [Async Search Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/async-search.html)\n\nDeletes an async search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
 pub struct AsyncSearchDelete<'a, 'b> {
     client: &'a Elasticsearch,
     parts: AsyncSearchDeleteParts<'b>,
@@ -175,7 +175,7 @@ impl<'b> AsyncSearchGetParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Async Search Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/async-search.html)\n\nRetrieves the results of a previously submitted async search request given its ID."]
+#[doc = "Builder for the [Async Search Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/async-search.html)\n\nRetrieves the results of a previously submitted async search request given its ID."]
 pub struct AsyncSearchGet<'a, 'b> {
     client: &'a Elasticsearch,
     parts: AsyncSearchGetParts<'b>,
@@ -328,7 +328,7 @@ impl<'b> AsyncSearchSubmitParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Async Search Submit API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/async-search.html)\n\nExecutes a search request asynchronously."]
+#[doc = "Builder for the [Async Search Submit API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/async-search.html)\n\nExecutes a search request asynchronously."]
 pub struct AsyncSearchSubmit<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: AsyncSearchSubmitParts<'b>,
@@ -927,15 +927,15 @@ impl<'a> AsyncSearch<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Async Search Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/async-search.html)\n\nDeletes an async search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
+    #[doc = "[Async Search Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/async-search.html)\n\nDeletes an async search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
     pub fn delete<'b>(&'a self, parts: AsyncSearchDeleteParts<'b>) -> AsyncSearchDelete<'a, 'b> {
         AsyncSearchDelete::new(&self.client, parts)
     }
-    #[doc = "[Async Search Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/async-search.html)\n\nRetrieves the results of a previously submitted async search request given its ID."]
+    #[doc = "[Async Search Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/async-search.html)\n\nRetrieves the results of a previously submitted async search request given its ID."]
     pub fn get<'b>(&'a self, parts: AsyncSearchGetParts<'b>) -> AsyncSearchGet<'a, 'b> {
         AsyncSearchGet::new(&self.client, parts)
     }
-    #[doc = "[Async Search Submit API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/async-search.html)\n\nExecutes a search request asynchronously."]
+    #[doc = "[Async Search Submit API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/async-search.html)\n\nExecutes a search request asynchronously."]
     pub fn submit<'b>(
         &'a self,
         parts: AsyncSearchSubmitParts<'b>,

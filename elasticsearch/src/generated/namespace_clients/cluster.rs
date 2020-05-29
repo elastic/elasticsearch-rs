@@ -52,7 +52,7 @@ impl ClusterAllocationExplainParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Allocation Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-allocation-explain.html)\n\nProvides explanations for shard allocations in the cluster."]
+#[doc = "Builder for the [Cluster Allocation Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-allocation-explain.html)\n\nProvides explanations for shard allocations in the cluster."]
 pub struct ClusterAllocationExplain<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: ClusterAllocationExplainParts,
@@ -216,7 +216,7 @@ impl<'b> ClusterDeleteComponentTemplateParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Delete Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-component-template.html)\n\nDeletes a component template"]
+#[doc = "Builder for the [Cluster Delete Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-component-template.html)\n\nDeletes a component template"]
 pub struct ClusterDeleteComponentTemplate<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterDeleteComponentTemplateParts<'b>,
@@ -349,7 +349,7 @@ impl ClusterDeleteVotingConfigExclusionsParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Delete Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/voting-config-exclusions.html)\n\nClears cluster voting config exclusions."]
+#[doc = "Builder for the [Cluster Delete Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/voting-config-exclusions.html)\n\nClears cluster voting config exclusions."]
 pub struct ClusterDeleteVotingConfigExclusions<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterDeleteVotingConfigExclusionsParts,
@@ -476,7 +476,7 @@ impl<'b> ClusterExistsComponentTemplateParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Exists Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-component-template.html)\n\nReturns information about whether a particular component template exist"]
+#[doc = "Builder for the [Cluster Exists Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-component-template.html)\n\nReturns information about whether a particular component template exist"]
 pub struct ClusterExistsComponentTemplate<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterExistsComponentTemplateParts<'b>,
@@ -618,7 +618,7 @@ impl<'b> ClusterGetComponentTemplateParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Get Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-component-template.html)\n\nReturns one or more component templates"]
+#[doc = "Builder for the [Cluster Get Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-component-template.html)\n\nReturns one or more component templates"]
 pub struct ClusterGetComponentTemplate<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterGetComponentTemplateParts<'b>,
@@ -749,7 +749,7 @@ impl ClusterGetSettingsParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-update-settings.html)\n\nReturns cluster settings."]
+#[doc = "Builder for the [Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-update-settings.html)\n\nReturns cluster settings."]
 pub struct ClusterGetSettings<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterGetSettingsParts,
@@ -911,7 +911,7 @@ impl<'b> ClusterHealthParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-health.html)\n\nReturns basic information about the health of the cluster."]
+#[doc = "Builder for the [Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-health.html)\n\nReturns basic information about the health of the cluster."]
 pub struct ClusterHealth<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterHealthParts<'b>,
@@ -1138,7 +1138,7 @@ impl ClusterPendingTasksParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-pending.html)\n\nReturns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
+#[doc = "Builder for the [Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-pending.html)\n\nReturns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
 pub struct ClusterPendingTasks<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterPendingTasksParts,
@@ -1271,7 +1271,7 @@ impl ClusterPostVotingConfigExclusionsParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Post Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/voting-config-exclusions.html)\n\nUpdates the cluster voting config exclusions by node ids or node names."]
+#[doc = "Builder for the [Cluster Post Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/voting-config-exclusions.html)\n\nUpdates the cluster voting config exclusions by node ids or node names."]
 pub struct ClusterPostVotingConfigExclusions<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: ClusterPostVotingConfigExclusionsParts,
@@ -1443,7 +1443,7 @@ impl<'b> ClusterPutComponentTemplateParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Put Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-component-template.html)\n\nCreates or updates a component template"]
+#[doc = "Builder for the [Cluster Put Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-component-template.html)\n\nCreates or updates a component template"]
 pub struct ClusterPutComponentTemplate<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: ClusterPutComponentTemplateParts<'b>,
@@ -1609,7 +1609,7 @@ impl ClusterPutSettingsParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-update-settings.html)\n\nUpdates the cluster settings."]
+#[doc = "Builder for the [Cluster Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-update-settings.html)\n\nUpdates the cluster settings."]
 pub struct ClusterPutSettings<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: ClusterPutSettingsParts,
@@ -1775,7 +1775,7 @@ impl ClusterRemoteInfoParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Remote Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-remote-info.html)\n\nReturns the information about configured remote clusters."]
+#[doc = "Builder for the [Cluster Remote Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-remote-info.html)\n\nReturns the information about configured remote clusters."]
 pub struct ClusterRemoteInfo<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterRemoteInfoParts,
@@ -1886,7 +1886,7 @@ impl ClusterRerouteParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Reroute API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-reroute.html)\n\nAllows to manually change the allocation of individual shards in the cluster."]
+#[doc = "Builder for the [Cluster Reroute API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-reroute.html)\n\nAllows to manually change the allocation of individual shards in the cluster."]
 pub struct ClusterReroute<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: ClusterRerouteParts,
@@ -2113,7 +2113,7 @@ impl<'b> ClusterStateParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-state.html)\n\nReturns a comprehensive information about the state of the cluster."]
+#[doc = "Builder for the [Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-state.html)\n\nReturns a comprehensive information about the state of the cluster."]
 pub struct ClusterState<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterStateParts<'b>,
@@ -2318,7 +2318,7 @@ impl<'b> ClusterStatsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-stats.html)\n\nReturns high-level overview of cluster statistics."]
+#[doc = "Builder for the [Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-stats.html)\n\nReturns high-level overview of cluster statistics."]
 pub struct ClusterStats<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterStatsParts<'b>,
@@ -2443,79 +2443,79 @@ impl<'a> Cluster<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Cluster Allocation Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-allocation-explain.html)\n\nProvides explanations for shard allocations in the cluster."]
+    #[doc = "[Cluster Allocation Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-allocation-explain.html)\n\nProvides explanations for shard allocations in the cluster."]
     pub fn allocation_explain<'b>(&'a self) -> ClusterAllocationExplain<'a, 'b, ()> {
         ClusterAllocationExplain::new(&self.client)
     }
-    #[doc = "[Cluster Delete Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-component-template.html)\n\nDeletes a component template"]
+    #[doc = "[Cluster Delete Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-component-template.html)\n\nDeletes a component template"]
     pub fn delete_component_template<'b>(
         &'a self,
         parts: ClusterDeleteComponentTemplateParts<'b>,
     ) -> ClusterDeleteComponentTemplate<'a, 'b> {
         ClusterDeleteComponentTemplate::new(&self.client, parts)
     }
-    #[doc = "[Cluster Delete Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/voting-config-exclusions.html)\n\nClears cluster voting config exclusions."]
+    #[doc = "[Cluster Delete Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/voting-config-exclusions.html)\n\nClears cluster voting config exclusions."]
     pub fn delete_voting_config_exclusions<'b>(
         &'a self,
     ) -> ClusterDeleteVotingConfigExclusions<'a, 'b> {
         ClusterDeleteVotingConfigExclusions::new(&self.client)
     }
-    #[doc = "[Cluster Exists Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-component-template.html)\n\nReturns information about whether a particular component template exist"]
+    #[doc = "[Cluster Exists Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-component-template.html)\n\nReturns information about whether a particular component template exist"]
     pub fn exists_component_template<'b>(
         &'a self,
         parts: ClusterExistsComponentTemplateParts<'b>,
     ) -> ClusterExistsComponentTemplate<'a, 'b> {
         ClusterExistsComponentTemplate::new(&self.client, parts)
     }
-    #[doc = "[Cluster Get Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-component-template.html)\n\nReturns one or more component templates"]
+    #[doc = "[Cluster Get Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-component-template.html)\n\nReturns one or more component templates"]
     pub fn get_component_template<'b>(
         &'a self,
         parts: ClusterGetComponentTemplateParts<'b>,
     ) -> ClusterGetComponentTemplate<'a, 'b> {
         ClusterGetComponentTemplate::new(&self.client, parts)
     }
-    #[doc = "[Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-update-settings.html)\n\nReturns cluster settings."]
+    #[doc = "[Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-update-settings.html)\n\nReturns cluster settings."]
     pub fn get_settings<'b>(&'a self) -> ClusterGetSettings<'a, 'b> {
         ClusterGetSettings::new(&self.client)
     }
-    #[doc = "[Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-health.html)\n\nReturns basic information about the health of the cluster."]
+    #[doc = "[Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-health.html)\n\nReturns basic information about the health of the cluster."]
     pub fn health<'b>(&'a self, parts: ClusterHealthParts<'b>) -> ClusterHealth<'a, 'b> {
         ClusterHealth::new(&self.client, parts)
     }
-    #[doc = "[Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-pending.html)\n\nReturns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
+    #[doc = "[Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-pending.html)\n\nReturns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
     pub fn pending_tasks<'b>(&'a self) -> ClusterPendingTasks<'a, 'b> {
         ClusterPendingTasks::new(&self.client)
     }
-    #[doc = "[Cluster Post Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/voting-config-exclusions.html)\n\nUpdates the cluster voting config exclusions by node ids or node names."]
+    #[doc = "[Cluster Post Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/voting-config-exclusions.html)\n\nUpdates the cluster voting config exclusions by node ids or node names."]
     pub fn post_voting_config_exclusions<'b>(
         &'a self,
     ) -> ClusterPostVotingConfigExclusions<'a, 'b, ()> {
         ClusterPostVotingConfigExclusions::new(&self.client)
     }
-    #[doc = "[Cluster Put Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-component-template.html)\n\nCreates or updates a component template"]
+    #[doc = "[Cluster Put Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-component-template.html)\n\nCreates or updates a component template"]
     pub fn put_component_template<'b>(
         &'a self,
         parts: ClusterPutComponentTemplateParts<'b>,
     ) -> ClusterPutComponentTemplate<'a, 'b, ()> {
         ClusterPutComponentTemplate::new(&self.client, parts)
     }
-    #[doc = "[Cluster Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-update-settings.html)\n\nUpdates the cluster settings."]
+    #[doc = "[Cluster Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-update-settings.html)\n\nUpdates the cluster settings."]
     pub fn put_settings<'b>(&'a self) -> ClusterPutSettings<'a, 'b, ()> {
         ClusterPutSettings::new(&self.client)
     }
-    #[doc = "[Cluster Remote Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-remote-info.html)\n\nReturns the information about configured remote clusters."]
+    #[doc = "[Cluster Remote Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-remote-info.html)\n\nReturns the information about configured remote clusters."]
     pub fn remote_info<'b>(&'a self) -> ClusterRemoteInfo<'a, 'b> {
         ClusterRemoteInfo::new(&self.client)
     }
-    #[doc = "[Cluster Reroute API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-reroute.html)\n\nAllows to manually change the allocation of individual shards in the cluster."]
+    #[doc = "[Cluster Reroute API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-reroute.html)\n\nAllows to manually change the allocation of individual shards in the cluster."]
     pub fn reroute<'b>(&'a self) -> ClusterReroute<'a, 'b, ()> {
         ClusterReroute::new(&self.client)
     }
-    #[doc = "[Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-state.html)\n\nReturns a comprehensive information about the state of the cluster."]
+    #[doc = "[Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-state.html)\n\nReturns a comprehensive information about the state of the cluster."]
     pub fn state<'b>(&'a self, parts: ClusterStateParts<'b>) -> ClusterState<'a, 'b> {
         ClusterState::new(&self.client, parts)
     }
-    #[doc = "[Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-stats.html)\n\nReturns high-level overview of cluster statistics."]
+    #[doc = "[Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-stats.html)\n\nReturns high-level overview of cluster statistics."]
     pub fn stats<'b>(&'a self, parts: ClusterStatsParts<'b>) -> ClusterStats<'a, 'b> {
         ClusterStats::new(&self.client, parts)
     }

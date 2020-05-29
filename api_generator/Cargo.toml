@@ -1,6 +1,6 @@
 [package]
 name = "api_generator"
-version = "7.7.1-alpha.1"
+version = "8.0.0-alpha.1"
 description = "Generates source code for elasticsearch package, from the Elasticsearch REST API specs"
 authors = ["Elastic and Contributors"]
 edition = "2018"

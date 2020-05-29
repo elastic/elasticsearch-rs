@@ -61,7 +61,7 @@ impl<'b> GraphExploreParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
+#[doc = "Builder for the [Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
 pub struct GraphExplore<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: GraphExploreParts<'b>,
@@ -213,7 +213,7 @@ impl<'a> Graph<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
+    #[doc = "[Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
     pub fn explore<'b>(&'a self, parts: GraphExploreParts<'b>) -> GraphExplore<'a, 'b, ()> {
         GraphExplore::new(&self.client, parts)
     }

@@ -1,6 +1,6 @@
 [package]
 name = "yaml_test_runner"
-version = "7.7.1-alpha.1"
+version = "8.0.0-alpha.1"
 edition = "2018"
 authors = ["Elastic and Contributors"]
 description = "Generates and runs tests from Elasticsearch's YAML test specs"
