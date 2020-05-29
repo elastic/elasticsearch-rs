@@ -77,6 +77,7 @@ pub struct TasksCancel<'a, 'b, B> {
     parent_task_id: Option<&'b str>,
     pretty: Option<bool>,
     source: Option<&'b str>,
+    wait_for_completion: Option<bool>,
 }
 impl<'a, 'b, B> TasksCancel<'a, 'b, B>
 where
@@ -98,6 +99,7 @@ where
             parent_task_id: None,
             pretty: None,
             source: None,
+            wait_for_completion: None,
         }
     }
     #[doc = "A comma-separated list of actions that should be cancelled. Leave empty to cancel all."]
@@ -123,6 +125,7 @@ where
             parent_task_id: self.parent_task_id,
             pretty: self.pretty,
             source: self.source,
+            wait_for_completion: self.wait_for_completion,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -165,6 +168,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Should the request block until the cancellation of the task and its descendant tasks is completed. Defaults to false"]
+    pub fn wait_for_completion(mut self, wait_for_completion: bool) -> Self {
+        self.wait_for_completion = Some(wait_for_completion);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Tasks Cancel API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -196,6 +204,8 @@ where
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
                 source: Option<&'b str>,
+                #[serde(rename = "wait_for_completion")]
+                wait_for_completion: Option<bool>,
             }
             let query_params = QueryParams {
                 actions: self.actions,
@@ -206,6 +216,7 @@ where
                 parent_task_id: self.parent_task_id,
                 pretty: self.pretty,
                 source: self.source,
+                wait_for_completion: self.wait_for_completion,
             };
             Some(query_params)
         };
