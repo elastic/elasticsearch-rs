@@ -45,7 +45,7 @@ use std::{
 #[cfg_attr(
     any(feature = "native-tls", feature = "rustls-tls"),
     doc = r##"
-```rust,norun
+```rust,no_run
 # use elasticsearch::{
 #     auth::Credentials,
 #     cert::{Certificate,CertificateValidation},
@@ -84,7 +84,7 @@ let _response = client.ping().send().await?;
 #[cfg_attr(
     feature = "native-tls",
     doc = r##"
-```rust,norun
+```rust,no_run
 # use elasticsearch::{
 #     auth::Credentials,
 #     cert::{Certificate,CertificateValidation},
@@ -118,7 +118,7 @@ let _response = client.ping().send().await?;
 /// No validation is performed on the certificate provided by the server.
 /// **Use on production clusters is strongly discouraged**
 ///
-/// ```rust,norun
+/// ```rust,no_run
 /// # use elasticsearch::{
 /// #     auth::Credentials,
 /// #     cert::{Certificate,CertificateValidation},

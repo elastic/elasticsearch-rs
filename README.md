@@ -85,7 +85,7 @@ tokio = { version = "*", features = ["full"] }
 
 and to attribute async main function with `#[tokio::main]`
 
-```rust,norun
+```rust,no_run
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // your code ...
@@ -95,7 +95,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 and attribute test functions with `#[tokio::test]`
 
-```rust,norun
+```rust,no_run
 #[tokio::test]
 async fn my_test() -> Result<(), Box<dyn std::error::Error>> {
     // your code ...
