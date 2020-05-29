@@ -326,7 +326,7 @@ impl<'b> EnrichGetPolicyParts<'b> {
                 p.push_str(encoded_name.as_ref());
                 p.into()
             }
-            EnrichGetPolicyParts::None => "/_enrich/policy/".into(),
+            EnrichGetPolicyParts::None => "/_enrich/policy".into(),
         }
     }
 }

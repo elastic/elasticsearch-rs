@@ -454,8 +454,6 @@ pub enum CountParts<'b> {
     None,
     #[doc = "Index"]
     Index(&'b [&'b str]),
-    #[doc = "Index and Type"]
-    IndexType(&'b [&'b str], &'b [&'b str]),
 }
 impl<'b> CountParts<'b> {
     #[doc = "Builds a relative URL path to the Count API"]
@@ -469,20 +467,6 @@ impl<'b> CountParts<'b> {
                 let mut p = String::with_capacity(8usize + encoded_index.len());
                 p.push_str("/");
                 p.push_str(encoded_index.as_ref());
-                p.push_str("/_count");
-                p.into()
-            }
-            CountParts::IndexType(ref index, ref ty) => {
-                let index_str = index.join(",");
-                let ty_str = ty.join(",");
-                let encoded_index: Cow<str> =
-                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(9usize + encoded_index.len() + encoded_ty.len());
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_count");
                 p.into()
             }
@@ -1234,8 +1218,6 @@ impl<'a, 'b> Delete<'a, 'b> {
 pub enum DeleteByQueryParts<'b> {
     #[doc = "Index"]
     Index(&'b [&'b str]),
-    #[doc = "Index and Type"]
-    IndexType(&'b [&'b str], &'b [&'b str]),
 }
 impl<'b> DeleteByQueryParts<'b> {
     #[doc = "Builds a relative URL path to the Delete By Query API"]
@@ -1248,20 +1230,6 @@ impl<'b> DeleteByQueryParts<'b> {
                 let mut p = String::with_capacity(18usize + encoded_index.len());
                 p.push_str("/");
                 p.push_str(encoded_index.as_ref());
-                p.push_str("/_delete_by_query");
-                p.into()
-            }
-            DeleteByQueryParts::IndexType(ref index, ref ty) => {
-                let index_str = index.join(",");
-                let ty_str = ty.join(",");
-                let encoded_index: Cow<str> =
-                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(19usize + encoded_index.len() + encoded_ty.len());
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_delete_by_query");
                 p.into()
             }
@@ -1303,7 +1271,6 @@ pub struct DeleteByQuery<'a, 'b, B> {
     scroll_size: Option<i64>,
     search_timeout: Option<&'b str>,
     search_type: Option<SearchType>,
-    size: Option<i64>,
     slices: Option<Slices>,
     sort: Option<&'b [&'b str]>,
     source: Option<&'b str>,
@@ -1354,7 +1321,6 @@ where
             scroll_size: None,
             search_timeout: None,
             search_type: None,
-            size: None,
             slices: None,
             sort: None,
             source: None,
@@ -1434,7 +1400,6 @@ where
             scroll_size: self.scroll_size,
             search_timeout: self.search_timeout,
             search_type: self.search_type,
-            size: self.size,
             slices: self.slices,
             sort: self.sort,
             source: self.source,
@@ -1521,7 +1486,7 @@ where
         self.q = Some(q);
         self
     }
-    #[doc = "Should the effected indexes be refreshed?"]
+    #[doc = "Should the affected indexes be refreshed?"]
     pub fn refresh(mut self, refresh: bool) -> Self {
         self.refresh = Some(refresh);
         self
@@ -1559,11 +1524,6 @@ where
     #[doc = "Search operation type"]
     pub fn search_type(mut self, search_type: SearchType) -> Self {
         self.search_type = Some(search_type);
-        self
-    }
-    #[doc = "Deprecated, please use `max_docs` instead"]
-    pub fn size(mut self, size: i64) -> Self {
-        self.size = Some(size);
         self
     }
     #[doc = "The number of slices this task should be divided into. Defaults to 1, meaning the task isn't sliced into subtasks. Can be set to `auto`."]
@@ -1694,8 +1654,6 @@ where
                 search_timeout: Option<&'b str>,
                 #[serde(rename = "search_type")]
                 search_type: Option<SearchType>,
-                #[serde(rename = "size")]
-                size: Option<i64>,
                 #[serde(rename = "slices")]
                 slices: Option<Slices>,
                 #[serde(rename = "sort", serialize_with = "crate::client::serialize_coll_qs")]
@@ -1744,7 +1702,6 @@ where
                 scroll_size: self.scroll_size,
                 search_timeout: self.search_timeout,
                 search_type: self.search_type,
-                size: self.size,
                 slices: self.slices,
                 sort: self.sort,
                 source: self.source,
@@ -2059,8 +2016,6 @@ impl<'a, 'b> DeleteScript<'a, 'b> {
 pub enum ExistsParts<'b> {
     #[doc = "Index and Id"]
     IndexId(&'b str, &'b str),
-    #[doc = "Index, Type and Id"]
-    IndexTypeId(&'b str, &'b str, &'b str),
 }
 impl<'b> ExistsParts<'b> {
     #[doc = "Builds a relative URL path to the Exists API"]
@@ -2074,22 +2029,6 @@ impl<'b> ExistsParts<'b> {
                 p.push_str("/");
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_doc/");
-                p.push_str(encoded_id.as_ref());
-                p.into()
-            }
-            ExistsParts::IndexTypeId(ref index, ref ty, ref id) => {
-                let encoded_index: Cow<str> =
-                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(
-                    3usize + encoded_index.len() + encoded_ty.len() + encoded_id.len(),
-                );
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
-                p.push_str("/");
                 p.push_str(encoded_id.as_ref());
                 p.into()
             }
@@ -2549,8 +2488,6 @@ impl<'a, 'b> ExistsSource<'a, 'b> {
 pub enum ExplainParts<'b> {
     #[doc = "Index and Id"]
     IndexId(&'b str, &'b str),
-    #[doc = "Index, Type and Id"]
-    IndexTypeId(&'b str, &'b str, &'b str),
 }
 impl<'b> ExplainParts<'b> {
     #[doc = "Builds a relative URL path to the Explain API"]
@@ -2565,23 +2502,6 @@ impl<'b> ExplainParts<'b> {
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_explain/");
                 p.push_str(encoded_id.as_ref());
-                p.into()
-            }
-            ExplainParts::IndexTypeId(ref index, ref ty, ref id) => {
-                let encoded_index: Cow<str> =
-                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(
-                    12usize + encoded_index.len() + encoded_ty.len() + encoded_id.len(),
-                );
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_id.as_ref());
-                p.push_str("/_explain");
                 p.into()
             }
         }
@@ -3064,8 +2984,6 @@ where
 pub enum GetParts<'b> {
     #[doc = "Index and Id"]
     IndexId(&'b str, &'b str),
-    #[doc = "Index, Type and Id"]
-    IndexTypeId(&'b str, &'b str, &'b str),
 }
 impl<'b> GetParts<'b> {
     #[doc = "Builds a relative URL path to the Get API"]
@@ -3079,22 +2997,6 @@ impl<'b> GetParts<'b> {
                 p.push_str("/");
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_doc/");
-                p.push_str(encoded_id.as_ref());
-                p.into()
-            }
-            GetParts::IndexTypeId(ref index, ref ty, ref id) => {
-                let encoded_index: Cow<str> =
-                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(
-                    3usize + encoded_index.len() + encoded_ty.len() + encoded_id.len(),
-                );
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
-                p.push_str("/");
                 p.push_str(encoded_id.as_ref());
                 p.into()
             }
@@ -3442,8 +3344,6 @@ impl<'a, 'b> GetScript<'a, 'b> {
 pub enum GetSourceParts<'b> {
     #[doc = "Index and Id"]
     IndexId(&'b str, &'b str),
-    #[doc = "Index, Type and Id"]
-    IndexTypeId(&'b str, &'b str, &'b str),
 }
 impl<'b> GetSourceParts<'b> {
     #[doc = "Builds a relative URL path to the Get Source API"]
@@ -3458,23 +3358,6 @@ impl<'b> GetSourceParts<'b> {
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_source/");
                 p.push_str(encoded_id.as_ref());
-                p.into()
-            }
-            GetSourceParts::IndexTypeId(ref index, ref ty, ref id) => {
-                let encoded_index: Cow<str> =
-                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(
-                    11usize + encoded_index.len() + encoded_ty.len() + encoded_id.len(),
-                );
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_id.as_ref());
-                p.push_str("/_source");
                 p.into()
             }
         }
@@ -3683,10 +3566,6 @@ pub enum IndexParts<'b> {
     IndexId(&'b str, &'b str),
     #[doc = "Index"]
     Index(&'b str),
-    #[doc = "Index and Type"]
-    IndexType(&'b str, &'b str),
-    #[doc = "Index, Type and Id"]
-    IndexTypeId(&'b str, &'b str, &'b str),
 }
 impl<'b> IndexParts<'b> {
     #[doc = "Builds a relative URL path to the Index API"]
@@ -3710,33 +3589,6 @@ impl<'b> IndexParts<'b> {
                 p.push_str("/");
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_doc");
-                p.into()
-            }
-            IndexParts::IndexType(ref index, ref ty) => {
-                let encoded_index: Cow<str> =
-                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(2usize + encoded_index.len() + encoded_ty.len());
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
-                p.into()
-            }
-            IndexParts::IndexTypeId(ref index, ref ty, ref id) => {
-                let encoded_index: Cow<str> =
-                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(
-                    3usize + encoded_index.len() + encoded_ty.len() + encoded_id.len(),
-                );
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_id.as_ref());
                 p.into()
             }
         }
@@ -4089,8 +3941,6 @@ pub enum MgetParts<'b> {
     None,
     #[doc = "Index"]
     Index(&'b str),
-    #[doc = "Index and Type"]
-    IndexType(&'b str, &'b str),
 }
 impl<'b> MgetParts<'b> {
     #[doc = "Builds a relative URL path to the Mget API"]
@@ -4103,18 +3953,6 @@ impl<'b> MgetParts<'b> {
                 let mut p = String::with_capacity(7usize + encoded_index.len());
                 p.push_str("/");
                 p.push_str(encoded_index.as_ref());
-                p.push_str("/_mget");
-                p.into()
-            }
-            MgetParts::IndexType(ref index, ref ty) => {
-                let encoded_index: Cow<str> =
-                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(8usize + encoded_index.len() + encoded_ty.len());
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_mget");
                 p.into()
             }
@@ -4350,8 +4188,6 @@ pub enum MsearchParts<'b> {
     None,
     #[doc = "Index"]
     Index(&'b [&'b str]),
-    #[doc = "Index and Type"]
-    IndexType(&'b [&'b str], &'b [&'b str]),
 }
 impl<'b> MsearchParts<'b> {
     #[doc = "Builds a relative URL path to the Msearch API"]
@@ -4365,20 +4201,6 @@ impl<'b> MsearchParts<'b> {
                 let mut p = String::with_capacity(10usize + encoded_index.len());
                 p.push_str("/");
                 p.push_str(encoded_index.as_ref());
-                p.push_str("/_msearch");
-                p.into()
-            }
-            MsearchParts::IndexType(ref index, ref ty) => {
-                let index_str = index.join(",");
-                let ty_str = ty.join(",");
-                let encoded_index: Cow<str> =
-                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(11usize + encoded_index.len() + encoded_ty.len());
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_msearch");
                 p.into()
             }
@@ -4591,8 +4413,6 @@ pub enum MsearchTemplateParts<'b> {
     None,
     #[doc = "Index"]
     Index(&'b [&'b str]),
-    #[doc = "Index and Type"]
-    IndexType(&'b [&'b str], &'b [&'b str]),
 }
 impl<'b> MsearchTemplateParts<'b> {
     #[doc = "Builds a relative URL path to the Msearch Template API"]
@@ -4606,20 +4426,6 @@ impl<'b> MsearchTemplateParts<'b> {
                 let mut p = String::with_capacity(19usize + encoded_index.len());
                 p.push_str("/");
                 p.push_str(encoded_index.as_ref());
-                p.push_str("/_msearch/template");
-                p.into()
-            }
-            MsearchTemplateParts::IndexType(ref index, ref ty) => {
-                let index_str = index.join(",");
-                let ty_str = ty.join(",");
-                let encoded_index: Cow<str> =
-                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(20usize + encoded_index.len() + encoded_ty.len());
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_msearch/template");
                 p.into()
             }
@@ -4810,8 +4616,6 @@ pub enum MtermvectorsParts<'b> {
     None,
     #[doc = "Index"]
     Index(&'b str),
-    #[doc = "Index and Type"]
-    IndexType(&'b str, &'b str),
 }
 impl<'b> MtermvectorsParts<'b> {
     #[doc = "Builds a relative URL path to the Mtermvectors API"]
@@ -4824,18 +4628,6 @@ impl<'b> MtermvectorsParts<'b> {
                 let mut p = String::with_capacity(15usize + encoded_index.len());
                 p.push_str("/");
                 p.push_str(encoded_index.as_ref());
-                p.push_str("/_mtermvectors");
-                p.into()
-            }
-            MtermvectorsParts::IndexType(ref index, ref ty) => {
-                let encoded_index: Cow<str> =
-                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(16usize + encoded_index.len() + encoded_ty.len());
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_mtermvectors");
                 p.into()
             }
@@ -6097,8 +5889,6 @@ pub enum SearchParts<'b> {
     None,
     #[doc = "Index"]
     Index(&'b [&'b str]),
-    #[doc = "Index and Type"]
-    IndexType(&'b [&'b str], &'b [&'b str]),
 }
 impl<'b> SearchParts<'b> {
     #[doc = "Builds a relative URL path to the Search API"]
@@ -6112,20 +5902,6 @@ impl<'b> SearchParts<'b> {
                 let mut p = String::with_capacity(9usize + encoded_index.len());
                 p.push_str("/");
                 p.push_str(encoded_index.as_ref());
-                p.push_str("/_search");
-                p.into()
-            }
-            SearchParts::IndexType(ref index, ref ty) => {
-                let index_str = index.join(",");
-                let ty_str = ty.join(",");
-                let encoded_index: Cow<str> =
-                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(10usize + encoded_index.len() + encoded_ty.len());
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_search");
                 p.into()
             }
@@ -6532,7 +6308,7 @@ where
         self.track_scores = Some(track_scores);
         self
     }
-    #[doc = "Indicate if the number of documents that match the query should be tracked"]
+    #[doc = "Indicate if the number of documents that match the query should be tracked. A number can also be specified, to accurately track the total hit count up to the number."]
     pub fn track_total_hits<T: Into<TrackTotalHits>>(mut self, track_total_hits: T) -> Self {
         self.track_total_hits = Some(track_total_hits.into());
         self
@@ -6961,8 +6737,6 @@ pub enum SearchTemplateParts<'b> {
     None,
     #[doc = "Index"]
     Index(&'b [&'b str]),
-    #[doc = "Index and Type"]
-    IndexType(&'b [&'b str], &'b [&'b str]),
 }
 impl<'b> SearchTemplateParts<'b> {
     #[doc = "Builds a relative URL path to the Search Template API"]
@@ -6976,20 +6750,6 @@ impl<'b> SearchTemplateParts<'b> {
                 let mut p = String::with_capacity(18usize + encoded_index.len());
                 p.push_str("/");
                 p.push_str(encoded_index.as_ref());
-                p.push_str("/_search/template");
-                p.into()
-            }
-            SearchTemplateParts::IndexType(ref index, ref ty) => {
-                let index_str = index.join(",");
-                let ty_str = ty.join(",");
-                let encoded_index: Cow<str> =
-                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(19usize + encoded_index.len() + encoded_ty.len());
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_search/template");
                 p.into()
             }
@@ -7274,10 +7034,6 @@ pub enum TermvectorsParts<'b> {
     IndexId(&'b str, &'b str),
     #[doc = "Index"]
     Index(&'b str),
-    #[doc = "Index, Type and Id"]
-    IndexTypeId(&'b str, &'b str, &'b str),
-    #[doc = "Index and Type"]
-    IndexType(&'b str, &'b str),
 }
 impl<'b> TermvectorsParts<'b> {
     #[doc = "Builds a relative URL path to the Termvectors API"]
@@ -7300,35 +7056,6 @@ impl<'b> TermvectorsParts<'b> {
                 let mut p = String::with_capacity(14usize + encoded_index.len());
                 p.push_str("/");
                 p.push_str(encoded_index.as_ref());
-                p.push_str("/_termvectors");
-                p.into()
-            }
-            TermvectorsParts::IndexTypeId(ref index, ref ty, ref id) => {
-                let encoded_index: Cow<str> =
-                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(
-                    16usize + encoded_index.len() + encoded_ty.len() + encoded_id.len(),
-                );
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_id.as_ref());
-                p.push_str("/_termvectors");
-                p.into()
-            }
-            TermvectorsParts::IndexType(ref index, ref ty) => {
-                let encoded_index: Cow<str> =
-                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(15usize + encoded_index.len() + encoded_ty.len());
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_termvectors");
                 p.into()
             }
@@ -7875,8 +7602,6 @@ where
 pub enum UpdateByQueryParts<'b> {
     #[doc = "Index"]
     Index(&'b [&'b str]),
-    #[doc = "Index and Type"]
-    IndexType(&'b [&'b str], &'b [&'b str]),
 }
 impl<'b> UpdateByQueryParts<'b> {
     #[doc = "Builds a relative URL path to the Update By Query API"]
@@ -7889,20 +7614,6 @@ impl<'b> UpdateByQueryParts<'b> {
                 let mut p = String::with_capacity(18usize + encoded_index.len());
                 p.push_str("/");
                 p.push_str(encoded_index.as_ref());
-                p.push_str("/_update_by_query");
-                p.into()
-            }
-            UpdateByQueryParts::IndexType(ref index, ref ty) => {
-                let index_str = index.join(",");
-                let ty_str = ty.join(",");
-                let encoded_index: Cow<str> =
-                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(19usize + encoded_index.len() + encoded_ty.len());
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_update_by_query");
                 p.into()
             }
@@ -7945,7 +7656,6 @@ pub struct UpdateByQuery<'a, 'b, B> {
     scroll_size: Option<i64>,
     search_timeout: Option<&'b str>,
     search_type: Option<SearchType>,
-    size: Option<i64>,
     slices: Option<Slices>,
     sort: Option<&'b [&'b str]>,
     source: Option<&'b str>,
@@ -7998,7 +7708,6 @@ where
             scroll_size: None,
             search_timeout: None,
             search_type: None,
-            size: None,
             slices: None,
             sort: None,
             source: None,
@@ -8080,7 +7789,6 @@ where
             scroll_size: self.scroll_size,
             search_timeout: self.search_timeout,
             search_type: self.search_type,
-            size: self.size,
             slices: self.slices,
             sort: self.sort,
             source: self.source,
@@ -8211,11 +7919,6 @@ where
     #[doc = "Search operation type"]
     pub fn search_type(mut self, search_type: SearchType) -> Self {
         self.search_type = Some(search_type);
-        self
-    }
-    #[doc = "Deprecated, please use `max_docs` instead"]
-    pub fn size(mut self, size: i64) -> Self {
-        self.size = Some(size);
         self
     }
     #[doc = "The number of slices this task should be divided into. Defaults to 1, meaning the task isn't sliced into subtasks. Can be set to `auto`."]
@@ -8353,8 +8056,6 @@ where
                 search_timeout: Option<&'b str>,
                 #[serde(rename = "search_type")]
                 search_type: Option<SearchType>,
-                #[serde(rename = "size")]
-                size: Option<i64>,
                 #[serde(rename = "slices")]
                 slices: Option<Slices>,
                 #[serde(rename = "sort", serialize_with = "crate::client::serialize_coll_qs")]
@@ -8406,7 +8107,6 @@ where
                 scroll_size: self.scroll_size,
                 search_timeout: self.search_timeout,
                 search_type: self.search_type,
-                size: self.size,
                 slices: self.slices,
                 sort: self.sort,
                 source: self.source,

@@ -60,7 +60,7 @@ impl<'b> SnapshotCleanupRepositoryParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Snapshot Cleanup Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/modules-snapshots.html)\n\nRemoves stale data from repository."]
+#[doc = "Builder for the [Snapshot Cleanup Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/clean-up-snapshot-repo-api.html)\n\nRemoves stale data from repository."]
 pub struct SnapshotCleanupRepository<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SnapshotCleanupRepositoryParts<'b>,
@@ -1612,7 +1612,7 @@ impl<'a> Snapshot<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Snapshot Cleanup Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/modules-snapshots.html)\n\nRemoves stale data from repository."]
+    #[doc = "[Snapshot Cleanup Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/clean-up-snapshot-repo-api.html)\n\nRemoves stale data from repository."]
     pub fn cleanup_repository<'b>(
         &'a self,
         parts: SnapshotCleanupRepositoryParts<'b>,

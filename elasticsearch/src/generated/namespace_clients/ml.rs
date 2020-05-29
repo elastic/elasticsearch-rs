@@ -721,9 +721,10 @@ impl MlDeleteExpiredDataParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Delete Expired Data API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-expired-data.html)\n\nDeletes expired and unused machine learning data."]
-pub struct MlDeleteExpiredData<'a, 'b> {
+pub struct MlDeleteExpiredData<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlDeleteExpiredDataParts,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -731,7 +732,10 @@ pub struct MlDeleteExpiredData<'a, 'b> {
     pretty: Option<bool>,
     source: Option<&'b str>,
 }
-impl<'a, 'b> MlDeleteExpiredData<'a, 'b> {
+impl<'a, 'b, B> MlDeleteExpiredData<'a, 'b, B>
+where
+    B: Body,
+{
     #[doc = "Creates a new instance of [MlDeleteExpiredData]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
         let headers = HeaderMap::new();
@@ -739,11 +743,29 @@ impl<'a, 'b> MlDeleteExpiredData<'a, 'b> {
             client,
             parts: MlDeleteExpiredDataParts::None,
             headers,
+            body: None,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
             source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> MlDeleteExpiredData<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        MlDeleteExpiredData {
+            client: self.client,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -808,7 +830,7 @@ impl<'a, 'b> MlDeleteExpiredData<'a, 'b> {
             };
             Some(query_params)
         };
-        let body = Option::<()>::None;
+        let body = self.body;
         let response = self
             .client
             .send(method, &path, headers, query_string.as_ref(), body)
@@ -6922,7 +6944,7 @@ impl MlValidateParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the Ml Validate API\n\nValidates an anomaly detection job."]
+#[doc = "Builder for the [Ml Validate API](https://www.elastic.co/guide/en/machine-learning/7.7/ml-jobs.html)\n\nValidates an anomaly detection job."]
 pub struct MlValidate<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlValidateParts,
@@ -7055,7 +7077,7 @@ impl MlValidateDetectorParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the Ml Validate Detector API\n\nValidates an anomaly detection detector."]
+#[doc = "Builder for the [Ml Validate Detector API](https://www.elastic.co/guide/en/machine-learning/7.7/ml-jobs.html)\n\nValidates an anomaly detection detector."]
 pub struct MlValidateDetector<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlValidateDetectorParts,
@@ -7215,7 +7237,7 @@ impl<'a> Ml<'a> {
         MlDeleteDatafeed::new(&self.client, parts)
     }
     #[doc = "[Ml Delete Expired Data API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-expired-data.html)\n\nDeletes expired and unused machine learning data."]
-    pub fn delete_expired_data<'b>(&'a self) -> MlDeleteExpiredData<'a, 'b> {
+    pub fn delete_expired_data<'b>(&'a self) -> MlDeleteExpiredData<'a, 'b, ()> {
         MlDeleteExpiredData::new(&self.client)
     }
     #[doc = "[Ml Delete Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-filter.html)\n\nDeletes a filter."]
@@ -7424,11 +7446,11 @@ impl<'a> Ml<'a> {
     ) -> MlUpdateModelSnapshot<'a, 'b, ()> {
         MlUpdateModelSnapshot::new(&self.client, parts)
     }
-    #[doc = "Ml Validate API\n\nValidates an anomaly detection job."]
+    #[doc = "[Ml Validate API](https://www.elastic.co/guide/en/machine-learning/7.7/ml-jobs.html)\n\nValidates an anomaly detection job."]
     pub fn validate<'b>(&'a self) -> MlValidate<'a, 'b, ()> {
         MlValidate::new(&self.client)
     }
-    #[doc = "Ml Validate Detector API\n\nValidates an anomaly detection detector."]
+    #[doc = "[Ml Validate Detector API](https://www.elastic.co/guide/en/machine-learning/7.7/ml-jobs.html)\n\nValidates an anomaly detection detector."]
     pub fn validate_detector<'b>(&'a self) -> MlValidateDetector<'a, 'b, ()> {
         MlValidateDetector::new(&self.client)
     }

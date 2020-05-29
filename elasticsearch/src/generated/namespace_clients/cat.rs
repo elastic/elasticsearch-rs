@@ -2594,7 +2594,6 @@ pub struct CatNodes<'a, 'b> {
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
-    local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     s: Option<&'b [&'b str]>,
@@ -2620,7 +2619,6 @@ impl<'a, 'b> CatNodes<'a, 'b> {
             h: None,
             help: None,
             human: None,
-            local: None,
             master_timeout: None,
             pretty: None,
             s: None,
@@ -2672,11 +2670,6 @@ impl<'a, 'b> CatNodes<'a, 'b> {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
-        self
-    }
-    #[doc = "Calculate the selected nodes using the local cluster state rather than the state from master node (default: false)"]
-    pub fn local(mut self, local: bool) -> Self {
-        self.local = Some(local);
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
@@ -2737,8 +2730,6 @@ impl<'a, 'b> CatNodes<'a, 'b> {
                 help: Option<bool>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "local")]
-                local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
@@ -2761,7 +2752,6 @@ impl<'a, 'b> CatNodes<'a, 'b> {
                 h: self.h,
                 help: self.help,
                 human: self.human,
-                local: self.local,
                 master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 s: self.s,
@@ -4616,8 +4606,8 @@ pub struct CatThreadPool<'a, 'b> {
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     s: Option<&'b [&'b str]>,
-    size: Option<Size>,
     source: Option<&'b str>,
+    time: Option<Time>,
     v: Option<bool>,
 }
 impl<'a, 'b> CatThreadPool<'a, 'b> {
@@ -4640,8 +4630,8 @@ impl<'a, 'b> CatThreadPool<'a, 'b> {
             master_timeout: None,
             pretty: None,
             s: None,
-            size: None,
             source: None,
+            time: None,
             v: None,
         }
     }
@@ -4700,14 +4690,14 @@ impl<'a, 'b> CatThreadPool<'a, 'b> {
         self.s = Some(s);
         self
     }
-    #[doc = "The multiplier in which to display values"]
-    pub fn size(mut self, size: Size) -> Self {
-        self.size = Some(size);
-        self
-    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
+        self
+    }
+    #[doc = "The unit in which to display time values"]
+    pub fn time(mut self, time: Time) -> Self {
+        self.time = Some(time);
         self
     }
     #[doc = "Verbose mode. Display column headers"]
@@ -4747,10 +4737,10 @@ impl<'a, 'b> CatThreadPool<'a, 'b> {
                 pretty: Option<bool>,
                 #[serde(rename = "s", serialize_with = "crate::client::serialize_coll_qs")]
                 s: Option<&'b [&'b str]>,
-                #[serde(rename = "size")]
-                size: Option<Size>,
                 #[serde(rename = "source")]
                 source: Option<&'b str>,
+                #[serde(rename = "time")]
+                time: Option<Time>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
@@ -4765,8 +4755,8 @@ impl<'a, 'b> CatThreadPool<'a, 'b> {
                 master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 s: self.s,
-                size: self.size,
                 source: self.source,
+                time: self.time,
                 v: self.v,
             };
             Some(query_params)

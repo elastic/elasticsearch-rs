@@ -196,6 +196,545 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Cluster Delete Component Template API"]
+pub enum ClusterDeleteComponentTemplateParts<'b> {
+    #[doc = "Name"]
+    Name(&'b str),
+}
+impl<'b> ClusterDeleteComponentTemplateParts<'b> {
+    #[doc = "Builds a relative URL path to the Cluster Delete Component Template API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            ClusterDeleteComponentTemplateParts::Name(ref name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(21usize + encoded_name.len());
+                p.push_str("/_component_template/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Cluster Delete Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-component-template.html)\n\nDeletes a component template"]
+pub struct ClusterDeleteComponentTemplate<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: ClusterDeleteComponentTemplateParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    master_timeout: Option<&'b str>,
+    pretty: Option<bool>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
+}
+impl<'a, 'b> ClusterDeleteComponentTemplate<'a, 'b> {
+    #[doc = "Creates a new instance of [ClusterDeleteComponentTemplate] with the specified API parts"]
+    pub fn new(client: &'a Elasticsearch, parts: ClusterDeleteComponentTemplateParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        ClusterDeleteComponentTemplate {
+            client,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Cluster Delete Component Template API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
+        let headers = self.headers;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
+                filter_path: Option<&'b [&'b str]>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<&'b str>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<&'b str>,
+                #[serde(rename = "timeout")]
+                timeout: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .client
+            .send(method, &path, headers, query_string.as_ref(), body)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Cluster Delete Voting Config Exclusions API"]
+pub enum ClusterDeleteVotingConfigExclusionsParts {
+    #[doc = "No parts"]
+    None,
+}
+impl ClusterDeleteVotingConfigExclusionsParts {
+    #[doc = "Builds a relative URL path to the Cluster Delete Voting Config Exclusions API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            ClusterDeleteVotingConfigExclusionsParts::None => {
+                "/_cluster/voting_config_exclusions".into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Cluster Delete Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/voting-config-exclusions.html)\n\nClears cluster voting config exclusions."]
+pub struct ClusterDeleteVotingConfigExclusions<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: ClusterDeleteVotingConfigExclusionsParts,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<&'b str>,
+    wait_for_removal: Option<bool>,
+}
+impl<'a, 'b> ClusterDeleteVotingConfigExclusions<'a, 'b> {
+    #[doc = "Creates a new instance of [ClusterDeleteVotingConfigExclusions]"]
+    pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
+        ClusterDeleteVotingConfigExclusions {
+            client,
+            parts: ClusterDeleteVotingConfigExclusionsParts::None,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+            wait_for_removal: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Specifies whether to wait for all excluded nodes to be removed from the cluster before clearing the voting configuration exclusions list."]
+    pub fn wait_for_removal(mut self, wait_for_removal: bool) -> Self {
+        self.wait_for_removal = Some(wait_for_removal);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Cluster Delete Voting Config Exclusions API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
+        let headers = self.headers;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
+                filter_path: Option<&'b [&'b str]>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<&'b str>,
+                #[serde(rename = "wait_for_removal")]
+                wait_for_removal: Option<bool>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+                wait_for_removal: self.wait_for_removal,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .client
+            .send(method, &path, headers, query_string.as_ref(), body)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Cluster Exists Component Template API"]
+pub enum ClusterExistsComponentTemplateParts<'b> {
+    #[doc = "Name"]
+    Name(&'b str),
+}
+impl<'b> ClusterExistsComponentTemplateParts<'b> {
+    #[doc = "Builds a relative URL path to the Cluster Exists Component Template API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            ClusterExistsComponentTemplateParts::Name(ref name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(21usize + encoded_name.len());
+                p.push_str("/_component_template/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Cluster Exists Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-component-template.html)\n\nReturns information about whether a particular component template exist"]
+pub struct ClusterExistsComponentTemplate<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: ClusterExistsComponentTemplateParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<&'b str>,
+    pretty: Option<bool>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b> ClusterExistsComponentTemplate<'a, 'b> {
+    #[doc = "Creates a new instance of [ClusterExistsComponentTemplate] with the specified API parts"]
+    pub fn new(client: &'a Elasticsearch, parts: ClusterExistsComponentTemplateParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        ClusterExistsComponentTemplate {
+            client,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            local: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: bool) -> Self {
+        self.local = Some(local);
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Cluster Exists Component Template API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Head;
+        let headers = self.headers;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
+                filter_path: Option<&'b [&'b str]>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<&'b str>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                local: self.local,
+                master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .client
+            .send(method, &path, headers, query_string.as_ref(), body)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Cluster Get Component Template API"]
+pub enum ClusterGetComponentTemplateParts<'b> {
+    #[doc = "No parts"]
+    None,
+    #[doc = "Name"]
+    Name(&'b [&'b str]),
+}
+impl<'b> ClusterGetComponentTemplateParts<'b> {
+    #[doc = "Builds a relative URL path to the Cluster Get Component Template API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            ClusterGetComponentTemplateParts::None => "/_component_template".into(),
+            ClusterGetComponentTemplateParts::Name(ref name) => {
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(21usize + encoded_name.len());
+                p.push_str("/_component_template/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Cluster Get Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-component-template.html)\n\nReturns one or more component templates"]
+pub struct ClusterGetComponentTemplate<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: ClusterGetComponentTemplateParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<&'b str>,
+    pretty: Option<bool>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b> ClusterGetComponentTemplate<'a, 'b> {
+    #[doc = "Creates a new instance of [ClusterGetComponentTemplate] with the specified API parts"]
+    pub fn new(client: &'a Elasticsearch, parts: ClusterGetComponentTemplateParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        ClusterGetComponentTemplate {
+            client,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            local: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: bool) -> Self {
+        self.local = Some(local);
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Cluster Get Component Template API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
+        let headers = self.headers;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
+                filter_path: Option<&'b [&'b str]>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<&'b str>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                local: self.local,
+                master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .client
+            .send(method, &path, headers, query_string.as_ref(), body)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cluster Get Settings API"]
 pub enum ClusterGetSettingsParts {
     #[doc = "No parts"]
@@ -708,6 +1247,346 @@ impl<'a, 'b> ClusterPendingTasks<'a, 'b> {
             Some(query_params)
         };
         let body = Option::<()>::None;
+        let response = self
+            .client
+            .send(method, &path, headers, query_string.as_ref(), body)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Cluster Post Voting Config Exclusions API"]
+pub enum ClusterPostVotingConfigExclusionsParts {
+    #[doc = "No parts"]
+    None,
+}
+impl ClusterPostVotingConfigExclusionsParts {
+    #[doc = "Builds a relative URL path to the Cluster Post Voting Config Exclusions API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            ClusterPostVotingConfigExclusionsParts::None => {
+                "/_cluster/voting_config_exclusions".into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Cluster Post Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/voting-config-exclusions.html)\n\nUpdates the cluster voting config exclusions by node ids or node names."]
+pub struct ClusterPostVotingConfigExclusions<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: ClusterPostVotingConfigExclusionsParts,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    node_ids: Option<&'b str>,
+    node_names: Option<&'b str>,
+    pretty: Option<bool>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
+}
+impl<'a, 'b, B> ClusterPostVotingConfigExclusions<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [ClusterPostVotingConfigExclusions]"]
+    pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
+        ClusterPostVotingConfigExclusions {
+            client,
+            parts: ClusterPostVotingConfigExclusionsParts::None,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            node_ids: None,
+            node_names: None,
+            pretty: None,
+            source: None,
+            timeout: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> ClusterPostVotingConfigExclusions<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        ClusterPostVotingConfigExclusions {
+            client: self.client,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            node_ids: self.node_ids,
+            node_names: self.node_names,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "A comma-separated list of the persistent ids of the nodes to exclude from the voting configuration. If specified, you may not also specify ?node_names."]
+    pub fn node_ids(mut self, node_ids: &'b str) -> Self {
+        self.node_ids = Some(node_ids);
+        self
+    }
+    #[doc = "A comma-separated list of the names of the nodes to exclude from the voting configuration. If specified, you may not also specify ?node_ids."]
+    pub fn node_names(mut self, node_names: &'b str) -> Self {
+        self.node_names = Some(node_names);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Cluster Post Voting Config Exclusions API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
+        let headers = self.headers;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
+                filter_path: Option<&'b [&'b str]>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "node_ids")]
+                node_ids: Option<&'b str>,
+                #[serde(rename = "node_names")]
+                node_names: Option<&'b str>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<&'b str>,
+                #[serde(rename = "timeout")]
+                timeout: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                node_ids: self.node_ids,
+                node_names: self.node_names,
+                pretty: self.pretty,
+                source: self.source,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .client
+            .send(method, &path, headers, query_string.as_ref(), body)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Cluster Put Component Template API"]
+pub enum ClusterPutComponentTemplateParts<'b> {
+    #[doc = "Name"]
+    Name(&'b str),
+}
+impl<'b> ClusterPutComponentTemplateParts<'b> {
+    #[doc = "Builds a relative URL path to the Cluster Put Component Template API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            ClusterPutComponentTemplateParts::Name(ref name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(21usize + encoded_name.len());
+                p.push_str("/_component_template/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Cluster Put Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-component-template.html)\n\nCreates or updates a component template"]
+pub struct ClusterPutComponentTemplate<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: ClusterPutComponentTemplateParts<'b>,
+    body: Option<B>,
+    create: Option<bool>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    master_timeout: Option<&'b str>,
+    pretty: Option<bool>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
+}
+impl<'a, 'b, B> ClusterPutComponentTemplate<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [ClusterPutComponentTemplate] with the specified API parts"]
+    pub fn new(client: &'a Elasticsearch, parts: ClusterPutComponentTemplateParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        ClusterPutComponentTemplate {
+            client,
+            parts,
+            headers,
+            body: None,
+            create: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> ClusterPutComponentTemplate<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        ClusterPutComponentTemplate {
+            client: self.client,
+            parts: self.parts,
+            body: Some(body.into()),
+            create: self.create,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+        }
+    }
+    #[doc = "Whether the index template should only be added if new or can also replace an existing one"]
+    pub fn create(mut self, create: bool) -> Self {
+        self.create = Some(create);
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Cluster Put Component Template API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
+        let headers = self.headers;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                #[serde(rename = "create")]
+                create: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
+                filter_path: Option<&'b [&'b str]>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<&'b str>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<&'b str>,
+                #[serde(rename = "timeout")]
+                timeout: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                create: self.create,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
         let response = self
             .client
             .send(method, &path, headers, query_string.as_ref(), body)
@@ -1568,6 +2447,33 @@ impl<'a> Cluster<'a> {
     pub fn allocation_explain<'b>(&'a self) -> ClusterAllocationExplain<'a, 'b, ()> {
         ClusterAllocationExplain::new(&self.client)
     }
+    #[doc = "[Cluster Delete Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-component-template.html)\n\nDeletes a component template"]
+    pub fn delete_component_template<'b>(
+        &'a self,
+        parts: ClusterDeleteComponentTemplateParts<'b>,
+    ) -> ClusterDeleteComponentTemplate<'a, 'b> {
+        ClusterDeleteComponentTemplate::new(&self.client, parts)
+    }
+    #[doc = "[Cluster Delete Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/voting-config-exclusions.html)\n\nClears cluster voting config exclusions."]
+    pub fn delete_voting_config_exclusions<'b>(
+        &'a self,
+    ) -> ClusterDeleteVotingConfigExclusions<'a, 'b> {
+        ClusterDeleteVotingConfigExclusions::new(&self.client)
+    }
+    #[doc = "[Cluster Exists Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-component-template.html)\n\nReturns information about whether a particular component template exist"]
+    pub fn exists_component_template<'b>(
+        &'a self,
+        parts: ClusterExistsComponentTemplateParts<'b>,
+    ) -> ClusterExistsComponentTemplate<'a, 'b> {
+        ClusterExistsComponentTemplate::new(&self.client, parts)
+    }
+    #[doc = "[Cluster Get Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-component-template.html)\n\nReturns one or more component templates"]
+    pub fn get_component_template<'b>(
+        &'a self,
+        parts: ClusterGetComponentTemplateParts<'b>,
+    ) -> ClusterGetComponentTemplate<'a, 'b> {
+        ClusterGetComponentTemplate::new(&self.client, parts)
+    }
     #[doc = "[Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-update-settings.html)\n\nReturns cluster settings."]
     pub fn get_settings<'b>(&'a self) -> ClusterGetSettings<'a, 'b> {
         ClusterGetSettings::new(&self.client)
@@ -1579,6 +2485,19 @@ impl<'a> Cluster<'a> {
     #[doc = "[Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-pending.html)\n\nReturns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
     pub fn pending_tasks<'b>(&'a self) -> ClusterPendingTasks<'a, 'b> {
         ClusterPendingTasks::new(&self.client)
+    }
+    #[doc = "[Cluster Post Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/voting-config-exclusions.html)\n\nUpdates the cluster voting config exclusions by node ids or node names."]
+    pub fn post_voting_config_exclusions<'b>(
+        &'a self,
+    ) -> ClusterPostVotingConfigExclusions<'a, 'b, ()> {
+        ClusterPostVotingConfigExclusions::new(&self.client)
+    }
+    #[doc = "[Cluster Put Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-component-template.html)\n\nCreates or updates a component template"]
+    pub fn put_component_template<'b>(
+        &'a self,
+        parts: ClusterPutComponentTemplateParts<'b>,
+    ) -> ClusterPutComponentTemplate<'a, 'b, ()> {
+        ClusterPutComponentTemplate::new(&self.client, parts)
     }
     #[doc = "[Cluster Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-update-settings.html)\n\nUpdates the cluster settings."]
     pub fn put_settings<'b>(&'a self) -> ClusterPutSettings<'a, 'b, ()> {

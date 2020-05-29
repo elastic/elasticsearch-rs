@@ -22,7 +22,8 @@
       },
       "accept_enterprise":{
         "type":"boolean",
-        "description":"If the active license is an enterprise license, return type as 'enterprise' (default: false)"
+        "description":"Supported for backwards compatibility with 7.x. If this param is used it must be set to true",
+        "deprecated":true
       }
     }
   }

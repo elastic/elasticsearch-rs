@@ -136,22 +136,6 @@ pub enum SearchType {
     DfsQueryThenFetch,
 }
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
-#[doc = "The multiplier in which to display values"]
-pub enum Size {
-    #[serde(rename = "")]
-    Unspecified,
-    #[serde(rename = "k")]
-    K,
-    #[serde(rename = "m")]
-    M,
-    #[serde(rename = "g")]
-    G,
-    #[serde(rename = "t")]
-    T,
-    #[serde(rename = "p")]
-    P,
-}
-#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 #[doc = "Specify suggest mode"]
 pub enum SuggestMode {
     #[serde(rename = "missing")]

@@ -1974,7 +1974,7 @@ impl<'a, 'b> SecurityGetPrivileges<'a, 'b> {
 #[doc = "API parts for the Security Get Role API"]
 pub enum SecurityGetRoleParts<'b> {
     #[doc = "Name"]
-    Name(&'b str),
+    Name(&'b [&'b str]),
     #[doc = "No parts"]
     None,
 }
@@ -1983,7 +1983,9 @@ impl<'b> SecurityGetRoleParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SecurityGetRoleParts::Name(ref name) => {
-                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_name.len());
                 p.push_str("/_security/role/");
                 p.push_str(encoded_name.as_ref());
@@ -2094,7 +2096,7 @@ impl<'a, 'b> SecurityGetRole<'a, 'b> {
 #[doc = "API parts for the Security Get Role Mapping API"]
 pub enum SecurityGetRoleMappingParts<'b> {
     #[doc = "Name"]
-    Name(&'b str),
+    Name(&'b [&'b str]),
     #[doc = "No parts"]
     None,
 }
@@ -2103,7 +2105,9 @@ impl<'b> SecurityGetRoleMappingParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SecurityGetRoleMappingParts::Name(ref name) => {
-                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(24usize + encoded_name.len());
                 p.push_str("/_security/role_mapping/");
                 p.push_str(encoded_name.as_ref());
