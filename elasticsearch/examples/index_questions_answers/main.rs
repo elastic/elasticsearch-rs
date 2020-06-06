@@ -1,8 +1,6 @@
 #[macro_use]
 extern crate serde_json;
 
-use chrono::prelude::*;
-use chrono::ParseResult;
 use clap::{App, Arg};
 use elasticsearch::{
     auth::Credentials,
@@ -12,18 +10,14 @@ use elasticsearch::{
     BulkOperation, BulkParts, Elasticsearch, Error, DEFAULT_ADDRESS,
 };
 use serde_json::Value;
-use std::collections::BTreeMap;
-use std::fs::File;
-use std::io::Read;
-use std::str;
 use sysinfo::SystemExt;
 use url::Url;
-use xml::reader::{EventReader, XmlEvent};
 
 mod stack_overflow;
-use elasticsearch::indices::IndicesDeleteParts;
+use elasticsearch::indices::{IndicesDeleteParts, IndicesPutSettingsParts};
 use http::StatusCode;
 use stack_overflow::*;
+use std::time::Instant;
 
 /// Reads questions and answers from the Stack Overflow Data Dump XML file and indexes
 /// them into Elasticsearch using the bulk API. An index with explicit mapping is created
@@ -75,7 +69,7 @@ pub async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let path = matches.value_of("path").expect("missing 'path' argument");
     let limit = match matches.value_of("limit") {
-        Some(l) => Some(l.parse::<i32>()?),
+        Some(l) => Some(l.parse::<usize>()?),
         _ => None,
     };
     let size = match matches.value_of("size") {
@@ -84,170 +78,70 @@ pub async fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
 
     let delete = matches.is_present("delete");
-
     let client = create_client()?;
 
     create_index_if_not_exists(&client, delete).await?;
+    set_refresh_interval(&client, json!("-1")).await?;
 
-    let xml = open_xml(path)?;
-    let reader = EventReader::new(xml);
-    let mut count = 0;
+    let mut posts_iter = PostsIter::new(path);
+    let mut total = 0;
     let mut posts = Vec::with_capacity(size);
+    let now = Instant::now();
 
-    for e in reader {
-        match e {
-            Ok(XmlEvent::StartElement {
-                name, attributes, ..
-            }) => {
-                match name.local_name.as_ref() {
-                    "row" => {
-                        count += 1;
+    while let Some(post) = posts_iter.next() {
+        total += 1;
+        posts.push(post);
+        if total % size == 0 {
+            index_posts(&client, &posts).await?;
+            let duration = now.elapsed();
+            let secs = duration.as_secs_f64();
 
-                        let mut a = BTreeMap::new();
-                        for attribute in attributes {
-                            a.insert(attribute.name.local_name, attribute.value);
-                        }
+            let taken = if secs >= 60f64 {
+                format!("{}m", secs / 60f64)
+            } else {
+                format!("{:?}", duration)
+            };
 
-                        let id = a["Id"].parse::<i32>()?;
-                        let post_type_id = a["PostTypeId"].parse::<i32>()?;
-                        let score = a["Score"].parse::<i32>()?;
-                        let body = a["Body"].clone();
-                        let creation_date = parse_datetime_utc(a["CreationDate"].as_str())?;
-                        let comment_count = a["CommentCount"].parse::<i32>()?;
-                        let owner_user_id = if a.contains_key("OwnerUserId") {
-                            a["OwnerUserId"].parse::<i32>().ok()
-                        } else {
-                            None
-                        };
-
-                        let owner_display_name = a.get("OwnerDisplayName").map(|s| s.clone());
-                        let last_editor_user_id = if a.contains_key("LastEditorUserId") {
-                            a["LastEditorUserId"].parse::<i32>().ok()
-                        } else {
-                            None
-                        };
-
-                        let last_edit_date = if a.contains_key("LastEditDate") {
-                            Some(parse_datetime_utc(a["LastEditDate"].as_str())?)
-                        } else {
-                            None
-                        };
-
-                        let last_activity_date = if a.contains_key("LastActivityDate") {
-                            Some(parse_datetime_utc(a["LastActivityDate"].as_str())?)
-                        } else {
-                            None
-                        };
-
-                        let post: Post = if post_type_id == 1 {
-                            let title = a["Title"].clone();
-                            let title_suggest = {
-                                let weight = if score < 0 { 0 } else { score };
-                                json!({
-                                    "input": [title],
-                                    "weight": weight
-                                })
-                            };
-
-                            Question {
-                                id,
-                                parent_id: json!("question"),
-                                creation_date,
-                                score,
-                                body,
-                                owner_user_id,
-                                owner_display_name,
-                                last_editor_user_id,
-                                last_edit_date,
-                                last_activity_date,
-                                comment_count,
-                                tags: a
-                                    .get("Tags")
-                                    .map(|t| {
-                                        t.replace(">", "")
-                                            .split('<')
-                                            .filter(|s| !s.is_empty())
-                                            .map(|s| s.to_string())
-                                            .collect()
-                                    })
-                                    .unwrap_or_else(|| vec![]),
-                                title,
-                                title_suggest: Some(title_suggest),
-                                accepted_answer_id: None,
-                                view_count: a["ViewCount"].parse::<i32>()?,
-                                last_editor_display_name: a
-                                    .get("LastEditorDisplayName")
-                                    .map(|s| s.clone()),
-                                answer_count: a["AnswerCount"].parse::<i32>()?,
-                                favorite_count: a
-                                    .get("FavoriteCount")
-                                    .map(|s| s.parse::<i32>().unwrap())
-                                    .unwrap_or_else(|| 0),
-                                community_owned_date: a
-                                    .get("CommunityOwnedDate")
-                                    .map(|s| parse_datetime_utc(s).unwrap()),
-                            }
-                            .into()
-                        } else {
-                            Answer {
-                                id,
-                                body,
-                                comment_count,
-                                score,
-                                creation_date,
-                                last_activity_date,
-                                last_edit_date,
-                                last_editor_user_id,
-                                owner_display_name,
-                                parent_id: json!({
-                                    "parent": a["ParentId"].clone(),
-                                    "name": "answer"
-                                }),
-                                owner_user_id,
-                            }
-                            .into()
-                        };
-
-                        posts.push(post);
-                        if count % size == 0 {
-                            println!(
-                                "Indexing {} posts. count: {}, size: {}",
-                                posts.len(),
-                                count,
-                                size
-                            );
-                            index_posts(&client, &posts).await?;
-                            posts.clear();
-                        }
-                    }
-                    _ => {}
-                }
-
-                if let Some(l) = limit {
-                    if count as i32 > l {
-                        break;
-                    }
-                }
-            }
-            Err(e) => println!("Error: {:?}", e),
-            _ => (),
+            println!(
+                "Indexed total {} posts in {}",
+                total,
+                taken);
+            posts.clear();
         }
 
-        if !posts.is_empty() {
-            index_posts(&client, &posts).await?;
-            posts.clear();
+        if let Some(l) = limit {
+            if total >= l {
+                break;
+            }
         }
     }
 
+    if !posts.is_empty() {
+        index_posts(&client, &posts).await?;
+        posts.clear();
+    }
+
+    set_refresh_interval(&client, json!(null)).await?;
     Ok(())
 }
 
-fn open_xml(path: &str) -> std::io::Result<File> {
-    let mut xml = File::open(path)?;
-    // skip the BOM as the xml library doesn't handle this.
-    let mut bom = [0; 3];
-    xml.read_exact(&mut bom)?;
-    Ok(xml)
+async fn set_refresh_interval(client: &Elasticsearch, interval: Value) -> Result<(), Error> {
+    let response = client
+        .indices()
+        .put_settings(IndicesPutSettingsParts::Index(&["posts"]))
+        .body(json!({
+            "index" : {
+                "refresh_interval" : interval
+            }
+        }))
+        .send()
+        .await?;
+
+    if !response.status_code().is_success() {
+        println!("Failed to update refresh interval");
+    }
+
+    Ok(())
 }
 
 async fn index_posts(client: &Elasticsearch, posts: &[Post]) -> Result<(), Error> {
@@ -268,8 +162,16 @@ async fn index_posts(client: &Elasticsearch, posts: &[Post]) -> Result<(), Error
     let json: Value = response.json().await?;
 
     if json["errors"].as_bool().unwrap() {
-        // TODO collect up the errors.
-        println!("Errors whilst indexing");
+
+        let failed : Vec<&Value> = json["items"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter(|v| !v["error"].is_null())
+            .collect();
+
+        // TODO: retry failures
+        println!("Errors whilst indexing. Failures: {}", failed.len());
     }
 
     Ok(())
@@ -437,10 +339,6 @@ async fn create_index_if_not_exists(client: &Elasticsearch, delete: bool) -> Res
     }
 
     Ok(())
-}
-
-fn parse_datetime_utc<S: AsRef<str>>(s: S) -> ParseResult<DateTime<Utc>> {
-    Utc.datetime_from_str(s.as_ref(), "%Y-%m-%dT%H:%M:%S.%f")
 }
 
 fn create_client() -> Result<Elasticsearch, Error> {
