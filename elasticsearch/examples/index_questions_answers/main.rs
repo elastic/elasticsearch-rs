@@ -24,6 +24,7 @@ use std::time::Instant;
 /// for search in other examples.
 ///
 /// Stack Overflow data is licensed under cc-by-sa 4.0.
+// TODO: Concurrent bulk requests
 #[tokio::main]
 pub async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let matches = App::new("index_questions_answers")
