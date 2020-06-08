@@ -1,5 +1,9 @@
 on: push
 name: Clippy check
+env:
+  # workaround current issue with rustfmt-nightly
+  CFG_RELEASE_CHANNEL: nightly
+  CFG_RELEASE: nightly
 jobs:
   clippy_check:
     runs-on: ubuntu-latest
