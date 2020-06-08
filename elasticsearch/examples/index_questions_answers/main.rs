@@ -19,6 +19,8 @@ use http::StatusCode;
 use stack_overflow::*;
 use std::time::Instant;
 
+static POSTS_INDEX: &'static str = "posts";
+
 /// Reads questions and answers from the Stack Overflow Data Dump XML file and indexes
 /// them into Elasticsearch using the bulk API. An index with explicit mapping is created
 /// for search in other examples.
@@ -103,10 +105,7 @@ pub async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 format!("{:?}", duration)
             };
 
-            println!(
-                "Indexed total {} posts in {}",
-                total,
-                taken);
+            println!("Indexed total {} posts in {}", total, taken);
             posts.clear();
         }
 
@@ -129,7 +128,7 @@ pub async fn main() -> Result<(), Box<dyn std::error::Error>> {
 async fn set_refresh_interval(client: &Elasticsearch, interval: Value) -> Result<(), Error> {
     let response = client
         .indices()
-        .put_settings(IndicesPutSettingsParts::Index(&["posts"]))
+        .put_settings(IndicesPutSettingsParts::Index(&[POSTS_INDEX]))
         .body(json!({
             "index" : {
                 "refresh_interval" : interval
@@ -155,7 +154,7 @@ async fn index_posts(client: &Elasticsearch, posts: &[Post]) -> Result<(), Error
         .collect();
 
     let response = client
-        .bulk(BulkParts::Index("posts"))
+        .bulk(BulkParts::Index(POSTS_INDEX))
         .body(body)
         .send()
         .await?;
@@ -163,8 +162,7 @@ async fn index_posts(client: &Elasticsearch, posts: &[Post]) -> Result<(), Error
     let json: Value = response.json().await?;
 
     if json["errors"].as_bool().unwrap() {
-
-        let failed : Vec<&Value> = json["items"]
+        let failed: Vec<&Value> = json["items"]
             .as_array()
             .unwrap()
             .iter()
@@ -181,14 +179,14 @@ async fn index_posts(client: &Elasticsearch, posts: &[Post]) -> Result<(), Error
 async fn create_index_if_not_exists(client: &Elasticsearch, delete: bool) -> Result<(), Error> {
     let exists = client
         .indices()
-        .exists(IndicesExistsParts::Index(&["posts"]))
+        .exists(IndicesExistsParts::Index(&[POSTS_INDEX]))
         .send()
         .await?;
 
     if exists.status_code().is_success() && delete {
         let delete = client
             .indices()
-            .delete(IndicesDeleteParts::Index(&["posts"]))
+            .delete(IndicesDeleteParts::Index(&[POSTS_INDEX]))
             .send()
             .await?;
 
@@ -200,7 +198,7 @@ async fn create_index_if_not_exists(client: &Elasticsearch, delete: bool) -> Res
     if exists.status_code() == StatusCode::NOT_FOUND || delete {
         let response = client
             .indices()
-            .create(IndicesCreateParts::Index("posts"))
+            .create(IndicesCreateParts::Index(POSTS_INDEX))
             .body(json!(
                 {
                   "mappings": {
@@ -365,7 +363,7 @@ fn create_client() -> Result<Elasticsearch, Error> {
             url.set_username("").unwrap();
             u
         } else {
-            "elastic".into()
+            std::env::var("ES_USERNAME").unwrap_or_else(|_| "elastic".into())
         };
 
         let password = match url.password() {
@@ -374,7 +372,7 @@ fn create_client() -> Result<Elasticsearch, Error> {
                 url.set_password(None).unwrap();
                 pass
             }
-            None => "changeme".into(),
+            None => std::env::var("ES_PASSWORD").unwrap_or_else(|_| "changeme".into()),
         };
 
         Some(Credentials::Basic(username, password))

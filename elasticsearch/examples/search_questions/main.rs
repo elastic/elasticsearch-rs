@@ -8,9 +8,11 @@ use serde_json::{json, Value};
 use std::env;
 use sysinfo::SystemExt;
 use url::Url;
-
 mod stack_overflow;
 use stack_overflow::*;
+use textwrap::fill;
+
+static POSTS_INDEX: &'static str = "posts";
 
 #[tokio::main]
 pub async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -57,12 +59,15 @@ pub async fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
 
     let client = create_client()?;
-    let response = client
-        .search(SearchParts::Index(&["posts"]))
+    let mut response = client
+        .search(SearchParts::Index(&[POSTS_INDEX]))
         .body(query)
         .pretty(true)
         .send()
         .await?;
+
+    // turn the response into an Error if status code is unsuccessful
+    response = response.error_for_status_code()?;
 
     let json: Value = response.json().await?;
 
@@ -74,10 +79,12 @@ pub async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .collect();
 
     for question in questions {
-        println!("{}", question.title);
-        println!("https://stackoverflow.com/q/{}", question.id);
+        println!(
+            "{} - https://stackoverflow.com/q/{}",
+            question.title, question.id
+        );
         println!();
-        println!("{}", question.body);
+        println!("{}", fill(&question.body, 80));
         println!("{}", "-".repeat(50));
     }
 
@@ -107,7 +114,7 @@ fn create_client() -> Result<Elasticsearch, Error> {
             url.set_username("").unwrap();
             u
         } else {
-            "elastic".into()
+            std::env::var("ES_USERNAME").unwrap_or_else(|_| "elastic".into())
         };
 
         let password = match url.password() {
@@ -116,7 +123,7 @@ fn create_client() -> Result<Elasticsearch, Error> {
                 url.set_password(None).unwrap();
                 pass
             }
-            None => "changeme".into(),
+            None => std::env::var("ES_PASSWORD").unwrap_or_else(|_| "changeme".into()),
         };
 
         Some(Credentials::Basic(username, password))

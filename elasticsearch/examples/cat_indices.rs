@@ -1,81 +1,24 @@
-#[macro_use]
-extern crate serde_json;
-
-use elasticsearch::{
-    auth::Credentials,
-    cert::CertificateValidation,
-    http::transport::{SingleNodeConnectionPool, TransportBuilder},
-    Elasticsearch, Error, SearchParts, DEFAULT_ADDRESS,
-};
-use serde_json::Value;
-use std::env;
+use elasticsearch::auth::Credentials;
+use elasticsearch::cat::CatIndicesParts;
+use elasticsearch::cert::CertificateValidation;
+use elasticsearch::http::transport::{SingleNodeConnectionPool, TransportBuilder};
+use elasticsearch::{Elasticsearch, Error, DEFAULT_ADDRESS};
 use sysinfo::SystemExt;
 use url::Url;
-mod stack_overflow;
-use elasticsearch::http::response::Response;
-use stack_overflow::*;
-use textwrap::fill;
-
-static POSTS_INDEX: &'static str = "posts";
 
 #[tokio::main]
 pub async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let args: Vec<String> = env::args().collect();
-    let query = if args.len() < 2 {
-        json!({
-            "query": {
-                "match_all": {}
-            }
-        })
-    } else {
-        json!({
-            "query": {
-                "match": {
-                    "body": {
-                        "query": args[1],
-                        "operator": "and"
-                    }
-                }
-            }
-        })
-    };
-
     let client = create_client()?;
-    let mut response = client
-        .search(SearchParts::Index(&[POSTS_INDEX]))
-        .body(query)
-        .pretty(true)
+
+    let response = client
+        .cat()
+        .indices(CatIndicesParts::None)
+        .v(true)
         .send()
         .await?;
 
-    // turn the response into an Error if status code is unsuccessful
-    response = response.error_for_status_code()?;
-
-    let json: Value = response.json().await?;
-    let posts: Vec<Post> = json["hits"]["hits"]
-        .as_array()
-        .unwrap()
-        .iter()
-        .map(|h| serde_json::from_value(h["_source"].clone()).unwrap())
-        .collect();
-
-    for post in posts {
-        match post {
-            Post::Question(q) => {
-                println!("{} - https://stackoverflow.com/q/{}", q.title, q.id);
-                println!();
-                println!("{}", fill(&q.body, 80));
-                println!("{}", "-".repeat(50));
-            }
-            Post::Answer(a) => {
-                println!("https://stackoverflow.com/a/{}", a.id);
-                println!();
-                println!("{}", fill(&a.body, 80));
-                println!("{}", "-".repeat(30));
-            }
-        }
-    }
-
+    let text = response.text().await?;
+    println!("{}", text);
     Ok(())
 }
 
