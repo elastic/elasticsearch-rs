@@ -714,7 +714,7 @@ where
         self.track_scores = Some(track_scores);
         self
     }
-    #[doc = "Indicate if the number of documents that match the query should be tracked"]
+    #[doc = "Indicate if the number of documents that match the query should be tracked. A number can also be specified, to accurately track the total hit count up to the number."]
     pub fn track_total_hits<T: Into<TrackTotalHits>>(mut self, track_total_hits: T) -> Self {
         self.track_total_hits = Some(track_total_hits.into());
         self

@@ -545,17 +545,18 @@ where
 #[doc = "API parts for the Snapshot Delete API"]
 pub enum SnapshotDeleteParts<'b> {
     #[doc = "Repository and Snapshot"]
-    RepositorySnapshot(&'b str, &'b str),
+    RepositorySnapshot(&'b str, &'b [&'b str]),
 }
 impl<'b> SnapshotDeleteParts<'b> {
     #[doc = "Builds a relative URL path to the Snapshot Delete API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SnapshotDeleteParts::RepositorySnapshot(ref repository, ref snapshot) => {
+                let snapshot_str = snapshot.join(",");
                 let encoded_repository: Cow<str> =
                     percent_encode(repository.as_bytes(), PARTS_ENCODED).into();
                 let encoded_snapshot: Cow<str> =
-                    percent_encode(snapshot.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(snapshot_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
                     12usize + encoded_repository.len() + encoded_snapshot.len(),
                 );
@@ -569,7 +570,7 @@ impl<'b> SnapshotDeleteParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Snapshot Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nDeletes a snapshot."]
+#[doc = "Builder for the [Snapshot Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nDeletes one or more snapshots."]
 pub struct SnapshotDelete<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SnapshotDeleteParts<'b>,
@@ -1630,7 +1631,7 @@ impl<'a> Snapshot<'a> {
     ) -> SnapshotCreateRepository<'a, 'b, ()> {
         SnapshotCreateRepository::new(&self.client, parts)
     }
-    #[doc = "[Snapshot Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nDeletes a snapshot."]
+    #[doc = "[Snapshot Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nDeletes one or more snapshots."]
     pub fn delete<'b>(&'a self, parts: SnapshotDeleteParts<'b>) -> SnapshotDelete<'a, 'b> {
         SnapshotDelete::new(&self.client, parts)
     }
