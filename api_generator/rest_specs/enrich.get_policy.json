@@ -18,7 +18,7 @@
           }
         },
         {
-          "path": "/_enrich/policy/",
+          "path": "/_enrich/policy",
           "methods": [ "GET" ]
         }
       ]

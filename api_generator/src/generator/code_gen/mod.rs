@@ -167,6 +167,7 @@ fn typekind_to_ty(name: &str, kind: &TypeKind, required: bool, fn_arg: bool) -> 
         TypeKind::String => v.push_str(str_type),
         TypeKind::Text => v.push_str(str_type),
         TypeKind::Boolean => match name {
+            // keep until https://github.com/elastic/elasticsearch/pull/57329 is merged
             "track_total_hits" => {
                 if fn_arg {
                     v.push_str(format!("Into<{}>", name.to_pascal_case()).as_str())
@@ -185,7 +186,14 @@ fn typekind_to_ty(name: &str, kind: &TypeKind, required: bool, fn_arg: bool) -> 
         TypeKind::Time => v.push_str(str_type),
         TypeKind::Union(u) => match name {
             "slices" => v.push_str("Slices"),
-            _ => panic!("unsupported union type: {:?}", u),
+            "track_total_hits" => {
+                if fn_arg {
+                    v.push_str(format!("Into<{}>", name.to_pascal_case()).as_str())
+                } else {
+                    v.push_str(name.to_pascal_case().as_str())
+                }
+            }
+            _ => panic!("unsupported union type: {:?} for {}", u, name),
         },
     };
 

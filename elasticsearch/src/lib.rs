@@ -61,7 +61,7 @@
 //!
 //! ```toml,no_run
 //! [dependencies]
-//! elasticsearch = "7.7.1-alpha.1"
+//! elasticsearch = "8.0.0-alpha.1"
 //! ```
 //! The following _optional_ dependencies may also be useful to create requests and read responses
 //!
@@ -410,12 +410,5 @@ pub mod tests {
         let parts = SearchParts::Index(&[" !\"#$%&'\\()*+,-./:;<=>?@[\\]^_`{|}~"]);
         let url = parts.url();
         assert_eq!(url, "/%20%21%22%23%24%25%26%27%5C%28%29*%2B,-.%2F%3A%3B%3C%3D%3E%3F%40%5B%5C%5D%5E_%60%7B%7C%7D%7E/_search");
-    }
-
-    #[test]
-    fn build_search_on_selected_indices_and_types() {
-        let parts = SearchParts::IndexType(&["index-1", "index-2"], &["type-1", "type-2"]);
-        let url = parts.url();
-        assert_eq!(url, "/index-1,index-2/type-1,type-2/_search");
     }
 }

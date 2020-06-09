@@ -26,24 +26,6 @@
               "description":"A comma-separated list of index names to search; use `_all` or empty string to perform the operation on all indices"
             }
           }
-        },
-        {
-          "path" : "/{index}/{type}/_search",
-          "methods": ["GET", "POST"],
-          "parts": {
-            "index": {
-              "type" : "list",
-              "description" : "A comma-separated list of index names to search; use `_all` or empty string to perform the operation on all indices"
-            },
-            "type": {
-              "type": "list",
-              "description": "A comma-separated list of document types to search; leave empty to perform the operation on all types"
-            }
-          },
-          "deprecated" : {
-              "version" : "7.0.0",
-              "description" : "Specifying types in urls has been deprecated"
-          }
         }
       ]
     },
@@ -201,8 +183,8 @@
         "description":"Whether to calculate and return scores even if they are not used for sorting"
       },
       "track_total_hits":{
-        "type":"boolean",
-        "description":"Indicate if the number of documents that match the query should be tracked"
+        "type":"boolean|long",
+        "description":"Indicate if the number of documents that match the query should be tracked. A number can also be specified, to accurately track the total hit count up to the number."
       },
       "allow_partial_search_results":{
         "type":"boolean",

@@ -59,7 +59,7 @@ impl<'b> TransformDeleteTransformParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Transform Delete Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/delete-transform.html)\n\nDeletes an existing transform."]
+#[doc = "Builder for the [Transform Delete Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/delete-transform.html)\n\nDeletes an existing transform."]
 pub struct TransformDeleteTransform<'a, 'b> {
     client: &'a Elasticsearch,
     parts: TransformDeleteTransformParts<'b>,
@@ -190,7 +190,7 @@ impl<'b> TransformGetTransformParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Transform Get Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/get-transform.html)\n\nRetrieves configuration information for transforms."]
+#[doc = "Builder for the [Transform Get Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-transform.html)\n\nRetrieves configuration information for transforms."]
 pub struct TransformGetTransform<'a, 'b> {
     client: &'a Elasticsearch,
     parts: TransformGetTransformParts<'b>,
@@ -339,7 +339,7 @@ impl<'b> TransformGetTransformStatsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Transform Get Transform Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/get-transform-stats.html)\n\nRetrieves usage information for transforms."]
+#[doc = "Builder for the [Transform Get Transform Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-transform-stats.html)\n\nRetrieves usage information for transforms."]
 pub struct TransformGetTransformStats<'a, 'b> {
     client: &'a Elasticsearch,
     parts: TransformGetTransformStatsParts<'b>,
@@ -480,7 +480,7 @@ impl TransformPreviewTransformParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Transform Preview Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/preview-transform.html)\n\nPreviews a transform."]
+#[doc = "Builder for the [Transform Preview Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/preview-transform.html)\n\nPreviews a transform."]
 pub struct TransformPreviewTransform<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: TransformPreviewTransformParts,
@@ -620,7 +620,7 @@ impl<'b> TransformPutTransformParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Transform Put Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/put-transform.html)\n\nInstantiates a transform."]
+#[doc = "Builder for the [Transform Put Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/put-transform.html)\n\nInstantiates a transform."]
 pub struct TransformPutTransform<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: TransformPutTransformParts<'b>,
@@ -772,7 +772,7 @@ impl<'b> TransformStartTransformParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Transform Start Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/start-transform.html)\n\nStarts one or more transforms."]
+#[doc = "Builder for the [Transform Start Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/start-transform.html)\n\nStarts one or more transforms."]
 pub struct TransformStartTransform<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: TransformStartTransformParts<'b>,
@@ -924,7 +924,7 @@ impl<'b> TransformStopTransformParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Transform Stop Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/stop-transform.html)\n\nStops one or more transforms."]
+#[doc = "Builder for the [Transform Stop Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/stop-transform.html)\n\nStops one or more transforms."]
 pub struct TransformStopTransform<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: TransformStopTransformParts<'b>,
@@ -1120,7 +1120,7 @@ impl<'b> TransformUpdateTransformParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Transform Update Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/update-transform.html)\n\nUpdates certain properties of a transform."]
+#[doc = "Builder for the [Transform Update Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/update-transform.html)\n\nUpdates certain properties of a transform."]
 pub struct TransformUpdateTransform<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: TransformUpdateTransformParts<'b>,
@@ -1258,53 +1258,53 @@ impl<'a> Transform<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Transform Delete Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/delete-transform.html)\n\nDeletes an existing transform."]
+    #[doc = "[Transform Delete Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/delete-transform.html)\n\nDeletes an existing transform."]
     pub fn delete_transform<'b>(
         &'a self,
         parts: TransformDeleteTransformParts<'b>,
     ) -> TransformDeleteTransform<'a, 'b> {
         TransformDeleteTransform::new(&self.client, parts)
     }
-    #[doc = "[Transform Get Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/get-transform.html)\n\nRetrieves configuration information for transforms."]
+    #[doc = "[Transform Get Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-transform.html)\n\nRetrieves configuration information for transforms."]
     pub fn get_transform<'b>(
         &'a self,
         parts: TransformGetTransformParts<'b>,
     ) -> TransformGetTransform<'a, 'b> {
         TransformGetTransform::new(&self.client, parts)
     }
-    #[doc = "[Transform Get Transform Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/get-transform-stats.html)\n\nRetrieves usage information for transforms."]
+    #[doc = "[Transform Get Transform Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-transform-stats.html)\n\nRetrieves usage information for transforms."]
     pub fn get_transform_stats<'b>(
         &'a self,
         parts: TransformGetTransformStatsParts<'b>,
     ) -> TransformGetTransformStats<'a, 'b> {
         TransformGetTransformStats::new(&self.client, parts)
     }
-    #[doc = "[Transform Preview Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/preview-transform.html)\n\nPreviews a transform."]
+    #[doc = "[Transform Preview Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/preview-transform.html)\n\nPreviews a transform."]
     pub fn preview_transform<'b>(&'a self) -> TransformPreviewTransform<'a, 'b, ()> {
         TransformPreviewTransform::new(&self.client)
     }
-    #[doc = "[Transform Put Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/put-transform.html)\n\nInstantiates a transform."]
+    #[doc = "[Transform Put Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/put-transform.html)\n\nInstantiates a transform."]
     pub fn put_transform<'b>(
         &'a self,
         parts: TransformPutTransformParts<'b>,
     ) -> TransformPutTransform<'a, 'b, ()> {
         TransformPutTransform::new(&self.client, parts)
     }
-    #[doc = "[Transform Start Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/start-transform.html)\n\nStarts one or more transforms."]
+    #[doc = "[Transform Start Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/start-transform.html)\n\nStarts one or more transforms."]
     pub fn start_transform<'b>(
         &'a self,
         parts: TransformStartTransformParts<'b>,
     ) -> TransformStartTransform<'a, 'b, ()> {
         TransformStartTransform::new(&self.client, parts)
     }
-    #[doc = "[Transform Stop Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/stop-transform.html)\n\nStops one or more transforms."]
+    #[doc = "[Transform Stop Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/stop-transform.html)\n\nStops one or more transforms."]
     pub fn stop_transform<'b>(
         &'a self,
         parts: TransformStopTransformParts<'b>,
     ) -> TransformStopTransform<'a, 'b, ()> {
         TransformStopTransform::new(&self.client, parts)
     }
-    #[doc = "[Transform Update Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/update-transform.html)\n\nUpdates certain properties of a transform."]
+    #[doc = "[Transform Update Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/update-transform.html)\n\nUpdates certain properties of a transform."]
     pub fn update_transform<'b>(
         &'a self,
         parts: TransformUpdateTransformParts<'b>,

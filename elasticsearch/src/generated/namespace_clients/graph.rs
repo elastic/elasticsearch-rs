@@ -42,8 +42,6 @@ use std::borrow::Cow;
 pub enum GraphExploreParts<'b> {
     #[doc = "Index"]
     Index(&'b [&'b str]),
-    #[doc = "Index and Type"]
-    IndexType(&'b [&'b str], &'b [&'b str]),
 }
 impl<'b> GraphExploreParts<'b> {
     #[doc = "Builds a relative URL path to the Graph Explore API"]
@@ -59,25 +57,11 @@ impl<'b> GraphExploreParts<'b> {
                 p.push_str("/_graph/explore");
                 p.into()
             }
-            GraphExploreParts::IndexType(ref index, ref ty) => {
-                let index_str = index.join(",");
-                let ty_str = ty.join(",");
-                let encoded_index: Cow<str> =
-                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(17usize + encoded_index.len() + encoded_ty.len());
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
-                p.push_str("/_graph/explore");
-                p.into()
-            }
         }
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
+#[doc = "Builder for the [Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
 pub struct GraphExplore<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: GraphExploreParts<'b>,
@@ -229,7 +213,7 @@ impl<'a> Graph<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
+    #[doc = "[Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
     pub fn explore<'b>(&'a self, parts: GraphExploreParts<'b>) -> GraphExplore<'a, 'b, ()> {
         GraphExplore::new(&self.client, parts)
     }

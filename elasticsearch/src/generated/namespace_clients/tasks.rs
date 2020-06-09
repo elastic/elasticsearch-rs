@@ -63,7 +63,7 @@ impl<'b> TasksCancelParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/tasks.html)\n\nCancels a task, if it can be cancelled through an API."]
+#[doc = "Builder for the [Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/tasks.html)\n\nCancels a task, if it can be cancelled through an API."]
 pub struct TasksCancel<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: TasksCancelParts<'b>,
@@ -77,6 +77,7 @@ pub struct TasksCancel<'a, 'b, B> {
     parent_task_id: Option<&'b str>,
     pretty: Option<bool>,
     source: Option<&'b str>,
+    wait_for_completion: Option<bool>,
 }
 impl<'a, 'b, B> TasksCancel<'a, 'b, B>
 where
@@ -98,6 +99,7 @@ where
             parent_task_id: None,
             pretty: None,
             source: None,
+            wait_for_completion: None,
         }
     }
     #[doc = "A comma-separated list of actions that should be cancelled. Leave empty to cancel all."]
@@ -123,6 +125,7 @@ where
             parent_task_id: self.parent_task_id,
             pretty: self.pretty,
             source: self.source,
+            wait_for_completion: self.wait_for_completion,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -165,6 +168,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Should the request block until the cancellation of the task and its descendant tasks is completed. Defaults to false"]
+    pub fn wait_for_completion(mut self, wait_for_completion: bool) -> Self {
+        self.wait_for_completion = Some(wait_for_completion);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Tasks Cancel API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -196,6 +204,8 @@ where
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
                 source: Option<&'b str>,
+                #[serde(rename = "wait_for_completion")]
+                wait_for_completion: Option<bool>,
             }
             let query_params = QueryParams {
                 actions: self.actions,
@@ -206,6 +216,7 @@ where
                 parent_task_id: self.parent_task_id,
                 pretty: self.pretty,
                 source: self.source,
+                wait_for_completion: self.wait_for_completion,
             };
             Some(query_params)
         };
@@ -239,7 +250,7 @@ impl<'b> TasksGetParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/tasks.html)\n\nReturns information about a task."]
+#[doc = "Builder for the [Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/tasks.html)\n\nReturns information about a task."]
 pub struct TasksGet<'a, 'b> {
     client: &'a Elasticsearch,
     parts: TasksGetParts<'b>,
@@ -370,7 +381,7 @@ impl TasksListParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/tasks.html)\n\nReturns a list of tasks."]
+#[doc = "Builder for the [Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/tasks.html)\n\nReturns a list of tasks."]
 pub struct TasksList<'a, 'b> {
     client: &'a Elasticsearch,
     parts: TasksListParts,
@@ -548,15 +559,15 @@ impl<'a> Tasks<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/tasks.html)\n\nCancels a task, if it can be cancelled through an API."]
+    #[doc = "[Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/tasks.html)\n\nCancels a task, if it can be cancelled through an API."]
     pub fn cancel<'b>(&'a self, parts: TasksCancelParts<'b>) -> TasksCancel<'a, 'b, ()> {
         TasksCancel::new(&self.client, parts)
     }
-    #[doc = "[Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/tasks.html)\n\nReturns information about a task."]
+    #[doc = "[Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/tasks.html)\n\nReturns information about a task."]
     pub fn get<'b>(&'a self, parts: TasksGetParts<'b>) -> TasksGet<'a, 'b> {
         TasksGet::new(&self.client, parts)
     }
-    #[doc = "[Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/tasks.html)\n\nReturns a list of tasks."]
+    #[doc = "[Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/tasks.html)\n\nReturns a list of tasks."]
     pub fn list<'b>(&'a self) -> TasksList<'a, 'b> {
         TasksList::new(&self.client)
     }
