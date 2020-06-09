@@ -159,7 +159,7 @@ pub async fn general_oss_setup() -> Result<(), Error> {
         for (id, repo) in all_snapshots {
             let _snapshot_response = client
                 .snapshot()
-                .delete(SnapshotDeleteParts::RepositorySnapshot(&repo, &id))
+                .delete(SnapshotDeleteParts::RepositorySnapshot(&repo, &[&id]))
                 .send()
                 .await?;
         }
