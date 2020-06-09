@@ -122,24 +122,19 @@ async fn deprecation_warning_headers() -> Result<(), failure::Error> {
         .body(json! {
             {
               "aggs": {
-                "titles": {
-                  "terms": {
-                    "field": "title.keyword",
-                    "order": [{
-                      "_term": "asc"
-                    }]
-                  }
-                }
-              },
-              "query": {
-                "function_score": {
-                  "functions": [{
-                    "random_score": {
-                      "seed": 1337
-                    }
-                  }],
-                  "query": {
-                    "match_all": {}
+                "test": {
+                  "composite": {
+                    "sources": [
+                      {
+                        "date": {
+                          "date_histogram": {
+                            "field": "date",
+                            "interval": "1d",
+                            "format": "yyyy-MM-dd"
+                          }
+                        }
+                      }
+                    ]
                   }
                 }
               },
@@ -153,7 +148,7 @@ async fn deprecation_warning_headers() -> Result<(), failure::Error> {
     assert!(warnings.len() > 0);
     assert!(warnings
         .iter()
-        .any(|&w| w.contains("Deprecated aggregation order key")));
+        .any(|&w| w.contains("deprecated")));
 
     Ok(())
 }
