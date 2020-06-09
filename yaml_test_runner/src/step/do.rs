@@ -590,10 +590,20 @@ impl ApiCall {
                             }
                         }
                         Yaml::Real(r) => {
-                            let f = r.parse::<f64>()?;
-                            tokens.append(quote! {
-                                .#param_ident(#f)
-                            });
+                            match kind {
+                                TypeKind::Long | TypeKind::Number => {
+                                    let f = r.parse::<f64>()?;
+                                    tokens.append(quote! {
+                                        .#param_ident(#f as i64)
+                                    });
+                                }
+                                _ => {
+                                    let f = r.parse::<f64>()?;
+                                    tokens.append(quote! {
+                                        .#param_ident(#f)
+                                    });
+                                }
+                            }
                         }
                         _ => println!("unsupported value {:?} for param {}", v, n),
                     }

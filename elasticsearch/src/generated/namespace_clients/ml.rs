@@ -707,43 +707,81 @@ impl<'a, 'b> MlDeleteDatafeed<'a, 'b> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Delete Expired Data API"]
-pub enum MlDeleteExpiredDataParts {
+pub enum MlDeleteExpiredDataParts<'b> {
+    #[doc = "JobId"]
+    JobId(&'b str),
     #[doc = "No parts"]
     None,
 }
-impl MlDeleteExpiredDataParts {
+impl<'b> MlDeleteExpiredDataParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Delete Expired Data API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
+            MlDeleteExpiredDataParts::JobId(ref job_id) => {
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(26usize + encoded_job_id.len());
+                p.push_str("/_ml/_delete_expired_data/");
+                p.push_str(encoded_job_id.as_ref());
+                p.into()
+            }
             MlDeleteExpiredDataParts::None => "/_ml/_delete_expired_data".into(),
         }
     }
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Delete Expired Data API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-expired-data.html)\n\nDeletes expired and unused machine learning data."]
-pub struct MlDeleteExpiredData<'a, 'b> {
+pub struct MlDeleteExpiredData<'a, 'b, B> {
     client: &'a Elasticsearch,
-    parts: MlDeleteExpiredDataParts,
+    parts: MlDeleteExpiredDataParts<'b>,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    requests_per_second: Option<i64>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
-impl<'a, 'b> MlDeleteExpiredData<'a, 'b> {
-    #[doc = "Creates a new instance of [MlDeleteExpiredData]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+impl<'a, 'b, B> MlDeleteExpiredData<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [MlDeleteExpiredData] with the specified API parts"]
+    pub fn new(client: &'a Elasticsearch, parts: MlDeleteExpiredDataParts<'b>) -> Self {
         let headers = HeaderMap::new();
         MlDeleteExpiredData {
             client,
-            parts: MlDeleteExpiredDataParts::None,
+            parts,
             headers,
+            body: None,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
+            requests_per_second: None,
             source: None,
+            timeout: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> MlDeleteExpiredData<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        MlDeleteExpiredData {
+            client: self.client,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            requests_per_second: self.requests_per_second,
+            source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -771,9 +809,19 @@ impl<'a, 'b> MlDeleteExpiredData<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "The desired requests per second for the deletion processes."]
+    pub fn requests_per_second(mut self, requests_per_second: i64) -> Self {
+        self.requests_per_second = Some(requests_per_second);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
+        self
+    }
+    #[doc = "How long can the underlying delete processes run until they are canceled"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Delete Expired Data API that can be awaited"]
@@ -796,19 +844,25 @@ impl<'a, 'b> MlDeleteExpiredData<'a, 'b> {
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
+                #[serde(rename = "requests_per_second")]
+                requests_per_second: Option<i64>,
                 #[serde(rename = "source")]
                 source: Option<&'b str>,
+                #[serde(rename = "timeout")]
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
                 pretty: self.pretty,
+                requests_per_second: self.requests_per_second,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
-        let body = Option::<()>::None;
+        let body = self.body;
         let response = self
             .client
             .send(method, &path, headers, query_string.as_ref(), body)
@@ -1716,6 +1770,7 @@ pub struct MlForecast<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    max_model_memory: Option<&'b str>,
     pretty: Option<bool>,
     source: Option<&'b str>,
 }
@@ -1736,6 +1791,7 @@ where
             expires_in: None,
             filter_path: None,
             human: None,
+            max_model_memory: None,
             pretty: None,
             source: None,
         }
@@ -1755,6 +1811,7 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            max_model_memory: self.max_model_memory,
             pretty: self.pretty,
             source: self.source,
         }
@@ -1789,6 +1846,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "The max memory able to be used by the forecast. Default is 20mb."]
+    pub fn max_model_memory(mut self, max_model_memory: &'b str) -> Self {
+        self.max_model_memory = Some(max_model_memory);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -1821,6 +1883,8 @@ where
                 filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
+                #[serde(rename = "max_model_memory")]
+                max_model_memory: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
@@ -1832,6 +1896,7 @@ where
                 expires_in: self.expires_in,
                 filter_path: self.filter_path,
                 human: self.human,
+                max_model_memory: self.max_model_memory,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -2490,6 +2555,7 @@ pub struct MlGetCategories<'a, 'b, B> {
     from: Option<i32>,
     headers: HeaderMap,
     human: Option<bool>,
+    partition_field_value: Option<&'b str>,
     pretty: Option<bool>,
     size: Option<i32>,
     source: Option<&'b str>,
@@ -2510,6 +2576,7 @@ where
             filter_path: None,
             from: None,
             human: None,
+            partition_field_value: None,
             pretty: None,
             size: None,
             source: None,
@@ -2529,6 +2596,7 @@ where
             from: self.from,
             headers: self.headers,
             human: self.human,
+            partition_field_value: self.partition_field_value,
             pretty: self.pretty,
             size: self.size,
             source: self.source,
@@ -2557,6 +2625,11 @@ where
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
+        self
+    }
+    #[doc = "Specifies the partition to retrieve categories for. This is optional, and should never be used for jobs where per-partition categorization is disabled."]
+    pub fn partition_field_value(mut self, partition_field_value: &'b str) -> Self {
+        self.partition_field_value = Some(partition_field_value);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -2597,6 +2670,8 @@ where
                 from: Option<i32>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
+                #[serde(rename = "partition_field_value")]
+                partition_field_value: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "size")]
@@ -2609,6 +2684,7 @@ where
                 filter_path: self.filter_path,
                 from: self.from,
                 human: self.human,
+                partition_field_value: self.partition_field_value,
                 pretty: self.pretty,
                 size: self.size,
                 source: self.source,
@@ -6922,7 +6998,7 @@ impl MlValidateParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the Ml Validate API\n\nValidates an anomaly detection job."]
+#[doc = "Builder for the [Ml Validate API](https://www.elastic.co/guide/en/machine-learning/7.7/ml-jobs.html)\n\nValidates an anomaly detection job."]
 pub struct MlValidate<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlValidateParts,
@@ -7055,7 +7131,7 @@ impl MlValidateDetectorParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the Ml Validate Detector API\n\nValidates an anomaly detection detector."]
+#[doc = "Builder for the [Ml Validate Detector API](https://www.elastic.co/guide/en/machine-learning/7.7/ml-jobs.html)\n\nValidates an anomaly detection detector."]
 pub struct MlValidateDetector<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlValidateDetectorParts,
@@ -7215,8 +7291,11 @@ impl<'a> Ml<'a> {
         MlDeleteDatafeed::new(&self.client, parts)
     }
     #[doc = "[Ml Delete Expired Data API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-expired-data.html)\n\nDeletes expired and unused machine learning data."]
-    pub fn delete_expired_data<'b>(&'a self) -> MlDeleteExpiredData<'a, 'b> {
-        MlDeleteExpiredData::new(&self.client)
+    pub fn delete_expired_data<'b>(
+        &'a self,
+        parts: MlDeleteExpiredDataParts<'b>,
+    ) -> MlDeleteExpiredData<'a, 'b, ()> {
+        MlDeleteExpiredData::new(&self.client, parts)
     }
     #[doc = "[Ml Delete Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-filter.html)\n\nDeletes a filter."]
     pub fn delete_filter<'b>(&'a self, parts: MlDeleteFilterParts<'b>) -> MlDeleteFilter<'a, 'b> {
@@ -7424,11 +7503,11 @@ impl<'a> Ml<'a> {
     ) -> MlUpdateModelSnapshot<'a, 'b, ()> {
         MlUpdateModelSnapshot::new(&self.client, parts)
     }
-    #[doc = "Ml Validate API\n\nValidates an anomaly detection job."]
+    #[doc = "[Ml Validate API](https://www.elastic.co/guide/en/machine-learning/7.7/ml-jobs.html)\n\nValidates an anomaly detection job."]
     pub fn validate<'b>(&'a self) -> MlValidate<'a, 'b, ()> {
         MlValidate::new(&self.client)
     }
-    #[doc = "Ml Validate Detector API\n\nValidates an anomaly detection detector."]
+    #[doc = "[Ml Validate Detector API](https://www.elastic.co/guide/en/machine-learning/7.7/ml-jobs.html)\n\nValidates an anomaly detection detector."]
     pub fn validate_detector<'b>(&'a self) -> MlValidateDetector<'a, 'b, ()> {
         MlValidateDetector::new(&self.client)
     }
