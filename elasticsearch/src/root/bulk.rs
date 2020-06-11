@@ -16,9 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-use crate::http::request::Body;
-use crate::params::{SourceFilter, VersionType};
-use crate::Error;
+use crate::{
+    http::request::Body,
+    params::{SourceFilter, VersionType},
+    Error,
+};
 use bytes::{buf::BufMutExt, BufMut, Bytes, BytesMut};
 use serde::{
     ser::{SerializeMap, Serializer},
@@ -653,8 +655,8 @@ impl Body for BulkOperations {
 
 #[cfg(test)]
 mod tests {
-    use crate::generated::params::VersionType;
     use crate::{
+        generated::params::VersionType,
         http::request::{Body, NdBody},
         BulkOperation, BulkOperations,
     };

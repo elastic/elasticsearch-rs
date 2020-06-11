@@ -24,12 +24,14 @@ use quote::{ToTokens, Tokens};
 use regex::Regex;
 use semver::Version;
 use serde::Deserialize;
-use std::borrow::Borrow;
-use std::collections::{BTreeMap, HashSet};
-use std::fs;
-use std::fs::{File, OpenOptions};
-use std::io::Write;
-use std::path::{Component, Path, PathBuf};
+use std::{
+    borrow::Borrow,
+    collections::{BTreeMap, HashSet},
+    fs,
+    fs::{File, OpenOptions},
+    io::Write,
+    path::{Component, Path, PathBuf},
+};
 use yaml_rust::{Yaml, YamlLoader};
 
 /// The test suite to compile

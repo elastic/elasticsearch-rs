@@ -17,13 +17,14 @@
  * under the License.
  */
 use elasticsearch::{
-    auth::Credentials, http::response::Response, http::transport::TransportBuilder,
-    indices::IndicesExistsParts, params::Refresh, BulkOperation, BulkParts, Elasticsearch, Error,
-    DEFAULT_ADDRESS,
+    auth::Credentials,
+    http::{response::Response, transport::TransportBuilder},
+    indices::IndicesExistsParts,
+    params::Refresh,
+    BulkOperation, BulkParts, Elasticsearch, Error, DEFAULT_ADDRESS,
 };
 
-use elasticsearch::cert::CertificateValidation;
-use elasticsearch::http::transport::SingleNodeConnectionPool;
+use elasticsearch::{cert::CertificateValidation, http::transport::SingleNodeConnectionPool};
 use reqwest::StatusCode;
 use serde_json::json;
 use sysinfo::{RefreshKind, System, SystemExt};

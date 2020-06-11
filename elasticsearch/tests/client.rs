@@ -146,9 +146,7 @@ async fn deprecation_warning_headers() -> Result<(), failure::Error> {
 
     let warnings = response.warning_headers().collect::<Vec<&str>>();
     assert!(warnings.len() > 0);
-    assert!(warnings
-        .iter()
-        .any(|&w| w.contains("deprecated")));
+    assert!(warnings.iter().any(|&w| w.contains("deprecated")));
 
     Ok(())
 }

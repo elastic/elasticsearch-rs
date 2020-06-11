@@ -16,31 +16,34 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-use elasticsearch::cat::{CatSnapshotsParts, CatTemplatesParts};
-use elasticsearch::cluster::ClusterHealthParts;
-use elasticsearch::http::response::Response;
-use elasticsearch::http::{Method, StatusCode};
-use elasticsearch::ilm::IlmRemovePolicyParts;
-use elasticsearch::indices::{IndicesDeleteParts, IndicesDeleteTemplateParts, IndicesRefreshParts};
-use elasticsearch::ml::{
-    MlCloseJobParts, MlDeleteDatafeedParts, MlDeleteJobParts, MlGetDatafeedsParts, MlGetJobsParts,
-    MlStopDatafeedParts,
-};
-use elasticsearch::params::{ExpandWildcards, WaitForStatus};
-use elasticsearch::security::{
-    SecurityDeletePrivilegesParts, SecurityDeleteRoleParts, SecurityDeleteUserParts,
-    SecurityGetPrivilegesParts, SecurityGetRoleParts, SecurityGetUserParts, SecurityPutUserParts,
-};
-use elasticsearch::snapshot::{SnapshotDeleteParts, SnapshotDeleteRepositoryParts};
-use elasticsearch::tasks::TasksCancelParts;
-use elasticsearch::transform::{
-    TransformDeleteTransformParts, TransformGetTransformParts, TransformStopTransformParts,
-};
-use elasticsearch::watcher::WatcherDeleteWatchParts;
 use elasticsearch::{
     auth::Credentials,
+    cat::{CatSnapshotsParts, CatTemplatesParts},
     cert::CertificateValidation,
-    http::transport::{SingleNodeConnectionPool, TransportBuilder},
+    cluster::ClusterHealthParts,
+    http::{
+        response::Response,
+        transport::{SingleNodeConnectionPool, TransportBuilder},
+        Method, StatusCode,
+    },
+    ilm::IlmRemovePolicyParts,
+    indices::{IndicesDeleteParts, IndicesDeleteTemplateParts, IndicesRefreshParts},
+    ml::{
+        MlCloseJobParts, MlDeleteDatafeedParts, MlDeleteJobParts, MlGetDatafeedsParts,
+        MlGetJobsParts, MlStopDatafeedParts,
+    },
+    params::{ExpandWildcards, WaitForStatus},
+    security::{
+        SecurityDeletePrivilegesParts, SecurityDeleteRoleParts, SecurityDeleteUserParts,
+        SecurityGetPrivilegesParts, SecurityGetRoleParts, SecurityGetUserParts,
+        SecurityPutUserParts,
+    },
+    snapshot::{SnapshotDeleteParts, SnapshotDeleteRepositoryParts},
+    tasks::TasksCancelParts,
+    transform::{
+        TransformDeleteTransformParts, TransformGetTransformParts, TransformStopTransformParts,
+    },
+    watcher::WatcherDeleteWatchParts,
     Elasticsearch, Error, DEFAULT_ADDRESS,
 };
 use once_cell::sync::Lazy;

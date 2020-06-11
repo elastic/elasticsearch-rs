@@ -33,9 +33,7 @@
  * limitations under the License.
  */
 use crate::http::transport::BuildError;
-use std::error;
-use std::fmt;
-use std::io;
+use std::{error, fmt, io};
 
 /// An error within the client.
 ///

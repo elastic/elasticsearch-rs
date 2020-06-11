@@ -17,14 +17,14 @@
  * under the License.
  */
 use crate::generator::{
-    code_gen, code_gen::url::enum_builder::EnumBuilder, code_gen::*, ApiEndpoint, HttpMethod, Type,
-    TypeKind,
+    code_gen,
+    code_gen::{url::enum_builder::EnumBuilder, *},
+    ApiEndpoint, HttpMethod, Type, TypeKind,
 };
 use inflector::Inflector;
 use quote::{ToTokens, Tokens};
 use reqwest::Url;
-use std::path::PathBuf;
-use std::{collections::BTreeMap, fs, str};
+use std::{collections::BTreeMap, fs, path::PathBuf, str};
 use syn::{Field, FieldValue, ImplItem, TraitBoundModifier, TyParamBound};
 
 /// Builder that generates the AST for a request builder struct

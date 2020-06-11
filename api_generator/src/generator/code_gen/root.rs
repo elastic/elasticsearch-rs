@@ -16,9 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-use crate::generator::code_gen::request::request_builder::RequestBuilder;
-use crate::generator::code_gen::*;
-use crate::generator::*;
+use crate::generator::{
+    code_gen::{request::request_builder::RequestBuilder, *},
+    *,
+};
 use inflector::Inflector;
 use quote::Tokens;
 use std::path::PathBuf;

@@ -17,8 +17,7 @@
  * under the License.
  */
 use super::{ok_or_accumulate, Step};
-use crate::regex::clean_regex;
-use crate::regex::*;
+use crate::regex::{clean_regex, *};
 use api_generator::generator::{Api, ApiEndpoint, TypeKind};
 use inflector::Inflector;
 use itertools::Itertools;
@@ -589,22 +588,20 @@ impl ApiCall {
                                 });
                             }
                         }
-                        Yaml::Real(r) => {
-                            match kind {
-                                TypeKind::Long | TypeKind::Number => {
-                                    let f = r.parse::<f64>()?;
-                                    tokens.append(quote! {
-                                        .#param_ident(#f as i64)
-                                    });
-                                }
-                                _ => {
-                                    let f = r.parse::<f64>()?;
-                                            tokens.append(quote! {
-                                        .#param_ident(#f)
-                                    });
-                                }
+                        Yaml::Real(r) => match kind {
+                            TypeKind::Long | TypeKind::Number => {
+                                let f = r.parse::<f64>()?;
+                                tokens.append(quote! {
+                                    .#param_ident(#f as i64)
+                                });
                             }
-                        }
+                            _ => {
+                                let f = r.parse::<f64>()?;
+                                tokens.append(quote! {
+                                    .#param_ident(#f)
+                                });
+                            }
+                        },
                         _ => println!("unsupported value {:?} for param {}", v, n),
                     }
                 }

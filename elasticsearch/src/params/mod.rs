@@ -20,8 +20,7 @@
 
 pub use super::generated::params::*;
 use core::fmt;
-use serde::de::Visitor;
-use serde::{de, Deserialize, Deserializer, Serialize, Serializer};
+use serde::{de, de::Visitor, Deserialize, Deserializer, Serialize, Serializer};
 
 /// Control how the total number of hits should be tracked.
 ///

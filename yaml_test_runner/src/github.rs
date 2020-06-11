@@ -19,11 +19,7 @@
 use io::Write;
 use reqwest::header::{HeaderMap, HeaderValue, AUTHORIZATION};
 use serde::Deserialize;
-use std::error::Error as StdError;
-use std::fmt::Formatter;
-use std::fs::File;
-use std::path::PathBuf;
-use std::{fs, io};
+use std::{error::Error as StdError, fmt::Formatter, fs, fs::File, io, path::PathBuf};
 
 struct YamlTestSuite {
     dir: String,

@@ -28,9 +28,7 @@ extern crate simple_logger;
 
 use clap::{App, Arg};
 use log::Level;
-use std::fs;
-use std::path::PathBuf;
-use std::process::exit;
+use std::{fs, path::PathBuf, process::exit};
 
 mod generator;
 mod github;
