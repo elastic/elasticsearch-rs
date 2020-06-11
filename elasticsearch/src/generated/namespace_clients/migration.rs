@@ -30,6 +30,7 @@ use crate::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
+        transport::Transport,
         Method,
     },
     params::*,
@@ -65,7 +66,7 @@ impl<'b> MigrationDeprecationsParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Migration Deprecations API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/migration-api-deprecation.html)\n\nRetrieves information about different cluster, node, and index level settings that use deprecated features that will be removed or changed in the next major version."]
 pub struct MigrationDeprecations<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: MigrationDeprecationsParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -76,10 +77,10 @@ pub struct MigrationDeprecations<'a, 'b> {
 }
 impl<'a, 'b> MigrationDeprecations<'a, 'b> {
     #[doc = "Creates a new instance of [MigrationDeprecations] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: MigrationDeprecationsParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: MigrationDeprecationsParts<'b>) -> Self {
         let headers = HeaderMap::new();
         MigrationDeprecations {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -153,7 +154,7 @@ impl<'a, 'b> MigrationDeprecations<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -161,24 +162,27 @@ impl<'a, 'b> MigrationDeprecations<'a, 'b> {
 }
 #[doc = "Namespace client for Migration APIs"]
 pub struct Migration<'a> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
 }
 impl<'a> Migration<'a> {
     #[doc = "Creates a new instance of [Migration]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
-        Self { client }
+    pub fn new(transport: &'a Transport) -> Self {
+        Self { transport }
+    }
+    pub fn transport(&self) -> &Transport {
+        self.transport
     }
     #[doc = "[Migration Deprecations API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/migration-api-deprecation.html)\n\nRetrieves information about different cluster, node, and index level settings that use deprecated features that will be removed or changed in the next major version."]
     pub fn deprecations<'b>(
         &'a self,
         parts: MigrationDeprecationsParts<'b>,
     ) -> MigrationDeprecations<'a, 'b> {
-        MigrationDeprecations::new(&self.client, parts)
+        MigrationDeprecations::new(self.transport(), parts)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Migration APIs"]
     pub fn migration(&self) -> Migration {
-        Migration::new(&self)
+        Migration::new(self.transport())
     }
 }

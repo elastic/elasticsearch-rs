@@ -30,6 +30,7 @@ use crate::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
+        transport::Transport,
         Method,
     },
     params::*,
@@ -61,7 +62,7 @@ impl<'b> IlmDeleteLifecycleParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ilm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-delete-lifecycle.html)\n\nDeletes the specified lifecycle policy definition. A currently used policy cannot be deleted."]
 pub struct IlmDeleteLifecycle<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IlmDeleteLifecycleParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -72,10 +73,10 @@ pub struct IlmDeleteLifecycle<'a, 'b> {
 }
 impl<'a, 'b> IlmDeleteLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [IlmDeleteLifecycle] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IlmDeleteLifecycleParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IlmDeleteLifecycleParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IlmDeleteLifecycle {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -149,7 +150,7 @@ impl<'a, 'b> IlmDeleteLifecycle<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -180,7 +181,7 @@ impl<'b> IlmExplainLifecycleParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ilm Explain Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-explain-lifecycle.html)\n\nRetrieves information about the index's current lifecycle state, such as the currently executing phase, action, and step."]
 pub struct IlmExplainLifecycle<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IlmExplainLifecycleParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -193,10 +194,10 @@ pub struct IlmExplainLifecycle<'a, 'b> {
 }
 impl<'a, 'b> IlmExplainLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [IlmExplainLifecycle] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IlmExplainLifecycleParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IlmExplainLifecycleParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IlmExplainLifecycle {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -288,7 +289,7 @@ impl<'a, 'b> IlmExplainLifecycle<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -321,7 +322,7 @@ impl<'b> IlmGetLifecycleParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ilm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-get-lifecycle.html)\n\nReturns the specified policy definition. Includes the policy version and last modified date."]
 pub struct IlmGetLifecycle<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IlmGetLifecycleParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -332,10 +333,10 @@ pub struct IlmGetLifecycle<'a, 'b> {
 }
 impl<'a, 'b> IlmGetLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [IlmGetLifecycle] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IlmGetLifecycleParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IlmGetLifecycleParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IlmGetLifecycle {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -409,7 +410,7 @@ impl<'a, 'b> IlmGetLifecycle<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -432,7 +433,7 @@ impl IlmGetStatusParts {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ilm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-get-status.html)\n\nRetrieves the current index lifecycle management (ILM) status."]
 pub struct IlmGetStatus<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IlmGetStatusParts,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -443,10 +444,10 @@ pub struct IlmGetStatus<'a, 'b> {
 }
 impl<'a, 'b> IlmGetStatus<'a, 'b> {
     #[doc = "Creates a new instance of [IlmGetStatus]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         IlmGetStatus {
-            client,
+            transport,
             parts: IlmGetStatusParts::None,
             headers,
             error_trace: None,
@@ -520,7 +521,7 @@ impl<'a, 'b> IlmGetStatus<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -550,7 +551,7 @@ impl<'b> IlmMoveToStepParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ilm Move To Step API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-move-to-step.html)\n\nManually moves an index into the specified step and executes that step."]
 pub struct IlmMoveToStep<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IlmMoveToStepParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -565,10 +566,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IlmMoveToStep] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IlmMoveToStepParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IlmMoveToStepParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IlmMoveToStep {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -585,7 +586,7 @@ where
         T: Serialize,
     {
         IlmMoveToStep {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -660,7 +661,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -690,7 +691,7 @@ impl<'b> IlmPutLifecycleParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ilm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-put-lifecycle.html)\n\nCreates a lifecycle policy"]
 pub struct IlmPutLifecycle<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IlmPutLifecycleParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -705,10 +706,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IlmPutLifecycle] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IlmPutLifecycleParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IlmPutLifecycleParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IlmPutLifecycle {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -725,7 +726,7 @@ where
         T: Serialize,
     {
         IlmPutLifecycle {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -800,7 +801,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -831,7 +832,7 @@ impl<'b> IlmRemovePolicyParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ilm Remove Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-remove-policy.html)\n\nRemoves the assigned lifecycle policy and stops managing the specified index"]
 pub struct IlmRemovePolicy<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IlmRemovePolicyParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -846,10 +847,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IlmRemovePolicy] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IlmRemovePolicyParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IlmRemovePolicyParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IlmRemovePolicy {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -866,7 +867,7 @@ where
         T: Serialize,
     {
         IlmRemovePolicy {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -941,7 +942,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -972,7 +973,7 @@ impl<'b> IlmRetryParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ilm Retry API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-retry-policy.html)\n\nRetries executing the policy for an index that is in the ERROR step."]
 pub struct IlmRetry<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IlmRetryParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -987,10 +988,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IlmRetry] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IlmRetryParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IlmRetryParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IlmRetry {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -1007,7 +1008,7 @@ where
         T: Serialize,
     {
         IlmRetry {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -1082,7 +1083,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1105,7 +1106,7 @@ impl IlmStartParts {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ilm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-start.html)\n\nStart the index lifecycle management (ILM) plugin."]
 pub struct IlmStart<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IlmStartParts,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -1120,10 +1121,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IlmStart]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         IlmStart {
-            client,
+            transport,
             parts: IlmStartParts::None,
             headers,
             body: None,
@@ -1140,7 +1141,7 @@ where
         T: Serialize,
     {
         IlmStart {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -1215,7 +1216,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1238,7 +1239,7 @@ impl IlmStopParts {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ilm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-stop.html)\n\nHalts all lifecycle management operations and stops the index lifecycle management (ILM) plugin"]
 pub struct IlmStop<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IlmStopParts,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -1253,10 +1254,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IlmStop]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         IlmStop {
-            client,
+            transport,
             parts: IlmStopParts::None,
             headers,
             body: None,
@@ -1273,7 +1274,7 @@ where
         T: Serialize,
     {
         IlmStop {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -1348,7 +1349,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1356,69 +1357,72 @@ where
 }
 #[doc = "Namespace client for Index Lifecycle Management APIs"]
 pub struct Ilm<'a> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
 }
 impl<'a> Ilm<'a> {
     #[doc = "Creates a new instance of [Ilm]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
-        Self { client }
+    pub fn new(transport: &'a Transport) -> Self {
+        Self { transport }
+    }
+    pub fn transport(&self) -> &Transport {
+        self.transport
     }
     #[doc = "[Ilm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-delete-lifecycle.html)\n\nDeletes the specified lifecycle policy definition. A currently used policy cannot be deleted."]
     pub fn delete_lifecycle<'b>(
         &'a self,
         parts: IlmDeleteLifecycleParts<'b>,
     ) -> IlmDeleteLifecycle<'a, 'b> {
-        IlmDeleteLifecycle::new(&self.client, parts)
+        IlmDeleteLifecycle::new(self.transport(), parts)
     }
     #[doc = "[Ilm Explain Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-explain-lifecycle.html)\n\nRetrieves information about the index's current lifecycle state, such as the currently executing phase, action, and step."]
     pub fn explain_lifecycle<'b>(
         &'a self,
         parts: IlmExplainLifecycleParts<'b>,
     ) -> IlmExplainLifecycle<'a, 'b> {
-        IlmExplainLifecycle::new(&self.client, parts)
+        IlmExplainLifecycle::new(self.transport(), parts)
     }
     #[doc = "[Ilm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-get-lifecycle.html)\n\nReturns the specified policy definition. Includes the policy version and last modified date."]
     pub fn get_lifecycle<'b>(&'a self, parts: IlmGetLifecycleParts<'b>) -> IlmGetLifecycle<'a, 'b> {
-        IlmGetLifecycle::new(&self.client, parts)
+        IlmGetLifecycle::new(self.transport(), parts)
     }
     #[doc = "[Ilm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-get-status.html)\n\nRetrieves the current index lifecycle management (ILM) status."]
     pub fn get_status<'b>(&'a self) -> IlmGetStatus<'a, 'b> {
-        IlmGetStatus::new(&self.client)
+        IlmGetStatus::new(self.transport())
     }
     #[doc = "[Ilm Move To Step API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-move-to-step.html)\n\nManually moves an index into the specified step and executes that step."]
     pub fn move_to_step<'b>(&'a self, parts: IlmMoveToStepParts<'b>) -> IlmMoveToStep<'a, 'b, ()> {
-        IlmMoveToStep::new(&self.client, parts)
+        IlmMoveToStep::new(self.transport(), parts)
     }
     #[doc = "[Ilm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-put-lifecycle.html)\n\nCreates a lifecycle policy"]
     pub fn put_lifecycle<'b>(
         &'a self,
         parts: IlmPutLifecycleParts<'b>,
     ) -> IlmPutLifecycle<'a, 'b, ()> {
-        IlmPutLifecycle::new(&self.client, parts)
+        IlmPutLifecycle::new(self.transport(), parts)
     }
     #[doc = "[Ilm Remove Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-remove-policy.html)\n\nRemoves the assigned lifecycle policy and stops managing the specified index"]
     pub fn remove_policy<'b>(
         &'a self,
         parts: IlmRemovePolicyParts<'b>,
     ) -> IlmRemovePolicy<'a, 'b, ()> {
-        IlmRemovePolicy::new(&self.client, parts)
+        IlmRemovePolicy::new(self.transport(), parts)
     }
     #[doc = "[Ilm Retry API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-retry-policy.html)\n\nRetries executing the policy for an index that is in the ERROR step."]
     pub fn retry<'b>(&'a self, parts: IlmRetryParts<'b>) -> IlmRetry<'a, 'b, ()> {
-        IlmRetry::new(&self.client, parts)
+        IlmRetry::new(self.transport(), parts)
     }
     #[doc = "[Ilm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-start.html)\n\nStart the index lifecycle management (ILM) plugin."]
     pub fn start<'b>(&'a self) -> IlmStart<'a, 'b, ()> {
-        IlmStart::new(&self.client)
+        IlmStart::new(self.transport())
     }
     #[doc = "[Ilm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-stop.html)\n\nHalts all lifecycle management operations and stops the index lifecycle management (ILM) plugin"]
     pub fn stop<'b>(&'a self) -> IlmStop<'a, 'b, ()> {
-        IlmStop::new(&self.client)
+        IlmStop::new(self.transport())
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Index Lifecycle Management APIs"]
     pub fn ilm(&self) -> Ilm {
-        Ilm::new(&self)
+        Ilm::new(self.transport())
     }
 }

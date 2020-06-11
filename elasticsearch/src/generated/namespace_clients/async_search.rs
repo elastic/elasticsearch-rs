@@ -30,6 +30,7 @@ use crate::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
+        transport::Transport,
         Method,
     },
     params::*,
@@ -60,7 +61,7 @@ impl<'b> AsyncSearchDeleteParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Async Search Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/async-search.html)\n\nDeletes an async search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
 pub struct AsyncSearchDelete<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: AsyncSearchDeleteParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -71,10 +72,10 @@ pub struct AsyncSearchDelete<'a, 'b> {
 }
 impl<'a, 'b> AsyncSearchDelete<'a, 'b> {
     #[doc = "Creates a new instance of [AsyncSearchDelete] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: AsyncSearchDeleteParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: AsyncSearchDeleteParts<'b>) -> Self {
         let headers = HeaderMap::new();
         AsyncSearchDelete {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -148,7 +149,7 @@ impl<'a, 'b> AsyncSearchDelete<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -177,7 +178,7 @@ impl<'b> AsyncSearchGetParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Async Search Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/async-search.html)\n\nRetrieves the results of a previously submitted async search request given its ID."]
 pub struct AsyncSearchGet<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: AsyncSearchGetParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -191,10 +192,10 @@ pub struct AsyncSearchGet<'a, 'b> {
 }
 impl<'a, 'b> AsyncSearchGet<'a, 'b> {
     #[doc = "Creates a new instance of [AsyncSearchGet] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: AsyncSearchGetParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: AsyncSearchGetParts<'b>) -> Self {
         let headers = HeaderMap::new();
         AsyncSearchGet {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -295,7 +296,7 @@ impl<'a, 'b> AsyncSearchGet<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -330,7 +331,7 @@ impl<'b> AsyncSearchSubmitParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Async Search Submit API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/async-search.html)\n\nExecutes a search request asynchronously."]
 pub struct AsyncSearchSubmit<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: AsyncSearchSubmitParts<'b>,
     _source: Option<&'b [&'b str]>,
     _source_excludes: Option<&'b [&'b str]>,
@@ -386,10 +387,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [AsyncSearchSubmit] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: AsyncSearchSubmitParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: AsyncSearchSubmitParts<'b>) -> Self {
         let headers = HeaderMap::new();
         AsyncSearchSubmit {
-            client,
+            transport,
             parts,
             headers,
             _source: None,
@@ -487,7 +488,7 @@ where
         T: Serialize,
     {
         AsyncSearchSubmit {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             _source: self._source,
@@ -912,7 +913,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -920,32 +921,35 @@ where
 }
 #[doc = "Namespace client for AsyncSearch APIs"]
 pub struct AsyncSearch<'a> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
 }
 impl<'a> AsyncSearch<'a> {
     #[doc = "Creates a new instance of [AsyncSearch]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
-        Self { client }
+    pub fn new(transport: &'a Transport) -> Self {
+        Self { transport }
+    }
+    pub fn transport(&self) -> &Transport {
+        self.transport
     }
     #[doc = "[Async Search Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/async-search.html)\n\nDeletes an async search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
     pub fn delete<'b>(&'a self, parts: AsyncSearchDeleteParts<'b>) -> AsyncSearchDelete<'a, 'b> {
-        AsyncSearchDelete::new(&self.client, parts)
+        AsyncSearchDelete::new(self.transport(), parts)
     }
     #[doc = "[Async Search Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/async-search.html)\n\nRetrieves the results of a previously submitted async search request given its ID."]
     pub fn get<'b>(&'a self, parts: AsyncSearchGetParts<'b>) -> AsyncSearchGet<'a, 'b> {
-        AsyncSearchGet::new(&self.client, parts)
+        AsyncSearchGet::new(self.transport(), parts)
     }
     #[doc = "[Async Search Submit API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/async-search.html)\n\nExecutes a search request asynchronously."]
     pub fn submit<'b>(
         &'a self,
         parts: AsyncSearchSubmitParts<'b>,
     ) -> AsyncSearchSubmit<'a, 'b, ()> {
-        AsyncSearchSubmit::new(&self.client, parts)
+        AsyncSearchSubmit::new(self.transport(), parts)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for AsyncSearch APIs"]
     pub fn async_search(&self) -> AsyncSearch {
-        AsyncSearch::new(&self)
+        AsyncSearch::new(self.transport())
     }
 }

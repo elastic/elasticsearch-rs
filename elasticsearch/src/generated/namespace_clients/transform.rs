@@ -30,6 +30,7 @@ use crate::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
+        transport::Transport,
         Method,
     },
     params::*,
@@ -61,7 +62,7 @@ impl<'b> TransformDeleteTransformParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Transform Delete Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/delete-transform.html)\n\nDeletes an existing transform."]
 pub struct TransformDeleteTransform<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: TransformDeleteTransformParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -73,10 +74,10 @@ pub struct TransformDeleteTransform<'a, 'b> {
 }
 impl<'a, 'b> TransformDeleteTransform<'a, 'b> {
     #[doc = "Creates a new instance of [TransformDeleteTransform] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: TransformDeleteTransformParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: TransformDeleteTransformParts<'b>) -> Self {
         let headers = HeaderMap::new();
         TransformDeleteTransform {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -159,7 +160,7 @@ impl<'a, 'b> TransformDeleteTransform<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -192,7 +193,7 @@ impl<'b> TransformGetTransformParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Transform Get Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-transform.html)\n\nRetrieves configuration information for transforms."]
 pub struct TransformGetTransform<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: TransformGetTransformParts<'b>,
     allow_no_match: Option<bool>,
     error_trace: Option<bool>,
@@ -206,10 +207,10 @@ pub struct TransformGetTransform<'a, 'b> {
 }
 impl<'a, 'b> TransformGetTransform<'a, 'b> {
     #[doc = "Creates a new instance of [TransformGetTransform] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: TransformGetTransformParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: TransformGetTransformParts<'b>) -> Self {
         let headers = HeaderMap::new();
         TransformGetTransform {
-            client,
+            transport,
             parts,
             headers,
             allow_no_match: None,
@@ -310,7 +311,7 @@ impl<'a, 'b> TransformGetTransform<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -341,7 +342,7 @@ impl<'b> TransformGetTransformStatsParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Transform Get Transform Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-transform-stats.html)\n\nRetrieves usage information for transforms."]
 pub struct TransformGetTransformStats<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: TransformGetTransformStatsParts<'b>,
     allow_no_match: Option<bool>,
     error_trace: Option<bool>,
@@ -355,10 +356,10 @@ pub struct TransformGetTransformStats<'a, 'b> {
 }
 impl<'a, 'b> TransformGetTransformStats<'a, 'b> {
     #[doc = "Creates a new instance of [TransformGetTransformStats] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: TransformGetTransformStatsParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: TransformGetTransformStatsParts<'b>) -> Self {
         let headers = HeaderMap::new();
         TransformGetTransformStats {
-            client,
+            transport,
             parts,
             headers,
             allow_no_match: None,
@@ -459,7 +460,7 @@ impl<'a, 'b> TransformGetTransformStats<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -482,7 +483,7 @@ impl TransformPreviewTransformParts {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Transform Preview Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/preview-transform.html)\n\nPreviews a transform."]
 pub struct TransformPreviewTransform<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: TransformPreviewTransformParts,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -497,10 +498,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [TransformPreviewTransform]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         TransformPreviewTransform {
-            client,
+            transport,
             parts: TransformPreviewTransformParts::None,
             headers,
             body: None,
@@ -517,7 +518,7 @@ where
         T: Serialize,
     {
         TransformPreviewTransform {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -592,7 +593,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -622,7 +623,7 @@ impl<'b> TransformPutTransformParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Transform Put Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/put-transform.html)\n\nInstantiates a transform."]
 pub struct TransformPutTransform<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: TransformPutTransformParts<'b>,
     body: Option<B>,
     defer_validation: Option<bool>,
@@ -638,10 +639,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [TransformPutTransform] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: TransformPutTransformParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: TransformPutTransformParts<'b>) -> Self {
         let headers = HeaderMap::new();
         TransformPutTransform {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -659,7 +660,7 @@ where
         T: Serialize,
     {
         TransformPutTransform {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             defer_validation: self.defer_validation,
@@ -743,7 +744,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -774,7 +775,7 @@ impl<'b> TransformStartTransformParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Transform Start Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/start-transform.html)\n\nStarts one or more transforms."]
 pub struct TransformStartTransform<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: TransformStartTransformParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -790,10 +791,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [TransformStartTransform] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: TransformStartTransformParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: TransformStartTransformParts<'b>) -> Self {
         let headers = HeaderMap::new();
         TransformStartTransform {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -811,7 +812,7 @@ where
         T: Serialize,
     {
         TransformStartTransform {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -895,7 +896,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -926,7 +927,7 @@ impl<'b> TransformStopTransformParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Transform Stop Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/stop-transform.html)\n\nStops one or more transforms."]
 pub struct TransformStopTransform<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: TransformStopTransformParts<'b>,
     allow_no_match: Option<bool>,
     body: Option<B>,
@@ -946,10 +947,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [TransformStopTransform] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: TransformStopTransformParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: TransformStopTransformParts<'b>) -> Self {
         let headers = HeaderMap::new();
         TransformStopTransform {
-            client,
+            transport,
             parts,
             headers,
             allow_no_match: None,
@@ -976,7 +977,7 @@ where
         T: Serialize,
     {
         TransformStopTransform {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             allow_no_match: self.allow_no_match,
@@ -1091,7 +1092,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1122,7 +1123,7 @@ impl<'b> TransformUpdateTransformParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Transform Update Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/update-transform.html)\n\nUpdates certain properties of a transform."]
 pub struct TransformUpdateTransform<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: TransformUpdateTransformParts<'b>,
     body: Option<B>,
     defer_validation: Option<bool>,
@@ -1138,10 +1139,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [TransformUpdateTransform] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: TransformUpdateTransformParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: TransformUpdateTransformParts<'b>) -> Self {
         let headers = HeaderMap::new();
         TransformUpdateTransform {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -1159,7 +1160,7 @@ where
         T: Serialize,
     {
         TransformUpdateTransform {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             defer_validation: self.defer_validation,
@@ -1243,7 +1244,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1251,70 +1252,73 @@ where
 }
 #[doc = "Namespace client for Transform APIs"]
 pub struct Transform<'a> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
 }
 impl<'a> Transform<'a> {
     #[doc = "Creates a new instance of [Transform]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
-        Self { client }
+    pub fn new(transport: &'a Transport) -> Self {
+        Self { transport }
+    }
+    pub fn transport(&self) -> &Transport {
+        self.transport
     }
     #[doc = "[Transform Delete Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/delete-transform.html)\n\nDeletes an existing transform."]
     pub fn delete_transform<'b>(
         &'a self,
         parts: TransformDeleteTransformParts<'b>,
     ) -> TransformDeleteTransform<'a, 'b> {
-        TransformDeleteTransform::new(&self.client, parts)
+        TransformDeleteTransform::new(self.transport(), parts)
     }
     #[doc = "[Transform Get Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-transform.html)\n\nRetrieves configuration information for transforms."]
     pub fn get_transform<'b>(
         &'a self,
         parts: TransformGetTransformParts<'b>,
     ) -> TransformGetTransform<'a, 'b> {
-        TransformGetTransform::new(&self.client, parts)
+        TransformGetTransform::new(self.transport(), parts)
     }
     #[doc = "[Transform Get Transform Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-transform-stats.html)\n\nRetrieves usage information for transforms."]
     pub fn get_transform_stats<'b>(
         &'a self,
         parts: TransformGetTransformStatsParts<'b>,
     ) -> TransformGetTransformStats<'a, 'b> {
-        TransformGetTransformStats::new(&self.client, parts)
+        TransformGetTransformStats::new(self.transport(), parts)
     }
     #[doc = "[Transform Preview Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/preview-transform.html)\n\nPreviews a transform."]
     pub fn preview_transform<'b>(&'a self) -> TransformPreviewTransform<'a, 'b, ()> {
-        TransformPreviewTransform::new(&self.client)
+        TransformPreviewTransform::new(self.transport())
     }
     #[doc = "[Transform Put Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/put-transform.html)\n\nInstantiates a transform."]
     pub fn put_transform<'b>(
         &'a self,
         parts: TransformPutTransformParts<'b>,
     ) -> TransformPutTransform<'a, 'b, ()> {
-        TransformPutTransform::new(&self.client, parts)
+        TransformPutTransform::new(self.transport(), parts)
     }
     #[doc = "[Transform Start Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/start-transform.html)\n\nStarts one or more transforms."]
     pub fn start_transform<'b>(
         &'a self,
         parts: TransformStartTransformParts<'b>,
     ) -> TransformStartTransform<'a, 'b, ()> {
-        TransformStartTransform::new(&self.client, parts)
+        TransformStartTransform::new(self.transport(), parts)
     }
     #[doc = "[Transform Stop Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/stop-transform.html)\n\nStops one or more transforms."]
     pub fn stop_transform<'b>(
         &'a self,
         parts: TransformStopTransformParts<'b>,
     ) -> TransformStopTransform<'a, 'b, ()> {
-        TransformStopTransform::new(&self.client, parts)
+        TransformStopTransform::new(self.transport(), parts)
     }
     #[doc = "[Transform Update Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/update-transform.html)\n\nUpdates certain properties of a transform."]
     pub fn update_transform<'b>(
         &'a self,
         parts: TransformUpdateTransformParts<'b>,
     ) -> TransformUpdateTransform<'a, 'b, ()> {
-        TransformUpdateTransform::new(&self.client, parts)
+        TransformUpdateTransform::new(self.transport(), parts)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Transform APIs"]
     pub fn transform(&self) -> Transform {
-        Transform::new(&self)
+        Transform::new(self.transport())
     }
 }

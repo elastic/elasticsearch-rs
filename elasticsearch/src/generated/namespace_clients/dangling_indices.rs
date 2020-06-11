@@ -39,66 +39,241 @@ use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Sql Clear Cursor API"]
-pub enum SqlClearCursorParts {
-    #[doc = "No parts"]
-    None,
+#[doc = "API parts for the Dangling Indices Delete Dangling Index API"]
+pub enum DanglingIndicesDeleteDanglingIndexParts<'b> {
+    #[doc = "IndexUuid"]
+    IndexUuid(&'b str),
 }
-impl SqlClearCursorParts {
-    #[doc = "Builds a relative URL path to the Sql Clear Cursor API"]
+impl<'b> DanglingIndicesDeleteDanglingIndexParts<'b> {
+    #[doc = "Builds a relative URL path to the Dangling Indices Delete Dangling Index API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SqlClearCursorParts::None => "/_sql/close".into(),
+            DanglingIndicesDeleteDanglingIndexParts::IndexUuid(ref index_uuid) => {
+                let encoded_index_uuid: Cow<str> =
+                    percent_encode(index_uuid.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_index_uuid.len());
+                p.push_str("/_dangling/");
+                p.push_str(encoded_index_uuid.as_ref());
+                p.into()
+            }
         }
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Sql Clear Cursor API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/sql-pagination.html)\n\nClears the SQL cursor"]
-pub struct SqlClearCursor<'a, 'b, B> {
+#[doc = "Builder for the [Dangling Indices Delete Dangling Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-gateway-dangling-indices.html)\n\nDeletes the specified dangling index"]
+pub struct DanglingIndicesDeleteDanglingIndex<'a, 'b> {
     transport: &'a Transport,
-    parts: SqlClearCursorParts,
+    parts: DanglingIndicesDeleteDanglingIndexParts<'b>,
+    accept_data_loss: Option<bool>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    master_timeout: Option<&'b str>,
+    pretty: Option<bool>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
+}
+impl<'a, 'b> DanglingIndicesDeleteDanglingIndex<'a, 'b> {
+    #[doc = "Creates a new instance of [DanglingIndicesDeleteDanglingIndex] with the specified API parts"]
+    pub fn new(
+        transport: &'a Transport,
+        parts: DanglingIndicesDeleteDanglingIndexParts<'b>,
+    ) -> Self {
+        let headers = HeaderMap::new();
+        DanglingIndicesDeleteDanglingIndex {
+            transport,
+            parts,
+            headers,
+            accept_data_loss: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
+        }
+    }
+    #[doc = "Must be set to true in order to delete the dangling index"]
+    pub fn accept_data_loss(mut self, accept_data_loss: bool) -> Self {
+        self.accept_data_loss = Some(accept_data_loss);
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Dangling Indices Delete Dangling Index API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
+        let headers = self.headers;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                #[serde(rename = "accept_data_loss")]
+                accept_data_loss: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
+                filter_path: Option<&'b [&'b str]>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<&'b str>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<&'b str>,
+                #[serde(rename = "timeout")]
+                timeout: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                accept_data_loss: self.accept_data_loss,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Dangling Indices Import Dangling Index API"]
+pub enum DanglingIndicesImportDanglingIndexParts<'b> {
+    #[doc = "IndexUuid"]
+    IndexUuid(&'b str),
+}
+impl<'b> DanglingIndicesImportDanglingIndexParts<'b> {
+    #[doc = "Builds a relative URL path to the Dangling Indices Import Dangling Index API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            DanglingIndicesImportDanglingIndexParts::IndexUuid(ref index_uuid) => {
+                let encoded_index_uuid: Cow<str> =
+                    percent_encode(index_uuid.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(11usize + encoded_index_uuid.len());
+                p.push_str("/_dangling/");
+                p.push_str(encoded_index_uuid.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Dangling Indices Import Dangling Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-gateway-dangling-indices.html)\n\nImports the specified dangling index"]
+pub struct DanglingIndicesImportDanglingIndex<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: DanglingIndicesImportDanglingIndexParts<'b>,
+    accept_data_loss: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
-impl<'a, 'b, B> SqlClearCursor<'a, 'b, B>
+impl<'a, 'b, B> DanglingIndicesImportDanglingIndex<'a, 'b, B>
 where
     B: Body,
 {
-    #[doc = "Creates a new instance of [SqlClearCursor]"]
-    pub fn new(transport: &'a Transport) -> Self {
+    #[doc = "Creates a new instance of [DanglingIndicesImportDanglingIndex] with the specified API parts"]
+    pub fn new(
+        transport: &'a Transport,
+        parts: DanglingIndicesImportDanglingIndexParts<'b>,
+    ) -> Self {
         let headers = HeaderMap::new();
-        SqlClearCursor {
+        DanglingIndicesImportDanglingIndex {
             transport,
-            parts: SqlClearCursorParts::None,
+            parts,
             headers,
+            accept_data_loss: None,
             body: None,
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             source: None,
+            timeout: None,
         }
     }
+    #[doc = "Must be set to true in order to import the dangling index"]
+    pub fn accept_data_loss(mut self, accept_data_loss: bool) -> Self {
+        self.accept_data_loss = Some(accept_data_loss);
+        self
+    }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SqlClearCursor<'a, 'b, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> DanglingIndicesImportDanglingIndex<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
-        SqlClearCursor {
+        DanglingIndicesImportDanglingIndex {
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
+            accept_data_loss: self.accept_data_loss,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -121,6 +296,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -131,7 +311,12 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous call to the Sql Clear Cursor API that can be awaited"]
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Dangling Indices Import Dangling Index API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
@@ -140,6 +325,8 @@ where
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                #[serde(rename = "accept_data_loss")]
+                accept_data_loss: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
@@ -149,17 +336,24 @@ where
                 filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
                 source: Option<&'b str>,
+                #[serde(rename = "timeout")]
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
+                accept_data_loss: self.accept_data_loss,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -172,172 +366,24 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Sql Query API"]
-pub enum SqlQueryParts {
+#[doc = "API parts for the Dangling Indices List Dangling Indices API"]
+pub enum DanglingIndicesListDanglingIndicesParts {
     #[doc = "No parts"]
     None,
 }
-impl SqlQueryParts {
-    #[doc = "Builds a relative URL path to the Sql Query API"]
+impl DanglingIndicesListDanglingIndicesParts {
+    #[doc = "Builds a relative URL path to the Dangling Indices List Dangling Indices API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SqlQueryParts::None => "/_sql".into(),
+            DanglingIndicesListDanglingIndicesParts::None => "/_dangling".into(),
         }
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Sql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/sql-rest-overview.html)\n\nExecutes a SQL request"]
-pub struct SqlQuery<'a, 'b, B> {
+#[doc = "Builder for the [Dangling Indices List Dangling Indices API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-gateway-dangling-indices.html)\n\nReturns all dangling indices."]
+pub struct DanglingIndicesListDanglingIndices<'a, 'b> {
     transport: &'a Transport,
-    parts: SqlQueryParts,
-    body: Option<B>,
-    error_trace: Option<bool>,
-    filter_path: Option<&'b [&'b str]>,
-    format: Option<&'b str>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<&'b str>,
-}
-impl<'a, 'b, B> SqlQuery<'a, 'b, B>
-where
-    B: Body,
-{
-    #[doc = "Creates a new instance of [SqlQuery]"]
-    pub fn new(transport: &'a Transport) -> Self {
-        let headers = HeaderMap::new();
-        SqlQuery {
-            transport,
-            parts: SqlQueryParts::None,
-            headers,
-            body: None,
-            error_trace: None,
-            filter_path: None,
-            format: None,
-            human: None,
-            pretty: None,
-            source: None,
-        }
-    }
-    #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SqlQuery<'a, 'b, JsonBody<T>>
-    where
-        T: Serialize,
-    {
-        SqlQuery {
-            transport: self.transport,
-            parts: self.parts,
-            body: Some(body.into()),
-            error_trace: self.error_trace,
-            filter_path: self.filter_path,
-            format: self.format,
-            headers: self.headers,
-            human: self.human,
-            pretty: self.pretty,
-            source: self.source,
-        }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'b str) -> Self {
-        self.format = Some(format);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Sql Query API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = match self.body {
-            Some(_) => Method::Post,
-            None => Method::Get,
-        };
-        let headers = self.headers;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
-                error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
-                filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "format")]
-                format: Option<&'b str>,
-                #[serde(rename = "human")]
-                human: Option<bool>,
-                #[serde(rename = "pretty")]
-                pretty: Option<bool>,
-                #[serde(rename = "source")]
-                source: Option<&'b str>,
-            }
-            let query_params = QueryParams {
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                format: self.format,
-                human: self.human,
-                pretty: self.pretty,
-                source: self.source,
-            };
-            Some(query_params)
-        };
-        let body = self.body;
-        let response = self
-            .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
-            .await?;
-        Ok(response)
-    }
-}
-#[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Sql Translate API"]
-pub enum SqlTranslateParts {
-    #[doc = "No parts"]
-    None,
-}
-impl SqlTranslateParts {
-    #[doc = "Builds a relative URL path to the Sql Translate API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            SqlTranslateParts::None => "/_sql/translate".into(),
-        }
-    }
-}
-#[derive(Clone, Debug)]
-#[doc = "Builder for the [Sql Translate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/sql-translate.html)\n\nTranslates SQL into Elasticsearch queries"]
-pub struct SqlTranslate<'a, 'b, B> {
-    transport: &'a Transport,
-    parts: SqlTranslateParts,
-    body: Option<B>,
+    parts: DanglingIndicesListDanglingIndicesParts,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -345,40 +391,19 @@ pub struct SqlTranslate<'a, 'b, B> {
     pretty: Option<bool>,
     source: Option<&'b str>,
 }
-impl<'a, 'b, B> SqlTranslate<'a, 'b, B>
-where
-    B: Body,
-{
-    #[doc = "Creates a new instance of [SqlTranslate]"]
+impl<'a, 'b> DanglingIndicesListDanglingIndices<'a, 'b> {
+    #[doc = "Creates a new instance of [DanglingIndicesListDanglingIndices]"]
     pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
-        SqlTranslate {
+        DanglingIndicesListDanglingIndices {
             transport,
-            parts: SqlTranslateParts::None,
+            parts: DanglingIndicesListDanglingIndicesParts::None,
             headers,
-            body: None,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
             source: None,
-        }
-    }
-    #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SqlTranslate<'a, 'b, JsonBody<T>>
-    where
-        T: Serialize,
-    {
-        SqlTranslate {
-            transport: self.transport,
-            parts: self.parts,
-            body: Some(body.into()),
-            error_trace: self.error_trace,
-            filter_path: self.filter_path,
-            headers: self.headers,
-            human: self.human,
-            pretty: self.pretty,
-            source: self.source,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -411,13 +436,10 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous call to the Sql Translate API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Dangling Indices List Dangling Indices API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = match self.body {
-            Some(_) => Method::Post,
-            None => Method::Get,
-        };
+        let method = Method::Get;
         let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -446,7 +468,7 @@ where
             };
             Some(query_params)
         };
-        let body = self.body;
+        let body = Option::<()>::None;
         let response = self
             .transport
             .send(method, &path, headers, query_string.as_ref(), body)
@@ -454,34 +476,40 @@ where
         Ok(response)
     }
 }
-#[doc = "Namespace client for Sql APIs"]
-pub struct Sql<'a> {
+#[doc = "Namespace client for DanglingIndices APIs"]
+pub struct DanglingIndices<'a> {
     transport: &'a Transport,
 }
-impl<'a> Sql<'a> {
-    #[doc = "Creates a new instance of [Sql]"]
+impl<'a> DanglingIndices<'a> {
+    #[doc = "Creates a new instance of [DanglingIndices]"]
     pub fn new(transport: &'a Transport) -> Self {
         Self { transport }
     }
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Sql Clear Cursor API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/sql-pagination.html)\n\nClears the SQL cursor"]
-    pub fn clear_cursor<'b>(&'a self) -> SqlClearCursor<'a, 'b, ()> {
-        SqlClearCursor::new(self.transport())
+    #[doc = "[Dangling Indices Delete Dangling Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-gateway-dangling-indices.html)\n\nDeletes the specified dangling index"]
+    pub fn delete_dangling_index<'b>(
+        &'a self,
+        parts: DanglingIndicesDeleteDanglingIndexParts<'b>,
+    ) -> DanglingIndicesDeleteDanglingIndex<'a, 'b> {
+        DanglingIndicesDeleteDanglingIndex::new(self.transport(), parts)
     }
-    #[doc = "[Sql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/sql-rest-overview.html)\n\nExecutes a SQL request"]
-    pub fn query<'b>(&'a self) -> SqlQuery<'a, 'b, ()> {
-        SqlQuery::new(self.transport())
+    #[doc = "[Dangling Indices Import Dangling Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-gateway-dangling-indices.html)\n\nImports the specified dangling index"]
+    pub fn import_dangling_index<'b>(
+        &'a self,
+        parts: DanglingIndicesImportDanglingIndexParts<'b>,
+    ) -> DanglingIndicesImportDanglingIndex<'a, 'b, ()> {
+        DanglingIndicesImportDanglingIndex::new(self.transport(), parts)
     }
-    #[doc = "[Sql Translate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/sql-translate.html)\n\nTranslates SQL into Elasticsearch queries"]
-    pub fn translate<'b>(&'a self) -> SqlTranslate<'a, 'b, ()> {
-        SqlTranslate::new(self.transport())
+    #[doc = "[Dangling Indices List Dangling Indices API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-gateway-dangling-indices.html)\n\nReturns all dangling indices."]
+    pub fn list_dangling_indices<'b>(&'a self) -> DanglingIndicesListDanglingIndices<'a, 'b> {
+        DanglingIndicesListDanglingIndices::new(self.transport())
     }
 }
 impl Elasticsearch {
-    #[doc = "Creates a namespace client for Sql APIs"]
-    pub fn sql(&self) -> Sql {
-        Sql::new(self.transport())
+    #[doc = "Creates a namespace client for DanglingIndices APIs"]
+    pub fn dangling_indices(&self) -> DanglingIndices {
+        DanglingIndices::new(self.transport())
     }
 }

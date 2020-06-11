@@ -30,6 +30,7 @@ use crate::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
+        transport::Transport,
         Method,
     },
     params::*,
@@ -79,7 +80,7 @@ impl<'b> BulkParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-bulk.html)\n\nAllows to perform multiple index/update/delete operations in a single request."]
 pub struct Bulk<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: BulkParts<'b>,
     _source: Option<&'b [&'b str]>,
     _source_excludes: Option<&'b [&'b str]>,
@@ -103,10 +104,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [Bulk] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: BulkParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: BulkParts<'b>) -> Self {
         let headers = HeaderMap::new();
         Bulk {
-            client,
+            transport,
             parts,
             headers,
             _source: None,
@@ -147,7 +148,7 @@ where
         T: Body,
     {
         Bulk {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(NdBody(body)),
             _source: self._source,
@@ -297,7 +298,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -331,7 +332,7 @@ impl<'b> ClearScrollParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Clear Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-request-body.html#_clear_scroll_api)\n\nExplicitly clears the search context for a scroll."]
 pub struct ClearScroll<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: ClearScrollParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -346,10 +347,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [ClearScroll] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: ClearScrollParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: ClearScrollParts<'b>) -> Self {
         let headers = HeaderMap::new();
         ClearScroll {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -366,7 +367,7 @@ where
         T: Serialize,
     {
         ClearScroll {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -441,7 +442,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -476,7 +477,7 @@ impl<'b> CountParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Count API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-count.html)\n\nReturns number of documents matching a query."]
 pub struct Count<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: CountParts<'b>,
     allow_no_indices: Option<bool>,
     analyze_wildcard: Option<bool>,
@@ -505,10 +506,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [Count] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: CountParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: CountParts<'b>) -> Self {
         let headers = HeaderMap::new();
         Count {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -554,7 +555,7 @@ where
         T: Serialize,
     {
         Count {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
@@ -749,7 +750,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -801,7 +802,7 @@ impl<'b> CreateParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Create API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-index_.html)\n\nCreates a new document in the index.\n\nReturns a 409 response when a document with a same ID already exists in the index."]
 pub struct Create<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: CreateParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -823,10 +824,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [Create] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: CreateParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: CreateParts<'b>) -> Self {
         let headers = HeaderMap::new();
         Create {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -850,7 +851,7 @@ where
         T: Serialize,
     {
         Create {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -988,7 +989,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1039,7 +1040,7 @@ impl<'b> DeleteParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-delete.html)\n\nRemoves a document from the index."]
 pub struct Delete<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: DeleteParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -1058,10 +1059,10 @@ pub struct Delete<'a, 'b> {
 }
 impl<'a, 'b> Delete<'a, 'b> {
     #[doc = "Creates a new instance of [Delete] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: DeleteParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: DeleteParts<'b>) -> Self {
         let headers = HeaderMap::new();
         Delete {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -1207,7 +1208,7 @@ impl<'a, 'b> Delete<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1239,7 +1240,7 @@ impl<'b> DeleteByQueryParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Delete By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-delete-by-query.html)\n\nDeletes documents matching the provided query."]
 pub struct DeleteByQuery<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: DeleteByQueryParts<'b>,
     _source: Option<&'b [&'b str]>,
     _source_excludes: Option<&'b [&'b str]>,
@@ -1286,10 +1287,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [DeleteByQuery] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: DeleteByQueryParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: DeleteByQueryParts<'b>) -> Self {
         let headers = HeaderMap::new();
         DeleteByQuery {
-            client,
+            transport,
             parts,
             headers,
             _source: None,
@@ -1368,7 +1369,7 @@ where
         T: Serialize,
     {
         DeleteByQuery {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             _source: self._source,
@@ -1716,7 +1717,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1747,7 +1748,7 @@ impl<'b> DeleteByQueryRethrottleParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Delete By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-delete-by-query.html)\n\nChanges the number of requests per second for a particular Delete By Query operation."]
 pub struct DeleteByQueryRethrottle<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: DeleteByQueryRethrottleParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -1763,10 +1764,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [DeleteByQueryRethrottle] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: DeleteByQueryRethrottleParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: DeleteByQueryRethrottleParts<'b>) -> Self {
         let headers = HeaderMap::new();
         DeleteByQueryRethrottle {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -1784,7 +1785,7 @@ where
         T: Serialize,
     {
         DeleteByQueryRethrottle {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -1868,7 +1869,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1897,7 +1898,7 @@ impl<'b> DeleteScriptParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Delete Script API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-scripting.html)\n\nDeletes a script."]
 pub struct DeleteScript<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: DeleteScriptParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -1910,10 +1911,10 @@ pub struct DeleteScript<'a, 'b> {
 }
 impl<'a, 'b> DeleteScript<'a, 'b> {
     #[doc = "Creates a new instance of [DeleteScript] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: DeleteScriptParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: DeleteScriptParts<'b>) -> Self {
         let headers = HeaderMap::new();
         DeleteScript {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -2005,7 +2006,7 @@ impl<'a, 'b> DeleteScript<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -2038,7 +2039,7 @@ impl<'b> ExistsParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-get.html)\n\nReturns information about whether a document exists in an index."]
 pub struct Exists<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: ExistsParts<'b>,
     _source: Option<&'b [&'b str]>,
     _source_excludes: Option<&'b [&'b str]>,
@@ -2059,10 +2060,10 @@ pub struct Exists<'a, 'b> {
 }
 impl<'a, 'b> Exists<'a, 'b> {
     #[doc = "Creates a new instance of [Exists] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: ExistsParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: ExistsParts<'b>) -> Self {
         let headers = HeaderMap::new();
         Exists {
-            client,
+            transport,
             parts,
             headers,
             _source: None,
@@ -2238,7 +2239,7 @@ impl<'a, 'b> Exists<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -2290,7 +2291,7 @@ impl<'b> ExistsSourceParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Exists Source API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-get.html)\n\nReturns information about whether a document source exists in an index."]
 pub struct ExistsSource<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: ExistsSourceParts<'b>,
     _source: Option<&'b [&'b str]>,
     _source_excludes: Option<&'b [&'b str]>,
@@ -2310,10 +2311,10 @@ pub struct ExistsSource<'a, 'b> {
 }
 impl<'a, 'b> ExistsSource<'a, 'b> {
     #[doc = "Creates a new instance of [ExistsSource] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: ExistsSourceParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: ExistsSourceParts<'b>) -> Self {
         let headers = HeaderMap::new();
         ExistsSource {
-            client,
+            transport,
             parts,
             headers,
             _source: None,
@@ -2477,7 +2478,7 @@ impl<'a, 'b> ExistsSource<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -2510,7 +2511,7 @@ impl<'b> ExplainParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-explain.html)\n\nReturns information about why a specific matches (or doesn't match) a query."]
 pub struct Explain<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: ExplainParts<'b>,
     _source: Option<&'b [&'b str]>,
     _source_excludes: Option<&'b [&'b str]>,
@@ -2537,10 +2538,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [Explain] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: ExplainParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: ExplainParts<'b>) -> Self {
         let headers = HeaderMap::new();
         Explain {
-            client,
+            transport,
             parts,
             headers,
             _source: None,
@@ -2594,7 +2595,7 @@ where
         T: Serialize,
     {
         Explain {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             _source: self._source,
@@ -2767,7 +2768,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -2802,7 +2803,7 @@ impl<'b> FieldCapsParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Field Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-field-caps.html)\n\nReturns the information about the capabilities of fields among multiple indices."]
 pub struct FieldCaps<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: FieldCapsParts<'b>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
@@ -2822,10 +2823,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [FieldCaps] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: FieldCapsParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: FieldCapsParts<'b>) -> Self {
         let headers = HeaderMap::new();
         FieldCaps {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -2852,7 +2853,7 @@ where
         T: Serialize,
     {
         FieldCaps {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
@@ -2973,7 +2974,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -3006,7 +3007,7 @@ impl<'b> GetParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-get.html)\n\nReturns a document."]
 pub struct Get<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: GetParts<'b>,
     _source: Option<&'b [&'b str]>,
     _source_excludes: Option<&'b [&'b str]>,
@@ -3027,10 +3028,10 @@ pub struct Get<'a, 'b> {
 }
 impl<'a, 'b> Get<'a, 'b> {
     #[doc = "Creates a new instance of [Get] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: GetParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: GetParts<'b>) -> Self {
         let headers = HeaderMap::new();
         Get {
-            client,
+            transport,
             parts,
             headers,
             _source: None,
@@ -3206,7 +3207,7 @@ impl<'a, 'b> Get<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -3235,7 +3236,7 @@ impl<'b> GetScriptParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Get Script API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-scripting.html)\n\nReturns a script."]
 pub struct GetScript<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: GetScriptParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -3247,10 +3248,10 @@ pub struct GetScript<'a, 'b> {
 }
 impl<'a, 'b> GetScript<'a, 'b> {
     #[doc = "Creates a new instance of [GetScript] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: GetScriptParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: GetScriptParts<'b>) -> Self {
         let headers = HeaderMap::new();
         GetScript {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -3333,7 +3334,7 @@ impl<'a, 'b> GetScript<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -3366,7 +3367,7 @@ impl<'b> GetSourceParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Get Source API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-get.html)\n\nReturns the source of a document."]
 pub struct GetSource<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: GetSourceParts<'b>,
     _source: Option<&'b [&'b str]>,
     _source_excludes: Option<&'b [&'b str]>,
@@ -3386,10 +3387,10 @@ pub struct GetSource<'a, 'b> {
 }
 impl<'a, 'b> GetSource<'a, 'b> {
     #[doc = "Creates a new instance of [GetSource] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: GetSourceParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: GetSourceParts<'b>) -> Self {
         let headers = HeaderMap::new();
         GetSource {
-            client,
+            transport,
             parts,
             headers,
             _source: None,
@@ -3553,7 +3554,7 @@ impl<'a, 'b> GetSource<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -3597,7 +3598,7 @@ impl<'b> IndexParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-index_.html)\n\nCreates or updates a document in an index."]
 pub struct Index<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndexParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -3622,10 +3623,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [Index] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndexParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndexParts<'b>) -> Self {
         let headers = HeaderMap::new();
         Index {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -3652,7 +3653,7 @@ where
         T: Serialize,
     {
         Index {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -3817,7 +3818,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -3840,7 +3841,7 @@ impl InfoParts {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/index.html)\n\nReturns basic information about the cluster."]
 pub struct Info<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: InfoParts,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -3851,10 +3852,10 @@ pub struct Info<'a, 'b> {
 }
 impl<'a, 'b> Info<'a, 'b> {
     #[doc = "Creates a new instance of [Info]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         Info {
-            client,
+            transport,
             parts: InfoParts::None,
             headers,
             error_trace: None,
@@ -3928,7 +3929,7 @@ impl<'a, 'b> Info<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -3962,7 +3963,7 @@ impl<'b> MgetParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Mget API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-multi-get.html)\n\nAllows to get multiple documents in one request."]
 pub struct Mget<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: MgetParts<'b>,
     _source: Option<&'b [&'b str]>,
     _source_excludes: Option<&'b [&'b str]>,
@@ -3985,10 +3986,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [Mget] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: MgetParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: MgetParts<'b>) -> Self {
         let headers = HeaderMap::new();
         Mget {
-            client,
+            transport,
             parts,
             headers,
             _source: None,
@@ -4028,7 +4029,7 @@ where
         T: Serialize,
     {
         Mget {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             _source: self._source,
@@ -4175,7 +4176,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -4210,7 +4211,7 @@ impl<'b> MsearchParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Msearch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-multi-search.html)\n\nAllows to execute several search operations in one request."]
 pub struct Msearch<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: MsearchParts<'b>,
     body: Option<B>,
     ccs_minimize_roundtrips: Option<bool>,
@@ -4232,10 +4233,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [Msearch] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: MsearchParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: MsearchParts<'b>) -> Self {
         let headers = HeaderMap::new();
         Msearch {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -4259,7 +4260,7 @@ where
         T: Body,
     {
         Msearch {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(NdBody(body)),
             ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
@@ -4400,7 +4401,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -4435,7 +4436,7 @@ impl<'b> MsearchTemplateParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Msearch Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-multi-search.html)\n\nAllows to execute several search template operations in one request."]
 pub struct MsearchTemplate<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: MsearchTemplateParts<'b>,
     body: Option<B>,
     ccs_minimize_roundtrips: Option<bool>,
@@ -4455,10 +4456,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [MsearchTemplate] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: MsearchTemplateParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: MsearchTemplateParts<'b>) -> Self {
         let headers = HeaderMap::new();
         MsearchTemplate {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -4480,7 +4481,7 @@ where
         T: Body,
     {
         MsearchTemplate {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(NdBody(body)),
             ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
@@ -4603,7 +4604,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -4637,7 +4638,7 @@ impl<'b> MtermvectorsParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Mtermvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-multi-termvectors.html)\n\nReturns multiple termvectors in one request."]
 pub struct Mtermvectors<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: MtermvectorsParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -4664,10 +4665,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [Mtermvectors] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: MtermvectorsParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: MtermvectorsParts<'b>) -> Self {
         let headers = HeaderMap::new();
         Mtermvectors {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -4696,7 +4697,7 @@ where
         T: Serialize,
     {
         Mtermvectors {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -4882,7 +4883,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -4905,7 +4906,7 @@ impl PingParts {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/index.html)\n\nReturns whether the cluster is running."]
 pub struct Ping<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: PingParts,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -4916,10 +4917,10 @@ pub struct Ping<'a, 'b> {
 }
 impl<'a, 'b> Ping<'a, 'b> {
     #[doc = "Creates a new instance of [Ping]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         Ping {
-            client,
+            transport,
             parts: PingParts::None,
             headers,
             error_trace: None,
@@ -4993,7 +4994,7 @@ impl<'a, 'b> Ping<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -5036,7 +5037,7 @@ impl<'b> PutScriptParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Put Script API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-scripting.html)\n\nCreates or updates a script."]
 pub struct PutScript<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: PutScriptParts<'b>,
     body: Option<B>,
     context: Option<&'b str>,
@@ -5054,10 +5055,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [PutScript] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: PutScriptParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: PutScriptParts<'b>) -> Self {
         let headers = HeaderMap::new();
         PutScript {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -5077,7 +5078,7 @@ where
         T: Serialize,
     {
         PutScript {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             context: self.context,
@@ -5179,7 +5180,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -5202,7 +5203,7 @@ impl ReindexParts {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Reindex API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-reindex.html)\n\nAllows to copy documents from one index to another, optionally filtering the source\ndocuments by a query, changing the destination index settings, or fetching the\ndocuments from a remote cluster."]
 pub struct Reindex<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: ReindexParts,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -5225,10 +5226,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [Reindex]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         Reindex {
-            client,
+            transport,
             parts: ReindexParts::None,
             headers,
             body: None,
@@ -5253,7 +5254,7 @@ where
         T: Serialize,
     {
         Reindex {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -5400,7 +5401,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -5431,7 +5432,7 @@ impl<'b> ReindexRethrottleParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Reindex Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-reindex.html)\n\nChanges the number of requests per second for a particular Reindex operation."]
 pub struct ReindexRethrottle<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: ReindexRethrottleParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -5447,10 +5448,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [ReindexRethrottle] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: ReindexRethrottleParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: ReindexRethrottleParts<'b>) -> Self {
         let headers = HeaderMap::new();
         ReindexRethrottle {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -5468,7 +5469,7 @@ where
         T: Serialize,
     {
         ReindexRethrottle {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -5552,7 +5553,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -5584,7 +5585,7 @@ impl<'b> RenderSearchTemplateParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Render Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-template.html#_validating_templates)\n\nAllows to use the Mustache language to pre-render a search definition."]
 pub struct RenderSearchTemplate<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: RenderSearchTemplateParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -5599,10 +5600,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [RenderSearchTemplate] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: RenderSearchTemplateParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: RenderSearchTemplateParts<'b>) -> Self {
         let headers = HeaderMap::new();
         RenderSearchTemplate {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -5619,7 +5620,7 @@ where
         T: Serialize,
     {
         RenderSearchTemplate {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -5697,7 +5698,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -5730,7 +5731,7 @@ impl<'b> ScrollParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-request-body.html#request-body-search-scroll)\n\nAllows to retrieve a large numbers of results from a single search request."]
 pub struct Scroll<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: ScrollParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -5748,10 +5749,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [Scroll] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: ScrollParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: ScrollParts<'b>) -> Self {
         let headers = HeaderMap::new();
         Scroll {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -5771,7 +5772,7 @@ where
         T: Serialize,
     {
         Scroll {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -5876,7 +5877,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -5911,7 +5912,7 @@ impl<'b> SearchParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-search.html)\n\nReturns results matching a query."]
 pub struct Search<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SearchParts<'b>,
     _source: Option<&'b [&'b str]>,
     _source_excludes: Option<&'b [&'b str]>,
@@ -5968,10 +5969,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [Search] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: SearchParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: SearchParts<'b>) -> Self {
         let headers = HeaderMap::new();
         Search {
-            client,
+            transport,
             parts,
             headers,
             _source: None,
@@ -6070,7 +6071,7 @@ where
         T: Serialize,
     {
         Search {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             _source: self._source,
@@ -6507,7 +6508,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -6542,7 +6543,7 @@ impl<'b> SearchShardsParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Search Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-shards.html)\n\nReturns information about the indices and shards that a search request would be executed against."]
 pub struct SearchShards<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SearchShardsParts<'b>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
@@ -6563,10 +6564,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [SearchShards] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: SearchShardsParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: SearchShardsParts<'b>) -> Self {
         let headers = HeaderMap::new();
         SearchShards {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -6594,7 +6595,7 @@ where
         T: Serialize,
     {
         SearchShards {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
@@ -6724,7 +6725,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -6759,7 +6760,7 @@ impl<'b> SearchTemplateParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-template.html)\n\nAllows to use the Mustache language to pre-render a search definition."]
 pub struct SearchTemplate<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SearchTemplateParts<'b>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
@@ -6787,10 +6788,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [SearchTemplate] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: SearchTemplateParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: SearchTemplateParts<'b>) -> Self {
         let headers = HeaderMap::new();
         SearchTemplate {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -6825,7 +6826,7 @@ where
         T: Serialize,
     {
         SearchTemplate {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
@@ -7021,7 +7022,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -7065,7 +7066,7 @@ impl<'b> TermvectorsParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Termvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-termvectors.html)\n\nReturns information and statistics about terms in the fields of a particular document."]
 pub struct Termvectors<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: TermvectorsParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -7091,10 +7092,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [Termvectors] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: TermvectorsParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: TermvectorsParts<'b>) -> Self {
         let headers = HeaderMap::new();
         Termvectors {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -7122,7 +7123,7 @@ where
         T: Serialize,
     {
         Termvectors {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -7299,7 +7300,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -7351,7 +7352,7 @@ impl<'b> UpdateParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Update API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-update.html)\n\nUpdates a document with a script or partial document."]
 pub struct Update<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: UpdateParts<'b>,
     _source: Option<&'b [&'b str]>,
     _source_excludes: Option<&'b [&'b str]>,
@@ -7377,10 +7378,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [Update] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: UpdateParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: UpdateParts<'b>) -> Self {
         let headers = HeaderMap::new();
         Update {
-            client,
+            transport,
             parts,
             headers,
             _source: None,
@@ -7423,7 +7424,7 @@ where
         T: Serialize,
     {
         Update {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             _source: self._source,
@@ -7591,7 +7592,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -7623,7 +7624,7 @@ impl<'b> UpdateByQueryParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Update By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-update-by-query.html)\n\nPerforms an update on every document in the index without changing the source,\nfor example to pick up a mapping change."]
 pub struct UpdateByQuery<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: UpdateByQueryParts<'b>,
     _source: Option<&'b [&'b str]>,
     _source_excludes: Option<&'b [&'b str]>,
@@ -7672,10 +7673,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [UpdateByQuery] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: UpdateByQueryParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: UpdateByQueryParts<'b>) -> Self {
         let headers = HeaderMap::new();
         UpdateByQuery {
-            client,
+            transport,
             parts,
             headers,
             _source: None,
@@ -7756,7 +7757,7 @@ where
         T: Serialize,
     {
         UpdateByQuery {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             _source: self._source,
@@ -8122,7 +8123,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -8153,7 +8154,7 @@ impl<'b> UpdateByQueryRethrottleParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Update By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-update-by-query.html)\n\nChanges the number of requests per second for a particular Update By Query operation."]
 pub struct UpdateByQueryRethrottle<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: UpdateByQueryRethrottleParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -8169,10 +8170,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [UpdateByQueryRethrottle] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: UpdateByQueryRethrottleParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: UpdateByQueryRethrottleParts<'b>) -> Self {
         let headers = HeaderMap::new();
         UpdateByQueryRethrottle {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -8190,7 +8191,7 @@ where
         T: Serialize,
     {
         UpdateByQueryRethrottle {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -8274,7 +8275,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -8283,168 +8284,168 @@ where
 impl Elasticsearch {
     #[doc = "[Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-bulk.html)\n\nAllows to perform multiple index/update/delete operations in a single request."]
     pub fn bulk<'a, 'b>(&'a self, parts: BulkParts<'b>) -> Bulk<'a, 'b, ()> {
-        Bulk::new(&self, parts)
+        Bulk::new(self.transport(), parts)
     }
     #[doc = "[Clear Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-request-body.html#_clear_scroll_api)\n\nExplicitly clears the search context for a scroll."]
     pub fn clear_scroll<'a, 'b>(&'a self, parts: ClearScrollParts<'b>) -> ClearScroll<'a, 'b, ()> {
-        ClearScroll::new(&self, parts)
+        ClearScroll::new(self.transport(), parts)
     }
     #[doc = "[Count API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-count.html)\n\nReturns number of documents matching a query."]
     pub fn count<'a, 'b>(&'a self, parts: CountParts<'b>) -> Count<'a, 'b, ()> {
-        Count::new(&self, parts)
+        Count::new(self.transport(), parts)
     }
     #[doc = "[Create API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-index_.html)\n\nCreates a new document in the index.\n\nReturns a 409 response when a document with a same ID already exists in the index."]
     pub fn create<'a, 'b>(&'a self, parts: CreateParts<'b>) -> Create<'a, 'b, ()> {
-        Create::new(&self, parts)
+        Create::new(self.transport(), parts)
     }
     #[doc = "[Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-delete.html)\n\nRemoves a document from the index."]
     pub fn delete<'a, 'b>(&'a self, parts: DeleteParts<'b>) -> Delete<'a, 'b> {
-        Delete::new(&self, parts)
+        Delete::new(self.transport(), parts)
     }
     #[doc = "[Delete By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-delete-by-query.html)\n\nDeletes documents matching the provided query."]
     pub fn delete_by_query<'a, 'b>(
         &'a self,
         parts: DeleteByQueryParts<'b>,
     ) -> DeleteByQuery<'a, 'b, ()> {
-        DeleteByQuery::new(&self, parts)
+        DeleteByQuery::new(self.transport(), parts)
     }
     #[doc = "[Delete By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-delete-by-query.html)\n\nChanges the number of requests per second for a particular Delete By Query operation."]
     pub fn delete_by_query_rethrottle<'a, 'b>(
         &'a self,
         parts: DeleteByQueryRethrottleParts<'b>,
     ) -> DeleteByQueryRethrottle<'a, 'b, ()> {
-        DeleteByQueryRethrottle::new(&self, parts)
+        DeleteByQueryRethrottle::new(self.transport(), parts)
     }
     #[doc = "[Delete Script API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-scripting.html)\n\nDeletes a script."]
     pub fn delete_script<'a, 'b>(&'a self, parts: DeleteScriptParts<'b>) -> DeleteScript<'a, 'b> {
-        DeleteScript::new(&self, parts)
+        DeleteScript::new(self.transport(), parts)
     }
     #[doc = "[Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-get.html)\n\nReturns information about whether a document exists in an index."]
     pub fn exists<'a, 'b>(&'a self, parts: ExistsParts<'b>) -> Exists<'a, 'b> {
-        Exists::new(&self, parts)
+        Exists::new(self.transport(), parts)
     }
     #[doc = "[Exists Source API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-get.html)\n\nReturns information about whether a document source exists in an index."]
     pub fn exists_source<'a, 'b>(&'a self, parts: ExistsSourceParts<'b>) -> ExistsSource<'a, 'b> {
-        ExistsSource::new(&self, parts)
+        ExistsSource::new(self.transport(), parts)
     }
     #[doc = "[Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-explain.html)\n\nReturns information about why a specific matches (or doesn't match) a query."]
     pub fn explain<'a, 'b>(&'a self, parts: ExplainParts<'b>) -> Explain<'a, 'b, ()> {
-        Explain::new(&self, parts)
+        Explain::new(self.transport(), parts)
     }
     #[doc = "[Field Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-field-caps.html)\n\nReturns the information about the capabilities of fields among multiple indices."]
     pub fn field_caps<'a, 'b>(&'a self, parts: FieldCapsParts<'b>) -> FieldCaps<'a, 'b, ()> {
-        FieldCaps::new(&self, parts)
+        FieldCaps::new(self.transport(), parts)
     }
     #[doc = "[Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-get.html)\n\nReturns a document."]
     pub fn get<'a, 'b>(&'a self, parts: GetParts<'b>) -> Get<'a, 'b> {
-        Get::new(&self, parts)
+        Get::new(self.transport(), parts)
     }
     #[doc = "[Get Script API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-scripting.html)\n\nReturns a script."]
     pub fn get_script<'a, 'b>(&'a self, parts: GetScriptParts<'b>) -> GetScript<'a, 'b> {
-        GetScript::new(&self, parts)
+        GetScript::new(self.transport(), parts)
     }
     #[doc = "[Get Source API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-get.html)\n\nReturns the source of a document."]
     pub fn get_source<'a, 'b>(&'a self, parts: GetSourceParts<'b>) -> GetSource<'a, 'b> {
-        GetSource::new(&self, parts)
+        GetSource::new(self.transport(), parts)
     }
     #[doc = "[Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-index_.html)\n\nCreates or updates a document in an index."]
     pub fn index<'a, 'b>(&'a self, parts: IndexParts<'b>) -> Index<'a, 'b, ()> {
-        Index::new(&self, parts)
+        Index::new(self.transport(), parts)
     }
     #[doc = "[Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/index.html)\n\nReturns basic information about the cluster."]
     pub fn info<'a, 'b>(&'a self) -> Info<'a, 'b> {
-        Info::new(&self)
+        Info::new(self.transport())
     }
     #[doc = "[Mget API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-multi-get.html)\n\nAllows to get multiple documents in one request."]
     pub fn mget<'a, 'b>(&'a self, parts: MgetParts<'b>) -> Mget<'a, 'b, ()> {
-        Mget::new(&self, parts)
+        Mget::new(self.transport(), parts)
     }
     #[doc = "[Msearch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-multi-search.html)\n\nAllows to execute several search operations in one request."]
     pub fn msearch<'a, 'b>(&'a self, parts: MsearchParts<'b>) -> Msearch<'a, 'b, ()> {
-        Msearch::new(&self, parts)
+        Msearch::new(self.transport(), parts)
     }
     #[doc = "[Msearch Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-multi-search.html)\n\nAllows to execute several search template operations in one request."]
     pub fn msearch_template<'a, 'b>(
         &'a self,
         parts: MsearchTemplateParts<'b>,
     ) -> MsearchTemplate<'a, 'b, ()> {
-        MsearchTemplate::new(&self, parts)
+        MsearchTemplate::new(self.transport(), parts)
     }
     #[doc = "[Mtermvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-multi-termvectors.html)\n\nReturns multiple termvectors in one request."]
     pub fn mtermvectors<'a, 'b>(
         &'a self,
         parts: MtermvectorsParts<'b>,
     ) -> Mtermvectors<'a, 'b, ()> {
-        Mtermvectors::new(&self, parts)
+        Mtermvectors::new(self.transport(), parts)
     }
     #[doc = "[Ping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/index.html)\n\nReturns whether the cluster is running."]
     pub fn ping<'a, 'b>(&'a self) -> Ping<'a, 'b> {
-        Ping::new(&self)
+        Ping::new(self.transport())
     }
     #[doc = "[Put Script API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-scripting.html)\n\nCreates or updates a script."]
     pub fn put_script<'a, 'b>(&'a self, parts: PutScriptParts<'b>) -> PutScript<'a, 'b, ()> {
-        PutScript::new(&self, parts)
+        PutScript::new(self.transport(), parts)
     }
     #[doc = "[Reindex API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-reindex.html)\n\nAllows to copy documents from one index to another, optionally filtering the source\ndocuments by a query, changing the destination index settings, or fetching the\ndocuments from a remote cluster."]
     pub fn reindex<'a, 'b>(&'a self) -> Reindex<'a, 'b, ()> {
-        Reindex::new(&self)
+        Reindex::new(self.transport())
     }
     #[doc = "[Reindex Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-reindex.html)\n\nChanges the number of requests per second for a particular Reindex operation."]
     pub fn reindex_rethrottle<'a, 'b>(
         &'a self,
         parts: ReindexRethrottleParts<'b>,
     ) -> ReindexRethrottle<'a, 'b, ()> {
-        ReindexRethrottle::new(&self, parts)
+        ReindexRethrottle::new(self.transport(), parts)
     }
     #[doc = "[Render Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-template.html#_validating_templates)\n\nAllows to use the Mustache language to pre-render a search definition."]
     pub fn render_search_template<'a, 'b>(
         &'a self,
         parts: RenderSearchTemplateParts<'b>,
     ) -> RenderSearchTemplate<'a, 'b, ()> {
-        RenderSearchTemplate::new(&self, parts)
+        RenderSearchTemplate::new(self.transport(), parts)
     }
     #[doc = "[Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-request-body.html#request-body-search-scroll)\n\nAllows to retrieve a large numbers of results from a single search request.\n\n# Examples\n\nTo initiate a scroll, make search API call with a specified `scroll` timeout,\nthen fetch the next set of hits using the `_scroll_id` returned in\nthe response. Once no more hits are returned, clear the scroll.\n\n```rust,no_run\n# use elasticsearch::{Elasticsearch, Error, SearchParts, ScrollParts, ClearScrollParts};\n# use serde_json::{json, Value};\n# async fn doc() -> Result<(), Box<dyn std::error::Error>> {\nlet client = Elasticsearch::default();\n\nfn print_hits(hits: &[Value]) {\n    for hit in hits {\n        println!(\n            \"id: '{}', source: '{}', score: '{}'\",\n            hit[\"_id\"].as_str().unwrap(),\n            hit[\"_source\"],\n            hit[\"_score\"].as_f64().unwrap()\n        );\n    }\n}\n\nlet scroll = \"1m\";\nlet mut response = client\n    .search(SearchParts::Index(&[\"tweets\"]))\n    .scroll(scroll)\n    .body(json!({\n        \"query\": {\n            \"match\": {\n                \"body\": {\n                    \"query\": \"Elasticsearch rust\",\n                    \"operator\": \"AND\"\n                }\n            }\n        }\n    }))\n    .send()\n    .await?;\n\nlet mut response_body = response.json::<Value>().await?;\nlet mut scroll_id = response_body[\"_scroll_id\"].as_str().unwrap();\nlet mut hits = response_body[\"hits\"][\"hits\"].as_array().unwrap();\n\nprint_hits(hits);\n\nwhile hits.len() > 0 {\n    response = client\n        .scroll(ScrollParts::None)\n        .body(json!({\n            \"scroll\": scroll,\n            \"scroll_id\": scroll_id\n        }))\n        .send()\n        .await?;\n\n    response_body = response.json::<Value>().await?;\n    scroll_id = response_body[\"_scroll_id\"].as_str().unwrap();\n    hits = response_body[\"hits\"][\"hits\"].as_array().unwrap();\n    print_hits(hits);\n}\n\nresponse = client\n    .clear_scroll(ClearScrollParts::None)\n    .body(json!({\n        \"scroll_id\": scroll_id\n    }))\n    .send()\n    .await?;\n    \n# Ok(())\n# }\n```"]
     pub fn scroll<'a, 'b>(&'a self, parts: ScrollParts<'b>) -> Scroll<'a, 'b, ()> {
-        Scroll::new(&self, parts)
+        Scroll::new(self.transport(), parts)
     }
     #[doc = "[Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-search.html)\n\nReturns results matching a query."]
     pub fn search<'a, 'b>(&'a self, parts: SearchParts<'b>) -> Search<'a, 'b, ()> {
-        Search::new(&self, parts)
+        Search::new(self.transport(), parts)
     }
     #[doc = "[Search Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-shards.html)\n\nReturns information about the indices and shards that a search request would be executed against."]
     pub fn search_shards<'a, 'b>(
         &'a self,
         parts: SearchShardsParts<'b>,
     ) -> SearchShards<'a, 'b, ()> {
-        SearchShards::new(&self, parts)
+        SearchShards::new(self.transport(), parts)
     }
     #[doc = "[Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-template.html)\n\nAllows to use the Mustache language to pre-render a search definition."]
     pub fn search_template<'a, 'b>(
         &'a self,
         parts: SearchTemplateParts<'b>,
     ) -> SearchTemplate<'a, 'b, ()> {
-        SearchTemplate::new(&self, parts)
+        SearchTemplate::new(self.transport(), parts)
     }
     #[doc = "[Termvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-termvectors.html)\n\nReturns information and statistics about terms in the fields of a particular document."]
     pub fn termvectors<'a, 'b>(&'a self, parts: TermvectorsParts<'b>) -> Termvectors<'a, 'b, ()> {
-        Termvectors::new(&self, parts)
+        Termvectors::new(self.transport(), parts)
     }
     #[doc = "[Update API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-update.html)\n\nUpdates a document with a script or partial document."]
     pub fn update<'a, 'b>(&'a self, parts: UpdateParts<'b>) -> Update<'a, 'b, ()> {
-        Update::new(&self, parts)
+        Update::new(self.transport(), parts)
     }
     #[doc = "[Update By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-update-by-query.html)\n\nPerforms an update on every document in the index without changing the source,\nfor example to pick up a mapping change."]
     pub fn update_by_query<'a, 'b>(
         &'a self,
         parts: UpdateByQueryParts<'b>,
     ) -> UpdateByQuery<'a, 'b, ()> {
-        UpdateByQuery::new(&self, parts)
+        UpdateByQuery::new(self.transport(), parts)
     }
     #[doc = "[Update By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-update-by-query.html)\n\nChanges the number of requests per second for a particular Update By Query operation."]
     pub fn update_by_query_rethrottle<'a, 'b>(
         &'a self,
         parts: UpdateByQueryRethrottleParts<'b>,
     ) -> UpdateByQueryRethrottle<'a, 'b, ()> {
-        UpdateByQueryRethrottle::new(&self, parts)
+        UpdateByQueryRethrottle::new(self.transport(), parts)
     }
 }

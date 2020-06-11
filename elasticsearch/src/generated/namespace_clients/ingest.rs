@@ -30,6 +30,7 @@ use crate::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
+        transport::Transport,
         Method,
     },
     params::*,
@@ -60,7 +61,7 @@ impl<'b> IngestDeletePipelineParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/delete-pipeline-api.html)\n\nDeletes a pipeline."]
 pub struct IngestDeletePipeline<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IngestDeletePipelineParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -73,10 +74,10 @@ pub struct IngestDeletePipeline<'a, 'b> {
 }
 impl<'a, 'b> IngestDeletePipeline<'a, 'b> {
     #[doc = "Creates a new instance of [IngestDeletePipeline] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IngestDeletePipelineParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IngestDeletePipelineParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IngestDeletePipeline {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -168,7 +169,7 @@ impl<'a, 'b> IngestDeletePipeline<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -200,7 +201,7 @@ impl<'b> IngestGetPipelineParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-pipeline-api.html)\n\nReturns a pipeline."]
 pub struct IngestGetPipeline<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IngestGetPipelineParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -212,10 +213,10 @@ pub struct IngestGetPipeline<'a, 'b> {
 }
 impl<'a, 'b> IngestGetPipeline<'a, 'b> {
     #[doc = "Creates a new instance of [IngestGetPipeline] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IngestGetPipelineParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IngestGetPipelineParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IngestGetPipeline {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -298,7 +299,7 @@ impl<'a, 'b> IngestGetPipeline<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -321,7 +322,7 @@ impl IngestProcessorGrokParts {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ingest Processor Grok API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/grok-processor.html#grok-processor-rest-get)\n\nReturns a list of the built-in patterns."]
 pub struct IngestProcessorGrok<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IngestProcessorGrokParts,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -332,10 +333,10 @@ pub struct IngestProcessorGrok<'a, 'b> {
 }
 impl<'a, 'b> IngestProcessorGrok<'a, 'b> {
     #[doc = "Creates a new instance of [IngestProcessorGrok]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         IngestProcessorGrok {
-            client,
+            transport,
             parts: IngestProcessorGrokParts::None,
             headers,
             error_trace: None,
@@ -409,7 +410,7 @@ impl<'a, 'b> IngestProcessorGrok<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -438,7 +439,7 @@ impl<'b> IngestPutPipelineParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/put-pipeline-api.html)\n\nCreates or updates a pipeline."]
 pub struct IngestPutPipeline<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IngestPutPipelineParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -455,10 +456,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IngestPutPipeline] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IngestPutPipelineParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IngestPutPipelineParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IngestPutPipeline {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -477,7 +478,7 @@ where
         T: Serialize,
     {
         IngestPutPipeline {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -570,7 +571,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -603,7 +604,7 @@ impl<'b> IngestSimulateParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/simulate-pipeline-api.html)\n\nAllows to simulate a pipeline with example documents."]
 pub struct IngestSimulate<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IngestSimulateParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -619,10 +620,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IngestSimulate] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IngestSimulateParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IngestSimulateParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IngestSimulate {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -640,7 +641,7 @@ where
         T: Serialize,
     {
         IngestSimulate {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -727,7 +728,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -735,46 +736,49 @@ where
 }
 #[doc = "Namespace client for Ingest APIs"]
 pub struct Ingest<'a> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
 }
 impl<'a> Ingest<'a> {
     #[doc = "Creates a new instance of [Ingest]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
-        Self { client }
+    pub fn new(transport: &'a Transport) -> Self {
+        Self { transport }
+    }
+    pub fn transport(&self) -> &Transport {
+        self.transport
     }
     #[doc = "[Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/delete-pipeline-api.html)\n\nDeletes a pipeline."]
     pub fn delete_pipeline<'b>(
         &'a self,
         parts: IngestDeletePipelineParts<'b>,
     ) -> IngestDeletePipeline<'a, 'b> {
-        IngestDeletePipeline::new(&self.client, parts)
+        IngestDeletePipeline::new(self.transport(), parts)
     }
     #[doc = "[Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-pipeline-api.html)\n\nReturns a pipeline."]
     pub fn get_pipeline<'b>(
         &'a self,
         parts: IngestGetPipelineParts<'b>,
     ) -> IngestGetPipeline<'a, 'b> {
-        IngestGetPipeline::new(&self.client, parts)
+        IngestGetPipeline::new(self.transport(), parts)
     }
     #[doc = "[Ingest Processor Grok API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/grok-processor.html#grok-processor-rest-get)\n\nReturns a list of the built-in patterns."]
     pub fn processor_grok<'b>(&'a self) -> IngestProcessorGrok<'a, 'b> {
-        IngestProcessorGrok::new(&self.client)
+        IngestProcessorGrok::new(self.transport())
     }
     #[doc = "[Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/put-pipeline-api.html)\n\nCreates or updates a pipeline."]
     pub fn put_pipeline<'b>(
         &'a self,
         parts: IngestPutPipelineParts<'b>,
     ) -> IngestPutPipeline<'a, 'b, ()> {
-        IngestPutPipeline::new(&self.client, parts)
+        IngestPutPipeline::new(self.transport(), parts)
     }
     #[doc = "[Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/simulate-pipeline-api.html)\n\nAllows to simulate a pipeline with example documents."]
     pub fn simulate<'b>(&'a self, parts: IngestSimulateParts<'b>) -> IngestSimulate<'a, 'b, ()> {
-        IngestSimulate::new(&self.client, parts)
+        IngestSimulate::new(self.transport(), parts)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Ingest APIs"]
     pub fn ingest(&self) -> Ingest {
-        Ingest::new(&self)
+        Ingest::new(self.transport())
     }
 }

@@ -30,6 +30,7 @@ use crate::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
+        transport::Transport,
         Method,
     },
     params::*,
@@ -60,7 +61,7 @@ impl<'b> CcrDeleteAutoFollowPatternParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Delete Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-delete-auto-follow-pattern.html)\n\nDeletes auto-follow patterns."]
 pub struct CcrDeleteAutoFollowPattern<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: CcrDeleteAutoFollowPatternParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -71,10 +72,10 @@ pub struct CcrDeleteAutoFollowPattern<'a, 'b> {
 }
 impl<'a, 'b> CcrDeleteAutoFollowPattern<'a, 'b> {
     #[doc = "Creates a new instance of [CcrDeleteAutoFollowPattern] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: CcrDeleteAutoFollowPatternParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: CcrDeleteAutoFollowPatternParts<'b>) -> Self {
         let headers = HeaderMap::new();
         CcrDeleteAutoFollowPattern {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -148,7 +149,7 @@ impl<'a, 'b> CcrDeleteAutoFollowPattern<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -179,7 +180,7 @@ impl<'b> CcrFollowParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-put-follow.html)\n\nCreates a new follower index configured to follow the referenced leader index."]
 pub struct CcrFollow<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: CcrFollowParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -195,10 +196,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [CcrFollow] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: CcrFollowParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: CcrFollowParts<'b>) -> Self {
         let headers = HeaderMap::new();
         CcrFollow {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -216,7 +217,7 @@ where
         T: Serialize,
     {
         CcrFollow {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -300,7 +301,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -332,7 +333,7 @@ impl<'b> CcrFollowInfoParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Follow Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-get-follow-info.html)\n\nRetrieves information about all follower indices, including parameters and status for each follower index"]
 pub struct CcrFollowInfo<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: CcrFollowInfoParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -343,10 +344,10 @@ pub struct CcrFollowInfo<'a, 'b> {
 }
 impl<'a, 'b> CcrFollowInfo<'a, 'b> {
     #[doc = "Creates a new instance of [CcrFollowInfo] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: CcrFollowInfoParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: CcrFollowInfoParts<'b>) -> Self {
         let headers = HeaderMap::new();
         CcrFollowInfo {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -420,7 +421,7 @@ impl<'a, 'b> CcrFollowInfo<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -452,7 +453,7 @@ impl<'b> CcrFollowStatsParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Follow Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-get-follow-stats.html)\n\nRetrieves follower stats. return shard-level stats about the following tasks associated with each shard for the specified indices."]
 pub struct CcrFollowStats<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: CcrFollowStatsParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -463,10 +464,10 @@ pub struct CcrFollowStats<'a, 'b> {
 }
 impl<'a, 'b> CcrFollowStats<'a, 'b> {
     #[doc = "Creates a new instance of [CcrFollowStats] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: CcrFollowStatsParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: CcrFollowStatsParts<'b>) -> Self {
         let headers = HeaderMap::new();
         CcrFollowStats {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -540,7 +541,7 @@ impl<'a, 'b> CcrFollowStats<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -571,7 +572,7 @@ impl<'b> CcrForgetFollowerParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Forget Follower API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-post-forget-follower.html)\n\nRemoves the follower retention leases from the leader."]
 pub struct CcrForgetFollower<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: CcrForgetFollowerParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -586,10 +587,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [CcrForgetFollower] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: CcrForgetFollowerParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: CcrForgetFollowerParts<'b>) -> Self {
         let headers = HeaderMap::new();
         CcrForgetFollower {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -606,7 +607,7 @@ where
         T: Serialize,
     {
         CcrForgetFollower {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -681,7 +682,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -713,7 +714,7 @@ impl<'b> CcrGetAutoFollowPatternParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Get Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-get-auto-follow-pattern.html)\n\nGets configured auto-follow patterns. Returns the specified auto-follow pattern collection."]
 pub struct CcrGetAutoFollowPattern<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: CcrGetAutoFollowPatternParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -724,10 +725,10 @@ pub struct CcrGetAutoFollowPattern<'a, 'b> {
 }
 impl<'a, 'b> CcrGetAutoFollowPattern<'a, 'b> {
     #[doc = "Creates a new instance of [CcrGetAutoFollowPattern] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: CcrGetAutoFollowPatternParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: CcrGetAutoFollowPatternParts<'b>) -> Self {
         let headers = HeaderMap::new();
         CcrGetAutoFollowPattern {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -801,7 +802,7 @@ impl<'a, 'b> CcrGetAutoFollowPattern<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -831,7 +832,7 @@ impl<'b> CcrPauseAutoFollowPatternParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Pause Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-pause-auto-follow-pattern.html)\n\nPauses an auto-follow pattern"]
 pub struct CcrPauseAutoFollowPattern<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: CcrPauseAutoFollowPatternParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -846,10 +847,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [CcrPauseAutoFollowPattern] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: CcrPauseAutoFollowPatternParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: CcrPauseAutoFollowPatternParts<'b>) -> Self {
         let headers = HeaderMap::new();
         CcrPauseAutoFollowPattern {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -866,7 +867,7 @@ where
         T: Serialize,
     {
         CcrPauseAutoFollowPattern {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -941,7 +942,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -972,7 +973,7 @@ impl<'b> CcrPauseFollowParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Pause Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-post-pause-follow.html)\n\nPauses a follower index. The follower index will not fetch any additional operations from the leader index."]
 pub struct CcrPauseFollow<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: CcrPauseFollowParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -987,10 +988,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [CcrPauseFollow] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: CcrPauseFollowParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: CcrPauseFollowParts<'b>) -> Self {
         let headers = HeaderMap::new();
         CcrPauseFollow {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -1007,7 +1008,7 @@ where
         T: Serialize,
     {
         CcrPauseFollow {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -1082,7 +1083,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1111,7 +1112,7 @@ impl<'b> CcrPutAutoFollowPatternParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Put Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-put-auto-follow-pattern.html)\n\nCreates a new named collection of auto-follow patterns against a specified remote cluster. Newly created indices on the remote cluster matching any of the specified patterns will be automatically configured as follower indices."]
 pub struct CcrPutAutoFollowPattern<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: CcrPutAutoFollowPatternParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -1126,10 +1127,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [CcrPutAutoFollowPattern] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: CcrPutAutoFollowPatternParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: CcrPutAutoFollowPatternParts<'b>) -> Self {
         let headers = HeaderMap::new();
         CcrPutAutoFollowPattern {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -1146,7 +1147,7 @@ where
         T: Serialize,
     {
         CcrPutAutoFollowPattern {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -1221,7 +1222,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1251,7 +1252,7 @@ impl<'b> CcrResumeAutoFollowPatternParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Resume Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-resume-auto-follow-pattern.html)\n\nResumes an auto-follow pattern that has been paused"]
 pub struct CcrResumeAutoFollowPattern<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: CcrResumeAutoFollowPatternParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -1266,10 +1267,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [CcrResumeAutoFollowPattern] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: CcrResumeAutoFollowPatternParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: CcrResumeAutoFollowPatternParts<'b>) -> Self {
         let headers = HeaderMap::new();
         CcrResumeAutoFollowPattern {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -1286,7 +1287,7 @@ where
         T: Serialize,
     {
         CcrResumeAutoFollowPattern {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -1361,7 +1362,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1392,7 +1393,7 @@ impl<'b> CcrResumeFollowParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Resume Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-post-resume-follow.html)\n\nResumes a follower index that has been paused"]
 pub struct CcrResumeFollow<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: CcrResumeFollowParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -1407,10 +1408,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [CcrResumeFollow] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: CcrResumeFollowParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: CcrResumeFollowParts<'b>) -> Self {
         let headers = HeaderMap::new();
         CcrResumeFollow {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -1427,7 +1428,7 @@ where
         T: Serialize,
     {
         CcrResumeFollow {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -1502,7 +1503,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1525,7 +1526,7 @@ impl CcrStatsParts {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-get-stats.html)\n\nGets all stats related to cross-cluster replication."]
 pub struct CcrStats<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: CcrStatsParts,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -1536,10 +1537,10 @@ pub struct CcrStats<'a, 'b> {
 }
 impl<'a, 'b> CcrStats<'a, 'b> {
     #[doc = "Creates a new instance of [CcrStats]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         CcrStats {
-            client,
+            transport,
             parts: CcrStatsParts::None,
             headers,
             error_trace: None,
@@ -1613,7 +1614,7 @@ impl<'a, 'b> CcrStats<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1644,7 +1645,7 @@ impl<'b> CcrUnfollowParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Unfollow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-post-unfollow.html)\n\nStops the following task associated with a follower index and removes index metadata and settings associated with cross-cluster replication."]
 pub struct CcrUnfollow<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: CcrUnfollowParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -1659,10 +1660,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [CcrUnfollow] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: CcrUnfollowParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: CcrUnfollowParts<'b>) -> Self {
         let headers = HeaderMap::new();
         CcrUnfollow {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -1679,7 +1680,7 @@ where
         T: Serialize,
     {
         CcrUnfollow {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -1754,7 +1755,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1762,93 +1763,96 @@ where
 }
 #[doc = "Namespace client for Cross Cluster Replication APIs"]
 pub struct Ccr<'a> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
 }
 impl<'a> Ccr<'a> {
     #[doc = "Creates a new instance of [Ccr]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
-        Self { client }
+    pub fn new(transport: &'a Transport) -> Self {
+        Self { transport }
+    }
+    pub fn transport(&self) -> &Transport {
+        self.transport
     }
     #[doc = "[Ccr Delete Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-delete-auto-follow-pattern.html)\n\nDeletes auto-follow patterns."]
     pub fn delete_auto_follow_pattern<'b>(
         &'a self,
         parts: CcrDeleteAutoFollowPatternParts<'b>,
     ) -> CcrDeleteAutoFollowPattern<'a, 'b> {
-        CcrDeleteAutoFollowPattern::new(&self.client, parts)
+        CcrDeleteAutoFollowPattern::new(self.transport(), parts)
     }
     #[doc = "[Ccr Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-put-follow.html)\n\nCreates a new follower index configured to follow the referenced leader index."]
     pub fn follow<'b>(&'a self, parts: CcrFollowParts<'b>) -> CcrFollow<'a, 'b, ()> {
-        CcrFollow::new(&self.client, parts)
+        CcrFollow::new(self.transport(), parts)
     }
     #[doc = "[Ccr Follow Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-get-follow-info.html)\n\nRetrieves information about all follower indices, including parameters and status for each follower index"]
     pub fn follow_info<'b>(&'a self, parts: CcrFollowInfoParts<'b>) -> CcrFollowInfo<'a, 'b> {
-        CcrFollowInfo::new(&self.client, parts)
+        CcrFollowInfo::new(self.transport(), parts)
     }
     #[doc = "[Ccr Follow Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-get-follow-stats.html)\n\nRetrieves follower stats. return shard-level stats about the following tasks associated with each shard for the specified indices."]
     pub fn follow_stats<'b>(&'a self, parts: CcrFollowStatsParts<'b>) -> CcrFollowStats<'a, 'b> {
-        CcrFollowStats::new(&self.client, parts)
+        CcrFollowStats::new(self.transport(), parts)
     }
     #[doc = "[Ccr Forget Follower API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-post-forget-follower.html)\n\nRemoves the follower retention leases from the leader."]
     pub fn forget_follower<'b>(
         &'a self,
         parts: CcrForgetFollowerParts<'b>,
     ) -> CcrForgetFollower<'a, 'b, ()> {
-        CcrForgetFollower::new(&self.client, parts)
+        CcrForgetFollower::new(self.transport(), parts)
     }
     #[doc = "[Ccr Get Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-get-auto-follow-pattern.html)\n\nGets configured auto-follow patterns. Returns the specified auto-follow pattern collection."]
     pub fn get_auto_follow_pattern<'b>(
         &'a self,
         parts: CcrGetAutoFollowPatternParts<'b>,
     ) -> CcrGetAutoFollowPattern<'a, 'b> {
-        CcrGetAutoFollowPattern::new(&self.client, parts)
+        CcrGetAutoFollowPattern::new(self.transport(), parts)
     }
     #[doc = "[Ccr Pause Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-pause-auto-follow-pattern.html)\n\nPauses an auto-follow pattern"]
     pub fn pause_auto_follow_pattern<'b>(
         &'a self,
         parts: CcrPauseAutoFollowPatternParts<'b>,
     ) -> CcrPauseAutoFollowPattern<'a, 'b, ()> {
-        CcrPauseAutoFollowPattern::new(&self.client, parts)
+        CcrPauseAutoFollowPattern::new(self.transport(), parts)
     }
     #[doc = "[Ccr Pause Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-post-pause-follow.html)\n\nPauses a follower index. The follower index will not fetch any additional operations from the leader index."]
     pub fn pause_follow<'b>(
         &'a self,
         parts: CcrPauseFollowParts<'b>,
     ) -> CcrPauseFollow<'a, 'b, ()> {
-        CcrPauseFollow::new(&self.client, parts)
+        CcrPauseFollow::new(self.transport(), parts)
     }
     #[doc = "[Ccr Put Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-put-auto-follow-pattern.html)\n\nCreates a new named collection of auto-follow patterns against a specified remote cluster. Newly created indices on the remote cluster matching any of the specified patterns will be automatically configured as follower indices."]
     pub fn put_auto_follow_pattern<'b>(
         &'a self,
         parts: CcrPutAutoFollowPatternParts<'b>,
     ) -> CcrPutAutoFollowPattern<'a, 'b, ()> {
-        CcrPutAutoFollowPattern::new(&self.client, parts)
+        CcrPutAutoFollowPattern::new(self.transport(), parts)
     }
     #[doc = "[Ccr Resume Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-resume-auto-follow-pattern.html)\n\nResumes an auto-follow pattern that has been paused"]
     pub fn resume_auto_follow_pattern<'b>(
         &'a self,
         parts: CcrResumeAutoFollowPatternParts<'b>,
     ) -> CcrResumeAutoFollowPattern<'a, 'b, ()> {
-        CcrResumeAutoFollowPattern::new(&self.client, parts)
+        CcrResumeAutoFollowPattern::new(self.transport(), parts)
     }
     #[doc = "[Ccr Resume Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-post-resume-follow.html)\n\nResumes a follower index that has been paused"]
     pub fn resume_follow<'b>(
         &'a self,
         parts: CcrResumeFollowParts<'b>,
     ) -> CcrResumeFollow<'a, 'b, ()> {
-        CcrResumeFollow::new(&self.client, parts)
+        CcrResumeFollow::new(self.transport(), parts)
     }
     #[doc = "[Ccr Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-get-stats.html)\n\nGets all stats related to cross-cluster replication."]
     pub fn stats<'b>(&'a self) -> CcrStats<'a, 'b> {
-        CcrStats::new(&self.client)
+        CcrStats::new(self.transport())
     }
     #[doc = "[Ccr Unfollow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-post-unfollow.html)\n\nStops the following task associated with a follower index and removes index metadata and settings associated with cross-cluster replication."]
     pub fn unfollow<'b>(&'a self, parts: CcrUnfollowParts<'b>) -> CcrUnfollow<'a, 'b, ()> {
-        CcrUnfollow::new(&self.client, parts)
+        CcrUnfollow::new(self.transport(), parts)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Cross Cluster Replication APIs"]
     pub fn ccr(&self) -> Ccr {
-        Ccr::new(&self)
+        Ccr::new(self.transport())
     }
 }
