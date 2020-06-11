@@ -40,6 +40,7 @@ pub fn use_declarations() -> Tokens {
                 Method,
                 request::{Body, NdBody, JsonBody, PARTS_ENCODED},
                 response::Response,
+                transport::Transport,
             },
         };
         use std::borrow::Cow;
