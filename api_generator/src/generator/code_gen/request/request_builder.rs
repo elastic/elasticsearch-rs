@@ -194,11 +194,11 @@ impl<'a> RequestBuilder<'a> {
             let doc = doc(format!("Creates a new instance of [{}]", &builder_name));
             quote!(
                 #doc
-                pub fn new(client: &'a Elasticsearch) -> Self {
+                pub fn new(transport: &'a Transport) -> Self {
                     #headers
 
                     #builder_ident {
-                        client,
+                        transport,
                         parts: #enum_ty::None,
                         headers,
                         #(#default_fields),*,
@@ -212,11 +212,11 @@ impl<'a> RequestBuilder<'a> {
             ));
             quote!(
                 #doc
-                pub fn new(client: &'a Elasticsearch, parts: #enum_ty) -> Self {
+                pub fn new(transport: &'a Transport, parts: #enum_ty) -> Self {
                     #headers
 
                     #builder_ident {
-                        client,
+                        transport,
                         parts,
                         headers,
                         #(#default_fields),*,
@@ -296,7 +296,7 @@ impl<'a> RequestBuilder<'a> {
                 syn::Block {
                     stmts: vec![syn::Stmt::Expr(Box::new(parse_expr(quote!(
                             #builder_ident {
-                                client: self.client,
+                                transport: self.transport,
                                 parts: self.parts,
                                 body: #field_arg,
                                 #(#fields),*,
@@ -577,7 +577,7 @@ impl<'a> RequestBuilder<'a> {
             #[derive(Clone, Debug)]
             #[doc = #builder_doc]
             pub struct #builder_expr {
-                client: &'a Elasticsearch,
+                transport: &'a Transport,
                 parts: #enum_ty,
                 #(#fields),*,
             }
@@ -593,7 +593,7 @@ impl<'a> RequestBuilder<'a> {
                       let headers = self.headers;
                       let query_string = #query_string_expr;
                       let body = #body_expr;
-                      let response = self.client.send(method, &path, headers, query_string.as_ref(), body).await?;
+                      let response = self.transport.send(method, &path, headers, query_string.as_ref(), body).await?;
                       Ok(response)
                 }
             }
@@ -662,11 +662,7 @@ impl<'a> RequestBuilder<'a> {
             _ => doc(format!("{} API{}", api_name_for_docs, markdown_doc)),
         };
 
-        let clone_expr = if is_root_method {
-            quote!(&self)
-        } else {
-            quote!(&self.client)
-        };
+        let clone_expr = quote!(self.transport());
 
         if enum_builder.contains_single_parameterless_part() {
             quote!(
