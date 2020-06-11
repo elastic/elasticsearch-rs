@@ -64,6 +64,11 @@ impl Elasticsearch {
         Elasticsearch { transport }
     }
 
+    /// Gets the transport of the client
+    pub fn transport(&self) -> &Transport {
+        &self.transport
+    }
+
     /// Creates an asynchronous request that can be awaited
     ///
     /// Accepts the HTTP method and relative path to an API,
