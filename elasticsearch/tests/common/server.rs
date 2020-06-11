@@ -20,12 +20,9 @@
 // Licensed under Apache License, Version 2.0
 // https://github.com/seanmonstar/reqwest/blob/master/LICENSE-APACHE
 
-use std::convert::Infallible;
-use std::future::Future;
-use std::net;
-use std::sync::mpsc as std_mpsc;
-use std::thread;
-use std::time::Duration;
+use std::{
+    convert::Infallible, future::Future, net, sync::mpsc as std_mpsc, thread, time::Duration,
+};
 
 use tokio::sync::oneshot;
 

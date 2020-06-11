@@ -32,8 +32,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-use crate::generator::code_gen::url::url_builder::{IntoExpr, UrlBuilder};
-use crate::generator::{code_gen::*, ApiEndpoint, Path};
+use crate::generator::{
+    code_gen::{
+        url::url_builder::{IntoExpr, UrlBuilder},
+        *,
+    },
+    ApiEndpoint, Path,
+};
 use inflector::Inflector;
 
 /// Builder for request url parts enum

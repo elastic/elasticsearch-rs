@@ -21,10 +21,10 @@ extern crate dialoguer;
 
 use api_generator::{generator, rest_spec};
 use dialoguer::Input;
-use std::path::PathBuf;
 use std::{
     fs::{self, File},
     io::Write,
+    path::PathBuf,
 };
 
 fn main() -> Result<(), failure::Error> {

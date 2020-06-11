@@ -21,8 +21,7 @@ use common::*;
 
 use elasticsearch::auth::Credentials;
 
-use base64;
-use base64::write::EncoderWriter as Base64Encoder;
+use base64::{self, write::EncoderWriter as Base64Encoder};
 // use std::fs::File;
 // use std::io::Read;
 use std::io::Write;

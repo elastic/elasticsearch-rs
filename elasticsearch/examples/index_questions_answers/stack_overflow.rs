@@ -1,12 +1,8 @@
-use chrono::prelude::*;
-use chrono::{DateTime, Utc};
+use chrono::{prelude::*, DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::collections::BTreeMap;
-use std::fs::File;
-use std::io::Read;
-use xml::reader::XmlEvent;
-use xml::EventReader;
+use std::{collections::BTreeMap, fs::File, io::Read};
+use xml::{reader::XmlEvent, EventReader};
 
 /// A Stack Overflow post
 #[derive(Debug, Serialize, Deserialize, PartialEq)]

@@ -1,8 +1,10 @@
-use elasticsearch::auth::Credentials;
-use elasticsearch::cat::CatIndicesParts;
-use elasticsearch::cert::CertificateValidation;
-use elasticsearch::http::transport::{SingleNodeConnectionPool, TransportBuilder};
-use elasticsearch::{Elasticsearch, Error, DEFAULT_ADDRESS};
+use elasticsearch::{
+    auth::Credentials,
+    cat::CatIndicesParts,
+    cert::CertificateValidation,
+    http::transport::{SingleNodeConnectionPool, TransportBuilder},
+    Elasticsearch, Error, DEFAULT_ADDRESS,
+};
 use sysinfo::SystemExt;
 use url::Url;
 

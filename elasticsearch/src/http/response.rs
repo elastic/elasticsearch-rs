@@ -18,8 +18,10 @@
  */
 //! HTTP response components
 
-use crate::error::Error;
-use crate::http::{headers::HeaderMap, Method, StatusCode, Url};
+use crate::{
+    error::Error,
+    http::{headers::HeaderMap, Method, StatusCode, Url},
+};
 use serde::de::DeserializeOwned;
 
 /// A response from Elasticsearch

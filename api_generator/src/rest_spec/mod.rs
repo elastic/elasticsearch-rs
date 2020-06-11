@@ -22,8 +22,7 @@ mod parallel_downloading;
 
 use parallel_downloading::download_specs_to_dir;
 use serde::Deserialize;
-use std::fs;
-use std::path::PathBuf;
+use std::{fs, path::PathBuf};
 
 struct GitHubSpec {
     dir: String,

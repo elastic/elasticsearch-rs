@@ -37,10 +37,11 @@ use crate::auth::ClientCertificate;
 use base64::write::EncoderWriter as Base64Encoder;
 use bytes::BytesMut;
 use serde::Serialize;
-use std::error;
-use std::fmt;
-use std::fmt::Debug;
-use std::io::{self, Write};
+use std::{
+    error, fmt,
+    fmt::Debug,
+    io::{self, Write},
+};
 use url::Url;
 
 /// Error that can occur when building a [Transport]
@@ -580,8 +581,10 @@ impl ConnectionPool for CloudConnectionPool {
 
 #[cfg(test)]
 pub mod tests {
-    use crate::auth::ClientCertificate;
-    use crate::http::transport::{CloudId, Connection, SingleNodeConnectionPool, TransportBuilder};
+    use crate::{
+        auth::ClientCertificate,
+        http::transport::{CloudId, Connection, SingleNodeConnectionPool, TransportBuilder},
+    };
     use url::Url;
 
     #[test]

@@ -20,12 +20,14 @@ use super::RestApiSpec;
 
 use indicatif::{MultiProgress, ProgressBar, ProgressDrawTarget, ProgressStyle};
 use rayon::prelude::*;
-use std::error::Error as StdError;
-use std::fmt::Formatter;
-use std::fs::File;
-use std::io::{self, copy, Read};
-use std::path::PathBuf;
-use std::thread;
+use std::{
+    error::Error as StdError,
+    fmt::Formatter,
+    fs::File,
+    io::{self, copy, Read},
+    path::PathBuf,
+    thread,
+};
 
 #[derive(Debug)]
 pub(super) enum DownloadSpecsErrors {
