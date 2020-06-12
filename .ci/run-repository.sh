@@ -31,9 +31,6 @@ docker build --build-arg RUST_TOOLCHAIN="${RUST_TOOLCHAIN}" --file .ci/DockerFil
 
 echo -e "\033[1m>>>>> Run [elastic/elasticsearch-rs container] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m"
 
-# TODO: output junit.xml file to here
-mkdir test_results
-
 repo=$(realpath $(dirname $(realpath -s $0))/../)
 
 docker run \
