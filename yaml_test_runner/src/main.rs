@@ -54,8 +54,8 @@ fn main() -> Result<(), failure::Error> {
             .short("t")
             .long("token")
             .value_name("TOKEN")
-            .help("The GitHub access token. Required to increase the rate limit to be able to download all yaml tests")
-            .required(true)
+            .help("The GitHub access token. Increases the rate limit to be able to download all yaml tests. Must be specified if not passed through environment variable")
+            .required(false)
             .takes_value(true))
         .arg(Arg::with_name("path")
             .short("p")
@@ -98,13 +98,23 @@ fn main() -> Result<(), failure::Error> {
     let branch = matches
         .value_of("branch")
         .expect("missing 'branch' argument");
-    let token = matches.value_of("token").expect("missing 'token' argument");
+
+    let token = match std::env::var("TOKEN") {
+        Ok(v) => v,
+        Err(_) => match matches.value_of("token") {
+            Some(v) => v.into(),
+            None => {
+                error!("missing GitHub token. Either pass as TOKEN environment variable, or 'token' argument");
+                exit(1);
+            }
+        },
+    };
     let path = matches.value_of("path").expect("missing 'path' argument");
     let rest_specs_dir = PathBuf::from(path);
     let download_dir = PathBuf::from(format!("./{}/yaml", env!("CARGO_PKG_NAME")));
     let generated_dir = PathBuf::from(format!("./{}/tests", env!("CARGO_PKG_NAME")));
 
-    github::download_test_suites(token, branch, &download_dir)?;
+    github::download_test_suites(&token, branch, &download_dir)?;
 
     let mut last_downloaded_rest_spec_branch = rest_specs_dir.clone();
     last_downloaded_rest_spec_branch.push("last_downloaded_version");
