@@ -1,15 +1,77 @@
-ARG RUST_VERSION=nightly
-FROM rustlang/rust:${RUST_VERSION}
+# rust nightly docker image is currently broken for this project.
+# Use a known, good nightly version. Since there are no docker images for specific nightly versions, build from
+# scratch, using the same commands as the rust docker image with
+# - specific nightly version that works (see RUST_TOOLCHAIN)
+# - Added openssl, libssl-dev and pkg-config packages to compile native-tls
+# FROM rustlang/rust:${RUST_TOOLCHAIN}
+FROM debian:stretch-slim
+
+ARG RUST_TOOLCHAIN=nightly-2020-06-09
+
+ENV RUSTUP_HOME=/usr/local/rustup \
+    CARGO_HOME=/usr/local/cargo \
+    PATH=/usr/local/cargo/bin:$PATH \
+    RUST_TOOLCHAIN=$RUST_TOOLCHAIN
+
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+        ca-certificates \
+        gcc \
+        libc6-dev \
+        wget \
+        openssl \
+        libssl-dev \
+        pkg-config \
+        ; \
+    \
+    url="https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-gnu/rustup-init"; \
+    wget "$url"; \
+    chmod +x rustup-init; \
+    ./rustup-init -y --no-modify-path --default-toolchain nightly; \
+    rm rustup-init; \
+    chmod -R a+w $RUSTUP_HOME $CARGO_HOME; \
+    rustup toolchain install $RUST_TOOLCHAIN; \
+    rustup default $RUST_TOOLCHAIN; \
+    rustup --version; \
+    cargo --version; \
+    rustc --version; \
+    \
+    apt-get remove -y --auto-remove \
+        wget \
+        ; \
+    rm -rf /var/lib/apt/lists/*;
+
+# required to workaround a current issue with rustfmt-nightly
+ENV CFG_RELEASE=nightly
+ENV CFG_RELEASE_CHANNEL=nightly
 
 # create app directory
 WORKDIR /usr/src/elasticsearch-rs
 
-# copy just the Cargo.toml (and certs), and create a "fake" lib.rs so that Docker caches all the dependencies
-COPY .ci/certs ./../.ci/certs
-COPY elasticsearch/Cargo.toml .
-RUN mkdir src && echo "// dummy file" > src/lib.rs && cargo build --tests
+# copy just the Cargo.toml (and certs), and create a "fake" [lib/main].rs so that Docker caches all package dependencies
+COPY .ci/certs ./.ci/certs
+COPY Cargo.toml ./Cargo.toml
+COPY README.md ./README.md
+COPY elasticsearch/Cargo.toml ./elasticsearch/
+COPY api_generator/Cargo.toml ./api_generator/
+COPY yaml_test_runner/Cargo.toml ./yaml_test_runner/
+
+RUN mkdir -p elasticsearch/src; \
+echo "// dummy file" > elasticsearch/src/lib.rs; \
+mkdir -p api_generator/src; \
+echo "// dummy file" > api_generator/src/lib.rs; \
+mkdir -p yaml_test_runner/src; \
+echo "// dummy file" > yaml_test_runner/src/main.rs; \
+cargo build --tests
 
 # install app dependencies and build
-COPY README.md ./../
-COPY elasticsearch .
-RUN cargo build --tests --all-features
+COPY elasticsearch ./elasticsearch
+COPY api_generator ./api_generator
+COPY yaml_test_runner ./yaml_test_runner
+
+# Run cargo build separately on packages. Running cargo build at the workspace level fails for the api_generator/bin/run.rs
+# This may be related to the caching hack above. TODO: Investigate
+RUN cargo build -p api_generator; \
+cargo build -p elasticsearch; \
+cargo build -p yaml_test_runner
