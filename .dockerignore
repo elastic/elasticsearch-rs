@@ -1,8 +1,10 @@
 .git
 .gitignore
-LICENSE
+LICENSE.txt
 
-api_generator
 target
+docs
 .vscode
 .idea
+elasticsearch/docs
+elasticsearch/examples
