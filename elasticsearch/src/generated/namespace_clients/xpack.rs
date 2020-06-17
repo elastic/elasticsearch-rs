@@ -52,7 +52,7 @@ impl XpackInfoParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
+#[doc = "Builder for the [Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
 pub struct XpackInfo<'a, 'b> {
     client: &'a Elasticsearch,
     parts: XpackInfoParts,
@@ -176,7 +176,7 @@ impl XpackUsageParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
+#[doc = "Builder for the [Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
 pub struct XpackUsage<'a, 'b> {
     client: &'a Elasticsearch,
     parts: XpackUsageParts,
@@ -291,11 +291,11 @@ impl<'a> Xpack<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
+    #[doc = "[Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
     pub fn info<'b>(&'a self) -> XpackInfo<'a, 'b> {
         XpackInfo::new(&self.client)
     }
-    #[doc = "[Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
+    #[doc = "[Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
     pub fn usage<'b>(&'a self) -> XpackUsage<'a, 'b> {
         XpackUsage::new(&self.client)
     }

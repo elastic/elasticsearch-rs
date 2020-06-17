@@ -60,7 +60,7 @@ impl<'b> MlCloseJobParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Close Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-close-job.html)\n\nCloses one or more anomaly detection jobs. A job can be opened and closed multiple times throughout its lifecycle."]
+#[doc = "Builder for the [Ml Close Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-close-job.html)\n\nCloses one or more anomaly detection jobs. A job can be opened and closed multiple times throughout its lifecycle."]
 pub struct MlCloseJob<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlCloseJobParts<'b>,
@@ -233,7 +233,7 @@ impl<'b> MlDeleteCalendarParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Delete Calendar API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-calendar.html)\n\nDeletes a calendar."]
+#[doc = "Builder for the [Ml Delete Calendar API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-delete-calendar.html)\n\nDeletes a calendar."]
 pub struct MlDeleteCalendar<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlDeleteCalendarParts<'b>,
@@ -357,7 +357,7 @@ impl<'b> MlDeleteCalendarEventParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Delete Calendar Event API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-calendar-event.html)\n\nDeletes scheduled events from a calendar."]
+#[doc = "Builder for the [Ml Delete Calendar Event API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-delete-calendar-event.html)\n\nDeletes scheduled events from a calendar."]
 pub struct MlDeleteCalendarEvent<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlDeleteCalendarEventParts<'b>,
@@ -481,7 +481,7 @@ impl<'b> MlDeleteCalendarJobParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Delete Calendar Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-calendar-job.html)\n\nDeletes anomaly detection jobs from a calendar."]
+#[doc = "Builder for the [Ml Delete Calendar Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-delete-calendar-job.html)\n\nDeletes anomaly detection jobs from a calendar."]
 pub struct MlDeleteCalendarJob<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlDeleteCalendarJobParts<'b>,
@@ -599,7 +599,7 @@ impl<'b> MlDeleteDatafeedParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Delete Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-datafeed.html)\n\nDeletes an existing datafeed."]
+#[doc = "Builder for the [Ml Delete Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-delete-datafeed.html)\n\nDeletes an existing datafeed."]
 pub struct MlDeleteDatafeed<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlDeleteDatafeedParts<'b>,
@@ -707,62 +707,48 @@ impl<'a, 'b> MlDeleteDatafeed<'a, 'b> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Delete Expired Data API"]
-pub enum MlDeleteExpiredDataParts<'b> {
-    #[doc = "JobId"]
-    JobId(&'b str),
+pub enum MlDeleteExpiredDataParts {
     #[doc = "No parts"]
     None,
 }
-impl<'b> MlDeleteExpiredDataParts<'b> {
+impl MlDeleteExpiredDataParts {
     #[doc = "Builds a relative URL path to the Ml Delete Expired Data API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlDeleteExpiredDataParts::JobId(ref job_id) => {
-                let encoded_job_id: Cow<str> =
-                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(26usize + encoded_job_id.len());
-                p.push_str("/_ml/_delete_expired_data/");
-                p.push_str(encoded_job_id.as_ref());
-                p.into()
-            }
             MlDeleteExpiredDataParts::None => "/_ml/_delete_expired_data".into(),
         }
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Delete Expired Data API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-expired-data.html)\n\nDeletes expired and unused machine learning data."]
+#[doc = "Builder for the [Ml Delete Expired Data API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-delete-expired-data.html)\n\nDeletes expired and unused machine learning data."]
 pub struct MlDeleteExpiredData<'a, 'b, B> {
     client: &'a Elasticsearch,
-    parts: MlDeleteExpiredDataParts<'b>,
+    parts: MlDeleteExpiredDataParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    requests_per_second: Option<i64>,
     source: Option<&'b str>,
-    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> MlDeleteExpiredData<'a, 'b, B>
 where
     B: Body,
 {
-    #[doc = "Creates a new instance of [MlDeleteExpiredData] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: MlDeleteExpiredDataParts<'b>) -> Self {
+    #[doc = "Creates a new instance of [MlDeleteExpiredData]"]
+    pub fn new(client: &'a Elasticsearch) -> Self {
         let headers = HeaderMap::new();
         MlDeleteExpiredData {
             client,
-            parts,
+            parts: MlDeleteExpiredDataParts::None,
             headers,
             body: None,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
-            requests_per_second: None,
             source: None,
-            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -779,9 +765,7 @@ where
             headers: self.headers,
             human: self.human,
             pretty: self.pretty,
-            requests_per_second: self.requests_per_second,
             source: self.source,
-            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -809,19 +793,9 @@ where
         self.pretty = Some(pretty);
         self
     }
-    #[doc = "The desired requests per second for the deletion processes."]
-    pub fn requests_per_second(mut self, requests_per_second: i64) -> Self {
-        self.requests_per_second = Some(requests_per_second);
-        self
-    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
-        self
-    }
-    #[doc = "How long can the underlying delete processes run until they are canceled"]
-    pub fn timeout(mut self, timeout: &'b str) -> Self {
-        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Delete Expired Data API that can be awaited"]
@@ -844,21 +818,15 @@ where
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "requests_per_second")]
-                requests_per_second: Option<i64>,
                 #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "timeout")]
-                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
                 pretty: self.pretty,
-                requests_per_second: self.requests_per_second,
                 source: self.source,
-                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -892,7 +860,7 @@ impl<'b> MlDeleteFilterParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Delete Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-filter.html)\n\nDeletes a filter."]
+#[doc = "Builder for the [Ml Delete Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-delete-filter.html)\n\nDeletes a filter."]
 pub struct MlDeleteFilter<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlDeleteFilterParts<'b>,
@@ -1027,7 +995,7 @@ impl<'b> MlDeleteForecastParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Delete Forecast API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-forecast.html)\n\nDeletes forecasts from a machine learning job."]
+#[doc = "Builder for the [Ml Delete Forecast API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-delete-forecast.html)\n\nDeletes forecasts from a machine learning job."]
 pub struct MlDeleteForecast<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlDeleteForecastParts<'b>,
@@ -1165,7 +1133,7 @@ impl<'b> MlDeleteJobParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Delete Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-job.html)\n\nDeletes an existing anomaly detection job."]
+#[doc = "Builder for the [Ml Delete Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-delete-job.html)\n\nDeletes an existing anomaly detection job."]
 pub struct MlDeleteJob<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlDeleteJobParts<'b>,
@@ -1309,7 +1277,7 @@ impl<'b> MlDeleteModelSnapshotParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Delete Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-snapshot.html)\n\nDeletes an existing model snapshot."]
+#[doc = "Builder for the [Ml Delete Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-delete-snapshot.html)\n\nDeletes an existing model snapshot."]
 pub struct MlDeleteModelSnapshot<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlDeleteModelSnapshotParts<'b>,
@@ -1422,7 +1390,7 @@ impl MlEstimateModelMemoryParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Estimate Model Memory API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-apis.html)\n\nEstimates the model memory"]
+#[doc = "Builder for the [Ml Estimate Model Memory API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-apis.html)\n\nEstimates the model memory"]
 pub struct MlEstimateModelMemory<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlEstimateModelMemoryParts,
@@ -1563,7 +1531,7 @@ impl<'b> MlFlushJobParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Flush Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-flush-job.html)\n\nForces any buffered data to be processed by the job."]
+#[doc = "Builder for the [Ml Flush Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-flush-job.html)\n\nForces any buffered data to be processed by the job."]
 pub struct MlFlushJob<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlFlushJobParts<'b>,
@@ -1759,7 +1727,7 @@ impl<'b> MlForecastParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Forecast API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-forecast.html)\n\nPredicts the future behavior of a time series by using its historical behavior."]
+#[doc = "Builder for the [Ml Forecast API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-forecast.html)\n\nPredicts the future behavior of a time series by using its historical behavior."]
 pub struct MlForecast<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlForecastParts<'b>,
@@ -1770,7 +1738,6 @@ pub struct MlForecast<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    max_model_memory: Option<&'b str>,
     pretty: Option<bool>,
     source: Option<&'b str>,
 }
@@ -1791,7 +1758,6 @@ where
             expires_in: None,
             filter_path: None,
             human: None,
-            max_model_memory: None,
             pretty: None,
             source: None,
         }
@@ -1811,7 +1777,6 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
-            max_model_memory: self.max_model_memory,
             pretty: self.pretty,
             source: self.source,
         }
@@ -1846,11 +1811,6 @@ where
         self.human = Some(human);
         self
     }
-    #[doc = "The max memory able to be used by the forecast. Default is 20mb."]
-    pub fn max_model_memory(mut self, max_model_memory: &'b str) -> Self {
-        self.max_model_memory = Some(max_model_memory);
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -1883,8 +1843,6 @@ where
                 filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "max_model_memory")]
-                max_model_memory: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
@@ -1896,7 +1854,6 @@ where
                 expires_in: self.expires_in,
                 filter_path: self.filter_path,
                 human: self.human,
-                max_model_memory: self.max_model_memory,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -1948,7 +1905,7 @@ impl<'b> MlGetBucketsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Buckets API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-bucket.html)\n\nRetrieves anomaly detection job results for one or more buckets."]
+#[doc = "Builder for the [Ml Get Buckets API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-bucket.html)\n\nRetrieves anomaly detection job results for one or more buckets."]
 pub struct MlGetBuckets<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlGetBucketsParts<'b>,
@@ -2191,7 +2148,7 @@ impl<'b> MlGetCalendarEventsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Calendar Events API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-calendar-event.html)\n\nRetrieves information about the scheduled events in calendars."]
+#[doc = "Builder for the [Ml Get Calendar Events API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-calendar-event.html)\n\nRetrieves information about the scheduled events in calendars."]
 pub struct MlGetCalendarEvents<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlGetCalendarEventsParts<'b>,
@@ -2362,7 +2319,7 @@ impl<'b> MlGetCalendarsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Calendars API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-calendar.html)\n\nRetrieves configuration information for calendars."]
+#[doc = "Builder for the [Ml Get Calendars API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-calendar.html)\n\nRetrieves configuration information for calendars."]
 pub struct MlGetCalendars<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlGetCalendarsParts<'b>,
@@ -2545,7 +2502,7 @@ impl<'b> MlGetCategoriesParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Categories API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-category.html)\n\nRetrieves anomaly detection job results for one or more categories."]
+#[doc = "Builder for the [Ml Get Categories API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-category.html)\n\nRetrieves anomaly detection job results for one or more categories."]
 pub struct MlGetCategories<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlGetCategoriesParts<'b>,
@@ -2555,7 +2512,6 @@ pub struct MlGetCategories<'a, 'b, B> {
     from: Option<i32>,
     headers: HeaderMap,
     human: Option<bool>,
-    partition_field_value: Option<&'b str>,
     pretty: Option<bool>,
     size: Option<i32>,
     source: Option<&'b str>,
@@ -2576,7 +2532,6 @@ where
             filter_path: None,
             from: None,
             human: None,
-            partition_field_value: None,
             pretty: None,
             size: None,
             source: None,
@@ -2596,7 +2551,6 @@ where
             from: self.from,
             headers: self.headers,
             human: self.human,
-            partition_field_value: self.partition_field_value,
             pretty: self.pretty,
             size: self.size,
             source: self.source,
@@ -2625,11 +2579,6 @@ where
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
-        self
-    }
-    #[doc = "Specifies the partition to retrieve categories for. This is optional, and should never be used for jobs where per-partition categorization is disabled."]
-    pub fn partition_field_value(mut self, partition_field_value: &'b str) -> Self {
-        self.partition_field_value = Some(partition_field_value);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -2670,8 +2619,6 @@ where
                 from: Option<i32>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "partition_field_value")]
-                partition_field_value: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "size")]
@@ -2684,7 +2631,6 @@ where
                 filter_path: self.filter_path,
                 from: self.from,
                 human: self.human,
-                partition_field_value: self.partition_field_value,
                 pretty: self.pretty,
                 size: self.size,
                 source: self.source,
@@ -2725,7 +2671,7 @@ impl<'b> MlGetDatafeedStatsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Datafeed Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-datafeed-stats.html)\n\nRetrieves usage information for datafeeds."]
+#[doc = "Builder for the [Ml Get Datafeed Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-datafeed-stats.html)\n\nRetrieves usage information for datafeeds."]
 pub struct MlGetDatafeedStats<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlGetDatafeedStatsParts<'b>,
@@ -2856,7 +2802,7 @@ impl<'b> MlGetDatafeedsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Datafeeds API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-datafeed.html)\n\nRetrieves configuration information for datafeeds."]
+#[doc = "Builder for the [Ml Get Datafeeds API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-datafeed.html)\n\nRetrieves configuration information for datafeeds."]
 pub struct MlGetDatafeeds<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlGetDatafeedsParts<'b>,
@@ -2987,7 +2933,7 @@ impl<'b> MlGetFiltersParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Filters API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-filter.html)\n\nRetrieves filters."]
+#[doc = "Builder for the [Ml Get Filters API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-filter.html)\n\nRetrieves filters."]
 pub struct MlGetFilters<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlGetFiltersParts<'b>,
@@ -3126,7 +3072,7 @@ impl<'b> MlGetInfluencersParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Influencers API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-influencer.html)\n\nRetrieves anomaly detection job results for one or more influencers."]
+#[doc = "Builder for the [Ml Get Influencers API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-influencer.html)\n\nRetrieves anomaly detection job results for one or more influencers."]
 pub struct MlGetInfluencers<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlGetInfluencersParts<'b>,
@@ -3361,7 +3307,7 @@ impl<'b> MlGetJobStatsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Job Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-job-stats.html)\n\nRetrieves usage information for anomaly detection jobs."]
+#[doc = "Builder for the [Ml Get Job Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-job-stats.html)\n\nRetrieves usage information for anomaly detection jobs."]
 pub struct MlGetJobStats<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlGetJobStatsParts<'b>,
@@ -3492,7 +3438,7 @@ impl<'b> MlGetJobsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Jobs API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-job.html)\n\nRetrieves configuration information for anomaly detection jobs."]
+#[doc = "Builder for the [Ml Get Jobs API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-job.html)\n\nRetrieves configuration information for anomaly detection jobs."]
 pub struct MlGetJobs<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlGetJobsParts<'b>,
@@ -3637,7 +3583,7 @@ impl<'b> MlGetModelSnapshotsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Model Snapshots API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-snapshot.html)\n\nRetrieves information about model snapshots."]
+#[doc = "Builder for the [Ml Get Model Snapshots API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-snapshot.html)\n\nRetrieves information about model snapshots."]
 pub struct MlGetModelSnapshots<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlGetModelSnapshotsParts<'b>,
@@ -3847,7 +3793,7 @@ impl<'b> MlGetOverallBucketsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Overall Buckets API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-overall-buckets.html)\n\nRetrieves overall bucket results that summarize the bucket results of multiple anomaly detection jobs."]
+#[doc = "Builder for the [Ml Get Overall Buckets API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-overall-buckets.html)\n\nRetrieves overall bucket results that summarize the bucket results of multiple anomaly detection jobs."]
 pub struct MlGetOverallBuckets<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlGetOverallBucketsParts<'b>,
@@ -4068,7 +4014,7 @@ impl<'b> MlGetRecordsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Records API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-record.html)\n\nRetrieves anomaly records for an anomaly detection job."]
+#[doc = "Builder for the [Ml Get Records API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-record.html)\n\nRetrieves anomaly records for an anomaly detection job."]
 pub struct MlGetRecords<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlGetRecordsParts<'b>,
@@ -4292,7 +4238,7 @@ impl MlInfoParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/get-ml-info.html)\n\nReturns defaults and limits used by machine learning."]
+#[doc = "Builder for the [Ml Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/get-ml-info.html)\n\nReturns defaults and limits used by machine learning."]
 pub struct MlInfo<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlInfoParts,
@@ -4411,7 +4357,7 @@ impl<'b> MlOpenJobParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Open Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-open-job.html)\n\nOpens one or more anomaly detection jobs."]
+#[doc = "Builder for the [Ml Open Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-open-job.html)\n\nOpens one or more anomaly detection jobs."]
 pub struct MlOpenJob<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlOpenJobParts<'b>,
@@ -4552,7 +4498,7 @@ impl<'b> MlPostCalendarEventsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Post Calendar Events API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-post-calendar-event.html)\n\nPosts scheduled events in a calendar."]
+#[doc = "Builder for the [Ml Post Calendar Events API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-post-calendar-event.html)\n\nPosts scheduled events in a calendar."]
 pub struct MlPostCalendarEvents<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlPostCalendarEventsParts<'b>,
@@ -4693,7 +4639,7 @@ impl<'b> MlPostDataParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Post Data API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-post-data.html)\n\nSends data to an anomaly detection job for analysis."]
+#[doc = "Builder for the [Ml Post Data API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-post-data.html)\n\nSends data to an anomaly detection job for analysis."]
 pub struct MlPostData<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlPostDataParts<'b>,
@@ -4856,7 +4802,7 @@ impl<'b> MlPreviewDatafeedParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Preview Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-preview-datafeed.html)\n\nPreviews a datafeed."]
+#[doc = "Builder for the [Ml Preview Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-preview-datafeed.html)\n\nPreviews a datafeed."]
 pub struct MlPreviewDatafeed<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlPreviewDatafeedParts<'b>,
@@ -4974,7 +4920,7 @@ impl<'b> MlPutCalendarParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Put Calendar API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-put-calendar.html)\n\nInstantiates a calendar."]
+#[doc = "Builder for the [Ml Put Calendar API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-put-calendar.html)\n\nInstantiates a calendar."]
 pub struct MlPutCalendar<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlPutCalendarParts<'b>,
@@ -5120,7 +5066,7 @@ impl<'b> MlPutCalendarJobParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Put Calendar Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-put-calendar-job.html)\n\nAdds an anomaly detection job to a calendar."]
+#[doc = "Builder for the [Ml Put Calendar Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-put-calendar-job.html)\n\nAdds an anomaly detection job to a calendar."]
 pub struct MlPutCalendarJob<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlPutCalendarJobParts<'b>,
@@ -5260,7 +5206,7 @@ impl<'b> MlPutDatafeedParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Put Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-put-datafeed.html)\n\nInstantiates a datafeed."]
+#[doc = "Builder for the [Ml Put Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-put-datafeed.html)\n\nInstantiates a datafeed."]
 pub struct MlPutDatafeed<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlPutDatafeedParts<'b>,
@@ -5447,7 +5393,7 @@ impl<'b> MlPutFilterParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Put Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-put-filter.html)\n\nInstantiates a filter."]
+#[doc = "Builder for the [Ml Put Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-put-filter.html)\n\nInstantiates a filter."]
 pub struct MlPutFilter<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlPutFilterParts<'b>,
@@ -5587,7 +5533,7 @@ impl<'b> MlPutJobParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Put Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-put-job.html)\n\nInstantiates an anomaly detection job."]
+#[doc = "Builder for the [Ml Put Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-put-job.html)\n\nInstantiates an anomaly detection job."]
 pub struct MlPutJob<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlPutJobParts<'b>,
@@ -5734,7 +5680,7 @@ impl<'b> MlRevertModelSnapshotParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Revert Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-revert-snapshot.html)\n\nReverts to a specific snapshot."]
+#[doc = "Builder for the [Ml Revert Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-revert-snapshot.html)\n\nReverts to a specific snapshot."]
 pub struct MlRevertModelSnapshot<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlRevertModelSnapshotParts<'b>,
@@ -5878,7 +5824,7 @@ impl MlSetUpgradeModeParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Set Upgrade Mode API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-set-upgrade-mode.html)\n\nSets a cluster wide upgrade_mode setting that prepares machine learning indices for an upgrade."]
+#[doc = "Builder for the [Ml Set Upgrade Mode API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-set-upgrade-mode.html)\n\nSets a cluster wide upgrade_mode setting that prepares machine learning indices for an upgrade."]
 pub struct MlSetUpgradeMode<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlSetUpgradeModeParts,
@@ -6041,7 +5987,7 @@ impl<'b> MlStartDatafeedParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Start Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-start-datafeed.html)\n\nStarts one or more datafeeds."]
+#[doc = "Builder for the [Ml Start Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-start-datafeed.html)\n\nStarts one or more datafeeds."]
 pub struct MlStartDatafeed<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlStartDatafeedParts<'b>,
@@ -6215,7 +6161,7 @@ impl<'b> MlStopDatafeedParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Stop Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-stop-datafeed.html)\n\nStops one or more datafeeds."]
+#[doc = "Builder for the [Ml Stop Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-stop-datafeed.html)\n\nStops one or more datafeeds."]
 pub struct MlStopDatafeed<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlStopDatafeedParts<'b>,
@@ -6389,7 +6335,7 @@ impl<'b> MlUpdateDatafeedParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Update Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-update-datafeed.html)\n\nUpdates certain properties of a datafeed."]
+#[doc = "Builder for the [Ml Update Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-update-datafeed.html)\n\nUpdates certain properties of a datafeed."]
 pub struct MlUpdateDatafeed<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlUpdateDatafeedParts<'b>,
@@ -6577,7 +6523,7 @@ impl<'b> MlUpdateFilterParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Update Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-update-filter.html)\n\nUpdates the description of a filter, adds items, or removes items."]
+#[doc = "Builder for the [Ml Update Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-update-filter.html)\n\nUpdates the description of a filter, adds items, or removes items."]
 pub struct MlUpdateFilter<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlUpdateFilterParts<'b>,
@@ -6718,7 +6664,7 @@ impl<'b> MlUpdateJobParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Update Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-update-job.html)\n\nUpdates certain properties of an anomaly detection job."]
+#[doc = "Builder for the [Ml Update Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-update-job.html)\n\nUpdates certain properties of an anomaly detection job."]
 pub struct MlUpdateJob<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlUpdateJobParts<'b>,
@@ -6865,7 +6811,7 @@ impl<'b> MlUpdateModelSnapshotParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Update Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-update-snapshot.html)\n\nUpdates certain properties of a snapshot."]
+#[doc = "Builder for the [Ml Update Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-update-snapshot.html)\n\nUpdates certain properties of a snapshot."]
 pub struct MlUpdateModelSnapshot<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlUpdateModelSnapshotParts<'b>,
@@ -6998,7 +6944,7 @@ impl MlValidateParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Validate API](https://www.elastic.co/guide/en/machine-learning/7.7/ml-jobs.html)\n\nValidates an anomaly detection job."]
+#[doc = "Builder for the [Ml Validate API](https://www.elastic.co/guide/en/machine-learning/7.8/ml-jobs.html)\n\nValidates an anomaly detection job."]
 pub struct MlValidate<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlValidateParts,
@@ -7131,7 +7077,7 @@ impl MlValidateDetectorParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Validate Detector API](https://www.elastic.co/guide/en/machine-learning/7.7/ml-jobs.html)\n\nValidates an anomaly detection detector."]
+#[doc = "Builder for the [Ml Validate Detector API](https://www.elastic.co/guide/en/machine-learning/7.8/ml-jobs.html)\n\nValidates an anomaly detection detector."]
 pub struct MlValidateDetector<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlValidateDetectorParts,
@@ -7258,256 +7204,253 @@ impl<'a> Ml<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Ml Close Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-close-job.html)\n\nCloses one or more anomaly detection jobs. A job can be opened and closed multiple times throughout its lifecycle."]
+    #[doc = "[Ml Close Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-close-job.html)\n\nCloses one or more anomaly detection jobs. A job can be opened and closed multiple times throughout its lifecycle."]
     pub fn close_job<'b>(&'a self, parts: MlCloseJobParts<'b>) -> MlCloseJob<'a, 'b, ()> {
         MlCloseJob::new(&self.client, parts)
     }
-    #[doc = "[Ml Delete Calendar API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-calendar.html)\n\nDeletes a calendar."]
+    #[doc = "[Ml Delete Calendar API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-delete-calendar.html)\n\nDeletes a calendar."]
     pub fn delete_calendar<'b>(
         &'a self,
         parts: MlDeleteCalendarParts<'b>,
     ) -> MlDeleteCalendar<'a, 'b> {
         MlDeleteCalendar::new(&self.client, parts)
     }
-    #[doc = "[Ml Delete Calendar Event API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-calendar-event.html)\n\nDeletes scheduled events from a calendar."]
+    #[doc = "[Ml Delete Calendar Event API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-delete-calendar-event.html)\n\nDeletes scheduled events from a calendar."]
     pub fn delete_calendar_event<'b>(
         &'a self,
         parts: MlDeleteCalendarEventParts<'b>,
     ) -> MlDeleteCalendarEvent<'a, 'b> {
         MlDeleteCalendarEvent::new(&self.client, parts)
     }
-    #[doc = "[Ml Delete Calendar Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-calendar-job.html)\n\nDeletes anomaly detection jobs from a calendar."]
+    #[doc = "[Ml Delete Calendar Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-delete-calendar-job.html)\n\nDeletes anomaly detection jobs from a calendar."]
     pub fn delete_calendar_job<'b>(
         &'a self,
         parts: MlDeleteCalendarJobParts<'b>,
     ) -> MlDeleteCalendarJob<'a, 'b> {
         MlDeleteCalendarJob::new(&self.client, parts)
     }
-    #[doc = "[Ml Delete Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-datafeed.html)\n\nDeletes an existing datafeed."]
+    #[doc = "[Ml Delete Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-delete-datafeed.html)\n\nDeletes an existing datafeed."]
     pub fn delete_datafeed<'b>(
         &'a self,
         parts: MlDeleteDatafeedParts<'b>,
     ) -> MlDeleteDatafeed<'a, 'b> {
         MlDeleteDatafeed::new(&self.client, parts)
     }
-    #[doc = "[Ml Delete Expired Data API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-expired-data.html)\n\nDeletes expired and unused machine learning data."]
-    pub fn delete_expired_data<'b>(
-        &'a self,
-        parts: MlDeleteExpiredDataParts<'b>,
-    ) -> MlDeleteExpiredData<'a, 'b, ()> {
-        MlDeleteExpiredData::new(&self.client, parts)
+    #[doc = "[Ml Delete Expired Data API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-delete-expired-data.html)\n\nDeletes expired and unused machine learning data."]
+    pub fn delete_expired_data<'b>(&'a self) -> MlDeleteExpiredData<'a, 'b, ()> {
+        MlDeleteExpiredData::new(&self.client)
     }
-    #[doc = "[Ml Delete Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-filter.html)\n\nDeletes a filter."]
+    #[doc = "[Ml Delete Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-delete-filter.html)\n\nDeletes a filter."]
     pub fn delete_filter<'b>(&'a self, parts: MlDeleteFilterParts<'b>) -> MlDeleteFilter<'a, 'b> {
         MlDeleteFilter::new(&self.client, parts)
     }
-    #[doc = "[Ml Delete Forecast API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-forecast.html)\n\nDeletes forecasts from a machine learning job."]
+    #[doc = "[Ml Delete Forecast API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-delete-forecast.html)\n\nDeletes forecasts from a machine learning job."]
     pub fn delete_forecast<'b>(
         &'a self,
         parts: MlDeleteForecastParts<'b>,
     ) -> MlDeleteForecast<'a, 'b> {
         MlDeleteForecast::new(&self.client, parts)
     }
-    #[doc = "[Ml Delete Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-job.html)\n\nDeletes an existing anomaly detection job."]
+    #[doc = "[Ml Delete Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-delete-job.html)\n\nDeletes an existing anomaly detection job."]
     pub fn delete_job<'b>(&'a self, parts: MlDeleteJobParts<'b>) -> MlDeleteJob<'a, 'b> {
         MlDeleteJob::new(&self.client, parts)
     }
-    #[doc = "[Ml Delete Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-delete-snapshot.html)\n\nDeletes an existing model snapshot."]
+    #[doc = "[Ml Delete Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-delete-snapshot.html)\n\nDeletes an existing model snapshot."]
     pub fn delete_model_snapshot<'b>(
         &'a self,
         parts: MlDeleteModelSnapshotParts<'b>,
     ) -> MlDeleteModelSnapshot<'a, 'b> {
         MlDeleteModelSnapshot::new(&self.client, parts)
     }
-    #[doc = "[Ml Estimate Model Memory API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-apis.html)\n\nEstimates the model memory"]
+    #[doc = "[Ml Estimate Model Memory API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-apis.html)\n\nEstimates the model memory"]
     pub fn estimate_model_memory<'b>(&'a self) -> MlEstimateModelMemory<'a, 'b, ()> {
         MlEstimateModelMemory::new(&self.client)
     }
-    #[doc = "[Ml Flush Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-flush-job.html)\n\nForces any buffered data to be processed by the job."]
+    #[doc = "[Ml Flush Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-flush-job.html)\n\nForces any buffered data to be processed by the job."]
     pub fn flush_job<'b>(&'a self, parts: MlFlushJobParts<'b>) -> MlFlushJob<'a, 'b, ()> {
         MlFlushJob::new(&self.client, parts)
     }
-    #[doc = "[Ml Forecast API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-forecast.html)\n\nPredicts the future behavior of a time series by using its historical behavior."]
+    #[doc = "[Ml Forecast API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-forecast.html)\n\nPredicts the future behavior of a time series by using its historical behavior."]
     pub fn forecast<'b>(&'a self, parts: MlForecastParts<'b>) -> MlForecast<'a, 'b, ()> {
         MlForecast::new(&self.client, parts)
     }
-    #[doc = "[Ml Get Buckets API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-bucket.html)\n\nRetrieves anomaly detection job results for one or more buckets."]
+    #[doc = "[Ml Get Buckets API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-bucket.html)\n\nRetrieves anomaly detection job results for one or more buckets."]
     pub fn get_buckets<'b>(&'a self, parts: MlGetBucketsParts<'b>) -> MlGetBuckets<'a, 'b, ()> {
         MlGetBuckets::new(&self.client, parts)
     }
-    #[doc = "[Ml Get Calendar Events API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-calendar-event.html)\n\nRetrieves information about the scheduled events in calendars."]
+    #[doc = "[Ml Get Calendar Events API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-calendar-event.html)\n\nRetrieves information about the scheduled events in calendars."]
     pub fn get_calendar_events<'b>(
         &'a self,
         parts: MlGetCalendarEventsParts<'b>,
     ) -> MlGetCalendarEvents<'a, 'b> {
         MlGetCalendarEvents::new(&self.client, parts)
     }
-    #[doc = "[Ml Get Calendars API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-calendar.html)\n\nRetrieves configuration information for calendars."]
+    #[doc = "[Ml Get Calendars API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-calendar.html)\n\nRetrieves configuration information for calendars."]
     pub fn get_calendars<'b>(
         &'a self,
         parts: MlGetCalendarsParts<'b>,
     ) -> MlGetCalendars<'a, 'b, ()> {
         MlGetCalendars::new(&self.client, parts)
     }
-    #[doc = "[Ml Get Categories API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-category.html)\n\nRetrieves anomaly detection job results for one or more categories."]
+    #[doc = "[Ml Get Categories API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-category.html)\n\nRetrieves anomaly detection job results for one or more categories."]
     pub fn get_categories<'b>(
         &'a self,
         parts: MlGetCategoriesParts<'b>,
     ) -> MlGetCategories<'a, 'b, ()> {
         MlGetCategories::new(&self.client, parts)
     }
-    #[doc = "[Ml Get Datafeed Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-datafeed-stats.html)\n\nRetrieves usage information for datafeeds."]
+    #[doc = "[Ml Get Datafeed Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-datafeed-stats.html)\n\nRetrieves usage information for datafeeds."]
     pub fn get_datafeed_stats<'b>(
         &'a self,
         parts: MlGetDatafeedStatsParts<'b>,
     ) -> MlGetDatafeedStats<'a, 'b> {
         MlGetDatafeedStats::new(&self.client, parts)
     }
-    #[doc = "[Ml Get Datafeeds API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-datafeed.html)\n\nRetrieves configuration information for datafeeds."]
+    #[doc = "[Ml Get Datafeeds API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-datafeed.html)\n\nRetrieves configuration information for datafeeds."]
     pub fn get_datafeeds<'b>(&'a self, parts: MlGetDatafeedsParts<'b>) -> MlGetDatafeeds<'a, 'b> {
         MlGetDatafeeds::new(&self.client, parts)
     }
-    #[doc = "[Ml Get Filters API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-filter.html)\n\nRetrieves filters."]
+    #[doc = "[Ml Get Filters API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-filter.html)\n\nRetrieves filters."]
     pub fn get_filters<'b>(&'a self, parts: MlGetFiltersParts<'b>) -> MlGetFilters<'a, 'b> {
         MlGetFilters::new(&self.client, parts)
     }
-    #[doc = "[Ml Get Influencers API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-influencer.html)\n\nRetrieves anomaly detection job results for one or more influencers."]
+    #[doc = "[Ml Get Influencers API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-influencer.html)\n\nRetrieves anomaly detection job results for one or more influencers."]
     pub fn get_influencers<'b>(
         &'a self,
         parts: MlGetInfluencersParts<'b>,
     ) -> MlGetInfluencers<'a, 'b, ()> {
         MlGetInfluencers::new(&self.client, parts)
     }
-    #[doc = "[Ml Get Job Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-job-stats.html)\n\nRetrieves usage information for anomaly detection jobs."]
+    #[doc = "[Ml Get Job Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-job-stats.html)\n\nRetrieves usage information for anomaly detection jobs."]
     pub fn get_job_stats<'b>(&'a self, parts: MlGetJobStatsParts<'b>) -> MlGetJobStats<'a, 'b> {
         MlGetJobStats::new(&self.client, parts)
     }
-    #[doc = "[Ml Get Jobs API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-job.html)\n\nRetrieves configuration information for anomaly detection jobs."]
+    #[doc = "[Ml Get Jobs API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-job.html)\n\nRetrieves configuration information for anomaly detection jobs."]
     pub fn get_jobs<'b>(&'a self, parts: MlGetJobsParts<'b>) -> MlGetJobs<'a, 'b> {
         MlGetJobs::new(&self.client, parts)
     }
-    #[doc = "[Ml Get Model Snapshots API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-snapshot.html)\n\nRetrieves information about model snapshots."]
+    #[doc = "[Ml Get Model Snapshots API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-snapshot.html)\n\nRetrieves information about model snapshots."]
     pub fn get_model_snapshots<'b>(
         &'a self,
         parts: MlGetModelSnapshotsParts<'b>,
     ) -> MlGetModelSnapshots<'a, 'b, ()> {
         MlGetModelSnapshots::new(&self.client, parts)
     }
-    #[doc = "[Ml Get Overall Buckets API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-overall-buckets.html)\n\nRetrieves overall bucket results that summarize the bucket results of multiple anomaly detection jobs."]
+    #[doc = "[Ml Get Overall Buckets API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-overall-buckets.html)\n\nRetrieves overall bucket results that summarize the bucket results of multiple anomaly detection jobs."]
     pub fn get_overall_buckets<'b>(
         &'a self,
         parts: MlGetOverallBucketsParts<'b>,
     ) -> MlGetOverallBuckets<'a, 'b, ()> {
         MlGetOverallBuckets::new(&self.client, parts)
     }
-    #[doc = "[Ml Get Records API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-get-record.html)\n\nRetrieves anomaly records for an anomaly detection job."]
+    #[doc = "[Ml Get Records API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-get-record.html)\n\nRetrieves anomaly records for an anomaly detection job."]
     pub fn get_records<'b>(&'a self, parts: MlGetRecordsParts<'b>) -> MlGetRecords<'a, 'b, ()> {
         MlGetRecords::new(&self.client, parts)
     }
-    #[doc = "[Ml Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/get-ml-info.html)\n\nReturns defaults and limits used by machine learning."]
+    #[doc = "[Ml Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/get-ml-info.html)\n\nReturns defaults and limits used by machine learning."]
     pub fn info<'b>(&'a self) -> MlInfo<'a, 'b> {
         MlInfo::new(&self.client)
     }
-    #[doc = "[Ml Open Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-open-job.html)\n\nOpens one or more anomaly detection jobs."]
+    #[doc = "[Ml Open Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-open-job.html)\n\nOpens one or more anomaly detection jobs."]
     pub fn open_job<'b>(&'a self, parts: MlOpenJobParts<'b>) -> MlOpenJob<'a, 'b, ()> {
         MlOpenJob::new(&self.client, parts)
     }
-    #[doc = "[Ml Post Calendar Events API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-post-calendar-event.html)\n\nPosts scheduled events in a calendar."]
+    #[doc = "[Ml Post Calendar Events API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-post-calendar-event.html)\n\nPosts scheduled events in a calendar."]
     pub fn post_calendar_events<'b>(
         &'a self,
         parts: MlPostCalendarEventsParts<'b>,
     ) -> MlPostCalendarEvents<'a, 'b, ()> {
         MlPostCalendarEvents::new(&self.client, parts)
     }
-    #[doc = "[Ml Post Data API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-post-data.html)\n\nSends data to an anomaly detection job for analysis."]
+    #[doc = "[Ml Post Data API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-post-data.html)\n\nSends data to an anomaly detection job for analysis."]
     pub fn post_data<'b>(&'a self, parts: MlPostDataParts<'b>) -> MlPostData<'a, 'b, ()> {
         MlPostData::new(&self.client, parts)
     }
-    #[doc = "[Ml Preview Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-preview-datafeed.html)\n\nPreviews a datafeed."]
+    #[doc = "[Ml Preview Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-preview-datafeed.html)\n\nPreviews a datafeed."]
     pub fn preview_datafeed<'b>(
         &'a self,
         parts: MlPreviewDatafeedParts<'b>,
     ) -> MlPreviewDatafeed<'a, 'b> {
         MlPreviewDatafeed::new(&self.client, parts)
     }
-    #[doc = "[Ml Put Calendar API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-put-calendar.html)\n\nInstantiates a calendar."]
+    #[doc = "[Ml Put Calendar API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-put-calendar.html)\n\nInstantiates a calendar."]
     pub fn put_calendar<'b>(&'a self, parts: MlPutCalendarParts<'b>) -> MlPutCalendar<'a, 'b, ()> {
         MlPutCalendar::new(&self.client, parts)
     }
-    #[doc = "[Ml Put Calendar Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-put-calendar-job.html)\n\nAdds an anomaly detection job to a calendar."]
+    #[doc = "[Ml Put Calendar Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-put-calendar-job.html)\n\nAdds an anomaly detection job to a calendar."]
     pub fn put_calendar_job<'b>(
         &'a self,
         parts: MlPutCalendarJobParts<'b>,
     ) -> MlPutCalendarJob<'a, 'b, ()> {
         MlPutCalendarJob::new(&self.client, parts)
     }
-    #[doc = "[Ml Put Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-put-datafeed.html)\n\nInstantiates a datafeed."]
+    #[doc = "[Ml Put Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-put-datafeed.html)\n\nInstantiates a datafeed."]
     pub fn put_datafeed<'b>(&'a self, parts: MlPutDatafeedParts<'b>) -> MlPutDatafeed<'a, 'b, ()> {
         MlPutDatafeed::new(&self.client, parts)
     }
-    #[doc = "[Ml Put Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-put-filter.html)\n\nInstantiates a filter."]
+    #[doc = "[Ml Put Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-put-filter.html)\n\nInstantiates a filter."]
     pub fn put_filter<'b>(&'a self, parts: MlPutFilterParts<'b>) -> MlPutFilter<'a, 'b, ()> {
         MlPutFilter::new(&self.client, parts)
     }
-    #[doc = "[Ml Put Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-put-job.html)\n\nInstantiates an anomaly detection job."]
+    #[doc = "[Ml Put Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-put-job.html)\n\nInstantiates an anomaly detection job."]
     pub fn put_job<'b>(&'a self, parts: MlPutJobParts<'b>) -> MlPutJob<'a, 'b, ()> {
         MlPutJob::new(&self.client, parts)
     }
-    #[doc = "[Ml Revert Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-revert-snapshot.html)\n\nReverts to a specific snapshot."]
+    #[doc = "[Ml Revert Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-revert-snapshot.html)\n\nReverts to a specific snapshot."]
     pub fn revert_model_snapshot<'b>(
         &'a self,
         parts: MlRevertModelSnapshotParts<'b>,
     ) -> MlRevertModelSnapshot<'a, 'b, ()> {
         MlRevertModelSnapshot::new(&self.client, parts)
     }
-    #[doc = "[Ml Set Upgrade Mode API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-set-upgrade-mode.html)\n\nSets a cluster wide upgrade_mode setting that prepares machine learning indices for an upgrade."]
+    #[doc = "[Ml Set Upgrade Mode API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-set-upgrade-mode.html)\n\nSets a cluster wide upgrade_mode setting that prepares machine learning indices for an upgrade."]
     pub fn set_upgrade_mode<'b>(&'a self) -> MlSetUpgradeMode<'a, 'b, ()> {
         MlSetUpgradeMode::new(&self.client)
     }
-    #[doc = "[Ml Start Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-start-datafeed.html)\n\nStarts one or more datafeeds."]
+    #[doc = "[Ml Start Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-start-datafeed.html)\n\nStarts one or more datafeeds."]
     pub fn start_datafeed<'b>(
         &'a self,
         parts: MlStartDatafeedParts<'b>,
     ) -> MlStartDatafeed<'a, 'b, ()> {
         MlStartDatafeed::new(&self.client, parts)
     }
-    #[doc = "[Ml Stop Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-stop-datafeed.html)\n\nStops one or more datafeeds."]
+    #[doc = "[Ml Stop Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-stop-datafeed.html)\n\nStops one or more datafeeds."]
     pub fn stop_datafeed<'b>(
         &'a self,
         parts: MlStopDatafeedParts<'b>,
     ) -> MlStopDatafeed<'a, 'b, ()> {
         MlStopDatafeed::new(&self.client, parts)
     }
-    #[doc = "[Ml Update Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-update-datafeed.html)\n\nUpdates certain properties of a datafeed."]
+    #[doc = "[Ml Update Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-update-datafeed.html)\n\nUpdates certain properties of a datafeed."]
     pub fn update_datafeed<'b>(
         &'a self,
         parts: MlUpdateDatafeedParts<'b>,
     ) -> MlUpdateDatafeed<'a, 'b, ()> {
         MlUpdateDatafeed::new(&self.client, parts)
     }
-    #[doc = "[Ml Update Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-update-filter.html)\n\nUpdates the description of a filter, adds items, or removes items."]
+    #[doc = "[Ml Update Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-update-filter.html)\n\nUpdates the description of a filter, adds items, or removes items."]
     pub fn update_filter<'b>(
         &'a self,
         parts: MlUpdateFilterParts<'b>,
     ) -> MlUpdateFilter<'a, 'b, ()> {
         MlUpdateFilter::new(&self.client, parts)
     }
-    #[doc = "[Ml Update Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-update-job.html)\n\nUpdates certain properties of an anomaly detection job."]
+    #[doc = "[Ml Update Job API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-update-job.html)\n\nUpdates certain properties of an anomaly detection job."]
     pub fn update_job<'b>(&'a self, parts: MlUpdateJobParts<'b>) -> MlUpdateJob<'a, 'b, ()> {
         MlUpdateJob::new(&self.client, parts)
     }
-    #[doc = "[Ml Update Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ml-update-snapshot.html)\n\nUpdates certain properties of a snapshot."]
+    #[doc = "[Ml Update Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/ml-update-snapshot.html)\n\nUpdates certain properties of a snapshot."]
     pub fn update_model_snapshot<'b>(
         &'a self,
         parts: MlUpdateModelSnapshotParts<'b>,
     ) -> MlUpdateModelSnapshot<'a, 'b, ()> {
         MlUpdateModelSnapshot::new(&self.client, parts)
     }
-    #[doc = "[Ml Validate API](https://www.elastic.co/guide/en/machine-learning/7.7/ml-jobs.html)\n\nValidates an anomaly detection job."]
+    #[doc = "[Ml Validate API](https://www.elastic.co/guide/en/machine-learning/7.8/ml-jobs.html)\n\nValidates an anomaly detection job."]
     pub fn validate<'b>(&'a self) -> MlValidate<'a, 'b, ()> {
         MlValidate::new(&self.client)
     }
-    #[doc = "[Ml Validate Detector API](https://www.elastic.co/guide/en/machine-learning/7.7/ml-jobs.html)\n\nValidates an anomaly detection detector."]
+    #[doc = "[Ml Validate Detector API](https://www.elastic.co/guide/en/machine-learning/7.8/ml-jobs.html)\n\nValidates an anomaly detection detector."]
     pub fn validate_detector<'b>(&'a self) -> MlValidateDetector<'a, 'b, ()> {
         MlValidateDetector::new(&self.client)
     }
