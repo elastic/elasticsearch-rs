@@ -28,6 +28,7 @@ extern crate simple_logger;
 
 use clap::{App, Arg};
 use log::Level;
+use serde_json::Value;
 use std::{fs, path::PathBuf, process::exit};
 
 mod generator;
@@ -42,20 +43,19 @@ fn main() -> Result<(), failure::Error> {
 
     let matches = App::new(env!("CARGO_PKG_NAME"))
         .about(env!("CARGO_PKG_DESCRIPTION"))
-        .arg(Arg::with_name("branch")
-            .short("b")
-            .long("branch")
-            .value_name("BRANCH")
-            .help("The git branch in the Elasticsearch repository from which to download yaml tests")
-            .required(true)
-            .default_value("master")
-            .takes_value(true))
         .arg(Arg::with_name("token")
             .short("t")
             .long("token")
             .value_name("TOKEN")
             .help("The GitHub access token. Increases the rate limit to be able to download all yaml tests. Must be specified if not passed through environment variable")
             .required(false)
+            .takes_value(true))
+        .arg(Arg::with_name("url")
+            .short("u")
+            .long("url")
+            .value_name("ELASTICSEARCH_URL")
+            .help("The url of a running Elasticsearch cluster. Used to determine the version, test suite and branch to use to compile tests")
+            .required(true)
             .takes_value(true))
         .arg(Arg::with_name("path")
             .short("p")
@@ -66,39 +66,8 @@ fn main() -> Result<(), failure::Error> {
             .takes_value(true))
         .get_matches();
 
-    // Get the version from ELASTICSEARCH_VERSION environment variable, if set.
-    // any prerelease part needs to be trimmed because the semver crate only allows
-    // a version with a prerelease to match against predicates, if at least one predicate
-    // has a prerelease. See
-    // https://github.com/steveklabnik/semver/blob/afa5fc853cb4d6d2b1329579e5528f86f3b550f9/src/version_req.rs#L319-L331
-    let (suite, version) = match std::env::var("ELASTICSEARCH_VERSION") {
-        Ok(v) => {
-            let suite = if v.contains("oss") {
-                TestSuite::Oss
-            } else {
-                TestSuite::XPack
-            };
-
-            let v = v
-                .split(':')
-                .next_back()
-                .unwrap()
-                .trim_end_matches(|c: char| c.is_alphabetic() || c == '-');
-
-            (suite, semver::Version::parse(v)?)
-        }
-        Err(_) => {
-            error!("ELASTICSEARCH_VERSION environment variable must be set to compile tests");
-            exit(1);
-        }
-    };
-
-    info!("Using version {:?} to compile tests", &version);
-
-    let branch = matches
-        .value_of("branch")
-        .expect("missing 'branch' argument");
-
+    let url = matches.value_of("url").expect("missing 'url' argument");
+    let path = matches.value_of("path").expect("missing 'path' argument");
     let token = match std::env::var("TOKEN") {
         Ok(v) => v,
         Err(_) => match matches.value_of("token") {
@@ -109,12 +78,27 @@ fn main() -> Result<(), failure::Error> {
             }
         },
     };
-    let path = matches.value_of("path").expect("missing 'path' argument");
+
+    let (branch, suite, version) = match branch_suite_and_version_from_elasticsearch(url) {
+        Ok(v) => v,
+        Err(e) => {
+            error!(
+                "Problem getting values from Elasticsearch at {}. {:?}",
+                url, e
+            );
+            exit(1);
+        }
+    };
+
+    info!("Using version {}", &version.to_string());
+    info!("Using branch {}", &branch);
+    info!("Using test_suite {:?}", &suite);
+
     let rest_specs_dir = PathBuf::from(path);
     let download_dir = PathBuf::from(format!("./{}/yaml", env!("CARGO_PKG_NAME")));
     let generated_dir = PathBuf::from(format!("./{}/tests", env!("CARGO_PKG_NAME")));
 
-    github::download_test_suites(&token, branch, &download_dir)?;
+    github::download_test_suites(&token, &branch, &download_dir)?;
 
     let mut last_downloaded_rest_spec_branch = rest_specs_dir.clone();
     last_downloaded_rest_spec_branch.push("last_downloaded_version");
@@ -134,10 +118,10 @@ fn main() -> Result<(), failure::Error> {
     }
 
     if download_rest_specs {
-        api_generator::rest_spec::download_specs(branch, &rest_specs_dir)?;
+        api_generator::rest_spec::download_specs(&branch, &rest_specs_dir)?;
     }
 
-    let api = api_generator::generator::read_api(branch, &rest_specs_dir)?;
+    let api = api_generator::generator::read_api(&branch, &rest_specs_dir)?;
 
     // delete everything under the generated_dir except common dir
     if generated_dir.exists() {
@@ -167,4 +151,27 @@ fn main() -> Result<(), failure::Error> {
     )?;
 
     Ok(())
+}
+
+fn branch_suite_and_version_from_elasticsearch(
+    url: &str,
+) -> Result<(String, TestSuite, semver::Version), failure::Error> {
+    let mut response = reqwest::get(url)?;
+    let json: Value = response.json()?;
+    let branch = json["version"]["build_hash"].as_str().unwrap().to_string();
+    let suite = match json["version"]["build_flavor"].as_str().unwrap() {
+        "oss" => TestSuite::Oss,
+        _ => TestSuite::XPack,
+    };
+
+    // any prerelease part needs to be trimmed because the semver crate only allows
+    // a version with a prerelease to match against predicates, if at least one predicate
+    // has a prerelease. See
+    // https://github.com/steveklabnik/semver/blob/afa5fc853cb4d6d2b1329579e5528f86f3b550f9/src/version_req.rs#L319-L331
+    let version = json["version"]["number"]
+        .as_str()
+        .unwrap()
+        .trim_end_matches(|c: char| c.is_alphabetic() || c == '-');
+
+    Ok((branch, suite, semver::Version::parse(version)?))
 }
