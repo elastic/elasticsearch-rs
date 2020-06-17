@@ -5,15 +5,12 @@
 # STACK_VERSION -- version e.g Major.Minor.Patch(-Prelease)
 # TEST_SUITE -- which test suite to run: oss or xpack
 # ELASTICSEARCH_URL -- The url at which elasticsearch is reachable, a default is composed based on STACK_VERSION and TEST_SUITE
-# BRANCH -- Elasticsearch branch from which to pull the YAML test files
 # RUST_TOOLCHAIN -- Rust toolchain version to compile and run tests
-# TOKEN -- GitHub access token used to download the YAML files from the GitHub API
 script_path=$(dirname $(realpath -s $0))
 source $script_path/functions/imports.sh
 set -euo pipefail
 
 RUST_TOOLCHAIN=${RUST_TOOLCHAIN-nightly-2020-06-09}
-TOKEN=${TOKEN-}
 ELASTICSEARCH_URL=${ELASTICSEARCH_URL-"$elasticsearch_url"}
 elasticsearch_container=${elasticsearch_container-}
 
@@ -31,16 +28,16 @@ echo -e "\033[1m>>>>> Run [elastic/elasticsearch-rs container] >>>>>>>>>>>>>>>>>
 
 repo=$(realpath $(dirname $(realpath -s $0))/../)
 
+# ES_TEST_SERVER en var is needed for cargo tests
 docker run \
   --network=${network_name} \
   --env "ES_TEST_SERVER=${ELASTICSEARCH_URL}" \
-  --env "TOKEN=${TOKEN}" \
   --name test-runner \
   --volume ${repo}/test_results:/usr/src/elasticsearch-rs/test_results \
   --rm \
   elastic/elasticsearch-rs \
   /bin/bash -c \
-  "cargo run -p yaml_test_runner -- -u \"${ELASTICSEARCH_URL}\" -p \"api_generator/rest_specs\"; \\
+  "cargo run -p yaml_test_runner -- -u \"${ELASTICSEARCH_URL}\"; \\
    mkdir -p test_results; \\
    cargo test -p yaml_test_runner -- --test-threads=1 -Z unstable-options --format json | tee test_results/results.json; \\
    cat test_results/results.json | cargo2junit > test_results/junit.xml"
