@@ -17,78 +17,58 @@
  * under the License.
  */
 extern crate reqwest;
-
-mod parallel_downloading;
-
-use parallel_downloading::download_specs_to_dir;
-use serde::Deserialize;
-use std::{fs, path::PathBuf};
-
-struct GitHubSpec {
-    dir: String,
-    branch: String,
-    url: String,
-}
-
-#[derive(Deserialize, Debug)]
-struct Links {
-    #[serde(rename = "self")]
-    self_link: String,
-    git: String,
-    html: String,
-}
-
-#[derive(Deserialize, Debug)]
-struct RestApiSpec {
-    name: String,
-    path: String,
-    sha: String,
-    size: i32,
-    url: String,
-    html_url: String,
-    git_url: String,
-    download_url: String,
-    #[serde(rename = "type")]
-    ty: String,
-    #[serde(rename = "_links")]
-    links: Links,
-}
+use self::reqwest::header::{HeaderMap, HeaderValue, USER_AGENT};
+use flate2::read::GzDecoder;
+use globset::Glob;
+use reqwest::Response;
+use std::{fs::File, io, path::PathBuf};
+use tar::{Archive, Entry};
 
 pub fn download_specs(branch: &str, download_dir: &PathBuf) -> Result<(), failure::Error> {
-    let spec_urls = [
-        ("core".to_string(), "https://api.github.com/repos/elastic/elasticsearch/contents/rest-api-spec/src/main/resources/rest-api-spec/api".to_string()),
-        ("xpack".to_string(), "https://api.github.com/repos/elastic/elasticsearch/contents/x-pack/plugin/src/test/resources/rest-api-spec/api".to_string())];
+    let url = format!(
+        "https://api.github.com/repos/elastic/elasticsearch/tarball/{}",
+        branch
+    );
 
-    let specs: Vec<GitHubSpec> = spec_urls
-        .iter()
-        .map(|(dir, template_url)| {
-            let url = format!("{}?ref={}", template_url, branch);
-            GitHubSpec {
-                dir: dir.to_string(),
-                branch: branch.to_string(),
-                url,
-            }
-        })
-        .collect();
+    let mut headers = HeaderMap::new();
+    headers.append(
+        USER_AGENT,
+        HeaderValue::from_str(&format!("elasticsearch-rs/{}", env!("CARGO_PKG_NAME")))?,
+    );
+    let client = reqwest::ClientBuilder::new()
+        .default_headers(headers)
+        .build()
+        .unwrap();
 
-    fs::create_dir_all(download_dir)?;
-    for spec in specs {
-        download_endpoints(&spec, &download_dir)?;
+    let response = client.get(&url).send()?;
+    let tar = GzDecoder::new(response);
+    let mut archive = Archive::new(tar);
+
+    let oss_spec = Glob::new("**/rest-api-spec/src/main/resources/rest-api-spec/api/*.json")?
+        .compile_matcher();
+    let xpack_spec = Glob::new("**/x-pack/plugin/src/test/resources/rest-api-spec/api/*.json")?
+        .compile_matcher();
+
+    for entry in archive.entries()? {
+        let file = entry?;
+        let path = file.path()?;
+        if oss_spec.is_match(&path) || xpack_spec.is_match(&path) {
+            write_spec_file(download_dir, file)?;
+        }
     }
 
     Ok(())
 }
 
-fn download_endpoints(spec: &GitHubSpec, download_dir: &PathBuf) -> Result<(), failure::Error> {
-    let client = reqwest::blocking::ClientBuilder::new()
-        .user_agent(concat!("RustApiGenerator/", env!("CARGO_PKG_VERSION")))
-        .build()
-        .unwrap();
+fn write_spec_file(
+    download_dir: &PathBuf,
+    mut entry: Entry<GzDecoder<Response>>,
+) -> Result<(), failure::Error> {
+    let path = entry.path()?;
+    let mut dir = download_dir.clone();
+    dir.push(path.file_name().unwrap());
+    let mut file = File::create(&dir)?;
+    io::copy(&mut entry, &mut file)?;
 
-    let response = client.get(&spec.url).send().unwrap();
-    let rest_api_specs: Vec<RestApiSpec> = response.json().unwrap();
-    println!("Downloading {} specs from {}", spec.dir, spec.branch);
-    download_specs_to_dir(client, rest_api_specs.as_slice(), download_dir).unwrap();
-    println!("Done downloading {} specs from {}", spec.dir, spec.branch);
     Ok(())
 }
