@@ -31,6 +31,9 @@ syn = { version = "~0.11", features = ["full"] }
 sysinfo = "0.9.6"
 url = "2.1.1"
 yaml-rust = "0.4.3"
+tar = "~0.4"
+flate2 = "~1"
+globset = "~0.4"
 
 [dev-dependencies]
 tokio = { version = "0.2.0", default-features = false, features = ["macros", "tcp", "time"] }

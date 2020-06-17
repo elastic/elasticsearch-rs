@@ -43,13 +43,6 @@ fn main() -> Result<(), failure::Error> {
 
     let matches = App::new(env!("CARGO_PKG_NAME"))
         .about(env!("CARGO_PKG_DESCRIPTION"))
-        .arg(Arg::with_name("token")
-            .short("t")
-            .long("token")
-            .value_name("TOKEN")
-            .help("The GitHub access token. Increases the rate limit to be able to download all yaml tests. Must be specified if not passed through environment variable")
-            .required(false)
-            .takes_value(true))
         .arg(Arg::with_name("url")
             .short("u")
             .long("url")
@@ -57,28 +50,9 @@ fn main() -> Result<(), failure::Error> {
             .help("The url of a running Elasticsearch cluster. Used to determine the version, test suite and branch to use to compile tests")
             .required(true)
             .takes_value(true))
-        .arg(Arg::with_name("path")
-            .short("p")
-            .long("path")
-            .value_name("PATH")
-            .help("The path to the rest API specs. Required to build a representation of the client API.")
-            .required(true)
-            .takes_value(true))
         .get_matches();
 
     let url = matches.value_of("url").expect("missing 'url' argument");
-    let path = matches.value_of("path").expect("missing 'path' argument");
-    let token = match std::env::var("TOKEN") {
-        Ok(v) => v,
-        Err(_) => match matches.value_of("token") {
-            Some(v) => v.into(),
-            None => {
-                error!("missing GitHub token. Either pass as TOKEN environment variable, or 'token' argument");
-                exit(1);
-            }
-        },
-    };
-
     let (branch, suite, version) = match branch_suite_and_version_from_elasticsearch(url) {
         Ok(v) => v,
         Err(e) => {
@@ -94,32 +68,41 @@ fn main() -> Result<(), failure::Error> {
     info!("Using branch {}", &branch);
     info!("Using test_suite {:?}", &suite);
 
-    let rest_specs_dir = PathBuf::from(path);
+    let rest_specs_dir = PathBuf::from("./api_generator/rest_specs");
+
+    if !rest_specs_dir.exists()
+        || rest_specs_dir
+            .read_dir()
+            .map(|mut e| e.next().is_none())
+            .unwrap_or_else(|_| true)
+    {
+        error!(
+            "No rest specs found at {}. Run api_generator project to download rest specs",
+            rest_specs_dir.to_str().unwrap()
+        );
+        exit(1);
+    }
+
+    let last_downloaded_rest_spec_branch = {
+        let mut p = rest_specs_dir.clone();
+        p.push("last_downloaded_version");
+        p
+    };
+
+    if !last_downloaded_rest_spec_branch.exists() {
+        error!(
+            "No last downloaded rest version found at {}.",
+            last_downloaded_rest_spec_branch.to_str().unwrap()
+        );
+        exit(1);
+    }
+    let rest_spec_version = fs::read_to_string(last_downloaded_rest_spec_branch)?;
+    info!("Using rest specs from {}", &rest_spec_version);
+
     let download_dir = PathBuf::from(format!("./{}/yaml", env!("CARGO_PKG_NAME")));
     let generated_dir = PathBuf::from(format!("./{}/tests", env!("CARGO_PKG_NAME")));
 
-    github::download_test_suites(&token, &branch, &download_dir)?;
-
-    let mut last_downloaded_rest_spec_branch = rest_specs_dir.clone();
-    last_downloaded_rest_spec_branch.push("last_downloaded_version");
-
-    let mut download_rest_specs = true;
-    if last_downloaded_rest_spec_branch.exists() {
-        let version = fs::read_to_string(last_downloaded_rest_spec_branch)
-            .expect("Could not read rest specs last_downloaded version into string");
-
-        if version == branch {
-            info!(
-                "rest specs for branch {} already downloaded in {:?}",
-                branch, &rest_specs_dir
-            );
-            download_rest_specs = false;
-        }
-    }
-
-    if download_rest_specs {
-        api_generator::rest_spec::download_specs(&branch, &rest_specs_dir)?;
-    }
+    github::download_test_suites(&branch, &download_dir)?;
 
     let api = api_generator::generator::read_api(&branch, &rest_specs_dir)?;
 
