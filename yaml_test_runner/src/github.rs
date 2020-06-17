@@ -47,7 +47,7 @@ pub fn download_test_suites(branch: &str, download_dir: &PathBuf) -> Result<(), 
     let mut headers = HeaderMap::new();
     headers.append(
         USER_AGENT,
-        HeaderValue::from_str("elasticsearch-rs/yaml_test_runner")?,
+        HeaderValue::from_str(&format!("elasticsearch-rs/{}", env!("CARGO_PKG_NAME")))?,
     );
     let client = reqwest::ClientBuilder::new()
         .default_headers(headers)

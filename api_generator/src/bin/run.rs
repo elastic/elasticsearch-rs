@@ -69,6 +69,7 @@ fn main() -> Result<(), failure::Error> {
             .unwrap();
 
         fs::remove_dir_all(&download_dir)?;
+        fs::create_dir_all(&download_dir)?;
         rest_spec::download_specs(&branch, &download_dir)?;
         File::create(&last_downloaded_version)?.write_all(branch.as_bytes())?;
     }
