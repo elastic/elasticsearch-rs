@@ -77,23 +77,28 @@ pub fn generate(api: &Api, docs_dir: &PathBuf) -> Result<Vec<(String, String)>, 
 
             #namespace_doc
             pub struct #namespace_client_name<'a> {
-                client: &'a Elasticsearch
+                transport: &'a Transport
             }
 
             impl<'a> #namespace_client_name<'a> {
                 #new_namespace_client_doc
-                pub fn new(client: &'a Elasticsearch) -> Self {
+                pub fn new(transport: &'a Transport) -> Self {
                     Self {
-                        client
+                        transport
                     }
                 }
+
+                pub fn transport(&self) -> &Transport {
+                    self.transport
+                }
+
                 #(#methods)*
             }
 
             impl Elasticsearch {
                 #namespace_fn_doc
                 pub fn #namespace_name(&self) -> #namespace_client_name {
-                    #namespace_client_name::new(&self)
+                    #namespace_client_name::new(self.transport())
                 }
             }
         ));

@@ -30,6 +30,7 @@ use crate::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
+        transport::Transport,
         Method,
     },
     params::*,
@@ -65,7 +66,7 @@ impl<'b> IndicesAnalyzeParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-analyze.html)\n\nPerforms the analysis process on a text and return the tokens breakdown of the text."]
 pub struct IndicesAnalyze<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesAnalyzeParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -81,10 +82,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesAnalyze] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesAnalyzeParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesAnalyzeParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesAnalyze {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -102,7 +103,7 @@ where
         T: Serialize,
     {
         IndicesAnalyze {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -189,7 +190,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -224,7 +225,7 @@ impl<'b> IndicesClearCacheParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-clearcache.html)\n\nClears all or specific caches for one or more indices."]
 pub struct IndicesClearCache<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesClearCacheParts<'b>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
@@ -247,10 +248,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesClearCache] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesClearCacheParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesClearCacheParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesClearCache {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -280,7 +281,7 @@ where
         T: Serialize,
     {
         IndicesClearCache {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
@@ -425,7 +426,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -460,7 +461,7 @@ impl<'b> IndicesCloneParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-clone-index.html)\n\nClones an index"]
 pub struct IndicesClone<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesCloneParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -478,10 +479,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesClone] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesCloneParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesCloneParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesClone {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -501,7 +502,7 @@ where
         T: Serialize,
     {
         IndicesClone {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -603,7 +604,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -635,7 +636,7 @@ impl<'b> IndicesCloseParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Close API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-open-close.html)\n\nCloses an index."]
 pub struct IndicesClose<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesCloseParts<'b>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
@@ -656,10 +657,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesClose] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesCloseParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesCloseParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesClose {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -687,7 +688,7 @@ where
         T: Serialize,
     {
         IndicesClose {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
@@ -814,7 +815,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -844,7 +845,7 @@ impl<'b> IndicesCreateParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Create API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-create-index.html)\n\nCreates an index with optional settings and mappings."]
 pub struct IndicesCreate<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesCreateParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -862,10 +863,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesCreate] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesCreateParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesCreateParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesCreate {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -885,7 +886,7 @@ where
         T: Serialize,
     {
         IndicesCreate {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -987,7 +988,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1018,7 +1019,7 @@ impl<'b> IndicesDeleteParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-delete-index.html)\n\nDeletes an index."]
 pub struct IndicesDelete<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesDeleteParts<'b>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
@@ -1034,10 +1035,10 @@ pub struct IndicesDelete<'a, 'b> {
 }
 impl<'a, 'b> IndicesDelete<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesDelete] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesDeleteParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesDeleteParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesDelete {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -1159,7 +1160,7 @@ impl<'a, 'b> IndicesDelete<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1196,7 +1197,7 @@ impl<'b> IndicesDeleteAliasParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Delete Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-aliases.html)\n\nDeletes an alias."]
 pub struct IndicesDeleteAlias<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesDeleteAliasParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -1209,10 +1210,10 @@ pub struct IndicesDeleteAlias<'a, 'b> {
 }
 impl<'a, 'b> IndicesDeleteAlias<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesDeleteAlias] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesDeleteAliasParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesDeleteAliasParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesDeleteAlias {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -1304,144 +1305,7 @@ impl<'a, 'b> IndicesDeleteAlias<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
-            .send(method, &path, headers, query_string.as_ref(), body)
-            .await?;
-        Ok(response)
-    }
-}
-#[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Indices Delete Index Template API"]
-pub enum IndicesDeleteIndexTemplateParts<'b> {
-    #[doc = "Name"]
-    Name(&'b str),
-}
-impl<'b> IndicesDeleteIndexTemplateParts<'b> {
-    #[doc = "Builds a relative URL path to the Indices Delete Index Template API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            IndicesDeleteIndexTemplateParts::Name(ref name) => {
-                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(17usize + encoded_name.len());
-                p.push_str("/_index_template/");
-                p.push_str(encoded_name.as_ref());
-                p.into()
-            }
-        }
-    }
-}
-#[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Delete Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nDeletes an index template."]
-pub struct IndicesDeleteIndexTemplate<'a, 'b> {
-    client: &'a Elasticsearch,
-    parts: IndicesDeleteIndexTemplateParts<'b>,
-    error_trace: Option<bool>,
-    filter_path: Option<&'b [&'b str]>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    master_timeout: Option<&'b str>,
-    pretty: Option<bool>,
-    source: Option<&'b str>,
-    timeout: Option<&'b str>,
-}
-impl<'a, 'b> IndicesDeleteIndexTemplate<'a, 'b> {
-    #[doc = "Creates a new instance of [IndicesDeleteIndexTemplate] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesDeleteIndexTemplateParts<'b>) -> Self {
-        let headers = HeaderMap::new();
-        IndicesDeleteIndexTemplate {
-            client,
-            parts,
-            headers,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            master_timeout: None,
-            pretty: None,
-            source: None,
-            timeout: None,
-        }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
-        self.master_timeout = Some(master_timeout);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: &'b str) -> Self {
-        self.timeout = Some(timeout);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Indices Delete Index Template API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = Method::Delete;
-        let headers = self.headers;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
-                error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
-                filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
-                human: Option<bool>,
-                #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
-                pretty: Option<bool>,
-                #[serde(rename = "source")]
-                source: Option<&'b str>,
-                #[serde(rename = "timeout")]
-                timeout: Option<&'b str>,
-            }
-            let query_params = QueryParams {
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                human: self.human,
-                master_timeout: self.master_timeout,
-                pretty: self.pretty,
-                source: self.source,
-                timeout: self.timeout,
-            };
-            Some(query_params)
-        };
-        let body = Option::<()>::None;
-        let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1470,7 +1334,7 @@ impl<'b> IndicesDeleteTemplateParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Delete Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nDeletes an index template."]
 pub struct IndicesDeleteTemplate<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesDeleteTemplateParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -1483,10 +1347,10 @@ pub struct IndicesDeleteTemplate<'a, 'b> {
 }
 impl<'a, 'b> IndicesDeleteTemplate<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesDeleteTemplate] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesDeleteTemplateParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesDeleteTemplateParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesDeleteTemplate {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -1578,7 +1442,7 @@ impl<'a, 'b> IndicesDeleteTemplate<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1609,7 +1473,7 @@ impl<'b> IndicesExistsParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-exists.html)\n\nReturns information about whether a particular index exists."]
 pub struct IndicesExists<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesExistsParts<'b>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
@@ -1626,10 +1490,10 @@ pub struct IndicesExists<'a, 'b> {
 }
 impl<'a, 'b> IndicesExists<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesExists] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesExistsParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesExistsParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesExists {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -1760,7 +1624,7 @@ impl<'a, 'b> IndicesExists<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1808,7 +1672,7 @@ impl<'b> IndicesExistsAliasParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Exists Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-aliases.html)\n\nReturns information about whether a particular alias exists."]
 pub struct IndicesExistsAlias<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesExistsAliasParts<'b>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
@@ -1823,10 +1687,10 @@ pub struct IndicesExistsAlias<'a, 'b> {
 }
 impl<'a, 'b> IndicesExistsAlias<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesExistsAlias] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesExistsAliasParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesExistsAliasParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesExistsAlias {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -1939,154 +1803,7 @@ impl<'a, 'b> IndicesExistsAlias<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
-            .send(method, &path, headers, query_string.as_ref(), body)
-            .await?;
-        Ok(response)
-    }
-}
-#[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Indices Exists Index Template API"]
-pub enum IndicesExistsIndexTemplateParts<'b> {
-    #[doc = "Name"]
-    Name(&'b str),
-}
-impl<'b> IndicesExistsIndexTemplateParts<'b> {
-    #[doc = "Builds a relative URL path to the Indices Exists Index Template API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            IndicesExistsIndexTemplateParts::Name(ref name) => {
-                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(17usize + encoded_name.len());
-                p.push_str("/_index_template/");
-                p.push_str(encoded_name.as_ref());
-                p.into()
-            }
-        }
-    }
-}
-#[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Exists Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nReturns information about whether a particular index template exists."]
-pub struct IndicesExistsIndexTemplate<'a, 'b> {
-    client: &'a Elasticsearch,
-    parts: IndicesExistsIndexTemplateParts<'b>,
-    error_trace: Option<bool>,
-    filter_path: Option<&'b [&'b str]>,
-    flat_settings: Option<bool>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    local: Option<bool>,
-    master_timeout: Option<&'b str>,
-    pretty: Option<bool>,
-    source: Option<&'b str>,
-}
-impl<'a, 'b> IndicesExistsIndexTemplate<'a, 'b> {
-    #[doc = "Creates a new instance of [IndicesExistsIndexTemplate] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesExistsIndexTemplateParts<'b>) -> Self {
-        let headers = HeaderMap::new();
-        IndicesExistsIndexTemplate {
-            client,
-            parts,
-            headers,
-            error_trace: None,
-            filter_path: None,
-            flat_settings: None,
-            human: None,
-            local: None,
-            master_timeout: None,
-            pretty: None,
-            source: None,
-        }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Return settings in flat format (default: false)"]
-    pub fn flat_settings(mut self, flat_settings: bool) -> Self {
-        self.flat_settings = Some(flat_settings);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: bool) -> Self {
-        self.local = Some(local);
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
-        self.master_timeout = Some(master_timeout);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Indices Exists Index Template API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = Method::Head;
-        let headers = self.headers;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
-                error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
-                filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "flat_settings")]
-                flat_settings: Option<bool>,
-                #[serde(rename = "human")]
-                human: Option<bool>,
-                #[serde(rename = "local")]
-                local: Option<bool>,
-                #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
-                pretty: Option<bool>,
-                #[serde(rename = "source")]
-                source: Option<&'b str>,
-            }
-            let query_params = QueryParams {
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                flat_settings: self.flat_settings,
-                human: self.human,
-                local: self.local,
-                master_timeout: self.master_timeout,
-                pretty: self.pretty,
-                source: self.source,
-            };
-            Some(query_params)
-        };
-        let body = Option::<()>::None;
-        let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -2117,7 +1834,7 @@ impl<'b> IndicesExistsTemplateParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Exists Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nReturns information about whether a particular index template exists."]
 pub struct IndicesExistsTemplate<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesExistsTemplateParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -2131,10 +1848,10 @@ pub struct IndicesExistsTemplate<'a, 'b> {
 }
 impl<'a, 'b> IndicesExistsTemplate<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesExistsTemplate] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesExistsTemplateParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesExistsTemplateParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesExistsTemplate {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -2235,7 +1952,7 @@ impl<'a, 'b> IndicesExistsTemplate<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -2270,7 +1987,7 @@ impl<'b> IndicesExistsTypeParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Exists Type API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-types-exists.html)\n\nReturns information about whether a particular document type exists. (DEPRECATED)"]
 pub struct IndicesExistsType<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesExistsTypeParts<'b>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
@@ -2285,10 +2002,10 @@ pub struct IndicesExistsType<'a, 'b> {
 }
 impl<'a, 'b> IndicesExistsType<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesExistsType] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesExistsTypeParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesExistsTypeParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesExistsType {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -2401,7 +2118,7 @@ impl<'a, 'b> IndicesExistsType<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -2436,7 +2153,7 @@ impl<'b> IndicesFlushParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Flush API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-flush.html)\n\nPerforms the flush operation on one or more indices."]
 pub struct IndicesFlush<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesFlushParts<'b>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
@@ -2456,10 +2173,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesFlush] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesFlushParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesFlushParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesFlush {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -2486,7 +2203,7 @@ where
         T: Serialize,
     {
         IndicesFlush {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
@@ -2607,7 +2324,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -2642,7 +2359,7 @@ impl<'b> IndicesForcemergeParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Forcemerge API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-forcemerge.html)\n\nPerforms the force merge operation on one or more indices."]
 pub struct IndicesForcemerge<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesForcemergeParts<'b>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
@@ -2663,10 +2380,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesForcemerge] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesForcemergeParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesForcemergeParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesForcemerge {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -2694,7 +2411,7 @@ where
         T: Serialize,
     {
         IndicesForcemerge {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
@@ -2821,7 +2538,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -2852,7 +2569,7 @@ impl<'b> IndicesFreezeParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Freeze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/freeze-index-api.html)\n\nFreezes an index. A frozen index has almost no overhead on the cluster (except for maintaining its metadata in memory) and is read-only."]
 pub struct IndicesFreeze<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesFreezeParts<'b>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
@@ -2873,10 +2590,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesFreeze] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesFreezeParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesFreezeParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesFreeze {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -2904,7 +2621,7 @@ where
         T: Serialize,
     {
         IndicesFreeze {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
@@ -3031,7 +2748,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -3062,7 +2779,7 @@ impl<'b> IndicesGetParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-get-index.html)\n\nReturns information about one or more indices."]
 pub struct IndicesGet<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesGetParts<'b>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
@@ -3080,10 +2797,10 @@ pub struct IndicesGet<'a, 'b> {
 }
 impl<'a, 'b> IndicesGet<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGet] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesGetParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesGetParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesGet {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -3223,7 +2940,7 @@ impl<'a, 'b> IndicesGet<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -3286,7 +3003,7 @@ impl<'b> IndicesGetAliasParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Get Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-aliases.html)\n\nReturns an alias."]
 pub struct IndicesGetAlias<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesGetAliasParts<'b>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
@@ -3301,10 +3018,10 @@ pub struct IndicesGetAlias<'a, 'b> {
 }
 impl<'a, 'b> IndicesGetAlias<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGetAlias] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesGetAliasParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesGetAliasParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesGetAlias {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -3417,7 +3134,7 @@ impl<'a, 'b> IndicesGetAlias<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -3465,7 +3182,7 @@ impl<'b> IndicesGetFieldMappingParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Get Field Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-get-field-mapping.html)\n\nReturns mapping for one or more fields."]
 pub struct IndicesGetFieldMapping<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesGetFieldMappingParts<'b>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
@@ -3481,10 +3198,10 @@ pub struct IndicesGetFieldMapping<'a, 'b> {
 }
 impl<'a, 'b> IndicesGetFieldMapping<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGetFieldMapping] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesGetFieldMappingParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesGetFieldMappingParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesGetFieldMapping {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -3606,159 +3323,7 @@ impl<'a, 'b> IndicesGetFieldMapping<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
-            .send(method, &path, headers, query_string.as_ref(), body)
-            .await?;
-        Ok(response)
-    }
-}
-#[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Indices Get Index Template API"]
-pub enum IndicesGetIndexTemplateParts<'b> {
-    #[doc = "No parts"]
-    None,
-    #[doc = "Name"]
-    Name(&'b [&'b str]),
-}
-impl<'b> IndicesGetIndexTemplateParts<'b> {
-    #[doc = "Builds a relative URL path to the Indices Get Index Template API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            IndicesGetIndexTemplateParts::None => "/_index_template".into(),
-            IndicesGetIndexTemplateParts::Name(ref name) => {
-                let name_str = name.join(",");
-                let encoded_name: Cow<str> =
-                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(17usize + encoded_name.len());
-                p.push_str("/_index_template/");
-                p.push_str(encoded_name.as_ref());
-                p.into()
-            }
-        }
-    }
-}
-#[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Get Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nReturns an index template."]
-pub struct IndicesGetIndexTemplate<'a, 'b> {
-    client: &'a Elasticsearch,
-    parts: IndicesGetIndexTemplateParts<'b>,
-    error_trace: Option<bool>,
-    filter_path: Option<&'b [&'b str]>,
-    flat_settings: Option<bool>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    local: Option<bool>,
-    master_timeout: Option<&'b str>,
-    pretty: Option<bool>,
-    source: Option<&'b str>,
-}
-impl<'a, 'b> IndicesGetIndexTemplate<'a, 'b> {
-    #[doc = "Creates a new instance of [IndicesGetIndexTemplate] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesGetIndexTemplateParts<'b>) -> Self {
-        let headers = HeaderMap::new();
-        IndicesGetIndexTemplate {
-            client,
-            parts,
-            headers,
-            error_trace: None,
-            filter_path: None,
-            flat_settings: None,
-            human: None,
-            local: None,
-            master_timeout: None,
-            pretty: None,
-            source: None,
-        }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Return settings in flat format (default: false)"]
-    pub fn flat_settings(mut self, flat_settings: bool) -> Self {
-        self.flat_settings = Some(flat_settings);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: bool) -> Self {
-        self.local = Some(local);
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
-        self.master_timeout = Some(master_timeout);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Indices Get Index Template API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = Method::Get;
-        let headers = self.headers;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
-                error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
-                filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "flat_settings")]
-                flat_settings: Option<bool>,
-                #[serde(rename = "human")]
-                human: Option<bool>,
-                #[serde(rename = "local")]
-                local: Option<bool>,
-                #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
-                pretty: Option<bool>,
-                #[serde(rename = "source")]
-                source: Option<&'b str>,
-            }
-            let query_params = QueryParams {
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                flat_settings: self.flat_settings,
-                human: self.human,
-                local: self.local,
-                master_timeout: self.master_timeout,
-                pretty: self.pretty,
-                source: self.source,
-            };
-            Some(query_params)
-        };
-        let body = Option::<()>::None;
-        let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -3793,7 +3358,7 @@ impl<'b> IndicesGetMappingParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Get Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-get-mapping.html)\n\nReturns mappings for one or more indices."]
 pub struct IndicesGetMapping<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesGetMappingParts<'b>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
@@ -3809,10 +3374,10 @@ pub struct IndicesGetMapping<'a, 'b> {
 }
 impl<'a, 'b> IndicesGetMapping<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGetMapping] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesGetMappingParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesGetMappingParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesGetMapping {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -3934,7 +3499,7 @@ impl<'a, 'b> IndicesGetMapping<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -3997,7 +3562,7 @@ impl<'b> IndicesGetSettingsParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-get-settings.html)\n\nReturns settings for one or more indices."]
 pub struct IndicesGetSettings<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesGetSettingsParts<'b>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
@@ -4015,10 +3580,10 @@ pub struct IndicesGetSettings<'a, 'b> {
 }
 impl<'a, 'b> IndicesGetSettings<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGetSettings] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesGetSettingsParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesGetSettingsParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesGetSettings {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -4158,7 +3723,7 @@ impl<'a, 'b> IndicesGetSettings<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -4192,7 +3757,7 @@ impl<'b> IndicesGetTemplateParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Get Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nReturns an index template."]
 pub struct IndicesGetTemplate<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesGetTemplateParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -4206,10 +3771,10 @@ pub struct IndicesGetTemplate<'a, 'b> {
 }
 impl<'a, 'b> IndicesGetTemplate<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGetTemplate] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesGetTemplateParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesGetTemplateParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesGetTemplate {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -4310,7 +3875,7 @@ impl<'a, 'b> IndicesGetTemplate<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -4345,7 +3910,7 @@ impl<'b> IndicesGetUpgradeParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Get Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-upgrade.html)\n\nDEPRECATED Returns a progress status of current upgrade."]
 pub struct IndicesGetUpgrade<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesGetUpgradeParts<'b>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
@@ -4359,10 +3924,10 @@ pub struct IndicesGetUpgrade<'a, 'b> {
 }
 impl<'a, 'b> IndicesGetUpgrade<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGetUpgrade] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesGetUpgradeParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesGetUpgradeParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesGetUpgrade {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -4466,7 +4031,7 @@ impl<'a, 'b> IndicesGetUpgrade<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -4498,7 +4063,7 @@ impl<'b> IndicesOpenParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Open API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-open-close.html)\n\nOpens an index."]
 pub struct IndicesOpen<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesOpenParts<'b>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
@@ -4519,10 +4084,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesOpen] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesOpenParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesOpenParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesOpen {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -4550,7 +4115,7 @@ where
         T: Serialize,
     {
         IndicesOpen {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
@@ -4677,7 +4242,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -4712,7 +4277,7 @@ impl<'b> IndicesPutAliasParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Put Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-aliases.html)\n\nCreates or updates an alias."]
 pub struct IndicesPutAlias<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesPutAliasParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -4729,10 +4294,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesPutAlias] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesPutAliasParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesPutAliasParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesPutAlias {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -4751,7 +4316,7 @@ where
         T: Serialize,
     {
         IndicesPutAlias {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -4844,179 +4409,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
-            .send(method, &path, headers, query_string.as_ref(), body)
-            .await?;
-        Ok(response)
-    }
-}
-#[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Indices Put Index Template API"]
-pub enum IndicesPutIndexTemplateParts<'b> {
-    #[doc = "Name"]
-    Name(&'b str),
-}
-impl<'b> IndicesPutIndexTemplateParts<'b> {
-    #[doc = "Builds a relative URL path to the Indices Put Index Template API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            IndicesPutIndexTemplateParts::Name(ref name) => {
-                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(17usize + encoded_name.len());
-                p.push_str("/_index_template/");
-                p.push_str(encoded_name.as_ref());
-                p.into()
-            }
-        }
-    }
-}
-#[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Put Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nCreates or updates an index template."]
-pub struct IndicesPutIndexTemplate<'a, 'b, B> {
-    client: &'a Elasticsearch,
-    parts: IndicesPutIndexTemplateParts<'b>,
-    body: Option<B>,
-    cause: Option<&'b str>,
-    create: Option<bool>,
-    error_trace: Option<bool>,
-    filter_path: Option<&'b [&'b str]>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    master_timeout: Option<&'b str>,
-    pretty: Option<bool>,
-    source: Option<&'b str>,
-}
-impl<'a, 'b, B> IndicesPutIndexTemplate<'a, 'b, B>
-where
-    B: Body,
-{
-    #[doc = "Creates a new instance of [IndicesPutIndexTemplate] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesPutIndexTemplateParts<'b>) -> Self {
-        let headers = HeaderMap::new();
-        IndicesPutIndexTemplate {
-            client,
-            parts,
-            headers,
-            body: None,
-            cause: None,
-            create: None,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            master_timeout: None,
-            pretty: None,
-            source: None,
-        }
-    }
-    #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesPutIndexTemplate<'a, 'b, JsonBody<T>>
-    where
-        T: Serialize,
-    {
-        IndicesPutIndexTemplate {
-            client: self.client,
-            parts: self.parts,
-            body: Some(body.into()),
-            cause: self.cause,
-            create: self.create,
-            error_trace: self.error_trace,
-            filter_path: self.filter_path,
-            headers: self.headers,
-            human: self.human,
-            master_timeout: self.master_timeout,
-            pretty: self.pretty,
-            source: self.source,
-        }
-    }
-    #[doc = "User defined reason for creating/updating the index template"]
-    pub fn cause(mut self, cause: &'b str) -> Self {
-        self.cause = Some(cause);
-        self
-    }
-    #[doc = "Whether the index template should only be added if new or can also replace an existing one"]
-    pub fn create(mut self, create: bool) -> Self {
-        self.create = Some(create);
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
-        self.master_timeout = Some(master_timeout);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Indices Put Index Template API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = Method::Put;
-        let headers = self.headers;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                #[serde(rename = "cause")]
-                cause: Option<&'b str>,
-                #[serde(rename = "create")]
-                create: Option<bool>,
-                #[serde(rename = "error_trace")]
-                error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
-                filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
-                human: Option<bool>,
-                #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
-                pretty: Option<bool>,
-                #[serde(rename = "source")]
-                source: Option<&'b str>,
-            }
-            let query_params = QueryParams {
-                cause: self.cause,
-                create: self.create,
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                human: self.human,
-                master_timeout: self.master_timeout,
-                pretty: self.pretty,
-                source: self.source,
-            };
-            Some(query_params)
-        };
-        let body = self.body;
-        let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -5048,7 +4441,7 @@ impl<'b> IndicesPutMappingParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Put Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-put-mapping.html)\n\nUpdates the index mappings."]
 pub struct IndicesPutMapping<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesPutMappingParts<'b>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
@@ -5068,10 +4461,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesPutMapping] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesPutMappingParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesPutMappingParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesPutMapping {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -5098,7 +4491,7 @@ where
         T: Serialize,
     {
         IndicesPutMapping {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
@@ -5216,7 +4609,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -5251,7 +4644,7 @@ impl<'b> IndicesPutSettingsParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-update-settings.html)\n\nUpdates the index settings."]
 pub struct IndicesPutSettings<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesPutSettingsParts<'b>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
@@ -5273,10 +4666,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesPutSettings] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesPutSettingsParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesPutSettingsParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesPutSettings {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -5305,7 +4698,7 @@ where
         T: Serialize,
     {
         IndicesPutSettings {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
@@ -5441,7 +4834,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -5470,7 +4863,7 @@ impl<'b> IndicesPutTemplateParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Put Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nCreates or updates an index template."]
 pub struct IndicesPutTemplate<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesPutTemplateParts<'b>,
     body: Option<B>,
     create: Option<bool>,
@@ -5488,10 +4881,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesPutTemplate] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesPutTemplateParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesPutTemplateParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesPutTemplate {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -5511,7 +4904,7 @@ where
         T: Serialize,
     {
         IndicesPutTemplate {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             create: self.create,
@@ -5613,7 +5006,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -5648,7 +5041,7 @@ impl<'b> IndicesRecoveryParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-recovery.html)\n\nReturns information about ongoing index shard recoveries."]
 pub struct IndicesRecovery<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesRecoveryParts<'b>,
     active_only: Option<bool>,
     detailed: Option<bool>,
@@ -5661,10 +5054,10 @@ pub struct IndicesRecovery<'a, 'b> {
 }
 impl<'a, 'b> IndicesRecovery<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesRecovery] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesRecoveryParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesRecoveryParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesRecovery {
-            client,
+            transport,
             parts,
             headers,
             active_only: None,
@@ -5756,7 +5149,7 @@ impl<'a, 'b> IndicesRecovery<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -5791,7 +5184,7 @@ impl<'b> IndicesRefreshParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Refresh API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-refresh.html)\n\nPerforms the refresh operation in one or more indices."]
 pub struct IndicesRefresh<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesRefreshParts<'b>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
@@ -5809,10 +5202,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesRefresh] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesRefreshParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesRefreshParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesRefresh {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -5837,7 +5230,7 @@ where
         T: Serialize,
     {
         IndicesRefresh {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
@@ -5940,7 +5333,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -5972,7 +5365,7 @@ impl<'b> IndicesReloadSearchAnalyzersParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Reload Search Analyzers API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-reload-analyzers.html)\n\nReloads an index's search analyzers and their resources."]
 pub struct IndicesReloadSearchAnalyzers<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesReloadSearchAnalyzersParts<'b>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
@@ -5990,10 +5383,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesReloadSearchAnalyzers] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesReloadSearchAnalyzersParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesReloadSearchAnalyzersParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesReloadSearchAnalyzers {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -6018,7 +5411,7 @@ where
         T: Serialize,
     {
         IndicesReloadSearchAnalyzers {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
@@ -6121,7 +5514,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -6167,7 +5560,7 @@ impl<'b> IndicesRolloverParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Rollover API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-rollover-index.html)\n\nUpdates an alias to point to a new index when the existing index\nis considered to be too large or too old."]
 pub struct IndicesRollover<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesRolloverParts<'b>,
     body: Option<B>,
     dry_run: Option<bool>,
@@ -6186,10 +5579,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesRollover] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesRolloverParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesRolloverParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesRollover {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -6210,7 +5603,7 @@ where
         T: Serialize,
     {
         IndicesRollover {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             dry_run: self.dry_run,
@@ -6321,7 +5714,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -6356,7 +5749,7 @@ impl<'b> IndicesSegmentsParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-segments.html)\n\nProvides low-level information about segments in a Lucene index."]
 pub struct IndicesSegments<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesSegmentsParts<'b>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
@@ -6371,10 +5764,10 @@ pub struct IndicesSegments<'a, 'b> {
 }
 impl<'a, 'b> IndicesSegments<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesSegments] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesSegmentsParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesSegmentsParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesSegments {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -6487,7 +5880,7 @@ impl<'a, 'b> IndicesSegments<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -6522,7 +5915,7 @@ impl<'b> IndicesShardStoresParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Shard Stores API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-shards-stores.html)\n\nProvides store information for shard copies of indices."]
 pub struct IndicesShardStores<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesShardStoresParts<'b>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
@@ -6537,10 +5930,10 @@ pub struct IndicesShardStores<'a, 'b> {
 }
 impl<'a, 'b> IndicesShardStores<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesShardStores] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesShardStoresParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesShardStoresParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesShardStores {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -6653,7 +6046,7 @@ impl<'a, 'b> IndicesShardStores<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -6688,7 +6081,7 @@ impl<'b> IndicesShrinkParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Shrink API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-shrink-index.html)\n\nAllow to shrink an existing index into a new index with fewer primary shards."]
 pub struct IndicesShrink<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesShrinkParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -6706,10 +6099,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesShrink] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesShrinkParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesShrinkParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesShrink {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -6729,7 +6122,7 @@ where
         T: Serialize,
     {
         IndicesShrink {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -6831,354 +6224,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
-            .send(method, &path, headers, query_string.as_ref(), body)
-            .await?;
-        Ok(response)
-    }
-}
-#[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Indices Simulate Index Template API"]
-pub enum IndicesSimulateIndexTemplateParts<'b> {
-    #[doc = "Name"]
-    Name(&'b str),
-}
-impl<'b> IndicesSimulateIndexTemplateParts<'b> {
-    #[doc = "Builds a relative URL path to the Indices Simulate Index Template API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            IndicesSimulateIndexTemplateParts::Name(ref name) => {
-                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(33usize + encoded_name.len());
-                p.push_str("/_index_template/_simulate_index/");
-                p.push_str(encoded_name.as_ref());
-                p.into()
-            }
-        }
-    }
-}
-#[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Simulate Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nSimulate matching the given index name against the index templates in the system"]
-pub struct IndicesSimulateIndexTemplate<'a, 'b, B> {
-    client: &'a Elasticsearch,
-    parts: IndicesSimulateIndexTemplateParts<'b>,
-    body: Option<B>,
-    cause: Option<&'b str>,
-    create: Option<bool>,
-    error_trace: Option<bool>,
-    filter_path: Option<&'b [&'b str]>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    master_timeout: Option<&'b str>,
-    pretty: Option<bool>,
-    source: Option<&'b str>,
-}
-impl<'a, 'b, B> IndicesSimulateIndexTemplate<'a, 'b, B>
-where
-    B: Body,
-{
-    #[doc = "Creates a new instance of [IndicesSimulateIndexTemplate] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesSimulateIndexTemplateParts<'b>) -> Self {
-        let headers = HeaderMap::new();
-        IndicesSimulateIndexTemplate {
-            client,
-            parts,
-            headers,
-            body: None,
-            cause: None,
-            create: None,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            master_timeout: None,
-            pretty: None,
-            source: None,
-        }
-    }
-    #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesSimulateIndexTemplate<'a, 'b, JsonBody<T>>
-    where
-        T: Serialize,
-    {
-        IndicesSimulateIndexTemplate {
-            client: self.client,
-            parts: self.parts,
-            body: Some(body.into()),
-            cause: self.cause,
-            create: self.create,
-            error_trace: self.error_trace,
-            filter_path: self.filter_path,
-            headers: self.headers,
-            human: self.human,
-            master_timeout: self.master_timeout,
-            pretty: self.pretty,
-            source: self.source,
-        }
-    }
-    #[doc = "User defined reason for dry-run creating the new template for simulation purposes"]
-    pub fn cause(mut self, cause: &'b str) -> Self {
-        self.cause = Some(cause);
-        self
-    }
-    #[doc = "Whether the index template we optionally defined in the body should only be dry-run added if new or can also replace an existing one"]
-    pub fn create(mut self, create: bool) -> Self {
-        self.create = Some(create);
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
-        self.master_timeout = Some(master_timeout);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Indices Simulate Index Template API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = Method::Post;
-        let headers = self.headers;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                #[serde(rename = "cause")]
-                cause: Option<&'b str>,
-                #[serde(rename = "create")]
-                create: Option<bool>,
-                #[serde(rename = "error_trace")]
-                error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
-                filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
-                human: Option<bool>,
-                #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
-                pretty: Option<bool>,
-                #[serde(rename = "source")]
-                source: Option<&'b str>,
-            }
-            let query_params = QueryParams {
-                cause: self.cause,
-                create: self.create,
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                human: self.human,
-                master_timeout: self.master_timeout,
-                pretty: self.pretty,
-                source: self.source,
-            };
-            Some(query_params)
-        };
-        let body = self.body;
-        let response = self
-            .client
-            .send(method, &path, headers, query_string.as_ref(), body)
-            .await?;
-        Ok(response)
-    }
-}
-#[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Indices Simulate Template API"]
-pub enum IndicesSimulateTemplateParts<'b> {
-    #[doc = "No parts"]
-    None,
-    #[doc = "Name"]
-    Name(&'b str),
-}
-impl<'b> IndicesSimulateTemplateParts<'b> {
-    #[doc = "Builds a relative URL path to the Indices Simulate Template API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            IndicesSimulateTemplateParts::None => "/_index_template/_simulate".into(),
-            IndicesSimulateTemplateParts::Name(ref name) => {
-                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(27usize + encoded_name.len());
-                p.push_str("/_index_template/_simulate/");
-                p.push_str(encoded_name.as_ref());
-                p.into()
-            }
-        }
-    }
-}
-#[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Simulate Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nSimulate resolving the given template name or body"]
-pub struct IndicesSimulateTemplate<'a, 'b, B> {
-    client: &'a Elasticsearch,
-    parts: IndicesSimulateTemplateParts<'b>,
-    body: Option<B>,
-    cause: Option<&'b str>,
-    create: Option<bool>,
-    error_trace: Option<bool>,
-    filter_path: Option<&'b [&'b str]>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    master_timeout: Option<&'b str>,
-    pretty: Option<bool>,
-    source: Option<&'b str>,
-}
-impl<'a, 'b, B> IndicesSimulateTemplate<'a, 'b, B>
-where
-    B: Body,
-{
-    #[doc = "Creates a new instance of [IndicesSimulateTemplate] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesSimulateTemplateParts<'b>) -> Self {
-        let headers = HeaderMap::new();
-        IndicesSimulateTemplate {
-            client,
-            parts,
-            headers,
-            body: None,
-            cause: None,
-            create: None,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            master_timeout: None,
-            pretty: None,
-            source: None,
-        }
-    }
-    #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesSimulateTemplate<'a, 'b, JsonBody<T>>
-    where
-        T: Serialize,
-    {
-        IndicesSimulateTemplate {
-            client: self.client,
-            parts: self.parts,
-            body: Some(body.into()),
-            cause: self.cause,
-            create: self.create,
-            error_trace: self.error_trace,
-            filter_path: self.filter_path,
-            headers: self.headers,
-            human: self.human,
-            master_timeout: self.master_timeout,
-            pretty: self.pretty,
-            source: self.source,
-        }
-    }
-    #[doc = "User defined reason for dry-run creating the new template for simulation purposes"]
-    pub fn cause(mut self, cause: &'b str) -> Self {
-        self.cause = Some(cause);
-        self
-    }
-    #[doc = "Whether the index template we optionally defined in the body should only be dry-run added if new or can also replace an existing one"]
-    pub fn create(mut self, create: bool) -> Self {
-        self.create = Some(create);
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
-        self.master_timeout = Some(master_timeout);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Indices Simulate Template API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = Method::Post;
-        let headers = self.headers;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                #[serde(rename = "cause")]
-                cause: Option<&'b str>,
-                #[serde(rename = "create")]
-                create: Option<bool>,
-                #[serde(rename = "error_trace")]
-                error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
-                filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
-                human: Option<bool>,
-                #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
-                pretty: Option<bool>,
-                #[serde(rename = "source")]
-                source: Option<&'b str>,
-            }
-            let query_params = QueryParams {
-                cause: self.cause,
-                create: self.create,
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                human: self.human,
-                master_timeout: self.master_timeout,
-                pretty: self.pretty,
-                source: self.source,
-            };
-            Some(query_params)
-        };
-        let body = self.body;
-        let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -7213,7 +6259,7 @@ impl<'b> IndicesSplitParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Split API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-split-index.html)\n\nAllows you to split an existing index into a new index with more primary shards."]
 pub struct IndicesSplit<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesSplitParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -7231,10 +6277,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesSplit] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesSplitParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesSplitParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesSplit {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -7254,7 +6300,7 @@ where
         T: Serialize,
     {
         IndicesSplit {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -7356,7 +6402,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -7419,7 +6465,7 @@ impl<'b> IndicesStatsParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-stats.html)\n\nProvides statistics on operations happening in an index."]
 pub struct IndicesStats<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesStatsParts<'b>,
     completion_fields: Option<&'b [&'b str]>,
     error_trace: Option<bool>,
@@ -7440,10 +6486,10 @@ pub struct IndicesStats<'a, 'b> {
 }
 impl<'a, 'b> IndicesStats<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesStats] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesStatsParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesStatsParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesStats {
-            client,
+            transport,
             parts,
             headers,
             completion_fields: None,
@@ -7616,7 +6662,7 @@ impl<'a, 'b> IndicesStats<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -7647,7 +6693,7 @@ impl<'b> IndicesUnfreezeParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Unfreeze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/unfreeze-index-api.html)\n\nUnfreezes an index. When a frozen index is unfrozen, the index goes through the normal recovery process and becomes writeable again."]
 pub struct IndicesUnfreeze<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesUnfreezeParts<'b>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
@@ -7668,10 +6714,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesUnfreeze] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesUnfreezeParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesUnfreezeParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesUnfreeze {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -7699,7 +6745,7 @@ where
         T: Serialize,
     {
         IndicesUnfreeze {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
@@ -7826,7 +6872,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -7849,7 +6895,7 @@ impl IndicesUpdateAliasesParts {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Update Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-aliases.html)\n\nUpdates index aliases."]
 pub struct IndicesUpdateAliases<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesUpdateAliasesParts,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -7866,10 +6912,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesUpdateAliases]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         IndicesUpdateAliases {
-            client,
+            transport,
             parts: IndicesUpdateAliasesParts::None,
             headers,
             body: None,
@@ -7888,7 +6934,7 @@ where
         T: Serialize,
     {
         IndicesUpdateAliases {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -7981,7 +7027,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -8016,7 +7062,7 @@ impl<'b> IndicesUpgradeParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-upgrade.html)\n\nDEPRECATED Upgrades to the current version of Lucene."]
 pub struct IndicesUpgrade<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesUpgradeParts<'b>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
@@ -8036,10 +7082,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesUpgrade] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesUpgradeParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesUpgradeParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesUpgrade {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -8066,7 +7112,7 @@ where
         T: Serialize,
     {
         IndicesUpgrade {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
@@ -8184,7 +7230,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -8235,7 +7281,7 @@ impl<'b> IndicesValidateQueryParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Validate Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-validate.html)\n\nAllows a user to validate a potentially expensive query without executing it."]
 pub struct IndicesValidateQuery<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: IndicesValidateQueryParts<'b>,
     all_shards: Option<bool>,
     allow_no_indices: Option<bool>,
@@ -8262,10 +7308,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesValidateQuery] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: IndicesValidateQueryParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: IndicesValidateQueryParts<'b>) -> Self {
         let headers = HeaderMap::new();
         IndicesValidateQuery {
-            client,
+            transport,
             parts,
             headers,
             all_shards: None,
@@ -8314,7 +7360,7 @@ where
         T: Serialize,
     {
         IndicesValidateQuery {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             all_shards: self.all_shards,
@@ -8483,7 +7529,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -8491,273 +7537,234 @@ where
 }
 #[doc = "Namespace client for Indices APIs"]
 pub struct Indices<'a> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
 }
 impl<'a> Indices<'a> {
     #[doc = "Creates a new instance of [Indices]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
-        Self { client }
+    pub fn new(transport: &'a Transport) -> Self {
+        Self { transport }
+    }
+    pub fn transport(&self) -> &Transport {
+        self.transport
     }
     #[doc = "[Indices Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-analyze.html)\n\nPerforms the analysis process on a text and return the tokens breakdown of the text."]
     pub fn analyze<'b>(&'a self, parts: IndicesAnalyzeParts<'b>) -> IndicesAnalyze<'a, 'b, ()> {
-        IndicesAnalyze::new(&self.client, parts)
+        IndicesAnalyze::new(self.transport(), parts)
     }
     #[doc = "[Indices Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-clearcache.html)\n\nClears all or specific caches for one or more indices."]
     pub fn clear_cache<'b>(
         &'a self,
         parts: IndicesClearCacheParts<'b>,
     ) -> IndicesClearCache<'a, 'b, ()> {
-        IndicesClearCache::new(&self.client, parts)
+        IndicesClearCache::new(self.transport(), parts)
     }
     #[doc = "[Indices Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-clone-index.html)\n\nClones an index"]
     pub fn clone<'b>(&'a self, parts: IndicesCloneParts<'b>) -> IndicesClone<'a, 'b, ()> {
-        IndicesClone::new(&self.client, parts)
+        IndicesClone::new(self.transport(), parts)
     }
     #[doc = "[Indices Close API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-open-close.html)\n\nCloses an index."]
     pub fn close<'b>(&'a self, parts: IndicesCloseParts<'b>) -> IndicesClose<'a, 'b, ()> {
-        IndicesClose::new(&self.client, parts)
+        IndicesClose::new(self.transport(), parts)
     }
     #[doc = "[Indices Create API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-create-index.html)\n\nCreates an index with optional settings and mappings.\n\n# Examples\n\nCreate an index with a mapping\n\n```rust,no_run\n# use elasticsearch::{Elasticsearch, Error, indices::IndicesCreateParts};\n# use serde_json::{json, Value};\n# async fn doc() -> Result<(), Box<dyn std::error::Error>> {\nlet client = Elasticsearch::default();\nlet response = client\n    .indices()\n    .create(IndicesCreateParts::Index(\"test_index\"))\n    .body(json!({\n        \"mappings\" : {\n            \"properties\" : {\n                \"field1\" : { \"type\" : \"text\" }\n            }\n        }\n    }))\n    .send()\n    .await?;\n    \n# Ok(())\n# }\n```"]
     pub fn create<'b>(&'a self, parts: IndicesCreateParts<'b>) -> IndicesCreate<'a, 'b, ()> {
-        IndicesCreate::new(&self.client, parts)
+        IndicesCreate::new(self.transport(), parts)
     }
     #[doc = "[Indices Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-delete-index.html)\n\nDeletes an index."]
     pub fn delete<'b>(&'a self, parts: IndicesDeleteParts<'b>) -> IndicesDelete<'a, 'b> {
-        IndicesDelete::new(&self.client, parts)
+        IndicesDelete::new(self.transport(), parts)
     }
     #[doc = "[Indices Delete Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-aliases.html)\n\nDeletes an alias."]
     pub fn delete_alias<'b>(
         &'a self,
         parts: IndicesDeleteAliasParts<'b>,
     ) -> IndicesDeleteAlias<'a, 'b> {
-        IndicesDeleteAlias::new(&self.client, parts)
-    }
-    #[doc = "[Indices Delete Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nDeletes an index template."]
-    pub fn delete_index_template<'b>(
-        &'a self,
-        parts: IndicesDeleteIndexTemplateParts<'b>,
-    ) -> IndicesDeleteIndexTemplate<'a, 'b> {
-        IndicesDeleteIndexTemplate::new(&self.client, parts)
+        IndicesDeleteAlias::new(self.transport(), parts)
     }
     #[doc = "[Indices Delete Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nDeletes an index template."]
     pub fn delete_template<'b>(
         &'a self,
         parts: IndicesDeleteTemplateParts<'b>,
     ) -> IndicesDeleteTemplate<'a, 'b> {
-        IndicesDeleteTemplate::new(&self.client, parts)
+        IndicesDeleteTemplate::new(self.transport(), parts)
     }
     #[doc = "[Indices Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-exists.html)\n\nReturns information about whether a particular index exists."]
     pub fn exists<'b>(&'a self, parts: IndicesExistsParts<'b>) -> IndicesExists<'a, 'b> {
-        IndicesExists::new(&self.client, parts)
+        IndicesExists::new(self.transport(), parts)
     }
     #[doc = "[Indices Exists Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-aliases.html)\n\nReturns information about whether a particular alias exists."]
     pub fn exists_alias<'b>(
         &'a self,
         parts: IndicesExistsAliasParts<'b>,
     ) -> IndicesExistsAlias<'a, 'b> {
-        IndicesExistsAlias::new(&self.client, parts)
-    }
-    #[doc = "[Indices Exists Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nReturns information about whether a particular index template exists."]
-    pub fn exists_index_template<'b>(
-        &'a self,
-        parts: IndicesExistsIndexTemplateParts<'b>,
-    ) -> IndicesExistsIndexTemplate<'a, 'b> {
-        IndicesExistsIndexTemplate::new(&self.client, parts)
+        IndicesExistsAlias::new(self.transport(), parts)
     }
     #[doc = "[Indices Exists Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nReturns information about whether a particular index template exists."]
     pub fn exists_template<'b>(
         &'a self,
         parts: IndicesExistsTemplateParts<'b>,
     ) -> IndicesExistsTemplate<'a, 'b> {
-        IndicesExistsTemplate::new(&self.client, parts)
+        IndicesExistsTemplate::new(self.transport(), parts)
     }
     #[doc = "[Indices Exists Type API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-types-exists.html)\n\nReturns information about whether a particular document type exists. (DEPRECATED)"]
     pub fn exists_type<'b>(
         &'a self,
         parts: IndicesExistsTypeParts<'b>,
     ) -> IndicesExistsType<'a, 'b> {
-        IndicesExistsType::new(&self.client, parts)
+        IndicesExistsType::new(self.transport(), parts)
     }
     #[doc = "[Indices Flush API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-flush.html)\n\nPerforms the flush operation on one or more indices."]
     pub fn flush<'b>(&'a self, parts: IndicesFlushParts<'b>) -> IndicesFlush<'a, 'b, ()> {
-        IndicesFlush::new(&self.client, parts)
+        IndicesFlush::new(self.transport(), parts)
     }
     #[doc = "[Indices Forcemerge API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-forcemerge.html)\n\nPerforms the force merge operation on one or more indices."]
     pub fn forcemerge<'b>(
         &'a self,
         parts: IndicesForcemergeParts<'b>,
     ) -> IndicesForcemerge<'a, 'b, ()> {
-        IndicesForcemerge::new(&self.client, parts)
+        IndicesForcemerge::new(self.transport(), parts)
     }
     #[doc = "[Indices Freeze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/freeze-index-api.html)\n\nFreezes an index. A frozen index has almost no overhead on the cluster (except for maintaining its metadata in memory) and is read-only."]
     pub fn freeze<'b>(&'a self, parts: IndicesFreezeParts<'b>) -> IndicesFreeze<'a, 'b, ()> {
-        IndicesFreeze::new(&self.client, parts)
+        IndicesFreeze::new(self.transport(), parts)
     }
     #[doc = "[Indices Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-get-index.html)\n\nReturns information about one or more indices."]
     pub fn get<'b>(&'a self, parts: IndicesGetParts<'b>) -> IndicesGet<'a, 'b> {
-        IndicesGet::new(&self.client, parts)
+        IndicesGet::new(self.transport(), parts)
     }
     #[doc = "[Indices Get Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-aliases.html)\n\nReturns an alias."]
     pub fn get_alias<'b>(&'a self, parts: IndicesGetAliasParts<'b>) -> IndicesGetAlias<'a, 'b> {
-        IndicesGetAlias::new(&self.client, parts)
+        IndicesGetAlias::new(self.transport(), parts)
     }
     #[doc = "[Indices Get Field Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-get-field-mapping.html)\n\nReturns mapping for one or more fields."]
     pub fn get_field_mapping<'b>(
         &'a self,
         parts: IndicesGetFieldMappingParts<'b>,
     ) -> IndicesGetFieldMapping<'a, 'b> {
-        IndicesGetFieldMapping::new(&self.client, parts)
-    }
-    #[doc = "[Indices Get Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nReturns an index template."]
-    pub fn get_index_template<'b>(
-        &'a self,
-        parts: IndicesGetIndexTemplateParts<'b>,
-    ) -> IndicesGetIndexTemplate<'a, 'b> {
-        IndicesGetIndexTemplate::new(&self.client, parts)
+        IndicesGetFieldMapping::new(self.transport(), parts)
     }
     #[doc = "[Indices Get Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-get-mapping.html)\n\nReturns mappings for one or more indices."]
     pub fn get_mapping<'b>(
         &'a self,
         parts: IndicesGetMappingParts<'b>,
     ) -> IndicesGetMapping<'a, 'b> {
-        IndicesGetMapping::new(&self.client, parts)
+        IndicesGetMapping::new(self.transport(), parts)
     }
     #[doc = "[Indices Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-get-settings.html)\n\nReturns settings for one or more indices."]
     pub fn get_settings<'b>(
         &'a self,
         parts: IndicesGetSettingsParts<'b>,
     ) -> IndicesGetSettings<'a, 'b> {
-        IndicesGetSettings::new(&self.client, parts)
+        IndicesGetSettings::new(self.transport(), parts)
     }
     #[doc = "[Indices Get Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nReturns an index template."]
     pub fn get_template<'b>(
         &'a self,
         parts: IndicesGetTemplateParts<'b>,
     ) -> IndicesGetTemplate<'a, 'b> {
-        IndicesGetTemplate::new(&self.client, parts)
+        IndicesGetTemplate::new(self.transport(), parts)
     }
     #[doc = "[Indices Get Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-upgrade.html)\n\nDEPRECATED Returns a progress status of current upgrade."]
     pub fn get_upgrade<'b>(
         &'a self,
         parts: IndicesGetUpgradeParts<'b>,
     ) -> IndicesGetUpgrade<'a, 'b> {
-        IndicesGetUpgrade::new(&self.client, parts)
+        IndicesGetUpgrade::new(self.transport(), parts)
     }
     #[doc = "[Indices Open API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-open-close.html)\n\nOpens an index."]
     pub fn open<'b>(&'a self, parts: IndicesOpenParts<'b>) -> IndicesOpen<'a, 'b, ()> {
-        IndicesOpen::new(&self.client, parts)
+        IndicesOpen::new(self.transport(), parts)
     }
     #[doc = "[Indices Put Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-aliases.html)\n\nCreates or updates an alias."]
     pub fn put_alias<'b>(&'a self, parts: IndicesPutAliasParts<'b>) -> IndicesPutAlias<'a, 'b, ()> {
-        IndicesPutAlias::new(&self.client, parts)
-    }
-    #[doc = "[Indices Put Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nCreates or updates an index template."]
-    pub fn put_index_template<'b>(
-        &'a self,
-        parts: IndicesPutIndexTemplateParts<'b>,
-    ) -> IndicesPutIndexTemplate<'a, 'b, ()> {
-        IndicesPutIndexTemplate::new(&self.client, parts)
+        IndicesPutAlias::new(self.transport(), parts)
     }
     #[doc = "[Indices Put Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-put-mapping.html)\n\nUpdates the index mappings.\n\n# Examples\n\nPut a mapping into an existing index, assuming the index does not have a mapping, \nor that any properties specified do not conflict with existing properties\n\n```rust,no_run\n# use elasticsearch::{Elasticsearch, Error, indices::IndicesPutMappingParts};\n# use serde_json::{json, Value};\n# async fn doc() -> Result<(), Box<dyn std::error::Error>> {\nlet client = Elasticsearch::default();\nlet response = client\n    .indices()\n    .put_mapping(IndicesPutMappingParts::Index(&[\"test_index\"]))\n    .body(json!({\n        \"properties\" : {\n            \"field1\" : { \"type\" : \"text\" }\n        }\n    }))\n    .send()\n    .await?;\n    \n# Ok(())\n# }\n```"]
     pub fn put_mapping<'b>(
         &'a self,
         parts: IndicesPutMappingParts<'b>,
     ) -> IndicesPutMapping<'a, 'b, ()> {
-        IndicesPutMapping::new(&self.client, parts)
+        IndicesPutMapping::new(self.transport(), parts)
     }
     #[doc = "[Indices Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-update-settings.html)\n\nUpdates the index settings."]
     pub fn put_settings<'b>(
         &'a self,
         parts: IndicesPutSettingsParts<'b>,
     ) -> IndicesPutSettings<'a, 'b, ()> {
-        IndicesPutSettings::new(&self.client, parts)
+        IndicesPutSettings::new(self.transport(), parts)
     }
     #[doc = "[Indices Put Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nCreates or updates an index template."]
     pub fn put_template<'b>(
         &'a self,
         parts: IndicesPutTemplateParts<'b>,
     ) -> IndicesPutTemplate<'a, 'b, ()> {
-        IndicesPutTemplate::new(&self.client, parts)
+        IndicesPutTemplate::new(self.transport(), parts)
     }
     #[doc = "[Indices Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-recovery.html)\n\nReturns information about ongoing index shard recoveries."]
     pub fn recovery<'b>(&'a self, parts: IndicesRecoveryParts<'b>) -> IndicesRecovery<'a, 'b> {
-        IndicesRecovery::new(&self.client, parts)
+        IndicesRecovery::new(self.transport(), parts)
     }
     #[doc = "[Indices Refresh API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-refresh.html)\n\nPerforms the refresh operation in one or more indices."]
     pub fn refresh<'b>(&'a self, parts: IndicesRefreshParts<'b>) -> IndicesRefresh<'a, 'b, ()> {
-        IndicesRefresh::new(&self.client, parts)
+        IndicesRefresh::new(self.transport(), parts)
     }
     #[doc = "[Indices Reload Search Analyzers API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-reload-analyzers.html)\n\nReloads an index's search analyzers and their resources."]
     pub fn reload_search_analyzers<'b>(
         &'a self,
         parts: IndicesReloadSearchAnalyzersParts<'b>,
     ) -> IndicesReloadSearchAnalyzers<'a, 'b, ()> {
-        IndicesReloadSearchAnalyzers::new(&self.client, parts)
+        IndicesReloadSearchAnalyzers::new(self.transport(), parts)
     }
     #[doc = "[Indices Rollover API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-rollover-index.html)\n\nUpdates an alias to point to a new index when the existing index\nis considered to be too large or too old."]
     pub fn rollover<'b>(&'a self, parts: IndicesRolloverParts<'b>) -> IndicesRollover<'a, 'b, ()> {
-        IndicesRollover::new(&self.client, parts)
+        IndicesRollover::new(self.transport(), parts)
     }
     #[doc = "[Indices Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-segments.html)\n\nProvides low-level information about segments in a Lucene index."]
     pub fn segments<'b>(&'a self, parts: IndicesSegmentsParts<'b>) -> IndicesSegments<'a, 'b> {
-        IndicesSegments::new(&self.client, parts)
+        IndicesSegments::new(self.transport(), parts)
     }
     #[doc = "[Indices Shard Stores API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-shards-stores.html)\n\nProvides store information for shard copies of indices."]
     pub fn shard_stores<'b>(
         &'a self,
         parts: IndicesShardStoresParts<'b>,
     ) -> IndicesShardStores<'a, 'b> {
-        IndicesShardStores::new(&self.client, parts)
+        IndicesShardStores::new(self.transport(), parts)
     }
     #[doc = "[Indices Shrink API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-shrink-index.html)\n\nAllow to shrink an existing index into a new index with fewer primary shards."]
     pub fn shrink<'b>(&'a self, parts: IndicesShrinkParts<'b>) -> IndicesShrink<'a, 'b, ()> {
-        IndicesShrink::new(&self.client, parts)
-    }
-    #[doc = "[Indices Simulate Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nSimulate matching the given index name against the index templates in the system"]
-    pub fn simulate_index_template<'b>(
-        &'a self,
-        parts: IndicesSimulateIndexTemplateParts<'b>,
-    ) -> IndicesSimulateIndexTemplate<'a, 'b, ()> {
-        IndicesSimulateIndexTemplate::new(&self.client, parts)
-    }
-    #[doc = "[Indices Simulate Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nSimulate resolving the given template name or body"]
-    pub fn simulate_template<'b>(
-        &'a self,
-        parts: IndicesSimulateTemplateParts<'b>,
-    ) -> IndicesSimulateTemplate<'a, 'b, ()> {
-        IndicesSimulateTemplate::new(&self.client, parts)
+        IndicesShrink::new(self.transport(), parts)
     }
     #[doc = "[Indices Split API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-split-index.html)\n\nAllows you to split an existing index into a new index with more primary shards."]
     pub fn split<'b>(&'a self, parts: IndicesSplitParts<'b>) -> IndicesSplit<'a, 'b, ()> {
-        IndicesSplit::new(&self.client, parts)
+        IndicesSplit::new(self.transport(), parts)
     }
     #[doc = "[Indices Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-stats.html)\n\nProvides statistics on operations happening in an index."]
     pub fn stats<'b>(&'a self, parts: IndicesStatsParts<'b>) -> IndicesStats<'a, 'b> {
-        IndicesStats::new(&self.client, parts)
+        IndicesStats::new(self.transport(), parts)
     }
     #[doc = "[Indices Unfreeze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/unfreeze-index-api.html)\n\nUnfreezes an index. When a frozen index is unfrozen, the index goes through the normal recovery process and becomes writeable again."]
     pub fn unfreeze<'b>(&'a self, parts: IndicesUnfreezeParts<'b>) -> IndicesUnfreeze<'a, 'b, ()> {
-        IndicesUnfreeze::new(&self.client, parts)
+        IndicesUnfreeze::new(self.transport(), parts)
     }
     #[doc = "[Indices Update Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-aliases.html)\n\nUpdates index aliases."]
     pub fn update_aliases<'b>(&'a self) -> IndicesUpdateAliases<'a, 'b, ()> {
-        IndicesUpdateAliases::new(&self.client)
+        IndicesUpdateAliases::new(self.transport())
     }
     #[doc = "[Indices Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-upgrade.html)\n\nDEPRECATED Upgrades to the current version of Lucene."]
     pub fn upgrade<'b>(&'a self, parts: IndicesUpgradeParts<'b>) -> IndicesUpgrade<'a, 'b, ()> {
-        IndicesUpgrade::new(&self.client, parts)
+        IndicesUpgrade::new(self.transport(), parts)
     }
     #[doc = "[Indices Validate Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-validate.html)\n\nAllows a user to validate a potentially expensive query without executing it."]
     pub fn validate_query<'b>(
         &'a self,
         parts: IndicesValidateQueryParts<'b>,
     ) -> IndicesValidateQuery<'a, 'b, ()> {
-        IndicesValidateQuery::new(&self.client, parts)
+        IndicesValidateQuery::new(self.transport(), parts)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Indices APIs"]
     pub fn indices(&self) -> Indices {
-        Indices::new(&self)
+        Indices::new(self.transport())
     }
 }

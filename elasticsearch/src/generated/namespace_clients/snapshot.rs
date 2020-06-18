@@ -30,6 +30,7 @@ use crate::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
+        transport::Transport,
         Method,
     },
     params::*,
@@ -62,7 +63,7 @@ impl<'b> SnapshotCleanupRepositoryParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Cleanup Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/clean-up-snapshot-repo-api.html)\n\nRemoves stale data from repository."]
 pub struct SnapshotCleanupRepository<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SnapshotCleanupRepositoryParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -79,10 +80,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [SnapshotCleanupRepository] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: SnapshotCleanupRepositoryParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: SnapshotCleanupRepositoryParts<'b>) -> Self {
         let headers = HeaderMap::new();
         SnapshotCleanupRepository {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -101,7 +102,7 @@ where
         T: Serialize,
     {
         SnapshotCleanupRepository {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -194,7 +195,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -230,7 +231,7 @@ impl<'b> SnapshotCreateParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Create API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nCreates a snapshot in a repository."]
 pub struct SnapshotCreate<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SnapshotCreateParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -247,10 +248,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [SnapshotCreate] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: SnapshotCreateParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: SnapshotCreateParts<'b>) -> Self {
         let headers = HeaderMap::new();
         SnapshotCreate {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -269,7 +270,7 @@ where
         T: Serialize,
     {
         SnapshotCreate {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -362,7 +363,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -392,7 +393,7 @@ impl<'b> SnapshotCreateRepositoryParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Create Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nCreates a repository."]
 pub struct SnapshotCreateRepository<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SnapshotCreateRepositoryParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -410,10 +411,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [SnapshotCreateRepository] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: SnapshotCreateRepositoryParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: SnapshotCreateRepositoryParts<'b>) -> Self {
         let headers = HeaderMap::new();
         SnapshotCreateRepository {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -433,7 +434,7 @@ where
         T: Serialize,
     {
         SnapshotCreateRepository {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -535,7 +536,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -572,7 +573,7 @@ impl<'b> SnapshotDeleteParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nDeletes one or more snapshots."]
 pub struct SnapshotDelete<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SnapshotDeleteParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -584,10 +585,10 @@ pub struct SnapshotDelete<'a, 'b> {
 }
 impl<'a, 'b> SnapshotDelete<'a, 'b> {
     #[doc = "Creates a new instance of [SnapshotDelete] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: SnapshotDeleteParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: SnapshotDeleteParts<'b>) -> Self {
         let headers = HeaderMap::new();
         SnapshotDelete {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -670,7 +671,7 @@ impl<'a, 'b> SnapshotDelete<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -701,7 +702,7 @@ impl<'b> SnapshotDeleteRepositoryParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Delete Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nDeletes a repository."]
 pub struct SnapshotDeleteRepository<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SnapshotDeleteRepositoryParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -714,10 +715,10 @@ pub struct SnapshotDeleteRepository<'a, 'b> {
 }
 impl<'a, 'b> SnapshotDeleteRepository<'a, 'b> {
     #[doc = "Creates a new instance of [SnapshotDeleteRepository] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: SnapshotDeleteRepositoryParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: SnapshotDeleteRepositoryParts<'b>) -> Self {
         let headers = HeaderMap::new();
         SnapshotDeleteRepository {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -809,7 +810,7 @@ impl<'a, 'b> SnapshotDeleteRepository<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -846,7 +847,7 @@ impl<'b> SnapshotGetParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nReturns information about a snapshot."]
 pub struct SnapshotGet<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SnapshotGetParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -860,10 +861,10 @@ pub struct SnapshotGet<'a, 'b> {
 }
 impl<'a, 'b> SnapshotGet<'a, 'b> {
     #[doc = "Creates a new instance of [SnapshotGet] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: SnapshotGetParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: SnapshotGetParts<'b>) -> Self {
         let headers = HeaderMap::new();
         SnapshotGet {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -964,7 +965,7 @@ impl<'a, 'b> SnapshotGet<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -998,7 +999,7 @@ impl<'b> SnapshotGetRepositoryParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Get Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nReturns information about a repository."]
 pub struct SnapshotGetRepository<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SnapshotGetRepositoryParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -1011,10 +1012,10 @@ pub struct SnapshotGetRepository<'a, 'b> {
 }
 impl<'a, 'b> SnapshotGetRepository<'a, 'b> {
     #[doc = "Creates a new instance of [SnapshotGetRepository] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: SnapshotGetRepositoryParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: SnapshotGetRepositoryParts<'b>) -> Self {
         let headers = HeaderMap::new();
         SnapshotGetRepository {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -1106,7 +1107,7 @@ impl<'a, 'b> SnapshotGetRepository<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1143,7 +1144,7 @@ impl<'b> SnapshotRestoreParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Restore API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nRestores a snapshot."]
 pub struct SnapshotRestore<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SnapshotRestoreParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -1160,10 +1161,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [SnapshotRestore] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: SnapshotRestoreParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: SnapshotRestoreParts<'b>) -> Self {
         let headers = HeaderMap::new();
         SnapshotRestore {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -1182,7 +1183,7 @@ where
         T: Serialize,
     {
         SnapshotRestore {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -1275,7 +1276,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1327,7 +1328,7 @@ impl<'b> SnapshotStatusParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nReturns information about the status of a snapshot."]
 pub struct SnapshotStatus<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SnapshotStatusParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -1340,10 +1341,10 @@ pub struct SnapshotStatus<'a, 'b> {
 }
 impl<'a, 'b> SnapshotStatus<'a, 'b> {
     #[doc = "Creates a new instance of [SnapshotStatus] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: SnapshotStatusParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: SnapshotStatusParts<'b>) -> Self {
         let headers = HeaderMap::new();
         SnapshotStatus {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -1435,7 +1436,7 @@ impl<'a, 'b> SnapshotStatus<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1466,7 +1467,7 @@ impl<'b> SnapshotVerifyRepositoryParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Verify Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nVerifies a repository."]
 pub struct SnapshotVerifyRepository<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SnapshotVerifyRepositoryParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -1483,10 +1484,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [SnapshotVerifyRepository] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: SnapshotVerifyRepositoryParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: SnapshotVerifyRepositoryParts<'b>) -> Self {
         let headers = HeaderMap::new();
         SnapshotVerifyRepository {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -1505,7 +1506,7 @@ where
         T: Serialize,
     {
         SnapshotVerifyRepository {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -1598,7 +1599,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1606,72 +1607,75 @@ where
 }
 #[doc = "Namespace client for Snapshot APIs"]
 pub struct Snapshot<'a> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
 }
 impl<'a> Snapshot<'a> {
     #[doc = "Creates a new instance of [Snapshot]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
-        Self { client }
+    pub fn new(transport: &'a Transport) -> Self {
+        Self { transport }
+    }
+    pub fn transport(&self) -> &Transport {
+        self.transport
     }
     #[doc = "[Snapshot Cleanup Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/clean-up-snapshot-repo-api.html)\n\nRemoves stale data from repository."]
     pub fn cleanup_repository<'b>(
         &'a self,
         parts: SnapshotCleanupRepositoryParts<'b>,
     ) -> SnapshotCleanupRepository<'a, 'b, ()> {
-        SnapshotCleanupRepository::new(&self.client, parts)
+        SnapshotCleanupRepository::new(self.transport(), parts)
     }
     #[doc = "[Snapshot Create API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nCreates a snapshot in a repository."]
     pub fn create<'b>(&'a self, parts: SnapshotCreateParts<'b>) -> SnapshotCreate<'a, 'b, ()> {
-        SnapshotCreate::new(&self.client, parts)
+        SnapshotCreate::new(self.transport(), parts)
     }
     #[doc = "[Snapshot Create Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nCreates a repository."]
     pub fn create_repository<'b>(
         &'a self,
         parts: SnapshotCreateRepositoryParts<'b>,
     ) -> SnapshotCreateRepository<'a, 'b, ()> {
-        SnapshotCreateRepository::new(&self.client, parts)
+        SnapshotCreateRepository::new(self.transport(), parts)
     }
     #[doc = "[Snapshot Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nDeletes one or more snapshots."]
     pub fn delete<'b>(&'a self, parts: SnapshotDeleteParts<'b>) -> SnapshotDelete<'a, 'b> {
-        SnapshotDelete::new(&self.client, parts)
+        SnapshotDelete::new(self.transport(), parts)
     }
     #[doc = "[Snapshot Delete Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nDeletes a repository."]
     pub fn delete_repository<'b>(
         &'a self,
         parts: SnapshotDeleteRepositoryParts<'b>,
     ) -> SnapshotDeleteRepository<'a, 'b> {
-        SnapshotDeleteRepository::new(&self.client, parts)
+        SnapshotDeleteRepository::new(self.transport(), parts)
     }
     #[doc = "[Snapshot Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nReturns information about a snapshot."]
     pub fn get<'b>(&'a self, parts: SnapshotGetParts<'b>) -> SnapshotGet<'a, 'b> {
-        SnapshotGet::new(&self.client, parts)
+        SnapshotGet::new(self.transport(), parts)
     }
     #[doc = "[Snapshot Get Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nReturns information about a repository."]
     pub fn get_repository<'b>(
         &'a self,
         parts: SnapshotGetRepositoryParts<'b>,
     ) -> SnapshotGetRepository<'a, 'b> {
-        SnapshotGetRepository::new(&self.client, parts)
+        SnapshotGetRepository::new(self.transport(), parts)
     }
     #[doc = "[Snapshot Restore API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nRestores a snapshot."]
     pub fn restore<'b>(&'a self, parts: SnapshotRestoreParts<'b>) -> SnapshotRestore<'a, 'b, ()> {
-        SnapshotRestore::new(&self.client, parts)
+        SnapshotRestore::new(self.transport(), parts)
     }
     #[doc = "[Snapshot Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nReturns information about the status of a snapshot."]
     pub fn status<'b>(&'a self, parts: SnapshotStatusParts<'b>) -> SnapshotStatus<'a, 'b> {
-        SnapshotStatus::new(&self.client, parts)
+        SnapshotStatus::new(self.transport(), parts)
     }
     #[doc = "[Snapshot Verify Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nVerifies a repository."]
     pub fn verify_repository<'b>(
         &'a self,
         parts: SnapshotVerifyRepositoryParts<'b>,
     ) -> SnapshotVerifyRepository<'a, 'b, ()> {
-        SnapshotVerifyRepository::new(&self.client, parts)
+        SnapshotVerifyRepository::new(self.transport(), parts)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Snapshot APIs"]
     pub fn snapshot(&self) -> Snapshot {
-        Snapshot::new(&self)
+        Snapshot::new(self.transport())
     }
 }

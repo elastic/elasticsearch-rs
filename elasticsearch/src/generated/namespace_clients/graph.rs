@@ -30,6 +30,7 @@ use crate::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
+        transport::Transport,
         Method,
     },
     params::*,
@@ -63,7 +64,7 @@ impl<'b> GraphExploreParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
 pub struct GraphExplore<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: GraphExploreParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -80,10 +81,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [GraphExplore] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: GraphExploreParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: GraphExploreParts<'b>) -> Self {
         let headers = HeaderMap::new();
         GraphExplore {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -102,7 +103,7 @@ where
         T: Serialize,
     {
         GraphExplore {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -198,7 +199,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -206,21 +207,24 @@ where
 }
 #[doc = "Namespace client for Graph APIs"]
 pub struct Graph<'a> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
 }
 impl<'a> Graph<'a> {
     #[doc = "Creates a new instance of [Graph]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
-        Self { client }
+    pub fn new(transport: &'a Transport) -> Self {
+        Self { transport }
+    }
+    pub fn transport(&self) -> &Transport {
+        self.transport
     }
     #[doc = "[Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
     pub fn explore<'b>(&'a self, parts: GraphExploreParts<'b>) -> GraphExplore<'a, 'b, ()> {
-        GraphExplore::new(&self.client, parts)
+        GraphExplore::new(self.transport(), parts)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Graph APIs"]
     pub fn graph(&self) -> Graph {
-        Graph::new(&self)
+        Graph::new(self.transport())
     }
 }

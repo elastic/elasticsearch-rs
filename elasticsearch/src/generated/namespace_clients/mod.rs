@@ -26,6 +26,7 @@ pub mod async_search;
 pub mod cat;
 pub mod ccr;
 pub mod cluster;
+pub mod dangling_indices;
 pub mod enrich;
 pub mod graph;
 pub mod ilm;
