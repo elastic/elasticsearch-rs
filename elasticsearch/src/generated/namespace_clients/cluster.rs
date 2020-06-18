@@ -30,6 +30,7 @@ use crate::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
+        transport::Transport,
         Method,
     },
     params::*,
@@ -52,9 +53,9 @@ impl ClusterAllocationExplainParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Allocation Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-allocation-explain.html)\n\nProvides explanations for shard allocations in the cluster."]
+#[doc = "Builder for the [Cluster Allocation Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/cluster-allocation-explain.html)\n\nProvides explanations for shard allocations in the cluster."]
 pub struct ClusterAllocationExplain<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: ClusterAllocationExplainParts,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -71,10 +72,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [ClusterAllocationExplain]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         ClusterAllocationExplain {
-            client,
+            transport,
             parts: ClusterAllocationExplainParts::None,
             headers,
             body: None,
@@ -93,7 +94,7 @@ where
         T: Serialize,
     {
         ClusterAllocationExplain {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -189,7 +190,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -212,9 +213,9 @@ impl ClusterDeleteVotingConfigExclusionsParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Delete Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/voting-config-exclusions.html)\n\nClears cluster voting config exclusions."]
+#[doc = "Builder for the [Cluster Delete Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/voting-config-exclusions.html)\n\nClears cluster voting config exclusions."]
 pub struct ClusterDeleteVotingConfigExclusions<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: ClusterDeleteVotingConfigExclusionsParts,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -226,10 +227,10 @@ pub struct ClusterDeleteVotingConfigExclusions<'a, 'b> {
 }
 impl<'a, 'b> ClusterDeleteVotingConfigExclusions<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterDeleteVotingConfigExclusions]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         ClusterDeleteVotingConfigExclusions {
-            client,
+            transport,
             parts: ClusterDeleteVotingConfigExclusionsParts::None,
             headers,
             error_trace: None,
@@ -312,7 +313,7 @@ impl<'a, 'b> ClusterDeleteVotingConfigExclusions<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -333,9 +334,9 @@ impl ClusterGetSettingsParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-update-settings.html)\n\nReturns cluster settings."]
+#[doc = "Builder for the [Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/cluster-update-settings.html)\n\nReturns cluster settings."]
 pub struct ClusterGetSettings<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: ClusterGetSettingsParts,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -350,10 +351,10 @@ pub struct ClusterGetSettings<'a, 'b> {
 }
 impl<'a, 'b> ClusterGetSettings<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterGetSettings]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         ClusterGetSettings {
-            client,
+            transport,
             parts: ClusterGetSettingsParts::None,
             headers,
             error_trace: None,
@@ -463,7 +464,7 @@ impl<'a, 'b> ClusterGetSettings<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -495,9 +496,9 @@ impl<'b> ClusterHealthParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-health.html)\n\nReturns basic information about the health of the cluster."]
+#[doc = "Builder for the [Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/cluster-health.html)\n\nReturns basic information about the health of the cluster."]
 pub struct ClusterHealth<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: ClusterHealthParts<'b>,
     error_trace: Option<bool>,
     expand_wildcards: Option<&'b [ExpandWildcards]>,
@@ -519,10 +520,10 @@ pub struct ClusterHealth<'a, 'b> {
 }
 impl<'a, 'b> ClusterHealth<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterHealth] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: ClusterHealthParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: ClusterHealthParts<'b>) -> Self {
         let headers = HeaderMap::new();
         ClusterHealth {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -701,7 +702,7 @@ impl<'a, 'b> ClusterHealth<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -722,9 +723,9 @@ impl ClusterPendingTasksParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-pending.html)\n\nReturns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
+#[doc = "Builder for the [Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/cluster-pending.html)\n\nReturns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
 pub struct ClusterPendingTasks<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: ClusterPendingTasksParts,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -737,10 +738,10 @@ pub struct ClusterPendingTasks<'a, 'b> {
 }
 impl<'a, 'b> ClusterPendingTasks<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterPendingTasks]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         ClusterPendingTasks {
-            client,
+            transport,
             parts: ClusterPendingTasksParts::None,
             headers,
             error_trace: None,
@@ -832,7 +833,7 @@ impl<'a, 'b> ClusterPendingTasks<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -855,9 +856,9 @@ impl ClusterPostVotingConfigExclusionsParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Post Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/voting-config-exclusions.html)\n\nUpdates the cluster voting config exclusions by node ids or node names."]
+#[doc = "Builder for the [Cluster Post Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/voting-config-exclusions.html)\n\nUpdates the cluster voting config exclusions by node ids or node names."]
 pub struct ClusterPostVotingConfigExclusions<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: ClusterPostVotingConfigExclusionsParts,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -875,10 +876,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [ClusterPostVotingConfigExclusions]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         ClusterPostVotingConfigExclusions {
-            client,
+            transport,
             parts: ClusterPostVotingConfigExclusionsParts::None,
             headers,
             body: None,
@@ -898,7 +899,7 @@ where
         T: Serialize,
     {
         ClusterPostVotingConfigExclusions {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -1000,7 +1001,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1021,9 +1022,9 @@ impl ClusterPutSettingsParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-update-settings.html)\n\nUpdates the cluster settings."]
+#[doc = "Builder for the [Cluster Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/cluster-update-settings.html)\n\nUpdates the cluster settings."]
 pub struct ClusterPutSettings<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: ClusterPutSettingsParts,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -1041,10 +1042,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [ClusterPutSettings]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         ClusterPutSettings {
-            client,
+            transport,
             parts: ClusterPutSettingsParts::None,
             headers,
             body: None,
@@ -1064,7 +1065,7 @@ where
         T: Serialize,
     {
         ClusterPutSettings {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -1166,7 +1167,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1187,9 +1188,9 @@ impl ClusterRemoteInfoParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Remote Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-remote-info.html)\n\nReturns the information about configured remote clusters."]
+#[doc = "Builder for the [Cluster Remote Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/cluster-remote-info.html)\n\nReturns the information about configured remote clusters."]
 pub struct ClusterRemoteInfo<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: ClusterRemoteInfoParts,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -1200,10 +1201,10 @@ pub struct ClusterRemoteInfo<'a, 'b> {
 }
 impl<'a, 'b> ClusterRemoteInfo<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterRemoteInfo]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         ClusterRemoteInfo {
-            client,
+            transport,
             parts: ClusterRemoteInfoParts::None,
             headers,
             error_trace: None,
@@ -1277,7 +1278,7 @@ impl<'a, 'b> ClusterRemoteInfo<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1298,9 +1299,9 @@ impl ClusterRerouteParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Reroute API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-reroute.html)\n\nAllows to manually change the allocation of individual shards in the cluster."]
+#[doc = "Builder for the [Cluster Reroute API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/cluster-reroute.html)\n\nAllows to manually change the allocation of individual shards in the cluster."]
 pub struct ClusterReroute<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: ClusterRerouteParts,
     body: Option<B>,
     dry_run: Option<bool>,
@@ -1321,10 +1322,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [ClusterReroute]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         ClusterReroute {
-            client,
+            transport,
             parts: ClusterRerouteParts::None,
             headers,
             body: None,
@@ -1347,7 +1348,7 @@ where
         T: Serialize,
     {
         ClusterReroute {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             dry_run: self.dry_run,
@@ -1476,7 +1477,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1525,9 +1526,9 @@ impl<'b> ClusterStateParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-state.html)\n\nReturns a comprehensive information about the state of the cluster."]
+#[doc = "Builder for the [Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/cluster-state.html)\n\nReturns a comprehensive information about the state of the cluster."]
 pub struct ClusterState<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: ClusterStateParts<'b>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
@@ -1546,10 +1547,10 @@ pub struct ClusterState<'a, 'b> {
 }
 impl<'a, 'b> ClusterState<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterState] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: ClusterStateParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: ClusterStateParts<'b>) -> Self {
         let headers = HeaderMap::new();
         ClusterState {
-            client,
+            transport,
             parts,
             headers,
             allow_no_indices: None,
@@ -1698,7 +1699,7 @@ impl<'a, 'b> ClusterState<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1730,9 +1731,9 @@ impl<'b> ClusterStatsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-stats.html)\n\nReturns high-level overview of cluster statistics."]
+#[doc = "Builder for the [Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/cluster-stats.html)\n\nReturns high-level overview of cluster statistics."]
 pub struct ClusterStats<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: ClusterStatsParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -1745,10 +1746,10 @@ pub struct ClusterStats<'a, 'b> {
 }
 impl<'a, 'b> ClusterStats<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterStats] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: ClusterStatsParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: ClusterStatsParts<'b>) -> Self {
         let headers = HeaderMap::new();
         ClusterStats {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -1840,7 +1841,7 @@ impl<'a, 'b> ClusterStats<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1848,65 +1849,68 @@ impl<'a, 'b> ClusterStats<'a, 'b> {
 }
 #[doc = "Namespace client for Cluster APIs"]
 pub struct Cluster<'a> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
 }
 impl<'a> Cluster<'a> {
     #[doc = "Creates a new instance of [Cluster]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
-        Self { client }
+    pub fn new(transport: &'a Transport) -> Self {
+        Self { transport }
     }
-    #[doc = "[Cluster Allocation Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-allocation-explain.html)\n\nProvides explanations for shard allocations in the cluster."]
+    pub fn transport(&self) -> &Transport {
+        self.transport
+    }
+    #[doc = "[Cluster Allocation Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/cluster-allocation-explain.html)\n\nProvides explanations for shard allocations in the cluster."]
     pub fn allocation_explain<'b>(&'a self) -> ClusterAllocationExplain<'a, 'b, ()> {
-        ClusterAllocationExplain::new(&self.client)
+        ClusterAllocationExplain::new(self.transport())
     }
-    #[doc = "[Cluster Delete Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/voting-config-exclusions.html)\n\nClears cluster voting config exclusions."]
+    #[doc = "[Cluster Delete Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/voting-config-exclusions.html)\n\nClears cluster voting config exclusions."]
     pub fn delete_voting_config_exclusions<'b>(
         &'a self,
     ) -> ClusterDeleteVotingConfigExclusions<'a, 'b> {
-        ClusterDeleteVotingConfigExclusions::new(&self.client)
+        ClusterDeleteVotingConfigExclusions::new(self.transport())
     }
-    #[doc = "[Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-update-settings.html)\n\nReturns cluster settings."]
+    #[doc = "[Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/cluster-update-settings.html)\n\nReturns cluster settings."]
     pub fn get_settings<'b>(&'a self) -> ClusterGetSettings<'a, 'b> {
-        ClusterGetSettings::new(&self.client)
+        ClusterGetSettings::new(self.transport())
     }
-    #[doc = "[Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-health.html)\n\nReturns basic information about the health of the cluster."]
+    #[doc = "[Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/cluster-health.html)\n\nReturns basic information about the health of the cluster."]
     pub fn health<'b>(&'a self, parts: ClusterHealthParts<'b>) -> ClusterHealth<'a, 'b> {
-        ClusterHealth::new(&self.client, parts)
+        ClusterHealth::new(self.transport(), parts)
     }
-    #[doc = "[Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-pending.html)\n\nReturns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
+    #[doc = "[Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/cluster-pending.html)\n\nReturns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
     pub fn pending_tasks<'b>(&'a self) -> ClusterPendingTasks<'a, 'b> {
-        ClusterPendingTasks::new(&self.client)
+        ClusterPendingTasks::new(self.transport())
     }
-    #[doc = "[Cluster Post Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/voting-config-exclusions.html)\n\nUpdates the cluster voting config exclusions by node ids or node names."]
+    #[doc = "[Cluster Post Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/voting-config-exclusions.html)\n\nUpdates the cluster voting config exclusions by node ids or node names."]
     pub fn post_voting_config_exclusions<'b>(
         &'a self,
     ) -> ClusterPostVotingConfigExclusions<'a, 'b, ()> {
-        ClusterPostVotingConfigExclusions::new(&self.client)
+        ClusterPostVotingConfigExclusions::new(self.transport())
     }
-    #[doc = "[Cluster Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-update-settings.html)\n\nUpdates the cluster settings."]
+    #[doc = "[Cluster Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/cluster-update-settings.html)\n\nUpdates the cluster settings."]
     pub fn put_settings<'b>(&'a self) -> ClusterPutSettings<'a, 'b, ()> {
-        ClusterPutSettings::new(&self.client)
+        ClusterPutSettings::new(self.transport())
     }
-    #[doc = "[Cluster Remote Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-remote-info.html)\n\nReturns the information about configured remote clusters."]
+    #[doc = "[Cluster Remote Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/cluster-remote-info.html)\n\nReturns the information about configured remote clusters."]
     pub fn remote_info<'b>(&'a self) -> ClusterRemoteInfo<'a, 'b> {
-        ClusterRemoteInfo::new(&self.client)
+        ClusterRemoteInfo::new(self.transport())
     }
-    #[doc = "[Cluster Reroute API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-reroute.html)\n\nAllows to manually change the allocation of individual shards in the cluster."]
+    #[doc = "[Cluster Reroute API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/cluster-reroute.html)\n\nAllows to manually change the allocation of individual shards in the cluster."]
     pub fn reroute<'b>(&'a self) -> ClusterReroute<'a, 'b, ()> {
-        ClusterReroute::new(&self.client)
+        ClusterReroute::new(self.transport())
     }
-    #[doc = "[Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-state.html)\n\nReturns a comprehensive information about the state of the cluster."]
+    #[doc = "[Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/cluster-state.html)\n\nReturns a comprehensive information about the state of the cluster."]
     pub fn state<'b>(&'a self, parts: ClusterStateParts<'b>) -> ClusterState<'a, 'b> {
-        ClusterState::new(&self.client, parts)
+        ClusterState::new(self.transport(), parts)
     }
-    #[doc = "[Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-stats.html)\n\nReturns high-level overview of cluster statistics."]
+    #[doc = "[Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/cluster-stats.html)\n\nReturns high-level overview of cluster statistics."]
     pub fn stats<'b>(&'a self, parts: ClusterStatsParts<'b>) -> ClusterStats<'a, 'b> {
-        ClusterStats::new(&self.client, parts)
+        ClusterStats::new(self.transport(), parts)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Cluster APIs"]
     pub fn cluster(&self) -> Cluster {
-        Cluster::new(&self)
+        Cluster::new(self.transport())
     }
 }

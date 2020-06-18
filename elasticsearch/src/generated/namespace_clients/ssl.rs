@@ -30,6 +30,7 @@ use crate::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
+        transport::Transport,
         Method,
     },
     params::*,
@@ -52,9 +53,9 @@ impl SslCertificatesParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-ssl.html)\n\nRetrieves information about the X.509 certificates used to encrypt communications in the cluster."]
+#[doc = "Builder for the [Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/security-api-ssl.html)\n\nRetrieves information about the X.509 certificates used to encrypt communications in the cluster."]
 pub struct SslCertificates<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SslCertificatesParts,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -65,10 +66,10 @@ pub struct SslCertificates<'a, 'b> {
 }
 impl<'a, 'b> SslCertificates<'a, 'b> {
     #[doc = "Creates a new instance of [SslCertificates]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         SslCertificates {
-            client,
+            transport,
             parts: SslCertificatesParts::None,
             headers,
             error_trace: None,
@@ -142,7 +143,7 @@ impl<'a, 'b> SslCertificates<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -150,21 +151,24 @@ impl<'a, 'b> SslCertificates<'a, 'b> {
 }
 #[doc = "Namespace client for Ssl APIs"]
 pub struct Ssl<'a> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
 }
 impl<'a> Ssl<'a> {
     #[doc = "Creates a new instance of [Ssl]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
-        Self { client }
+    pub fn new(transport: &'a Transport) -> Self {
+        Self { transport }
     }
-    #[doc = "[Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-ssl.html)\n\nRetrieves information about the X.509 certificates used to encrypt communications in the cluster."]
+    pub fn transport(&self) -> &Transport {
+        self.transport
+    }
+    #[doc = "[Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/security-api-ssl.html)\n\nRetrieves information about the X.509 certificates used to encrypt communications in the cluster."]
     pub fn certificates<'b>(&'a self) -> SslCertificates<'a, 'b> {
-        SslCertificates::new(&self.client)
+        SslCertificates::new(self.transport())
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Ssl APIs"]
     pub fn ssl(&self) -> Ssl {
-        Ssl::new(&self)
+        Ssl::new(self.transport())
     }
 }
