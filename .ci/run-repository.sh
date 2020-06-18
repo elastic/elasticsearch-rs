@@ -28,7 +28,7 @@ echo -e "\033[1m>>>>> Run [elastic/elasticsearch-rs container] >>>>>>>>>>>>>>>>>
 
 repo=$(realpath $(dirname $(realpath -s $0))/../)
 
-# ES_TEST_SERVER en var is needed for cargo tests
+# ES_TEST_SERVER env var is needed for cargo test
 docker run \
   --network=${network_name} \
   --env "ES_TEST_SERVER=${ELASTICSEARCH_URL}" \
@@ -40,5 +40,4 @@ docker run \
   "cargo run -p yaml_test_runner -- -u \"${ELASTICSEARCH_URL}\"; \\
    mkdir -p test_results; \\
    cargo test -p yaml_test_runner -- --test-threads=1 -Z unstable-options --format json | tee test_results/results.json; \\
-   cat test_results/results.json | cargo2junit > test_results/junit.xml"
-
+   cat test_results/results.json | cargo2junit > test_results/cargo-junit.xml"
