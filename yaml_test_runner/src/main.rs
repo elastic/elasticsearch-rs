@@ -141,7 +141,11 @@ fn main() -> Result<(), failure::Error> {
 fn branch_suite_and_version_from_elasticsearch(
     url: &str,
 ) -> Result<(String, TestSuite, semver::Version), failure::Error> {
-    let mut response = reqwest::get(url)?;
+    let client = reqwest::ClientBuilder::new()
+        .danger_accept_invalid_certs(true)
+        .build()?;
+
+    let mut response = client.get(url).send()?;
     let json: Value = response.json()?;
     let branch = json["version"]["build_hash"].as_str().unwrap().to_string();
     let suite = match json["version"]["build_flavor"].as_str().unwrap() {
