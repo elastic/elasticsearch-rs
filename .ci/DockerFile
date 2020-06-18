@@ -50,11 +50,34 @@ ENV CFG_RELEASE_CHANNEL=nightly
 # create app directory
 WORKDIR /usr/src/elasticsearch-rs
 
+# copy just enough to build dependencies
 COPY .ci/certs ./.ci/certs
 COPY Cargo.toml ./Cargo.toml
 COPY README.md ./README.md
-COPY elasticsearch ./elasticsearch
+COPY elasticsearch/Cargo.toml ./elasticsearch/Cargo.toml
+COPY api_generator/Cargo.toml ./api_generator/Cargo.toml
+COPY yaml_test_runner/Cargo.toml ./yaml_test_runner/Cargo.toml
+
+# cache dependencies
+RUN mkdir -p elasticsearch/src; \
+echo "// dummy file" > elasticsearch/src/lib.rs; \
+mkdir -p api_generator/src; \
+echo "// dummy file" > api_generator/src/lib.rs; \
+mkdir -p yaml_test_runner/src; \
+echo "// dummy file" > yaml_test_runner/src/main.rs; \
+cargo build --tests; \
+rm elasticsearch/src/lib.rs; \
+rm api_generator/src/lib.rs; \
+rm yaml_test_runner/src/main.rs;
+
+# copy all source
+COPY elasticsearch/src ./elasticsearch/src
+COPY elasticsearch/build.rs ./elasticsearch/build.rs
 COPY api_generator ./api_generator
 COPY yaml_test_runner ./yaml_test_runner
 
-RUN cargo build --tests
+# build
+RUN rm ./target/debug/deps/api_generator*; \
+rm ./target/debug/deps/elasticsearch*; \
+rm ./target/debug/deps/yaml_test_runner*; \
+cargo build --tests;
