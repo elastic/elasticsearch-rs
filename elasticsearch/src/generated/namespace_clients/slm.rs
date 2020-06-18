@@ -30,6 +30,7 @@ use crate::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
+        transport::Transport,
         Method,
     },
     params::*,
@@ -61,7 +62,7 @@ impl<'b> SlmDeleteLifecycleParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Slm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/slm-api-delete-policy.html)\n\nDeletes an existing snapshot lifecycle policy."]
 pub struct SlmDeleteLifecycle<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SlmDeleteLifecycleParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -72,10 +73,10 @@ pub struct SlmDeleteLifecycle<'a, 'b> {
 }
 impl<'a, 'b> SlmDeleteLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [SlmDeleteLifecycle] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: SlmDeleteLifecycleParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: SlmDeleteLifecycleParts<'b>) -> Self {
         let headers = HeaderMap::new();
         SlmDeleteLifecycle {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -149,7 +150,7 @@ impl<'a, 'b> SlmDeleteLifecycle<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -180,7 +181,7 @@ impl<'b> SlmExecuteLifecycleParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Slm Execute Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/slm-api-execute-lifecycle.html)\n\nImmediately creates a snapshot according to the lifecycle policy, without waiting for the scheduled time."]
 pub struct SlmExecuteLifecycle<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SlmExecuteLifecycleParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -195,10 +196,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [SlmExecuteLifecycle] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: SlmExecuteLifecycleParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: SlmExecuteLifecycleParts<'b>) -> Self {
         let headers = HeaderMap::new();
         SlmExecuteLifecycle {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -215,7 +216,7 @@ where
         T: Serialize,
     {
         SlmExecuteLifecycle {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -290,7 +291,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -313,7 +314,7 @@ impl SlmExecuteRetentionParts {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Slm Execute Retention API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/slm-api-execute-retention.html)\n\nDeletes any snapshots that are expired according to the policy's retention rules."]
 pub struct SlmExecuteRetention<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SlmExecuteRetentionParts,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -328,10 +329,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [SlmExecuteRetention]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         SlmExecuteRetention {
-            client,
+            transport,
             parts: SlmExecuteRetentionParts::None,
             headers,
             body: None,
@@ -348,7 +349,7 @@ where
         T: Serialize,
     {
         SlmExecuteRetention {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -423,7 +424,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -457,7 +458,7 @@ impl<'b> SlmGetLifecycleParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Slm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/slm-api-get-policy.html)\n\nRetrieves one or more snapshot lifecycle policy definitions and information about the latest snapshot attempts."]
 pub struct SlmGetLifecycle<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SlmGetLifecycleParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -468,10 +469,10 @@ pub struct SlmGetLifecycle<'a, 'b> {
 }
 impl<'a, 'b> SlmGetLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [SlmGetLifecycle] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: SlmGetLifecycleParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: SlmGetLifecycleParts<'b>) -> Self {
         let headers = HeaderMap::new();
         SlmGetLifecycle {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -545,7 +546,7 @@ impl<'a, 'b> SlmGetLifecycle<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -568,7 +569,7 @@ impl SlmGetStatsParts {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Slm Get Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/slm-api-get-stats.html)\n\nReturns global and policy-level statistics about actions taken by snapshot lifecycle management."]
 pub struct SlmGetStats<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SlmGetStatsParts,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -579,10 +580,10 @@ pub struct SlmGetStats<'a, 'b> {
 }
 impl<'a, 'b> SlmGetStats<'a, 'b> {
     #[doc = "Creates a new instance of [SlmGetStats]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         SlmGetStats {
-            client,
+            transport,
             parts: SlmGetStatsParts::None,
             headers,
             error_trace: None,
@@ -656,7 +657,7 @@ impl<'a, 'b> SlmGetStats<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -679,7 +680,7 @@ impl SlmGetStatusParts {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Slm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/slm-api-get-status.html)\n\nRetrieves the status of snapshot lifecycle management (SLM)."]
 pub struct SlmGetStatus<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SlmGetStatusParts,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -690,10 +691,10 @@ pub struct SlmGetStatus<'a, 'b> {
 }
 impl<'a, 'b> SlmGetStatus<'a, 'b> {
     #[doc = "Creates a new instance of [SlmGetStatus]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         SlmGetStatus {
-            client,
+            transport,
             parts: SlmGetStatusParts::None,
             headers,
             error_trace: None,
@@ -767,7 +768,7 @@ impl<'a, 'b> SlmGetStatus<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -797,7 +798,7 @@ impl<'b> SlmPutLifecycleParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Slm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/slm-api-put-policy.html)\n\nCreates or updates a snapshot lifecycle policy."]
 pub struct SlmPutLifecycle<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SlmPutLifecycleParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -812,10 +813,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [SlmPutLifecycle] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: SlmPutLifecycleParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: SlmPutLifecycleParts<'b>) -> Self {
         let headers = HeaderMap::new();
         SlmPutLifecycle {
-            client,
+            transport,
             parts,
             headers,
             body: None,
@@ -832,7 +833,7 @@ where
         T: Serialize,
     {
         SlmPutLifecycle {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -907,7 +908,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -930,7 +931,7 @@ impl SlmStartParts {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Slm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/slm-api-start.html)\n\nTurns on snapshot lifecycle management (SLM)."]
 pub struct SlmStart<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SlmStartParts,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -945,10 +946,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [SlmStart]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         SlmStart {
-            client,
+            transport,
             parts: SlmStartParts::None,
             headers,
             body: None,
@@ -965,7 +966,7 @@ where
         T: Serialize,
     {
         SlmStart {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -1040,7 +1041,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1063,7 +1064,7 @@ impl SlmStopParts {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Slm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/slm-api-stop.html)\n\nTurns off snapshot lifecycle management (SLM)."]
 pub struct SlmStop<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: SlmStopParts,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -1078,10 +1079,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [SlmStop]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         SlmStop {
-            client,
+            transport,
             parts: SlmStopParts::None,
             headers,
             body: None,
@@ -1098,7 +1099,7 @@ where
         T: Serialize,
     {
         SlmStop {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             error_trace: self.error_trace,
@@ -1173,7 +1174,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -1181,62 +1182,65 @@ where
 }
 #[doc = "Namespace client for Snapshot Lifecycle Management APIs"]
 pub struct Slm<'a> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
 }
 impl<'a> Slm<'a> {
     #[doc = "Creates a new instance of [Slm]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
-        Self { client }
+    pub fn new(transport: &'a Transport) -> Self {
+        Self { transport }
+    }
+    pub fn transport(&self) -> &Transport {
+        self.transport
     }
     #[doc = "[Slm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/slm-api-delete-policy.html)\n\nDeletes an existing snapshot lifecycle policy."]
     pub fn delete_lifecycle<'b>(
         &'a self,
         parts: SlmDeleteLifecycleParts<'b>,
     ) -> SlmDeleteLifecycle<'a, 'b> {
-        SlmDeleteLifecycle::new(&self.client, parts)
+        SlmDeleteLifecycle::new(self.transport(), parts)
     }
     #[doc = "[Slm Execute Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/slm-api-execute-lifecycle.html)\n\nImmediately creates a snapshot according to the lifecycle policy, without waiting for the scheduled time."]
     pub fn execute_lifecycle<'b>(
         &'a self,
         parts: SlmExecuteLifecycleParts<'b>,
     ) -> SlmExecuteLifecycle<'a, 'b, ()> {
-        SlmExecuteLifecycle::new(&self.client, parts)
+        SlmExecuteLifecycle::new(self.transport(), parts)
     }
     #[doc = "[Slm Execute Retention API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/slm-api-execute-retention.html)\n\nDeletes any snapshots that are expired according to the policy's retention rules."]
     pub fn execute_retention<'b>(&'a self) -> SlmExecuteRetention<'a, 'b, ()> {
-        SlmExecuteRetention::new(&self.client)
+        SlmExecuteRetention::new(self.transport())
     }
     #[doc = "[Slm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/slm-api-get-policy.html)\n\nRetrieves one or more snapshot lifecycle policy definitions and information about the latest snapshot attempts."]
     pub fn get_lifecycle<'b>(&'a self, parts: SlmGetLifecycleParts<'b>) -> SlmGetLifecycle<'a, 'b> {
-        SlmGetLifecycle::new(&self.client, parts)
+        SlmGetLifecycle::new(self.transport(), parts)
     }
     #[doc = "[Slm Get Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/slm-api-get-stats.html)\n\nReturns global and policy-level statistics about actions taken by snapshot lifecycle management."]
     pub fn get_stats<'b>(&'a self) -> SlmGetStats<'a, 'b> {
-        SlmGetStats::new(&self.client)
+        SlmGetStats::new(self.transport())
     }
     #[doc = "[Slm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/slm-api-get-status.html)\n\nRetrieves the status of snapshot lifecycle management (SLM)."]
     pub fn get_status<'b>(&'a self) -> SlmGetStatus<'a, 'b> {
-        SlmGetStatus::new(&self.client)
+        SlmGetStatus::new(self.transport())
     }
     #[doc = "[Slm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/slm-api-put-policy.html)\n\nCreates or updates a snapshot lifecycle policy."]
     pub fn put_lifecycle<'b>(
         &'a self,
         parts: SlmPutLifecycleParts<'b>,
     ) -> SlmPutLifecycle<'a, 'b, ()> {
-        SlmPutLifecycle::new(&self.client, parts)
+        SlmPutLifecycle::new(self.transport(), parts)
     }
     #[doc = "[Slm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/slm-api-start.html)\n\nTurns on snapshot lifecycle management (SLM)."]
     pub fn start<'b>(&'a self) -> SlmStart<'a, 'b, ()> {
-        SlmStart::new(&self.client)
+        SlmStart::new(self.transport())
     }
     #[doc = "[Slm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/slm-api-stop.html)\n\nTurns off snapshot lifecycle management (SLM)."]
     pub fn stop<'b>(&'a self) -> SlmStop<'a, 'b, ()> {
-        SlmStop::new(&self.client)
+        SlmStop::new(self.transport())
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Snapshot Lifecycle Management APIs"]
     pub fn slm(&self) -> Slm {
-        Slm::new(&self)
+        Slm::new(self.transport())
     }
 }

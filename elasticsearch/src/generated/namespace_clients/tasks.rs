@@ -30,6 +30,7 @@ use crate::{
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
+        transport::Transport,
         Method,
     },
     params::*,
@@ -65,7 +66,7 @@ impl<'b> TasksCancelParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/tasks.html)\n\nCancels a task, if it can be cancelled through an API."]
 pub struct TasksCancel<'a, 'b, B> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: TasksCancelParts<'b>,
     actions: Option<&'b [&'b str]>,
     body: Option<B>,
@@ -84,10 +85,10 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [TasksCancel] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: TasksCancelParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: TasksCancelParts<'b>) -> Self {
         let headers = HeaderMap::new();
         TasksCancel {
-            client,
+            transport,
             parts,
             headers,
             actions: None,
@@ -113,7 +114,7 @@ where
         T: Serialize,
     {
         TasksCancel {
-            client: self.client,
+            transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
             actions: self.actions,
@@ -222,7 +223,7 @@ where
         };
         let body = self.body;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -252,7 +253,7 @@ impl<'b> TasksGetParts<'b> {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/tasks.html)\n\nReturns information about a task."]
 pub struct TasksGet<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: TasksGetParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -265,10 +266,10 @@ pub struct TasksGet<'a, 'b> {
 }
 impl<'a, 'b> TasksGet<'a, 'b> {
     #[doc = "Creates a new instance of [TasksGet] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: TasksGetParts<'b>) -> Self {
+    pub fn new(transport: &'a Transport, parts: TasksGetParts<'b>) -> Self {
         let headers = HeaderMap::new();
         TasksGet {
-            client,
+            transport,
             parts,
             headers,
             error_trace: None,
@@ -360,7 +361,7 @@ impl<'a, 'b> TasksGet<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -383,7 +384,7 @@ impl TasksListParts {
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/tasks.html)\n\nReturns a list of tasks."]
 pub struct TasksList<'a, 'b> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
     parts: TasksListParts,
     actions: Option<&'b [&'b str]>,
     detailed: Option<bool>,
@@ -401,10 +402,10 @@ pub struct TasksList<'a, 'b> {
 }
 impl<'a, 'b> TasksList<'a, 'b> {
     #[doc = "Creates a new instance of [TasksList]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         TasksList {
-            client,
+            transport,
             parts: TasksListParts::None,
             headers,
             actions: None,
@@ -544,7 +545,7 @@ impl<'a, 'b> TasksList<'a, 'b> {
         };
         let body = Option::<()>::None;
         let response = self
-            .client
+            .transport
             .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
@@ -552,29 +553,32 @@ impl<'a, 'b> TasksList<'a, 'b> {
 }
 #[doc = "Namespace client for Tasks APIs"]
 pub struct Tasks<'a> {
-    client: &'a Elasticsearch,
+    transport: &'a Transport,
 }
 impl<'a> Tasks<'a> {
     #[doc = "Creates a new instance of [Tasks]"]
-    pub fn new(client: &'a Elasticsearch) -> Self {
-        Self { client }
+    pub fn new(transport: &'a Transport) -> Self {
+        Self { transport }
+    }
+    pub fn transport(&self) -> &Transport {
+        self.transport
     }
     #[doc = "[Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/tasks.html)\n\nCancels a task, if it can be cancelled through an API."]
     pub fn cancel<'b>(&'a self, parts: TasksCancelParts<'b>) -> TasksCancel<'a, 'b, ()> {
-        TasksCancel::new(&self.client, parts)
+        TasksCancel::new(self.transport(), parts)
     }
     #[doc = "[Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/tasks.html)\n\nReturns information about a task."]
     pub fn get<'b>(&'a self, parts: TasksGetParts<'b>) -> TasksGet<'a, 'b> {
-        TasksGet::new(&self.client, parts)
+        TasksGet::new(self.transport(), parts)
     }
     #[doc = "[Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/7.8/tasks.html)\n\nReturns a list of tasks."]
     pub fn list<'b>(&'a self) -> TasksList<'a, 'b> {
-        TasksList::new(&self.client)
+        TasksList::new(self.transport())
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Tasks APIs"]
     pub fn tasks(&self) -> Tasks {
-        Tasks::new(&self)
+        Tasks::new(self.transport())
     }
 }
