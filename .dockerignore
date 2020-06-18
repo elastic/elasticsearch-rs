@@ -6,5 +6,8 @@ target
 docs
 .vscode
 .idea
-elasticsearch/docs
-elasticsearch/examples
+
+api_generator/src/bin
+
+yaml_test_runner/tests
+!yaml_test_runner/tests/common

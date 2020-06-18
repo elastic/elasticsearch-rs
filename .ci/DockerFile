@@ -50,29 +50,34 @@ ENV CFG_RELEASE_CHANNEL=nightly
 # create app directory
 WORKDIR /usr/src/elasticsearch-rs
 
-# copy just the Cargo.toml (and certs), and create a "fake" [lib/main].rs so that Docker caches all package dependencies
+# copy just enough to build dependencies
 COPY .ci/certs ./.ci/certs
 COPY Cargo.toml ./Cargo.toml
 COPY README.md ./README.md
-COPY elasticsearch/Cargo.toml ./elasticsearch/
-COPY api_generator/Cargo.toml ./api_generator/
-COPY yaml_test_runner/Cargo.toml ./yaml_test_runner/
+COPY elasticsearch/Cargo.toml ./elasticsearch/Cargo.toml
+COPY api_generator/Cargo.toml ./api_generator/Cargo.toml
+COPY yaml_test_runner/Cargo.toml ./yaml_test_runner/Cargo.toml
 
+# cache dependencies
 RUN mkdir -p elasticsearch/src; \
 echo "// dummy file" > elasticsearch/src/lib.rs; \
 mkdir -p api_generator/src; \
 echo "// dummy file" > api_generator/src/lib.rs; \
 mkdir -p yaml_test_runner/src; \
 echo "// dummy file" > yaml_test_runner/src/main.rs; \
-cargo build --tests
+cargo build --tests; \
+rm elasticsearch/src/lib.rs; \
+rm api_generator/src/lib.rs; \
+rm yaml_test_runner/src/main.rs;
 
-# install app dependencies and build
-COPY elasticsearch ./elasticsearch
+# copy all source
+COPY elasticsearch/src ./elasticsearch/src
+COPY elasticsearch/build.rs ./elasticsearch/build.rs
 COPY api_generator ./api_generator
 COPY yaml_test_runner ./yaml_test_runner
 
-# Run cargo build separately on packages. Running cargo build at the workspace level fails for the api_generator/bin/run.rs
-# This may be related to the caching hack above. TODO: Investigate
-RUN cargo build -p api_generator; \
-cargo build -p elasticsearch; \
-cargo build -p yaml_test_runner
+# build
+RUN rm ./target/debug/deps/api_generator*; \
+rm ./target/debug/deps/elasticsearch*; \
+rm ./target/debug/deps/yaml_test_runner*; \
+cargo build --tests;
