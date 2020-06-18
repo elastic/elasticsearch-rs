@@ -40,5 +40,5 @@ docker run \
   "cargo run -p yaml_test_runner -- -u \"${ELASTICSEARCH_URL}\"; \\
    mkdir -p test_results; \\
    cargo test -p yaml_test_runner -- --test-threads=1 -Z unstable-options --format json | tee test_results/results.json; \\
-   cat test_results/results.json | cargo2junit > test_results/junit.xml"
+   cat test_results/results.json | cargo2junit > test_results/cargo-junit.xml"
 

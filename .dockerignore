@@ -8,3 +8,6 @@ docs
 .idea
 elasticsearch/docs
 elasticsearch/examples
+
+yaml_test_runner/tests
+!yaml_test_runner/tests/common
