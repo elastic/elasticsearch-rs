@@ -16,6 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+#![recursion_limit = "256"]
+
 extern crate api_generator;
 #[macro_use]
 extern crate lazy_static;

@@ -7,8 +7,8 @@ description = "Generates and runs tests from Elasticsearch's YAML test specs"
 repository = "https://github.com/elastic/elasticsearch-rs"
 
 [dependencies]
-elasticsearch = { path = "../elasticsearch" }
-api_generator = { path = "../api_generator" }
+elasticsearch = { path = "./../elasticsearch" }
+api_generator = { path = "./../api_generator" }
 
 base64 = "^0.11"
 clap = "~2"
