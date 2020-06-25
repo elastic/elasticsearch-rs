@@ -1,0 +1,33 @@
+[package]
+name = "benchmarks"
+version = "8.0.0-alpha.1"
+publish = false
+description = "Runs benchmarks for the Elasticsearch Rust client"
+repository = "https://github.com/elastic/elasticsearch-rs"
+authors = ["Elastic and Contributors"]
+edition = "2018"
+license = "Apache-2.0"
+
+[dependencies]
+chrono = { version = "^0.4", features = ["serde"] }
+elasticsearch = { path = "./../elasticsearch" }
+once_cell = "1.4.0"
+os_type = "2.2.0"
+tokio = "~0.2"
+serde = "~1"
+serde_json = "~1"
+serde_with = "~1"
+rustc_version_runtime = "~0.1"
+sys-info = "~0.7"
+sysinfo = "0.12.0"
+
+# always use all optimizations and link time optimizations
+[profile.dev]
+opt-level = 3
+lto = true
+codegen-units = 1
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
