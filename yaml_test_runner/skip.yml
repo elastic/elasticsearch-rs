@@ -52,3 +52,8 @@ tests:
   oss/indices.stats/12_level.yml:
     # uses number as a key into object. serde_json::Value expects a string key
     - "Level - shards"
+
+  oss/search.aggregation/250_moving_fn.yml:
+    # The use of an invalid window interval results in a 400 response which looks like
+    # it suppresses the sending of deprecation headers
+    - "Bad window deprecated interval"
