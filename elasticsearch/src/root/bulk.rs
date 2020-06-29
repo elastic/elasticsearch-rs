@@ -53,7 +53,7 @@ struct BulkMetadata {
     _index: Option<String>,
     // TODO: intentionally omit type for now, as it's going away.
     //_type: Option<String>,
-    _id: String,
+    _id: Option<String>,
     pipeline: Option<String>,
     if_seq_no: Option<i64>,
     if_primary_term: Option<i64>,
@@ -114,11 +114,12 @@ impl Serialize for BulkHeader {
 /// # async fn doc() -> Result<(), Box<dyn std::error::Error>> {
 /// # let client = Elasticsearch::default();
 /// let mut ops: Vec<BulkOperation<Value>> = Vec::with_capacity(4);
-/// ops.push(BulkOperation::index("1", json!({
+/// ops.push(BulkOperation::index(json!({
 ///         "user": "kimchy",
 ///         "post_date": "2009-11-15T00:00:00Z",
 ///         "message": "Trying out Elasticsearch, so far so good?"
 ///     }))
+///     .id("1")
 ///     .pipeline("process_tweet")
 ///     .into()
 /// );
@@ -169,11 +170,8 @@ where
     }
 
     /// Creates a new instance of a [bulk index operation](BulkIndexOperation)
-    pub fn index<S>(id: S, source: B) -> BulkIndexOperation<B>
-    where
-        S: Into<String>,
-    {
-        BulkIndexOperation::new(id, source)
+    pub fn index(source: B) -> BulkIndexOperation<B> {
+        BulkIndexOperation::new(source)
     }
 
     /// Creates a new instance of a [bulk delete operation](BulkDeleteOperation)
@@ -228,7 +226,7 @@ impl<B> BulkCreateOperation<B> {
                 header: BulkHeader {
                     action: BulkAction::Create,
                     metadata: BulkMetadata {
-                        _id: id.into(),
+                        _id: Some(id.into()),
                         ..Default::default()
                     },
                 },
@@ -283,22 +281,30 @@ pub struct BulkIndexOperation<B> {
 
 impl<B> BulkIndexOperation<B> {
     /// Creates a new instance of [BulkIndexOperation]
-    pub fn new<S>(id: S, source: B) -> Self
-    where
-        S: Into<String>,
-    {
+    pub fn new(source: B) -> Self {
         Self {
             operation: BulkOperation {
                 header: BulkHeader {
                     action: BulkAction::Index,
                     metadata: BulkMetadata {
-                        _id: id.into(),
                         ..Default::default()
                     },
                 },
                 source: Some(source),
             },
         }
+    }
+
+    /// Specify the id for the document
+    ///
+    /// If an id is not specified, Elasticsearch will generate an id for the document
+    /// which will be returned in the response.
+    pub fn id<S>(mut self, id: S) -> Self
+    where
+        S: Into<String>,
+    {
+        self.operation.header.metadata._id = Some(id.into());
+        self
     }
 
     /// Specify the name of the index to perform the bulk update operation against.
@@ -385,7 +391,7 @@ impl<B> BulkDeleteOperation<B> {
                 header: BulkHeader {
                     action: BulkAction::Delete,
                     metadata: BulkMetadata {
-                        _id: id.into(),
+                        _id: Some(id.into()),
                         ..Default::default()
                     },
                 },
@@ -468,7 +474,7 @@ where
                 header: BulkHeader {
                     action: BulkAction::Update,
                     metadata: BulkMetadata {
-                        _id: id.into(),
+                        _id: Some(id.into()),
                         ..Default::default()
                     },
                 },
@@ -590,7 +596,8 @@ impl<B> From<BulkUpdateOperation<B>> for BulkOperation<B> {
 /// }
 ///
 /// let mut ops = BulkOperations::new();
-/// ops.push(BulkOperation::index("1", IndexDoc { foo: "index" })
+/// ops.push(BulkOperation::index(IndexDoc { foo: "index" })
+///     .id("1")
 ///     .pipeline("pipeline")
 ///     .index("index_doc")
 ///     .routing("routing")
@@ -679,7 +686,8 @@ mod tests {
         let mut ops: Vec<BulkOperation<Value>> = Vec::with_capacity(4);
 
         ops.push(
-            BulkOperation::index("1", json!({ "foo": "index" }))
+            BulkOperation::index(json!({ "foo": "index" }))
+                .id("1")
                 .pipeline("pipeline")
                 .routing("routing")
                 .if_seq_no(1)
@@ -765,7 +773,8 @@ mod tests {
         let mut ops = BulkOperations::new();
 
         ops.push(
-            BulkOperation::index("1", IndexDoc { foo: "index" })
+            BulkOperation::index(IndexDoc { foo: "index" })
+                .id("1")
                 .pipeline("pipeline")
                 .index("index_doc")
                 .routing("routing"),
