@@ -1,8 +1,6 @@
 use chrono::{DateTime, Duration, Utc};
-use elasticsearch::{
-    http::response::Response, BulkIndexOperation, BulkOperation, BulkParts, Elasticsearch,
-};
-use std::{borrow::BorrowMut, env, error, fmt};
+use elasticsearch::{http::response::Response, BulkOperation, BulkParts, Elasticsearch};
+use std::{error, fmt};
 use tokio::runtime::Runtime;
 #[macro_use]
 extern crate serde_json;
@@ -36,7 +34,7 @@ static STATS_INDEX: Lazy<String> =
 
 fn main() -> Result<(), Error> {
     let rustc_version = version();
-    let mut config = Config::new(rustc_version.to_string())?;
+    let config = Config::new(rustc_version.to_string())?;
 
     let benchmarks = Benchmarks::new();
     let mut runtime = Runtime::new().unwrap();
@@ -102,8 +100,8 @@ impl Config {
 
         let (vars, errors): (Vec<_>, Vec<_>) = env_keys
             .iter()
-            .map(|e| match std::env::var(e.clone()) {
-                Ok(v) if !v.is_empty() => Ok((e.to_string(), v.clone())),
+            .map(|e| match std::env::var(e) {
+                Ok(v) if !v.is_empty() => Ok((e.to_string(), v)),
                 Ok(v) => Err(Error::config(format!(
                     "{} environment variable is empty",
                     e
@@ -255,11 +253,8 @@ impl<'a> Runner<'a> {
 
         let client = self.config.runner_client();
 
-        match self.action.setup {
-            Some(f) => {
-                (f)(client, runtime)?;
-            }
-            None => (),
+        if let Some(f) = self.action.setup {
+            (f)(client, runtime)?;
         }
 
         for i in 0..self.action.warmups {
@@ -394,7 +389,7 @@ impl<'a> Runner<'a> {
                         let de = runtime.block_on(async { r.json::<Value>().await });
                         match de {
                             Ok(json) => {
-                                if json["errors"].as_bool().unwrap() == true {
+                                if json["errors"].as_bool().unwrap() {
                                     let error_count = json["items"]
                                         .as_array()
                                         .unwrap()

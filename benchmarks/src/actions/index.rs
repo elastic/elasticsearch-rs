@@ -20,7 +20,7 @@ pub fn action() -> Action {
     }
 }
 
-static INDEX: &'static str = "test-bench-index";
+static INDEX: &str = "test-bench-index";
 
 fn setup(client: &Elasticsearch, runtime: &mut Runtime) -> Result<Response, Error> {
     runtime.block_on(async {
