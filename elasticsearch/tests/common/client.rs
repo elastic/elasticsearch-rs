@@ -99,8 +99,10 @@ pub async fn index_documents(client: &Elasticsearch) -> Result<Response, Error> 
 
     if exists_response.status_code() == StatusCode::NOT_FOUND {
         let mut body: Vec<BulkOperation<_>> = vec![];
-        for i in 1..11 {
-            let op = BulkOperation::index(i.to_string(), json!({"title":"Elasticsearch"})).into();
+        for i in 1..=10 {
+            let op = BulkOperation::index(json!({"title":"Elasticsearch"}))
+                .id(i.to_string())
+                .into();
             body.push(op);
         }
 
