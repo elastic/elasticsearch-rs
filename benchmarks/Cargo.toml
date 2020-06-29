@@ -16,6 +16,7 @@ serde_json = "~1"
 serde_with = "~1"
 rustc_version_runtime = "~0.1"
 sys-info = "~0.7"
+sysinfo = "0.12.0"
 
 # always use all optimizations and link time optimizations
 [profile.dev]

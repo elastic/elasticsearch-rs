@@ -14,7 +14,7 @@ pub fn action() -> Action {
         warmups: 0,
         environment: None,
         repetitions: 10000,
-        operations: Some(0),
+        operations: Some(1),
         setup: Some(setup),
         run: index,
     }
@@ -48,6 +48,7 @@ fn index(i: i32, client: &Elasticsearch, runtime: &mut Runtime) -> Result<Respon
     runtime.block_on(async {
         client
             .index(IndexParts::IndexId(INDEX, i.to_string().as_str()))
+            // TODO: Use data source
             .body(json!(
                 {
                     "small": "document here"

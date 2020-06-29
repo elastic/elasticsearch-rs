@@ -1,5 +1,7 @@
 use chrono::{DateTime, Duration, Utc};
-use elasticsearch::{http::response::Response, Elasticsearch};
+use elasticsearch::{
+    http::response::Response, BulkIndexOperation, BulkOperation, BulkParts, Elasticsearch,
+};
 use std::{borrow::BorrowMut, env, error, fmt};
 use tokio::runtime::Runtime;
 #[macro_use]
@@ -8,12 +10,17 @@ extern crate rustc_version_runtime;
 extern crate sys_info;
 use crate::{
     actions::{index::action as index_action, ping::action as ping_action},
-    record::{Git, Os, Target},
+    record::{Benchmark, Event, Git, Http, HttpResponse, Os, Record, Target},
 };
-use elasticsearch::http::transport::Transport;
+use elasticsearch::http::{
+    transport::{SingleNodeConnectionPool, Transport, TransportBuilder},
+    Url,
+};
 use once_cell::sync::Lazy;
 use rustc_version_runtime::version;
+use serde_json::Value;
 use std::{collections::BTreeMap, time::Instant};
+use sysinfo::SystemExt;
 
 mod actions;
 mod record;
@@ -23,6 +30,9 @@ static CLIENT_BENCHMARK_CATEGORY: Lazy<String> =
 
 static FILTER: Lazy<String> =
     Lazy::new(|| std::env::var("FILTER").unwrap_or_else(|_| "".to_string()));
+
+static STATS_INDEX: Lazy<String> =
+    Lazy::new(|| format!("metrics-intake-{}", Utc::now().format("%Y-%m")));
 
 fn main() -> Result<(), Error> {
     let rustc_version = version();
@@ -38,17 +48,15 @@ fn main() -> Result<(), Error> {
 
         let mut runner = Runner::new(&config, &operation);
 
-        match runner.run() {
-            Ok(_) => {}
+        match runner.run(&mut runtime) {
+            Ok(results) => println!(
+                "{}, repetitions: {}, mean: {}ns. errors: {}",
+                &results.action,
+                &results.repetitions,
+                &results.mean,
+                &results.errors.len()
+            ),
             Err(e) => println!("{}", e.to_string()),
-        }
-
-        for stat in &runner.stats {
-            println!(
-                "{}: {}ns",
-                &operation.action,
-                stat.duration.num_nanoseconds().unwrap()
-            )
         }
     }
 
@@ -152,14 +160,28 @@ impl Config {
             runner_client: Elasticsearch::new(
                 Transport::single_node(vars.get("ELASTICSEARCH_TARGET_URL").unwrap()).unwrap(),
             ),
-            report_client: Elasticsearch::new(
-                Transport::single_node(vars.get("ELASTICSEARCH_REPORT_URL").unwrap()).unwrap(),
-            ),
+            report_client: {
+                let url = Url::parse(vars.get("ELASTICSEARCH_REPORT_URL").unwrap()).unwrap();
+                let mut builder = TransportBuilder::new(SingleNodeConnectionPool::new(url));
+
+                let system = sysinfo::System::new();
+                if !system.get_process_by_name("Fiddler").is_empty() {
+                    builder =
+                        builder.proxy(Url::parse("http://localhost:8888").unwrap(), None, None);
+                }
+
+                let transport = builder.build().unwrap();
+                Elasticsearch::new(transport)
+            },
         })
     }
 
     pub fn runner_client(&self) -> &Elasticsearch {
         &self.runner_client
+    }
+
+    pub fn report_client(&self) -> &Elasticsearch {
+        &self.report_client
     }
 
     pub fn environment(&self) -> &str {
@@ -183,11 +205,20 @@ struct ConfigService {
     git: ConfigGit,
 }
 
+#[derive(Clone)]
 struct Stats {
     start: DateTime<Utc>,
     duration: Duration,
     outcome: String,
     status_code: Option<u16>,
+}
+
+struct Results {
+    action: String,
+    repetitions: i32,
+    stats: Vec<Stats>,
+    errors: Vec<String>,
+    mean: i64,
 }
 
 struct Runner<'a> {
@@ -205,7 +236,7 @@ impl<'a> Runner<'a> {
         }
     }
 
-    pub fn run(&mut self) -> Result<(), Error> {
+    pub fn run(&mut self, runtime: &mut Runtime) -> Result<Results, Error> {
         let operations = self.action.operations.unwrap_or_else(|| 1);
         let category = self
             .action
@@ -223,17 +254,16 @@ impl<'a> Runner<'a> {
         );
 
         let client = self.config.runner_client();
-        let mut runtime = Runtime::new().unwrap();
 
         match self.action.setup {
             Some(f) => {
-                (f)(client, &mut runtime)?;
+                (f)(client, runtime)?;
             }
             None => (),
         }
 
         for i in 0..self.action.warmups {
-            match self.action.measure(i, client, &mut runtime) {
+            match self.action.measure(i, client, runtime) {
                 Ok(r) => {
                     if !r.status_code().is_success() {
                         let e = r.error_for_status_code().err().unwrap();
@@ -247,7 +277,7 @@ impl<'a> Runner<'a> {
         for i in 0..self.action.repetitions {
             let start = Utc::now();
             let now = Instant::now();
-            let result = self.action.measure(i, client, &mut runtime);
+            let result = self.action.measure(i, client, runtime);
             let duration = now.elapsed();
             let mut outcome = String::new();
             let mut status_code: Option<u16> = None;
@@ -277,10 +307,113 @@ impl<'a> Runner<'a> {
         }
 
         if errors.is_empty() {
-            Ok(())
+            self.save_stats(runtime, operations, category, environment)
+                .ok()
+                .unwrap();
+            Ok(Results {
+                action: self.action.action.clone(),
+                repetitions: self.action.repetitions,
+                stats: self.stats.clone(),
+                errors,
+                mean: {
+                    (self
+                        .stats
+                        .iter()
+                        .map(|s| s.duration.num_nanoseconds().unwrap() as f64)
+                        .sum::<f64>()
+                        / self.stats.len() as f64) as i64
+                },
+            })
         } else {
             Err(Error::run(errors))
         }
+    }
+
+    fn save_stats(
+        &self,
+        runtime: &mut Runtime,
+        operations: i32,
+        category: String,
+        environment: String,
+    ) -> Result<(), Error> {
+        let chunk_size = 1_000;
+        let client = self.config.report_client();
+        for chunk in self.stats.chunks(chunk_size) {
+            let mut body: Vec<BulkOperation<Record>> = Vec::with_capacity(1_000);
+
+            for stat in chunk {
+                body.push(
+                    BulkOperation::index(Record {
+                        timestamp: stat.start,
+                        labels: {
+                            let mut map = BTreeMap::new();
+                            map.insert("build_id".into(), self.config.build_id.clone());
+                            map.insert("client".into(), "elasticsearch-rs".into());
+                            map.insert("environment".into(), environment.clone());
+                            map
+                        },
+                        tags: vec!["bench".into(), "elasticsearch-rs".into()],
+                        event: Event {
+                            action: self.action.action.clone(),
+                            duration: stat.duration.num_nanoseconds().unwrap(),
+                            outcome: stat.outcome.clone(),
+                            dataset: None,
+                        },
+                        http: Http {
+                            response: HttpResponse {
+                                status_code: stat.status_code,
+                            },
+                        },
+                        benchmark: Benchmark {
+                            build_id: self.config.build_id.clone(),
+                            repetitions: self.action.repetitions,
+                            operations,
+                            runner: self.config.runner.clone(),
+                            target: self.config.target.clone(),
+                            category: category.clone(),
+                            environment: environment.clone(),
+                        },
+                    })
+                    .into(),
+                );
+            }
+
+            let response = runtime.block_on(async {
+                client
+                    .bulk(BulkParts::Index(STATS_INDEX.as_str()))
+                    .body(body)
+                    .send()
+                    .await
+            });
+
+            match response {
+                Ok(r) => {
+                    if !r.status_code().is_success() {
+                        println!("HTTP {} error saving stats", r.status_code().as_u16());
+                    } else {
+                        let de = runtime.block_on(async { r.json::<Value>().await });
+                        match de {
+                            Ok(json) => {
+                                if json["errors"].as_bool().unwrap() == true {
+                                    let error_count = json["items"]
+                                        .as_array()
+                                        .unwrap()
+                                        .iter()
+                                        .filter(|item| item["index"]["error"].is_object())
+                                        .count();
+
+                                    println!("{} errors saving stats", error_count);
+                                }
+                            }
+                            Err(e) => println!("Error saving stats: {}", e.to_string()),
+                        }
+                    }
+                }
+                Err(e) => println!("Error saving stats: {}", e.to_string()),
+            }
+        }
+
+        Ok(())
     }
 }
 

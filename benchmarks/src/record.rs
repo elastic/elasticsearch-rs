@@ -18,7 +18,7 @@ pub struct Event {
     pub action: String,
     pub duration: i64,
     pub outcome: String,
-    pub dataset: String,
+    pub dataset: Option<String>,
 }
 
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone)]
@@ -28,7 +28,7 @@ pub struct Http {
 
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone)]
 pub struct HttpResponse {
-    pub status_code: u16,
+    pub status_code: Option<u16>,
 }
 
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone)]

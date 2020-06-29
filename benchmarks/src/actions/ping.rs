@@ -9,7 +9,7 @@ pub fn action() -> Action {
         warmups: 0,
         environment: None,
         repetitions: 10000,
-        operations: Some(0),
+        operations: Some(1),
         setup: None,
         run: ping,
     }
