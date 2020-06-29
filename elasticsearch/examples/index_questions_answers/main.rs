@@ -149,7 +149,7 @@ async fn index_posts(client: &Elasticsearch, posts: &[Post]) -> Result<(), Error
         .iter()
         .map(|p| {
             let id = p.id().to_string();
-            BulkOperation::index(&id, p).routing(&id).into()
+            BulkOperation::index(p).id(&id).routing(&id).into()
         })
         .collect();
 
