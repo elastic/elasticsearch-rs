@@ -1,24 +1,20 @@
 use chrono::{DateTime, Duration, Utc};
 use elasticsearch::{http::response::Response, BulkOperation, BulkParts, Elasticsearch};
-use std::{error, fmt};
+use std::{error, fmt, fs};
 use tokio::runtime::Runtime;
 #[macro_use]
 extern crate serde_json;
 extern crate rustc_version_runtime;
 extern crate sys_info;
 use crate::{
-    actions::{index::action as index_action, ping::action as ping_action},
+    actions::{get::get, index::index, info::info, ping::ping},
     record::{Benchmark, Event, Git, Http, HttpResponse, Os, Record, Target},
 };
-use elasticsearch::http::{
-    transport::{SingleNodeConnectionPool, Transport, TransportBuilder},
-    Url,
-};
+use elasticsearch::http::transport::Transport;
 use once_cell::sync::Lazy;
 use rustc_version_runtime::version;
 use serde_json::Value;
-use std::{collections::BTreeMap, time::Instant};
-use sysinfo::SystemExt;
+use std::{collections::BTreeMap, fs::File, io::BufReader, path::PathBuf, time::Instant};
 
 mod actions;
 mod record;
@@ -35,12 +31,11 @@ static STATS_INDEX: Lazy<String> =
 fn main() -> Result<(), Error> {
     let rustc_version = version();
     let config = Config::new(rustc_version.to_string())?;
-
     let benchmarks = Benchmarks::new();
     let mut runtime = Runtime::new().unwrap();
 
     for operation in benchmarks.operations {
-        if FILTER.contains(&operation.action) {
+        if !FILTER.is_empty() && !FILTER.contains(&operation.action) {
             continue;
         }
 
@@ -68,7 +63,7 @@ struct Benchmarks {
 impl Benchmarks {
     pub fn new() -> Self {
         Self {
-            operations: vec![ping_action(), index_action()],
+            operations: vec![ping(), index(), get(), info()],
         }
     }
 }
@@ -80,6 +75,7 @@ pub struct Config {
     runner: record::Runner,
     runner_client: Elasticsearch,
     report_client: Elasticsearch,
+    data_sources: BTreeMap<String, Value>,
 }
 
 impl Config {
@@ -102,7 +98,7 @@ impl Config {
             .iter()
             .map(|e| match std::env::var(e) {
                 Ok(v) if !v.is_empty() => Ok((e.to_string(), v)),
-                Ok(v) => Err(Error::config(format!(
+                Ok(_) => Err(Error::config(format!(
                     "{} environment variable is empty",
                     e
                 ))),
@@ -122,6 +118,36 @@ impl Config {
             .into_iter()
             .map(Result::unwrap)
             .collect::<BTreeMap<String, String>>();
+
+        let data_source = PathBuf::from(vars.get("DATA_SOURCE").unwrap());
+        if !data_source.exists() {
+            return Err(Error::config(format!(
+                "Data source at {} does not exist",
+                data_source.to_str().unwrap()
+            )));
+        }
+
+        let mut data_sources = BTreeMap::new();
+        let entries = fs::read_dir(&data_source)?;
+        for entry in entries {
+            if let Ok(e) = entry {
+                if let Ok(f) = e.file_type() {
+                    if !f.is_dir() {
+                        continue;
+                    }
+
+                    let reader = {
+                        let mut path = e.path().clone();
+                        path.push("document.json");
+                        let file = File::open(path)?;
+                        BufReader::new(file)
+                    };
+                    let json: Value = serde_json::from_reader(reader)?;
+
+                    data_sources.insert(e.file_name().to_string_lossy().to_string(), json);
+                }
+            }
+        }
 
         let service = record::Service {
             ty: vars.get("TARGET_SERVICE_TYPE").unwrap().to_string(),
@@ -158,19 +184,10 @@ impl Config {
             runner_client: Elasticsearch::new(
                 Transport::single_node(vars.get("ELASTICSEARCH_TARGET_URL").unwrap()).unwrap(),
             ),
-            report_client: {
-                let url = Url::parse(vars.get("ELASTICSEARCH_REPORT_URL").unwrap()).unwrap();
-                let mut builder = TransportBuilder::new(SingleNodeConnectionPool::new(url));
-
-                let system = sysinfo::System::new();
-                if !system.get_process_by_name("Fiddler").is_empty() {
-                    builder =
-                        builder.proxy(Url::parse("http://localhost:8888").unwrap(), None, None);
-                }
-
-                let transport = builder.build().unwrap();
-                Elasticsearch::new(transport)
-            },
+            report_client: Elasticsearch::new(
+                Transport::single_node(vars.get("ELASTICSEARCH_REPORT_URL").unwrap()).unwrap(),
+            ),
+            data_sources,
         })
     }
 
@@ -185,22 +202,10 @@ impl Config {
     pub fn environment(&self) -> &str {
         self.environment.as_str()
     }
-}
 
-struct ConfigOs {
-    family: String,
-}
-
-struct ConfigGit {
-    branch: String,
-    commit: String,
-}
-
-struct ConfigService {
-    ty: String,
-    name: String,
-    version: String,
-    git: ConfigGit,
+    pub fn data_sources(&self, key: &str) -> Option<&Value> {
+        self.data_sources.get(key)
+    }
 }
 
 #[derive(Clone)]
@@ -214,7 +219,6 @@ struct Stats {
 struct Results {
     action: String,
     repetitions: i32,
-    stats: Vec<Stats>,
     errors: Vec<String>,
     mean: i64,
 }
@@ -251,14 +255,12 @@ impl<'a> Runner<'a> {
             (self.action.warmups + (self.action.repetitions * operations)) as usize,
         );
 
-        let client = self.config.runner_client();
-
         if let Some(f) = self.action.setup {
-            (f)(client, runtime)?;
+            (f)(self.config, runtime)?;
         }
 
         for i in 0..self.action.warmups {
-            match self.action.measure(i, client, runtime) {
+            match self.action.measure(i, self.config, runtime) {
                 Ok(r) => {
                     if !r.status_code().is_success() {
                         let e = r.error_for_status_code().err().unwrap();
@@ -272,7 +274,7 @@ impl<'a> Runner<'a> {
         for i in 0..self.action.repetitions {
             let start = Utc::now();
             let now = Instant::now();
-            let result = self.action.measure(i, client, runtime);
+            let result = self.action.measure(i, self.config, runtime);
             let duration = now.elapsed();
             let mut outcome = String::new();
             let mut status_code: Option<u16> = None;
@@ -308,7 +310,6 @@ impl<'a> Runner<'a> {
             Ok(Results {
                 action: self.action.action.clone(),
                 repetitions: self.action.repetitions,
-                stats: self.stats.clone(),
                 errors,
                 mean: {
                     (self
@@ -439,9 +440,27 @@ impl From<elasticsearch::Error> for Error {
     }
 }
 
+impl From<std::io::Error> for Error {
+    fn from(err: std::io::Error) -> Self {
+        Error {
+            kind: Kind::IO(err),
+        }
+    }
+}
+
+impl From<serde_json::Error> for Error {
+    fn from(err: serde_json::Error) -> Self {
+        Error {
+            kind: Kind::DataSource(err),
+        }
+    }
+}
+
 #[derive(Debug)]
 enum Kind {
     Config(String),
+    IO(std::io::Error),
+    DataSource(serde_json::Error),
     Response(elasticsearch::Error),
     Run(Vec<String>),
 }
@@ -450,6 +469,8 @@ impl error::Error for Error {
     fn source(&self) -> Option<&(dyn error::Error + 'static)> {
         match &self.kind {
             Kind::Config(_) => None,
+            Kind::IO(err) => Some(err),
+            Kind::DataSource(err) => Some(err),
             Kind::Response(err) => Some(err),
             Kind::Run(_) => None,
         }
@@ -460,6 +481,8 @@ impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match &self.kind {
             Kind::Config(err) => err.fmt(f),
+            Kind::DataSource(err) => err.fmt(f),
+            Kind::IO(err) => err.fmt(f),
             Kind::Response(err) => err.fmt(f),
             Kind::Run(errs) => errs.join("\n").fmt(f),
         }
@@ -473,8 +496,8 @@ pub struct Action {
     warmups: i32,
     repetitions: i32,
     operations: Option<i32>,
-    setup: Option<fn(&Elasticsearch, &mut Runtime) -> Result<Response, elasticsearch::Error>>,
-    run: fn(i32, &Elasticsearch, &mut Runtime) -> Result<Response, elasticsearch::Error>,
+    setup: Option<fn(&Config, &mut Runtime) -> Result<Response, elasticsearch::Error>>,
+    run: fn(i32, &Config, &mut Runtime) -> Result<Response, elasticsearch::Error>,
 }
 
 impl Action {
@@ -489,9 +512,9 @@ impl Action {
     pub fn measure(
         &self,
         i: i32,
-        client: &Elasticsearch,
+        config: &Config,
         runtime: &mut Runtime,
     ) -> Result<Response, elasticsearch::Error> {
-        (self.run)(i, client, runtime)
+        (self.run)(i, config, runtime)
     }
 }
