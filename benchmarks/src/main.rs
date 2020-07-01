@@ -43,10 +43,11 @@ fn main() -> Result<(), Error> {
 
         match runner.run(&mut runtime) {
             Ok(results) => println!(
-                "{}, repetitions: {}, mean: {}ns. errors: {}",
+                "{}, repetitions: {}, mean: {} ns, ops/sec: {}, errors: {}",
                 &results.action,
                 &results.repetitions,
                 &results.mean,
+                &results.ops_sec,
                 &results.errors.len()
             ),
             Err(e) => println!("{}", e.to_string()),
@@ -221,6 +222,7 @@ struct Results {
     repetitions: i32,
     errors: Vec<String>,
     mean: i64,
+    ops_sec: f64,
 }
 
 struct Runner<'a> {
@@ -307,18 +309,22 @@ impl<'a> Runner<'a> {
             self.save_stats(runtime, operations, category, environment)
                 .ok()
                 .unwrap();
+
+            let mean = {
+                (self
+                    .stats
+                    .iter()
+                    .map(|s| s.duration.num_nanoseconds().unwrap() as f64)
+                    .sum::<f64>()
+                    / self.stats.len() as f64) as i64
+            };
+
             Ok(Results {
                 action: self.action.action.clone(),
                 repetitions: self.action.repetitions,
                 errors,
-                mean: {
-                    (self
-                        .stats
-                        .iter()
-                        .map(|s| s.duration.num_nanoseconds().unwrap() as f64)
-                        .sum::<f64>()
-                        / self.stats.len() as f64) as i64
-                },
+                mean,
+                ops_sec: { 1e+9f64 / mean as f64 },
             })
         } else {
             Err(Error::run(errors))
