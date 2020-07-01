@@ -1,0 +1,13 @@
+ARG RUST_VERSION=1.44.1-stretch
+FROM rust:${RUST_VERSION}
+
+# create app directory
+WORKDIR /usr/src/elasticsearch-rs
+
+COPY elasticsearch/Cargo.toml ./elasticsearch/Cargo.toml
+COPY elasticsearch/src ./elasticsearch/src
+COPY elasticsearch/build.rs ./elasticsearch/build.rs
+
+COPY benchmarks ./benchmarks
+
+RUN cd benchmarks && cargo build --release
