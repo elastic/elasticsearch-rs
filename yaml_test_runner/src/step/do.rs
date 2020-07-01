@@ -103,8 +103,12 @@ impl Do {
                 });
             }
         } else if !self.allowed_warnings.is_empty() {
+            let allowed = &self.allowed_warnings;
             tokens.append(quote! {
-                let warnings: Vec<&str> = response.warning_headers().collect();
+                let allowed_warnings = vec![#(#allowed),*];
+                let warnings: Vec<&str> = response.warning_headers()
+                    .filter(|w| !allowed_warnings.iter().any(|a| w.contains(a)))
+                    .collect();
                 assert_warnings_is_empty!(warnings);
             });
         }
