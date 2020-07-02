@@ -64,7 +64,7 @@ struct Benchmarks {
 impl Benchmarks {
     pub fn new() -> Self {
         Self {
-            operations: vec![ping(), index(), get(), info()],
+            operations: vec![ping(), index(), get(), info(), bulk()],
         }
     }
 }
