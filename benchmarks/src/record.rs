@@ -13,6 +13,7 @@ pub struct Record {
     pub benchmark: Benchmark,
 }
 
+#[serde_with::skip_serializing_none]
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone)]
 pub struct Event {
     pub action: String,
@@ -26,6 +27,7 @@ pub struct Http {
     pub response: HttpResponse,
 }
 
+#[serde_with::skip_serializing_none]
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone)]
 pub struct HttpResponse {
     pub status_code: Option<u16>,
