@@ -1,7 +1,8 @@
+#[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+use elasticsearch::cert::CertificateValidation;
 use elasticsearch::{
     auth::Credentials,
     cat::CatIndicesParts,
-    cert::CertificateValidation,
     http::transport::{SingleNodeConnectionPool, TransportBuilder},
     Elasticsearch, Error, DEFAULT_ADDRESS,
 };
@@ -68,7 +69,16 @@ fn create_client() -> Result<Elasticsearch, Error> {
     let mut builder = TransportBuilder::new(conn_pool);
 
     builder = match credentials {
-        Some(c) => builder.auth(c).cert_validation(CertificateValidation::None),
+        Some(c) => {
+            builder = builder.auth(c);
+
+            #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+            {
+                builder = builder.cert_validation(CertificateValidation::None);
+            }
+
+            builder
+        }
         None => builder,
     };
 

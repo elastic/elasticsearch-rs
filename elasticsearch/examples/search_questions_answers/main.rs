@@ -1,9 +1,10 @@
 #[macro_use]
 extern crate serde_json;
 
+#[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+use elasticsearch::cert::CertificateValidation;
 use elasticsearch::{
     auth::Credentials,
-    cert::CertificateValidation,
     http::transport::{SingleNodeConnectionPool, TransportBuilder},
     Elasticsearch, Error, SearchParts, DEFAULT_ADDRESS,
 };
@@ -123,7 +124,16 @@ fn create_client() -> Result<Elasticsearch, Error> {
     let mut builder = TransportBuilder::new(conn_pool);
 
     builder = match credentials {
-        Some(c) => builder.auth(c).cert_validation(CertificateValidation::None),
+        Some(c) => {
+            builder = builder.auth(c);
+
+            #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+            {
+                builder = builder.cert_validation(CertificateValidation::None);
+            }
+
+            builder
+        }
         None => builder,
     };
 
