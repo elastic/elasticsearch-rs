@@ -16,14 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-use elasticsearch::{
-    auth::Credentials, http::response::Response, http::transport::TransportBuilder,
-    indices::IndicesExistsParts, params::Refresh, BulkOperation, BulkParts, Elasticsearch, Error,
-    DEFAULT_ADDRESS,
-};
-
+#[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
 use elasticsearch::cert::CertificateValidation;
-use elasticsearch::http::transport::SingleNodeConnectionPool;
+use elasticsearch::{
+    auth::Credentials,
+    http::{
+        response::Response,
+        transport::{SingleNodeConnectionPool, TransportBuilder},
+    },
+    indices::IndicesExistsParts,
+    params::Refresh,
+    BulkOperation, BulkParts, Elasticsearch, Error, DEFAULT_ADDRESS,
+};
 use reqwest::StatusCode;
 use serde_json::json;
 use sysinfo::{RefreshKind, System, SystemExt};
@@ -55,9 +59,12 @@ pub fn create_builder(addr: &str) -> TransportBuilder {
     // assume if we're running with HTTPS then authentication is also enabled and disable
     // certificate validation - we'll change this for tests that need to.
     if url.scheme() == "https" {
-        builder = builder
-            .auth(Credentials::Basic("elastic".into(), "changeme".into()))
-            .cert_validation(CertificateValidation::None)
+        builder = builder.auth(Credentials::Basic("elastic".into(), "changeme".into()));
+
+        #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+        {
+            builder = builder.cert_validation(CertificateValidation::None);
+    }
     }
 
     builder

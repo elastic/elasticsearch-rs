@@ -2,11 +2,14 @@
 extern crate serde_json;
 
 use clap::{App, Arg};
+#[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+use elasticsearch::cert::CertificateValidation;
 use elasticsearch::{
     auth::Credentials,
-    cert::CertificateValidation,
     http::transport::{SingleNodeConnectionPool, TransportBuilder},
-    indices::{IndicesCreateParts, IndicesExistsParts},
+    indices::{
+        IndicesCreateParts, IndicesDeleteParts, IndicesExistsParts, IndicesPutSettingsParts,
+    },
     BulkOperation, BulkParts, Elasticsearch, Error, DEFAULT_ADDRESS,
 };
 use serde_json::Value;
@@ -14,7 +17,6 @@ use sysinfo::SystemExt;
 use url::Url;
 
 mod stack_overflow;
-use elasticsearch::indices::{IndicesDeleteParts, IndicesPutSettingsParts};
 use http::StatusCode;
 use stack_overflow::*;
 use std::time::Instant;
@@ -384,7 +386,16 @@ fn create_client() -> Result<Elasticsearch, Error> {
     let mut builder = TransportBuilder::new(conn_pool);
 
     builder = match credentials {
-        Some(c) => builder.auth(c).cert_validation(CertificateValidation::None),
+        Some(c) => {
+            builder = builder.auth(c);
+
+            #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+            {
+                builder = builder.cert_validation(CertificateValidation::None);
+            }
+
+            builder
+        }
         None => builder,
     };
 

@@ -18,9 +18,12 @@
  */
 //! HTTP transport and connection components
 
+#[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+use crate::auth::ClientCertificate;
+#[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+use crate::cert::CertificateValidation;
 use crate::{
     auth::Credentials,
-    cert::CertificateValidation,
     error::Error,
     http::{
         headers::{
@@ -32,8 +35,6 @@ use crate::{
         Method,
     },
 };
-
-use crate::auth::ClientCertificate;
 use base64::write::EncoderWriter as Base64Encoder;
 use bytes::BytesMut;
 use serde::Serialize;
@@ -118,6 +119,7 @@ impl TransportBuilder {
             client_builder: reqwest::ClientBuilder::new(),
             conn_pool: Box::new(conn_pool),
             credentials: None,
+            #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
             cert_validation: None,
             proxy: None,
             proxy_credentials: None,
@@ -157,6 +159,7 @@ impl TransportBuilder {
     /// Validation applied to the certificate provided to establish a HTTPS connection.
     /// By default, full validation is applied. When using a self-signed certificate,
     /// different validation can be applied.
+    #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
     pub fn cert_validation(mut self, validation: CertificateValidation) -> Self {
         self.cert_validation = Some(validation);
         self
@@ -212,10 +215,10 @@ impl TransportBuilder {
             };
         }
 
+        #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
         if let Some(v) = self.cert_validation {
             client_builder = match v {
                 CertificateValidation::Default => client_builder,
-                #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
                 CertificateValidation::Full(chain) => {
                     chain.into_iter().fold(client_builder, |client_builder, c| {
                         client_builder.add_root_certificate(c)
@@ -580,6 +583,7 @@ impl ConnectionPool for CloudConnectionPool {
 
 #[cfg(test)]
 pub mod tests {
+    #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
     use crate::auth::ClientCertificate;
     use crate::http::transport::{CloudId, Connection, SingleNodeConnectionPool, TransportBuilder};
     use url::Url;
