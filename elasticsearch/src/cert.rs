@@ -229,8 +229,8 @@ impl Certificate {
         }
 
         if certs.is_empty() {
-            Err(Error::lib(
-                "could not find PEM certificate in input data".to_string(),
+            Err(crate::error::lib(
+                "could not find PEM certificate in input data",
             ))
         } else {
             Ok(Self(certs))

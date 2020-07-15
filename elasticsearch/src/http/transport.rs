@@ -405,13 +405,7 @@ impl Transport {
         let response = request_builder.send().await;
         match response {
             Ok(r) => Ok(Response::new(r, method)),
-            Err(e) => {
-                if e.is_timeout() {
-                    Err(Error::lib(format!("Request timed out to {:?}", e.url())))
-                } else {
-                    Err(e.into())
-                }
-            }
+            Err(e) => Err(e.into()),
         }
     }
 }
@@ -482,7 +476,7 @@ impl CloudId {
     /// web console
     pub fn parse(cloud_id: &str) -> Result<CloudId, Error> {
         if cloud_id.is_empty() || !cloud_id.contains(':') {
-            return Err(Error::lib(
+            return Err(crate::error::lib(
                 "cloud_id should be of the form '<cluster name>:<base64 data>'",
             ));
         }
@@ -490,13 +484,16 @@ impl CloudId {
         let parts: Vec<&str> = cloud_id.splitn(2, ':').collect();
         let name: String = parts[0].into();
         if name.is_empty() {
-            return Err(Error::lib("cloud_id cluster name cannot be empty"));
+            return Err(crate::error::lib("cloud_id cluster name cannot be empty"));
         }
 
         let data = parts[1];
         let decoded_result = base64::decode(data);
         if decoded_result.is_err() {
-            return Err(Error::lib(format!("cannot base 64 decode '{}'", data)));
+            return Err(crate::error::lib(format!(
+                "cannot base 64 decode '{}'",
+                data
+            )));
         }
 
         let decoded = decoded_result.unwrap();
@@ -510,18 +507,18 @@ impl CloudId {
                     Ok(s) => {
                         domain_name = s.trim();
                         if domain_name.is_empty() {
-                            return Err(Error::lib("decoded '<base64 data>' must contain a domain name as the first part"));
+                            return Err(crate::error::lib("decoded '<base64 data>' must contain a domain name as the first part"));
                         }
                     }
                     Err(_) => {
-                        return Err(Error::lib(
+                        return Err(crate::error::lib(
                             "decoded '<base64 data>' must contain a domain name as the first part",
                         ))
                     }
                 }
             }
             None => {
-                return Err(Error::lib(
+                return Err(crate::error::lib(
                     "decoded '<base64 data>' must contain a domain name as the first part",
                 ));
             }
@@ -532,19 +529,19 @@ impl CloudId {
                 Ok(s) => {
                     uuid = s.trim();
                     if uuid.is_empty() {
-                        return Err(Error::lib(
+                        return Err(crate::error::lib(
                             "decoded '<base64 data>' must contain a uuid as the second part",
                         ));
                     }
                 }
                 Err(_) => {
-                    return Err(Error::lib(
+                    return Err(crate::error::lib(
                         "decoded '<base64 data>' must contain a uuid as the second part",
                     ))
                 }
             },
             None => {
-                return Err(Error::lib(
+                return Err(crate::error::lib(
                     "decoded '<base64 data>' must contain at least two parts",
                 ));
             }

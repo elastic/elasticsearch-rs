@@ -32,10 +32,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-use crate::http::transport::BuildError;
+use crate::http::{transport::BuildError, StatusCode};
 use std::{error, fmt, io};
 
-/// An error within the client.
+/// An error with the client.
 ///
 /// Errors that can occur include IO and parsing errors, as well as specific
 /// errors from Elasticsearch and internal errors from this library
@@ -102,10 +102,26 @@ impl From<BuildError> for Error {
     }
 }
 
+pub(crate) fn lib(err: impl Into<String>) -> Error {
+    Error {
+        kind: Kind::Lib(err.into()),
+    }
+}
+
 impl Error {
-    pub(crate) fn lib(err: impl Into<String>) -> Self {
-        Error {
-            kind: Kind::Lib(err.into()),
+    /// The status code, if the error was generated from a response
+    pub fn status_code(&self) -> Option<StatusCode> {
+        match &self.kind {
+            Kind::Http(err) => err.status(),
+            _ => None,
+        }
+    }
+
+    /// Returns true if the error is related to a timeout
+    pub fn is_timeout(&self) -> bool {
+        match &self.kind {
+            Kind::Http(err) => err.is_timeout(),
+            _ => false,
         }
     }
 }

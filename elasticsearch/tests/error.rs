@@ -48,3 +48,31 @@ async fn bad_request_returns_response() -> Result<(), failure::Error> {
 
     Ok(())
 }
+
+#[tokio::test]
+async fn deserialize_exception() -> Result<(), failure::Error> {
+    let client = client::create_default();
+    let response = client
+        .explain(ExplainParts::IndexId("non_existent_index", "id"))
+        .error_trace(true)
+        .body(json!({}))
+        .send()
+        .await?;
+
+    let status_code = response.status_code();
+    assert_eq!(status_code, StatusCode::BAD_REQUEST);
+
+    let ex = response.exception().await?.unwrap();
+    let error = ex.error();
+
+    assert_eq!(ex.status().unwrap(), status_code.as_u16());
+    assert_eq!(error.ty(), "action_request_validation_exception");
+    assert!(error.stack_trace().is_some());
+    assert_eq!(
+        error.reason(),
+        Some("Validation Failed: 1: query is missing;")
+    );
+    assert!(!error.root_cause().is_empty());
+    assert_eq!(error.reason(), error.root_cause().first().unwrap().reason());
+    Ok(())
+}
