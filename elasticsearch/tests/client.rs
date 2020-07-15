@@ -217,6 +217,12 @@ async fn search_with_body() -> Result<(), failure::Error> {
     assert_eq!(response.url(), &expected_url);
     assert_eq!(response.status_code(), StatusCode::OK);
     assert_eq!(response.method(), elasticsearch::http::Method::Post);
+    let debug = format!("{:?}", &response);
+    assert_eq!(
+        format!("Response {{ method: Post, url: \"{}\", status_code: 200, headers: {{\"content-type\": \"application/json; charset=UTF-8\"}} }}",
+                expected_url.as_str()),
+        debug);
+
     let response_body = response.json::<Value>().await?;
     assert!(response_body["took"].as_i64().is_some());
 
