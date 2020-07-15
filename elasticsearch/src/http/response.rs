@@ -23,6 +23,7 @@ use crate::{
     http::{headers::HeaderMap, Method, StatusCode, Url},
 };
 use serde::de::DeserializeOwned;
+use std::fmt;
 
 /// A response from Elasticsearch
 pub struct Response(reqwest::Response, Method);
@@ -118,5 +119,16 @@ impl Response {
             .get_all("Warning")
             .iter()
             .map(|w| w.to_str().unwrap())
+    }
+}
+
+impl fmt::Debug for Response {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.debug_struct("Response")
+            .field("method", &self.method())
+            .field("url", self.url())
+            .field("status_code", &self.status_code())
+            .field("headers", self.headers())
+            .finish()
     }
 }
