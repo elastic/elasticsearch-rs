@@ -19,7 +19,7 @@ echo -e "\033[1mBuilding Docker image for commit [$COMMIT]\033[0m"
 set -x
 
 docker build \
-  --file .ci/benchmarks/Dockerfile \
+  --file .ci/benchmarks/DockerFile \
   --tag elastic/elasticsearch-rs \
   .
 
