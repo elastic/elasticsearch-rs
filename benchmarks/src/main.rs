@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+extern crate os_type;
 #[macro_use]
 extern crate serde_json;
 extern crate rustc_version_runtime;
@@ -183,6 +184,8 @@ impl Config {
             family: vars.get("TARGET_SERVICE_OS_FAMILY").unwrap().to_string(),
         };
 
+        let current_os = os_type::current_platform();
+
         Ok(Self {
             build_id: vars.get("BUILD_ID").unwrap().to_string(),
             environment: vars
@@ -194,12 +197,19 @@ impl Config {
                 os: os.clone(),
             },
             runner: record::Runner {
-                service,
+                service: record::Service {
+                    ty: "client".to_string(),
+                    name: "elasticsearch-rs".to_string(),
+                    version: elasticsearch::http::headers::DEFAULT_USER_AGENT.trim_start_matches("elasticsearch-rs/").to_string(),
+                    git: service.git,
+                },
                 runtime: record::Runtime {
                     name: "rust".to_string(),
                     version: rustc_version,
                 },
-                os,
+                os: Os {
+                    family: format!("{:?} {}", &current_os.os_type, &current_os.version),
+                },
             },
             runner_client: Elasticsearch::new(
                 Transport::single_node(vars.get("ELASTICSEARCH_TARGET_URL").unwrap()).unwrap(),
