@@ -112,11 +112,12 @@ impl Response {
     /// Deprecation headers signal the use of Elasticsearch functionality
     /// or features that are deprecated and will be removed in a future release.
     pub fn warning_headers(&self) -> impl Iterator<Item = &str> {
-        self.0
-            .headers()
-            .get_all("Warning")
-            .iter()
-            .map(|w| w.to_str().unwrap())
+        self.0.headers().get_all("Warning").iter().map(|w| {
+            let s = w.to_str().unwrap();
+            let first_quote = s.find(r#"""#).unwrap();
+            let last_quote = s.len() - 1;
+            &s[first_quote + 1..last_quote]
+        })
     }
 }
 
