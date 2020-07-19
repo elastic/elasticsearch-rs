@@ -93,6 +93,7 @@ pub struct Bulk<'a, 'b, B> {
     pipeline: Option<&'b str>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
+    require_alias: Option<bool>,
     routing: Option<&'b str>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
@@ -120,6 +121,7 @@ where
             pipeline: None,
             pretty: None,
             refresh: None,
+            require_alias: None,
             routing: None,
             source: None,
             timeout: None,
@@ -161,6 +163,7 @@ where
             pipeline: self.pipeline,
             pretty: self.pretty,
             refresh: self.refresh,
+            require_alias: self.require_alias,
             routing: self.routing,
             source: self.source,
             timeout: self.timeout,
@@ -201,6 +204,11 @@ where
     #[doc = "If `true` then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` (the default) then do nothing with refreshes."]
     pub fn refresh(mut self, refresh: Refresh) -> Self {
         self.refresh = Some(refresh);
+        self
+    }
+    #[doc = "Sets require_alias for all incoming documents. Defaults to unset (false)"]
+    pub fn require_alias(mut self, require_alias: bool) -> Self {
+        self.require_alias = Some(require_alias);
         self
     }
     #[doc = "Specific routing value"]
@@ -267,6 +275,8 @@ where
                 pretty: Option<bool>,
                 #[serde(rename = "refresh")]
                 refresh: Option<Refresh>,
+                #[serde(rename = "require_alias")]
+                require_alias: Option<bool>,
                 #[serde(rename = "routing")]
                 routing: Option<&'b str>,
                 #[serde(rename = "source")]
@@ -288,6 +298,7 @@ where
                 pipeline: self.pipeline,
                 pretty: self.pretty,
                 refresh: self.refresh,
+                require_alias: self.require_alias,
                 routing: self.routing,
                 source: self.source,
                 timeout: self.timeout,
@@ -3611,6 +3622,7 @@ pub struct Index<'a, 'b, B> {
     pipeline: Option<&'b str>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
+    require_alias: Option<bool>,
     routing: Option<&'b str>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
@@ -3639,6 +3651,7 @@ where
             pipeline: None,
             pretty: None,
             refresh: None,
+            require_alias: None,
             routing: None,
             source: None,
             timeout: None,
@@ -3666,6 +3679,7 @@ where
             pipeline: self.pipeline,
             pretty: self.pretty,
             refresh: self.refresh,
+            require_alias: self.require_alias,
             routing: self.routing,
             source: self.source,
             timeout: self.timeout,
@@ -3722,6 +3736,11 @@ where
     #[doc = "If `true` then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` (the default) then do nothing with refreshes."]
     pub fn refresh(mut self, refresh: Refresh) -> Self {
         self.refresh = Some(refresh);
+        self
+    }
+    #[doc = "When true, requires destination to be an alias. Default is false"]
+    pub fn require_alias(mut self, require_alias: bool) -> Self {
+        self.require_alias = Some(require_alias);
         self
     }
     #[doc = "Specific routing value"]
@@ -3784,6 +3803,8 @@ where
                 pretty: Option<bool>,
                 #[serde(rename = "refresh")]
                 refresh: Option<Refresh>,
+                #[serde(rename = "require_alias")]
+                require_alias: Option<bool>,
                 #[serde(rename = "routing")]
                 routing: Option<&'b str>,
                 #[serde(rename = "source")]
@@ -3807,6 +3828,7 @@ where
                 pipeline: self.pipeline,
                 pretty: self.pretty,
                 refresh: self.refresh,
+                require_alias: self.require_alias,
                 routing: self.routing,
                 source: self.source,
                 timeout: self.timeout,
@@ -7367,6 +7389,7 @@ pub struct Update<'a, 'b, B> {
     lang: Option<&'b str>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
+    require_alias: Option<bool>,
     retry_on_conflict: Option<i64>,
     routing: Option<&'b str>,
     source: Option<&'b str>,
@@ -7396,6 +7419,7 @@ where
             lang: None,
             pretty: None,
             refresh: None,
+            require_alias: None,
             retry_on_conflict: None,
             routing: None,
             source: None,
@@ -7439,6 +7463,7 @@ where
             lang: self.lang,
             pretty: self.pretty,
             refresh: self.refresh,
+            require_alias: self.require_alias,
             retry_on_conflict: self.retry_on_conflict,
             routing: self.routing,
             source: self.source,
@@ -7489,6 +7514,11 @@ where
     #[doc = "If `true` then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` (the default) then do nothing with refreshes."]
     pub fn refresh(mut self, refresh: Refresh) -> Self {
         self.refresh = Some(refresh);
+        self
+    }
+    #[doc = "When true, requires destination is an alias. Default is false"]
+    pub fn require_alias(mut self, require_alias: bool) -> Self {
+        self.require_alias = Some(require_alias);
         self
     }
     #[doc = "Specify how many times should the operation be retried when a conflict occurs (default: 0)"]
@@ -7559,6 +7589,8 @@ where
                 pretty: Option<bool>,
                 #[serde(rename = "refresh")]
                 refresh: Option<Refresh>,
+                #[serde(rename = "require_alias")]
+                require_alias: Option<bool>,
                 #[serde(rename = "retry_on_conflict")]
                 retry_on_conflict: Option<i64>,
                 #[serde(rename = "routing")]
@@ -7582,6 +7614,7 @@ where
                 lang: self.lang,
                 pretty: self.pretty,
                 refresh: self.refresh,
+                require_alias: self.require_alias,
                 retry_on_conflict: self.retry_on_conflict,
                 routing: self.routing,
                 source: self.source,
