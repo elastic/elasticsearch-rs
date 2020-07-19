@@ -53,10 +53,11 @@ impl XpackInfoParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
+#[doc = "Builder for the [Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
 pub struct XpackInfo<'a, 'b> {
     transport: &'a Transport,
     parts: XpackInfoParts,
+    accept_enterprise: Option<bool>,
     categories: Option<&'b [&'b str]>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -73,6 +74,7 @@ impl<'a, 'b> XpackInfo<'a, 'b> {
             transport,
             parts: XpackInfoParts::None,
             headers,
+            accept_enterprise: None,
             categories: None,
             error_trace: None,
             filter_path: None,
@@ -80,6 +82,11 @@ impl<'a, 'b> XpackInfo<'a, 'b> {
             pretty: None,
             source: None,
         }
+    }
+    #[doc = "If an enterprise license is installed, return the type and mode as 'enterprise' (default: false)"]
+    pub fn accept_enterprise(mut self, accept_enterprise: bool) -> Self {
+        self.accept_enterprise = Some(accept_enterprise);
+        self
     }
     #[doc = "Comma-separated list of info categories. Can be any of: build, license, features"]
     pub fn categories(mut self, categories: &'b [&'b str]) -> Self {
@@ -125,6 +132,8 @@ impl<'a, 'b> XpackInfo<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                #[serde(rename = "accept_enterprise")]
+                accept_enterprise: Option<bool>,
                 #[serde(
                     rename = "categories",
                     serialize_with = "crate::client::serialize_coll_qs"
@@ -145,6 +154,7 @@ impl<'a, 'b> XpackInfo<'a, 'b> {
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
+                accept_enterprise: self.accept_enterprise,
                 categories: self.categories,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
@@ -177,7 +187,7 @@ impl XpackUsageParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
+#[doc = "Builder for the [Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
 pub struct XpackUsage<'a, 'b> {
     transport: &'a Transport,
     parts: XpackUsageParts,
@@ -295,11 +305,11 @@ impl<'a> Xpack<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
+    #[doc = "[Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
     pub fn info<'b>(&'a self) -> XpackInfo<'a, 'b> {
         XpackInfo::new(self.transport())
     }
-    #[doc = "[Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
+    #[doc = "[Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
     pub fn usage<'b>(&'a self) -> XpackUsage<'a, 'b> {
         XpackUsage::new(self.transport())
     }
