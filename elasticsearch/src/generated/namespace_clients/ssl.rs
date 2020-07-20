@@ -53,7 +53,7 @@ impl SslCertificatesParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/security-api-ssl.html)\n\nRetrieves information about the X.509 certificates used to encrypt communications in the cluster."]
+#[doc = "Builder for the [Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-api-ssl.html)\n\nRetrieves information about the X.509 certificates used to encrypt communications in the cluster."]
 pub struct SslCertificates<'a, 'b> {
     transport: &'a Transport,
     parts: SslCertificatesParts,
@@ -161,7 +161,7 @@ impl<'a> Ssl<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/security-api-ssl.html)\n\nRetrieves information about the X.509 certificates used to encrypt communications in the cluster."]
+    #[doc = "[Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-api-ssl.html)\n\nRetrieves information about the X.509 certificates used to encrypt communications in the cluster."]
     pub fn certificates<'b>(&'a self) -> SslCertificates<'a, 'b> {
         SslCertificates::new(self.transport())
     }
