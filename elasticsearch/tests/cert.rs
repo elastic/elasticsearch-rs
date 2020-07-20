@@ -16,6 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+//! These tests require a cluster configured with Security. One can be spun up using the
+//! .ci/run-elasticsearch.sh script as follows:
+//!
+//! export TEST_SUITE=xpack
+//! export STACK_VERSION=<a version that aligns with the client e.g. 7.8.0, 8.0.0-SNAPSHOT, etc>
+//!
+//! DETACH=true .ci/run-elasticsearch.sh
 #![cfg(any(feature = "native-tls", feature = "rustls-tls"))]
 
 extern crate os_type;
@@ -26,12 +33,10 @@ use common::*;
 use elasticsearch::cert::{Certificate, CertificateValidation};
 use os_type::OSType;
 
-// TODO: These tests require a cluster configured with Security. Figure out best way to surface this e.g. test category, naming convention, etc.
-
 static CA_CERT: &[u8] = include_bytes!("../../.ci/certs/ca.crt");
 static CA_CHAIN_CERT: &[u8] = include_bytes!("../../.ci/certs/ca-chain.crt");
-static TESTNODE_SAN_CERT: &[u8] = include_bytes!("../../.ci/certs/testnode_san.crt");
 static TESTNODE_CERT: &[u8] = include_bytes!("../../.ci/certs/testnode.crt");
+static TESTNODE_NO_SAN_CERT: &[u8] = include_bytes!("../../.ci/certs/testnode_no_san.crt");
 
 fn expected_error_message() -> String {
     if cfg!(windows) {
@@ -139,7 +144,7 @@ async fn full_certificate_ca_chain_validation() -> Result<(), failure::Error> {
 #[tokio::test]
 #[cfg(all(windows, feature = "native-tls"))]
 async fn full_certificate_validation() -> Result<(), failure::Error> {
-    let cert = Certificate::from_pem(TESTNODE_SAN_CERT)?;
+    let cert = Certificate::from_pem(TESTNODE_CERT)?;
     let builder =
         client::create_default_builder().cert_validation(CertificateValidation::Full(cert));
     let client = client::create(builder);
@@ -151,9 +156,9 @@ async fn full_certificate_validation() -> Result<(), failure::Error> {
 #[tokio::test]
 #[cfg(feature = "rustls-tls")]
 async fn full_certificate_validation_rustls_tls() -> Result<(), failure::Error> {
-    let mut chain: Vec<u8> = Vec::with_capacity(TESTNODE_SAN_CERT.len() + CA_CERT.len());
+    let mut chain: Vec<u8> = Vec::with_capacity(TESTNODE_CERT.len() + CA_CERT.len());
     chain.extend(CA_CERT);
-    chain.extend(TESTNODE_SAN_CERT);
+    chain.extend(TESTNODE_CERT);
 
     let cert = Certificate::from_pem(chain.as_slice())?;
     let builder =
@@ -168,7 +173,7 @@ async fn full_certificate_validation_rustls_tls() -> Result<(), failure::Error> 
 #[tokio::test]
 #[cfg(all(unix, any(feature = "native-tls", feature = "rustls-tls")))]
 async fn full_certificate_validation() -> Result<(), failure::Error> {
-    let cert = Certificate::from_pem(TESTNODE_SAN_CERT)?;
+    let cert = Certificate::from_pem(TESTNODE_CERT)?;
     let builder =
         client::create_default_builder().cert_validation(CertificateValidation::Full(cert));
     let client = client::create(builder);
@@ -203,7 +208,7 @@ async fn full_certificate_validation() -> Result<(), failure::Error> {
 #[tokio::test]
 #[cfg(all(windows, feature = "native-tls"))]
 async fn certificate_certificate_validation() -> Result<(), failure::Error> {
-    let cert = Certificate::from_pem(TESTNODE_SAN_CERT)?;
+    let cert = Certificate::from_pem(TESTNODE_CERT)?;
     let builder =
         client::create_default_builder().cert_validation(CertificateValidation::Certificate(cert));
     let client = client::create(builder);
@@ -216,7 +221,7 @@ async fn certificate_certificate_validation() -> Result<(), failure::Error> {
 #[tokio::test]
 #[cfg(all(unix, feature = "native-tls"))]
 async fn certificate_certificate_validation() -> Result<(), failure::Error> {
-    let cert = Certificate::from_pem(TESTNODE_SAN_CERT)?;
+    let cert = Certificate::from_pem(TESTNODE_CERT)?;
     let builder =
         client::create_default_builder().cert_validation(CertificateValidation::Certificate(cert));
     let client = client::create(builder);
@@ -264,7 +269,7 @@ async fn certificate_certificate_ca_validation() -> Result<(), failure::Error> {
 #[tokio::test]
 #[cfg(feature = "native-tls")]
 async fn fail_certificate_certificate_validation() -> Result<(), failure::Error> {
-    let cert = Certificate::from_pem(TESTNODE_CERT)?;
+    let cert = Certificate::from_pem(TESTNODE_NO_SAN_CERT)?;
     let builder =
         client::create_default_builder().cert_validation(CertificateValidation::Certificate(cert));
 
