@@ -57,6 +57,7 @@ impl XpackInfoParts {
 pub struct XpackInfo<'a, 'b> {
     transport: &'a Transport,
     parts: XpackInfoParts,
+    accept_enterprise: Option<bool>,
     categories: Option<&'b [&'b str]>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -73,6 +74,7 @@ impl<'a, 'b> XpackInfo<'a, 'b> {
             transport,
             parts: XpackInfoParts::None,
             headers,
+            accept_enterprise: None,
             categories: None,
             error_trace: None,
             filter_path: None,
@@ -80,6 +82,11 @@ impl<'a, 'b> XpackInfo<'a, 'b> {
             pretty: None,
             source: None,
         }
+    }
+    #[doc = "If an enterprise license is installed, return the type and mode as 'enterprise' (default: false)"]
+    pub fn accept_enterprise(mut self, accept_enterprise: bool) -> Self {
+        self.accept_enterprise = Some(accept_enterprise);
+        self
     }
     #[doc = "Comma-separated list of info categories. Can be any of: build, license, features"]
     pub fn categories(mut self, categories: &'b [&'b str]) -> Self {
@@ -125,6 +132,8 @@ impl<'a, 'b> XpackInfo<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                #[serde(rename = "accept_enterprise")]
+                accept_enterprise: Option<bool>,
                 #[serde(
                     rename = "categories",
                     serialize_with = "crate::client::serialize_coll_qs"
@@ -145,6 +154,7 @@ impl<'a, 'b> XpackInfo<'a, 'b> {
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
+                accept_enterprise: self.accept_enterprise,
                 categories: self.categories,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
