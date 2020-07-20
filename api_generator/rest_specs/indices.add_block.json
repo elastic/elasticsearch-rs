@@ -1,22 +1,25 @@
 {
-  "indices.put_mapping":{
+  "indices.add_block":{
     "documentation":{
-      "url":"https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-put-mapping.html",
-      "description":"Updates the index mappings."
+      "url":"https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-blocks.html",
+      "description":"Adds a block to an index."
     },
     "stability":"stable",
     "url":{
       "paths":[
         {
-          "path":"/{index}/_mapping",
+          "path":"/{index}/_block/{block}",
           "methods":[
-            "PUT",
-            "POST"
+            "PUT"
           ],
           "parts":{
             "index":{
               "type":"list",
-              "description":"A comma-separated list of index names the mapping should be added to (supports wildcards); use `_all` or omit to add the mapping on all indices."
+              "description":"A comma separated list of indices to add a block to"
+            },
+            "block":{
+              "type":"string",
+              "description":"The block to add (one of read, write, read_only or metadata)"
             }
           }
         }
@@ -50,16 +53,7 @@
         ],
         "default":"open",
         "description":"Whether to expand wildcard expression to concrete indices that are open, closed or both."
-      },
-      "write_index_only":{
-        "type":"boolean",
-        "default":false,
-        "description":"When true, applies mappings only to the write index of an alias or data stream"
       }
-    },
-    "body":{
-      "description":"The mapping definition",
-      "required":true
     }
   }
 }

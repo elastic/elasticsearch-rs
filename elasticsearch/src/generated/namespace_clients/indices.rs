@@ -39,6 +39,210 @@ use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Indices Add Block API"]
+pub enum IndicesAddBlockParts<'b> {
+    #[doc = "Index and Block"]
+    IndexBlock(&'b [&'b str], &'b str),
+}
+impl<'b> IndicesAddBlockParts<'b> {
+    #[doc = "Builds a relative URL path to the Indices Add Block API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            IndicesAddBlockParts::IndexBlock(ref index, ref block) => {
+                let index_str = index.join(",");
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_block: Cow<str> =
+                    percent_encode(block.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(9usize + encoded_index.len() + encoded_block.len());
+                p.push_str("/");
+                p.push_str(encoded_index.as_ref());
+                p.push_str("/_block/");
+                p.push_str(encoded_block.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Indices Add Block API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-blocks.html)\n\nAdds a block to an index."]
+pub struct IndicesAddBlock<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: IndicesAddBlockParts<'b>,
+    allow_no_indices: Option<bool>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<&'b [ExpandWildcards]>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    master_timeout: Option<&'b str>,
+    pretty: Option<bool>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
+}
+impl<'a, 'b, B> IndicesAddBlock<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [IndicesAddBlock] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: IndicesAddBlockParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        IndicesAddBlock {
+            transport,
+            parts,
+            headers,
+            allow_no_indices: None,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
+        }
+    }
+    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> IndicesAddBlock<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        IndicesAddBlock {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            allow_no_indices: self.allow_no_indices,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Indices Add Block API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
+        let headers = self.headers;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
+                expand_wildcards: Option<&'b [ExpandWildcards]>,
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
+                filter_path: Option<&'b [&'b str]>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<&'b str>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<&'b str>,
+                #[serde(rename = "timeout")]
+                timeout: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
+                expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
+                ignore_unavailable: self.ignore_unavailable,
+                master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Analyze API"]
 pub enum IndicesAnalyzeParts<'b> {
     #[doc = "No parts"]
@@ -4455,6 +4659,7 @@ pub struct IndicesPutMapping<'a, 'b, B> {
     pretty: Option<bool>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
+    write_index_only: Option<bool>,
 }
 impl<'a, 'b, B> IndicesPutMapping<'a, 'b, B>
 where
@@ -4478,6 +4683,7 @@ where
             pretty: None,
             source: None,
             timeout: None,
+            write_index_only: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
@@ -4505,6 +4711,7 @@ where
             pretty: self.pretty,
             source: self.source,
             timeout: self.timeout,
+            write_index_only: self.write_index_only,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -4557,6 +4764,11 @@ where
         self.timeout = Some(timeout);
         self
     }
+    #[doc = "When true, applies mappings only to the write index of an alias or data stream"]
+    pub fn write_index_only(mut self, write_index_only: bool) -> Self {
+        self.write_index_only = Some(write_index_only);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Indices Put Mapping API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -4592,6 +4804,8 @@ where
                 source: Option<&'b str>,
                 #[serde(rename = "timeout")]
                 timeout: Option<&'b str>,
+                #[serde(rename = "write_index_only")]
+                write_index_only: Option<bool>,
             }
             let query_params = QueryParams {
                 allow_no_indices: self.allow_no_indices,
@@ -4604,6 +4818,7 @@ where
                 pretty: self.pretty,
                 source: self.source,
                 timeout: self.timeout,
+                write_index_only: self.write_index_only,
             };
             Some(query_params)
         };
@@ -7546,6 +7761,10 @@ impl<'a> Indices<'a> {
     }
     pub fn transport(&self) -> &Transport {
         self.transport
+    }
+    #[doc = "[Indices Add Block API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-blocks.html)\n\nAdds a block to an index."]
+    pub fn add_block<'b>(&'a self, parts: IndicesAddBlockParts<'b>) -> IndicesAddBlock<'a, 'b, ()> {
+        IndicesAddBlock::new(self.transport(), parts)
     }
     #[doc = "[Indices Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-analyze.html)\n\nPerforms the analysis process on a text and return the tokens breakdown of the text."]
     pub fn analyze<'b>(&'a self, parts: IndicesAnalyzeParts<'b>) -> IndicesAnalyze<'a, 'b, ()> {

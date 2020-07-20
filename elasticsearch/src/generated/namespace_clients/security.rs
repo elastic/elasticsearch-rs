@@ -305,6 +305,148 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Security Clear Cached Privileges API"]
+pub enum SecurityClearCachedPrivilegesParts<'b> {
+    #[doc = "Application"]
+    Application(&'b [&'b str]),
+}
+impl<'b> SecurityClearCachedPrivilegesParts<'b> {
+    #[doc = "Builds a relative URL path to the Security Clear Cached Privileges API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SecurityClearCachedPrivilegesParts::Application(ref application) => {
+                let application_str = application.join(",");
+                let encoded_application: Cow<str> =
+                    percent_encode(application_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(34usize + encoded_application.len());
+                p.push_str("/_security/privilege/");
+                p.push_str(encoded_application.as_ref());
+                p.push_str("/_clear_cache");
+                p.into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Security Clear Cached Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-clear-privilege-cache.html)\n\nEvicts application privileges from the native application privileges cache."]
+pub struct SecurityClearCachedPrivileges<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: SecurityClearCachedPrivilegesParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b, B> SecurityClearCachedPrivileges<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [SecurityClearCachedPrivileges] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: SecurityClearCachedPrivilegesParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        SecurityClearCachedPrivileges {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> SecurityClearCachedPrivileges<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        SecurityClearCachedPrivileges {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Security Clear Cached Privileges API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
+        let headers = self.headers;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
+                filter_path: Option<&'b [&'b str]>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Clear Cached Realms API"]
 pub enum SecurityClearCachedRealmsParts<'b> {
     #[doc = "Realms"]
@@ -3610,6 +3752,13 @@ impl<'a> Security<'a> {
         parts: SecurityChangePasswordParts<'b>,
     ) -> SecurityChangePassword<'a, 'b, ()> {
         SecurityChangePassword::new(self.transport(), parts)
+    }
+    #[doc = "[Security Clear Cached Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-clear-privilege-cache.html)\n\nEvicts application privileges from the native application privileges cache."]
+    pub fn clear_cached_privileges<'b>(
+        &'a self,
+        parts: SecurityClearCachedPrivilegesParts<'b>,
+    ) -> SecurityClearCachedPrivileges<'a, 'b, ()> {
+        SecurityClearCachedPrivileges::new(self.transport(), parts)
     }
     #[doc = "[Security Clear Cached Realms API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-clear-cache.html)\n\nEvicts users from the user cache. Can completely clear the cache or evict specific users."]
     pub fn clear_cached_realms<'b>(
