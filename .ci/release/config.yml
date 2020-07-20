@@ -1,0 +1,17 @@
+# Used in release notes generation to map GitHub labels to release notes sections
+
+github:
+  owner: elastic
+  repository: elasticsearch-rs
+
+# Label headers and their descriptions. The labels will form the sections of the release notes  
+labels:
+  enhancement: "Features & Enhancements"    
+  bug: "Bug Fixes"
+  documentation: "Documentation & Examples"
+  uncategorized: "Uncategorized"
+  breaking-change: "Breaking Changes"
+  infra: "CI & testing"
+
+# Label header to use for uncategorized issues and PRs
+uncategorized: "Uncategorized"
