@@ -358,6 +358,7 @@ pub mod cat;
 pub mod ccr;
 pub mod cert;
 pub mod cluster;
+pub mod dangling_indices;
 pub mod enrich;
 pub mod graph;
 pub mod http;
