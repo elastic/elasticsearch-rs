@@ -1210,6 +1210,268 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Indices Create Data Stream API"]
+pub enum IndicesCreateDataStreamParts<'b> {
+    #[doc = "Name"]
+    Name(&'b str),
+}
+impl<'b> IndicesCreateDataStreamParts<'b> {
+    #[doc = "Builds a relative URL path to the Indices Create Data Stream API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            IndicesCreateDataStreamParts::Name(ref name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(14usize + encoded_name.len());
+                p.push_str("/_data_stream/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Indices Create Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/data-streams.html)\n\nCreates or updates a data stream"]
+pub struct IndicesCreateDataStream<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: IndicesCreateDataStreamParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b, B> IndicesCreateDataStream<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [IndicesCreateDataStream] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: IndicesCreateDataStreamParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        IndicesCreateDataStream {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> IndicesCreateDataStream<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        IndicesCreateDataStream {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Indices Create Data Stream API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
+        let headers = self.headers;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
+                filter_path: Option<&'b [&'b str]>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Indices Data Streams Stats API"]
+pub enum IndicesDataStreamsStatsParts<'b> {
+    #[doc = "No parts"]
+    None,
+    #[doc = "Name"]
+    Name(&'b [&'b str]),
+}
+impl<'b> IndicesDataStreamsStatsParts<'b> {
+    #[doc = "Builds a relative URL path to the Indices Data Streams Stats API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            IndicesDataStreamsStatsParts::None => "/_data_stream/_stats".into(),
+            IndicesDataStreamsStatsParts::Name(ref name) => {
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(21usize + encoded_name.len());
+                p.push_str("/_data_stream/");
+                p.push_str(encoded_name.as_ref());
+                p.push_str("/_stats");
+                p.into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Indices Data Streams Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/data-streams.html)\n\nProvides statistics on operations happening in a data stream."]
+pub struct IndicesDataStreamsStats<'a, 'b> {
+    transport: &'a Transport,
+    parts: IndicesDataStreamsStatsParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b> IndicesDataStreamsStats<'a, 'b> {
+    #[doc = "Creates a new instance of [IndicesDataStreamsStats] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: IndicesDataStreamsStatsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        IndicesDataStreamsStats {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Indices Data Streams Stats API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
+        let headers = self.headers;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
+                filter_path: Option<&'b [&'b str]>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Delete API"]
 pub enum IndicesDeleteParts<'b> {
     #[doc = "Index"]
@@ -1515,6 +1777,125 @@ impl<'a, 'b> IndicesDeleteAlias<'a, 'b> {
                 pretty: self.pretty,
                 source: self.source,
                 timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Indices Delete Data Stream API"]
+pub enum IndicesDeleteDataStreamParts<'b> {
+    #[doc = "Name"]
+    Name(&'b [&'b str]),
+}
+impl<'b> IndicesDeleteDataStreamParts<'b> {
+    #[doc = "Builds a relative URL path to the Indices Delete Data Stream API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            IndicesDeleteDataStreamParts::Name(ref name) => {
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(14usize + encoded_name.len());
+                p.push_str("/_data_stream/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Indices Delete Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/data-streams.html)\n\nDeletes a data stream."]
+pub struct IndicesDeleteDataStream<'a, 'b> {
+    transport: &'a Transport,
+    parts: IndicesDeleteDataStreamParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b> IndicesDeleteDataStream<'a, 'b> {
+    #[doc = "Creates a new instance of [IndicesDeleteDataStream] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: IndicesDeleteDataStreamParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        IndicesDeleteDataStream {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Indices Delete Data Stream API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
+        let headers = self.headers;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
+                filter_path: Option<&'b [&'b str]>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -3536,6 +3917,128 @@ impl<'a, 'b> IndicesGetAlias<'a, 'b> {
                 human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 local: self.local,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Indices Get Data Stream API"]
+pub enum IndicesGetDataStreamParts<'b> {
+    #[doc = "No parts"]
+    None,
+    #[doc = "Name"]
+    Name(&'b [&'b str]),
+}
+impl<'b> IndicesGetDataStreamParts<'b> {
+    #[doc = "Builds a relative URL path to the Indices Get Data Stream API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            IndicesGetDataStreamParts::None => "/_data_stream".into(),
+            IndicesGetDataStreamParts::Name(ref name) => {
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(14usize + encoded_name.len());
+                p.push_str("/_data_stream/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Indices Get Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/data-streams.html)\n\nReturns data streams."]
+pub struct IndicesGetDataStream<'a, 'b> {
+    transport: &'a Transport,
+    parts: IndicesGetDataStreamParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b> IndicesGetDataStream<'a, 'b> {
+    #[doc = "Creates a new instance of [IndicesGetDataStream] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: IndicesGetDataStreamParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        IndicesGetDataStream {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Indices Get Data Stream API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
+        let headers = self.headers;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
+                filter_path: Option<&'b [&'b str]>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -8166,6 +8669,20 @@ impl<'a> Indices<'a> {
     pub fn create<'b>(&'a self, parts: IndicesCreateParts<'b>) -> IndicesCreate<'a, 'b, ()> {
         IndicesCreate::new(self.transport(), parts)
     }
+    #[doc = "[Indices Create Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/data-streams.html)\n\nCreates or updates a data stream"]
+    pub fn create_data_stream<'b>(
+        &'a self,
+        parts: IndicesCreateDataStreamParts<'b>,
+    ) -> IndicesCreateDataStream<'a, 'b, ()> {
+        IndicesCreateDataStream::new(self.transport(), parts)
+    }
+    #[doc = "[Indices Data Streams Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/data-streams.html)\n\nProvides statistics on operations happening in a data stream."]
+    pub fn data_streams_stats<'b>(
+        &'a self,
+        parts: IndicesDataStreamsStatsParts<'b>,
+    ) -> IndicesDataStreamsStats<'a, 'b> {
+        IndicesDataStreamsStats::new(self.transport(), parts)
+    }
     #[doc = "[Indices Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/indices-delete-index.html)\n\nDeletes an index."]
     pub fn delete<'b>(&'a self, parts: IndicesDeleteParts<'b>) -> IndicesDelete<'a, 'b> {
         IndicesDelete::new(self.transport(), parts)
@@ -8176,6 +8693,13 @@ impl<'a> Indices<'a> {
         parts: IndicesDeleteAliasParts<'b>,
     ) -> IndicesDeleteAlias<'a, 'b> {
         IndicesDeleteAlias::new(self.transport(), parts)
+    }
+    #[doc = "[Indices Delete Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/data-streams.html)\n\nDeletes a data stream."]
+    pub fn delete_data_stream<'b>(
+        &'a self,
+        parts: IndicesDeleteDataStreamParts<'b>,
+    ) -> IndicesDeleteDataStream<'a, 'b> {
+        IndicesDeleteDataStream::new(self.transport(), parts)
     }
     #[doc = "[Indices Delete Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/indices-templates.html)\n\nDeletes an index template."]
     pub fn delete_template<'b>(
@@ -8238,6 +8762,13 @@ impl<'a> Indices<'a> {
     #[doc = "[Indices Get Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/indices-aliases.html)\n\nReturns an alias."]
     pub fn get_alias<'b>(&'a self, parts: IndicesGetAliasParts<'b>) -> IndicesGetAlias<'a, 'b> {
         IndicesGetAlias::new(self.transport(), parts)
+    }
+    #[doc = "[Indices Get Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/data-streams.html)\n\nReturns data streams."]
+    pub fn get_data_stream<'b>(
+        &'a self,
+        parts: IndicesGetDataStreamParts<'b>,
+    ) -> IndicesGetDataStream<'a, 'b> {
+        IndicesGetDataStream::new(self.transport(), parts)
     }
     #[doc = "[Indices Get Field Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/indices-get-field-mapping.html)\n\nReturns mapping for one or more fields."]
     pub fn get_field_mapping<'b>(
