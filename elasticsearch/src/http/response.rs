@@ -134,7 +134,7 @@ impl Response {
     pub fn warning_headers(&self) -> impl Iterator<Item = &str> {
         self.0.headers().get_all("Warning").iter().map(|w| {
             let s = w.to_str().unwrap();
-            let first_quote = s.find(r#"""#).unwrap();
+            let first_quote = s.find('"').unwrap();
             let last_quote = s.len() - 1;
             &s[first_quote + 1..last_quote]
         })
@@ -208,8 +208,8 @@ where
 
 impl Error {
     /// The cause of the exception
-    pub fn caused_by(&self) -> Option<&Box<Cause>> {
-        self.caused_by.as_ref()
+    pub fn caused_by(&self) -> Option<&Cause> {
+        self.caused_by.as_deref()
     }
 
     /// The root causes for the exception
@@ -224,19 +224,19 @@ impl Error {
 
     /// The reason for the exception, if available.
     pub fn reason(&self) -> Option<&str> {
-        self.reason.as_ref().map(|r| r.as_str())
+        self.reason.as_deref()
     }
 
     /// The exception stack trace, if available.
     ///
     /// Available if `error_trace` is specified on the request
     pub fn stack_trace(&self) -> Option<&str> {
-        self.stack_trace.as_ref().map(|r| r.as_str())
+        self.stack_trace.as_deref()
     }
 
     /// The type of exception, if available.
     pub fn ty(&self) -> Option<&str> {
-        self.ty.as_ref().map(|t| t.as_str())
+        self.ty.as_deref()
     }
 
     /// Additional details about the cause.
@@ -323,25 +323,25 @@ where
 
 impl Cause {
     /// The cause of the exception
-    pub fn caused_by(&self) -> Option<&Box<Cause>> {
-        self.caused_by.as_ref()
+    pub fn caused_by(&self) -> Option<&Cause> {
+        self.caused_by.as_deref()
     }
 
     /// The reason for the exception
     pub fn reason(&self) -> Option<&str> {
-        self.reason.as_ref().map(|r| r.as_str())
+        self.reason.as_deref()
     }
 
     /// The exception stack trace, if available.
     ///
     /// Available if `error_trace` is specified on the request
     pub fn stack_trace(&self) -> Option<&str> {
-        self.stack_trace.as_ref().map(|r| r.as_str())
+        self.stack_trace.as_deref()
     }
 
     /// The type of exception, if available.
     pub fn ty(&self) -> Option<&str> {
-        self.ty.as_ref().map(|t| t.as_str())
+        self.ty.as_deref()
     }
 
     /// Additional details about the cause.
