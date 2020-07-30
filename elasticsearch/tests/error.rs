@@ -66,7 +66,7 @@ async fn deserialize_exception() -> Result<(), failure::Error> {
     let error = ex.error();
 
     assert_eq!(ex.status().unwrap(), status_code.as_u16());
-    assert_eq!(error.ty(), "action_request_validation_exception");
+    assert_eq!(error.ty(), Some("action_request_validation_exception"));
     assert!(error.stack_trace().is_some());
     assert_eq!(
         error.reason(),
