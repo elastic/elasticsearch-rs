@@ -75,11 +75,11 @@ impl Response {
         }
     }
 
-    /// Asynchronously reads the response body into an [ElasticsearchException] if
+    /// Asynchronously reads the response body into an [Exception] if
     /// Elasticsearch returned a HTTP status code in the 400-599 range.
     ///
     /// Reading the response body consumes `self`
-    pub async fn exception(self) -> Result<Option<ElasticsearchException>, ClientError> {
+    pub async fn exception(self) -> Result<Option<Exception>, ClientError> {
         if self.status_code().is_client_error() || self.status_code().is_server_error() {
             let ex = self.json().await?;
             Ok(Some(ex))
@@ -154,16 +154,17 @@ impl fmt::Debug for Response {
 
 /// An exception raised by Elasticsearch.
 ///
-/// Contains details that indicate why the exception was raised which can help
+/// Contains details that indicate why the exception was raised which can help to determine
+/// what subsequent action to take.
 #[serde_with::skip_serializing_none]
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone)]
-pub struct ElasticsearchException {
+pub struct Exception {
     status: Option<u16>,
     #[serde(deserialize_with = "crate::string_or_struct")]
     error: Error,
 }
 
-impl ElasticsearchException {
+impl Exception {
     /// The status code of the exception, if available.
     pub fn status(&self) -> Option<u16> {
         self.status
@@ -179,6 +180,8 @@ impl ElasticsearchException {
 #[serde_with::skip_serializing_none]
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone)]
 pub struct Error {
+    #[serde(deserialize_with = "option_box_cause", default)]
+    caused_by: Option<Box<Cause>>,
     #[serde(default = "BTreeMap::new", deserialize_with = "header_map")]
     header: BTreeMap<String, Vec<String>>,
     #[serde(default = "Vec::new")]
@@ -186,7 +189,7 @@ pub struct Error {
     reason: Option<String>,
     stack_trace: Option<String>,
     #[serde(rename = "type")]
-    ty: String,
+    ty: Option<String>,
     #[serde(default = "BTreeMap::new", flatten)]
     additional_details: BTreeMap<String, Value>,
 }
@@ -204,17 +207,22 @@ where
 }
 
 impl Error {
+    /// The cause of the exception
+    pub fn caused_by(&self) -> Option<&Box<Cause>> {
+        self.caused_by.as_ref()
+    }
+
     /// The root causes for the exception
     pub fn root_cause(&self) -> &Vec<Cause> {
         &self.root_cause
     }
 
-    /// The headers
+    /// The headers for the exception
     pub fn header(&self) -> &BTreeMap<String, Vec<String>> {
         &self.header
     }
 
-    /// The reason for the exception
+    /// The reason for the exception, if available.
     pub fn reason(&self) -> Option<&str> {
         self.reason.as_ref().map(|r| r.as_str())
     }
@@ -226,9 +234,9 @@ impl Error {
         self.stack_trace.as_ref().map(|r| r.as_str())
     }
 
-    /// The type of exception
-    pub fn ty(&self) -> &str {
-        self.ty.as_str()
+    /// The type of exception, if available.
+    pub fn ty(&self) -> Option<&str> {
+        self.ty.as_ref().map(|t| t.as_str())
     }
 
     /// Additional details about the cause.
@@ -247,11 +255,12 @@ impl FromStr for Error {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Ok(Error {
+            caused_by: None,
             header: Default::default(),
             root_cause: Vec::new(),
             reason: Some(s.to_string()),
             stack_trace: None,
-            ty: String::new(),
+            ty: None,
             additional_details: Default::default(),
         })
     }
@@ -266,7 +275,7 @@ pub struct Cause {
     reason: Option<String>,
     stack_trace: Option<String>,
     #[serde(rename = "type")]
-    ty: String,
+    ty: Option<String>,
     #[serde(default = "BTreeMap::new", flatten)]
     additional_details: BTreeMap<String, Value>,
 }
@@ -294,7 +303,7 @@ where
                 caused_by: None,
                 reason: Some(value.to_string()),
                 stack_trace: None,
-                ty: String::new(),
+                ty: None,
                 additional_details: Default::default(),
             })
         }
@@ -330,9 +339,9 @@ impl Cause {
         self.stack_trace.as_ref().map(|r| r.as_str())
     }
 
-    /// The type of exception
-    pub fn ty(&self) -> &str {
-        self.ty.as_str()
+    /// The type of exception, if available.
+    pub fn ty(&self) -> Option<&str> {
+        self.ty.as_ref().map(|t| t.as_str())
     }
 
     /// Additional details about the cause.
@@ -346,110 +355,153 @@ impl Cause {
 
 #[cfg(test)]
 pub mod tests {
-    use crate::http::response::ElasticsearchException;
+    use crate::http::response::Exception;
     use serde_json::json;
 
     #[test]
-    fn deserialize_exception_with_additional_details() -> Result<(), failure::Error> {
+    fn deserialize_error_string() -> Result<(), failure::Error> {
+        let json = r#"{"error":"no handler found for uri [/test_1/test/1/_update?_source=foo%2Cbar] and method [POST]"}"#;
+        let ex: Exception = serde_json::from_str(json)?;
+
+        assert_eq!(ex.status(), None);
+        assert_eq!(ex.error().reason(), Some("no handler found for uri [/test_1/test/1/_update?_source=foo%2Cbar] and method [POST]"));
+        assert_eq!(ex.error().ty(), None);
+
+        Ok(())
+    }
+
+    #[test]
+    fn deserialize_illegal_argument_exception() -> Result<(), failure::Error> {
         let json = r#"{
-            "error":{
-                "root_cause" : [
-                    {
-                        "type" : "parse_exception",
-                        "reason" : "failed to parse date field [-1m] with format [strict_date_optional_time||epoch_millis]",
-                        "caused_by" : {
-                            "type" : "parse_exception",
-                            "reason" : "failed to parse date field [-1m] with format [strict_date_optional_time||epoch_millis]",
-                            "index" : null,
-                            "resource.id" : ["alias1", "alias2"],
-                            "script_stack" : ["alias1", "alias2"],
-                            "unknown_prop" : ["alias1", "alias2"],
-                            "caused_by" : {
-                                "type" : "illegal_argument_exception",
-                                "reason" : "Parse failure at index [2] of [-1m]",
-                                "caused_by" : "x"
-                            }
-                        }
-                    }
-                ],
-                "type" : "search_phase_execution_exception",
-                "reason" : "all shards failed",
-                "phase" : "query",
-                "grouped" : true,
-                "failed_shards" : [
-                {
-                    "shard" : 0,
-                    "index" : "project",
-                    "node" : "Uo6PBln_QrmD8Y9o1NKdQw",
-                    "unknown_prop" : "x",
-                    "reason" : {
-                        "type" : "parse_exception",
-                        "reason" : "failed to parse date field [-1m] with format [strict_date_optional_time||epoch_millis]",
-                        "caused_by" : {
-                            "type" : "illegal_argument_exception",
-                            "reason" : "Parse failure at index [2] of [-1m]"
-                        }
-                    },
-                    "status" : "x"
-                }
-                ],
-                "header" : {
-                    "WWW-Authenticate" : "Bearer ...",
-                    "x" : ["y", "z"]
-                },
-                "license.expired.feature" : "ml",
-                "index" : "index",
-                "index_uuid" : "x9h1ks",
-                "unknown_prop" : {},
-                "unknown_prop2" : false,
-                "resource.type" : "aliases",
-                "resource.id" : "alias1",
-                "shard" : "1",
-                "line" : 12,
-                "col" : 199,
-                "bytes_wanted" : 1298312,
-                "bytes_limit" : 8912031,
-                "script_stack" : "x",
-                "script" : "some script",
-                "lang" : "painless"
+          "error": {
+            "root_cause": [{
+              "type": "illegal_argument_exception",
+              "reason": "Missing mandatory contexts in context query"
+            }],
+            "type": "search_phase_execution_exception",
+            "reason": "all shards failed",
+            "phase": "query",
+            "grouped": true,
+            "header": {
+                "WWW-Authenticate": "Bearer: token",
+                "x": ["y", "z"]
+            },
+            "failed_shards": [{
+              "shard": 0,
+              "index": "test",
+              "node": "APOkVK-rQi2Ll6CcAdeR6Q",
+              "reason": {
+                "type": "illegal_argument_exception",
+                "reason": "Missing mandatory contexts in context query"
+              }
+            }],
+            "caused_by": {
+              "type": "illegal_argument_exception",
+              "reason": "Missing mandatory contexts in context query",
+              "caused_by": {
+                "type": "illegal_argument_exception",
+                "reason": "Missing mandatory contexts in context query"
+              }
             }
+          },
+          "status": 400
         }"#;
 
-        let ex: ElasticsearchException = serde_json::from_str(json)?;
+        let ex: Exception = serde_json::from_str(json)?;
+
+        assert_eq!(ex.status(), Some(400));
+
         let error = ex.error();
 
-        assert!(ex.status().is_none());
-        assert_eq!(error.reason(), Some("all shards failed"));
-        assert!(!error.additional_details().is_empty());
+        assert_eq!(error.root_cause().len(), 1);
         assert_eq!(
-            error.additional_details().get("script_stack"),
-            Some(&json!("x"))
+            error.root_cause()[0].ty(),
+            Some("illegal_argument_exception")
         );
+        assert_eq!(
+            error.root_cause()[0].reason(),
+            Some("Missing mandatory contexts in context query")
+        );
+
         assert_eq!(error.header().len(), 2);
+        assert_eq!(
+            error.header().get("WWW-Authenticate"),
+            Some(&vec!["Bearer: token".to_string()])
+        );
         assert_eq!(
             error.header().get("x"),
             Some(&vec!["y".to_string(), "z".to_string()])
         );
 
-        assert!(!error.root_cause().is_empty());
-        let first_root_cause = &error.root_cause()[0];
-        assert!(first_root_cause.caused_by().is_some());
-        let caused_by = first_root_cause.caused_by().unwrap();
-        assert_eq!(caused_by.reason(), Some("failed to parse date field [-1m] with format [strict_date_optional_time||epoch_millis]"));
+        assert!(error.caused_by().is_some());
+        let caused_by = error.caused_by().unwrap();
 
-        assert!(caused_by.caused_by().is_some());
-        let inner_caused_by = caused_by.caused_by().unwrap();
+        assert_eq!(caused_by.ty(), Some("illegal_argument_exception"));
         assert_eq!(
-            inner_caused_by.reason(),
-            Some("Parse failure at index [2] of [-1m]")
+            caused_by.reason(),
+            Some("Missing mandatory contexts in context query")
         );
 
-        assert!(inner_caused_by.caused_by().is_some());
-        let inner_inner_caused_by = inner_caused_by.caused_by().unwrap();
-        assert_eq!(inner_inner_caused_by.reason(), Some("x"));
+        assert!(caused_by.caused_by().is_some());
+        let caused_by_caused_by = caused_by.caused_by().unwrap();
 
-        assert!(inner_inner_caused_by.caused_by().is_none());
+        assert_eq!(caused_by_caused_by.ty(), Some("illegal_argument_exception"));
+        assert_eq!(
+            caused_by_caused_by.reason(),
+            Some("Missing mandatory contexts in context query")
+        );
 
+        assert!(error.additional_details().len() > 0);
+        assert_eq!(
+            error.additional_details().get("phase"),
+            Some(&json!("query"))
+        );
+        assert_eq!(
+            error.additional_details().get("grouped"),
+            Some(&json!(true))
+        );
+
+        Ok(())
+    }
+
+    #[test]
+    fn deserialize_index_not_found_exception() -> Result<(), failure::Error> {
+        let json = r#"{
+          "error": {
+            "root_cause": [{
+              "type": "index_not_found_exception",
+              "reason": "no such index [test_index]",
+              "resource.type": "index_or_alias",
+              "resource.id": "test_index",
+              "index_uuid": "_na_",
+              "index": "test_index"
+            }],
+            "type": "index_not_found_exception",
+            "reason": "no such index [test_index]",
+            "resource.type": "index_or_alias",
+            "resource.id": "test_index",
+            "index_uuid": "_na_",
+            "index": "test_index"
+          },
+          "status": 404
+        }"#;
+
+        let ex: Exception = serde_json::from_str(json)?;
+
+        assert_eq!(ex.status(), Some(404));
+        let error = ex.error();
+
+        assert_eq!(error.ty(), Some("index_not_found_exception"));
+        assert_eq!(error.reason(), Some("no such index [test_index]"));
+        assert_eq!(
+            error.additional_details().get("index").unwrap(),
+            &json!("test_index")
+        );
+        assert_eq!(error.root_cause().len(), 1);
+        assert_eq!(
+            error.root_cause()[0].ty(),
+            Some("index_not_found_exception")
+        );
         Ok(())
     }
 }

@@ -387,11 +387,12 @@ mod root;
 
 // exposes types within modules at the library root level
 pub use crate::{client::*, error::*, http::transport::DEFAULT_ADDRESS, root::*};
-use serde::de::{MapAccess, Visitor};
-use serde::{de, Deserialize, Deserializer};
-use std::fmt;
-use std::marker::PhantomData;
-use std::str::FromStr;
+use serde::{
+    de,
+    de::{MapAccess, Visitor},
+    Deserialize, Deserializer,
+};
+use std::{fmt, marker::PhantomData, str::FromStr};
 use void::Void;
 
 /// Deserializes a string or a map into a struct `T` that implements `FromStr`
@@ -440,7 +441,7 @@ pub(crate) fn string_or_seq_string<'de, D>(deserializer: D) -> Result<Vec<String
 where
     D: Deserializer<'de>,
 {
-    struct StringOrVec(PhantomData<Vec<String>>);
+    struct StringOrVec;
 
     impl<'de> de::Visitor<'de> for StringOrVec {
         type Value = Vec<String>;
@@ -464,7 +465,7 @@ where
         }
     }
 
-    deserializer.deserialize_any(StringOrVec(PhantomData))
+    deserializer.deserialize_any(StringOrVec)
 }
 
 #[cfg(test)]
