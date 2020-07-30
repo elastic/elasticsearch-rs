@@ -31,7 +31,6 @@ use std::env;
 use sysinfo::SystemExt;
 use url::Url;
 mod stack_overflow;
-use elasticsearch::http::response::Response;
 use stack_overflow::*;
 use textwrap::fill;
 
