@@ -38,7 +38,7 @@ use std::{error, fmt, io};
 /// An error with the client.
 ///
 /// Errors that can occur include IO and parsing errors, as well as specific
-/// errors from Elasticsearch and internal errors from this library
+/// errors from Elasticsearch and internal errors from the client.
 #[derive(Debug)]
 pub struct Error {
     kind: Kind,
@@ -121,6 +121,14 @@ impl Error {
     pub fn is_timeout(&self) -> bool {
         match &self.kind {
             Kind::Http(err) => err.is_timeout(),
+            _ => false,
+        }
+    }
+
+    /// Returns true if the error is related to serialization or deserialization
+    pub fn is_json(&self) -> bool {
+        match &self.kind {
+            Kind::Json(_) => true,
             _ => false,
         }
     }

@@ -21,7 +21,11 @@ use crate::{
     error::Error as ClientError,
     http::{headers::HeaderMap, Method, StatusCode, Url},
 };
-use serde::{de, de::{MapAccess, Visitor, DeserializeOwned}, Deserialize, Deserializer, Serialize};
+use serde::{
+    de,
+    de::{DeserializeOwned, MapAccess, Visitor},
+    Deserialize, Deserializer, Serialize,
+};
 use serde_json::Value;
 use std::{collections::BTreeMap, fmt, str::FromStr};
 use void::Void;
@@ -72,7 +76,7 @@ impl Response {
     }
 
     /// Asynchronously reads the response body into an [ElasticsearchException] if
-    /// Elasticsearch returned an error.
+    /// Elasticsearch returned a HTTP status code in the 400-599 range.
     ///
     /// Reading the response body consumes `self`
     pub async fn exception(self) -> Result<Option<ElasticsearchException>, ClientError> {
@@ -165,7 +169,7 @@ impl ElasticsearchException {
         self.status
     }
 
-    /// The error details for the exception
+    /// The details for the exception
     pub fn error(&self) -> &Error {
         &self.error
     }
