@@ -37,7 +37,7 @@ use crate::{
 };
 use percent_encoding::percent_encode;
 use serde::Serialize;
-use std::borrow::Cow;
+use std::{borrow::Cow, time::Duration};
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Graph Explore API"]
 pub enum GraphExploreParts<'b> {
@@ -72,6 +72,7 @@ pub struct GraphExplore<'a, 'b, B> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     routing: Option<&'b str>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
@@ -92,6 +93,7 @@ where
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             routing: None,
             source: None,
             timeout: None,
@@ -111,6 +113,7 @@ where
             headers: self.headers,
             human: self.human,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             routing: self.routing,
             source: self.source,
             timeout: self.timeout,
@@ -141,6 +144,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: &'b str) -> Self {
         self.routing = Some(routing);
@@ -164,6 +172,7 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -200,7 +209,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }

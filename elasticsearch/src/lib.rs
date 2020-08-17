@@ -332,7 +332,8 @@
 //!         SearchParts::Index(&["tweets"]).url().as_ref(),
 //!         HeaderMap::new(),
 //!         Option::<&Value>::None,
-//!         Some(body.as_ref())
+//!         Some(body.as_ref()),
+//!         None,
 //!     )
 //!     .await?;
 //!

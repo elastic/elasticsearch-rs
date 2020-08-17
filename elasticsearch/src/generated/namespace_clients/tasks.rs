@@ -37,7 +37,7 @@ use crate::{
 };
 use percent_encoding::percent_encode;
 use serde::Serialize;
-use std::borrow::Cow;
+use std::{borrow::Cow, time::Duration};
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Tasks Cancel API"]
 pub enum TasksCancelParts<'b> {
@@ -77,6 +77,7 @@ pub struct TasksCancel<'a, 'b, B> {
     nodes: Option<&'b [&'b str]>,
     parent_task_id: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     wait_for_completion: Option<bool>,
 }
@@ -99,6 +100,7 @@ where
             nodes: None,
             parent_task_id: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             wait_for_completion: None,
         }
@@ -125,6 +127,7 @@ where
             nodes: self.nodes,
             parent_task_id: self.parent_task_id,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             wait_for_completion: self.wait_for_completion,
         }
@@ -164,6 +167,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -179,6 +187,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -224,7 +233,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -260,6 +269,7 @@ pub struct TasksGet<'a, 'b> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
     wait_for_completion: Option<bool>,
@@ -276,6 +286,7 @@ impl<'a, 'b> TasksGet<'a, 'b> {
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
             wait_for_completion: None,
@@ -306,6 +317,11 @@ impl<'a, 'b> TasksGet<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -326,6 +342,7 @@ impl<'a, 'b> TasksGet<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -362,7 +379,7 @@ impl<'a, 'b> TasksGet<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -396,6 +413,7 @@ pub struct TasksList<'a, 'b> {
     nodes: Option<&'b [&'b str]>,
     parent_task_id: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
     wait_for_completion: Option<bool>,
@@ -417,6 +435,7 @@ impl<'a, 'b> TasksList<'a, 'b> {
             nodes: None,
             parent_task_id: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
             wait_for_completion: None,
@@ -472,6 +491,11 @@ impl<'a, 'b> TasksList<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -492,6 +516,7 @@ impl<'a, 'b> TasksList<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -546,7 +571,7 @@ impl<'a, 'b> TasksList<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
