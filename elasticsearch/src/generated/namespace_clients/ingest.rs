@@ -58,6 +58,12 @@ impl<'b> IngestDeletePipelineParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for IngestDeletePipelineParts<'b> {
+    #[doc = "Builds a [IngestDeletePipelineParts::Id] for the Ingest Delete Pipeline API"]
+    fn from(t: &'b str) -> IngestDeletePipelineParts<'b> {
+        IngestDeletePipelineParts::Id(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/delete-pipeline-api.html)\n\nDeletes a pipeline."]
 pub struct IngestDeletePipeline<'a, 'b> {
@@ -74,11 +80,14 @@ pub struct IngestDeletePipeline<'a, 'b> {
 }
 impl<'a, 'b> IngestDeletePipeline<'a, 'b> {
     #[doc = "Creates a new instance of [IngestDeletePipeline] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IngestDeletePipelineParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IngestDeletePipelineParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IngestDeletePipeline {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             filter_path: None,
@@ -198,6 +207,12 @@ impl<'b> IngestGetPipelineParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for IngestGetPipelineParts<'b> {
+    #[doc = "Builds a [IngestGetPipelineParts::Id] for the Ingest Get Pipeline API"]
+    fn from(t: &'b str) -> IngestGetPipelineParts<'b> {
+        IngestGetPipelineParts::Id(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-pipeline-api.html)\n\nReturns a pipeline."]
 pub struct IngestGetPipeline<'a, 'b> {
@@ -213,11 +228,14 @@ pub struct IngestGetPipeline<'a, 'b> {
 }
 impl<'a, 'b> IngestGetPipeline<'a, 'b> {
     #[doc = "Creates a new instance of [IngestGetPipeline] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IngestGetPipelineParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IngestGetPipelineParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IngestGetPipeline {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             filter_path: None,
@@ -436,6 +454,12 @@ impl<'b> IngestPutPipelineParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for IngestPutPipelineParts<'b> {
+    #[doc = "Builds a [IngestPutPipelineParts::Id] for the Ingest Put Pipeline API"]
+    fn from(t: &'b str) -> IngestPutPipelineParts<'b> {
+        IngestPutPipelineParts::Id(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/put-pipeline-api.html)\n\nCreates or updates a pipeline."]
 pub struct IngestPutPipeline<'a, 'b, B> {
@@ -456,11 +480,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IngestPutPipeline] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IngestPutPipelineParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IngestPutPipelineParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IngestPutPipeline {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             body: None,
             error_trace: None,
@@ -601,6 +628,12 @@ impl<'b> IngestSimulateParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for IngestSimulateParts<'b> {
+    #[doc = "Builds a [IngestSimulateParts::Id] for the Ingest Simulate API"]
+    fn from(t: &'b str) -> IngestSimulateParts<'b> {
+        IngestSimulateParts::Id(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/simulate-pipeline-api.html)\n\nAllows to simulate a pipeline with example documents."]
 pub struct IngestSimulate<'a, 'b, B> {
@@ -620,11 +653,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IngestSimulate] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IngestSimulateParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IngestSimulateParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IngestSimulate {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             body: None,
             error_trace: None,
@@ -747,17 +783,17 @@ impl<'a> Ingest<'a> {
         self.transport
     }
     #[doc = "[Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/delete-pipeline-api.html)\n\nDeletes a pipeline."]
-    pub fn delete_pipeline<'b>(
-        &'a self,
-        parts: IngestDeletePipelineParts<'b>,
-    ) -> IngestDeletePipeline<'a, 'b> {
+    pub fn delete_pipeline<'b, P>(&'a self, parts: P) -> IngestDeletePipeline<'a, 'b>
+    where
+        P: Into<IngestDeletePipelineParts<'b>>,
+    {
         IngestDeletePipeline::new(self.transport(), parts)
     }
     #[doc = "[Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-pipeline-api.html)\n\nReturns a pipeline."]
-    pub fn get_pipeline<'b>(
-        &'a self,
-        parts: IngestGetPipelineParts<'b>,
-    ) -> IngestGetPipeline<'a, 'b> {
+    pub fn get_pipeline<'b, P>(&'a self, parts: P) -> IngestGetPipeline<'a, 'b>
+    where
+        P: Into<IngestGetPipelineParts<'b>>,
+    {
         IngestGetPipeline::new(self.transport(), parts)
     }
     #[doc = "[Ingest Processor Grok API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/grok-processor.html#grok-processor-rest-get)\n\nReturns a list of the built-in patterns."]
@@ -765,14 +801,17 @@ impl<'a> Ingest<'a> {
         IngestProcessorGrok::new(self.transport())
     }
     #[doc = "[Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/put-pipeline-api.html)\n\nCreates or updates a pipeline."]
-    pub fn put_pipeline<'b>(
-        &'a self,
-        parts: IngestPutPipelineParts<'b>,
-    ) -> IngestPutPipeline<'a, 'b, ()> {
+    pub fn put_pipeline<'b, P>(&'a self, parts: P) -> IngestPutPipeline<'a, 'b, ()>
+    where
+        P: Into<IngestPutPipelineParts<'b>>,
+    {
         IngestPutPipeline::new(self.transport(), parts)
     }
     #[doc = "[Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/simulate-pipeline-api.html)\n\nAllows to simulate a pipeline with example documents."]
-    pub fn simulate<'b>(&'a self, parts: IngestSimulateParts<'b>) -> IngestSimulate<'a, 'b, ()> {
+    pub fn simulate<'b, P>(&'a self, parts: P) -> IngestSimulate<'a, 'b, ()>
+    where
+        P: Into<IngestSimulateParts<'b>>,
+    {
         IngestSimulate::new(self.transport(), parts)
     }
 }

@@ -63,6 +63,12 @@ impl<'b> MigrationDeprecationsParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for MigrationDeprecationsParts<'b> {
+    #[doc = "Builds a [MigrationDeprecationsParts::Index] for the Migration Deprecations API"]
+    fn from(t: &'b str) -> MigrationDeprecationsParts<'b> {
+        MigrationDeprecationsParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Migration Deprecations API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/migration-api-deprecation.html)\n\nRetrieves information about different cluster, node, and index level settings that use deprecated features that will be removed or changed in the next major version."]
 pub struct MigrationDeprecations<'a, 'b> {
@@ -77,11 +83,14 @@ pub struct MigrationDeprecations<'a, 'b> {
 }
 impl<'a, 'b> MigrationDeprecations<'a, 'b> {
     #[doc = "Creates a new instance of [MigrationDeprecations] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: MigrationDeprecationsParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<MigrationDeprecationsParts<'b>>,
+    {
         let headers = HeaderMap::new();
         MigrationDeprecations {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             filter_path: None,
@@ -173,10 +182,10 @@ impl<'a> Migration<'a> {
         self.transport
     }
     #[doc = "[Migration Deprecations API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/migration-api-deprecation.html)\n\nRetrieves information about different cluster, node, and index level settings that use deprecated features that will be removed or changed in the next major version."]
-    pub fn deprecations<'b>(
-        &'a self,
-        parts: MigrationDeprecationsParts<'b>,
-    ) -> MigrationDeprecations<'a, 'b> {
+    pub fn deprecations<'b, P>(&'a self, parts: P) -> MigrationDeprecations<'a, 'b>
+    where
+        P: Into<MigrationDeprecationsParts<'b>>,
+    {
         MigrationDeprecations::new(self.transport(), parts)
     }
 }

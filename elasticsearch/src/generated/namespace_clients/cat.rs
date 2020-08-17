@@ -63,6 +63,12 @@ impl<'b> CatAliasesParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for CatAliasesParts<'b> {
+    #[doc = "Builds a [CatAliasesParts::Name] for the Cat Aliases API"]
+    fn from(t: &'b [&'b str]) -> CatAliasesParts<'b> {
+        CatAliasesParts::Name(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-alias.html)\n\nShows information about currently configured aliases to indices including filter and routing infos."]
 pub struct CatAliases<'a, 'b> {
@@ -84,13 +90,16 @@ pub struct CatAliases<'a, 'b> {
 }
 impl<'a, 'b> CatAliases<'a, 'b> {
     #[doc = "Creates a new instance of [CatAliases] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: CatAliasesParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<CatAliasesParts<'b>>,
+    {
         let mut headers = HeaderMap::with_capacity(2);
         headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
         headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatAliases {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             expand_wildcards: None,
@@ -260,6 +269,12 @@ impl<'b> CatAllocationParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for CatAllocationParts<'b> {
+    #[doc = "Builds a [CatAllocationParts::NodeId] for the Cat Allocation API"]
+    fn from(t: &'b [&'b str]) -> CatAllocationParts<'b> {
+        CatAllocationParts::NodeId(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Allocation API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-allocation.html)\n\nProvides a snapshot of how many shards are allocated to each data node and how much disk space they are using."]
 pub struct CatAllocation<'a, 'b> {
@@ -282,13 +297,16 @@ pub struct CatAllocation<'a, 'b> {
 }
 impl<'a, 'b> CatAllocation<'a, 'b> {
     #[doc = "Creates a new instance of [CatAllocation] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: CatAllocationParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<CatAllocationParts<'b>>,
+    {
         let mut headers = HeaderMap::with_capacity(2);
         headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
         headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatAllocation {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             bytes: None,
             error_trace: None,
@@ -464,6 +482,12 @@ impl<'b> CatCountParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for CatCountParts<'b> {
+    #[doc = "Builds a [CatCountParts::Index] for the Cat Count API"]
+    fn from(t: &'b [&'b str]) -> CatCountParts<'b> {
+        CatCountParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Count API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-count.html)\n\nProvides quick access to the document count of the entire cluster, or individual indices."]
 pub struct CatCount<'a, 'b> {
@@ -483,13 +507,16 @@ pub struct CatCount<'a, 'b> {
 }
 impl<'a, 'b> CatCount<'a, 'b> {
     #[doc = "Creates a new instance of [CatCount] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: CatCountParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<CatCountParts<'b>>,
+    {
         let mut headers = HeaderMap::with_capacity(2);
         headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
         headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatCount {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             filter_path: None,
@@ -638,6 +665,12 @@ impl<'b> CatFielddataParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for CatFielddataParts<'b> {
+    #[doc = "Builds a [CatFielddataParts::Fields] for the Cat Fielddata API"]
+    fn from(t: &'b [&'b str]) -> CatFielddataParts<'b> {
+        CatFielddataParts::Fields(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Fielddata API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-fielddata.html)\n\nShows how much heap memory is currently being used by fielddata on every data node in the cluster."]
 pub struct CatFielddata<'a, 'b> {
@@ -659,13 +692,16 @@ pub struct CatFielddata<'a, 'b> {
 }
 impl<'a, 'b> CatFielddata<'a, 'b> {
     #[doc = "Creates a new instance of [CatFielddata] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: CatFielddataParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<CatFielddataParts<'b>>,
+    {
         let mut headers = HeaderMap::with_capacity(2);
         headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
         headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatFielddata {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             bytes: None,
             error_trace: None,
@@ -1148,6 +1184,12 @@ impl<'b> CatIndicesParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for CatIndicesParts<'b> {
+    #[doc = "Builds a [CatIndicesParts::Index] for the Cat Indices API"]
+    fn from(t: &'b [&'b str]) -> CatIndicesParts<'b> {
+        CatIndicesParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Indices API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-indices.html)\n\nReturns information about indices: number of primaries and replicas, document counts, disk size, ..."]
 pub struct CatIndices<'a, 'b> {
@@ -1175,13 +1217,16 @@ pub struct CatIndices<'a, 'b> {
 }
 impl<'a, 'b> CatIndices<'a, 'b> {
     #[doc = "Creates a new instance of [CatIndices] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: CatIndicesParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<CatIndicesParts<'b>>,
+    {
         let mut headers = HeaderMap::with_capacity(2);
         headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
         headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatIndices {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             bytes: None,
             error_trace: None,
@@ -1586,6 +1631,12 @@ impl<'b> CatMlDataFrameAnalyticsParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for CatMlDataFrameAnalyticsParts<'b> {
+    #[doc = "Builds a [CatMlDataFrameAnalyticsParts::Id] for the Cat Ml Data Frame Analytics API"]
+    fn from(t: &'b str) -> CatMlDataFrameAnalyticsParts<'b> {
+        CatMlDataFrameAnalyticsParts::Id(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Ml Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-dfanalytics.html)\n\nGets configuration and usage information about data frame analytics jobs."]
 pub struct CatMlDataFrameAnalytics<'a, 'b> {
@@ -1608,13 +1659,16 @@ pub struct CatMlDataFrameAnalytics<'a, 'b> {
 }
 impl<'a, 'b> CatMlDataFrameAnalytics<'a, 'b> {
     #[doc = "Creates a new instance of [CatMlDataFrameAnalytics] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: CatMlDataFrameAnalyticsParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<CatMlDataFrameAnalyticsParts<'b>>,
+    {
         let mut headers = HeaderMap::with_capacity(2);
         headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
         headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatMlDataFrameAnalytics {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_match: None,
             bytes: None,
@@ -1789,6 +1843,12 @@ impl<'b> CatMlDatafeedsParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for CatMlDatafeedsParts<'b> {
+    #[doc = "Builds a [CatMlDatafeedsParts::DatafeedId] for the Cat Ml Datafeeds API"]
+    fn from(t: &'b str) -> CatMlDatafeedsParts<'b> {
+        CatMlDatafeedsParts::DatafeedId(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Ml Datafeeds API](http://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-datafeeds.html)\n\nGets configuration and usage information about datafeeds."]
 pub struct CatMlDatafeeds<'a, 'b> {
@@ -1810,13 +1870,16 @@ pub struct CatMlDatafeeds<'a, 'b> {
 }
 impl<'a, 'b> CatMlDatafeeds<'a, 'b> {
     #[doc = "Creates a new instance of [CatMlDatafeeds] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: CatMlDatafeedsParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<CatMlDatafeedsParts<'b>>,
+    {
         let mut headers = HeaderMap::with_capacity(2);
         headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
         headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatMlDatafeeds {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_datafeeds: None,
             error_trace: None,
@@ -1982,6 +2045,12 @@ impl<'b> CatMlJobsParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for CatMlJobsParts<'b> {
+    #[doc = "Builds a [CatMlJobsParts::JobId] for the Cat Ml Jobs API"]
+    fn from(t: &'b str) -> CatMlJobsParts<'b> {
+        CatMlJobsParts::JobId(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Ml Jobs API](http://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-anomaly-detectors.html)\n\nGets configuration and usage information about anomaly detection jobs."]
 pub struct CatMlJobs<'a, 'b> {
@@ -2004,13 +2073,16 @@ pub struct CatMlJobs<'a, 'b> {
 }
 impl<'a, 'b> CatMlJobs<'a, 'b> {
     #[doc = "Creates a new instance of [CatMlJobs] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: CatMlJobsParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<CatMlJobsParts<'b>>,
+    {
         let mut headers = HeaderMap::with_capacity(2);
         headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
         headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatMlJobs {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_jobs: None,
             bytes: None,
@@ -2185,6 +2257,12 @@ impl<'b> CatMlTrainedModelsParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for CatMlTrainedModelsParts<'b> {
+    #[doc = "Builds a [CatMlTrainedModelsParts::ModelId] for the Cat Ml Trained Models API"]
+    fn from(t: &'b str) -> CatMlTrainedModelsParts<'b> {
+        CatMlTrainedModelsParts::ModelId(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Ml Trained Models API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-trained-model.html)\n\nGets configuration and usage information about inference trained models."]
 pub struct CatMlTrainedModels<'a, 'b> {
@@ -2209,13 +2287,16 @@ pub struct CatMlTrainedModels<'a, 'b> {
 }
 impl<'a, 'b> CatMlTrainedModels<'a, 'b> {
     #[doc = "Creates a new instance of [CatMlTrainedModels] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: CatMlTrainedModelsParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<CatMlTrainedModelsParts<'b>>,
+    {
         let mut headers = HeaderMap::with_capacity(2);
         headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
         headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatMlTrainedModels {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_match: None,
             bytes: None,
@@ -3171,6 +3252,12 @@ impl<'b> CatRecoveryParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for CatRecoveryParts<'b> {
+    #[doc = "Builds a [CatRecoveryParts::Index] for the Cat Recovery API"]
+    fn from(t: &'b [&'b str]) -> CatRecoveryParts<'b> {
+        CatRecoveryParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-recovery.html)\n\nReturns information about index shard recoveries, both on-going completed."]
 pub struct CatRecovery<'a, 'b> {
@@ -3195,13 +3282,16 @@ pub struct CatRecovery<'a, 'b> {
 }
 impl<'a, 'b> CatRecovery<'a, 'b> {
     #[doc = "Creates a new instance of [CatRecovery] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: CatRecoveryParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<CatRecoveryParts<'b>>,
+    {
         let mut headers = HeaderMap::with_capacity(2);
         headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
         headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatRecovery {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             active_only: None,
             bytes: None,
@@ -3578,6 +3668,12 @@ impl<'b> CatSegmentsParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for CatSegmentsParts<'b> {
+    #[doc = "Builds a [CatSegmentsParts::Index] for the Cat Segments API"]
+    fn from(t: &'b [&'b str]) -> CatSegmentsParts<'b> {
+        CatSegmentsParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-segments.html)\n\nProvides low-level information about the segments in the shards of an index."]
 pub struct CatSegments<'a, 'b> {
@@ -3598,13 +3694,16 @@ pub struct CatSegments<'a, 'b> {
 }
 impl<'a, 'b> CatSegments<'a, 'b> {
     #[doc = "Creates a new instance of [CatSegments] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: CatSegmentsParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<CatSegmentsParts<'b>>,
+    {
         let mut headers = HeaderMap::with_capacity(2);
         headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
         headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatSegments {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             bytes: None,
             error_trace: None,
@@ -3762,6 +3861,12 @@ impl<'b> CatShardsParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for CatShardsParts<'b> {
+    #[doc = "Builds a [CatShardsParts::Index] for the Cat Shards API"]
+    fn from(t: &'b [&'b str]) -> CatShardsParts<'b> {
+        CatShardsParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-shards.html)\n\nProvides a detailed view of shard allocation on nodes."]
 pub struct CatShards<'a, 'b> {
@@ -3785,13 +3890,16 @@ pub struct CatShards<'a, 'b> {
 }
 impl<'a, 'b> CatShards<'a, 'b> {
     #[doc = "Creates a new instance of [CatShards] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: CatShardsParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<CatShardsParts<'b>>,
+    {
         let mut headers = HeaderMap::with_capacity(2);
         headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
         headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatShards {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             bytes: None,
             error_trace: None,
@@ -3976,6 +4084,12 @@ impl<'b> CatSnapshotsParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for CatSnapshotsParts<'b> {
+    #[doc = "Builds a [CatSnapshotsParts::Repository] for the Cat Snapshots API"]
+    fn from(t: &'b [&'b str]) -> CatSnapshotsParts<'b> {
+        CatSnapshotsParts::Repository(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Snapshots API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-snapshots.html)\n\nReturns all snapshots in a specific repository."]
 pub struct CatSnapshots<'a, 'b> {
@@ -3998,13 +4112,16 @@ pub struct CatSnapshots<'a, 'b> {
 }
 impl<'a, 'b> CatSnapshots<'a, 'b> {
     #[doc = "Creates a new instance of [CatSnapshots] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: CatSnapshotsParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<CatSnapshotsParts<'b>>,
+    {
         let mut headers = HeaderMap::with_capacity(2);
         headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
         headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatSnapshots {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             filter_path: None,
@@ -4397,6 +4514,12 @@ impl<'b> CatTemplatesParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for CatTemplatesParts<'b> {
+    #[doc = "Builds a [CatTemplatesParts::Name] for the Cat Templates API"]
+    fn from(t: &'b str) -> CatTemplatesParts<'b> {
+        CatTemplatesParts::Name(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Templates API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-templates.html)\n\nReturns information about existing templates."]
 pub struct CatTemplates<'a, 'b> {
@@ -4418,13 +4541,16 @@ pub struct CatTemplates<'a, 'b> {
 }
 impl<'a, 'b> CatTemplates<'a, 'b> {
     #[doc = "Creates a new instance of [CatTemplates] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: CatTemplatesParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<CatTemplatesParts<'b>>,
+    {
         let mut headers = HeaderMap::with_capacity(2);
         headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
         headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatTemplates {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             filter_path: None,
@@ -4591,6 +4717,12 @@ impl<'b> CatThreadPoolParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for CatThreadPoolParts<'b> {
+    #[doc = "Builds a [CatThreadPoolParts::ThreadPoolPatterns] for the Cat Thread Pool API"]
+    fn from(t: &'b [&'b str]) -> CatThreadPoolParts<'b> {
+        CatThreadPoolParts::ThreadPoolPatterns(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Thread Pool API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-thread-pool.html)\n\nReturns cluster-wide thread pool statistics per node.\nBy default the active, queue and rejected statistics are returned for all thread pools."]
 pub struct CatThreadPool<'a, 'b> {
@@ -4613,13 +4745,16 @@ pub struct CatThreadPool<'a, 'b> {
 }
 impl<'a, 'b> CatThreadPool<'a, 'b> {
     #[doc = "Creates a new instance of [CatThreadPool] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: CatThreadPoolParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<CatThreadPoolParts<'b>>,
+    {
         let mut headers = HeaderMap::with_capacity(2);
         headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
         headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatThreadPool {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             filter_path: None,
@@ -4794,6 +4929,12 @@ impl<'b> CatTransformsParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for CatTransformsParts<'b> {
+    #[doc = "Builds a [CatTransformsParts::TransformId] for the Cat Transforms API"]
+    fn from(t: &'b str) -> CatTransformsParts<'b> {
+        CatTransformsParts::TransformId(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Transforms API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-transforms.html)\n\nGets configuration and usage information about transforms."]
 pub struct CatTransforms<'a, 'b> {
@@ -4817,13 +4958,16 @@ pub struct CatTransforms<'a, 'b> {
 }
 impl<'a, 'b> CatTransforms<'a, 'b> {
     #[doc = "Creates a new instance of [CatTransforms] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: CatTransformsParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<CatTransformsParts<'b>>,
+    {
         let mut headers = HeaderMap::with_capacity(2);
         headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
         headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatTransforms {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_match: None,
             error_trace: None,
@@ -4996,19 +5140,31 @@ impl<'a> Cat<'a> {
         self.transport
     }
     #[doc = "[Cat Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-alias.html)\n\nShows information about currently configured aliases to indices including filter and routing infos."]
-    pub fn aliases<'b>(&'a self, parts: CatAliasesParts<'b>) -> CatAliases<'a, 'b> {
+    pub fn aliases<'b, P>(&'a self, parts: P) -> CatAliases<'a, 'b>
+    where
+        P: Into<CatAliasesParts<'b>>,
+    {
         CatAliases::new(self.transport(), parts)
     }
     #[doc = "[Cat Allocation API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-allocation.html)\n\nProvides a snapshot of how many shards are allocated to each data node and how much disk space they are using."]
-    pub fn allocation<'b>(&'a self, parts: CatAllocationParts<'b>) -> CatAllocation<'a, 'b> {
+    pub fn allocation<'b, P>(&'a self, parts: P) -> CatAllocation<'a, 'b>
+    where
+        P: Into<CatAllocationParts<'b>>,
+    {
         CatAllocation::new(self.transport(), parts)
     }
     #[doc = "[Cat Count API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-count.html)\n\nProvides quick access to the document count of the entire cluster, or individual indices."]
-    pub fn count<'b>(&'a self, parts: CatCountParts<'b>) -> CatCount<'a, 'b> {
+    pub fn count<'b, P>(&'a self, parts: P) -> CatCount<'a, 'b>
+    where
+        P: Into<CatCountParts<'b>>,
+    {
         CatCount::new(self.transport(), parts)
     }
     #[doc = "[Cat Fielddata API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-fielddata.html)\n\nShows how much heap memory is currently being used by fielddata on every data node in the cluster."]
-    pub fn fielddata<'b>(&'a self, parts: CatFielddataParts<'b>) -> CatFielddata<'a, 'b> {
+    pub fn fielddata<'b, P>(&'a self, parts: P) -> CatFielddata<'a, 'b>
+    where
+        P: Into<CatFielddataParts<'b>>,
+    {
         CatFielddata::new(self.transport(), parts)
     }
     #[doc = "[Cat Health API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-health.html)\n\nReturns a concise representation of the cluster health."]
@@ -5020,7 +5176,10 @@ impl<'a> Cat<'a> {
         CatHelp::new(self.transport())
     }
     #[doc = "[Cat Indices API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-indices.html)\n\nReturns information about indices: number of primaries and replicas, document counts, disk size, ..."]
-    pub fn indices<'b>(&'a self, parts: CatIndicesParts<'b>) -> CatIndices<'a, 'b> {
+    pub fn indices<'b, P>(&'a self, parts: P) -> CatIndices<'a, 'b>
+    where
+        P: Into<CatIndicesParts<'b>>,
+    {
         CatIndices::new(self.transport(), parts)
     }
     #[doc = "[Cat Master API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-master.html)\n\nReturns information about the master node."]
@@ -5028,25 +5187,31 @@ impl<'a> Cat<'a> {
         CatMaster::new(self.transport())
     }
     #[doc = "[Cat Ml Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-dfanalytics.html)\n\nGets configuration and usage information about data frame analytics jobs."]
-    pub fn ml_data_frame_analytics<'b>(
-        &'a self,
-        parts: CatMlDataFrameAnalyticsParts<'b>,
-    ) -> CatMlDataFrameAnalytics<'a, 'b> {
+    pub fn ml_data_frame_analytics<'b, P>(&'a self, parts: P) -> CatMlDataFrameAnalytics<'a, 'b>
+    where
+        P: Into<CatMlDataFrameAnalyticsParts<'b>>,
+    {
         CatMlDataFrameAnalytics::new(self.transport(), parts)
     }
     #[doc = "[Cat Ml Datafeeds API](http://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-datafeeds.html)\n\nGets configuration and usage information about datafeeds."]
-    pub fn ml_datafeeds<'b>(&'a self, parts: CatMlDatafeedsParts<'b>) -> CatMlDatafeeds<'a, 'b> {
+    pub fn ml_datafeeds<'b, P>(&'a self, parts: P) -> CatMlDatafeeds<'a, 'b>
+    where
+        P: Into<CatMlDatafeedsParts<'b>>,
+    {
         CatMlDatafeeds::new(self.transport(), parts)
     }
     #[doc = "[Cat Ml Jobs API](http://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-anomaly-detectors.html)\n\nGets configuration and usage information about anomaly detection jobs."]
-    pub fn ml_jobs<'b>(&'a self, parts: CatMlJobsParts<'b>) -> CatMlJobs<'a, 'b> {
+    pub fn ml_jobs<'b, P>(&'a self, parts: P) -> CatMlJobs<'a, 'b>
+    where
+        P: Into<CatMlJobsParts<'b>>,
+    {
         CatMlJobs::new(self.transport(), parts)
     }
     #[doc = "[Cat Ml Trained Models API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-trained-model.html)\n\nGets configuration and usage information about inference trained models."]
-    pub fn ml_trained_models<'b>(
-        &'a self,
-        parts: CatMlTrainedModelsParts<'b>,
-    ) -> CatMlTrainedModels<'a, 'b> {
+    pub fn ml_trained_models<'b, P>(&'a self, parts: P) -> CatMlTrainedModels<'a, 'b>
+    where
+        P: Into<CatMlTrainedModelsParts<'b>>,
+    {
         CatMlTrainedModels::new(self.transport(), parts)
     }
     #[doc = "[Cat Nodeattrs API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-nodeattrs.html)\n\nReturns information about custom node attributes."]
@@ -5066,7 +5231,10 @@ impl<'a> Cat<'a> {
         CatPlugins::new(self.transport())
     }
     #[doc = "[Cat Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-recovery.html)\n\nReturns information about index shard recoveries, both on-going completed."]
-    pub fn recovery<'b>(&'a self, parts: CatRecoveryParts<'b>) -> CatRecovery<'a, 'b> {
+    pub fn recovery<'b, P>(&'a self, parts: P) -> CatRecovery<'a, 'b>
+    where
+        P: Into<CatRecoveryParts<'b>>,
+    {
         CatRecovery::new(self.transport(), parts)
     }
     #[doc = "[Cat Repositories API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-repositories.html)\n\nReturns information about snapshot repositories registered in the cluster."]
@@ -5074,15 +5242,24 @@ impl<'a> Cat<'a> {
         CatRepositories::new(self.transport())
     }
     #[doc = "[Cat Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-segments.html)\n\nProvides low-level information about the segments in the shards of an index."]
-    pub fn segments<'b>(&'a self, parts: CatSegmentsParts<'b>) -> CatSegments<'a, 'b> {
+    pub fn segments<'b, P>(&'a self, parts: P) -> CatSegments<'a, 'b>
+    where
+        P: Into<CatSegmentsParts<'b>>,
+    {
         CatSegments::new(self.transport(), parts)
     }
     #[doc = "[Cat Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-shards.html)\n\nProvides a detailed view of shard allocation on nodes."]
-    pub fn shards<'b>(&'a self, parts: CatShardsParts<'b>) -> CatShards<'a, 'b> {
+    pub fn shards<'b, P>(&'a self, parts: P) -> CatShards<'a, 'b>
+    where
+        P: Into<CatShardsParts<'b>>,
+    {
         CatShards::new(self.transport(), parts)
     }
     #[doc = "[Cat Snapshots API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-snapshots.html)\n\nReturns all snapshots in a specific repository."]
-    pub fn snapshots<'b>(&'a self, parts: CatSnapshotsParts<'b>) -> CatSnapshots<'a, 'b> {
+    pub fn snapshots<'b, P>(&'a self, parts: P) -> CatSnapshots<'a, 'b>
+    where
+        P: Into<CatSnapshotsParts<'b>>,
+    {
         CatSnapshots::new(self.transport(), parts)
     }
     #[doc = "[Cat Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/tasks.html)\n\nReturns information about the tasks currently executing on one or more nodes in the cluster."]
@@ -5090,15 +5267,24 @@ impl<'a> Cat<'a> {
         CatTasks::new(self.transport())
     }
     #[doc = "[Cat Templates API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-templates.html)\n\nReturns information about existing templates."]
-    pub fn templates<'b>(&'a self, parts: CatTemplatesParts<'b>) -> CatTemplates<'a, 'b> {
+    pub fn templates<'b, P>(&'a self, parts: P) -> CatTemplates<'a, 'b>
+    where
+        P: Into<CatTemplatesParts<'b>>,
+    {
         CatTemplates::new(self.transport(), parts)
     }
     #[doc = "[Cat Thread Pool API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-thread-pool.html)\n\nReturns cluster-wide thread pool statistics per node.\nBy default the active, queue and rejected statistics are returned for all thread pools."]
-    pub fn thread_pool<'b>(&'a self, parts: CatThreadPoolParts<'b>) -> CatThreadPool<'a, 'b> {
+    pub fn thread_pool<'b, P>(&'a self, parts: P) -> CatThreadPool<'a, 'b>
+    where
+        P: Into<CatThreadPoolParts<'b>>,
+    {
         CatThreadPool::new(self.transport(), parts)
     }
     #[doc = "[Cat Transforms API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-transforms.html)\n\nGets configuration and usage information about transforms."]
-    pub fn transforms<'b>(&'a self, parts: CatTransformsParts<'b>) -> CatTransforms<'a, 'b> {
+    pub fn transforms<'b, P>(&'a self, parts: P) -> CatTransforms<'a, 'b>
+    where
+        P: Into<CatTransformsParts<'b>>,
+    {
         CatTransforms::new(self.transport(), parts)
     }
 }

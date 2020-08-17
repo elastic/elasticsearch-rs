@@ -59,6 +59,12 @@ impl<'b> SlmDeleteLifecycleParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for SlmDeleteLifecycleParts<'b> {
+    #[doc = "Builds a [SlmDeleteLifecycleParts::PolicyId] for the Slm Delete Lifecycle API"]
+    fn from(t: &'b str) -> SlmDeleteLifecycleParts<'b> {
+        SlmDeleteLifecycleParts::PolicyId(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Slm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/slm-api-delete-policy.html)\n\nDeletes an existing snapshot lifecycle policy."]
 pub struct SlmDeleteLifecycle<'a, 'b> {
@@ -73,11 +79,14 @@ pub struct SlmDeleteLifecycle<'a, 'b> {
 }
 impl<'a, 'b> SlmDeleteLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [SlmDeleteLifecycle] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: SlmDeleteLifecycleParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<SlmDeleteLifecycleParts<'b>>,
+    {
         let headers = HeaderMap::new();
         SlmDeleteLifecycle {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             filter_path: None,
@@ -178,6 +187,12 @@ impl<'b> SlmExecuteLifecycleParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for SlmExecuteLifecycleParts<'b> {
+    #[doc = "Builds a [SlmExecuteLifecycleParts::PolicyId] for the Slm Execute Lifecycle API"]
+    fn from(t: &'b str) -> SlmExecuteLifecycleParts<'b> {
+        SlmExecuteLifecycleParts::PolicyId(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Slm Execute Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/slm-api-execute-lifecycle.html)\n\nImmediately creates a snapshot according to the lifecycle policy, without waiting for the scheduled time."]
 pub struct SlmExecuteLifecycle<'a, 'b, B> {
@@ -196,11 +211,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [SlmExecuteLifecycle] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: SlmExecuteLifecycleParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<SlmExecuteLifecycleParts<'b>>,
+    {
         let headers = HeaderMap::new();
         SlmExecuteLifecycle {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             body: None,
             error_trace: None,
@@ -455,6 +473,12 @@ impl<'b> SlmGetLifecycleParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for SlmGetLifecycleParts<'b> {
+    #[doc = "Builds a [SlmGetLifecycleParts::PolicyId] for the Slm Get Lifecycle API"]
+    fn from(t: &'b [&'b str]) -> SlmGetLifecycleParts<'b> {
+        SlmGetLifecycleParts::PolicyId(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Slm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/slm-api-get-policy.html)\n\nRetrieves one or more snapshot lifecycle policy definitions and information about the latest snapshot attempts."]
 pub struct SlmGetLifecycle<'a, 'b> {
@@ -469,11 +493,14 @@ pub struct SlmGetLifecycle<'a, 'b> {
 }
 impl<'a, 'b> SlmGetLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [SlmGetLifecycle] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: SlmGetLifecycleParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<SlmGetLifecycleParts<'b>>,
+    {
         let headers = HeaderMap::new();
         SlmGetLifecycle {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             filter_path: None,
@@ -795,6 +822,12 @@ impl<'b> SlmPutLifecycleParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for SlmPutLifecycleParts<'b> {
+    #[doc = "Builds a [SlmPutLifecycleParts::PolicyId] for the Slm Put Lifecycle API"]
+    fn from(t: &'b str) -> SlmPutLifecycleParts<'b> {
+        SlmPutLifecycleParts::PolicyId(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Slm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/slm-api-put-policy.html)\n\nCreates or updates a snapshot lifecycle policy."]
 pub struct SlmPutLifecycle<'a, 'b, B> {
@@ -813,11 +846,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [SlmPutLifecycle] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: SlmPutLifecycleParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<SlmPutLifecycleParts<'b>>,
+    {
         let headers = HeaderMap::new();
         SlmPutLifecycle {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             body: None,
             error_trace: None,
@@ -1193,17 +1229,17 @@ impl<'a> Slm<'a> {
         self.transport
     }
     #[doc = "[Slm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/slm-api-delete-policy.html)\n\nDeletes an existing snapshot lifecycle policy."]
-    pub fn delete_lifecycle<'b>(
-        &'a self,
-        parts: SlmDeleteLifecycleParts<'b>,
-    ) -> SlmDeleteLifecycle<'a, 'b> {
+    pub fn delete_lifecycle<'b, P>(&'a self, parts: P) -> SlmDeleteLifecycle<'a, 'b>
+    where
+        P: Into<SlmDeleteLifecycleParts<'b>>,
+    {
         SlmDeleteLifecycle::new(self.transport(), parts)
     }
     #[doc = "[Slm Execute Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/slm-api-execute-lifecycle.html)\n\nImmediately creates a snapshot according to the lifecycle policy, without waiting for the scheduled time."]
-    pub fn execute_lifecycle<'b>(
-        &'a self,
-        parts: SlmExecuteLifecycleParts<'b>,
-    ) -> SlmExecuteLifecycle<'a, 'b, ()> {
+    pub fn execute_lifecycle<'b, P>(&'a self, parts: P) -> SlmExecuteLifecycle<'a, 'b, ()>
+    where
+        P: Into<SlmExecuteLifecycleParts<'b>>,
+    {
         SlmExecuteLifecycle::new(self.transport(), parts)
     }
     #[doc = "[Slm Execute Retention API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/slm-api-execute-retention.html)\n\nDeletes any snapshots that are expired according to the policy's retention rules."]
@@ -1211,7 +1247,10 @@ impl<'a> Slm<'a> {
         SlmExecuteRetention::new(self.transport())
     }
     #[doc = "[Slm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/slm-api-get-policy.html)\n\nRetrieves one or more snapshot lifecycle policy definitions and information about the latest snapshot attempts."]
-    pub fn get_lifecycle<'b>(&'a self, parts: SlmGetLifecycleParts<'b>) -> SlmGetLifecycle<'a, 'b> {
+    pub fn get_lifecycle<'b, P>(&'a self, parts: P) -> SlmGetLifecycle<'a, 'b>
+    where
+        P: Into<SlmGetLifecycleParts<'b>>,
+    {
         SlmGetLifecycle::new(self.transport(), parts)
     }
     #[doc = "[Slm Get Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/slm-api-get-stats.html)\n\nReturns global and policy-level statistics about actions taken by snapshot lifecycle management."]
@@ -1223,10 +1262,10 @@ impl<'a> Slm<'a> {
         SlmGetStatus::new(self.transport())
     }
     #[doc = "[Slm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/slm-api-put-policy.html)\n\nCreates or updates a snapshot lifecycle policy."]
-    pub fn put_lifecycle<'b>(
-        &'a self,
-        parts: SlmPutLifecycleParts<'b>,
-    ) -> SlmPutLifecycle<'a, 'b, ()> {
+    pub fn put_lifecycle<'b, P>(&'a self, parts: P) -> SlmPutLifecycle<'a, 'b, ()>
+    where
+        P: Into<SlmPutLifecycleParts<'b>>,
+    {
         SlmPutLifecycle::new(self.transport(), parts)
     }
     #[doc = "[Slm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/slm-api-start.html)\n\nTurns on snapshot lifecycle management (SLM)."]

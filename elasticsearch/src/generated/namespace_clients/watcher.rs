@@ -77,6 +77,18 @@ impl<'b> WatcherAckWatchParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for WatcherAckWatchParts<'b> {
+    #[doc = "Builds a [WatcherAckWatchParts::WatchId] for the Watcher Ack Watch API"]
+    fn from(t: &'b str) -> WatcherAckWatchParts<'b> {
+        WatcherAckWatchParts::WatchId(t)
+    }
+}
+impl<'b> From<(&'b str, &'b [&'b str])> for WatcherAckWatchParts<'b> {
+    #[doc = "Builds a [WatcherAckWatchParts::WatchIdActionId] for the Watcher Ack Watch API"]
+    fn from(t: (&'b str, &'b [&'b str])) -> WatcherAckWatchParts<'b> {
+        WatcherAckWatchParts::WatchIdActionId(t.0, t.1)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Watcher Ack Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-ack-watch.html)\n\nAcknowledges a watch, manually throttling the execution of the watch's actions."]
 pub struct WatcherAckWatch<'a, 'b, B> {
@@ -95,11 +107,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [WatcherAckWatch] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: WatcherAckWatchParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<WatcherAckWatchParts<'b>>,
+    {
         let headers = HeaderMap::new();
         WatcherAckWatch {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             body: None,
             error_trace: None,
@@ -218,6 +233,12 @@ impl<'b> WatcherActivateWatchParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for WatcherActivateWatchParts<'b> {
+    #[doc = "Builds a [WatcherActivateWatchParts::WatchId] for the Watcher Activate Watch API"]
+    fn from(t: &'b str) -> WatcherActivateWatchParts<'b> {
+        WatcherActivateWatchParts::WatchId(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Watcher Activate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-activate-watch.html)\n\nActivates a currently inactive watch."]
 pub struct WatcherActivateWatch<'a, 'b, B> {
@@ -236,11 +257,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [WatcherActivateWatch] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: WatcherActivateWatchParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<WatcherActivateWatchParts<'b>>,
+    {
         let headers = HeaderMap::new();
         WatcherActivateWatch {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             body: None,
             error_trace: None,
@@ -359,6 +383,12 @@ impl<'b> WatcherDeactivateWatchParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for WatcherDeactivateWatchParts<'b> {
+    #[doc = "Builds a [WatcherDeactivateWatchParts::WatchId] for the Watcher Deactivate Watch API"]
+    fn from(t: &'b str) -> WatcherDeactivateWatchParts<'b> {
+        WatcherDeactivateWatchParts::WatchId(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Watcher Deactivate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-deactivate-watch.html)\n\nDeactivates a currently active watch."]
 pub struct WatcherDeactivateWatch<'a, 'b, B> {
@@ -377,11 +407,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [WatcherDeactivateWatch] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: WatcherDeactivateWatchParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<WatcherDeactivateWatchParts<'b>>,
+    {
         let headers = HeaderMap::new();
         WatcherDeactivateWatch {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             body: None,
             error_trace: None,
@@ -498,6 +531,12 @@ impl<'b> WatcherDeleteWatchParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for WatcherDeleteWatchParts<'b> {
+    #[doc = "Builds a [WatcherDeleteWatchParts::Id] for the Watcher Delete Watch API"]
+    fn from(t: &'b str) -> WatcherDeleteWatchParts<'b> {
+        WatcherDeleteWatchParts::Id(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Watcher Delete Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-delete-watch.html)\n\nRemoves a watch from Watcher."]
 pub struct WatcherDeleteWatch<'a, 'b> {
@@ -512,11 +551,14 @@ pub struct WatcherDeleteWatch<'a, 'b> {
 }
 impl<'a, 'b> WatcherDeleteWatch<'a, 'b> {
     #[doc = "Creates a new instance of [WatcherDeleteWatch] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: WatcherDeleteWatchParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<WatcherDeleteWatchParts<'b>>,
+    {
         let headers = HeaderMap::new();
         WatcherDeleteWatch {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             filter_path: None,
@@ -619,6 +661,12 @@ impl<'b> WatcherExecuteWatchParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for WatcherExecuteWatchParts<'b> {
+    #[doc = "Builds a [WatcherExecuteWatchParts::Id] for the Watcher Execute Watch API"]
+    fn from(t: &'b str) -> WatcherExecuteWatchParts<'b> {
+        WatcherExecuteWatchParts::Id(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Watcher Execute Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-execute-watch.html)\n\nForces the execution of a stored watch."]
 pub struct WatcherExecuteWatch<'a, 'b, B> {
@@ -638,11 +686,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [WatcherExecuteWatch] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: WatcherExecuteWatchParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<WatcherExecuteWatchParts<'b>>,
+    {
         let headers = HeaderMap::new();
         WatcherExecuteWatch {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             body: None,
             debug: None,
@@ -769,6 +820,12 @@ impl<'b> WatcherGetWatchParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for WatcherGetWatchParts<'b> {
+    #[doc = "Builds a [WatcherGetWatchParts::Id] for the Watcher Get Watch API"]
+    fn from(t: &'b str) -> WatcherGetWatchParts<'b> {
+        WatcherGetWatchParts::Id(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Watcher Get Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-get-watch.html)\n\nRetrieves a watch by its ID."]
 pub struct WatcherGetWatch<'a, 'b> {
@@ -783,11 +840,14 @@ pub struct WatcherGetWatch<'a, 'b> {
 }
 impl<'a, 'b> WatcherGetWatch<'a, 'b> {
     #[doc = "Creates a new instance of [WatcherGetWatch] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: WatcherGetWatchParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<WatcherGetWatchParts<'b>>,
+    {
         let headers = HeaderMap::new();
         WatcherGetWatch {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             filter_path: None,
@@ -886,6 +946,12 @@ impl<'b> WatcherPutWatchParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for WatcherPutWatchParts<'b> {
+    #[doc = "Builds a [WatcherPutWatchParts::Id] for the Watcher Put Watch API"]
+    fn from(t: &'b str) -> WatcherPutWatchParts<'b> {
+        WatcherPutWatchParts::Id(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Watcher Put Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-put-watch.html)\n\nCreates a new watch, or updates an existing one."]
 pub struct WatcherPutWatch<'a, 'b, B> {
@@ -908,11 +974,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [WatcherPutWatch] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: WatcherPutWatchParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<WatcherPutWatchParts<'b>>,
+    {
         let headers = HeaderMap::new();
         WatcherPutWatch {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             active: None,
             body: None,
@@ -1207,6 +1276,12 @@ impl<'b> WatcherStatsParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for WatcherStatsParts<'b> {
+    #[doc = "Builds a [WatcherStatsParts::Metric] for the Watcher Stats API"]
+    fn from(t: &'b [&'b str]) -> WatcherStatsParts<'b> {
+        WatcherStatsParts::Metric(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Watcher Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-stats.html)\n\nRetrieves the current Watcher metrics."]
 pub struct WatcherStats<'a, 'b> {
@@ -1223,11 +1298,14 @@ pub struct WatcherStats<'a, 'b> {
 }
 impl<'a, 'b> WatcherStats<'a, 'b> {
     #[doc = "Creates a new instance of [WatcherStats] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: WatcherStatsParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<WatcherStatsParts<'b>>,
+    {
         let headers = HeaderMap::new();
         WatcherStats {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             emit_stacktraces: None,
             error_trace: None,
@@ -1470,43 +1548,52 @@ impl<'a> Watcher<'a> {
         self.transport
     }
     #[doc = "[Watcher Ack Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-ack-watch.html)\n\nAcknowledges a watch, manually throttling the execution of the watch's actions."]
-    pub fn ack_watch<'b>(&'a self, parts: WatcherAckWatchParts<'b>) -> WatcherAckWatch<'a, 'b, ()> {
+    pub fn ack_watch<'b, P>(&'a self, parts: P) -> WatcherAckWatch<'a, 'b, ()>
+    where
+        P: Into<WatcherAckWatchParts<'b>>,
+    {
         WatcherAckWatch::new(self.transport(), parts)
     }
     #[doc = "[Watcher Activate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-activate-watch.html)\n\nActivates a currently inactive watch."]
-    pub fn activate_watch<'b>(
-        &'a self,
-        parts: WatcherActivateWatchParts<'b>,
-    ) -> WatcherActivateWatch<'a, 'b, ()> {
+    pub fn activate_watch<'b, P>(&'a self, parts: P) -> WatcherActivateWatch<'a, 'b, ()>
+    where
+        P: Into<WatcherActivateWatchParts<'b>>,
+    {
         WatcherActivateWatch::new(self.transport(), parts)
     }
     #[doc = "[Watcher Deactivate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-deactivate-watch.html)\n\nDeactivates a currently active watch."]
-    pub fn deactivate_watch<'b>(
-        &'a self,
-        parts: WatcherDeactivateWatchParts<'b>,
-    ) -> WatcherDeactivateWatch<'a, 'b, ()> {
+    pub fn deactivate_watch<'b, P>(&'a self, parts: P) -> WatcherDeactivateWatch<'a, 'b, ()>
+    where
+        P: Into<WatcherDeactivateWatchParts<'b>>,
+    {
         WatcherDeactivateWatch::new(self.transport(), parts)
     }
     #[doc = "[Watcher Delete Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-delete-watch.html)\n\nRemoves a watch from Watcher."]
-    pub fn delete_watch<'b>(
-        &'a self,
-        parts: WatcherDeleteWatchParts<'b>,
-    ) -> WatcherDeleteWatch<'a, 'b> {
+    pub fn delete_watch<'b, P>(&'a self, parts: P) -> WatcherDeleteWatch<'a, 'b>
+    where
+        P: Into<WatcherDeleteWatchParts<'b>>,
+    {
         WatcherDeleteWatch::new(self.transport(), parts)
     }
     #[doc = "[Watcher Execute Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-execute-watch.html)\n\nForces the execution of a stored watch."]
-    pub fn execute_watch<'b>(
-        &'a self,
-        parts: WatcherExecuteWatchParts<'b>,
-    ) -> WatcherExecuteWatch<'a, 'b, ()> {
+    pub fn execute_watch<'b, P>(&'a self, parts: P) -> WatcherExecuteWatch<'a, 'b, ()>
+    where
+        P: Into<WatcherExecuteWatchParts<'b>>,
+    {
         WatcherExecuteWatch::new(self.transport(), parts)
     }
     #[doc = "[Watcher Get Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-get-watch.html)\n\nRetrieves a watch by its ID."]
-    pub fn get_watch<'b>(&'a self, parts: WatcherGetWatchParts<'b>) -> WatcherGetWatch<'a, 'b> {
+    pub fn get_watch<'b, P>(&'a self, parts: P) -> WatcherGetWatch<'a, 'b>
+    where
+        P: Into<WatcherGetWatchParts<'b>>,
+    {
         WatcherGetWatch::new(self.transport(), parts)
     }
     #[doc = "[Watcher Put Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-put-watch.html)\n\nCreates a new watch, or updates an existing one."]
-    pub fn put_watch<'b>(&'a self, parts: WatcherPutWatchParts<'b>) -> WatcherPutWatch<'a, 'b, ()> {
+    pub fn put_watch<'b, P>(&'a self, parts: P) -> WatcherPutWatch<'a, 'b, ()>
+    where
+        P: Into<WatcherPutWatchParts<'b>>,
+    {
         WatcherPutWatch::new(self.transport(), parts)
     }
     #[doc = "[Watcher Start API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-start.html)\n\nStarts Watcher if it is not already running."]
@@ -1514,7 +1601,10 @@ impl<'a> Watcher<'a> {
         WatcherStart::new(self.transport())
     }
     #[doc = "[Watcher Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-stats.html)\n\nRetrieves the current Watcher metrics."]
-    pub fn stats<'b>(&'a self, parts: WatcherStatsParts<'b>) -> WatcherStats<'a, 'b> {
+    pub fn stats<'b, P>(&'a self, parts: P) -> WatcherStats<'a, 'b>
+    where
+        P: Into<WatcherStatsParts<'b>>,
+    {
         WatcherStats::new(self.transport(), parts)
     }
     #[doc = "[Watcher Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-stop.html)\n\nStops Watcher if it is running."]

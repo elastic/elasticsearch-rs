@@ -65,6 +65,12 @@ impl<'b> IndicesAddBlockParts<'b> {
         }
     }
 }
+impl<'b> From<(&'b [&'b str], &'b str)> for IndicesAddBlockParts<'b> {
+    #[doc = "Builds a [IndicesAddBlockParts::IndexBlock] for the Indices Add Block API"]
+    fn from(t: (&'b [&'b str], &'b str)) -> IndicesAddBlockParts<'b> {
+        IndicesAddBlockParts::IndexBlock(t.0, t.1)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Add Block API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-blocks.html)\n\nAdds a block to an index."]
 pub struct IndicesAddBlock<'a, 'b, B> {
@@ -88,11 +94,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesAddBlock] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesAddBlockParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesAddBlockParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesAddBlock {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             body: None,
@@ -267,6 +276,12 @@ impl<'b> IndicesAnalyzeParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for IndicesAnalyzeParts<'b> {
+    #[doc = "Builds a [IndicesAnalyzeParts::Index] for the Indices Analyze API"]
+    fn from(t: &'b str) -> IndicesAnalyzeParts<'b> {
+        IndicesAnalyzeParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-analyze.html)\n\nPerforms the analysis process on a text and return the tokens breakdown of the text."]
 pub struct IndicesAnalyze<'a, 'b, B> {
@@ -286,11 +301,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesAnalyze] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesAnalyzeParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesAnalyzeParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesAnalyze {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             body: None,
             error_trace: None,
@@ -426,6 +444,12 @@ impl<'b> IndicesClearCacheParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesClearCacheParts<'b> {
+    #[doc = "Builds a [IndicesClearCacheParts::Index] for the Indices Clear Cache API"]
+    fn from(t: &'b [&'b str]) -> IndicesClearCacheParts<'b> {
+        IndicesClearCacheParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-clearcache.html)\n\nClears all or specific caches for one or more indices."]
 pub struct IndicesClearCache<'a, 'b, B> {
@@ -452,11 +476,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesClearCache] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesClearCacheParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesClearCacheParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesClearCache {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             body: None,
@@ -662,6 +689,12 @@ impl<'b> IndicesCloneParts<'b> {
         }
     }
 }
+impl<'b> From<(&'b str, &'b str)> for IndicesCloneParts<'b> {
+    #[doc = "Builds a [IndicesCloneParts::IndexTarget] for the Indices Clone API"]
+    fn from(t: (&'b str, &'b str)) -> IndicesCloneParts<'b> {
+        IndicesCloneParts::IndexTarget(t.0, t.1)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-clone-index.html)\n\nClones an index"]
 pub struct IndicesClone<'a, 'b, B> {
@@ -683,11 +716,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesClone] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesCloneParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesCloneParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesClone {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             body: None,
             error_trace: None,
@@ -837,6 +873,12 @@ impl<'b> IndicesCloseParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesCloseParts<'b> {
+    #[doc = "Builds a [IndicesCloseParts::Index] for the Indices Close API"]
+    fn from(t: &'b [&'b str]) -> IndicesCloseParts<'b> {
+        IndicesCloseParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Close API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-open-close.html)\n\nCloses an index."]
 pub struct IndicesClose<'a, 'b, B> {
@@ -861,11 +903,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesClose] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesCloseParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesCloseParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesClose {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             body: None,
@@ -1046,6 +1091,12 @@ impl<'b> IndicesCreateParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for IndicesCreateParts<'b> {
+    #[doc = "Builds a [IndicesCreateParts::Index] for the Indices Create API"]
+    fn from(t: &'b str) -> IndicesCreateParts<'b> {
+        IndicesCreateParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Create API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-create-index.html)\n\nCreates an index with optional settings and mappings."]
 pub struct IndicesCreate<'a, 'b, B> {
@@ -1067,11 +1118,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesCreate] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesCreateParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesCreateParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesCreate {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             body: None,
             error_trace: None,
@@ -1482,6 +1536,12 @@ impl<'b> IndicesDeleteParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesDeleteParts<'b> {
+    #[doc = "Builds a [IndicesDeleteParts::Index] for the Indices Delete API"]
+    fn from(t: &'b [&'b str]) -> IndicesDeleteParts<'b> {
+        IndicesDeleteParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-delete-index.html)\n\nDeletes an index."]
 pub struct IndicesDelete<'a, 'b> {
@@ -1501,11 +1561,14 @@ pub struct IndicesDelete<'a, 'b> {
 }
 impl<'a, 'b> IndicesDelete<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesDelete] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesDeleteParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesDeleteParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesDelete {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             error_trace: None,
@@ -1660,6 +1723,12 @@ impl<'b> IndicesDeleteAliasParts<'b> {
         }
     }
 }
+impl<'b> From<(&'b [&'b str], &'b [&'b str])> for IndicesDeleteAliasParts<'b> {
+    #[doc = "Builds a [IndicesDeleteAliasParts::IndexName] for the Indices Delete Alias API"]
+    fn from(t: (&'b [&'b str], &'b [&'b str])) -> IndicesDeleteAliasParts<'b> {
+        IndicesDeleteAliasParts::IndexName(t.0, t.1)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Delete Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-aliases.html)\n\nDeletes an alias."]
 pub struct IndicesDeleteAlias<'a, 'b> {
@@ -1676,11 +1745,14 @@ pub struct IndicesDeleteAlias<'a, 'b> {
 }
 impl<'a, 'b> IndicesDeleteAlias<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesDeleteAlias] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesDeleteAliasParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesDeleteAliasParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesDeleteAlias {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             filter_path: None,
@@ -1916,6 +1988,12 @@ impl<'b> IndicesDeleteTemplateParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for IndicesDeleteTemplateParts<'b> {
+    #[doc = "Builds a [IndicesDeleteTemplateParts::Name] for the Indices Delete Template API"]
+    fn from(t: &'b str) -> IndicesDeleteTemplateParts<'b> {
+        IndicesDeleteTemplateParts::Name(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Delete Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nDeletes an index template."]
 pub struct IndicesDeleteTemplate<'a, 'b> {
@@ -1932,11 +2010,14 @@ pub struct IndicesDeleteTemplate<'a, 'b> {
 }
 impl<'a, 'b> IndicesDeleteTemplate<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesDeleteTemplate] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesDeleteTemplateParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesDeleteTemplateParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesDeleteTemplate {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             filter_path: None,
@@ -2055,6 +2136,12 @@ impl<'b> IndicesExistsParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesExistsParts<'b> {
+    #[doc = "Builds a [IndicesExistsParts::Index] for the Indices Exists API"]
+    fn from(t: &'b [&'b str]) -> IndicesExistsParts<'b> {
+        IndicesExistsParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-exists.html)\n\nReturns information about whether a particular index exists."]
 pub struct IndicesExists<'a, 'b> {
@@ -2075,11 +2162,14 @@ pub struct IndicesExists<'a, 'b> {
 }
 impl<'a, 'b> IndicesExists<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesExists] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesExistsParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesExistsParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesExists {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             error_trace: None,
@@ -2254,6 +2344,18 @@ impl<'b> IndicesExistsAliasParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesExistsAliasParts<'b> {
+    #[doc = "Builds a [IndicesExistsAliasParts::Name] for the Indices Exists Alias API"]
+    fn from(t: &'b [&'b str]) -> IndicesExistsAliasParts<'b> {
+        IndicesExistsAliasParts::Name(t)
+    }
+}
+impl<'b> From<(&'b [&'b str], &'b [&'b str])> for IndicesExistsAliasParts<'b> {
+    #[doc = "Builds a [IndicesExistsAliasParts::IndexName] for the Indices Exists Alias API"]
+    fn from(t: (&'b [&'b str], &'b [&'b str])) -> IndicesExistsAliasParts<'b> {
+        IndicesExistsAliasParts::IndexName(t.0, t.1)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Exists Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-aliases.html)\n\nReturns information about whether a particular alias exists."]
 pub struct IndicesExistsAlias<'a, 'b> {
@@ -2272,11 +2374,14 @@ pub struct IndicesExistsAlias<'a, 'b> {
 }
 impl<'a, 'b> IndicesExistsAlias<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesExistsAlias] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesExistsAliasParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesExistsAliasParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesExistsAlias {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             error_trace: None,
@@ -2416,6 +2521,12 @@ impl<'b> IndicesExistsTemplateParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesExistsTemplateParts<'b> {
+    #[doc = "Builds a [IndicesExistsTemplateParts::Name] for the Indices Exists Template API"]
+    fn from(t: &'b [&'b str]) -> IndicesExistsTemplateParts<'b> {
+        IndicesExistsTemplateParts::Name(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Exists Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nReturns information about whether a particular index template exists."]
 pub struct IndicesExistsTemplate<'a, 'b> {
@@ -2433,11 +2544,14 @@ pub struct IndicesExistsTemplate<'a, 'b> {
 }
 impl<'a, 'b> IndicesExistsTemplate<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesExistsTemplate] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesExistsTemplateParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesExistsTemplateParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesExistsTemplate {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             filter_path: None,
@@ -2569,6 +2683,12 @@ impl<'b> IndicesExistsTypeParts<'b> {
         }
     }
 }
+impl<'b> From<(&'b [&'b str], &'b [&'b str])> for IndicesExistsTypeParts<'b> {
+    #[doc = "Builds a [IndicesExistsTypeParts::IndexType] for the Indices Exists Type API"]
+    fn from(t: (&'b [&'b str], &'b [&'b str])) -> IndicesExistsTypeParts<'b> {
+        IndicesExistsTypeParts::IndexType(t.0, t.1)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Exists Type API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-types-exists.html)\n\nReturns information about whether a particular document type exists. (DEPRECATED)"]
 pub struct IndicesExistsType<'a, 'b> {
@@ -2587,11 +2707,14 @@ pub struct IndicesExistsType<'a, 'b> {
 }
 impl<'a, 'b> IndicesExistsType<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesExistsType] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesExistsTypeParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesExistsTypeParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesExistsType {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             error_trace: None,
@@ -2735,6 +2858,12 @@ impl<'b> IndicesFlushParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesFlushParts<'b> {
+    #[doc = "Builds a [IndicesFlushParts::Index] for the Indices Flush API"]
+    fn from(t: &'b [&'b str]) -> IndicesFlushParts<'b> {
+        IndicesFlushParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Flush API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-flush.html)\n\nPerforms the flush operation on one or more indices."]
 pub struct IndicesFlush<'a, 'b, B> {
@@ -2758,11 +2887,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesFlush] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesFlushParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesFlushParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesFlush {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             body: None,
@@ -2941,6 +3073,12 @@ impl<'b> IndicesForcemergeParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesForcemergeParts<'b> {
+    #[doc = "Builds a [IndicesForcemergeParts::Index] for the Indices Forcemerge API"]
+    fn from(t: &'b [&'b str]) -> IndicesForcemergeParts<'b> {
+        IndicesForcemergeParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Forcemerge API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-forcemerge.html)\n\nPerforms the force merge operation on one or more indices."]
 pub struct IndicesForcemerge<'a, 'b, B> {
@@ -2965,11 +3103,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesForcemerge] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesForcemergeParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesForcemergeParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesForcemerge {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             body: None,
@@ -3151,6 +3292,12 @@ impl<'b> IndicesFreezeParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for IndicesFreezeParts<'b> {
+    #[doc = "Builds a [IndicesFreezeParts::Index] for the Indices Freeze API"]
+    fn from(t: &'b str) -> IndicesFreezeParts<'b> {
+        IndicesFreezeParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Freeze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/freeze-index-api.html)\n\nFreezes an index. A frozen index has almost no overhead on the cluster (except for maintaining its metadata in memory) and is read-only."]
 pub struct IndicesFreeze<'a, 'b, B> {
@@ -3175,11 +3322,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesFreeze] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesFreezeParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesFreezeParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesFreeze {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             body: None,
@@ -3361,6 +3511,12 @@ impl<'b> IndicesGetParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesGetParts<'b> {
+    #[doc = "Builds a [IndicesGetParts::Index] for the Indices Get API"]
+    fn from(t: &'b [&'b str]) -> IndicesGetParts<'b> {
+        IndicesGetParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-get-index.html)\n\nReturns information about one or more indices."]
 pub struct IndicesGet<'a, 'b> {
@@ -3382,11 +3538,14 @@ pub struct IndicesGet<'a, 'b> {
 }
 impl<'a, 'b> IndicesGet<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGet] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesGetParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesGetParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesGet {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             error_trace: None,
@@ -3585,6 +3744,18 @@ impl<'b> IndicesGetAliasParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesGetAliasParts<'b> {
+    #[doc = "Builds a [IndicesGetAliasParts::Name] for the Indices Get Alias API"]
+    fn from(t: &'b [&'b str]) -> IndicesGetAliasParts<'b> {
+        IndicesGetAliasParts::Name(t)
+    }
+}
+impl<'b> From<(&'b [&'b str], &'b [&'b str])> for IndicesGetAliasParts<'b> {
+    #[doc = "Builds a [IndicesGetAliasParts::IndexName] for the Indices Get Alias API"]
+    fn from(t: (&'b [&'b str], &'b [&'b str])) -> IndicesGetAliasParts<'b> {
+        IndicesGetAliasParts::IndexName(t.0, t.1)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Get Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-aliases.html)\n\nReturns an alias."]
 pub struct IndicesGetAlias<'a, 'b> {
@@ -3603,11 +3774,14 @@ pub struct IndicesGetAlias<'a, 'b> {
 }
 impl<'a, 'b> IndicesGetAlias<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGetAlias] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesGetAliasParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesGetAliasParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesGetAlias {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             error_trace: None,
@@ -3886,6 +4060,18 @@ impl<'b> IndicesGetFieldMappingParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesGetFieldMappingParts<'b> {
+    #[doc = "Builds a [IndicesGetFieldMappingParts::Fields] for the Indices Get Field Mapping API"]
+    fn from(t: &'b [&'b str]) -> IndicesGetFieldMappingParts<'b> {
+        IndicesGetFieldMappingParts::Fields(t)
+    }
+}
+impl<'b> From<(&'b [&'b str], &'b [&'b str])> for IndicesGetFieldMappingParts<'b> {
+    #[doc = "Builds a [IndicesGetFieldMappingParts::IndexFields] for the Indices Get Field Mapping API"]
+    fn from(t: (&'b [&'b str], &'b [&'b str])) -> IndicesGetFieldMappingParts<'b> {
+        IndicesGetFieldMappingParts::IndexFields(t.0, t.1)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Get Field Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-get-field-mapping.html)\n\nReturns mapping for one or more fields."]
 pub struct IndicesGetFieldMapping<'a, 'b> {
@@ -3905,11 +4091,14 @@ pub struct IndicesGetFieldMapping<'a, 'b> {
 }
 impl<'a, 'b> IndicesGetFieldMapping<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGetFieldMapping] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesGetFieldMappingParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesGetFieldMappingParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesGetFieldMapping {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             error_trace: None,
@@ -4062,6 +4251,12 @@ impl<'b> IndicesGetMappingParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesGetMappingParts<'b> {
+    #[doc = "Builds a [IndicesGetMappingParts::Index] for the Indices Get Mapping API"]
+    fn from(t: &'b [&'b str]) -> IndicesGetMappingParts<'b> {
+        IndicesGetMappingParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Get Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-get-mapping.html)\n\nReturns mappings for one or more indices."]
 pub struct IndicesGetMapping<'a, 'b> {
@@ -4081,11 +4276,14 @@ pub struct IndicesGetMapping<'a, 'b> {
 }
 impl<'a, 'b> IndicesGetMapping<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGetMapping] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesGetMappingParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesGetMappingParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesGetMapping {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             error_trace: None,
@@ -4266,6 +4464,18 @@ impl<'b> IndicesGetSettingsParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesGetSettingsParts<'b> {
+    #[doc = "Builds a [IndicesGetSettingsParts::Index] for the Indices Get Settings API"]
+    fn from(t: &'b [&'b str]) -> IndicesGetSettingsParts<'b> {
+        IndicesGetSettingsParts::Index(t)
+    }
+}
+impl<'b> From<(&'b [&'b str], &'b [&'b str])> for IndicesGetSettingsParts<'b> {
+    #[doc = "Builds a [IndicesGetSettingsParts::IndexName] for the Indices Get Settings API"]
+    fn from(t: (&'b [&'b str], &'b [&'b str])) -> IndicesGetSettingsParts<'b> {
+        IndicesGetSettingsParts::IndexName(t.0, t.1)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-get-settings.html)\n\nReturns settings for one or more indices."]
 pub struct IndicesGetSettings<'a, 'b> {
@@ -4287,11 +4497,14 @@ pub struct IndicesGetSettings<'a, 'b> {
 }
 impl<'a, 'b> IndicesGetSettings<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGetSettings] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesGetSettingsParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesGetSettingsParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesGetSettings {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             error_trace: None,
@@ -4461,6 +4674,12 @@ impl<'b> IndicesGetTemplateParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesGetTemplateParts<'b> {
+    #[doc = "Builds a [IndicesGetTemplateParts::Name] for the Indices Get Template API"]
+    fn from(t: &'b [&'b str]) -> IndicesGetTemplateParts<'b> {
+        IndicesGetTemplateParts::Name(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Get Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nReturns an index template."]
 pub struct IndicesGetTemplate<'a, 'b> {
@@ -4478,11 +4697,14 @@ pub struct IndicesGetTemplate<'a, 'b> {
 }
 impl<'a, 'b> IndicesGetTemplate<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGetTemplate] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesGetTemplateParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesGetTemplateParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesGetTemplate {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             filter_path: None,
@@ -4614,6 +4836,12 @@ impl<'b> IndicesGetUpgradeParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesGetUpgradeParts<'b> {
+    #[doc = "Builds a [IndicesGetUpgradeParts::Index] for the Indices Get Upgrade API"]
+    fn from(t: &'b [&'b str]) -> IndicesGetUpgradeParts<'b> {
+        IndicesGetUpgradeParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Get Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-upgrade.html)\n\nDEPRECATED Returns a progress status of current upgrade."]
 pub struct IndicesGetUpgrade<'a, 'b> {
@@ -4631,11 +4859,14 @@ pub struct IndicesGetUpgrade<'a, 'b> {
 }
 impl<'a, 'b> IndicesGetUpgrade<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGetUpgrade] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesGetUpgradeParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesGetUpgradeParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesGetUpgrade {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             error_trace: None,
@@ -4767,6 +4998,12 @@ impl<'b> IndicesOpenParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesOpenParts<'b> {
+    #[doc = "Builds a [IndicesOpenParts::Index] for the Indices Open API"]
+    fn from(t: &'b [&'b str]) -> IndicesOpenParts<'b> {
+        IndicesOpenParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Open API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-open-close.html)\n\nOpens an index."]
 pub struct IndicesOpen<'a, 'b, B> {
@@ -4791,11 +5028,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesOpen] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesOpenParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesOpenParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesOpen {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             body: None,
@@ -4981,6 +5221,12 @@ impl<'b> IndicesPutAliasParts<'b> {
         }
     }
 }
+impl<'b> From<(&'b [&'b str], &'b str)> for IndicesPutAliasParts<'b> {
+    #[doc = "Builds a [IndicesPutAliasParts::IndexName] for the Indices Put Alias API"]
+    fn from(t: (&'b [&'b str], &'b str)) -> IndicesPutAliasParts<'b> {
+        IndicesPutAliasParts::IndexName(t.0, t.1)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Put Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-aliases.html)\n\nCreates or updates an alias."]
 pub struct IndicesPutAlias<'a, 'b, B> {
@@ -5001,11 +5247,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesPutAlias] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesPutAliasParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesPutAliasParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesPutAlias {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             body: None,
             error_trace: None,
@@ -5145,6 +5394,12 @@ impl<'b> IndicesPutMappingParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesPutMappingParts<'b> {
+    #[doc = "Builds a [IndicesPutMappingParts::Index] for the Indices Put Mapping API"]
+    fn from(t: &'b [&'b str]) -> IndicesPutMappingParts<'b> {
+        IndicesPutMappingParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Put Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-put-mapping.html)\n\nUpdates the index mappings."]
 pub struct IndicesPutMapping<'a, 'b, B> {
@@ -5169,11 +5424,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesPutMapping] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesPutMappingParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesPutMappingParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesPutMapping {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             body: None,
@@ -5359,6 +5617,12 @@ impl<'b> IndicesPutSettingsParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesPutSettingsParts<'b> {
+    #[doc = "Builds a [IndicesPutSettingsParts::Index] for the Indices Put Settings API"]
+    fn from(t: &'b [&'b str]) -> IndicesPutSettingsParts<'b> {
+        IndicesPutSettingsParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-update-settings.html)\n\nUpdates the index settings."]
 pub struct IndicesPutSettings<'a, 'b, B> {
@@ -5384,11 +5648,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesPutSettings] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesPutSettingsParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesPutSettingsParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesPutSettings {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             body: None,
@@ -5578,6 +5845,12 @@ impl<'b> IndicesPutTemplateParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for IndicesPutTemplateParts<'b> {
+    #[doc = "Builds a [IndicesPutTemplateParts::Name] for the Indices Put Template API"]
+    fn from(t: &'b str) -> IndicesPutTemplateParts<'b> {
+        IndicesPutTemplateParts::Name(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Put Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nCreates or updates an index template."]
 pub struct IndicesPutTemplate<'a, 'b, B> {
@@ -5599,11 +5872,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesPutTemplate] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesPutTemplateParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesPutTemplateParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesPutTemplate {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             body: None,
             create: None,
@@ -5756,6 +6032,12 @@ impl<'b> IndicesRecoveryParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesRecoveryParts<'b> {
+    #[doc = "Builds a [IndicesRecoveryParts::Index] for the Indices Recovery API"]
+    fn from(t: &'b [&'b str]) -> IndicesRecoveryParts<'b> {
+        IndicesRecoveryParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-recovery.html)\n\nReturns information about ongoing index shard recoveries."]
 pub struct IndicesRecovery<'a, 'b> {
@@ -5772,11 +6054,14 @@ pub struct IndicesRecovery<'a, 'b> {
 }
 impl<'a, 'b> IndicesRecovery<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesRecovery] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesRecoveryParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesRecoveryParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesRecovery {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             active_only: None,
             detailed: None,
@@ -5899,6 +6184,12 @@ impl<'b> IndicesRefreshParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesRefreshParts<'b> {
+    #[doc = "Builds a [IndicesRefreshParts::Index] for the Indices Refresh API"]
+    fn from(t: &'b [&'b str]) -> IndicesRefreshParts<'b> {
+        IndicesRefreshParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Refresh API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-refresh.html)\n\nPerforms the refresh operation in one or more indices."]
 pub struct IndicesRefresh<'a, 'b, B> {
@@ -5920,11 +6211,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesRefresh] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesRefreshParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesRefreshParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesRefresh {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             body: None,
@@ -6080,6 +6374,12 @@ impl<'b> IndicesReloadSearchAnalyzersParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesReloadSearchAnalyzersParts<'b> {
+    #[doc = "Builds a [IndicesReloadSearchAnalyzersParts::Index] for the Indices Reload Search Analyzers API"]
+    fn from(t: &'b [&'b str]) -> IndicesReloadSearchAnalyzersParts<'b> {
+        IndicesReloadSearchAnalyzersParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Reload Search Analyzers API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-reload-analyzers.html)\n\nReloads an index's search analyzers and their resources."]
 pub struct IndicesReloadSearchAnalyzers<'a, 'b, B> {
@@ -6101,11 +6401,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesReloadSearchAnalyzers] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesReloadSearchAnalyzersParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesReloadSearchAnalyzersParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesReloadSearchAnalyzers {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             body: None,
@@ -6275,6 +6578,18 @@ impl<'b> IndicesRolloverParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for IndicesRolloverParts<'b> {
+    #[doc = "Builds a [IndicesRolloverParts::Alias] for the Indices Rollover API"]
+    fn from(t: &'b str) -> IndicesRolloverParts<'b> {
+        IndicesRolloverParts::Alias(t)
+    }
+}
+impl<'b> From<(&'b str, &'b str)> for IndicesRolloverParts<'b> {
+    #[doc = "Builds a [IndicesRolloverParts::AliasNewIndex] for the Indices Rollover API"]
+    fn from(t: (&'b str, &'b str)) -> IndicesRolloverParts<'b> {
+        IndicesRolloverParts::AliasNewIndex(t.0, t.1)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Rollover API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-rollover-index.html)\n\nUpdates an alias to point to a new index when the existing index\nis considered to be too large or too old."]
 pub struct IndicesRollover<'a, 'b, B> {
@@ -6297,11 +6612,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesRollover] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesRolloverParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesRolloverParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesRollover {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             body: None,
             dry_run: None,
@@ -6464,6 +6782,12 @@ impl<'b> IndicesSegmentsParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesSegmentsParts<'b> {
+    #[doc = "Builds a [IndicesSegmentsParts::Index] for the Indices Segments API"]
+    fn from(t: &'b [&'b str]) -> IndicesSegmentsParts<'b> {
+        IndicesSegmentsParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-segments.html)\n\nProvides low-level information about segments in a Lucene index."]
 pub struct IndicesSegments<'a, 'b> {
@@ -6482,11 +6806,14 @@ pub struct IndicesSegments<'a, 'b> {
 }
 impl<'a, 'b> IndicesSegments<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesSegments] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesSegmentsParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesSegmentsParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesSegments {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             error_trace: None,
@@ -6630,6 +6957,12 @@ impl<'b> IndicesShardStoresParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesShardStoresParts<'b> {
+    #[doc = "Builds a [IndicesShardStoresParts::Index] for the Indices Shard Stores API"]
+    fn from(t: &'b [&'b str]) -> IndicesShardStoresParts<'b> {
+        IndicesShardStoresParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Shard Stores API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-shards-stores.html)\n\nProvides store information for shard copies of indices."]
 pub struct IndicesShardStores<'a, 'b> {
@@ -6648,11 +6981,14 @@ pub struct IndicesShardStores<'a, 'b> {
 }
 impl<'a, 'b> IndicesShardStores<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesShardStores] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesShardStoresParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesShardStoresParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesShardStores {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             error_trace: None,
@@ -6796,6 +7132,12 @@ impl<'b> IndicesShrinkParts<'b> {
         }
     }
 }
+impl<'b> From<(&'b str, &'b str)> for IndicesShrinkParts<'b> {
+    #[doc = "Builds a [IndicesShrinkParts::IndexTarget] for the Indices Shrink API"]
+    fn from(t: (&'b str, &'b str)) -> IndicesShrinkParts<'b> {
+        IndicesShrinkParts::IndexTarget(t.0, t.1)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Shrink API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-shrink-index.html)\n\nAllow to shrink an existing index into a new index with fewer primary shards."]
 pub struct IndicesShrink<'a, 'b, B> {
@@ -6817,11 +7159,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesShrink] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesShrinkParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesShrinkParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesShrink {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             body: None,
             error_trace: None,
@@ -6974,6 +7319,12 @@ impl<'b> IndicesSplitParts<'b> {
         }
     }
 }
+impl<'b> From<(&'b str, &'b str)> for IndicesSplitParts<'b> {
+    #[doc = "Builds a [IndicesSplitParts::IndexTarget] for the Indices Split API"]
+    fn from(t: (&'b str, &'b str)) -> IndicesSplitParts<'b> {
+        IndicesSplitParts::IndexTarget(t.0, t.1)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Split API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-split-index.html)\n\nAllows you to split an existing index into a new index with more primary shards."]
 pub struct IndicesSplit<'a, 'b, B> {
@@ -6995,11 +7346,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesSplit] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesSplitParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesSplitParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesSplit {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             body: None,
             error_trace: None,
@@ -7180,6 +7534,18 @@ impl<'b> IndicesStatsParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesStatsParts<'b> {
+    #[doc = "Builds a [IndicesStatsParts::Metric] for the Indices Stats API"]
+    fn from(t: &'b [&'b str]) -> IndicesStatsParts<'b> {
+        IndicesStatsParts::Metric(t)
+    }
+}
+impl<'b> From<(&'b [&'b str], &'b [&'b str])> for IndicesStatsParts<'b> {
+    #[doc = "Builds a [IndicesStatsParts::IndexMetric] for the Indices Stats API"]
+    fn from(t: (&'b [&'b str], &'b [&'b str])) -> IndicesStatsParts<'b> {
+        IndicesStatsParts::IndexMetric(t.0, t.1)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-stats.html)\n\nProvides statistics on operations happening in an index."]
 pub struct IndicesStats<'a, 'b> {
@@ -7204,11 +7570,14 @@ pub struct IndicesStats<'a, 'b> {
 }
 impl<'a, 'b> IndicesStats<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesStats] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesStatsParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesStatsParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesStats {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             completion_fields: None,
             error_trace: None,
@@ -7408,6 +7777,12 @@ impl<'b> IndicesUnfreezeParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for IndicesUnfreezeParts<'b> {
+    #[doc = "Builds a [IndicesUnfreezeParts::Index] for the Indices Unfreeze API"]
+    fn from(t: &'b str) -> IndicesUnfreezeParts<'b> {
+        IndicesUnfreezeParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Unfreeze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/unfreeze-index-api.html)\n\nUnfreezes an index. When a frozen index is unfrozen, the index goes through the normal recovery process and becomes writeable again."]
 pub struct IndicesUnfreeze<'a, 'b, B> {
@@ -7432,11 +7807,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesUnfreeze] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesUnfreezeParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesUnfreezeParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesUnfreeze {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             body: None,
@@ -7777,6 +8155,12 @@ impl<'b> IndicesUpgradeParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesUpgradeParts<'b> {
+    #[doc = "Builds a [IndicesUpgradeParts::Index] for the Indices Upgrade API"]
+    fn from(t: &'b [&'b str]) -> IndicesUpgradeParts<'b> {
+        IndicesUpgradeParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-upgrade.html)\n\nDEPRECATED Upgrades to the current version of Lucene."]
 pub struct IndicesUpgrade<'a, 'b, B> {
@@ -7800,11 +8184,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesUpgrade] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesUpgradeParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesUpgradeParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesUpgrade {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             body: None,
@@ -7996,6 +8383,18 @@ impl<'b> IndicesValidateQueryParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for IndicesValidateQueryParts<'b> {
+    #[doc = "Builds a [IndicesValidateQueryParts::Index] for the Indices Validate Query API"]
+    fn from(t: &'b [&'b str]) -> IndicesValidateQueryParts<'b> {
+        IndicesValidateQueryParts::Index(t)
+    }
+}
+impl<'b> From<(&'b [&'b str], &'b [&'b str])> for IndicesValidateQueryParts<'b> {
+    #[doc = "Builds a [IndicesValidateQueryParts::IndexType] for the Indices Validate Query API"]
+    fn from(t: (&'b [&'b str], &'b [&'b str])) -> IndicesValidateQueryParts<'b> {
+        IndicesValidateQueryParts::IndexType(t.0, t.1)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Indices Validate Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-validate.html)\n\nAllows a user to validate a potentially expensive query without executing it."]
 pub struct IndicesValidateQuery<'a, 'b, B> {
@@ -8026,11 +8425,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [IndicesValidateQuery] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesValidateQueryParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<IndicesValidateQueryParts<'b>>,
+    {
         let headers = HeaderMap::new();
         IndicesValidateQuery {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             all_shards: None,
             allow_no_indices: None,
@@ -8266,30 +8668,45 @@ impl<'a> Indices<'a> {
         self.transport
     }
     #[doc = "[Indices Add Block API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-blocks.html)\n\nAdds a block to an index."]
-    pub fn add_block<'b>(&'a self, parts: IndicesAddBlockParts<'b>) -> IndicesAddBlock<'a, 'b, ()> {
+    pub fn add_block<'b, P>(&'a self, parts: P) -> IndicesAddBlock<'a, 'b, ()>
+    where
+        P: Into<IndicesAddBlockParts<'b>>,
+    {
         IndicesAddBlock::new(self.transport(), parts)
     }
     #[doc = "[Indices Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-analyze.html)\n\nPerforms the analysis process on a text and return the tokens breakdown of the text."]
-    pub fn analyze<'b>(&'a self, parts: IndicesAnalyzeParts<'b>) -> IndicesAnalyze<'a, 'b, ()> {
+    pub fn analyze<'b, P>(&'a self, parts: P) -> IndicesAnalyze<'a, 'b, ()>
+    where
+        P: Into<IndicesAnalyzeParts<'b>>,
+    {
         IndicesAnalyze::new(self.transport(), parts)
     }
     #[doc = "[Indices Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-clearcache.html)\n\nClears all or specific caches for one or more indices."]
-    pub fn clear_cache<'b>(
-        &'a self,
-        parts: IndicesClearCacheParts<'b>,
-    ) -> IndicesClearCache<'a, 'b, ()> {
+    pub fn clear_cache<'b, P>(&'a self, parts: P) -> IndicesClearCache<'a, 'b, ()>
+    where
+        P: Into<IndicesClearCacheParts<'b>>,
+    {
         IndicesClearCache::new(self.transport(), parts)
     }
     #[doc = "[Indices Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-clone-index.html)\n\nClones an index"]
-    pub fn clone<'b>(&'a self, parts: IndicesCloneParts<'b>) -> IndicesClone<'a, 'b, ()> {
+    pub fn clone<'b, P>(&'a self, parts: P) -> IndicesClone<'a, 'b, ()>
+    where
+        P: Into<IndicesCloneParts<'b>>,
+    {
         IndicesClone::new(self.transport(), parts)
     }
     #[doc = "[Indices Close API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-open-close.html)\n\nCloses an index."]
-    pub fn close<'b>(&'a self, parts: IndicesCloseParts<'b>) -> IndicesClose<'a, 'b, ()> {
+    pub fn close<'b, P>(&'a self, parts: P) -> IndicesClose<'a, 'b, ()>
+    where
+        P: Into<IndicesCloseParts<'b>>,
+    {
         IndicesClose::new(self.transport(), parts)
     }
     #[doc = "[Indices Create API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-create-index.html)\n\nCreates an index with optional settings and mappings.\n\n# Examples\n\nCreate an index with a mapping\n\n```rust,no_run\n# use elasticsearch::{Elasticsearch, Error, indices::IndicesCreateParts};\n# use serde_json::{json, Value};\n# async fn doc() -> Result<(), Box<dyn std::error::Error>> {\nlet client = Elasticsearch::default();\nlet response = client\n    .indices()\n    .create(IndicesCreateParts::Index(\"test_index\"))\n    .body(json!({\n        \"mappings\" : {\n            \"properties\" : {\n                \"field1\" : { \"type\" : \"text\" }\n            }\n        }\n    }))\n    .send()\n    .await?;\n    \n# Ok(())\n# }\n```"]
-    pub fn create<'b>(&'a self, parts: IndicesCreateParts<'b>) -> IndicesCreate<'a, 'b, ()> {
+    pub fn create<'b, P>(&'a self, parts: P) -> IndicesCreate<'a, 'b, ()>
+    where
+        P: Into<IndicesCreateParts<'b>>,
+    {
         IndicesCreate::new(self.transport(), parts)
     }
     #[doc = "[Indices Create Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/data-streams.html)\n\nCreates or updates a data stream"]
@@ -8307,14 +8724,17 @@ impl<'a> Indices<'a> {
         IndicesDataStreamsStats::new(self.transport(), parts)
     }
     #[doc = "[Indices Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-delete-index.html)\n\nDeletes an index."]
-    pub fn delete<'b>(&'a self, parts: IndicesDeleteParts<'b>) -> IndicesDelete<'a, 'b> {
+    pub fn delete<'b, P>(&'a self, parts: P) -> IndicesDelete<'a, 'b>
+    where
+        P: Into<IndicesDeleteParts<'b>>,
+    {
         IndicesDelete::new(self.transport(), parts)
     }
     #[doc = "[Indices Delete Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-aliases.html)\n\nDeletes an alias."]
-    pub fn delete_alias<'b>(
-        &'a self,
-        parts: IndicesDeleteAliasParts<'b>,
-    ) -> IndicesDeleteAlias<'a, 'b> {
+    pub fn delete_alias<'b, P>(&'a self, parts: P) -> IndicesDeleteAlias<'a, 'b>
+    where
+        P: Into<IndicesDeleteAliasParts<'b>>,
+    {
         IndicesDeleteAlias::new(self.transport(), parts)
     }
     #[doc = "[Indices Delete Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/data-streams.html)\n\nDeletes a data stream."]
@@ -8325,58 +8745,73 @@ impl<'a> Indices<'a> {
         IndicesDeleteDataStream::new(self.transport(), parts)
     }
     #[doc = "[Indices Delete Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nDeletes an index template."]
-    pub fn delete_template<'b>(
-        &'a self,
-        parts: IndicesDeleteTemplateParts<'b>,
-    ) -> IndicesDeleteTemplate<'a, 'b> {
+    pub fn delete_template<'b, P>(&'a self, parts: P) -> IndicesDeleteTemplate<'a, 'b>
+    where
+        P: Into<IndicesDeleteTemplateParts<'b>>,
+    {
         IndicesDeleteTemplate::new(self.transport(), parts)
     }
     #[doc = "[Indices Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-exists.html)\n\nReturns information about whether a particular index exists."]
-    pub fn exists<'b>(&'a self, parts: IndicesExistsParts<'b>) -> IndicesExists<'a, 'b> {
+    pub fn exists<'b, P>(&'a self, parts: P) -> IndicesExists<'a, 'b>
+    where
+        P: Into<IndicesExistsParts<'b>>,
+    {
         IndicesExists::new(self.transport(), parts)
     }
     #[doc = "[Indices Exists Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-aliases.html)\n\nReturns information about whether a particular alias exists."]
-    pub fn exists_alias<'b>(
-        &'a self,
-        parts: IndicesExistsAliasParts<'b>,
-    ) -> IndicesExistsAlias<'a, 'b> {
+    pub fn exists_alias<'b, P>(&'a self, parts: P) -> IndicesExistsAlias<'a, 'b>
+    where
+        P: Into<IndicesExistsAliasParts<'b>>,
+    {
         IndicesExistsAlias::new(self.transport(), parts)
     }
     #[doc = "[Indices Exists Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nReturns information about whether a particular index template exists."]
-    pub fn exists_template<'b>(
-        &'a self,
-        parts: IndicesExistsTemplateParts<'b>,
-    ) -> IndicesExistsTemplate<'a, 'b> {
+    pub fn exists_template<'b, P>(&'a self, parts: P) -> IndicesExistsTemplate<'a, 'b>
+    where
+        P: Into<IndicesExistsTemplateParts<'b>>,
+    {
         IndicesExistsTemplate::new(self.transport(), parts)
     }
     #[doc = "[Indices Exists Type API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-types-exists.html)\n\nReturns information about whether a particular document type exists. (DEPRECATED)"]
-    pub fn exists_type<'b>(
-        &'a self,
-        parts: IndicesExistsTypeParts<'b>,
-    ) -> IndicesExistsType<'a, 'b> {
+    pub fn exists_type<'b, P>(&'a self, parts: P) -> IndicesExistsType<'a, 'b>
+    where
+        P: Into<IndicesExistsTypeParts<'b>>,
+    {
         IndicesExistsType::new(self.transport(), parts)
     }
     #[doc = "[Indices Flush API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-flush.html)\n\nPerforms the flush operation on one or more indices."]
-    pub fn flush<'b>(&'a self, parts: IndicesFlushParts<'b>) -> IndicesFlush<'a, 'b, ()> {
+    pub fn flush<'b, P>(&'a self, parts: P) -> IndicesFlush<'a, 'b, ()>
+    where
+        P: Into<IndicesFlushParts<'b>>,
+    {
         IndicesFlush::new(self.transport(), parts)
     }
     #[doc = "[Indices Forcemerge API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-forcemerge.html)\n\nPerforms the force merge operation on one or more indices."]
-    pub fn forcemerge<'b>(
-        &'a self,
-        parts: IndicesForcemergeParts<'b>,
-    ) -> IndicesForcemerge<'a, 'b, ()> {
+    pub fn forcemerge<'b, P>(&'a self, parts: P) -> IndicesForcemerge<'a, 'b, ()>
+    where
+        P: Into<IndicesForcemergeParts<'b>>,
+    {
         IndicesForcemerge::new(self.transport(), parts)
     }
     #[doc = "[Indices Freeze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/freeze-index-api.html)\n\nFreezes an index. A frozen index has almost no overhead on the cluster (except for maintaining its metadata in memory) and is read-only."]
-    pub fn freeze<'b>(&'a self, parts: IndicesFreezeParts<'b>) -> IndicesFreeze<'a, 'b, ()> {
+    pub fn freeze<'b, P>(&'a self, parts: P) -> IndicesFreeze<'a, 'b, ()>
+    where
+        P: Into<IndicesFreezeParts<'b>>,
+    {
         IndicesFreeze::new(self.transport(), parts)
     }
     #[doc = "[Indices Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-get-index.html)\n\nReturns information about one or more indices."]
-    pub fn get<'b>(&'a self, parts: IndicesGetParts<'b>) -> IndicesGet<'a, 'b> {
+    pub fn get<'b, P>(&'a self, parts: P) -> IndicesGet<'a, 'b>
+    where
+        P: Into<IndicesGetParts<'b>>,
+    {
         IndicesGet::new(self.transport(), parts)
     }
     #[doc = "[Indices Get Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-aliases.html)\n\nReturns an alias."]
-    pub fn get_alias<'b>(&'a self, parts: IndicesGetAliasParts<'b>) -> IndicesGetAlias<'a, 'b> {
+    pub fn get_alias<'b, P>(&'a self, parts: P) -> IndicesGetAlias<'a, 'b>
+    where
+        P: Into<IndicesGetAliasParts<'b>>,
+    {
         IndicesGetAlias::new(self.transport(), parts)
     }
     #[doc = "[Indices Get Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/data-streams.html)\n\nReturns data streams."]
@@ -8387,113 +8822,146 @@ impl<'a> Indices<'a> {
         IndicesGetDataStream::new(self.transport(), parts)
     }
     #[doc = "[Indices Get Field Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-get-field-mapping.html)\n\nReturns mapping for one or more fields."]
-    pub fn get_field_mapping<'b>(
-        &'a self,
-        parts: IndicesGetFieldMappingParts<'b>,
-    ) -> IndicesGetFieldMapping<'a, 'b> {
+    pub fn get_field_mapping<'b, P>(&'a self, parts: P) -> IndicesGetFieldMapping<'a, 'b>
+    where
+        P: Into<IndicesGetFieldMappingParts<'b>>,
+    {
         IndicesGetFieldMapping::new(self.transport(), parts)
     }
     #[doc = "[Indices Get Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-get-mapping.html)\n\nReturns mappings for one or more indices."]
-    pub fn get_mapping<'b>(
-        &'a self,
-        parts: IndicesGetMappingParts<'b>,
-    ) -> IndicesGetMapping<'a, 'b> {
+    pub fn get_mapping<'b, P>(&'a self, parts: P) -> IndicesGetMapping<'a, 'b>
+    where
+        P: Into<IndicesGetMappingParts<'b>>,
+    {
         IndicesGetMapping::new(self.transport(), parts)
     }
     #[doc = "[Indices Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-get-settings.html)\n\nReturns settings for one or more indices."]
-    pub fn get_settings<'b>(
-        &'a self,
-        parts: IndicesGetSettingsParts<'b>,
-    ) -> IndicesGetSettings<'a, 'b> {
+    pub fn get_settings<'b, P>(&'a self, parts: P) -> IndicesGetSettings<'a, 'b>
+    where
+        P: Into<IndicesGetSettingsParts<'b>>,
+    {
         IndicesGetSettings::new(self.transport(), parts)
     }
     #[doc = "[Indices Get Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nReturns an index template."]
-    pub fn get_template<'b>(
-        &'a self,
-        parts: IndicesGetTemplateParts<'b>,
-    ) -> IndicesGetTemplate<'a, 'b> {
+    pub fn get_template<'b, P>(&'a self, parts: P) -> IndicesGetTemplate<'a, 'b>
+    where
+        P: Into<IndicesGetTemplateParts<'b>>,
+    {
         IndicesGetTemplate::new(self.transport(), parts)
     }
     #[doc = "[Indices Get Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-upgrade.html)\n\nDEPRECATED Returns a progress status of current upgrade."]
-    pub fn get_upgrade<'b>(
-        &'a self,
-        parts: IndicesGetUpgradeParts<'b>,
-    ) -> IndicesGetUpgrade<'a, 'b> {
+    pub fn get_upgrade<'b, P>(&'a self, parts: P) -> IndicesGetUpgrade<'a, 'b>
+    where
+        P: Into<IndicesGetUpgradeParts<'b>>,
+    {
         IndicesGetUpgrade::new(self.transport(), parts)
     }
     #[doc = "[Indices Open API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-open-close.html)\n\nOpens an index."]
-    pub fn open<'b>(&'a self, parts: IndicesOpenParts<'b>) -> IndicesOpen<'a, 'b, ()> {
+    pub fn open<'b, P>(&'a self, parts: P) -> IndicesOpen<'a, 'b, ()>
+    where
+        P: Into<IndicesOpenParts<'b>>,
+    {
         IndicesOpen::new(self.transport(), parts)
     }
     #[doc = "[Indices Put Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-aliases.html)\n\nCreates or updates an alias."]
-    pub fn put_alias<'b>(&'a self, parts: IndicesPutAliasParts<'b>) -> IndicesPutAlias<'a, 'b, ()> {
+    pub fn put_alias<'b, P>(&'a self, parts: P) -> IndicesPutAlias<'a, 'b, ()>
+    where
+        P: Into<IndicesPutAliasParts<'b>>,
+    {
         IndicesPutAlias::new(self.transport(), parts)
     }
     #[doc = "[Indices Put Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-put-mapping.html)\n\nUpdates the index mappings.\n\n# Examples\n\nPut a mapping into an existing index, assuming the index does not have a mapping, \nor that any properties specified do not conflict with existing properties\n\n```rust,no_run\n# use elasticsearch::{Elasticsearch, Error, indices::IndicesPutMappingParts};\n# use serde_json::{json, Value};\n# async fn doc() -> Result<(), Box<dyn std::error::Error>> {\nlet client = Elasticsearch::default();\nlet response = client\n    .indices()\n    .put_mapping(IndicesPutMappingParts::Index(&[\"test_index\"]))\n    .body(json!({\n        \"properties\" : {\n            \"field1\" : { \"type\" : \"text\" }\n        }\n    }))\n    .send()\n    .await?;\n    \n# Ok(())\n# }\n```"]
-    pub fn put_mapping<'b>(
-        &'a self,
-        parts: IndicesPutMappingParts<'b>,
-    ) -> IndicesPutMapping<'a, 'b, ()> {
+    pub fn put_mapping<'b, P>(&'a self, parts: P) -> IndicesPutMapping<'a, 'b, ()>
+    where
+        P: Into<IndicesPutMappingParts<'b>>,
+    {
         IndicesPutMapping::new(self.transport(), parts)
     }
     #[doc = "[Indices Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-update-settings.html)\n\nUpdates the index settings."]
-    pub fn put_settings<'b>(
-        &'a self,
-        parts: IndicesPutSettingsParts<'b>,
-    ) -> IndicesPutSettings<'a, 'b, ()> {
+    pub fn put_settings<'b, P>(&'a self, parts: P) -> IndicesPutSettings<'a, 'b, ()>
+    where
+        P: Into<IndicesPutSettingsParts<'b>>,
+    {
         IndicesPutSettings::new(self.transport(), parts)
     }
     #[doc = "[Indices Put Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nCreates or updates an index template."]
-    pub fn put_template<'b>(
-        &'a self,
-        parts: IndicesPutTemplateParts<'b>,
-    ) -> IndicesPutTemplate<'a, 'b, ()> {
+    pub fn put_template<'b, P>(&'a self, parts: P) -> IndicesPutTemplate<'a, 'b, ()>
+    where
+        P: Into<IndicesPutTemplateParts<'b>>,
+    {
         IndicesPutTemplate::new(self.transport(), parts)
     }
     #[doc = "[Indices Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-recovery.html)\n\nReturns information about ongoing index shard recoveries."]
-    pub fn recovery<'b>(&'a self, parts: IndicesRecoveryParts<'b>) -> IndicesRecovery<'a, 'b> {
+    pub fn recovery<'b, P>(&'a self, parts: P) -> IndicesRecovery<'a, 'b>
+    where
+        P: Into<IndicesRecoveryParts<'b>>,
+    {
         IndicesRecovery::new(self.transport(), parts)
     }
     #[doc = "[Indices Refresh API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-refresh.html)\n\nPerforms the refresh operation in one or more indices."]
-    pub fn refresh<'b>(&'a self, parts: IndicesRefreshParts<'b>) -> IndicesRefresh<'a, 'b, ()> {
+    pub fn refresh<'b, P>(&'a self, parts: P) -> IndicesRefresh<'a, 'b, ()>
+    where
+        P: Into<IndicesRefreshParts<'b>>,
+    {
         IndicesRefresh::new(self.transport(), parts)
     }
     #[doc = "[Indices Reload Search Analyzers API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-reload-analyzers.html)\n\nReloads an index's search analyzers and their resources."]
-    pub fn reload_search_analyzers<'b>(
+    pub fn reload_search_analyzers<'b, P>(
         &'a self,
-        parts: IndicesReloadSearchAnalyzersParts<'b>,
-    ) -> IndicesReloadSearchAnalyzers<'a, 'b, ()> {
+        parts: P,
+    ) -> IndicesReloadSearchAnalyzers<'a, 'b, ()>
+    where
+        P: Into<IndicesReloadSearchAnalyzersParts<'b>>,
+    {
         IndicesReloadSearchAnalyzers::new(self.transport(), parts)
     }
     #[doc = "[Indices Rollover API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-rollover-index.html)\n\nUpdates an alias to point to a new index when the existing index\nis considered to be too large or too old."]
-    pub fn rollover<'b>(&'a self, parts: IndicesRolloverParts<'b>) -> IndicesRollover<'a, 'b, ()> {
+    pub fn rollover<'b, P>(&'a self, parts: P) -> IndicesRollover<'a, 'b, ()>
+    where
+        P: Into<IndicesRolloverParts<'b>>,
+    {
         IndicesRollover::new(self.transport(), parts)
     }
     #[doc = "[Indices Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-segments.html)\n\nProvides low-level information about segments in a Lucene index."]
-    pub fn segments<'b>(&'a self, parts: IndicesSegmentsParts<'b>) -> IndicesSegments<'a, 'b> {
+    pub fn segments<'b, P>(&'a self, parts: P) -> IndicesSegments<'a, 'b>
+    where
+        P: Into<IndicesSegmentsParts<'b>>,
+    {
         IndicesSegments::new(self.transport(), parts)
     }
     #[doc = "[Indices Shard Stores API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-shards-stores.html)\n\nProvides store information for shard copies of indices."]
-    pub fn shard_stores<'b>(
-        &'a self,
-        parts: IndicesShardStoresParts<'b>,
-    ) -> IndicesShardStores<'a, 'b> {
+    pub fn shard_stores<'b, P>(&'a self, parts: P) -> IndicesShardStores<'a, 'b>
+    where
+        P: Into<IndicesShardStoresParts<'b>>,
+    {
         IndicesShardStores::new(self.transport(), parts)
     }
     #[doc = "[Indices Shrink API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-shrink-index.html)\n\nAllow to shrink an existing index into a new index with fewer primary shards."]
-    pub fn shrink<'b>(&'a self, parts: IndicesShrinkParts<'b>) -> IndicesShrink<'a, 'b, ()> {
+    pub fn shrink<'b, P>(&'a self, parts: P) -> IndicesShrink<'a, 'b, ()>
+    where
+        P: Into<IndicesShrinkParts<'b>>,
+    {
         IndicesShrink::new(self.transport(), parts)
     }
     #[doc = "[Indices Split API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-split-index.html)\n\nAllows you to split an existing index into a new index with more primary shards."]
-    pub fn split<'b>(&'a self, parts: IndicesSplitParts<'b>) -> IndicesSplit<'a, 'b, ()> {
+    pub fn split<'b, P>(&'a self, parts: P) -> IndicesSplit<'a, 'b, ()>
+    where
+        P: Into<IndicesSplitParts<'b>>,
+    {
         IndicesSplit::new(self.transport(), parts)
     }
     #[doc = "[Indices Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-stats.html)\n\nProvides statistics on operations happening in an index."]
-    pub fn stats<'b>(&'a self, parts: IndicesStatsParts<'b>) -> IndicesStats<'a, 'b> {
+    pub fn stats<'b, P>(&'a self, parts: P) -> IndicesStats<'a, 'b>
+    where
+        P: Into<IndicesStatsParts<'b>>,
+    {
         IndicesStats::new(self.transport(), parts)
     }
     #[doc = "[Indices Unfreeze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/unfreeze-index-api.html)\n\nUnfreezes an index. When a frozen index is unfrozen, the index goes through the normal recovery process and becomes writeable again."]
-    pub fn unfreeze<'b>(&'a self, parts: IndicesUnfreezeParts<'b>) -> IndicesUnfreeze<'a, 'b, ()> {
+    pub fn unfreeze<'b, P>(&'a self, parts: P) -> IndicesUnfreeze<'a, 'b, ()>
+    where
+        P: Into<IndicesUnfreezeParts<'b>>,
+    {
         IndicesUnfreeze::new(self.transport(), parts)
     }
     #[doc = "[Indices Update Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-aliases.html)\n\nUpdates index aliases."]
@@ -8501,14 +8969,17 @@ impl<'a> Indices<'a> {
         IndicesUpdateAliases::new(self.transport())
     }
     #[doc = "[Indices Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-upgrade.html)\n\nDEPRECATED Upgrades to the current version of Lucene."]
-    pub fn upgrade<'b>(&'a self, parts: IndicesUpgradeParts<'b>) -> IndicesUpgrade<'a, 'b, ()> {
+    pub fn upgrade<'b, P>(&'a self, parts: P) -> IndicesUpgrade<'a, 'b, ()>
+    where
+        P: Into<IndicesUpgradeParts<'b>>,
+    {
         IndicesUpgrade::new(self.transport(), parts)
     }
     #[doc = "[Indices Validate Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-validate.html)\n\nAllows a user to validate a potentially expensive query without executing it."]
-    pub fn validate_query<'b>(
-        &'a self,
-        parts: IndicesValidateQueryParts<'b>,
-    ) -> IndicesValidateQuery<'a, 'b, ()> {
+    pub fn validate_query<'b, P>(&'a self, parts: P) -> IndicesValidateQuery<'a, 'b, ()>
+    where
+        P: Into<IndicesValidateQueryParts<'b>>,
+    {
         IndicesValidateQuery::new(self.transport(), parts)
     }
 }

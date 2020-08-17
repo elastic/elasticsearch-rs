@@ -495,6 +495,12 @@ impl<'b> ClusterHealthParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for ClusterHealthParts<'b> {
+    #[doc = "Builds a [ClusterHealthParts::Index] for the Cluster Health API"]
+    fn from(t: &'b [&'b str]) -> ClusterHealthParts<'b> {
+        ClusterHealthParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-health.html)\n\nReturns basic information about the health of the cluster."]
 pub struct ClusterHealth<'a, 'b> {
@@ -520,11 +526,14 @@ pub struct ClusterHealth<'a, 'b> {
 }
 impl<'a, 'b> ClusterHealth<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterHealth] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: ClusterHealthParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<ClusterHealthParts<'b>>,
+    {
         let headers = HeaderMap::new();
         ClusterHealth {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             expand_wildcards: None,
@@ -1525,6 +1534,18 @@ impl<'b> ClusterStateParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for ClusterStateParts<'b> {
+    #[doc = "Builds a [ClusterStateParts::Metric] for the Cluster State API"]
+    fn from(t: &'b [&'b str]) -> ClusterStateParts<'b> {
+        ClusterStateParts::Metric(t)
+    }
+}
+impl<'b> From<(&'b [&'b str], &'b [&'b str])> for ClusterStateParts<'b> {
+    #[doc = "Builds a [ClusterStateParts::MetricIndex] for the Cluster State API"]
+    fn from(t: (&'b [&'b str], &'b [&'b str])) -> ClusterStateParts<'b> {
+        ClusterStateParts::MetricIndex(t.0, t.1)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-state.html)\n\nReturns a comprehensive information about the state of the cluster."]
 pub struct ClusterState<'a, 'b> {
@@ -1547,11 +1568,14 @@ pub struct ClusterState<'a, 'b> {
 }
 impl<'a, 'b> ClusterState<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterState] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: ClusterStateParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<ClusterStateParts<'b>>,
+    {
         let headers = HeaderMap::new();
         ClusterState {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             allow_no_indices: None,
             error_trace: None,
@@ -1730,6 +1754,12 @@ impl<'b> ClusterStatsParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for ClusterStatsParts<'b> {
+    #[doc = "Builds a [ClusterStatsParts::NodeId] for the Cluster Stats API"]
+    fn from(t: &'b [&'b str]) -> ClusterStatsParts<'b> {
+        ClusterStatsParts::NodeId(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-stats.html)\n\nReturns high-level overview of cluster statistics."]
 pub struct ClusterStats<'a, 'b> {
@@ -1746,11 +1776,14 @@ pub struct ClusterStats<'a, 'b> {
 }
 impl<'a, 'b> ClusterStats<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterStats] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: ClusterStatsParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<ClusterStatsParts<'b>>,
+    {
         let headers = HeaderMap::new();
         ClusterStats {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             filter_path: None,
@@ -1874,7 +1907,10 @@ impl<'a> Cluster<'a> {
         ClusterGetSettings::new(self.transport())
     }
     #[doc = "[Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-health.html)\n\nReturns basic information about the health of the cluster."]
-    pub fn health<'b>(&'a self, parts: ClusterHealthParts<'b>) -> ClusterHealth<'a, 'b> {
+    pub fn health<'b, P>(&'a self, parts: P) -> ClusterHealth<'a, 'b>
+    where
+        P: Into<ClusterHealthParts<'b>>,
+    {
         ClusterHealth::new(self.transport(), parts)
     }
     #[doc = "[Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-pending.html)\n\nReturns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
@@ -1900,11 +1936,17 @@ impl<'a> Cluster<'a> {
         ClusterReroute::new(self.transport())
     }
     #[doc = "[Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-state.html)\n\nReturns a comprehensive information about the state of the cluster."]
-    pub fn state<'b>(&'a self, parts: ClusterStateParts<'b>) -> ClusterState<'a, 'b> {
+    pub fn state<'b, P>(&'a self, parts: P) -> ClusterState<'a, 'b>
+    where
+        P: Into<ClusterStateParts<'b>>,
+    {
         ClusterState::new(self.transport(), parts)
     }
     #[doc = "[Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-stats.html)\n\nReturns high-level overview of cluster statistics."]
-    pub fn stats<'b>(&'a self, parts: ClusterStatsParts<'b>) -> ClusterStats<'a, 'b> {
+    pub fn stats<'b, P>(&'a self, parts: P) -> ClusterStats<'a, 'b>
+    where
+        P: Into<ClusterStatsParts<'b>>,
+    {
         ClusterStats::new(self.transport(), parts)
     }
 }

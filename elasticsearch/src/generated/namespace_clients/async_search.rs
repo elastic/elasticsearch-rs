@@ -58,6 +58,12 @@ impl<'b> AsyncSearchDeleteParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for AsyncSearchDeleteParts<'b> {
+    #[doc = "Builds a [AsyncSearchDeleteParts::Id] for the Async Search Delete API"]
+    fn from(t: &'b str) -> AsyncSearchDeleteParts<'b> {
+        AsyncSearchDeleteParts::Id(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Async Search Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/async-search.html)\n\nDeletes an async search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
 pub struct AsyncSearchDelete<'a, 'b> {
@@ -72,11 +78,14 @@ pub struct AsyncSearchDelete<'a, 'b> {
 }
 impl<'a, 'b> AsyncSearchDelete<'a, 'b> {
     #[doc = "Creates a new instance of [AsyncSearchDelete] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: AsyncSearchDeleteParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<AsyncSearchDeleteParts<'b>>,
+    {
         let headers = HeaderMap::new();
         AsyncSearchDelete {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             filter_path: None,
@@ -175,6 +184,12 @@ impl<'b> AsyncSearchGetParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for AsyncSearchGetParts<'b> {
+    #[doc = "Builds a [AsyncSearchGetParts::Id] for the Async Search Get API"]
+    fn from(t: &'b str) -> AsyncSearchGetParts<'b> {
+        AsyncSearchGetParts::Id(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Async Search Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/async-search.html)\n\nRetrieves the results of a previously submitted async search request given its ID."]
 pub struct AsyncSearchGet<'a, 'b> {
@@ -192,11 +207,14 @@ pub struct AsyncSearchGet<'a, 'b> {
 }
 impl<'a, 'b> AsyncSearchGet<'a, 'b> {
     #[doc = "Creates a new instance of [AsyncSearchGet] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: AsyncSearchGetParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<AsyncSearchGetParts<'b>>,
+    {
         let headers = HeaderMap::new();
         AsyncSearchGet {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             filter_path: None,
@@ -328,6 +346,12 @@ impl<'b> AsyncSearchSubmitParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for AsyncSearchSubmitParts<'b> {
+    #[doc = "Builds a [AsyncSearchSubmitParts::Index] for the Async Search Submit API"]
+    fn from(t: &'b [&'b str]) -> AsyncSearchSubmitParts<'b> {
+        AsyncSearchSubmitParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Async Search Submit API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/async-search.html)\n\nExecutes a search request asynchronously."]
 pub struct AsyncSearchSubmit<'a, 'b, B> {
@@ -387,11 +411,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [AsyncSearchSubmit] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: AsyncSearchSubmitParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<AsyncSearchSubmitParts<'b>>,
+    {
         let headers = HeaderMap::new();
         AsyncSearchSubmit {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             _source: None,
             _source_excludes: None,
@@ -932,18 +959,24 @@ impl<'a> AsyncSearch<'a> {
         self.transport
     }
     #[doc = "[Async Search Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/async-search.html)\n\nDeletes an async search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
-    pub fn delete<'b>(&'a self, parts: AsyncSearchDeleteParts<'b>) -> AsyncSearchDelete<'a, 'b> {
+    pub fn delete<'b, P>(&'a self, parts: P) -> AsyncSearchDelete<'a, 'b>
+    where
+        P: Into<AsyncSearchDeleteParts<'b>>,
+    {
         AsyncSearchDelete::new(self.transport(), parts)
     }
     #[doc = "[Async Search Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/async-search.html)\n\nRetrieves the results of a previously submitted async search request given its ID."]
-    pub fn get<'b>(&'a self, parts: AsyncSearchGetParts<'b>) -> AsyncSearchGet<'a, 'b> {
+    pub fn get<'b, P>(&'a self, parts: P) -> AsyncSearchGet<'a, 'b>
+    where
+        P: Into<AsyncSearchGetParts<'b>>,
+    {
         AsyncSearchGet::new(self.transport(), parts)
     }
     #[doc = "[Async Search Submit API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/async-search.html)\n\nExecutes a search request asynchronously."]
-    pub fn submit<'b>(
-        &'a self,
-        parts: AsyncSearchSubmitParts<'b>,
-    ) -> AsyncSearchSubmit<'a, 'b, ()> {
+    pub fn submit<'b, P>(&'a self, parts: P) -> AsyncSearchSubmit<'a, 'b, ()>
+    where
+        P: Into<AsyncSearchSubmitParts<'b>>,
+    {
         AsyncSearchSubmit::new(self.transport(), parts)
     }
 }

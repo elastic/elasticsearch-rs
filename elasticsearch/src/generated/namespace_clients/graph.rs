@@ -61,6 +61,12 @@ impl<'b> GraphExploreParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for GraphExploreParts<'b> {
+    #[doc = "Builds a [GraphExploreParts::Index] for the Graph Explore API"]
+    fn from(t: &'b [&'b str]) -> GraphExploreParts<'b> {
+        GraphExploreParts::Index(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
 pub struct GraphExplore<'a, 'b, B> {
@@ -81,11 +87,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [GraphExplore] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: GraphExploreParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<GraphExploreParts<'b>>,
+    {
         let headers = HeaderMap::new();
         GraphExplore {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             body: None,
             error_trace: None,
@@ -218,7 +227,10 @@ impl<'a> Graph<'a> {
         self.transport
     }
     #[doc = "[Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
-    pub fn explore<'b>(&'a self, parts: GraphExploreParts<'b>) -> GraphExplore<'a, 'b, ()> {
+    pub fn explore<'b, P>(&'a self, parts: P) -> GraphExplore<'a, 'b, ()>
+    where
+        P: Into<GraphExploreParts<'b>>,
+    {
         GraphExplore::new(self.transport(), parts)
     }
 }
