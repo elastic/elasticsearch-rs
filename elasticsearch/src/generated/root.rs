@@ -350,7 +350,7 @@ impl<'b> ClearScrollParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Clear Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-request-body.html#_clear_scroll_api)\n\nExplicitly clears the search context for a scroll."]
+#[doc = "Builder for the [Clear Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/clear-scroll-api.html)\n\nExplicitly clears the search context for a scroll."]
 pub struct ClearScroll<'a, 'b, B> {
     transport: &'a Transport,
     parts: ClearScrollParts<'b>,
@@ -8916,7 +8916,7 @@ impl Elasticsearch {
     pub fn bulk<'a, 'b>(&'a self, parts: BulkParts<'b>) -> Bulk<'a, 'b, ()> {
         Bulk::new(self.transport(), parts)
     }
-    #[doc = "[Clear Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-request-body.html#_clear_scroll_api)\n\nExplicitly clears the search context for a scroll."]
+    #[doc = "[Clear Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/clear-scroll-api.html)\n\nExplicitly clears the search context for a scroll."]
     pub fn clear_scroll<'a, 'b>(&'a self, parts: ClearScrollParts<'b>) -> ClearScroll<'a, 'b, ()> {
         ClearScroll::new(self.transport(), parts)
     }

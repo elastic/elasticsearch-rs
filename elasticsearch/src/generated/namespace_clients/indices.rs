@@ -66,7 +66,7 @@ impl<'b> IndicesAddBlockParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Add Block API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/indices-blocks.html)\n\nAdds a block to an index."]
+#[doc = "Builder for the [Indices Add Block API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/index-modules-blocks.html)\n\nAdds a block to an index."]
 pub struct IndicesAddBlock<'a, 'b, B> {
     transport: &'a Transport,
     parts: IndicesAddBlockParts<'b>,
@@ -1284,7 +1284,7 @@ impl<'b> IndicesCreateDataStreamParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Create Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/data-streams.html)\n\nCreates or updates a data stream"]
+#[doc = "Builder for the [Indices Create Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/data-streams.html)\n\nCreates a data stream"]
 pub struct IndicesCreateDataStream<'a, 'b, B> {
     transport: &'a Transport,
     parts: IndicesCreateDataStreamParts<'b>,
@@ -3110,6 +3110,7 @@ pub struct IndicesFlushSynced<'a, 'b, B> {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> IndicesFlushSynced<'a, 'b, B>
@@ -3131,6 +3132,7 @@ where
             human: None,
             ignore_unavailable: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -3156,6 +3158,7 @@ where
             human: self.human,
             ignore_unavailable: self.ignore_unavailable,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -3194,6 +3197,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -3207,6 +3215,7 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3249,7 +3258,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -9026,7 +9035,7 @@ impl<'a> Indices<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Indices Add Block API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/indices-blocks.html)\n\nAdds a block to an index."]
+    #[doc = "[Indices Add Block API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/index-modules-blocks.html)\n\nAdds a block to an index."]
     pub fn add_block<'b>(&'a self, parts: IndicesAddBlockParts<'b>) -> IndicesAddBlock<'a, 'b, ()> {
         IndicesAddBlock::new(self.transport(), parts)
     }
@@ -9053,7 +9062,7 @@ impl<'a> Indices<'a> {
     pub fn create<'b>(&'a self, parts: IndicesCreateParts<'b>) -> IndicesCreate<'a, 'b, ()> {
         IndicesCreate::new(self.transport(), parts)
     }
-    #[doc = "[Indices Create Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/data-streams.html)\n\nCreates or updates a data stream"]
+    #[doc = "[Indices Create Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/data-streams.html)\n\nCreates a data stream"]
     pub fn create_data_stream<'b>(
         &'a self,
         parts: IndicesCreateDataStreamParts<'b>,

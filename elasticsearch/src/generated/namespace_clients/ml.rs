@@ -66,6 +66,7 @@ pub struct MlCloseJob<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlCloseJobParts<'b>,
     allow_no_jobs: Option<bool>,
+    allow_no_match: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -89,6 +90,7 @@ where
             parts,
             headers,
             allow_no_jobs: None,
+            allow_no_match: None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -105,6 +107,11 @@ where
         self.allow_no_jobs = Some(allow_no_jobs);
         self
     }
+    #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
+    pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
+        self.allow_no_match = Some(allow_no_match);
+        self
+    }
     #[doc = "The body for the API call"]
     pub fn body<T>(self, body: T) -> MlCloseJob<'a, 'b, JsonBody<T>>
     where
@@ -115,6 +122,7 @@ where
             parts: self.parts,
             body: Some(body.into()),
             allow_no_jobs: self.allow_no_jobs,
+            allow_no_match: self.allow_no_match,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             force: self.force,
@@ -183,6 +191,8 @@ where
             struct QueryParams<'b> {
                 #[serde(rename = "allow_no_jobs")]
                 allow_no_jobs: Option<bool>,
+                #[serde(rename = "allow_no_match")]
+                allow_no_match: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
@@ -203,6 +213,7 @@ where
             }
             let query_params = QueryParams {
                 allow_no_jobs: self.allow_no_jobs,
+                allow_no_match: self.allow_no_match,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 force: self.force,
@@ -2875,6 +2886,7 @@ pub struct MlGetDatafeedStats<'a, 'b> {
     transport: &'a Transport,
     parts: MlGetDatafeedStatsParts<'b>,
     allow_no_datafeeds: Option<bool>,
+    allow_no_match: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -2892,6 +2904,7 @@ impl<'a, 'b> MlGetDatafeedStats<'a, 'b> {
             parts,
             headers,
             allow_no_datafeeds: None,
+            allow_no_match: None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -2903,6 +2916,11 @@ impl<'a, 'b> MlGetDatafeedStats<'a, 'b> {
     #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
     pub fn allow_no_datafeeds(mut self, allow_no_datafeeds: bool) -> Self {
         self.allow_no_datafeeds = Some(allow_no_datafeeds);
+        self
+    }
+    #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
+    pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
+        self.allow_no_match = Some(allow_no_match);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2952,6 +2970,8 @@ impl<'a, 'b> MlGetDatafeedStats<'a, 'b> {
             struct QueryParams<'b> {
                 #[serde(rename = "allow_no_datafeeds")]
                 allow_no_datafeeds: Option<bool>,
+                #[serde(rename = "allow_no_match")]
+                allow_no_match: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
@@ -2968,6 +2988,7 @@ impl<'a, 'b> MlGetDatafeedStats<'a, 'b> {
             }
             let query_params = QueryParams {
                 allow_no_datafeeds: self.allow_no_datafeeds,
+                allow_no_match: self.allow_no_match,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
@@ -3014,6 +3035,7 @@ pub struct MlGetDatafeeds<'a, 'b> {
     transport: &'a Transport,
     parts: MlGetDatafeedsParts<'b>,
     allow_no_datafeeds: Option<bool>,
+    allow_no_match: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -3031,6 +3053,7 @@ impl<'a, 'b> MlGetDatafeeds<'a, 'b> {
             parts,
             headers,
             allow_no_datafeeds: None,
+            allow_no_match: None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -3042,6 +3065,11 @@ impl<'a, 'b> MlGetDatafeeds<'a, 'b> {
     #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
     pub fn allow_no_datafeeds(mut self, allow_no_datafeeds: bool) -> Self {
         self.allow_no_datafeeds = Some(allow_no_datafeeds);
+        self
+    }
+    #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
+    pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
+        self.allow_no_match = Some(allow_no_match);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -3091,6 +3119,8 @@ impl<'a, 'b> MlGetDatafeeds<'a, 'b> {
             struct QueryParams<'b> {
                 #[serde(rename = "allow_no_datafeeds")]
                 allow_no_datafeeds: Option<bool>,
+                #[serde(rename = "allow_no_match")]
+                allow_no_match: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
@@ -3107,6 +3137,7 @@ impl<'a, 'b> MlGetDatafeeds<'a, 'b> {
             }
             let query_params = QueryParams {
                 allow_no_datafeeds: self.allow_no_datafeeds,
+                allow_no_match: self.allow_no_match,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
@@ -3544,6 +3575,7 @@ pub struct MlGetJobStats<'a, 'b> {
     transport: &'a Transport,
     parts: MlGetJobStatsParts<'b>,
     allow_no_jobs: Option<bool>,
+    allow_no_match: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -3561,6 +3593,7 @@ impl<'a, 'b> MlGetJobStats<'a, 'b> {
             parts,
             headers,
             allow_no_jobs: None,
+            allow_no_match: None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -3572,6 +3605,11 @@ impl<'a, 'b> MlGetJobStats<'a, 'b> {
     #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
     pub fn allow_no_jobs(mut self, allow_no_jobs: bool) -> Self {
         self.allow_no_jobs = Some(allow_no_jobs);
+        self
+    }
+    #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
+    pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
+        self.allow_no_match = Some(allow_no_match);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -3621,6 +3659,8 @@ impl<'a, 'b> MlGetJobStats<'a, 'b> {
             struct QueryParams<'b> {
                 #[serde(rename = "allow_no_jobs")]
                 allow_no_jobs: Option<bool>,
+                #[serde(rename = "allow_no_match")]
+                allow_no_match: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
@@ -3637,6 +3677,7 @@ impl<'a, 'b> MlGetJobStats<'a, 'b> {
             }
             let query_params = QueryParams {
                 allow_no_jobs: self.allow_no_jobs,
+                allow_no_match: self.allow_no_match,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
@@ -3683,6 +3724,7 @@ pub struct MlGetJobs<'a, 'b> {
     transport: &'a Transport,
     parts: MlGetJobsParts<'b>,
     allow_no_jobs: Option<bool>,
+    allow_no_match: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -3700,6 +3742,7 @@ impl<'a, 'b> MlGetJobs<'a, 'b> {
             parts,
             headers,
             allow_no_jobs: None,
+            allow_no_match: None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -3711,6 +3754,11 @@ impl<'a, 'b> MlGetJobs<'a, 'b> {
     #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
     pub fn allow_no_jobs(mut self, allow_no_jobs: bool) -> Self {
         self.allow_no_jobs = Some(allow_no_jobs);
+        self
+    }
+    #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
+    pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
+        self.allow_no_match = Some(allow_no_match);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -3760,6 +3808,8 @@ impl<'a, 'b> MlGetJobs<'a, 'b> {
             struct QueryParams<'b> {
                 #[serde(rename = "allow_no_jobs")]
                 allow_no_jobs: Option<bool>,
+                #[serde(rename = "allow_no_match")]
+                allow_no_match: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
@@ -3776,6 +3826,7 @@ impl<'a, 'b> MlGetJobs<'a, 'b> {
             }
             let query_params = QueryParams {
                 allow_no_jobs: self.allow_no_jobs,
+                allow_no_match: self.allow_no_match,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
@@ -4055,6 +4106,7 @@ pub struct MlGetOverallBuckets<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlGetOverallBucketsParts<'b>,
     allow_no_jobs: Option<bool>,
+    allow_no_match: Option<bool>,
     body: Option<B>,
     bucket_span: Option<&'b str>,
     end: Option<&'b str>,
@@ -4082,6 +4134,7 @@ where
             parts,
             headers,
             allow_no_jobs: None,
+            allow_no_match: None,
             body: None,
             bucket_span: None,
             end: None,
@@ -4102,6 +4155,11 @@ where
         self.allow_no_jobs = Some(allow_no_jobs);
         self
     }
+    #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
+    pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
+        self.allow_no_match = Some(allow_no_match);
+        self
+    }
     #[doc = "The body for the API call"]
     pub fn body<T>(self, body: T) -> MlGetOverallBuckets<'a, 'b, JsonBody<T>>
     where
@@ -4112,6 +4170,7 @@ where
             parts: self.parts,
             body: Some(body.into()),
             allow_no_jobs: self.allow_no_jobs,
+            allow_no_match: self.allow_no_match,
             bucket_span: self.bucket_span,
             end: self.end,
             error_trace: self.error_trace,
@@ -4207,6 +4266,8 @@ where
             struct QueryParams<'b> {
                 #[serde(rename = "allow_no_jobs")]
                 allow_no_jobs: Option<bool>,
+                #[serde(rename = "allow_no_match")]
+                allow_no_match: Option<bool>,
                 #[serde(rename = "bucket_span")]
                 bucket_span: Option<&'b str>,
                 #[serde(rename = "end")]
@@ -4235,6 +4296,7 @@ where
             }
             let query_params = QueryParams {
                 allow_no_jobs: self.allow_no_jobs,
+                allow_no_match: self.allow_no_match,
                 bucket_span: self.bucket_span,
                 end: self.end,
                 error_trace: self.error_trace,
@@ -6556,6 +6618,7 @@ pub struct MlStopDatafeed<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlStopDatafeedParts<'b>,
     allow_no_datafeeds: Option<bool>,
+    allow_no_match: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -6579,6 +6642,7 @@ where
             parts,
             headers,
             allow_no_datafeeds: None,
+            allow_no_match: None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -6595,6 +6659,11 @@ where
         self.allow_no_datafeeds = Some(allow_no_datafeeds);
         self
     }
+    #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
+    pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
+        self.allow_no_match = Some(allow_no_match);
+        self
+    }
     #[doc = "The body for the API call"]
     pub fn body<T>(self, body: T) -> MlStopDatafeed<'a, 'b, JsonBody<T>>
     where
@@ -6605,6 +6674,7 @@ where
             parts: self.parts,
             body: Some(body.into()),
             allow_no_datafeeds: self.allow_no_datafeeds,
+            allow_no_match: self.allow_no_match,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             force: self.force,
@@ -6673,6 +6743,8 @@ where
             struct QueryParams<'b> {
                 #[serde(rename = "allow_no_datafeeds")]
                 allow_no_datafeeds: Option<bool>,
+                #[serde(rename = "allow_no_match")]
+                allow_no_match: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
@@ -6693,6 +6765,7 @@ where
             }
             let query_params = QueryParams {
                 allow_no_datafeeds: self.allow_no_datafeeds,
+                allow_no_match: self.allow_no_match,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 force: self.force,
