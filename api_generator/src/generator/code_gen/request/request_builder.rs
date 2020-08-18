@@ -352,7 +352,7 @@ impl<'a> RequestBuilder<'a> {
 
     /// Creates the AST for a builder fn to add a request timeout
     fn create_request_timeout_fn(field: &syn::Ident) -> syn::ImplItem {
-        let doc_attr = doc("Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished.");
+        let doc_attr = doc("Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished.");
 
         syn::ImplItem {
             ident: ident("request_timeout"),

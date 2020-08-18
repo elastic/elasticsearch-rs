@@ -209,7 +209,7 @@ where
         self.refresh = Some(refresh);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -426,7 +426,7 @@ where
         self.pretty = Some(pretty);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -682,7 +682,7 @@ where
         self.q = Some(q);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -945,7 +945,7 @@ where
         self.refresh = Some(refresh);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -1169,7 +1169,7 @@ impl<'a, 'b> Delete<'a, 'b> {
         self.refresh = Some(refresh);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -1555,7 +1555,7 @@ where
         self.request_cache = Some(request_cache);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -1889,7 +1889,7 @@ where
         self.pretty = Some(pretty);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -2031,7 +2031,7 @@ impl<'a, 'b> DeleteScript<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -2221,7 +2221,7 @@ impl<'a, 'b> Exists<'a, 'b> {
         self.refresh = Some(refresh);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -2479,7 +2479,7 @@ impl<'a, 'b> ExistsSource<'a, 'b> {
         self.refresh = Some(refresh);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -2768,7 +2768,7 @@ where
         self.q = Some(q);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -3023,7 +3023,7 @@ where
         self.pretty = Some(pretty);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -3223,7 +3223,7 @@ impl<'a, 'b> Get<'a, 'b> {
         self.refresh = Some(refresh);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -3417,7 +3417,7 @@ impl<'a, 'b> GetScript<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -3597,7 +3597,7 @@ impl<'a, 'b> GetSource<'a, 'b> {
         self.refresh = Some(refresh);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -3869,7 +3869,7 @@ where
         self.refresh = Some(refresh);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -4051,7 +4051,7 @@ impl<'a, 'b> Info<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -4258,7 +4258,7 @@ where
         self.refresh = Some(refresh);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -4502,7 +4502,7 @@ where
         self.pretty = Some(pretty);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -4720,7 +4720,7 @@ where
         self.pretty = Some(pretty);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -4982,7 +4982,7 @@ where
         self.realtime = Some(realtime);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -5160,7 +5160,7 @@ impl<'a, 'b> Ping<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -5341,7 +5341,7 @@ where
         self.pretty = Some(pretty);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -5531,7 +5531,7 @@ where
         self.refresh = Some(refresh);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -5738,7 +5738,7 @@ where
         self.pretty = Some(pretty);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -5897,7 +5897,7 @@ where
         self.pretty = Some(pretty);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -6061,7 +6061,7 @@ where
         self.pretty = Some(pretty);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -6483,7 +6483,7 @@ where
         self.request_cache = Some(request_cache);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -6925,7 +6925,7 @@ where
         self.pretty = Some(pretty);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -7187,7 +7187,7 @@ where
         self.profile = Some(profile);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -7491,7 +7491,7 @@ where
         self.realtime = Some(realtime);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -7789,7 +7789,7 @@ where
         self.refresh = Some(refresh);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -8207,7 +8207,7 @@ where
         self.request_cache = Some(request_cache);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self
@@ -8552,7 +8552,7 @@ where
         self.pretty = Some(pretty);
         self
     }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from the when the request starts connecting until the response body has finished."]
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
         self

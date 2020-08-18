@@ -187,9 +187,9 @@ impl TransportBuilder {
         self
     }
 
-    /// Enables a global request timeout for the client.
+    /// Sets a global request timeout for the client.
     ///
-    /// The timeout is applied from the when the request starts connecting until the response body has finished.
+    /// The timeout is applied from when the request starts connecting until the response body has finished.
     /// Default is no timeout.
     pub fn timeout(mut self, timeout: Duration) -> Self {
         self.timeout = Some(timeout);
