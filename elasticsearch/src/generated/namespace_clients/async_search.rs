@@ -37,7 +37,7 @@ use crate::{
 };
 use percent_encoding::percent_encode;
 use serde::Serialize;
-use std::borrow::Cow;
+use std::{borrow::Cow, time::Duration};
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Async Search Delete API"]
 pub enum AsyncSearchDeleteParts<'b> {
@@ -68,6 +68,7 @@ pub struct AsyncSearchDelete<'a, 'b> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> AsyncSearchDelete<'a, 'b> {
@@ -82,6 +83,7 @@ impl<'a, 'b> AsyncSearchDelete<'a, 'b> {
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -110,6 +112,11 @@ impl<'a, 'b> AsyncSearchDelete<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -120,6 +127,7 @@ impl<'a, 'b> AsyncSearchDelete<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Delete;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -150,7 +158,7 @@ impl<'a, 'b> AsyncSearchDelete<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -186,6 +194,7 @@ pub struct AsyncSearchGet<'a, 'b> {
     human: Option<bool>,
     keep_alive: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     typed_keys: Option<bool>,
     wait_for_completion_timeout: Option<&'b str>,
@@ -203,6 +212,7 @@ impl<'a, 'b> AsyncSearchGet<'a, 'b> {
             human: None,
             keep_alive: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             typed_keys: None,
             wait_for_completion_timeout: None,
@@ -238,6 +248,11 @@ impl<'a, 'b> AsyncSearchGet<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -258,6 +273,7 @@ impl<'a, 'b> AsyncSearchGet<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -297,7 +313,7 @@ impl<'a, 'b> AsyncSearchGet<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -362,6 +378,7 @@ pub struct AsyncSearchSubmit<'a, 'b, B> {
     pretty: Option<bool>,
     q: Option<&'b str>,
     request_cache: Option<bool>,
+    request_timeout: Option<Duration>,
     routing: Option<&'b [&'b str]>,
     search_type: Option<SearchType>,
     seq_no_primary_term: Option<bool>,
@@ -421,6 +438,7 @@ where
             pretty: None,
             q: None,
             request_cache: None,
+            request_timeout: None,
             routing: None,
             search_type: None,
             seq_no_primary_term: None,
@@ -519,6 +537,7 @@ where
             pretty: self.pretty,
             q: self.q,
             request_cache: self.request_cache,
+            request_timeout: self.request_timeout,
             routing: self.routing,
             search_type: self.search_type,
             seq_no_primary_term: self.seq_no_primary_term,
@@ -640,6 +659,11 @@ where
         self.request_cache = Some(request_cache);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "A comma-separated list of specific routing values"]
     pub fn routing(mut self, routing: &'b [&'b str]) -> Self {
         self.routing = Some(routing);
@@ -740,6 +764,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -914,7 +939,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }

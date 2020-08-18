@@ -37,7 +37,7 @@ use crate::{
 };
 use percent_encoding::percent_encode;
 use serde::Serialize;
-use std::borrow::Cow;
+use std::{borrow::Cow, time::Duration};
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Add Block API"]
 pub enum IndicesAddBlockParts<'b> {
@@ -80,6 +80,7 @@ pub struct IndicesAddBlock<'a, 'b, B> {
     ignore_unavailable: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
@@ -103,6 +104,7 @@ where
             ignore_unavailable: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
         }
@@ -130,6 +132,7 @@ where
             ignore_unavailable: self.ignore_unavailable,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
         }
@@ -174,6 +177,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -189,6 +197,7 @@ where
         let path = self.parts.url();
         let method = Method::Put;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -237,7 +246,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -279,6 +288,7 @@ pub struct IndicesAnalyze<'a, 'b, B> {
     human: Option<bool>,
     index: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> IndicesAnalyze<'a, 'b, B>
@@ -298,6 +308,7 @@ where
             human: None,
             index: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -316,6 +327,7 @@ where
             human: self.human,
             index: self.index,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -349,6 +361,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -362,6 +379,7 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -395,7 +413,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -445,6 +463,7 @@ pub struct IndicesClearCache<'a, 'b, B> {
     pretty: Option<bool>,
     query: Option<bool>,
     request: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> IndicesClearCache<'a, 'b, B>
@@ -471,6 +490,7 @@ where
             pretty: None,
             query: None,
             request: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -501,6 +521,7 @@ where
             pretty: self.pretty,
             query: self.query,
             request: self.request,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -564,6 +585,11 @@ where
         self.request = Some(request);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -574,6 +600,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -631,7 +658,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -674,6 +701,7 @@ pub struct IndicesClone<'a, 'b, B> {
     human: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
     wait_for_active_shards: Option<&'b str>,
@@ -695,6 +723,7 @@ where
             human: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
             wait_for_active_shards: None,
@@ -715,6 +744,7 @@ where
             human: self.human,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
@@ -750,6 +780,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -770,6 +805,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -809,7 +845,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -852,6 +888,7 @@ pub struct IndicesClose<'a, 'b, B> {
     ignore_unavailable: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
     wait_for_active_shards: Option<&'b str>,
@@ -876,6 +913,7 @@ where
             ignore_unavailable: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
             wait_for_active_shards: None,
@@ -904,6 +942,7 @@ where
             ignore_unavailable: self.ignore_unavailable,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
@@ -949,6 +988,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -969,6 +1013,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1020,7 +1065,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1059,6 +1104,7 @@ pub struct IndicesCreate<'a, 'b, B> {
     include_type_name: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
     wait_for_active_shards: Option<&'b str>,
@@ -1081,6 +1127,7 @@ where
             include_type_name: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
             wait_for_active_shards: None,
@@ -1102,6 +1149,7 @@ where
             include_type_name: self.include_type_name,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
@@ -1142,6 +1190,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -1162,6 +1215,7 @@ where
         let path = self.parts.url();
         let method = Method::Put;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1204,7 +1258,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1240,6 +1294,7 @@ pub struct IndicesCreateDataStream<'a, 'b, B> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> IndicesCreateDataStream<'a, 'b, B>
@@ -1258,6 +1313,7 @@ where
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -1275,6 +1331,7 @@ where
             headers: self.headers,
             human: self.human,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -1303,6 +1360,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -1313,6 +1375,7 @@ where
         let path = self.parts.url();
         let method = Method::Put;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1343,7 +1406,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1384,6 +1447,7 @@ pub struct IndicesDataStreamsStats<'a, 'b> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesDataStreamsStats<'a, 'b> {
@@ -1398,6 +1462,7 @@ impl<'a, 'b> IndicesDataStreamsStats<'a, 'b> {
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -1426,6 +1491,11 @@ impl<'a, 'b> IndicesDataStreamsStats<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -1436,6 +1506,7 @@ impl<'a, 'b> IndicesDataStreamsStats<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1466,7 +1537,7 @@ impl<'a, 'b> IndicesDataStreamsStats<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1507,6 +1578,7 @@ pub struct IndicesDelete<'a, 'b> {
     ignore_unavailable: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
@@ -1526,6 +1598,7 @@ impl<'a, 'b> IndicesDelete<'a, 'b> {
             ignore_unavailable: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
         }
@@ -1575,6 +1648,11 @@ impl<'a, 'b> IndicesDelete<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -1590,6 +1668,7 @@ impl<'a, 'b> IndicesDelete<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Delete;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1638,7 +1717,7 @@ impl<'a, 'b> IndicesDelete<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1682,6 +1761,7 @@ pub struct IndicesDeleteAlias<'a, 'b> {
     human: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
@@ -1698,6 +1778,7 @@ impl<'a, 'b> IndicesDeleteAlias<'a, 'b> {
             human: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
         }
@@ -1732,6 +1813,11 @@ impl<'a, 'b> IndicesDeleteAlias<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -1747,6 +1833,7 @@ impl<'a, 'b> IndicesDeleteAlias<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Delete;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1783,7 +1870,7 @@ impl<'a, 'b> IndicesDeleteAlias<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1820,6 +1907,7 @@ pub struct IndicesDeleteDataStream<'a, 'b> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesDeleteDataStream<'a, 'b> {
@@ -1834,6 +1922,7 @@ impl<'a, 'b> IndicesDeleteDataStream<'a, 'b> {
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -1862,6 +1951,11 @@ impl<'a, 'b> IndicesDeleteDataStream<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -1872,6 +1966,7 @@ impl<'a, 'b> IndicesDeleteDataStream<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Delete;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1902,7 +1997,7 @@ impl<'a, 'b> IndicesDeleteDataStream<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1938,6 +2033,7 @@ pub struct IndicesDeleteTemplate<'a, 'b> {
     human: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
@@ -1954,6 +2050,7 @@ impl<'a, 'b> IndicesDeleteTemplate<'a, 'b> {
             human: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
         }
@@ -1988,6 +2085,11 @@ impl<'a, 'b> IndicesDeleteTemplate<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -2003,6 +2105,7 @@ impl<'a, 'b> IndicesDeleteTemplate<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Delete;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2039,7 +2142,7 @@ impl<'a, 'b> IndicesDeleteTemplate<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -2082,6 +2185,7 @@ pub struct IndicesExists<'a, 'b> {
     include_defaults: Option<bool>,
     local: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesExists<'a, 'b> {
@@ -2102,6 +2206,7 @@ impl<'a, 'b> IndicesExists<'a, 'b> {
             include_defaults: None,
             local: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -2160,6 +2265,11 @@ impl<'a, 'b> IndicesExists<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -2170,6 +2280,7 @@ impl<'a, 'b> IndicesExists<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Head;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2221,7 +2332,7 @@ impl<'a, 'b> IndicesExists<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -2279,6 +2390,7 @@ pub struct IndicesExistsAlias<'a, 'b> {
     ignore_unavailable: Option<bool>,
     local: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesExistsAlias<'a, 'b> {
@@ -2297,6 +2409,7 @@ impl<'a, 'b> IndicesExistsAlias<'a, 'b> {
             ignore_unavailable: None,
             local: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -2345,6 +2458,11 @@ impl<'a, 'b> IndicesExistsAlias<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -2355,6 +2473,7 @@ impl<'a, 'b> IndicesExistsAlias<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Head;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2400,7 +2519,7 @@ impl<'a, 'b> IndicesExistsAlias<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -2440,6 +2559,7 @@ pub struct IndicesExistsTemplate<'a, 'b> {
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesExistsTemplate<'a, 'b> {
@@ -2457,6 +2577,7 @@ impl<'a, 'b> IndicesExistsTemplate<'a, 'b> {
             local: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -2500,6 +2621,11 @@ impl<'a, 'b> IndicesExistsTemplate<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -2510,6 +2636,7 @@ impl<'a, 'b> IndicesExistsTemplate<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Head;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2549,7 +2676,7 @@ impl<'a, 'b> IndicesExistsTemplate<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -2594,6 +2721,7 @@ pub struct IndicesExistsType<'a, 'b> {
     ignore_unavailable: Option<bool>,
     local: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesExistsType<'a, 'b> {
@@ -2612,6 +2740,7 @@ impl<'a, 'b> IndicesExistsType<'a, 'b> {
             ignore_unavailable: None,
             local: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -2660,6 +2789,11 @@ impl<'a, 'b> IndicesExistsType<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -2670,6 +2804,7 @@ impl<'a, 'b> IndicesExistsType<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Head;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2715,7 +2850,7 @@ impl<'a, 'b> IndicesExistsType<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -2761,6 +2896,7 @@ pub struct IndicesFlush<'a, 'b, B> {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     wait_if_ongoing: Option<bool>,
 }
@@ -2784,6 +2920,7 @@ where
             human: None,
             ignore_unavailable: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             wait_if_ongoing: None,
         }
@@ -2811,6 +2948,7 @@ where
             human: self.human,
             ignore_unavailable: self.ignore_unavailable,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             wait_if_ongoing: self.wait_if_ongoing,
         }
@@ -2855,6 +2993,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -2873,6 +3016,7 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2921,7 +3065,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -3153,6 +3297,7 @@ pub struct IndicesForcemerge<'a, 'b, B> {
     max_num_segments: Option<i64>,
     only_expunge_deletes: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> IndicesForcemerge<'a, 'b, B>
@@ -3177,6 +3322,7 @@ where
             max_num_segments: None,
             only_expunge_deletes: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -3205,6 +3351,7 @@ where
             max_num_segments: self.max_num_segments,
             only_expunge_deletes: self.only_expunge_deletes,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -3258,6 +3405,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -3268,6 +3420,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3319,7 +3472,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -3361,6 +3514,7 @@ pub struct IndicesFreeze<'a, 'b, B> {
     ignore_unavailable: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
     wait_for_active_shards: Option<&'b str>,
@@ -3385,6 +3539,7 @@ where
             ignore_unavailable: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
             wait_for_active_shards: None,
@@ -3413,6 +3568,7 @@ where
             ignore_unavailable: self.ignore_unavailable,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
@@ -3458,6 +3614,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -3478,6 +3639,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3529,7 +3691,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -3574,6 +3736,7 @@ pub struct IndicesGet<'a, 'b> {
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesGet<'a, 'b> {
@@ -3596,6 +3759,7 @@ impl<'a, 'b> IndicesGet<'a, 'b> {
             local: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -3664,6 +3828,11 @@ impl<'a, 'b> IndicesGet<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -3674,6 +3843,7 @@ impl<'a, 'b> IndicesGet<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3731,7 +3901,7 @@ impl<'a, 'b> IndicesGet<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -3804,6 +3974,7 @@ pub struct IndicesGetAlias<'a, 'b> {
     ignore_unavailable: Option<bool>,
     local: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesGetAlias<'a, 'b> {
@@ -3822,6 +3993,7 @@ impl<'a, 'b> IndicesGetAlias<'a, 'b> {
             ignore_unavailable: None,
             local: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -3870,6 +4042,11 @@ impl<'a, 'b> IndicesGetAlias<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -3880,6 +4057,7 @@ impl<'a, 'b> IndicesGetAlias<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3925,7 +4103,7 @@ impl<'a, 'b> IndicesGetAlias<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -3965,6 +4143,7 @@ pub struct IndicesGetDataStream<'a, 'b> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesGetDataStream<'a, 'b> {
@@ -3979,6 +4158,7 @@ impl<'a, 'b> IndicesGetDataStream<'a, 'b> {
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -4007,6 +4187,11 @@ impl<'a, 'b> IndicesGetDataStream<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -4017,6 +4202,7 @@ impl<'a, 'b> IndicesGetDataStream<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4047,7 +4233,7 @@ impl<'a, 'b> IndicesGetDataStream<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -4145,6 +4331,7 @@ pub struct IndicesGetFieldMapping<'a, 'b> {
     include_type_name: Option<bool>,
     local: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesGetFieldMapping<'a, 'b> {
@@ -4165,6 +4352,7 @@ impl<'a, 'b> IndicesGetFieldMapping<'a, 'b> {
             include_type_name: None,
             local: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -4223,6 +4411,11 @@ impl<'a, 'b> IndicesGetFieldMapping<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -4233,6 +4426,7 @@ impl<'a, 'b> IndicesGetFieldMapping<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4284,7 +4478,7 @@ impl<'a, 'b> IndicesGetFieldMapping<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -4356,6 +4550,7 @@ pub struct IndicesGetMapping<'a, 'b> {
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesGetMapping<'a, 'b> {
@@ -4376,6 +4571,7 @@ impl<'a, 'b> IndicesGetMapping<'a, 'b> {
             local: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -4434,6 +4630,11 @@ impl<'a, 'b> IndicesGetMapping<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -4444,6 +4645,7 @@ impl<'a, 'b> IndicesGetMapping<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4495,7 +4697,7 @@ impl<'a, 'b> IndicesGetMapping<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -4571,6 +4773,7 @@ pub struct IndicesGetSettings<'a, 'b> {
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesGetSettings<'a, 'b> {
@@ -4592,6 +4795,7 @@ impl<'a, 'b> IndicesGetSettings<'a, 'b> {
             local: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -4655,6 +4859,11 @@ impl<'a, 'b> IndicesGetSettings<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -4665,6 +4874,7 @@ impl<'a, 'b> IndicesGetSettings<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4719,7 +4929,7 @@ impl<'a, 'b> IndicesGetSettings<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -4763,6 +4973,7 @@ pub struct IndicesGetTemplate<'a, 'b> {
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesGetTemplate<'a, 'b> {
@@ -4781,6 +4992,7 @@ impl<'a, 'b> IndicesGetTemplate<'a, 'b> {
             local: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -4829,6 +5041,11 @@ impl<'a, 'b> IndicesGetTemplate<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -4839,6 +5056,7 @@ impl<'a, 'b> IndicesGetTemplate<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4881,7 +5099,7 @@ impl<'a, 'b> IndicesGetTemplate<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -4925,6 +5143,7 @@ pub struct IndicesGetUpgrade<'a, 'b> {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesGetUpgrade<'a, 'b> {
@@ -4942,6 +5161,7 @@ impl<'a, 'b> IndicesGetUpgrade<'a, 'b> {
             human: None,
             ignore_unavailable: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -4985,6 +5205,11 @@ impl<'a, 'b> IndicesGetUpgrade<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -4995,6 +5220,7 @@ impl<'a, 'b> IndicesGetUpgrade<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5037,7 +5263,7 @@ impl<'a, 'b> IndicesGetUpgrade<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -5080,6 +5306,7 @@ pub struct IndicesOpen<'a, 'b, B> {
     ignore_unavailable: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
     wait_for_active_shards: Option<&'b str>,
@@ -5104,6 +5331,7 @@ where
             ignore_unavailable: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
             wait_for_active_shards: None,
@@ -5132,6 +5360,7 @@ where
             ignore_unavailable: self.ignore_unavailable,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
@@ -5177,6 +5406,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -5197,6 +5431,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5248,7 +5483,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -5291,6 +5526,7 @@ pub struct IndicesPutAlias<'a, 'b, B> {
     human: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
@@ -5311,6 +5547,7 @@ where
             human: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
         }
@@ -5330,6 +5567,7 @@ where
             human: self.human,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
         }
@@ -5364,6 +5602,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -5379,6 +5622,7 @@ where
         let path = self.parts.url();
         let method = Method::Put;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5415,7 +5659,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -5483,6 +5727,7 @@ pub struct IndicesPutMapping<'a, 'b, B> {
     include_type_name: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
     write_index_only: Option<bool>,
@@ -5508,6 +5753,7 @@ where
             include_type_name: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
             write_index_only: None,
@@ -5537,6 +5783,7 @@ where
             include_type_name: self.include_type_name,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
             write_index_only: self.write_index_only,
@@ -5587,6 +5834,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -5607,6 +5859,7 @@ where
         let path = self.parts.url();
         let method = Method::Put;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5661,7 +5914,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -5709,6 +5962,7 @@ pub struct IndicesPutSettings<'a, 'b, B> {
     master_timeout: Option<&'b str>,
     preserve_existing: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
@@ -5734,6 +5988,7 @@ where
             master_timeout: None,
             preserve_existing: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
         }
@@ -5763,6 +6018,7 @@ where
             master_timeout: self.master_timeout,
             preserve_existing: self.preserve_existing,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
         }
@@ -5817,6 +6073,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -5832,6 +6093,7 @@ where
         let path = self.parts.url();
         let method = Method::Put;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5886,7 +6148,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -5926,6 +6188,7 @@ pub struct IndicesPutTemplate<'a, 'b, B> {
     master_timeout: Option<&'b str>,
     order: Option<i64>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> IndicesPutTemplate<'a, 'b, B>
@@ -5948,6 +6211,7 @@ where
             master_timeout: None,
             order: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -5969,6 +6233,7 @@ where
             master_timeout: self.master_timeout,
             order: self.order,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -6017,6 +6282,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -6027,6 +6297,7 @@ where
         let path = self.parts.url();
         let method = Method::Put;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -6069,7 +6340,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -6112,6 +6383,7 @@ pub struct IndicesRecovery<'a, 'b> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesRecovery<'a, 'b> {
@@ -6128,6 +6400,7 @@ impl<'a, 'b> IndicesRecovery<'a, 'b> {
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -6166,6 +6439,11 @@ impl<'a, 'b> IndicesRecovery<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -6176,6 +6454,7 @@ impl<'a, 'b> IndicesRecovery<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -6212,7 +6491,7 @@ impl<'a, 'b> IndicesRecovery<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -6257,6 +6536,7 @@ pub struct IndicesRefresh<'a, 'b, B> {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> IndicesRefresh<'a, 'b, B>
@@ -6278,6 +6558,7 @@ where
             human: None,
             ignore_unavailable: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -6303,6 +6584,7 @@ where
             human: self.human,
             ignore_unavailable: self.ignore_unavailable,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -6341,6 +6623,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -6354,6 +6641,7 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -6396,7 +6684,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -6438,6 +6726,7 @@ pub struct IndicesReloadSearchAnalyzers<'a, 'b, B> {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> IndicesReloadSearchAnalyzers<'a, 'b, B>
@@ -6459,6 +6748,7 @@ where
             human: None,
             ignore_unavailable: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -6484,6 +6774,7 @@ where
             human: self.human,
             ignore_unavailable: self.ignore_unavailable,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -6522,6 +6813,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -6535,6 +6831,7 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -6577,7 +6874,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -6633,6 +6930,7 @@ pub struct IndicesRollover<'a, 'b, B> {
     include_type_name: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
     wait_for_active_shards: Option<&'b str>,
@@ -6656,6 +6954,7 @@ where
             include_type_name: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
             wait_for_active_shards: None,
@@ -6678,6 +6977,7 @@ where
             include_type_name: self.include_type_name,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
@@ -6723,6 +7023,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -6743,6 +7048,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -6788,7 +7094,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -6832,6 +7138,7 @@ pub struct IndicesSegments<'a, 'b> {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     verbose: Option<bool>,
 }
@@ -6850,6 +7157,7 @@ impl<'a, 'b> IndicesSegments<'a, 'b> {
             human: None,
             ignore_unavailable: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             verbose: None,
         }
@@ -6894,6 +7202,11 @@ impl<'a, 'b> IndicesSegments<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -6909,6 +7222,7 @@ impl<'a, 'b> IndicesSegments<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -6954,7 +7268,7 @@ impl<'a, 'b> IndicesSegments<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -6998,6 +7312,7 @@ pub struct IndicesShardStores<'a, 'b> {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     status: Option<&'b [&'b str]>,
 }
@@ -7016,6 +7331,7 @@ impl<'a, 'b> IndicesShardStores<'a, 'b> {
             human: None,
             ignore_unavailable: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             status: None,
         }
@@ -7060,6 +7376,11 @@ impl<'a, 'b> IndicesShardStores<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -7075,6 +7396,7 @@ impl<'a, 'b> IndicesShardStores<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -7120,7 +7442,7 @@ impl<'a, 'b> IndicesShardStores<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -7164,6 +7486,7 @@ pub struct IndicesShrink<'a, 'b, B> {
     human: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
     wait_for_active_shards: Option<&'b str>,
@@ -7186,6 +7509,7 @@ where
             human: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
             wait_for_active_shards: None,
@@ -7207,6 +7531,7 @@ where
             human: self.human,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
@@ -7247,6 +7572,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -7267,6 +7597,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -7309,7 +7640,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -7353,6 +7684,7 @@ pub struct IndicesSplit<'a, 'b, B> {
     human: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
     wait_for_active_shards: Option<&'b str>,
@@ -7375,6 +7707,7 @@ where
             human: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
             wait_for_active_shards: None,
@@ -7396,6 +7729,7 @@ where
             human: self.human,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
@@ -7436,6 +7770,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -7456,6 +7795,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -7498,7 +7838,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -7576,6 +7916,7 @@ pub struct IndicesStats<'a, 'b> {
     include_unloaded_segments: Option<bool>,
     level: Option<Level>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     types: Option<&'b [&'b str]>,
 }
@@ -7600,6 +7941,7 @@ impl<'a, 'b> IndicesStats<'a, 'b> {
             include_unloaded_segments: None,
             level: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             types: None,
         }
@@ -7674,6 +8016,11 @@ impl<'a, 'b> IndicesStats<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -7689,6 +8036,7 @@ impl<'a, 'b> IndicesStats<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -7758,7 +8106,7 @@ impl<'a, 'b> IndicesStats<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -7800,6 +8148,7 @@ pub struct IndicesUnfreeze<'a, 'b, B> {
     ignore_unavailable: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
     wait_for_active_shards: Option<&'b str>,
@@ -7824,6 +8173,7 @@ where
             ignore_unavailable: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
             wait_for_active_shards: None,
@@ -7852,6 +8202,7 @@ where
             ignore_unavailable: self.ignore_unavailable,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
@@ -7897,6 +8248,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -7917,6 +8273,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -7968,7 +8325,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -7999,6 +8356,7 @@ pub struct IndicesUpdateAliases<'a, 'b, B> {
     human: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
@@ -8019,6 +8377,7 @@ where
             human: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
         }
@@ -8038,6 +8397,7 @@ where
             human: self.human,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
         }
@@ -8072,6 +8432,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -8087,6 +8452,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -8123,7 +8489,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -8169,6 +8535,7 @@ pub struct IndicesUpgrade<'a, 'b, B> {
     ignore_unavailable: Option<bool>,
     only_ancient_segments: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     wait_for_completion: Option<bool>,
 }
@@ -8192,6 +8559,7 @@ where
             ignore_unavailable: None,
             only_ancient_segments: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             wait_for_completion: None,
         }
@@ -8219,6 +8587,7 @@ where
             ignore_unavailable: self.ignore_unavailable,
             only_ancient_segments: self.only_ancient_segments,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             wait_for_completion: self.wait_for_completion,
         }
@@ -8263,6 +8632,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -8278,6 +8652,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -8326,7 +8701,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -8395,6 +8770,7 @@ pub struct IndicesValidateQuery<'a, 'b, B> {
     lenient: Option<bool>,
     pretty: Option<bool>,
     q: Option<&'b str>,
+    request_timeout: Option<Duration>,
     rewrite: Option<bool>,
     source: Option<&'b str>,
 }
@@ -8425,6 +8801,7 @@ where
             lenient: None,
             pretty: None,
             q: None,
+            request_timeout: None,
             rewrite: None,
             source: None,
         }
@@ -8474,6 +8851,7 @@ where
             lenient: self.lenient,
             pretty: self.pretty,
             q: self.q,
+            request_timeout: self.request_timeout,
             rewrite: self.rewrite,
             source: self.source,
         }
@@ -8538,6 +8916,11 @@ where
         self.q = Some(q);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Provide a more detailed explanation showing the actual Lucene query that will be executed."]
     pub fn rewrite(mut self, rewrite: bool) -> Self {
         self.rewrite = Some(rewrite);
@@ -8556,6 +8939,7 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -8625,7 +9009,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
