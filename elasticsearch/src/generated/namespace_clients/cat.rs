@@ -37,7 +37,7 @@ use crate::{
 };
 use percent_encoding::percent_encode;
 use serde::Serialize;
-use std::borrow::Cow;
+use std::{borrow::Cow, time::Duration};
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Aliases API"]
 pub enum CatAliasesParts<'b> {
@@ -78,6 +78,7 @@ pub struct CatAliases<'a, 'b> {
     human: Option<bool>,
     local: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     v: Option<bool>,
@@ -101,6 +102,7 @@ impl<'a, 'b> CatAliases<'a, 'b> {
             human: None,
             local: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             source: None,
             v: None,
@@ -156,6 +158,11 @@ impl<'a, 'b> CatAliases<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -176,6 +183,7 @@ impl<'a, 'b> CatAliases<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -230,7 +238,7 @@ impl<'a, 'b> CatAliases<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -276,6 +284,7 @@ pub struct CatAllocation<'a, 'b> {
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     v: Option<bool>,
@@ -300,6 +309,7 @@ impl<'a, 'b> CatAllocation<'a, 'b> {
             local: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             source: None,
             v: None,
@@ -360,6 +370,11 @@ impl<'a, 'b> CatAllocation<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -380,6 +395,7 @@ impl<'a, 'b> CatAllocation<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -434,7 +450,7 @@ impl<'a, 'b> CatAllocation<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -477,6 +493,7 @@ pub struct CatCount<'a, 'b> {
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     v: Option<bool>,
@@ -498,6 +515,7 @@ impl<'a, 'b> CatCount<'a, 'b> {
             help: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             source: None,
             v: None,
@@ -543,6 +561,11 @@ impl<'a, 'b> CatCount<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -563,6 +586,7 @@ impl<'a, 'b> CatCount<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -608,7 +632,7 @@ impl<'a, 'b> CatCount<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -653,6 +677,7 @@ pub struct CatFielddata<'a, 'b> {
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     v: Option<bool>,
@@ -676,6 +701,7 @@ impl<'a, 'b> CatFielddata<'a, 'b> {
             help: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             source: None,
             v: None,
@@ -731,6 +757,11 @@ impl<'a, 'b> CatFielddata<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -751,6 +782,7 @@ impl<'a, 'b> CatFielddata<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -802,7 +834,7 @@ impl<'a, 'b> CatFielddata<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -834,6 +866,7 @@ pub struct CatHealth<'a, 'b> {
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     time: Option<Time>,
@@ -857,6 +890,7 @@ impl<'a, 'b> CatHealth<'a, 'b> {
             help: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             source: None,
             time: None,
@@ -904,6 +938,11 @@ impl<'a, 'b> CatHealth<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -934,6 +973,7 @@ impl<'a, 'b> CatHealth<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -985,7 +1025,7 @@ impl<'a, 'b> CatHealth<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1015,6 +1055,7 @@ pub struct CatHelp<'a, 'b> {
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
 }
@@ -1033,6 +1074,7 @@ impl<'a, 'b> CatHelp<'a, 'b> {
             help: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             source: None,
         }
@@ -1067,6 +1109,11 @@ impl<'a, 'b> CatHelp<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -1082,6 +1129,7 @@ impl<'a, 'b> CatHelp<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1118,7 +1166,7 @@ impl<'a, 'b> CatHelp<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1168,6 +1216,7 @@ pub struct CatIndices<'a, 'b> {
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     pri: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     time: Option<Time>,
@@ -1197,6 +1246,7 @@ impl<'a, 'b> CatIndices<'a, 'b> {
             master_timeout: None,
             pretty: None,
             pri: None,
+            request_timeout: None,
             s: None,
             source: None,
             time: None,
@@ -1278,6 +1328,11 @@ impl<'a, 'b> CatIndices<'a, 'b> {
         self.pri = Some(pri);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -1303,6 +1358,7 @@ impl<'a, 'b> CatIndices<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1375,7 +1431,7 @@ impl<'a, 'b> CatIndices<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1409,6 +1465,7 @@ pub struct CatMaster<'a, 'b> {
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     v: Option<bool>,
@@ -1432,6 +1489,7 @@ impl<'a, 'b> CatMaster<'a, 'b> {
             local: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             source: None,
             v: None,
@@ -1487,6 +1545,11 @@ impl<'a, 'b> CatMaster<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -1507,6 +1570,7 @@ impl<'a, 'b> CatMaster<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1558,7 +1622,7 @@ impl<'a, 'b> CatMaster<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1601,6 +1665,7 @@ pub struct CatMlDataFrameAnalytics<'a, 'b> {
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     time: Option<Time>,
@@ -1625,6 +1690,7 @@ impl<'a, 'b> CatMlDataFrameAnalytics<'a, 'b> {
             help: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             source: None,
             time: None,
@@ -1681,6 +1747,11 @@ impl<'a, 'b> CatMlDataFrameAnalytics<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -1706,6 +1777,7 @@ impl<'a, 'b> CatMlDataFrameAnalytics<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1760,7 +1832,7 @@ impl<'a, 'b> CatMlDataFrameAnalytics<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1803,6 +1875,7 @@ pub struct CatMlDatafeeds<'a, 'b> {
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     time: Option<Time>,
@@ -1826,6 +1899,7 @@ impl<'a, 'b> CatMlDatafeeds<'a, 'b> {
             help: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             source: None,
             time: None,
@@ -1877,6 +1951,11 @@ impl<'a, 'b> CatMlDatafeeds<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -1902,6 +1981,7 @@ impl<'a, 'b> CatMlDatafeeds<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1953,7 +2033,7 @@ impl<'a, 'b> CatMlDatafeeds<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1997,6 +2077,7 @@ pub struct CatMlJobs<'a, 'b> {
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     time: Option<Time>,
@@ -2021,6 +2102,7 @@ impl<'a, 'b> CatMlJobs<'a, 'b> {
             help: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             source: None,
             time: None,
@@ -2077,6 +2159,11 @@ impl<'a, 'b> CatMlJobs<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -2102,6 +2189,7 @@ impl<'a, 'b> CatMlJobs<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2156,7 +2244,7 @@ impl<'a, 'b> CatMlJobs<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -2201,6 +2289,7 @@ pub struct CatMlTrainedModels<'a, 'b> {
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     size: Option<i32>,
     source: Option<&'b str>,
@@ -2227,6 +2316,7 @@ impl<'a, 'b> CatMlTrainedModels<'a, 'b> {
             help: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             size: None,
             source: None,
@@ -2289,6 +2379,11 @@ impl<'a, 'b> CatMlTrainedModels<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -2319,6 +2414,7 @@ impl<'a, 'b> CatMlTrainedModels<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2379,7 +2475,7 @@ impl<'a, 'b> CatMlTrainedModels<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -2413,6 +2509,7 @@ pub struct CatNodeattrs<'a, 'b> {
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     v: Option<bool>,
@@ -2436,6 +2533,7 @@ impl<'a, 'b> CatNodeattrs<'a, 'b> {
             local: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             source: None,
             v: None,
@@ -2491,6 +2589,11 @@ impl<'a, 'b> CatNodeattrs<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -2511,6 +2614,7 @@ impl<'a, 'b> CatNodeattrs<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2562,7 +2666,7 @@ impl<'a, 'b> CatNodeattrs<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -2597,6 +2701,7 @@ pub struct CatNodes<'a, 'b> {
     human: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     time: Option<Time>,
@@ -2622,6 +2727,7 @@ impl<'a, 'b> CatNodes<'a, 'b> {
             human: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             source: None,
             time: None,
@@ -2683,6 +2789,11 @@ impl<'a, 'b> CatNodes<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -2708,6 +2819,7 @@ impl<'a, 'b> CatNodes<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2765,7 +2877,7 @@ impl<'a, 'b> CatNodes<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -2799,6 +2911,7 @@ pub struct CatPendingTasks<'a, 'b> {
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     time: Option<Time>,
@@ -2823,6 +2936,7 @@ impl<'a, 'b> CatPendingTasks<'a, 'b> {
             local: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             source: None,
             time: None,
@@ -2879,6 +2993,11 @@ impl<'a, 'b> CatPendingTasks<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -2904,6 +3023,7 @@ impl<'a, 'b> CatPendingTasks<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2958,7 +3078,7 @@ impl<'a, 'b> CatPendingTasks<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -2992,6 +3112,7 @@ pub struct CatPlugins<'a, 'b> {
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     v: Option<bool>,
@@ -3015,6 +3136,7 @@ impl<'a, 'b> CatPlugins<'a, 'b> {
             local: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             source: None,
             v: None,
@@ -3070,6 +3192,11 @@ impl<'a, 'b> CatPlugins<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -3090,6 +3217,7 @@ impl<'a, 'b> CatPlugins<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3141,7 +3269,7 @@ impl<'a, 'b> CatPlugins<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -3188,6 +3316,7 @@ pub struct CatRecovery<'a, 'b> {
     human: Option<bool>,
     index: Option<&'b [&'b str]>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     time: Option<Time>,
@@ -3214,6 +3343,7 @@ impl<'a, 'b> CatRecovery<'a, 'b> {
             human: None,
             index: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             source: None,
             time: None,
@@ -3280,6 +3410,11 @@ impl<'a, 'b> CatRecovery<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -3305,6 +3440,7 @@ impl<'a, 'b> CatRecovery<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3365,7 +3501,7 @@ impl<'a, 'b> CatRecovery<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -3399,6 +3535,7 @@ pub struct CatRepositories<'a, 'b> {
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     v: Option<bool>,
@@ -3422,6 +3559,7 @@ impl<'a, 'b> CatRepositories<'a, 'b> {
             local: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             source: None,
             v: None,
@@ -3477,6 +3615,11 @@ impl<'a, 'b> CatRepositories<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -3497,6 +3640,7 @@ impl<'a, 'b> CatRepositories<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3548,7 +3692,7 @@ impl<'a, 'b> CatRepositories<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -3592,6 +3736,7 @@ pub struct CatSegments<'a, 'b> {
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     v: Option<bool>,
@@ -3614,6 +3759,7 @@ impl<'a, 'b> CatSegments<'a, 'b> {
             help: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             source: None,
             v: None,
@@ -3664,6 +3810,11 @@ impl<'a, 'b> CatSegments<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -3684,6 +3835,7 @@ impl<'a, 'b> CatSegments<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3732,7 +3884,7 @@ impl<'a, 'b> CatSegments<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -3778,6 +3930,7 @@ pub struct CatShards<'a, 'b> {
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     time: Option<Time>,
@@ -3803,6 +3956,7 @@ impl<'a, 'b> CatShards<'a, 'b> {
             local: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             source: None,
             time: None,
@@ -3864,6 +4018,11 @@ impl<'a, 'b> CatShards<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -3889,6 +4048,7 @@ impl<'a, 'b> CatShards<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3946,7 +4106,7 @@ impl<'a, 'b> CatShards<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -3991,6 +4151,7 @@ pub struct CatSnapshots<'a, 'b> {
     ignore_unavailable: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     time: Option<Time>,
@@ -4015,6 +4176,7 @@ impl<'a, 'b> CatSnapshots<'a, 'b> {
             ignore_unavailable: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             source: None,
             time: None,
@@ -4071,6 +4233,11 @@ impl<'a, 'b> CatSnapshots<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -4096,6 +4263,7 @@ impl<'a, 'b> CatSnapshots<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4150,7 +4318,7 @@ impl<'a, 'b> CatSnapshots<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -4186,6 +4354,7 @@ pub struct CatTasks<'a, 'b> {
     node_id: Option<&'b [&'b str]>,
     parent_task: Option<i64>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     time: Option<Time>,
@@ -4212,6 +4381,7 @@ impl<'a, 'b> CatTasks<'a, 'b> {
             node_id: None,
             parent_task: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             source: None,
             time: None,
@@ -4278,6 +4448,11 @@ impl<'a, 'b> CatTasks<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -4303,6 +4478,7 @@ impl<'a, 'b> CatTasks<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4369,7 +4545,7 @@ impl<'a, 'b> CatTasks<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -4412,6 +4588,7 @@ pub struct CatTemplates<'a, 'b> {
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     v: Option<bool>,
@@ -4435,6 +4612,7 @@ impl<'a, 'b> CatTemplates<'a, 'b> {
             local: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             source: None,
             v: None,
@@ -4490,6 +4668,11 @@ impl<'a, 'b> CatTemplates<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -4510,6 +4693,7 @@ impl<'a, 'b> CatTemplates<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4561,7 +4745,7 @@ impl<'a, 'b> CatTemplates<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -4606,6 +4790,7 @@ pub struct CatThreadPool<'a, 'b> {
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     time: Option<Time>,
@@ -4630,6 +4815,7 @@ impl<'a, 'b> CatThreadPool<'a, 'b> {
             local: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             source: None,
             time: None,
@@ -4686,6 +4872,11 @@ impl<'a, 'b> CatThreadPool<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -4711,6 +4902,7 @@ impl<'a, 'b> CatThreadPool<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4765,7 +4957,7 @@ impl<'a, 'b> CatThreadPool<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -4809,6 +5001,7 @@ pub struct CatTransforms<'a, 'b> {
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     size: Option<i32>,
     source: Option<&'b str>,
@@ -4834,6 +5027,7 @@ impl<'a, 'b> CatTransforms<'a, 'b> {
             help: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             s: None,
             size: None,
             source: None,
@@ -4891,6 +5085,11 @@ impl<'a, 'b> CatTransforms<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
@@ -4921,6 +5120,7 @@ impl<'a, 'b> CatTransforms<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4978,7 +5178,7 @@ impl<'a, 'b> CatTransforms<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
