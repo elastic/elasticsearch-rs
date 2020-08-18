@@ -85,7 +85,7 @@ impl<'a, 'b> XpackInfo<'a, 'b> {
             source: None,
         }
     }
-    #[doc = "Supported for backwards compatibility with 7.x. If this param is used it must be set to true"]
+    #[doc = "If this param is used it must be set to true"]
     pub fn accept_enterprise(mut self, accept_enterprise: bool) -> Self {
         self.accept_enterprise = Some(accept_enterprise);
         self

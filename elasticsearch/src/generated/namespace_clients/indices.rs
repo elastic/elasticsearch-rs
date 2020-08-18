@@ -66,7 +66,7 @@ impl<'b> IndicesAddBlockParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Add Block API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-blocks.html)\n\nAdds a block to an index."]
+#[doc = "Builder for the [Indices Add Block API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/index-modules-blocks.html)\n\nAdds a block to an index."]
 pub struct IndicesAddBlock<'a, 'b, B> {
     transport: &'a Transport,
     parts: IndicesAddBlockParts<'b>,
@@ -1273,7 +1273,7 @@ impl<'b> IndicesCreateDataStreamParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Create Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/data-streams.html)\n\nCreates or updates a data stream"]
+#[doc = "Builder for the [Indices Create Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/data-streams.html)\n\nCreates a data stream"]
 pub struct IndicesCreateDataStream<'a, 'b, B> {
     transport: &'a Transport,
     parts: IndicesCreateDataStreamParts<'b>,
@@ -8649,7 +8649,7 @@ impl<'a> Indices<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Indices Add Block API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-blocks.html)\n\nAdds a block to an index."]
+    #[doc = "[Indices Add Block API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/index-modules-blocks.html)\n\nAdds a block to an index."]
     pub fn add_block<'b>(&'a self, parts: IndicesAddBlockParts<'b>) -> IndicesAddBlock<'a, 'b, ()> {
         IndicesAddBlock::new(self.transport(), parts)
     }
@@ -8676,7 +8676,7 @@ impl<'a> Indices<'a> {
     pub fn create<'b>(&'a self, parts: IndicesCreateParts<'b>) -> IndicesCreate<'a, 'b, ()> {
         IndicesCreate::new(self.transport(), parts)
     }
-    #[doc = "[Indices Create Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/data-streams.html)\n\nCreates or updates a data stream"]
+    #[doc = "[Indices Create Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/data-streams.html)\n\nCreates a data stream"]
     pub fn create_data_stream<'b>(
         &'a self,
         parts: IndicesCreateDataStreamParts<'b>,

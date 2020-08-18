@@ -1867,6 +1867,7 @@ pub struct CatMlDatafeeds<'a, 'b> {
     transport: &'a Transport,
     parts: CatMlDatafeedsParts<'b>,
     allow_no_datafeeds: Option<bool>,
+    allow_no_match: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     format: Option<&'b str>,
@@ -1892,6 +1893,7 @@ impl<'a, 'b> CatMlDatafeeds<'a, 'b> {
             parts,
             headers,
             allow_no_datafeeds: None,
+            allow_no_match: None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -1909,6 +1911,11 @@ impl<'a, 'b> CatMlDatafeeds<'a, 'b> {
     #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
     pub fn allow_no_datafeeds(mut self, allow_no_datafeeds: bool) -> Self {
         self.allow_no_datafeeds = Some(allow_no_datafeeds);
+        self
+    }
+    #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
+    pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
+        self.allow_no_match = Some(allow_no_match);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1988,6 +1995,8 @@ impl<'a, 'b> CatMlDatafeeds<'a, 'b> {
             struct QueryParams<'b> {
                 #[serde(rename = "allow_no_datafeeds")]
                 allow_no_datafeeds: Option<bool>,
+                #[serde(rename = "allow_no_match")]
+                allow_no_match: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
@@ -2016,6 +2025,7 @@ impl<'a, 'b> CatMlDatafeeds<'a, 'b> {
             }
             let query_params = QueryParams {
                 allow_no_datafeeds: self.allow_no_datafeeds,
+                allow_no_match: self.allow_no_match,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 format: self.format,
@@ -2068,6 +2078,7 @@ pub struct CatMlJobs<'a, 'b> {
     transport: &'a Transport,
     parts: CatMlJobsParts<'b>,
     allow_no_jobs: Option<bool>,
+    allow_no_match: Option<bool>,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -2094,6 +2105,7 @@ impl<'a, 'b> CatMlJobs<'a, 'b> {
             parts,
             headers,
             allow_no_jobs: None,
+            allow_no_match: None,
             bytes: None,
             error_trace: None,
             filter_path: None,
@@ -2112,6 +2124,11 @@ impl<'a, 'b> CatMlJobs<'a, 'b> {
     #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
     pub fn allow_no_jobs(mut self, allow_no_jobs: bool) -> Self {
         self.allow_no_jobs = Some(allow_no_jobs);
+        self
+    }
+    #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
+    pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
+        self.allow_no_match = Some(allow_no_match);
         self
     }
     #[doc = "The unit in which to display byte values"]
@@ -2196,6 +2213,8 @@ impl<'a, 'b> CatMlJobs<'a, 'b> {
             struct QueryParams<'b> {
                 #[serde(rename = "allow_no_jobs")]
                 allow_no_jobs: Option<bool>,
+                #[serde(rename = "allow_no_match")]
+                allow_no_match: Option<bool>,
                 #[serde(rename = "bytes")]
                 bytes: Option<Bytes>,
                 #[serde(rename = "error_trace")]
@@ -2226,6 +2245,7 @@ impl<'a, 'b> CatMlJobs<'a, 'b> {
             }
             let query_params = QueryParams {
                 allow_no_jobs: self.allow_no_jobs,
+                allow_no_match: self.allow_no_match,
                 bytes: self.bytes,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
