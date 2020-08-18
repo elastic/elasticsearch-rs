@@ -42,6 +42,7 @@ use std::{
     error, fmt,
     fmt::Debug,
     io::{self, Write},
+    time::Duration,
 };
 use url::Url;
 
@@ -107,6 +108,7 @@ pub struct TransportBuilder {
     proxy_credentials: Option<Credentials>,
     disable_proxy: bool,
     headers: HeaderMap,
+    timeout: Option<Duration>,
 }
 
 impl TransportBuilder {
@@ -126,6 +128,7 @@ impl TransportBuilder {
             proxy_credentials: None,
             disable_proxy: false,
             headers: HeaderMap::new(),
+            timeout: None,
         }
     }
 
@@ -184,12 +187,25 @@ impl TransportBuilder {
         self
     }
 
+    /// Sets a global request timeout for the client.
+    ///
+    /// The timeout is applied from when the request starts connecting until the response body has finished.
+    /// Default is no timeout.
+    pub fn timeout(mut self, timeout: Duration) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
+
     /// Builds a [Transport] to use to send API calls to Elasticsearch.
     pub fn build(self) -> Result<Transport, BuildError> {
         let mut client_builder = self.client_builder;
 
         if !self.headers.is_empty() {
             client_builder = client_builder.default_headers(self.headers);
+        }
+
+        if let Some(t) = self.timeout {
+            client_builder = client_builder.timeout(t);
         }
 
         #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
@@ -341,6 +357,7 @@ impl Transport {
         headers: HeaderMap,
         query_string: Option<&Q>,
         body: Option<B>,
+        timeout: Option<Duration>,
     ) -> Result<Response, Error>
     where
         B: Body,
@@ -350,6 +367,10 @@ impl Transport {
         let url = connection.url.join(path.trim_start_matches('/'))?;
         let reqwest_method = self.method(method);
         let mut request_builder = self.client.request(reqwest_method, url);
+
+        if let Some(t) = timeout {
+            request_builder = request_builder.timeout(t);
+        }
 
         // set credentials before any headers, as credentials append to existing headers in reqwest,
         // whilst setting headers() overwrites, so if an Authorization header has been specified

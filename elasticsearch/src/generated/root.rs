@@ -37,7 +37,7 @@ use crate::{
 };
 use percent_encoding::percent_encode;
 use serde::Serialize;
-use std::borrow::Cow;
+use std::{borrow::Cow, time::Duration};
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Bulk API"]
 pub enum BulkParts<'b> {
@@ -93,6 +93,7 @@ pub struct Bulk<'a, 'b, B> {
     pipeline: Option<&'b str>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
+    request_timeout: Option<Duration>,
     routing: Option<&'b str>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
@@ -120,6 +121,7 @@ where
             pipeline: None,
             pretty: None,
             refresh: None,
+            request_timeout: None,
             routing: None,
             source: None,
             timeout: None,
@@ -161,6 +163,7 @@ where
             pipeline: self.pipeline,
             pretty: self.pretty,
             refresh: self.refresh,
+            request_timeout: self.request_timeout,
             routing: self.routing,
             source: self.source,
             timeout: self.timeout,
@@ -203,6 +206,11 @@ where
         self.refresh = Some(refresh);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: &'b str) -> Self {
         self.routing = Some(routing);
@@ -233,6 +241,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -299,7 +308,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -340,6 +349,7 @@ pub struct ClearScroll<'a, 'b, B> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> ClearScroll<'a, 'b, B>
@@ -358,6 +368,7 @@ where
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -375,6 +386,7 @@ where
             headers: self.headers,
             human: self.human,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -403,6 +415,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -413,6 +430,7 @@ where
         let path = self.parts.url();
         let method = Method::Delete;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -443,7 +461,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -513,6 +531,7 @@ pub struct Count<'a, 'b, B> {
     preference: Option<&'b str>,
     pretty: Option<bool>,
     q: Option<&'b str>,
+    request_timeout: Option<Duration>,
     routing: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     terminate_after: Option<i64>,
@@ -545,6 +564,7 @@ where
             preference: None,
             pretty: None,
             q: None,
+            request_timeout: None,
             routing: None,
             source: None,
             terminate_after: None,
@@ -591,6 +611,7 @@ where
             preference: self.preference,
             pretty: self.pretty,
             q: self.q,
+            request_timeout: self.request_timeout,
             routing: self.routing,
             source: self.source,
             terminate_after: self.terminate_after,
@@ -666,6 +687,11 @@ where
         self.q = Some(q);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "A comma-separated list of specific routing values"]
     pub fn routing(mut self, routing: &'b [&'b str]) -> Self {
         self.routing = Some(routing);
@@ -689,6 +715,7 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -767,7 +794,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -828,6 +855,7 @@ pub struct Create<'a, 'b, B> {
     pipeline: Option<&'b str>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
+    request_timeout: Option<Duration>,
     routing: Option<&'b str>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
@@ -853,6 +881,7 @@ where
             pipeline: None,
             pretty: None,
             refresh: None,
+            request_timeout: None,
             routing: None,
             source: None,
             timeout: None,
@@ -877,6 +906,7 @@ where
             pipeline: self.pipeline,
             pretty: self.pretty,
             refresh: self.refresh,
+            request_timeout: self.request_timeout,
             routing: self.routing,
             source: self.source,
             timeout: self.timeout,
@@ -920,6 +950,11 @@ where
         self.refresh = Some(refresh);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: &'b str) -> Self {
         self.routing = Some(routing);
@@ -955,6 +990,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1006,7 +1042,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1066,6 +1102,7 @@ pub struct Delete<'a, 'b> {
     if_seq_no: Option<i64>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
+    request_timeout: Option<Duration>,
     routing: Option<&'b str>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
@@ -1088,6 +1125,7 @@ impl<'a, 'b> Delete<'a, 'b> {
             if_seq_no: None,
             pretty: None,
             refresh: None,
+            request_timeout: None,
             routing: None,
             source: None,
             timeout: None,
@@ -1136,6 +1174,11 @@ impl<'a, 'b> Delete<'a, 'b> {
         self.refresh = Some(refresh);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: &'b str) -> Self {
         self.routing = Some(routing);
@@ -1171,6 +1214,7 @@ impl<'a, 'b> Delete<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Delete;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1225,7 +1269,7 @@ impl<'a, 'b> Delete<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1298,6 +1342,7 @@ pub struct DeleteByQuery<'a, 'b, B> {
     q: Option<&'b str>,
     refresh: Option<bool>,
     request_cache: Option<bool>,
+    request_timeout: Option<Duration>,
     requests_per_second: Option<i64>,
     routing: Option<&'b [&'b str]>,
     scroll: Option<&'b str>,
@@ -1349,6 +1394,7 @@ where
             q: None,
             refresh: None,
             request_cache: None,
+            request_timeout: None,
             requests_per_second: None,
             routing: None,
             scroll: None,
@@ -1429,6 +1475,7 @@ where
             q: self.q,
             refresh: self.refresh,
             request_cache: self.request_cache,
+            request_timeout: self.request_timeout,
             requests_per_second: self.requests_per_second,
             routing: self.routing,
             scroll: self.scroll,
@@ -1532,6 +1579,11 @@ where
         self.request_cache = Some(request_cache);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The throttle for this request in sub-requests per second. -1 means no throttle."]
     pub fn requests_per_second(mut self, requests_per_second: i64) -> Self {
         self.requests_per_second = Some(requests_per_second);
@@ -1617,6 +1669,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1761,7 +1814,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1799,6 +1852,7 @@ pub struct DeleteByQueryRethrottle<'a, 'b, B> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     requests_per_second: Option<i64>,
     source: Option<&'b str>,
 }
@@ -1818,6 +1872,7 @@ where
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             requests_per_second: None,
             source: None,
         }
@@ -1836,6 +1891,7 @@ where
             headers: self.headers,
             human: self.human,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             requests_per_second: self.requests_per_second,
             source: self.source,
         }
@@ -1865,6 +1921,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The throttle to set on this request in floating sub-requests per second. -1 means set no throttle."]
     pub fn requests_per_second(mut self, requests_per_second: i64) -> Self {
         self.requests_per_second = Some(requests_per_second);
@@ -1880,6 +1941,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1913,7 +1975,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1949,6 +2011,7 @@ pub struct DeleteScript<'a, 'b> {
     human: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
@@ -1965,6 +2028,7 @@ impl<'a, 'b> DeleteScript<'a, 'b> {
             human: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
         }
@@ -1999,6 +2063,11 @@ impl<'a, 'b> DeleteScript<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -2014,6 +2083,7 @@ impl<'a, 'b> DeleteScript<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Delete;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2050,7 +2120,7 @@ impl<'a, 'b> DeleteScript<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -2113,6 +2183,7 @@ pub struct Exists<'a, 'b> {
     pretty: Option<bool>,
     realtime: Option<bool>,
     refresh: Option<bool>,
+    request_timeout: Option<Duration>,
     routing: Option<&'b str>,
     source: Option<&'b str>,
     stored_fields: Option<&'b [&'b str]>,
@@ -2137,6 +2208,7 @@ impl<'a, 'b> Exists<'a, 'b> {
             pretty: None,
             realtime: None,
             refresh: None,
+            request_timeout: None,
             routing: None,
             source: None,
             stored_fields: None,
@@ -2199,6 +2271,11 @@ impl<'a, 'b> Exists<'a, 'b> {
         self.refresh = Some(refresh);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: &'b str) -> Self {
         self.routing = Some(routing);
@@ -2229,6 +2306,7 @@ impl<'a, 'b> Exists<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Head;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2301,7 +2379,7 @@ impl<'a, 'b> Exists<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -2365,6 +2443,7 @@ pub struct ExistsSource<'a, 'b> {
     pretty: Option<bool>,
     realtime: Option<bool>,
     refresh: Option<bool>,
+    request_timeout: Option<Duration>,
     routing: Option<&'b str>,
     source: Option<&'b str>,
     version: Option<i64>,
@@ -2388,6 +2467,7 @@ impl<'a, 'b> ExistsSource<'a, 'b> {
             pretty: None,
             realtime: None,
             refresh: None,
+            request_timeout: None,
             routing: None,
             source: None,
             version: None,
@@ -2449,6 +2529,11 @@ impl<'a, 'b> ExistsSource<'a, 'b> {
         self.refresh = Some(refresh);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: &'b str) -> Self {
         self.routing = Some(routing);
@@ -2474,6 +2559,7 @@ impl<'a, 'b> ExistsSource<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Head;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2540,7 +2626,7 @@ impl<'a, 'b> ExistsSource<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -2609,6 +2695,7 @@ pub struct Explain<'a, 'b, B> {
     preference: Option<&'b str>,
     pretty: Option<bool>,
     q: Option<&'b str>,
+    request_timeout: Option<Duration>,
     routing: Option<&'b str>,
     source: Option<&'b str>,
     stored_fields: Option<&'b [&'b str]>,
@@ -2639,6 +2726,7 @@ where
             preference: None,
             pretty: None,
             q: None,
+            request_timeout: None,
             routing: None,
             source: None,
             stored_fields: None,
@@ -2693,6 +2781,7 @@ where
             preference: self.preference,
             pretty: self.pretty,
             q: self.q,
+            request_timeout: self.request_timeout,
             routing: self.routing,
             source: self.source,
             stored_fields: self.stored_fields,
@@ -2748,6 +2837,11 @@ where
         self.q = Some(q);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: &'b str) -> Self {
         self.routing = Some(routing);
@@ -2771,6 +2865,7 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2849,7 +2944,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -2896,6 +2991,7 @@ pub struct FieldCaps<'a, 'b, B> {
     ignore_unavailable: Option<bool>,
     include_unmapped: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> FieldCaps<'a, 'b, B>
@@ -2919,6 +3015,7 @@ where
             ignore_unavailable: None,
             include_unmapped: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -2946,6 +3043,7 @@ where
             ignore_unavailable: self.ignore_unavailable,
             include_unmapped: self.include_unmapped,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -2994,6 +3092,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -3007,6 +3110,7 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3055,7 +3159,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -3118,6 +3222,7 @@ pub struct Get<'a, 'b> {
     pretty: Option<bool>,
     realtime: Option<bool>,
     refresh: Option<bool>,
+    request_timeout: Option<Duration>,
     routing: Option<&'b str>,
     source: Option<&'b str>,
     stored_fields: Option<&'b [&'b str]>,
@@ -3142,6 +3247,7 @@ impl<'a, 'b> Get<'a, 'b> {
             pretty: None,
             realtime: None,
             refresh: None,
+            request_timeout: None,
             routing: None,
             source: None,
             stored_fields: None,
@@ -3204,6 +3310,11 @@ impl<'a, 'b> Get<'a, 'b> {
         self.refresh = Some(refresh);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: &'b str) -> Self {
         self.routing = Some(routing);
@@ -3234,6 +3345,7 @@ impl<'a, 'b> Get<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3306,7 +3418,7 @@ impl<'a, 'b> Get<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -3342,6 +3454,7 @@ pub struct GetScript<'a, 'b> {
     human: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> GetScript<'a, 'b> {
@@ -3357,6 +3470,7 @@ impl<'a, 'b> GetScript<'a, 'b> {
             human: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -3390,6 +3504,11 @@ impl<'a, 'b> GetScript<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -3400,6 +3519,7 @@ impl<'a, 'b> GetScript<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3433,7 +3553,7 @@ impl<'a, 'b> GetScript<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -3497,6 +3617,7 @@ pub struct GetSource<'a, 'b> {
     pretty: Option<bool>,
     realtime: Option<bool>,
     refresh: Option<bool>,
+    request_timeout: Option<Duration>,
     routing: Option<&'b str>,
     source: Option<&'b str>,
     version: Option<i64>,
@@ -3520,6 +3641,7 @@ impl<'a, 'b> GetSource<'a, 'b> {
             pretty: None,
             realtime: None,
             refresh: None,
+            request_timeout: None,
             routing: None,
             source: None,
             version: None,
@@ -3581,6 +3703,11 @@ impl<'a, 'b> GetSource<'a, 'b> {
         self.refresh = Some(refresh);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: &'b str) -> Self {
         self.routing = Some(routing);
@@ -3606,6 +3733,7 @@ impl<'a, 'b> GetSource<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3672,7 +3800,7 @@ impl<'a, 'b> GetSource<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -3759,6 +3887,7 @@ pub struct Index<'a, 'b, B> {
     pipeline: Option<&'b str>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
+    request_timeout: Option<Duration>,
     routing: Option<&'b str>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
@@ -3787,6 +3916,7 @@ where
             pipeline: None,
             pretty: None,
             refresh: None,
+            request_timeout: None,
             routing: None,
             source: None,
             timeout: None,
@@ -3814,6 +3944,7 @@ where
             pipeline: self.pipeline,
             pretty: self.pretty,
             refresh: self.refresh,
+            request_timeout: self.request_timeout,
             routing: self.routing,
             source: self.source,
             timeout: self.timeout,
@@ -3872,6 +4003,11 @@ where
         self.refresh = Some(refresh);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: &'b str) -> Self {
         self.routing = Some(routing);
@@ -3907,6 +4043,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3967,7 +4104,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -3996,6 +4133,7 @@ pub struct Info<'a, 'b> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> Info<'a, 'b> {
@@ -4010,6 +4148,7 @@ impl<'a, 'b> Info<'a, 'b> {
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -4038,6 +4177,11 @@ impl<'a, 'b> Info<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -4048,6 +4192,7 @@ impl<'a, 'b> Info<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4078,7 +4223,7 @@ impl<'a, 'b> Info<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -4139,6 +4284,7 @@ pub struct Mget<'a, 'b, B> {
     pretty: Option<bool>,
     realtime: Option<bool>,
     refresh: Option<bool>,
+    request_timeout: Option<Duration>,
     routing: Option<&'b str>,
     source: Option<&'b str>,
     stored_fields: Option<&'b [&'b str]>,
@@ -4165,6 +4311,7 @@ where
             pretty: None,
             realtime: None,
             refresh: None,
+            request_timeout: None,
             routing: None,
             source: None,
             stored_fields: None,
@@ -4205,6 +4352,7 @@ where
             pretty: self.pretty,
             realtime: self.realtime,
             refresh: self.refresh,
+            request_timeout: self.request_timeout,
             routing: self.routing,
             source: self.source,
             stored_fields: self.stored_fields,
@@ -4250,6 +4398,11 @@ where
         self.refresh = Some(refresh);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: &'b str) -> Self {
         self.routing = Some(routing);
@@ -4273,6 +4426,7 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4339,7 +4493,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -4401,6 +4555,7 @@ pub struct Msearch<'a, 'b, B> {
     max_concurrent_shard_requests: Option<i64>,
     pre_filter_shard_size: Option<i64>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     rest_total_hits_as_int: Option<bool>,
     search_type: Option<SearchType>,
     source: Option<&'b str>,
@@ -4426,6 +4581,7 @@ where
             max_concurrent_shard_requests: None,
             pre_filter_shard_size: None,
             pretty: None,
+            request_timeout: None,
             rest_total_hits_as_int: None,
             search_type: None,
             source: None,
@@ -4450,6 +4606,7 @@ where
             max_concurrent_shard_requests: self.max_concurrent_shard_requests,
             pre_filter_shard_size: self.pre_filter_shard_size,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             rest_total_hits_as_int: self.rest_total_hits_as_int,
             search_type: self.search_type,
             source: self.source,
@@ -4501,6 +4658,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Indicates whether hits.total should be rendered as an integer or an object in the rest search response"]
     pub fn rest_total_hits_as_int(mut self, rest_total_hits_as_int: bool) -> Self {
         self.rest_total_hits_as_int = Some(rest_total_hits_as_int);
@@ -4529,6 +4691,7 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4580,7 +4743,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -4640,6 +4803,7 @@ pub struct MsearchTemplate<'a, 'b, B> {
     human: Option<bool>,
     max_concurrent_searches: Option<i64>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     rest_total_hits_as_int: Option<bool>,
     search_type: Option<SearchType>,
     source: Option<&'b str>,
@@ -4663,6 +4827,7 @@ where
             human: None,
             max_concurrent_searches: None,
             pretty: None,
+            request_timeout: None,
             rest_total_hits_as_int: None,
             search_type: None,
             source: None,
@@ -4685,6 +4850,7 @@ where
             human: self.human,
             max_concurrent_searches: self.max_concurrent_searches,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             rest_total_hits_as_int: self.rest_total_hits_as_int,
             search_type: self.search_type,
             source: self.source,
@@ -4726,6 +4892,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Indicates whether hits.total should be rendered as an integer or an object in the rest search response"]
     pub fn rest_total_hits_as_int(mut self, rest_total_hits_as_int: bool) -> Self {
         self.rest_total_hits_as_int = Some(rest_total_hits_as_int);
@@ -4754,6 +4925,7 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4799,7 +4971,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -4862,6 +5034,7 @@ pub struct Mtermvectors<'a, 'b, B> {
     preference: Option<&'b str>,
     pretty: Option<bool>,
     realtime: Option<bool>,
+    request_timeout: Option<Duration>,
     routing: Option<&'b str>,
     source: Option<&'b str>,
     term_statistics: Option<bool>,
@@ -4892,6 +5065,7 @@ where
             preference: None,
             pretty: None,
             realtime: None,
+            request_timeout: None,
             routing: None,
             source: None,
             term_statistics: None,
@@ -4921,6 +5095,7 @@ where
             preference: self.preference,
             pretty: self.pretty,
             realtime: self.realtime,
+            request_timeout: self.request_timeout,
             routing: self.routing,
             source: self.source,
             term_statistics: self.term_statistics,
@@ -4993,6 +5168,11 @@ where
         self.realtime = Some(realtime);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Specific routing value. Applies to all returned documents unless otherwise specified in body \"params\" or \"docs\"."]
     pub fn routing(mut self, routing: &'b str) -> Self {
         self.routing = Some(routing);
@@ -5026,6 +5206,7 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5092,7 +5273,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -5121,6 +5302,7 @@ pub struct Ping<'a, 'b> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> Ping<'a, 'b> {
@@ -5135,6 +5317,7 @@ impl<'a, 'b> Ping<'a, 'b> {
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -5163,6 +5346,11 @@ impl<'a, 'b> Ping<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -5173,6 +5361,7 @@ impl<'a, 'b> Ping<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Head;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5203,7 +5392,7 @@ impl<'a, 'b> Ping<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -5255,6 +5444,7 @@ pub struct PutScript<'a, 'b, B> {
     human: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
@@ -5276,6 +5466,7 @@ where
             human: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
         }
@@ -5296,6 +5487,7 @@ where
             human: self.human,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
         }
@@ -5335,6 +5527,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -5350,6 +5547,7 @@ where
         let path = self.parts.url();
         let method = Method::Put;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5389,7 +5587,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -5421,6 +5619,7 @@ pub struct Reindex<'a, 'b, B> {
     max_docs: Option<i64>,
     pretty: Option<bool>,
     refresh: Option<bool>,
+    request_timeout: Option<Duration>,
     requests_per_second: Option<i64>,
     scroll: Option<&'b str>,
     slices: Option<Slices>,
@@ -5447,6 +5646,7 @@ where
             max_docs: None,
             pretty: None,
             refresh: None,
+            request_timeout: None,
             requests_per_second: None,
             scroll: None,
             slices: None,
@@ -5472,6 +5672,7 @@ where
             max_docs: self.max_docs,
             pretty: self.pretty,
             refresh: self.refresh,
+            request_timeout: self.request_timeout,
             requests_per_second: self.requests_per_second,
             scroll: self.scroll,
             slices: self.slices,
@@ -5516,6 +5717,11 @@ where
         self.refresh = Some(refresh);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The throttle to set on this request in sub-requests per second. -1 means no throttle."]
     pub fn requests_per_second(mut self, requests_per_second: i64) -> Self {
         self.requests_per_second = Some(requests_per_second);
@@ -5556,6 +5762,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5610,7 +5817,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -5648,6 +5855,7 @@ pub struct ReindexRethrottle<'a, 'b, B> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     requests_per_second: Option<i64>,
     source: Option<&'b str>,
 }
@@ -5667,6 +5875,7 @@ where
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             requests_per_second: None,
             source: None,
         }
@@ -5685,6 +5894,7 @@ where
             headers: self.headers,
             human: self.human,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             requests_per_second: self.requests_per_second,
             source: self.source,
         }
@@ -5714,6 +5924,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The throttle to set on this request in floating sub-requests per second. -1 means set no throttle."]
     pub fn requests_per_second(mut self, requests_per_second: i64) -> Self {
         self.requests_per_second = Some(requests_per_second);
@@ -5729,6 +5944,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5762,7 +5978,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -5801,6 +6017,7 @@ pub struct RenderSearchTemplate<'a, 'b, B> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> RenderSearchTemplate<'a, 'b, B>
@@ -5819,6 +6036,7 @@ where
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -5836,6 +6054,7 @@ where
             headers: self.headers,
             human: self.human,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -5864,6 +6083,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -5877,6 +6101,7 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5907,7 +6132,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -5947,6 +6172,7 @@ pub struct Scroll<'a, 'b, B> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     rest_total_hits_as_int: Option<bool>,
     scroll: Option<&'b str>,
     scroll_id: Option<&'b str>,
@@ -5968,6 +6194,7 @@ where
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             rest_total_hits_as_int: None,
             scroll: None,
             scroll_id: None,
@@ -5988,6 +6215,7 @@ where
             headers: self.headers,
             human: self.human,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             rest_total_hits_as_int: self.rest_total_hits_as_int,
             scroll: self.scroll,
             scroll_id: self.scroll_id,
@@ -6019,6 +6247,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Indicates whether hits.total should be rendered as an integer or an object in the rest search response"]
     pub fn rest_total_hits_as_int(mut self, rest_total_hits_as_int: bool) -> Self {
         self.rest_total_hits_as_int = Some(rest_total_hits_as_int);
@@ -6047,6 +6280,7 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -6086,7 +6320,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -6167,6 +6401,7 @@ pub struct Search<'a, 'b, B> {
     pretty: Option<bool>,
     q: Option<&'b str>,
     request_cache: Option<bool>,
+    request_timeout: Option<Duration>,
     rest_total_hits_as_int: Option<bool>,
     routing: Option<&'b [&'b str]>,
     scroll: Option<&'b str>,
@@ -6227,6 +6462,7 @@ where
             pretty: None,
             q: None,
             request_cache: None,
+            request_timeout: None,
             rest_total_hits_as_int: None,
             routing: None,
             scroll: None,
@@ -6326,6 +6562,7 @@ where
             pretty: self.pretty,
             q: self.q,
             request_cache: self.request_cache,
+            request_timeout: self.request_timeout,
             rest_total_hits_as_int: self.rest_total_hits_as_int,
             routing: self.routing,
             scroll: self.scroll,
@@ -6448,6 +6685,11 @@ where
         self.request_cache = Some(request_cache);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Indicates whether hits.total should be rendered as an integer or an object in the rest search response"]
     pub fn rest_total_hits_as_int(mut self, rest_total_hits_as_int: bool) -> Self {
         self.rest_total_hits_as_int = Some(rest_total_hits_as_int);
@@ -6556,6 +6798,7 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -6733,7 +6976,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -6780,6 +7023,7 @@ pub struct SearchShards<'a, 'b, B> {
     local: Option<bool>,
     preference: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     routing: Option<&'b str>,
     source: Option<&'b str>,
 }
@@ -6804,6 +7048,7 @@ where
             local: None,
             preference: None,
             pretty: None,
+            request_timeout: None,
             routing: None,
             source: None,
         }
@@ -6832,6 +7077,7 @@ where
             local: self.local,
             preference: self.preference,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             routing: self.routing,
             source: self.source,
         }
@@ -6881,6 +7127,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: &'b str) -> Self {
         self.routing = Some(routing);
@@ -6899,6 +7150,7 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -6950,7 +7202,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -7016,6 +7268,7 @@ pub struct SearchTemplate<'a, 'b, B> {
     preference: Option<&'b str>,
     pretty: Option<bool>,
     profile: Option<bool>,
+    request_timeout: Option<Duration>,
     rest_total_hits_as_int: Option<bool>,
     routing: Option<&'b [&'b str]>,
     scroll: Option<&'b str>,
@@ -7047,6 +7300,7 @@ where
             preference: None,
             pretty: None,
             profile: None,
+            request_timeout: None,
             rest_total_hits_as_int: None,
             routing: None,
             scroll: None,
@@ -7082,6 +7336,7 @@ where
             preference: self.preference,
             pretty: self.pretty,
             profile: self.profile,
+            request_timeout: self.request_timeout,
             rest_total_hits_as_int: self.rest_total_hits_as_int,
             routing: self.routing,
             scroll: self.scroll,
@@ -7150,6 +7405,11 @@ where
         self.profile = Some(profile);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Indicates whether hits.total should be rendered as an integer or an object in the rest search response"]
     pub fn rest_total_hits_as_int(mut self, rest_total_hits_as_int: bool) -> Self {
         self.rest_total_hits_as_int = Some(rest_total_hits_as_int);
@@ -7188,6 +7448,7 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -7263,7 +7524,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -7354,6 +7615,7 @@ pub struct Termvectors<'a, 'b, B> {
     preference: Option<&'b str>,
     pretty: Option<bool>,
     realtime: Option<bool>,
+    request_timeout: Option<Duration>,
     routing: Option<&'b str>,
     source: Option<&'b str>,
     term_statistics: Option<bool>,
@@ -7383,6 +7645,7 @@ where
             preference: None,
             pretty: None,
             realtime: None,
+            request_timeout: None,
             routing: None,
             source: None,
             term_statistics: None,
@@ -7411,6 +7674,7 @@ where
             preference: self.preference,
             pretty: self.pretty,
             realtime: self.realtime,
+            request_timeout: self.request_timeout,
             routing: self.routing,
             source: self.source,
             term_statistics: self.term_statistics,
@@ -7478,6 +7742,11 @@ where
         self.realtime = Some(realtime);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Specific routing value."]
     pub fn routing(mut self, routing: &'b str) -> Self {
         self.routing = Some(routing);
@@ -7511,6 +7780,7 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -7574,7 +7844,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -7640,6 +7910,7 @@ pub struct Update<'a, 'b, B> {
     lang: Option<&'b str>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
+    request_timeout: Option<Duration>,
     retry_on_conflict: Option<i64>,
     routing: Option<&'b str>,
     source: Option<&'b str>,
@@ -7669,6 +7940,7 @@ where
             lang: None,
             pretty: None,
             refresh: None,
+            request_timeout: None,
             retry_on_conflict: None,
             routing: None,
             source: None,
@@ -7712,6 +7984,7 @@ where
             lang: self.lang,
             pretty: self.pretty,
             refresh: self.refresh,
+            request_timeout: self.request_timeout,
             retry_on_conflict: self.retry_on_conflict,
             routing: self.routing,
             source: self.source,
@@ -7764,6 +8037,11 @@ where
         self.refresh = Some(refresh);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Specify how many times should the operation be retried when a conflict occurs (default: 0)"]
     pub fn retry_on_conflict(mut self, retry_on_conflict: i64) -> Self {
         self.retry_on_conflict = Some(retry_on_conflict);
@@ -7794,6 +8072,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -7866,7 +8145,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -7940,6 +8219,7 @@ pub struct UpdateByQuery<'a, 'b, B> {
     q: Option<&'b str>,
     refresh: Option<bool>,
     request_cache: Option<bool>,
+    request_timeout: Option<Duration>,
     requests_per_second: Option<i64>,
     routing: Option<&'b [&'b str]>,
     scroll: Option<&'b str>,
@@ -7993,6 +8273,7 @@ where
             q: None,
             refresh: None,
             request_cache: None,
+            request_timeout: None,
             requests_per_second: None,
             routing: None,
             scroll: None,
@@ -8075,6 +8356,7 @@ where
             q: self.q,
             refresh: self.refresh,
             request_cache: self.request_cache,
+            request_timeout: self.request_timeout,
             requests_per_second: self.requests_per_second,
             routing: self.routing,
             scroll: self.scroll,
@@ -8184,6 +8466,11 @@ where
         self.request_cache = Some(request_cache);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The throttle to set on this request in sub-requests per second. -1 means no throttle."]
     pub fn requests_per_second(mut self, requests_per_second: i64) -> Self {
         self.requests_per_second = Some(requests_per_second);
@@ -8274,6 +8561,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -8424,7 +8712,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -8462,6 +8750,7 @@ pub struct UpdateByQueryRethrottle<'a, 'b, B> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     requests_per_second: Option<i64>,
     source: Option<&'b str>,
 }
@@ -8481,6 +8770,7 @@ where
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             requests_per_second: None,
             source: None,
         }
@@ -8499,6 +8789,7 @@ where
             headers: self.headers,
             human: self.human,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             requests_per_second: self.requests_per_second,
             source: self.source,
         }
@@ -8528,6 +8819,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The throttle to set on this request in floating sub-requests per second. -1 means set no throttle."]
     pub fn requests_per_second(mut self, requests_per_second: i64) -> Self {
         self.requests_per_second = Some(requests_per_second);
@@ -8543,6 +8839,7 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -8576,7 +8873,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }

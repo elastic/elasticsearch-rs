@@ -34,6 +34,7 @@ use elasticsearch::{
 use crate::common::client::index_documents;
 use hyper::Method;
 use serde_json::{json, Value};
+use std::time::Duration;
 
 #[tokio::test]
 async fn default_user_agent_content_type_accept_headers() -> Result<(), failure::Error> {
@@ -111,6 +112,71 @@ async fn x_opaque_id_header() -> Result<(), failure::Error> {
         .await?;
 
     Ok(())
+}
+
+#[tokio::test]
+async fn uses_global_request_timeout() {
+    let server = server::http(move |req| async move {
+        std::thread::sleep(Duration::from_secs(1));
+        http::Response::default()
+    });
+
+    let builder = client::create_builder(format!("http://{}", server.addr()).as_ref())
+        .timeout(std::time::Duration::from_millis(500));
+
+    let client = client::create(builder);
+    let response = client.ping().send().await;
+
+    match response {
+        Ok(r) => assert!(false, "Expected timeout error, but response received"),
+        Err(e) => assert!(e.is_timeout(), "Expected timeout error, but was {:?}", e),
+    }
+}
+
+#[tokio::test]
+async fn uses_call_request_timeout() {
+    let server = server::http(move |req| async move {
+        std::thread::sleep(Duration::from_secs(1));
+        http::Response::default()
+    });
+
+    let builder = client::create_builder(format!("http://{}", server.addr()).as_ref())
+        .timeout(std::time::Duration::from_secs(2));
+
+    let client = client::create(builder);
+    let response = client
+        .ping()
+        .request_timeout(Duration::from_millis(500))
+        .send()
+        .await;
+
+    match response {
+        Ok(r) => assert!(false, "Expected timeout error, but response received"),
+        Err(e) => assert!(e.is_timeout(), "Expected timeout error, but was {:?}", e),
+    }
+}
+
+#[tokio::test]
+async fn call_request_timeout_supersedes_global_timeout() {
+    let server = server::http(move |req| async move {
+        std::thread::sleep(Duration::from_secs(1));
+        http::Response::default()
+    });
+
+    let builder = client::create_builder(format!("http://{}", server.addr()).as_ref())
+        .timeout(std::time::Duration::from_millis(500));
+
+    let client = client::create(builder);
+    let response = client
+        .ping()
+        .request_timeout(Duration::from_secs(2))
+        .send()
+        .await;
+
+    match response {
+        Ok(r) => (),
+        Err(e) => assert!(e.is_timeout(), "Did not expect error, but was {:?}", e),
+    }
 }
 
 #[tokio::test]
@@ -354,6 +420,7 @@ async fn byte_slice_body() -> Result<(), failure::Error> {
             HeaderMap::new(),
             Option::<&Value>::None,
             Some(body.as_ref()),
+            None,
         )
         .await?;
 
