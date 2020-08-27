@@ -21,7 +21,7 @@ private = true
 condition = { env = { "TEST_SUITE" = "xpack" } }
 env = { "ELASTICSEARCH_URL" = "https://elastic:changeme@localhost:9200" }
 
-[tasks.generate-yaml-tests]
+[tasks.run-yaml-test-runner]
 category = "Elasticsearch"
 description = '''
 Runs yaml_test_runner crate to generate tests from yaml files for a given Elasticsearch commit.
@@ -31,7 +31,7 @@ private = true
 script = ["cargo run -p yaml_test_runner -- -u ${ELASTICSEARCH_URL}"]
 dependencies = ["start-elasticsearch"]
 
-[tasks.generate-yaml-tests.windows]
+[tasks.run-yaml-test-runner.windows]
 script = ["cargo run -p yaml_test_runner -- -u %ELASTICSEARCH_URL%"]
 
 [tasks.test-yaml-test-runner]
@@ -97,7 +97,14 @@ env = { "TEST_SUITE" = { value = "xpack", condition = { env_set = ["TEST_SUITE"]
 dependencies = ["test-elasticsearch"]
 run_task = "stop-elasticsearch"
 
+[tasks.generate-yaml-tests]
+category = "Elasticsearch"
+description = "Generates Elasticsearch client tests from YAML tests"
+dependencies = ["run-yaml-test-runner"]
+run_task = "format"
+
 [tasks.generate-api]
 category = "Elasticsearch"
 description = "Generates Elasticsearch client from REST API specs"
-run_task = "run-api-generator"
+dependencies = ["run-api-generator"]
+run_task = "format"

@@ -31,8 +31,9 @@ use std::str;
 pub fn use_declarations() -> Tokens {
     quote!(
         #![allow(unused_imports)]
+
         use crate::{
-            client::{Elasticsearch},
+            client::Elasticsearch,
             params::*,
             error::Error,
             http::{

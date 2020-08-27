@@ -29,7 +29,8 @@ pub fn generate(api: &Api) -> Result<String, failure::Error> {
         generate_param(&mut tokens, &e);
     }
 
-    rust_fmt(tokens.to_string())
+    let generated = tokens.to_string();
+    Ok(generated)
 }
 
 fn generate_param(tokens: &mut Tokens, e: &ApiEnum) {
