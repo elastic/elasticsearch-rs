@@ -1,0 +1,103 @@
+[config]
+default_to_workspace = false
+
+[env]
+# Determines the version of Elasticsearch docker container used
+STACK_VERSION = "8.0.0-SNAPSHOT"
+# Determines the distribution of docker container used. Either xpack or oss
+TEST_SUITE = "xpack"
+
+[tasks.set-oss-env]
+category = "Elasticsearch"
+description = "Sets ELASTICSEARCH_URL environment variable for later tasks when oss test suite used"
+private = true
+condition = { env = { "TEST_SUITE" = "oss" } }
+env = { "ELASTICSEARCH_URL" = "http://localhost:9200" }
+
+[tasks.set-xpack-env]
+category = "Elasticsearch"
+description = "Sets ELASTICSEARCH_URL environment variable for later tasks when xpack test suite used"
+private = true
+condition = { env = { "TEST_SUITE" = "xpack" } }
+env = { "ELASTICSEARCH_URL" = "https://elastic:changeme@localhost:9200" }
+
+[tasks.generate-yaml-tests]
+category = "Elasticsearch"
+description = '''
+Runs yaml_test_runner crate to generate tests from yaml files for a given Elasticsearch commit.
+The commit to use is retrieved from the running Elasticsearch instance
+'''
+private = true
+script = ["cargo run -p yaml_test_runner -- -u ${ELASTICSEARCH_URL}"]
+dependencies = ["start-elasticsearch"]
+
+[tasks.generate-yaml-tests.windows]
+script = ["cargo run -p yaml_test_runner -- -u %ELASTICSEARCH_URL%"]
+
+[tasks.test-yaml-test-runner]
+category = "Elasticsearch"
+private = true
+condition = { env_set = [ "ELASTICSEARCH_URL" ] }
+env = { "ES_TEST_SERVER" = "${ELASTICSEARCH_URL}" }
+command = "cargo"
+args = ["test", "-p", "yaml_test_runner", "--", "--test-threads=1"]
+dependencies = ["generate-yaml-tests"]
+
+[tasks.test-elasticsearch]
+category = "Elasticsearch"
+private = true
+condition = { env_set = [ "ELASTICSEARCH_URL" ], env = { "TEST_SUITE" = "xpack" } }
+env = { "ES_TEST_SERVER" = "${ELASTICSEARCH_URL}" }
+command = "cargo"
+args = ["test", "-p", "elasticsearch"]
+dependencies = ["start-elasticsearch"]
+
+[tasks.run-api-generator]
+category = "Elasticsearch"
+private = true
+command = "cargo"
+args = ["run", "-p", "api_generator"]
+
+# ============
+# Public tasks
+# ============
+
+[tasks.start-elasticsearch]
+category = "Elasticsearch"
+description = "Starts Elasticsearch docker container with the given version and distribution"
+condition = { env_set = [ "STACK_VERSION", "TEST_SUITE" ] }
+script = ["DETACH=true bash .ci/run-elasticsearch.sh"]
+dependencies = ["set-oss-env", "set-xpack-env"]
+
+[tasks.start-elasticsearch.windows]
+script = ["bash -c \"STACK_VERSION=%STACK_VERSION% TEST_SUITE=%TEST_SUITE% DETACH=true bash .ci/run-elasticsearch.sh\""]
+
+[tasks.stop-elasticsearch]
+category = "Elasticsearch"
+description = "Stops Elasticsearch docker container, if running"
+condition = { env_set = [ "STACK_VERSION", "TEST_SUITE" ] }
+script = ["CLEANUP=true bash .ci/run-elasticsearch.sh"]
+dependencies = ["set-oss-env", "set-xpack-env"]
+
+[tasks.stop-elasticsearch.windows]
+script = ["bash -c \"STACK_VERSION=%STACK_VERSION% TEST_SUITE=%TEST_SUITE% CLEANUP=true bash .ci/run-elasticsearch.sh\""]
+
+[tasks.test-yaml]
+category = "Elasticsearch"
+description = "Generates and runs yaml_test_runner crate xpack/oss tests against a given Elasticsearch version"
+condition = { env_set = [ "STACK_VERSION", "TEST_SUITE" ] }
+dependencies = ["generate-yaml-tests", "test-yaml-test-runner"]
+run_task = "stop-elasticsearch"
+
+[tasks.test]
+category = "Elasticsearch"
+clear = true
+description = "Runs Elasticsearch crate tests against a given Elasticsearch version"
+env = { "TEST_SUITE" = { value = "xpack", condition = { env_set = ["TEST_SUITE"] } } }
+dependencies = ["test-elasticsearch"]
+run_task = "stop-elasticsearch"
+
+[tasks.generate-api]
+category = "Elasticsearch"
+description = "Generates Elasticsearch client from REST API specs"
+run_task = "run-api-generator"
