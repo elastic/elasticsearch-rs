@@ -108,3 +108,42 @@ category = "Elasticsearch"
 description = "Generates Elasticsearch client from REST API specs"
 dependencies = ["run-api-generator"]
 run_task = "format"
+
+
+[tasks.default]
+clear = true
+script = ['''
+    echo
+    echo "Main tasks:"
+    echo "- generate-api: Generates Elasticsearch client from REST API specs"
+    echo "- start-elasticsearch: Starts Elasticsearch docker container with the given version and distribution"
+    echo "- stop-elasticsearch: Stops Elasticsearch docker container, if running"
+    echo "- test-yaml: Generates and runs yaml_test_runner crate xpack/oss tests against a given Elasticsearch version"
+    echo "- test: Runs Elasticsearch crate tests against a given Elasticsearch version"
+    echo
+    echo "Most tasks use these environment variables:"
+    echo "- STACK_VERSION (default '$STACK_VERSION'): the version of Elasticsearch"
+    echo "- TEST_SUITE ('oss' or 'xpack', default '$TEST_SUITE'): the distribution of Elasticsearch"
+    echo
+    echo "Run 'cargo make --list-all-steps' for a complete list of available tasks."
+    echo
+''']
+
+[tasks.default.windows]
+script = ['''
+    @echo off
+    echo.
+    echo Main tasks:
+    echo - generate-api: Generates Elasticsearch client from REST API specs
+    echo - start-elasticsearch: Starts Elasticsearch docker container with the given version and distribution
+    echo - stop-elasticsearch: Stops Elasticsearch docker container, if running
+    echo - test-yaml: Generates and runs yaml_test_runner crate xpack/oss tests against a given Elasticsearch version
+    echo - test: Runs Elasticsearch crate tests against a given Elasticsearch version
+    echo.
+    echo Most tasks use these environment variables:
+    echo - STACK_VERSION (default '$STACK_VERSION'): the version of Elasticsearch
+    echo - TEST_SUITE ('oss' or 'xpack', default '$TEST_SUITE'): the distribution of Elasticsearch
+    echo.
+    echo Run 'cargo make --list-all-steps' for a complete list of available tasks.
+    echo.
+''']
