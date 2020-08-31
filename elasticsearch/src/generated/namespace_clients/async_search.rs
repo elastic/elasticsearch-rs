@@ -131,18 +131,11 @@ impl<'a, 'b> AsyncSearchDelete<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -277,24 +270,14 @@ impl<'a, 'b> AsyncSearchGet<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "keep_alive")]
                 keep_alive: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "typed_keys")]
                 typed_keys: Option<bool>,
-                #[serde(rename = "wait_for_completion_timeout")]
                 wait_for_completion_timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -768,121 +751,61 @@ where
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(
-                    rename = "_source",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 _source: Option<&'b [&'b str]>,
-                #[serde(
-                    rename = "_source_excludes",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 _source_excludes: Option<&'b [&'b str]>,
-                #[serde(
-                    rename = "_source_includes",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 _source_includes: Option<&'b [&'b str]>,
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "allow_partial_search_results")]
                 allow_partial_search_results: Option<bool>,
-                #[serde(rename = "analyze_wildcard")]
                 analyze_wildcard: Option<bool>,
-                #[serde(rename = "analyzer")]
                 analyzer: Option<&'b str>,
-                #[serde(rename = "batched_reduce_size")]
                 batched_reduce_size: Option<i64>,
-                #[serde(rename = "default_operator")]
                 default_operator: Option<DefaultOperator>,
-                #[serde(rename = "df")]
                 df: Option<&'b str>,
-                #[serde(
-                    rename = "docvalue_fields",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 docvalue_fields: Option<&'b [&'b str]>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(rename = "explain")]
                 explain: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "from")]
                 from: Option<i64>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_throttled")]
                 ignore_throttled: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "keep_alive")]
                 keep_alive: Option<&'b str>,
-                #[serde(rename = "keep_on_completion")]
                 keep_on_completion: Option<bool>,
-                #[serde(rename = "lenient")]
                 lenient: Option<bool>,
-                #[serde(rename = "max_concurrent_shard_requests")]
                 max_concurrent_shard_requests: Option<i64>,
-                #[serde(rename = "preference")]
                 preference: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "q")]
                 q: Option<&'b str>,
-                #[serde(rename = "request_cache")]
                 request_cache: Option<bool>,
-                #[serde(
-                    rename = "routing",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 routing: Option<&'b [&'b str]>,
-                #[serde(rename = "search_type")]
                 search_type: Option<SearchType>,
-                #[serde(rename = "seq_no_primary_term")]
                 seq_no_primary_term: Option<bool>,
-                #[serde(rename = "size")]
                 size: Option<i64>,
-                #[serde(rename = "sort", serialize_with = "crate::client::serialize_coll_qs")]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 sort: Option<&'b [&'b str]>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "stats", serialize_with = "crate::client::serialize_coll_qs")]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 stats: Option<&'b [&'b str]>,
-                #[serde(
-                    rename = "stored_fields",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 stored_fields: Option<&'b [&'b str]>,
-                #[serde(rename = "suggest_field")]
                 suggest_field: Option<&'b str>,
-                #[serde(rename = "suggest_mode")]
                 suggest_mode: Option<SuggestMode>,
-                #[serde(rename = "suggest_size")]
                 suggest_size: Option<i64>,
-                #[serde(rename = "suggest_text")]
                 suggest_text: Option<&'b str>,
-                #[serde(rename = "terminate_after")]
                 terminate_after: Option<i64>,
-                #[serde(rename = "timeout")]
                 timeout: Option<&'b str>,
-                #[serde(rename = "track_scores")]
                 track_scores: Option<bool>,
-                #[serde(rename = "track_total_hits")]
                 track_total_hits: Option<TrackTotalHits>,
-                #[serde(rename = "typed_keys")]
                 typed_keys: Option<bool>,
-                #[serde(rename = "version")]
                 version: Option<bool>,
-                #[serde(rename = "wait_for_completion_timeout")]
                 wait_for_completion_timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
