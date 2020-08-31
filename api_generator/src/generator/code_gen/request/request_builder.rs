@@ -125,19 +125,31 @@ impl<'a> RequestBuilder<'a> {
             let query_struct_ty = ident("QueryParams");
             let struct_fields = endpoint_params.iter().map(|(param_name, param_type)| {
                 let field = Self::create_struct_field((param_name, param_type));
-                let field_rename = lit(param_name);
-                // TODO: we special case expand_wildcards here to be a list, but this should be fixed upstream
-                if param_type.ty == TypeKind::List || param_name == "expand_wildcards" {
-                    let serialize_with = lit("crate::client::serialize_coll_qs");
-                    quote! {
-                        #[serde(rename = #field_rename, serialize_with = #serialize_with)]
-                        #field
-                    }
-                } else {
+
+                let renamed = field.ident.as_ref().unwrap() != param_name;
+                let serde_rename = if renamed {
+                    let field_rename = lit(param_name);
                     quote! {
                         #[serde(rename = #field_rename)]
-                        #field
                     }
+                } else {
+                    quote!()
+                };
+
+                // TODO: we special case expand_wildcards here to be a list, but this should be fixed upstream
+                let expand = param_type.ty == TypeKind::List || param_name == "expand_wildcards";
+                let serialize_with = if expand {
+                    quote! {
+                        #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                    }
+                } else {
+                    quote!()
+                };
+
+                quote! {
+                    #serde_rename
+                    #serialize_with
+                    #field
                 }
             });
 
