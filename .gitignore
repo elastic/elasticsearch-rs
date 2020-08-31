@@ -3,6 +3,7 @@
 Cargo.lock
 
 .idea
+*.iml
 .vscode/
 *.log
 yaml_test_runner/yaml/
