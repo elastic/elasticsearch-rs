@@ -598,7 +598,7 @@ fn write_test_file(
     )?;
 
     let tokens = test.build();
-    let generated = api_generator::generator::rust_fmt(tokens.to_string())?;
+    let generated = tokens.to_string();
     let mut file = OpenOptions::new().append(true).open(&path)?;
     file.write_all(generated.as_bytes())?;
     file.write_all(b"\n")?;
