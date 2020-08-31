@@ -1,1 +1,3 @@
-merge_imports = true
+# Available on rustfmt nightly currently so commented out so that we remember to enable it once stable
+#merge_imports = true
+#normalize_doc_attributes = true
