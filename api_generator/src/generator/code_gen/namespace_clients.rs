@@ -103,7 +103,7 @@ pub fn generate(api: &Api, docs_dir: &PathBuf) -> Result<Vec<(String, String)>, 
             }
         ));
 
-        let generated = rust_fmt(tokens.to_string())?;
+        let generated = tokens.to_string();
         output.push((namespace.to_string(), generated));
     }
 
