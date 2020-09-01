@@ -625,3 +625,9 @@ where
 
     Ok(common)
 }
+
+/// Asserts that the expected generated AST matches the actual generated AST
+#[cfg(test)]
+pub fn ast_eq<T: ToTokens>(expected: Tokens, actual: T) {
+    assert_eq!(expected, quote!(#actual));
+}
