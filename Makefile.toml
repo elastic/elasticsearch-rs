@@ -89,6 +89,13 @@ condition = { env_set = [ "STACK_VERSION", "TEST_SUITE" ] }
 dependencies = ["generate-yaml-tests", "test-yaml-test-runner"]
 run_task = "stop-elasticsearch"
 
+[tasks.test-generator]
+category = "Elasticsearch"
+clear = true
+description = "Runs api_generator tests"
+command = "cargo"
+args = ["test", "-p", "api_generator"]
+
 [tasks.test]
 category = "Elasticsearch"
 clear = true
