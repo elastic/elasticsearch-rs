@@ -28,10 +28,9 @@ echo -e "\033[1m>>>>> Run [elastic/elasticsearch-rs container] >>>>>>>>>>>>>>>>>
 
 repo=$(realpath $(dirname $(realpath -s $0))/../)
 
-# ES_TEST_SERVER env var is needed for cargo test
 docker run \
   --network=${network_name} \
-  --env "ES_TEST_SERVER=${ELASTICSEARCH_URL}" \
+  --env "ELASTICSEARCH_URL=${ELASTICSEARCH_URL}" \
   --name test-runner \
   --volume ${repo}/test_results:/usr/src/elasticsearch-rs/test_results \
   --rm \

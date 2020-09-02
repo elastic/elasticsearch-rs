@@ -9,16 +9,16 @@ TEST_SUITE = "xpack"
 
 [tasks.set-oss-env]
 category = "Elasticsearch"
-description = "Sets ELASTICSEARCH_URL environment variable for later tasks when oss test suite used"
+description = "Sets ELASTICSEARCH_URL environment variable if not already set for later tasks when oss test suite used"
 private = true
-condition = { env = { "TEST_SUITE" = "oss" } }
+condition = { env = { "TEST_SUITE" = "oss" }, env_not_set = ["ELASTICSEARCH_URL"] }
 env = { "ELASTICSEARCH_URL" = "http://localhost:9200" }
 
 [tasks.set-xpack-env]
 category = "Elasticsearch"
-description = "Sets ELASTICSEARCH_URL environment variable for later tasks when xpack test suite used"
+description = "Sets ELASTICSEARCH_URL environment variable if not already set for later tasks when xpack test suite used"
 private = true
-condition = { env = { "TEST_SUITE" = "xpack" } }
+condition = { env = { "TEST_SUITE" = "xpack" }, env_not_set = ["ELASTICSEARCH_URL"] }
 env = { "ELASTICSEARCH_URL" = "https://elastic:changeme@localhost:9200" }
 
 [tasks.run-yaml-test-runner]
@@ -47,7 +47,6 @@ dependencies = ["generate-yaml-tests"]
 category = "Elasticsearch"
 private = true
 condition = { env_set = [ "ELASTICSEARCH_URL" ], env = { "TEST_SUITE" = "xpack" } }
-env = { "ES_TEST_SERVER" = "${ELASTICSEARCH_URL}" }
 command = "cargo"
 args = ["test", "-p", "elasticsearch"]
 dependencies = ["start-elasticsearch"]
