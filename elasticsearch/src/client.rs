@@ -22,6 +22,7 @@ use crate::{
 };
 
 use serde::{Serialize, Serializer};
+use std::time::Duration;
 
 /// Serializes an `Option<&[Serialize]>` with
 /// `Some(value)` to a comma separated string of values.
@@ -80,13 +81,14 @@ impl Elasticsearch {
         headers: HeaderMap,
         query_string: Option<&Q>,
         body: Option<B>,
+        timeout: Option<Duration>,
     ) -> Result<Response, Error>
     where
         B: Body,
         Q: Serialize + ?Sized,
     {
         self.transport
-            .send(method, path, headers, query_string, body)
+            .send(method, path, headers, query_string, body, timeout)
             .await
     }
 }

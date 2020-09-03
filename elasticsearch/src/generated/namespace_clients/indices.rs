@@ -22,8 +22,7 @@
 //
 // cargo run -p api_generator
 // -----------------------------------------------
-#![allow(unused_imports)]
-use crate::{
+# ! [ allow ( unused_imports ) ]use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
@@ -37,7 +36,206 @@ use crate::{
 };
 use percent_encoding::percent_encode;
 use serde::Serialize;
-use std::borrow::Cow;
+use std::{borrow::Cow, time::Duration};
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Indices Add Block API"]
+pub enum IndicesAddBlockParts<'b> {
+    #[doc = "Index and Block"]
+    IndexBlock(&'b [&'b str], &'b str),
+}
+impl<'b> IndicesAddBlockParts<'b> {
+    #[doc = "Builds a relative URL path to the Indices Add Block API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            IndicesAddBlockParts::IndexBlock(ref index, ref block) => {
+                let index_str = index.join(",");
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_block: Cow<str> =
+                    percent_encode(block.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(9usize + encoded_index.len() + encoded_block.len());
+                p.push_str("/");
+                p.push_str(encoded_index.as_ref());
+                p.push_str("/_block/");
+                p.push_str(encoded_block.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Indices Add Block API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/index-modules-blocks.html)\n\nAdds a block to an index."]
+pub struct IndicesAddBlock<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: IndicesAddBlockParts<'b>,
+    allow_no_indices: Option<bool>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<&'b [ExpandWildcards]>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    master_timeout: Option<&'b str>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
+}
+impl<'a, 'b, B> IndicesAddBlock<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [IndicesAddBlock] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: IndicesAddBlockParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        IndicesAddBlock {
+            transport,
+            parts,
+            headers,
+            allow_no_indices: None,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            master_timeout: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+            timeout: None,
+        }
+    }
+    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> IndicesAddBlock<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        IndicesAddBlock {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            allow_no_indices: self.allow_no_indices,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+            timeout: self.timeout,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Indices Add Block API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                allow_no_indices: Option<bool>,
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                expand_wildcards: Option<&'b [ExpandWildcards]>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                ignore_unavailable: Option<bool>,
+                master_timeout: Option<&'b str>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+                timeout: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
+                expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
+                ignore_unavailable: self.ignore_unavailable,
+                master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Analyze API"]
 pub enum IndicesAnalyzeParts<'b> {
@@ -75,6 +273,7 @@ pub struct IndicesAnalyze<'a, 'b, B> {
     human: Option<bool>,
     index: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> IndicesAnalyze<'a, 'b, B>
@@ -94,6 +293,7 @@ where
             human: None,
             index: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -112,6 +312,7 @@ where
             human: self.human,
             index: self.index,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -145,6 +346,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -158,24 +364,17 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "index")]
                 index: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -191,7 +390,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -241,6 +440,7 @@ pub struct IndicesClearCache<'a, 'b, B> {
     pretty: Option<bool>,
     query: Option<bool>,
     request: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> IndicesClearCache<'a, 'b, B>
@@ -267,6 +467,7 @@ where
             pretty: None,
             query: None,
             request: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -297,6 +498,7 @@ where
             pretty: self.pretty,
             query: self.query,
             request: self.request,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -360,6 +562,11 @@ where
         self.request = Some(request);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -370,41 +577,27 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(rename = "fielddata")]
                 fielddata: Option<bool>,
-                #[serde(rename = "fields", serialize_with = "crate::client::serialize_coll_qs")]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 fields: Option<&'b [&'b str]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "index", serialize_with = "crate::client::serialize_coll_qs")]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 index: Option<&'b [&'b str]>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "query")]
                 query: Option<bool>,
-                #[serde(rename = "request")]
                 request: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -427,7 +620,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -470,6 +663,7 @@ pub struct IndicesClone<'a, 'b, B> {
     human: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
     wait_for_active_shards: Option<&'b str>,
@@ -491,6 +685,7 @@ where
             human: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
             wait_for_active_shards: None,
@@ -511,6 +706,7 @@ where
             human: self.human,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
@@ -546,6 +742,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -566,28 +767,19 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "timeout")]
                 timeout: Option<&'b str>,
-                #[serde(rename = "wait_for_active_shards")]
                 wait_for_active_shards: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -605,7 +797,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -648,6 +840,7 @@ pub struct IndicesClose<'a, 'b, B> {
     ignore_unavailable: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
     wait_for_active_shards: Option<&'b str>,
@@ -672,6 +865,7 @@ where
             ignore_unavailable: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
             wait_for_active_shards: None,
@@ -700,6 +894,7 @@ where
             ignore_unavailable: self.ignore_unavailable,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
@@ -745,6 +940,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -765,37 +965,23 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "timeout")]
                 timeout: Option<&'b str>,
-                #[serde(rename = "wait_for_active_shards")]
                 wait_for_active_shards: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -816,7 +1002,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -854,6 +1040,7 @@ pub struct IndicesCreate<'a, 'b, B> {
     human: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
     wait_for_active_shards: Option<&'b str>,
@@ -875,6 +1062,7 @@ where
             human: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
             wait_for_active_shards: None,
@@ -895,6 +1083,7 @@ where
             human: self.human,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
@@ -930,6 +1119,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -950,28 +1144,19 @@ where
         let path = self.parts.url();
         let method = Method::Put;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "timeout")]
                 timeout: Option<&'b str>,
-                #[serde(rename = "wait_for_active_shards")]
                 wait_for_active_shards: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -989,7 +1174,272 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Indices Create Data Stream API"]
+pub enum IndicesCreateDataStreamParts<'b> {
+    #[doc = "Name"]
+    Name(&'b str),
+}
+impl<'b> IndicesCreateDataStreamParts<'b> {
+    #[doc = "Builds a relative URL path to the Indices Create Data Stream API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            IndicesCreateDataStreamParts::Name(ref name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(14usize + encoded_name.len());
+                p.push_str("/_data_stream/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Indices Create Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/data-streams.html)\n\nCreates a data stream"]
+pub struct IndicesCreateDataStream<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: IndicesCreateDataStreamParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b, B> IndicesCreateDataStream<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [IndicesCreateDataStream] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: IndicesCreateDataStreamParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        IndicesCreateDataStream {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> IndicesCreateDataStream<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        IndicesCreateDataStream {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Indices Create Data Stream API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Indices Data Streams Stats API"]
+pub enum IndicesDataStreamsStatsParts<'b> {
+    #[doc = "No parts"]
+    None,
+    #[doc = "Name"]
+    Name(&'b [&'b str]),
+}
+impl<'b> IndicesDataStreamsStatsParts<'b> {
+    #[doc = "Builds a relative URL path to the Indices Data Streams Stats API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            IndicesDataStreamsStatsParts::None => "/_data_stream/_stats".into(),
+            IndicesDataStreamsStatsParts::Name(ref name) => {
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(21usize + encoded_name.len());
+                p.push_str("/_data_stream/");
+                p.push_str(encoded_name.as_ref());
+                p.push_str("/_stats");
+                p.into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Indices Data Streams Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/data-streams.html)\n\nProvides statistics on operations happening in a data stream."]
+pub struct IndicesDataStreamsStats<'a, 'b> {
+    transport: &'a Transport,
+    parts: IndicesDataStreamsStatsParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b> IndicesDataStreamsStats<'a, 'b> {
+    #[doc = "Creates a new instance of [IndicesDataStreamsStats] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: IndicesDataStreamsStatsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        IndicesDataStreamsStats {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Indices Data Streams Stats API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1030,6 +1480,7 @@ pub struct IndicesDelete<'a, 'b> {
     ignore_unavailable: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
@@ -1049,6 +1500,7 @@ impl<'a, 'b> IndicesDelete<'a, 'b> {
             ignore_unavailable: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
         }
@@ -1098,6 +1550,11 @@ impl<'a, 'b> IndicesDelete<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -1113,35 +1570,22 @@ impl<'a, 'b> IndicesDelete<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Delete;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "timeout")]
                 timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -1161,7 +1605,7 @@ impl<'a, 'b> IndicesDelete<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1205,6 +1649,7 @@ pub struct IndicesDeleteAlias<'a, 'b> {
     human: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
@@ -1221,6 +1666,7 @@ impl<'a, 'b> IndicesDeleteAlias<'a, 'b> {
             human: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
         }
@@ -1255,6 +1701,11 @@ impl<'a, 'b> IndicesDeleteAlias<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -1270,26 +1721,18 @@ impl<'a, 'b> IndicesDeleteAlias<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Delete;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "timeout")]
                 timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -1306,7 +1749,127 @@ impl<'a, 'b> IndicesDeleteAlias<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Indices Delete Data Stream API"]
+pub enum IndicesDeleteDataStreamParts<'b> {
+    #[doc = "Name"]
+    Name(&'b [&'b str]),
+}
+impl<'b> IndicesDeleteDataStreamParts<'b> {
+    #[doc = "Builds a relative URL path to the Indices Delete Data Stream API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            IndicesDeleteDataStreamParts::Name(ref name) => {
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(14usize + encoded_name.len());
+                p.push_str("/_data_stream/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Indices Delete Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/data-streams.html)\n\nDeletes a data stream."]
+pub struct IndicesDeleteDataStream<'a, 'b> {
+    transport: &'a Transport,
+    parts: IndicesDeleteDataStreamParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b> IndicesDeleteDataStream<'a, 'b> {
+    #[doc = "Creates a new instance of [IndicesDeleteDataStream] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: IndicesDeleteDataStreamParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        IndicesDeleteDataStream {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Indices Delete Data Stream API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1342,6 +1905,7 @@ pub struct IndicesDeleteTemplate<'a, 'b> {
     human: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
@@ -1358,6 +1922,7 @@ impl<'a, 'b> IndicesDeleteTemplate<'a, 'b> {
             human: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
         }
@@ -1392,6 +1957,11 @@ impl<'a, 'b> IndicesDeleteTemplate<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -1407,26 +1977,18 @@ impl<'a, 'b> IndicesDeleteTemplate<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Delete;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "timeout")]
                 timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -1443,7 +2005,7 @@ impl<'a, 'b> IndicesDeleteTemplate<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1486,6 +2048,7 @@ pub struct IndicesExists<'a, 'b> {
     include_defaults: Option<bool>,
     local: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesExists<'a, 'b> {
@@ -1506,6 +2069,7 @@ impl<'a, 'b> IndicesExists<'a, 'b> {
             include_defaults: None,
             local: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -1564,6 +2128,11 @@ impl<'a, 'b> IndicesExists<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -1574,37 +2143,23 @@ impl<'a, 'b> IndicesExists<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Head;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "include_defaults")]
                 include_defaults: Option<bool>,
-                #[serde(rename = "local")]
                 local: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -1625,7 +2180,7 @@ impl<'a, 'b> IndicesExists<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1683,6 +2238,7 @@ pub struct IndicesExistsAlias<'a, 'b> {
     ignore_unavailable: Option<bool>,
     local: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesExistsAlias<'a, 'b> {
@@ -1701,6 +2257,7 @@ impl<'a, 'b> IndicesExistsAlias<'a, 'b> {
             ignore_unavailable: None,
             local: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -1749,6 +2306,11 @@ impl<'a, 'b> IndicesExistsAlias<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -1759,33 +2321,21 @@ impl<'a, 'b> IndicesExistsAlias<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Head;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "local")]
                 local: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -1804,7 +2354,7 @@ impl<'a, 'b> IndicesExistsAlias<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1844,6 +2394,7 @@ pub struct IndicesExistsTemplate<'a, 'b> {
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesExistsTemplate<'a, 'b> {
@@ -1861,6 +2412,7 @@ impl<'a, 'b> IndicesExistsTemplate<'a, 'b> {
             local: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -1904,6 +2456,11 @@ impl<'a, 'b> IndicesExistsTemplate<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -1914,28 +2471,19 @@ impl<'a, 'b> IndicesExistsTemplate<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Head;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "local")]
                 local: Option<bool>,
-                #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -1953,7 +2501,7 @@ impl<'a, 'b> IndicesExistsTemplate<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1998,6 +2546,7 @@ pub struct IndicesExistsType<'a, 'b> {
     ignore_unavailable: Option<bool>,
     local: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesExistsType<'a, 'b> {
@@ -2016,6 +2565,7 @@ impl<'a, 'b> IndicesExistsType<'a, 'b> {
             ignore_unavailable: None,
             local: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -2064,6 +2614,11 @@ impl<'a, 'b> IndicesExistsType<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -2074,33 +2629,21 @@ impl<'a, 'b> IndicesExistsType<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Head;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "local")]
                 local: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -2119,7 +2662,7 @@ impl<'a, 'b> IndicesExistsType<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -2165,6 +2708,7 @@ pub struct IndicesFlush<'a, 'b, B> {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     wait_if_ongoing: Option<bool>,
 }
@@ -2188,6 +2732,7 @@ where
             human: None,
             ignore_unavailable: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             wait_if_ongoing: None,
         }
@@ -2215,6 +2760,7 @@ where
             human: self.human,
             ignore_unavailable: self.ignore_unavailable,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             wait_if_ongoing: self.wait_if_ongoing,
         }
@@ -2259,6 +2805,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -2277,35 +2828,22 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "force")]
                 force: Option<bool>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "wait_if_ongoing")]
                 wait_if_ongoing: Option<bool>,
             }
             let query_params = QueryParams {
@@ -2325,7 +2863,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -2373,6 +2911,7 @@ pub struct IndicesForcemerge<'a, 'b, B> {
     max_num_segments: Option<i64>,
     only_expunge_deletes: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> IndicesForcemerge<'a, 'b, B>
@@ -2397,6 +2936,7 @@ where
             max_num_segments: None,
             only_expunge_deletes: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -2425,6 +2965,7 @@ where
             max_num_segments: self.max_num_segments,
             only_expunge_deletes: self.only_expunge_deletes,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -2478,6 +3019,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -2488,37 +3034,23 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "flush")]
                 flush: Option<bool>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "max_num_segments")]
                 max_num_segments: Option<i64>,
-                #[serde(rename = "only_expunge_deletes")]
                 only_expunge_deletes: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -2539,7 +3071,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -2581,6 +3113,7 @@ pub struct IndicesFreeze<'a, 'b, B> {
     ignore_unavailable: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
     wait_for_active_shards: Option<&'b str>,
@@ -2605,6 +3138,7 @@ where
             ignore_unavailable: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
             wait_for_active_shards: None,
@@ -2633,6 +3167,7 @@ where
             ignore_unavailable: self.ignore_unavailable,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
@@ -2678,6 +3213,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -2698,37 +3238,23 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "timeout")]
                 timeout: Option<&'b str>,
-                #[serde(rename = "wait_for_active_shards")]
                 wait_for_active_shards: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -2749,7 +3275,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -2793,6 +3319,7 @@ pub struct IndicesGet<'a, 'b> {
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesGet<'a, 'b> {
@@ -2814,6 +3341,7 @@ impl<'a, 'b> IndicesGet<'a, 'b> {
             local: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -2877,6 +3405,11 @@ impl<'a, 'b> IndicesGet<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -2887,39 +3420,24 @@ impl<'a, 'b> IndicesGet<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "include_defaults")]
                 include_defaults: Option<bool>,
-                #[serde(rename = "local")]
                 local: Option<bool>,
-                #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -2941,7 +3459,7 @@ impl<'a, 'b> IndicesGet<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -3014,6 +3532,7 @@ pub struct IndicesGetAlias<'a, 'b> {
     ignore_unavailable: Option<bool>,
     local: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesGetAlias<'a, 'b> {
@@ -3032,6 +3551,7 @@ impl<'a, 'b> IndicesGetAlias<'a, 'b> {
             ignore_unavailable: None,
             local: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -3080,6 +3600,11 @@ impl<'a, 'b> IndicesGetAlias<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -3090,33 +3615,21 @@ impl<'a, 'b> IndicesGetAlias<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "local")]
                 local: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -3135,7 +3648,130 @@ impl<'a, 'b> IndicesGetAlias<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Indices Get Data Stream API"]
+pub enum IndicesGetDataStreamParts<'b> {
+    #[doc = "No parts"]
+    None,
+    #[doc = "Name"]
+    Name(&'b [&'b str]),
+}
+impl<'b> IndicesGetDataStreamParts<'b> {
+    #[doc = "Builds a relative URL path to the Indices Get Data Stream API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            IndicesGetDataStreamParts::None => "/_data_stream".into(),
+            IndicesGetDataStreamParts::Name(ref name) => {
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(14usize + encoded_name.len());
+                p.push_str("/_data_stream/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Indices Get Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/data-streams.html)\n\nReturns data streams."]
+pub struct IndicesGetDataStream<'a, 'b> {
+    transport: &'a Transport,
+    parts: IndicesGetDataStreamParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b> IndicesGetDataStream<'a, 'b> {
+    #[doc = "Creates a new instance of [IndicesGetDataStream] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: IndicesGetDataStreamParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        IndicesGetDataStream {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Indices Get Data Stream API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -3194,6 +3830,7 @@ pub struct IndicesGetFieldMapping<'a, 'b> {
     include_defaults: Option<bool>,
     local: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesGetFieldMapping<'a, 'b> {
@@ -3213,6 +3850,7 @@ impl<'a, 'b> IndicesGetFieldMapping<'a, 'b> {
             include_defaults: None,
             local: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -3266,6 +3904,11 @@ impl<'a, 'b> IndicesGetFieldMapping<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -3276,35 +3919,22 @@ impl<'a, 'b> IndicesGetFieldMapping<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "include_defaults")]
                 include_defaults: Option<bool>,
-                #[serde(rename = "local")]
                 local: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -3324,7 +3954,7 @@ impl<'a, 'b> IndicesGetFieldMapping<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -3370,6 +4000,7 @@ pub struct IndicesGetMapping<'a, 'b> {
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesGetMapping<'a, 'b> {
@@ -3389,6 +4020,7 @@ impl<'a, 'b> IndicesGetMapping<'a, 'b> {
             local: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -3442,6 +4074,11 @@ impl<'a, 'b> IndicesGetMapping<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -3452,35 +4089,22 @@ impl<'a, 'b> IndicesGetMapping<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "local")]
                 local: Option<bool>,
-                #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -3500,7 +4124,7 @@ impl<'a, 'b> IndicesGetMapping<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -3576,6 +4200,7 @@ pub struct IndicesGetSettings<'a, 'b> {
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesGetSettings<'a, 'b> {
@@ -3597,6 +4222,7 @@ impl<'a, 'b> IndicesGetSettings<'a, 'b> {
             local: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -3660,6 +4286,11 @@ impl<'a, 'b> IndicesGetSettings<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -3670,39 +4301,24 @@ impl<'a, 'b> IndicesGetSettings<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "include_defaults")]
                 include_defaults: Option<bool>,
-                #[serde(rename = "local")]
                 local: Option<bool>,
-                #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -3724,7 +4340,7 @@ impl<'a, 'b> IndicesGetSettings<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -3767,6 +4383,7 @@ pub struct IndicesGetTemplate<'a, 'b> {
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesGetTemplate<'a, 'b> {
@@ -3784,6 +4401,7 @@ impl<'a, 'b> IndicesGetTemplate<'a, 'b> {
             local: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -3827,6 +4445,11 @@ impl<'a, 'b> IndicesGetTemplate<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -3837,28 +4460,19 @@ impl<'a, 'b> IndicesGetTemplate<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "local")]
                 local: Option<bool>,
-                #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -3876,7 +4490,7 @@ impl<'a, 'b> IndicesGetTemplate<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -3920,6 +4534,7 @@ pub struct IndicesGetUpgrade<'a, 'b> {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesGetUpgrade<'a, 'b> {
@@ -3937,6 +4552,7 @@ impl<'a, 'b> IndicesGetUpgrade<'a, 'b> {
             human: None,
             ignore_unavailable: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -3980,6 +4596,11 @@ impl<'a, 'b> IndicesGetUpgrade<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -3990,31 +4611,20 @@ impl<'a, 'b> IndicesGetUpgrade<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -4032,7 +4642,7 @@ impl<'a, 'b> IndicesGetUpgrade<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -4075,6 +4685,7 @@ pub struct IndicesOpen<'a, 'b, B> {
     ignore_unavailable: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
     wait_for_active_shards: Option<&'b str>,
@@ -4099,6 +4710,7 @@ where
             ignore_unavailable: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
             wait_for_active_shards: None,
@@ -4127,6 +4739,7 @@ where
             ignore_unavailable: self.ignore_unavailable,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
@@ -4172,6 +4785,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -4192,37 +4810,23 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "timeout")]
                 timeout: Option<&'b str>,
-                #[serde(rename = "wait_for_active_shards")]
                 wait_for_active_shards: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -4243,7 +4847,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -4286,6 +4890,7 @@ pub struct IndicesPutAlias<'a, 'b, B> {
     human: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
@@ -4306,6 +4911,7 @@ where
             human: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
         }
@@ -4325,6 +4931,7 @@ where
             human: self.human,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
         }
@@ -4359,6 +4966,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -4374,26 +4986,18 @@ where
         let path = self.parts.url();
         let method = Method::Put;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "timeout")]
                 timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -4410,7 +5014,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -4453,8 +5057,10 @@ pub struct IndicesPutMapping<'a, 'b, B> {
     ignore_unavailable: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
+    write_index_only: Option<bool>,
 }
 impl<'a, 'b, B> IndicesPutMapping<'a, 'b, B>
 where
@@ -4476,8 +5082,10 @@ where
             ignore_unavailable: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
+            write_index_only: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
@@ -4503,8 +5111,10 @@ where
             ignore_unavailable: self.ignore_unavailable,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
+            write_index_only: self.write_index_only,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -4547,6 +5157,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -4557,41 +5172,34 @@ where
         self.timeout = Some(timeout);
         self
     }
+    #[doc = "When true, applies mappings only to the write index of an alias or data stream"]
+    pub fn write_index_only(mut self, write_index_only: bool) -> Self {
+        self.write_index_only = Some(write_index_only);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Indices Put Mapping API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Put;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "timeout")]
                 timeout: Option<&'b str>,
+                write_index_only: Option<bool>,
             }
             let query_params = QueryParams {
                 allow_no_indices: self.allow_no_indices,
@@ -4604,13 +5212,14 @@ where
                 pretty: self.pretty,
                 source: self.source,
                 timeout: self.timeout,
+                write_index_only: self.write_index_only,
             };
             Some(query_params)
         };
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -4658,6 +5267,7 @@ pub struct IndicesPutSettings<'a, 'b, B> {
     master_timeout: Option<&'b str>,
     preserve_existing: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
@@ -4683,6 +5293,7 @@ where
             master_timeout: None,
             preserve_existing: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
         }
@@ -4712,6 +5323,7 @@ where
             master_timeout: self.master_timeout,
             preserve_existing: self.preserve_existing,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
         }
@@ -4766,6 +5378,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -4781,39 +5398,24 @@ where
         let path = self.parts.url();
         let method = Method::Put;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
-                #[serde(rename = "preserve_existing")]
                 preserve_existing: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "timeout")]
                 timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -4835,7 +5437,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -4874,6 +5476,7 @@ pub struct IndicesPutTemplate<'a, 'b, B> {
     master_timeout: Option<&'b str>,
     order: Option<i64>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> IndicesPutTemplate<'a, 'b, B>
@@ -4895,6 +5498,7 @@ where
             master_timeout: None,
             order: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -4915,6 +5519,7 @@ where
             master_timeout: self.master_timeout,
             order: self.order,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -4958,6 +5563,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -4968,28 +5578,19 @@ where
         let path = self.parts.url();
         let method = Method::Put;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "create")]
                 create: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
-                #[serde(rename = "order")]
                 order: Option<i64>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -5007,7 +5608,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -5050,6 +5651,7 @@ pub struct IndicesRecovery<'a, 'b> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> IndicesRecovery<'a, 'b> {
@@ -5066,6 +5668,7 @@ impl<'a, 'b> IndicesRecovery<'a, 'b> {
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -5104,6 +5707,11 @@ impl<'a, 'b> IndicesRecovery<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -5114,26 +5722,18 @@ impl<'a, 'b> IndicesRecovery<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "active_only")]
                 active_only: Option<bool>,
-                #[serde(rename = "detailed")]
                 detailed: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -5150,7 +5750,7 @@ impl<'a, 'b> IndicesRecovery<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -5195,6 +5795,7 @@ pub struct IndicesRefresh<'a, 'b, B> {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> IndicesRefresh<'a, 'b, B>
@@ -5216,6 +5817,7 @@ where
             human: None,
             ignore_unavailable: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -5241,6 +5843,7 @@ where
             human: self.human,
             ignore_unavailable: self.ignore_unavailable,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -5279,6 +5882,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -5292,31 +5900,20 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -5334,7 +5931,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -5376,6 +5973,7 @@ pub struct IndicesReloadSearchAnalyzers<'a, 'b, B> {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> IndicesReloadSearchAnalyzers<'a, 'b, B>
@@ -5397,6 +5995,7 @@ where
             human: None,
             ignore_unavailable: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -5422,6 +6021,7 @@ where
             human: self.human,
             ignore_unavailable: self.ignore_unavailable,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -5460,6 +6060,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -5473,31 +6078,20 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -5515,7 +6109,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -5570,6 +6164,7 @@ pub struct IndicesRollover<'a, 'b, B> {
     human: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
     wait_for_active_shards: Option<&'b str>,
@@ -5592,6 +6187,7 @@ where
             human: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
             wait_for_active_shards: None,
@@ -5613,6 +6209,7 @@ where
             human: self.human,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
@@ -5653,6 +6250,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -5673,30 +6275,20 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "dry_run")]
                 dry_run: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "timeout")]
                 timeout: Option<&'b str>,
-                #[serde(rename = "wait_for_active_shards")]
                 wait_for_active_shards: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -5715,7 +6307,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -5759,6 +6351,7 @@ pub struct IndicesSegments<'a, 'b> {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     verbose: Option<bool>,
 }
@@ -5777,6 +6370,7 @@ impl<'a, 'b> IndicesSegments<'a, 'b> {
             human: None,
             ignore_unavailable: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             verbose: None,
         }
@@ -5821,6 +6415,11 @@ impl<'a, 'b> IndicesSegments<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -5836,33 +6435,21 @@ impl<'a, 'b> IndicesSegments<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "verbose")]
                 verbose: Option<bool>,
             }
             let query_params = QueryParams {
@@ -5881,7 +6468,7 @@ impl<'a, 'b> IndicesSegments<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -5925,6 +6512,7 @@ pub struct IndicesShardStores<'a, 'b> {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     status: Option<&'b [&'b str]>,
 }
@@ -5943,6 +6531,7 @@ impl<'a, 'b> IndicesShardStores<'a, 'b> {
             human: None,
             ignore_unavailable: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             status: None,
         }
@@ -5987,6 +6576,11 @@ impl<'a, 'b> IndicesShardStores<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -6002,33 +6596,22 @@ impl<'a, 'b> IndicesShardStores<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "status", serialize_with = "crate::client::serialize_coll_qs")]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 status: Option<&'b [&'b str]>,
             }
             let query_params = QueryParams {
@@ -6047,7 +6630,7 @@ impl<'a, 'b> IndicesShardStores<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -6090,6 +6673,7 @@ pub struct IndicesShrink<'a, 'b, B> {
     human: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
     wait_for_active_shards: Option<&'b str>,
@@ -6111,6 +6695,7 @@ where
             human: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
             wait_for_active_shards: None,
@@ -6131,6 +6716,7 @@ where
             human: self.human,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
@@ -6166,6 +6752,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -6186,28 +6777,19 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "timeout")]
                 timeout: Option<&'b str>,
-                #[serde(rename = "wait_for_active_shards")]
                 wait_for_active_shards: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -6225,7 +6807,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -6268,6 +6850,7 @@ pub struct IndicesSplit<'a, 'b, B> {
     human: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
     wait_for_active_shards: Option<&'b str>,
@@ -6289,6 +6872,7 @@ where
             human: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
             wait_for_active_shards: None,
@@ -6309,6 +6893,7 @@ where
             human: self.human,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
@@ -6344,6 +6929,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -6364,28 +6954,19 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "timeout")]
                 timeout: Option<&'b str>,
-                #[serde(rename = "wait_for_active_shards")]
                 wait_for_active_shards: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -6403,7 +6984,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -6481,6 +7062,7 @@ pub struct IndicesStats<'a, 'b> {
     include_unloaded_segments: Option<bool>,
     level: Option<Level>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     types: Option<&'b [&'b str]>,
 }
@@ -6505,6 +7087,7 @@ impl<'a, 'b> IndicesStats<'a, 'b> {
             include_unloaded_segments: None,
             level: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             types: None,
         }
@@ -6579,6 +7162,11 @@ impl<'a, 'b> IndicesStats<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -6594,51 +7182,32 @@ impl<'a, 'b> IndicesStats<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(
-                    rename = "completion_fields",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 completion_fields: Option<&'b [&'b str]>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "fielddata_fields",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 fielddata_fields: Option<&'b [&'b str]>,
-                #[serde(rename = "fields", serialize_with = "crate::client::serialize_coll_qs")]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 fields: Option<&'b [&'b str]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "forbid_closed_indices")]
                 forbid_closed_indices: Option<bool>,
-                #[serde(rename = "groups", serialize_with = "crate::client::serialize_coll_qs")]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 groups: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "include_segment_file_sizes")]
                 include_segment_file_sizes: Option<bool>,
-                #[serde(rename = "include_unloaded_segments")]
                 include_unloaded_segments: Option<bool>,
-                #[serde(rename = "level")]
                 level: Option<Level>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "types", serialize_with = "crate::client::serialize_coll_qs")]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 types: Option<&'b [&'b str]>,
             }
             let query_params = QueryParams {
@@ -6663,7 +7232,7 @@ impl<'a, 'b> IndicesStats<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -6705,6 +7274,7 @@ pub struct IndicesUnfreeze<'a, 'b, B> {
     ignore_unavailable: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
     wait_for_active_shards: Option<&'b str>,
@@ -6729,6 +7299,7 @@ where
             ignore_unavailable: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
             wait_for_active_shards: None,
@@ -6757,6 +7328,7 @@ where
             ignore_unavailable: self.ignore_unavailable,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
@@ -6802,6 +7374,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -6822,37 +7399,23 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "timeout")]
                 timeout: Option<&'b str>,
-                #[serde(rename = "wait_for_active_shards")]
                 wait_for_active_shards: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -6873,7 +7436,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -6904,6 +7467,7 @@ pub struct IndicesUpdateAliases<'a, 'b, B> {
     human: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
@@ -6924,6 +7488,7 @@ where
             human: None,
             master_timeout: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             timeout: None,
         }
@@ -6943,6 +7508,7 @@ where
             human: self.human,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
         }
@@ -6977,6 +7543,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -6992,26 +7563,18 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "master_timeout")]
                 master_timeout: Option<&'b str>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "timeout")]
                 timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -7028,7 +7591,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -7074,6 +7637,7 @@ pub struct IndicesUpgrade<'a, 'b, B> {
     ignore_unavailable: Option<bool>,
     only_ancient_segments: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     wait_for_completion: Option<bool>,
 }
@@ -7097,6 +7661,7 @@ where
             ignore_unavailable: None,
             only_ancient_segments: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             wait_for_completion: None,
         }
@@ -7124,6 +7689,7 @@ where
             ignore_unavailable: self.ignore_unavailable,
             only_ancient_segments: self.only_ancient_segments,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             wait_for_completion: self.wait_for_completion,
         }
@@ -7168,6 +7734,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -7183,35 +7754,22 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "only_ancient_segments")]
                 only_ancient_segments: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "wait_for_completion")]
                 wait_for_completion: Option<bool>,
             }
             let query_params = QueryParams {
@@ -7231,7 +7789,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -7300,6 +7858,7 @@ pub struct IndicesValidateQuery<'a, 'b, B> {
     lenient: Option<bool>,
     pretty: Option<bool>,
     q: Option<&'b str>,
+    request_timeout: Option<Duration>,
     rewrite: Option<bool>,
     source: Option<&'b str>,
 }
@@ -7330,6 +7889,7 @@ where
             lenient: None,
             pretty: None,
             q: None,
+            request_timeout: None,
             rewrite: None,
             source: None,
         }
@@ -7379,6 +7939,7 @@ where
             lenient: self.lenient,
             pretty: self.pretty,
             q: self.q,
+            request_timeout: self.request_timeout,
             rewrite: self.rewrite,
             source: self.source,
         }
@@ -7443,6 +8004,11 @@ where
         self.q = Some(q);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "Provide a more detailed explanation showing the actual Lucene query that will be executed."]
     pub fn rewrite(mut self, rewrite: bool) -> Self {
         self.rewrite = Some(rewrite);
@@ -7461,49 +8027,29 @@ where
             None => Method::Get,
         };
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "all_shards")]
                 all_shards: Option<bool>,
-                #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
-                #[serde(rename = "analyze_wildcard")]
                 analyze_wildcard: Option<bool>,
-                #[serde(rename = "analyzer")]
                 analyzer: Option<&'b str>,
-                #[serde(rename = "default_operator")]
                 default_operator: Option<DefaultOperator>,
-                #[serde(rename = "df")]
                 df: Option<&'b str>,
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "expand_wildcards",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(rename = "explain")]
                 explain: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "lenient")]
                 lenient: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "q")]
                 q: Option<&'b str>,
-                #[serde(rename = "rewrite")]
                 rewrite: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -7530,7 +8076,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -7546,6 +8092,10 @@ impl<'a> Indices<'a> {
     }
     pub fn transport(&self) -> &Transport {
         self.transport
+    }
+    #[doc = "[Indices Add Block API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/index-modules-blocks.html)\n\nAdds a block to an index."]
+    pub fn add_block<'b>(&'a self, parts: IndicesAddBlockParts<'b>) -> IndicesAddBlock<'a, 'b, ()> {
+        IndicesAddBlock::new(self.transport(), parts)
     }
     #[doc = "[Indices Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-analyze.html)\n\nPerforms the analysis process on a text and return the tokens breakdown of the text."]
     pub fn analyze<'b>(&'a self, parts: IndicesAnalyzeParts<'b>) -> IndicesAnalyze<'a, 'b, ()> {
@@ -7570,6 +8120,20 @@ impl<'a> Indices<'a> {
     pub fn create<'b>(&'a self, parts: IndicesCreateParts<'b>) -> IndicesCreate<'a, 'b, ()> {
         IndicesCreate::new(self.transport(), parts)
     }
+    #[doc = "[Indices Create Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/data-streams.html)\n\nCreates a data stream"]
+    pub fn create_data_stream<'b>(
+        &'a self,
+        parts: IndicesCreateDataStreamParts<'b>,
+    ) -> IndicesCreateDataStream<'a, 'b, ()> {
+        IndicesCreateDataStream::new(self.transport(), parts)
+    }
+    #[doc = "[Indices Data Streams Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/data-streams.html)\n\nProvides statistics on operations happening in a data stream."]
+    pub fn data_streams_stats<'b>(
+        &'a self,
+        parts: IndicesDataStreamsStatsParts<'b>,
+    ) -> IndicesDataStreamsStats<'a, 'b> {
+        IndicesDataStreamsStats::new(self.transport(), parts)
+    }
     #[doc = "[Indices Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-delete-index.html)\n\nDeletes an index."]
     pub fn delete<'b>(&'a self, parts: IndicesDeleteParts<'b>) -> IndicesDelete<'a, 'b> {
         IndicesDelete::new(self.transport(), parts)
@@ -7580,6 +8144,13 @@ impl<'a> Indices<'a> {
         parts: IndicesDeleteAliasParts<'b>,
     ) -> IndicesDeleteAlias<'a, 'b> {
         IndicesDeleteAlias::new(self.transport(), parts)
+    }
+    #[doc = "[Indices Delete Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/data-streams.html)\n\nDeletes a data stream."]
+    pub fn delete_data_stream<'b>(
+        &'a self,
+        parts: IndicesDeleteDataStreamParts<'b>,
+    ) -> IndicesDeleteDataStream<'a, 'b> {
+        IndicesDeleteDataStream::new(self.transport(), parts)
     }
     #[doc = "[Indices Delete Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-templates.html)\n\nDeletes an index template."]
     pub fn delete_template<'b>(
@@ -7635,6 +8206,13 @@ impl<'a> Indices<'a> {
     #[doc = "[Indices Get Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-aliases.html)\n\nReturns an alias."]
     pub fn get_alias<'b>(&'a self, parts: IndicesGetAliasParts<'b>) -> IndicesGetAlias<'a, 'b> {
         IndicesGetAlias::new(self.transport(), parts)
+    }
+    #[doc = "[Indices Get Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/data-streams.html)\n\nReturns data streams."]
+    pub fn get_data_stream<'b>(
+        &'a self,
+        parts: IndicesGetDataStreamParts<'b>,
+    ) -> IndicesGetDataStream<'a, 'b> {
+        IndicesGetDataStream::new(self.transport(), parts)
     }
     #[doc = "[Indices Get Field Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-get-field-mapping.html)\n\nReturns mapping for one or more fields."]
     pub fn get_field_mapping<'b>(

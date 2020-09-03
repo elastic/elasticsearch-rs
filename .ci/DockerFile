@@ -6,7 +6,7 @@
 # FROM rustlang/rust:${RUST_TOOLCHAIN}
 FROM debian:stretch-slim
 
-ARG RUST_TOOLCHAIN=nightly-2020-06-09
+ARG RUST_TOOLCHAIN=nightly-2020-07-27
 
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \

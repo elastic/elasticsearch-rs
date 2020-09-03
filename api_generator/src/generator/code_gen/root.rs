@@ -56,6 +56,6 @@ pub fn generate(api: &Api, docs_dir: &PathBuf) -> Result<String, failure::Error>
         }
     ));
 
-    let generated = rust_fmt(tokens.to_string())?;
+    let generated = tokens.to_string();
     Ok(generated)
 }

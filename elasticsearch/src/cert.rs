@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+//! Certificate components
 
 use crate::error::Error;
 use std::{
@@ -25,6 +26,9 @@ use std::{
 };
 
 /// Validation applied to a SSL/TLS certificate, to establish a HTTPS connection.
+///
+/// This requires the `native-tls`, or `rustls-tls` feature to be enabled. `native-tls` is
+/// configured by default.
 ///
 /// # Examples
 ///
@@ -36,8 +40,6 @@ use std::{
 /// be able to change from another validation mode back to the default.
 ///
 /// ## Full validation
-///
-/// This requires the `native-tls`, or `rustls-tls` feature to be enabled.
 ///
 /// With Elasticsearch running at `https://example.com`, configured to use a certificate generated
 /// with your own Certificate Authority (CA), and where the certificate contains a CommonName (CN)
@@ -139,6 +141,7 @@ let _response = client.ping().send().await?;
 /// # Ok(())
 /// # }
 /// ```
+#[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
 pub enum CertificateValidation {
     /// Default validation of the certificate, which validates that the certificate provided by the
     /// server is signed by a trusted Certificate Authority (CA) and also verifies that the server’s hostname
@@ -160,10 +163,6 @@ pub enum CertificateValidation {
     ///
     /// Typically, the certificate provided to the client is the Certificate Authority (CA)
     /// used to sign the certificate used by the server.
-    ///
-    /// # Optional
-    /// This requires the `native-tls`, or `rustls-tls` feature to be enabled.
-    #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
     Full(Certificate),
     /// Validates that the certificate provided by the server is signed by a trusted
     /// Certificate Authority (CA), but does not perform hostname verification.
@@ -195,16 +194,14 @@ const BEGIN_CERTIFICATE: &str = "-----BEGIN CERTIFICATE-----";
 const END_CERTIFICATE: &str = "-----END CERTIFICATE-----";
 
 /// Represents a server X509 certificate chain.
+#[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
 pub struct Certificate(Vec<reqwest::Certificate>);
 
+#[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
 impl Certificate {
     /// Create a `Certificate` chain from PEM encoded certificates.
     ///
     /// The `pem` input data may contain one or more PEM encoded CA certificates.
-    ///
-    /// # Optional
-    /// This requires the `native-tls`, or `rustls-tls` feature to be enabled.
-    #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
     pub fn from_pem(pem: &[u8]) -> Result<Self, Error> {
         let reader = BufReader::new(Cursor::new(pem));
 
@@ -233,8 +230,8 @@ impl Certificate {
         }
 
         if certs.is_empty() {
-            Err(Error::lib(
-                "could not find PEM certificate in input data".to_string(),
+            Err(crate::error::lib(
+                "could not find PEM certificate in input data",
             ))
         } else {
             Ok(Self(certs))
@@ -242,10 +239,6 @@ impl Certificate {
     }
 
     /// Create a `Certificate` from a binary DER encoded certificate.
-    ///
-    /// # Optional
-    /// This requires the `native-tls`, or `rustls-tls` feature to be enabled.
-    #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
     pub fn from_der(der: &[u8]) -> Result<Self, Error> {
         Ok(Self(vec![reqwest::Certificate::from_der(der)?]))
     }
@@ -256,6 +249,7 @@ impl Certificate {
     }
 }
 
+#[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
 impl IntoIterator for Certificate {
     type Item = reqwest::Certificate;
     type IntoIter = vec::IntoIter<Self::Item>;
@@ -265,6 +259,7 @@ impl IntoIterator for Certificate {
     }
 }
 
+#[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
 impl Deref for Certificate {
     type Target = Vec<reqwest::Certificate>;
 

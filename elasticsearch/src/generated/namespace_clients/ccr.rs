@@ -22,8 +22,7 @@
 //
 // cargo run -p api_generator
 // -----------------------------------------------
-#![allow(unused_imports)]
-use crate::{
+# ! [ allow ( unused_imports ) ]use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
@@ -37,7 +36,7 @@ use crate::{
 };
 use percent_encoding::percent_encode;
 use serde::Serialize;
-use std::borrow::Cow;
+use std::{borrow::Cow, time::Duration};
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ccr Delete Auto Follow Pattern API"]
 pub enum CcrDeleteAutoFollowPatternParts<'b> {
@@ -68,6 +67,7 @@ pub struct CcrDeleteAutoFollowPattern<'a, 'b> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> CcrDeleteAutoFollowPattern<'a, 'b> {
@@ -82,6 +82,7 @@ impl<'a, 'b> CcrDeleteAutoFollowPattern<'a, 'b> {
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -110,6 +111,11 @@ impl<'a, 'b> CcrDeleteAutoFollowPattern<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -120,22 +126,16 @@ impl<'a, 'b> CcrDeleteAutoFollowPattern<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Delete;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -150,7 +150,7 @@ impl<'a, 'b> CcrDeleteAutoFollowPattern<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -188,6 +188,7 @@ pub struct CcrFollow<'a, 'b, B> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
     wait_for_active_shards: Option<&'b str>,
 }
@@ -207,6 +208,7 @@ where
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
             wait_for_active_shards: None,
         }
@@ -225,6 +227,7 @@ where
             headers: self.headers,
             human: self.human,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
             wait_for_active_shards: self.wait_for_active_shards,
         }
@@ -254,6 +257,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -269,24 +277,17 @@ where
         let path = self.parts.url();
         let method = Method::Put;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "wait_for_active_shards")]
                 wait_for_active_shards: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -302,7 +303,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -340,6 +341,7 @@ pub struct CcrFollowInfo<'a, 'b> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> CcrFollowInfo<'a, 'b> {
@@ -354,6 +356,7 @@ impl<'a, 'b> CcrFollowInfo<'a, 'b> {
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -382,6 +385,11 @@ impl<'a, 'b> CcrFollowInfo<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -392,22 +400,16 @@ impl<'a, 'b> CcrFollowInfo<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -422,7 +424,7 @@ impl<'a, 'b> CcrFollowInfo<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -460,6 +462,7 @@ pub struct CcrFollowStats<'a, 'b> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> CcrFollowStats<'a, 'b> {
@@ -474,6 +477,7 @@ impl<'a, 'b> CcrFollowStats<'a, 'b> {
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -502,6 +506,11 @@ impl<'a, 'b> CcrFollowStats<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -512,22 +521,16 @@ impl<'a, 'b> CcrFollowStats<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -542,7 +545,7 @@ impl<'a, 'b> CcrFollowStats<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -580,6 +583,7 @@ pub struct CcrForgetFollower<'a, 'b, B> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> CcrForgetFollower<'a, 'b, B>
@@ -598,6 +602,7 @@ where
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -615,6 +620,7 @@ where
             headers: self.headers,
             human: self.human,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -643,6 +649,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -653,22 +664,16 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -683,7 +688,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -721,6 +726,7 @@ pub struct CcrGetAutoFollowPattern<'a, 'b> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> CcrGetAutoFollowPattern<'a, 'b> {
@@ -735,6 +741,7 @@ impl<'a, 'b> CcrGetAutoFollowPattern<'a, 'b> {
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -763,6 +770,11 @@ impl<'a, 'b> CcrGetAutoFollowPattern<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -773,22 +785,16 @@ impl<'a, 'b> CcrGetAutoFollowPattern<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -803,7 +809,7 @@ impl<'a, 'b> CcrGetAutoFollowPattern<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -840,6 +846,7 @@ pub struct CcrPauseAutoFollowPattern<'a, 'b, B> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> CcrPauseAutoFollowPattern<'a, 'b, B>
@@ -858,6 +865,7 @@ where
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -875,6 +883,7 @@ where
             headers: self.headers,
             human: self.human,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -903,6 +912,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -913,22 +927,16 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -943,7 +951,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -981,6 +989,7 @@ pub struct CcrPauseFollow<'a, 'b, B> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> CcrPauseFollow<'a, 'b, B>
@@ -999,6 +1008,7 @@ where
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -1016,6 +1026,7 @@ where
             headers: self.headers,
             human: self.human,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -1044,6 +1055,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -1054,22 +1070,16 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -1084,7 +1094,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1120,6 +1130,7 @@ pub struct CcrPutAutoFollowPattern<'a, 'b, B> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> CcrPutAutoFollowPattern<'a, 'b, B>
@@ -1138,6 +1149,7 @@ where
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -1155,6 +1167,7 @@ where
             headers: self.headers,
             human: self.human,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -1183,6 +1196,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -1193,22 +1211,16 @@ where
         let path = self.parts.url();
         let method = Method::Put;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -1223,7 +1235,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1260,6 +1272,7 @@ pub struct CcrResumeAutoFollowPattern<'a, 'b, B> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> CcrResumeAutoFollowPattern<'a, 'b, B>
@@ -1278,6 +1291,7 @@ where
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -1295,6 +1309,7 @@ where
             headers: self.headers,
             human: self.human,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -1323,6 +1338,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -1333,22 +1353,16 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -1363,7 +1377,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1401,6 +1415,7 @@ pub struct CcrResumeFollow<'a, 'b, B> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> CcrResumeFollow<'a, 'b, B>
@@ -1419,6 +1434,7 @@ where
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -1436,6 +1452,7 @@ where
             headers: self.headers,
             human: self.human,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -1464,6 +1481,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -1474,22 +1496,16 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -1504,7 +1520,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1533,6 +1549,7 @@ pub struct CcrStats<'a, 'b> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> CcrStats<'a, 'b> {
@@ -1547,6 +1564,7 @@ impl<'a, 'b> CcrStats<'a, 'b> {
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -1575,6 +1593,11 @@ impl<'a, 'b> CcrStats<'a, 'b> {
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -1585,22 +1608,16 @@ impl<'a, 'b> CcrStats<'a, 'b> {
         let path = self.parts.url();
         let method = Method::Get;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -1615,7 +1632,7 @@ impl<'a, 'b> CcrStats<'a, 'b> {
         let body = Option::<()>::None;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }
@@ -1653,6 +1670,7 @@ pub struct CcrUnfollow<'a, 'b, B> {
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
+    request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> CcrUnfollow<'a, 'b, B>
@@ -1671,6 +1689,7 @@ where
             filter_path: None,
             human: None,
             pretty: None,
+            request_timeout: None,
             source: None,
         }
     }
@@ -1688,6 +1707,7 @@ where
             headers: self.headers,
             human: self.human,
             pretty: self.pretty,
+            request_timeout: self.request_timeout,
             source: self.source,
         }
     }
@@ -1716,6 +1736,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -1726,22 +1751,16 @@ where
         let path = self.parts.url();
         let method = Method::Post;
         let headers = self.headers;
+        let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs"
-                )]
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source")]
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -1756,7 +1775,7 @@ where
         let body = self.body;
         let response = self
             .transport
-            .send(method, &path, headers, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
             .await?;
         Ok(response)
     }

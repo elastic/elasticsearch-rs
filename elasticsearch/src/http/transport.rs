@@ -18,9 +18,12 @@
  */
 //! HTTP transport and connection components
 
+#[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+use crate::auth::ClientCertificate;
+#[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+use crate::cert::CertificateValidation;
 use crate::{
     auth::Credentials,
-    cert::CertificateValidation,
     error::Error,
     http::{
         headers::{
@@ -32,8 +35,6 @@ use crate::{
         Method,
     },
 };
-
-use crate::auth::ClientCertificate;
 use base64::write::EncoderWriter as Base64Encoder;
 use bytes::BytesMut;
 use serde::Serialize;
@@ -41,6 +42,7 @@ use std::{
     error, fmt,
     fmt::Debug,
     io::{self, Write},
+    time::Duration,
 };
 use url::Url;
 
@@ -106,6 +108,7 @@ pub struct TransportBuilder {
     proxy_credentials: Option<Credentials>,
     disable_proxy: bool,
     headers: HeaderMap,
+    timeout: Option<Duration>,
 }
 
 impl TransportBuilder {
@@ -119,11 +122,13 @@ impl TransportBuilder {
             client_builder: reqwest::ClientBuilder::new(),
             conn_pool: Box::new(conn_pool),
             credentials: None,
+            #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
             cert_validation: None,
             proxy: None,
             proxy_credentials: None,
             disable_proxy: false,
             headers: HeaderMap::new(),
+            timeout: None,
         }
     }
 
@@ -158,6 +163,7 @@ impl TransportBuilder {
     /// Validation applied to the certificate provided to establish a HTTPS connection.
     /// By default, full validation is applied. When using a self-signed certificate,
     /// different validation can be applied.
+    #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
     pub fn cert_validation(mut self, validation: CertificateValidation) -> Self {
         self.cert_validation = Some(validation);
         self
@@ -181,12 +187,25 @@ impl TransportBuilder {
         self
     }
 
+    /// Sets a global request timeout for the client.
+    ///
+    /// The timeout is applied from when the request starts connecting until the response body has finished.
+    /// Default is no timeout.
+    pub fn timeout(mut self, timeout: Duration) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
+
     /// Builds a [Transport] to use to send API calls to Elasticsearch.
     pub fn build(self) -> Result<Transport, BuildError> {
         let mut client_builder = self.client_builder;
 
         if !self.headers.is_empty() {
             client_builder = client_builder.default_headers(self.headers);
+        }
+
+        if let Some(t) = self.timeout {
+            client_builder = client_builder.timeout(t);
         }
 
         #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
@@ -213,10 +232,10 @@ impl TransportBuilder {
             };
         }
 
+        #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
         if let Some(v) = self.cert_validation {
             client_builder = match v {
                 CertificateValidation::Default => client_builder,
-                #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
                 CertificateValidation::Full(chain) => {
                     chain.into_iter().fold(client_builder, |client_builder, c| {
                         client_builder.add_root_certificate(c)
@@ -338,6 +357,7 @@ impl Transport {
         headers: HeaderMap,
         query_string: Option<&Q>,
         body: Option<B>,
+        timeout: Option<Duration>,
     ) -> Result<Response, Error>
     where
         B: Body,
@@ -347,6 +367,10 @@ impl Transport {
         let url = connection.url.join(path.trim_start_matches('/'))?;
         let reqwest_method = self.method(method);
         let mut request_builder = self.client.request(reqwest_method, url);
+
+        if let Some(t) = timeout {
+            request_builder = request_builder.timeout(t);
+        }
 
         // set credentials before any headers, as credentials append to existing headers in reqwest,
         // whilst setting headers() overwrites, so if an Authorization header has been specified
@@ -402,13 +426,7 @@ impl Transport {
         let response = request_builder.send().await;
         match response {
             Ok(r) => Ok(Response::new(r, method)),
-            Err(e) => {
-                if e.is_timeout() {
-                    Err(Error::lib(format!("Request timed out to {:?}", e.url())))
-                } else {
-                    Err(e.into())
-                }
-            }
+            Err(e) => Err(e.into()),
         }
     }
 }
@@ -479,7 +497,7 @@ impl CloudId {
     /// web console
     pub fn parse(cloud_id: &str) -> Result<CloudId, Error> {
         if cloud_id.is_empty() || !cloud_id.contains(':') {
-            return Err(Error::lib(
+            return Err(crate::error::lib(
                 "cloud_id should be of the form '<cluster name>:<base64 data>'",
             ));
         }
@@ -487,13 +505,16 @@ impl CloudId {
         let parts: Vec<&str> = cloud_id.splitn(2, ':').collect();
         let name: String = parts[0].into();
         if name.is_empty() {
-            return Err(Error::lib("cloud_id cluster name cannot be empty"));
+            return Err(crate::error::lib("cloud_id cluster name cannot be empty"));
         }
 
         let data = parts[1];
         let decoded_result = base64::decode(data);
         if decoded_result.is_err() {
-            return Err(Error::lib(format!("cannot base 64 decode '{}'", data)));
+            return Err(crate::error::lib(format!(
+                "cannot base 64 decode '{}'",
+                data
+            )));
         }
 
         let decoded = decoded_result.unwrap();
@@ -507,18 +528,18 @@ impl CloudId {
                     Ok(s) => {
                         domain_name = s.trim();
                         if domain_name.is_empty() {
-                            return Err(Error::lib("decoded '<base64 data>' must contain a domain name as the first part"));
+                            return Err(crate::error::lib("decoded '<base64 data>' must contain a domain name as the first part"));
                         }
                     }
                     Err(_) => {
-                        return Err(Error::lib(
+                        return Err(crate::error::lib(
                             "decoded '<base64 data>' must contain a domain name as the first part",
                         ))
                     }
                 }
             }
             None => {
-                return Err(Error::lib(
+                return Err(crate::error::lib(
                     "decoded '<base64 data>' must contain a domain name as the first part",
                 ));
             }
@@ -529,19 +550,19 @@ impl CloudId {
                 Ok(s) => {
                     uuid = s.trim();
                     if uuid.is_empty() {
-                        return Err(Error::lib(
+                        return Err(crate::error::lib(
                             "decoded '<base64 data>' must contain a uuid as the second part",
                         ));
                     }
                 }
                 Err(_) => {
-                    return Err(Error::lib(
+                    return Err(crate::error::lib(
                         "decoded '<base64 data>' must contain a uuid as the second part",
                     ))
                 }
             },
             None => {
-                return Err(Error::lib(
+                return Err(crate::error::lib(
                     "decoded '<base64 data>' must contain at least two parts",
                 ));
             }
@@ -581,10 +602,9 @@ impl ConnectionPool for CloudConnectionPool {
 
 #[cfg(test)]
 pub mod tests {
-    use crate::{
-        auth::ClientCertificate,
-        http::transport::{CloudId, Connection, SingleNodeConnectionPool, TransportBuilder},
-    };
+    #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+    use crate::auth::ClientCertificate;
+    use crate::http::transport::{CloudId, Connection, SingleNodeConnectionPool, TransportBuilder};
     use url::Url;
 
     #[test]

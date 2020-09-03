@@ -17,7 +17,6 @@
  * under the License.
  */
 use crate::generator::code_gen::url::url_builder::PathString;
-use rustfmt_nightly::{Config, Edition, EmitMode, Input, Session};
 use serde::{
     de::{MapAccess, Visitor},
     Deserialize, Deserializer,
@@ -627,39 +626,8 @@ where
     Ok(common)
 }
 
-/// formats tokens using rustfmt
-/// https://github.com/bcmyers/num-format/blob/b7a99480b8087924d291887b13d8c38b7ce43a36/num-format-dev/src/rustfmt.rs
-pub fn rust_fmt<S>(module: S) -> Result<String, failure::Error>
-where
-    S: Into<String>,
-{
-    let input = Input::Text(module.into());
-    let mut config = Config::default();
-    config.set().edition(Edition::Edition2018);
-    config.set().emit_mode(EmitMode::Stdout);
-    let mut output = Vec::new();
-    {
-        let mut session = Session::new(config, Some(&mut output));
-        let _format_report = session.format(input)?;
-    }
-
-    // remove stdin: from start of output
-    let stdin = b"stdin:";
-    if output.starts_with(stdin) {
-        output.drain(0..stdin.len());
-    }
-
-    let s = String::from_utf8(output)?;
-
-    // trim whitespace
-    Ok(s.trim().into())
-}
-
 /// Asserts that the expected generated AST matches the actual generated AST
 #[cfg(test)]
 pub fn ast_eq<T: ToTokens>(expected: Tokens, actual: T) {
-    assert_eq!(
-        rust_fmt(expected.to_string()).unwrap(),
-        rust_fmt(quote!(#actual).to_string()).unwrap()
-    );
+    assert_eq!(expected, quote!(#actual));
 }

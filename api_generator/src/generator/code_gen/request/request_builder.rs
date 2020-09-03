@@ -125,19 +125,31 @@ impl<'a> RequestBuilder<'a> {
             let query_struct_ty = ident("QueryParams");
             let struct_fields = endpoint_params.iter().map(|(param_name, param_type)| {
                 let field = Self::create_struct_field((param_name, param_type));
-                let field_rename = lit(param_name);
-                // TODO: we special case expand_wildcards here to be a list, but this should be fixed upstream
-                if param_type.ty == TypeKind::List || param_name == "expand_wildcards" {
-                    let serialize_with = lit("crate::client::serialize_coll_qs");
-                    quote! {
-                        #[serde(rename = #field_rename, serialize_with = #serialize_with)]
-                        #field
-                    }
-                } else {
+
+                let renamed = field.ident.as_ref().unwrap() != param_name;
+                let serde_rename = if renamed {
+                    let field_rename = lit(param_name);
                     quote! {
                         #[serde(rename = #field_rename)]
-                        #field
                     }
+                } else {
+                    quote!()
+                };
+
+                // TODO: we special case expand_wildcards here to be a list, but this should be fixed upstream
+                let expand = param_type.ty == TypeKind::List || param_name == "expand_wildcards";
+                let serialize_with = if expand {
+                    quote! {
+                        #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                    }
+                } else {
+                    quote!()
+                };
+
+                quote! {
+                    #serde_rename
+                    #serialize_with
+                    #field
                 }
             });
 
@@ -350,6 +362,43 @@ impl<'a> RequestBuilder<'a> {
         }
     }
 
+    /// Creates the AST for a builder fn to add a request timeout
+    fn create_request_timeout_fn(field: &syn::Ident) -> syn::ImplItem {
+        let doc_attr = doc("Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished.");
+
+        syn::ImplItem {
+            ident: ident("request_timeout"),
+            vis: syn::Visibility::Public,
+            defaultness: syn::Defaultness::Final,
+            attrs: vec![doc_attr],
+            node: syn::ImplItemKind::Method(
+                syn::MethodSig {
+                    unsafety: syn::Unsafety::Normal,
+                    constness: syn::Constness::NotConst,
+                    abi: None,
+                    decl: syn::FnDecl {
+                        inputs: vec![
+                            syn::FnArg::SelfValue(syn::Mutability::Mutable),
+                            syn::FnArg::Captured(
+                                syn::Pat::Path(None, path_none("timeout")),
+                                syn::parse_type("Duration").unwrap(),
+                            ),
+                        ],
+                        output: syn::FunctionRetTy::Ty(code_gen::ty("Self")),
+                        variadic: false,
+                    },
+                    generics: generics_none(),
+                },
+                syn::Block {
+                    stmts: vec![
+                        syn::Stmt::Semi(Box::new(parse_expr(quote!(self.#field = Some(timeout))))),
+                        syn::Stmt::Expr(Box::new(parse_expr(quote!(self)))),
+                    ],
+                },
+            ),
+        }
+    }
+
     /// Creates the AST for a builder fn for a builder impl
     fn create_impl_fn(f: (&String, &Type)) -> syn::ImplItem {
         let name = valid_name(&f.0).to_lowercase();
@@ -456,6 +505,7 @@ impl<'a> RequestBuilder<'a> {
             .collect();
 
         let headers_field_ident = ident("headers");
+        let request_timeout_ident = ident("request_timeout");
 
         // add a field for HTTP headers
         fields.push(syn::Field {
@@ -463,6 +513,12 @@ impl<'a> RequestBuilder<'a> {
             vis: syn::Visibility::Inherited,
             attrs: vec![],
             ty: syn::parse_type("HeaderMap").unwrap(),
+        });
+        fields.push(syn::Field {
+            ident: Some(request_timeout_ident.clone()),
+            vis: syn::Visibility::Inherited,
+            attrs: vec![],
+            ty: syn::parse_type("Option<Duration>").unwrap(),
         });
 
         if supports_body {
@@ -491,6 +547,7 @@ impl<'a> RequestBuilder<'a> {
             endpoint.params.iter().map(Self::create_impl_fn).collect();
 
         builder_fns.push(Self::create_header_fn(&headers_field_ident));
+        builder_fns.push(Self::create_request_timeout_fn(&request_timeout_ident));
 
         // add a body impl if supported
         if supports_body {
@@ -591,9 +648,10 @@ impl<'a> RequestBuilder<'a> {
                       let path = self.parts.url();
                       let method = #method_expr;
                       let headers = self.headers;
+                      let timeout = self.request_timeout;
                       let query_string = #query_string_expr;
                       let body = #body_expr;
-                      let response = self.transport.send(method, &path, headers, query_string.as_ref(), body).await?;
+                      let response = self.transport.send(method, &path, headers, query_string.as_ref(), body, timeout).await?;
                       Ok(response)
                 }
             }

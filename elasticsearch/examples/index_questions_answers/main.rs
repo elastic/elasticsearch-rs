@@ -1,12 +1,33 @@
+/*
+ * Licensed to Elasticsearch B.V. under one or more contributor
+ * license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright
+ * ownership. Elasticsearch B.V. licenses this file to you under
+ * the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 #[macro_use]
 extern crate serde_json;
 
 use clap::{App, Arg};
+#[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+use elasticsearch::cert::CertificateValidation;
 use elasticsearch::{
     auth::Credentials,
-    cert::CertificateValidation,
     http::transport::{SingleNodeConnectionPool, TransportBuilder},
-    indices::{IndicesCreateParts, IndicesExistsParts},
+    indices::{
+        IndicesCreateParts, IndicesDeleteParts, IndicesExistsParts, IndicesPutSettingsParts,
+    },
     BulkOperation, BulkParts, Elasticsearch, Error, DEFAULT_ADDRESS,
 };
 use serde_json::Value;
@@ -14,7 +35,6 @@ use sysinfo::SystemExt;
 use url::Url;
 
 mod stack_overflow;
-use elasticsearch::indices::{IndicesDeleteParts, IndicesPutSettingsParts};
 use http::StatusCode;
 use stack_overflow::*;
 use std::time::Instant;
@@ -384,7 +404,16 @@ fn create_client() -> Result<Elasticsearch, Error> {
     let mut builder = TransportBuilder::new(conn_pool);
 
     builder = match credentials {
-        Some(c) => builder.auth(c).cert_validation(CertificateValidation::None),
+        Some(c) => {
+            builder = builder.auth(c);
+
+            #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+            {
+                builder = builder.cert_validation(CertificateValidation::None);
+            }
+
+            builder
+        }
         None => builder,
     };
 

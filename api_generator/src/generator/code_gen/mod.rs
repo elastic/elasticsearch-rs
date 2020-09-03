@@ -31,8 +31,9 @@ use std::str;
 pub fn use_declarations() -> Tokens {
     quote!(
         #![allow(unused_imports)]
+
         use crate::{
-            client::{Elasticsearch},
+            client::Elasticsearch,
             params::*,
             error::Error,
             http::{
@@ -43,7 +44,10 @@ pub fn use_declarations() -> Tokens {
                 transport::Transport,
             },
         };
-        use std::borrow::Cow;
+        use std::{
+            borrow::Cow,
+            time::Duration
+        };
         use percent_encoding::percent_encode;
         use serde::Serialize;
     )
