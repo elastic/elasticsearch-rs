@@ -36,7 +36,7 @@ use url::Url;
 /// Gets the address to the Elasticsearch instance from environment variables
 /// and assumes an instance running locally on the default port otherwise
 pub fn cluster_addr() -> String {
-    match std::env::var("ES_TEST_SERVER") {
+    match std::env::var("ELASTICSEARCH_URL") {
         Ok(server) => server,
         Err(_) => DEFAULT_ADDRESS.into(),
     }

@@ -40,10 +40,11 @@ The project makes use of the following, which should be installed
    
 ### Cargo make
 
-Cargo make is used to define and configure a set of tasks, and run them as a flow. To see all of the tasks defined
+Cargo make is used to define and configure a set of tasks, and run them as a flow. To see all of the Elasticsearch
+category tasks defined
 
 ```sh
-cargo make --list-all-steps
+cargo make
 ```
 
 The `Elasticsearch` category of steps are specifically defined for this project and are defined in
@@ -69,7 +70,7 @@ The `Elasticsearch` category of steps are specifically defined for this project 
   a snapshot release like `7.x-SNAPSHOT`
 
   ```sh
-  cargo make test --env STACK_VERSION=<e.g. 7.9.0>
+  cargo make test --env STACK_VERSION=7.9.0
   ```
 
 - Run YAML tests
@@ -81,7 +82,7 @@ The `Elasticsearch` category of steps are specifically defined for this project 
   - `TEST_SUITE`: Elasticsearch distribution of `oss` or `xpack`
   
   ```sh
-  cargo make test-yaml --env STACK_VERSION=<e.g. 7.9.0> --env TEST_SUITE=<xpack or oss>
+  cargo make test-yaml --env STACK_VERSION=7.9.0 --env TEST_SUITE=oss
   ```
 
 ### Packages
@@ -110,7 +111,9 @@ can be `to_string()`'ed and written to disk, and this is used to create much of 
   A small executable that downloads YAML tests from GitHub and generates client tests from the YAML tests. The
   version of YAML tests to download are determined from the commit hash of a running Elasticsearch instance.
   
-  The `yaml_test_runner` package can be run with `cargo test` to run the generated client tests.
+  The `yaml_test_runner` package can be run with `cargo make test-yaml` to run the generated client tests,
+  passing environment variables `TEST_SUITE` and `STACK_VERSION` to control the distribution and version,
+  respectively.
   
 ### Design principles
 
@@ -141,21 +144,13 @@ The `quote` and `syn` crates help
       An id must always be provided for a delete script API call, so the `delete_script()` function 
       must accept it as a value.
 
-### Current development setup
-
-The required toolchain for packages in the workspace are controlled
-by a `rust-toolchain` file in the root of each package.
-
-`elasticsearch` package compiles and runs with rust stable. 
-`api_generator` and `yaml_test_runner` packages require rust nightly.
-
 ### Coding style guide
 
 The repository adheres to the styling enforced by `rustfmt`.
 
 #### Formatting
 
-Rust code can be formatted using [`rustfmt`](https://github.com/rust-lang/rustfmt). Follow the instructions to install.
+Rust code can be formatted using [`rustfmt`](https://github.com/rust-lang/rustfmt) through cargo make.
 
 To format all packages in a workspace, from the workspace root
 
@@ -167,7 +162,7 @@ It is strongly recommended to run this before opening a PR.
 
 #### Clippy
 
-[Clippy](https://github.com/rust-lang/rust-clippy) is a bunch of lints to catch common mistakes and improve your Rust code! Follow the instructions to install.
+[Clippy](https://github.com/rust-lang/rust-clippy) is a bunch of lints to catch common mistakes and improve your Rust code!
 
 Run clippy before opening a PR
 

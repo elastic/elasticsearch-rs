@@ -1,57 +1,26 @@
-# rust nightly docker image is currently broken for this project.
-# Use a known, good nightly version. Since there are no docker images for specific nightly versions, build from
-# scratch, using the same commands as the rust docker image with
-# - specific nightly version that works (see RUST_TOOLCHAIN)
-# - Added openssl, libssl-dev and pkg-config packages to compile native-tls
-# FROM rustlang/rust:${RUST_TOOLCHAIN}
-FROM debian:stretch-slim
+# Use rust latest stable along with
+# - openssl, libssl-dev and pkg-config packages to compile native-tls
+# - cargo make and cargo2junit
+ARG RUST_TOOLCHAIN=latest
 
-ARG RUST_TOOLCHAIN=nightly-2020-07-27
-
-ENV RUSTUP_HOME=/usr/local/rustup \
-    CARGO_HOME=/usr/local/cargo \
-    PATH=/usr/local/cargo/bin:$PATH \
-    RUST_TOOLCHAIN=$RUST_TOOLCHAIN
+FROM rust:${RUST_TOOLCHAIN}
 
 RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
-        ca-certificates \
-        gcc \
-        libc6-dev \
-        wget \
         openssl \
         libssl-dev \
         pkg-config \
         ; \
-    \
-    url="https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-gnu/rustup-init"; \
-    wget "$url"; \
-    chmod +x rustup-init; \
-    ./rustup-init -y --no-modify-path --default-toolchain nightly; \
-    rm rustup-init; \
-    chmod -R a+w $RUSTUP_HOME $CARGO_HOME; \
-    rustup toolchain install $RUST_TOOLCHAIN; \
-    rustup default $RUST_TOOLCHAIN; \
-    rustup --version; \
-    cargo --version; \
-    rustc --version; \
-    cargo install cargo2junit; \
-    \
-    apt-get remove -y --auto-remove \
-        wget \
-        ; \
-    rm -rf /var/lib/apt/lists/*;
-
-# required to workaround a current issue with rustfmt-nightly
-ENV CFG_RELEASE=nightly
-ENV CFG_RELEASE_CHANNEL=nightly
+    cargo install --force cargo-make; \
+    cargo install cargo2junit;
 
 # create app directory
 WORKDIR /usr/src/elasticsearch-rs
 
 COPY .ci/certs ./.ci/certs
 COPY Cargo.toml ./Cargo.toml
+COPY Makefile.toml ./Makefile.toml
 COPY README.md ./README.md
 COPY api_generator ./api_generator
 COPY elasticsearch/Cargo.toml ./elasticsearch/Cargo.toml
