@@ -53,7 +53,7 @@ use sysinfo::SystemExt;
 use url::Url;
 
 fn cluster_addr() -> String {
-    match std::env::var("ES_TEST_SERVER") {
+    match std::env::var("ELASTICSEARCH_URL") {
         Ok(server) => server,
         Err(_) => DEFAULT_ADDRESS.into(),
     }
