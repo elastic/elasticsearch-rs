@@ -24,7 +24,7 @@ env = { "ELASTICSEARCH_URL" = "https://elastic:changeme@localhost:9200" }
 [tasks.run-yaml-test-runner]
 category = "Elasticsearch"
 description = '''
-Runs yaml_test_runner crate to generate tests from yaml files for a given Elasticsearch commit.
+Runs yaml_test_runner package to generate tests from yaml files for a given Elasticsearch commit.
 The commit to use is retrieved from the running Elasticsearch instance
 '''
 private = true
@@ -107,7 +107,7 @@ script = ["bash -c \"STACK_VERSION=%STACK_VERSION% TEST_SUITE=%TEST_SUITE% CLEAN
 
 [tasks.test-yaml]
 category = "Elasticsearch"
-description = "Generates and runs yaml_test_runner crate xpack/oss tests against a given Elasticsearch version"
+description = "Generates and runs yaml_test_runner package xpack/oss tests against a given Elasticsearch version"
 condition = { env_set = [ "STACK_VERSION", "TEST_SUITE" ] }
 dependencies = ["generate-yaml-tests", "create-test-results-dir", "test-yaml-test-runner", "test-yaml-test-runner-ci", "convert-test-results-junit"]
 run_task = "stop-elasticsearch"
@@ -122,7 +122,7 @@ args = ["test", "-p", "api_generator"]
 [tasks.test]
 category = "Elasticsearch"
 clear = true
-description = "Runs Elasticsearch crate tests against a given Elasticsearch version"
+description = "Runs elasticsearch package tests against a given Elasticsearch version"
 env = { "TEST_SUITE" = { value = "xpack", condition = { env_set = ["TEST_SUITE"] } } }
 dependencies = ["test-elasticsearch"]
 run_task = "stop-elasticsearch"
@@ -148,12 +148,14 @@ script = ['''
     echo "- generate-api: Generates Elasticsearch client from REST API specs"
     echo "- start-elasticsearch: Starts Elasticsearch docker container with the given version and distribution"
     echo "- stop-elasticsearch: Stops Elasticsearch docker container, if running"
-    echo "- test-yaml: Generates and runs yaml_test_runner crate xpack/oss tests against a given Elasticsearch version"
-    echo "- test: Runs Elasticsearch crate tests against a given Elasticsearch version"
+    echo "- test-yaml: Generates and runs yaml_test_runner package xpack/oss tests against a given Elasticsearch version"
+    echo "- test-generator: Generates and runs api_generator package tests"
+    echo "- test: Runs elasticsearch package tests against a given Elasticsearch version"
     echo
     echo "Most tasks use these environment variables:"
     echo "- STACK_VERSION (default '$STACK_VERSION'): the version of Elasticsearch"
     echo "- TEST_SUITE ('oss' or 'xpack', default '$TEST_SUITE'): the distribution of Elasticsearch"
+    echo "- CI (default not set): set when running on CI to determine whether to start Elasticsearch and format test output as JSON"
     echo
     echo "Run 'cargo make --list-all-steps' for a complete list of available tasks."
     echo
@@ -167,12 +169,14 @@ script = ['''
     echo - generate-api: Generates Elasticsearch client from REST API specs
     echo - start-elasticsearch: Starts Elasticsearch docker container with the given version and distribution
     echo - stop-elasticsearch: Stops Elasticsearch docker container, if running
-    echo - test-yaml: Generates and runs yaml_test_runner crate xpack/oss tests against a given Elasticsearch version
-    echo - test: Runs Elasticsearch crate tests against a given Elasticsearch version
+    echo - test-yaml: Generates and runs yaml_test_runner package xpack/oss tests against a given Elasticsearch version
+    echo - test-generator: Generates and runs api_generator package tests
+    echo - test: Runs elasticsearch package tests against a given Elasticsearch version
     echo.
     echo Most tasks use these environment variables:
     echo - STACK_VERSION (default '$STACK_VERSION'): the version of Elasticsearch
     echo - TEST_SUITE ('oss' or 'xpack', default '$TEST_SUITE'): the distribution of Elasticsearch
+    echo - CI (default not set): set when running on CI to determine whether to start Elasticsearch and format test output as JSON
     echo.
     echo Run 'cargo make --list-all-steps' for a complete list of available tasks.
     echo.

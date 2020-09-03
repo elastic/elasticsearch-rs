@@ -1,10 +1,9 @@
 # Use rust latest stable along with
 # - openssl, libssl-dev and pkg-config packages to compile native-tls
 # - cargo make and cargo2junit
-# - specific nightly toolchain (required for now as JSON format output of cargo test requires it)
-FROM rust:latest
+ARG RUST_TOOLCHAIN=latest
 
-ARG RUST_TOOLCHAIN=nightly-2020-07-27
+FROM rust:${RUST_TOOLCHAIN}
 
 RUN set -eux; \
     apt-get update; \
@@ -13,7 +12,6 @@ RUN set -eux; \
         libssl-dev \
         pkg-config \
         ; \
-    rustup default ${RUST_TOOLCHAIN}; \
     cargo install --force cargo-make; \
     cargo install cargo2junit;
 

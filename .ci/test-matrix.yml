@@ -8,6 +8,6 @@ TEST_SUITE:
   - xpack
 
 RUST_TOOLCHAIN:
-  - nightly-2020-07-27
+  - latest
 
 exclude: ~
