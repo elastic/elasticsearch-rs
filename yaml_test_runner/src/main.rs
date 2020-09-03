@@ -29,7 +29,7 @@ extern crate quote;
 extern crate simple_logger;
 
 use clap::{App, Arg};
-use log::Level;
+use log::LevelFilter;
 use serde_json::Value;
 use std::{fs, path::PathBuf, process::exit};
 
@@ -41,7 +41,10 @@ mod step;
 use generator::TestSuite;
 
 fn main() -> Result<(), failure::Error> {
-    simple_logger::init_with_level(Level::Info).unwrap();
+    simple_logger::SimpleLogger::new()
+        .with_level(LevelFilter::Info)
+        .init()
+        .unwrap();
 
     let matches = App::new(env!("CARGO_PKG_NAME"))
         .about(env!("CARGO_PKG_DESCRIPTION"))
