@@ -30,13 +30,12 @@ repo=$(realpath $(dirname $(realpath -s $0))/../)
 
 docker run \
   --network=${network_name} \
+  --env "TEST_SUITE=${TEST_SUITE}" \
+  --env "STACK_VERSION=${STACK_VERSION}" \
   --env "ELASTICSEARCH_URL=${ELASTICSEARCH_URL}" \
+  --env "CI=true" \
   --name test-runner \
   --volume ${repo}/test_results:/usr/src/elasticsearch-rs/test_results \
   --rm \
   elastic/elasticsearch-rs \
-  /bin/bash -c \
-  "cargo run -p yaml_test_runner -- -u \"${ELASTICSEARCH_URL}\"; \\
-   mkdir -p test_results; \\
-   cargo test -p yaml_test_runner -- --test-threads=1 -Z unstable-options --format json | tee test_results/results.json; \\
-   cat test_results/results.json | cargo2junit > test_results/cargo-junit.xml"
+  /bin/bash -c "cargo make test-yaml"
