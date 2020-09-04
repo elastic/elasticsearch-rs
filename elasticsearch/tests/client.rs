@@ -116,7 +116,7 @@ async fn x_opaque_id_header() -> Result<(), failure::Error> {
 
 #[tokio::test]
 async fn uses_global_request_timeout() {
-    let server = server::http(move |req| async move {
+    let server = server::http(move |_| async move {
         std::thread::sleep(Duration::from_secs(1));
         http::Response::default()
     });
@@ -128,14 +128,14 @@ async fn uses_global_request_timeout() {
     let response = client.ping().send().await;
 
     match response {
-        Ok(r) => assert!(false, "Expected timeout error, but response received"),
+        Ok(_) => assert!(false, "Expected timeout error, but response received"),
         Err(e) => assert!(e.is_timeout(), "Expected timeout error, but was {:?}", e),
     }
 }
 
 #[tokio::test]
 async fn uses_call_request_timeout() {
-    let server = server::http(move |req| async move {
+    let server = server::http(move |_| async move {
         std::thread::sleep(Duration::from_secs(1));
         http::Response::default()
     });
@@ -151,14 +151,14 @@ async fn uses_call_request_timeout() {
         .await;
 
     match response {
-        Ok(r) => assert!(false, "Expected timeout error, but response received"),
+        Ok(_) => assert!(false, "Expected timeout error, but response received"),
         Err(e) => assert!(e.is_timeout(), "Expected timeout error, but was {:?}", e),
     }
 }
 
 #[tokio::test]
 async fn call_request_timeout_supersedes_global_timeout() {
-    let server = server::http(move |req| async move {
+    let server = server::http(move |_| async move {
         std::thread::sleep(Duration::from_secs(1));
         http::Response::default()
     });
@@ -174,7 +174,7 @@ async fn call_request_timeout_supersedes_global_timeout() {
         .await;
 
     match response {
-        Ok(r) => (),
+        Ok(_) => (),
         Err(e) => assert!(e.is_timeout(), "Did not expect error, but was {:?}", e),
     }
 }
