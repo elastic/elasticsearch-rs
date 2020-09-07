@@ -28,9 +28,9 @@ use std::{
 };
 
 fn main() -> Result<(), failure::Error> {
-    // This must be run from the src root directory, with cargo run -p api_generator
+    // This must be run from the repo root directory, with cargo run -p api_generator
     let download_dir = fs::canonicalize(PathBuf::from("./api_generator/rest_specs"))?;
-    let generated_dir = fs::canonicalize(PathBuf::from("./elasticsearch/src/generated"))?;
+    let generated_dir = fs::canonicalize(PathBuf::from("./elasticsearch/src"))?;
     let last_downloaded_version =
         PathBuf::from("./api_generator/rest_specs/last_downloaded_version");
 
@@ -96,12 +96,22 @@ fn main() -> Result<(), failure::Error> {
         }
 
         if generate_code {
-            // delete existing generated files if the exist
-            if generated_dir.exists() {
-                fs::remove_dir_all(&generated_dir)?;
+            // Delete previously generated files
+            let mut generated = generated_dir.clone();
+            generated.push(generator::GENERATED_TOML);
+
+            if generated.exists() {
+                let files =
+                    toml::from_str::<generator::GeneratedFiles>(&fs::read_to_string(generated)?)?;
+
+                for f in files.written {
+                    let mut generated_file = generated_dir.clone();
+                    generated_file.push(f);
+                    let _ = fs::remove_file(generated_file); // ignore missing files
+                }
             }
 
-            fs::create_dir_all(&generated_dir)?;
+            // and generate!
             generator::generate(&branch, &download_dir, &generated_dir)?;
         }
     }

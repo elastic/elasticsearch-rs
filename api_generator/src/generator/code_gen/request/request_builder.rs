@@ -687,7 +687,8 @@ impl<'a> RequestBuilder<'a> {
 
         let markdown_doc = {
             let mut path = docs_dir.clone();
-            path.push(format!("{}.fn.{}.md", namespace_name, name));
+            path.push("functions");
+            path.push(format!("{}.{}.md", namespace_name, name));
             if path.exists() {
                 let mut s = fs::read_to_string(&path)
                     .unwrap_or_else(|_| panic!("Could not read file at {:?}", &path));

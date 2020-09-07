@@ -353,16 +353,24 @@ type _DoctestReadme = ();
 #[macro_use]
 extern crate dyn_clone;
 
-pub mod async_search;
 pub mod auth;
+pub mod cert;
+pub mod client;
+pub mod error;
+pub mod http;
+pub mod params;
+pub mod root;
+
+// GENERATED-BEGIN:namespace-modules
+// Generated code - do not edit until the next GENERATED-END marker
+
+pub mod async_search;
 pub mod cat;
 pub mod ccr;
-pub mod cert;
 pub mod cluster;
 pub mod dangling_indices;
 pub mod enrich;
 pub mod graph;
-pub mod http;
 pub mod ilm;
 pub mod indices;
 pub mod ingest;
@@ -370,7 +378,6 @@ pub mod license;
 pub mod migration;
 pub mod ml;
 pub mod nodes;
-pub mod params;
 pub mod security;
 pub mod slm;
 pub mod snapshot;
@@ -380,11 +387,7 @@ pub mod tasks;
 pub mod transform;
 pub mod watcher;
 pub mod xpack;
-
-mod client;
-mod error;
-mod generated;
-mod root;
+// GENERATED-END
 
 // exposes types within modules at the library root level
 pub use crate::{client::*, error::*, http::transport::DEFAULT_ADDRESS, root::*};

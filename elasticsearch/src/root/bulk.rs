@@ -663,8 +663,8 @@ impl Body for BulkOperations {
 #[cfg(test)]
 mod tests {
     use crate::{
-        generated::params::VersionType,
         http::request::{Body, NdBody},
+        params::VersionType,
         BulkOperation, BulkOperations,
     };
     use bytes::{BufMut, BytesMut};
