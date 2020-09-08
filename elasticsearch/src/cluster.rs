@@ -21,7 +21,7 @@
 // This file is generated, Please do not edit it manually.
 // Run the following in the root of the repo to regenerate:
 //
-// cargo run -p api_generator
+// cargo make generate-api
 // -----------------------------------------------
 
 //! Cluster APIs
