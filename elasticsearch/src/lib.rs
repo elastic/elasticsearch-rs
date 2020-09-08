@@ -355,11 +355,8 @@ extern crate dyn_clone;
 
 pub mod auth;
 pub mod cert;
-pub mod client;
-pub mod error;
 pub mod http;
 pub mod params;
-pub mod root;
 
 // GENERATED-BEGIN:namespace-modules
 // Generated code - do not edit until the next GENERATED-END marker
@@ -388,6 +385,10 @@ pub mod transform;
 pub mod watcher;
 pub mod xpack;
 // GENERATED-END
+
+mod client;
+mod error;
+mod root;
 
 // exposes types within modules at the library root level
 pub use crate::{client::*, error::*, http::transport::DEFAULT_ADDRESS, root::*};

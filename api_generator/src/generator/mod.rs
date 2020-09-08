@@ -23,7 +23,7 @@ use serde::{
 };
 use serde_json::Value;
 use std::{
-    collections::{BTreeMap, HashMap, HashSet},
+    collections::{BTreeMap, BTreeSet, HashMap, HashSet},
     fmt,
     fs::{self, File},
     hash::{Hash, Hasher},
@@ -48,10 +48,10 @@ lazy_static! {
 }
 
 /// Record of generated files
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Default)]
 pub struct GeneratedFiles {
-    pub written: HashSet<String>,
-    pub merged: HashSet<String>,
+    pub written: BTreeSet<String>,
+    pub merged: BTreeSet<String>,
 }
 
 /// Location of the record of generated files in the `src` directory.
@@ -427,8 +427,7 @@ pub fn generate(
     };
 
     // generated file tracking lists
-    let mut written_files = HashSet::new();
-    let mut merged_files = HashSet::new();
+    let mut tracker = GeneratedFiles::default();
 
     // generate param enums
     let mut sections = HashMap::new();
@@ -437,7 +436,7 @@ pub fn generate(
         |section| sections.remove(section),
         generated_dir,
         "params.rs",
-        &mut merged_files,
+        &mut tracker,
     )?;
 
     // generate namespace client modules
@@ -457,7 +456,7 @@ pub fn generate(
             Some(&docs_file),
             &generated_dir,
             format!("{}.rs", name).as_str(),
-            &mut written_files,
+            &mut tracker,
         )?;
     }
 
@@ -470,7 +469,7 @@ mod bulk;
 pub use bulk::*;
     "#,
     );
-    write_file(root, None, generated_dir, "root/mod.rs", &mut written_files)?;
+    write_file(root, None, generated_dir, "root/mod.rs", &mut tracker)?;
 
     // declare namespace modules in the top-level lib.rs
     let mods = api
@@ -486,19 +485,13 @@ pub use bulk::*;
         |section| sections.remove(section),
         generated_dir,
         "lib.rs",
-        &mut merged_files,
+        &mut tracker,
     )?;
 
     let mut generated = generated_dir.clone();
     generated.push(GENERATED_TOML);
 
-    fs::write(
-        generated,
-        toml::to_string_pretty(&GeneratedFiles {
-            written: written_files,
-            merged: merged_files,
-        })?,
-    )?;
+    fs::write(generated, toml::to_string_pretty(&tracker)?)?;
 
     Ok(())
 }

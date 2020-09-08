@@ -1,6 +1,6 @@
+use super::GeneratedFiles;
 use path_slash::*;
 use regex::Regex;
-use std::collections::HashSet;
 use std::fs::File;
 use std::io::BufReader;
 use std::io::{BufRead, Write};
@@ -13,7 +13,7 @@ pub fn write_file(
     docs: Option<&PathBuf>,
     dir: &PathBuf,
     file_name: &str,
-    written_files: &mut HashSet<String>,
+    tracker: &mut GeneratedFiles,
 ) -> Result<(), failure::Error> {
     let mut path = dir.clone();
     path.push(PathBuf::from_slash(file_name));
@@ -66,7 +66,7 @@ pub fn write_file(
     file.write_all(input.as_bytes())?;
     file.write_all(b"\n")?;
 
-    written_files.insert(file_name.to_owned());
+    tracker.written.insert(file_name.to_owned());
 
     Ok(())
 }
@@ -102,7 +102,7 @@ pub fn merge_file(
     mut get_content: impl FnMut(&str) -> Option<String>,
     dir: &Path,
     file_name: &str,
-    merged_files: &mut HashSet<String>,
+    tracker: &mut GeneratedFiles,
 ) -> Result<(), failure::Error> {
     let mut path = dir.to_owned();
     path.push(PathBuf::from_slash(file_name));
@@ -174,7 +174,7 @@ pub fn merge_file(
 
     std::fs::write(&path, output)?;
 
-    merged_files.insert(file_name.to_owned());
+    tracker.merged.insert(file_name.to_owned());
 
     Ok(())
 }
@@ -182,7 +182,7 @@ pub fn merge_file(
 #[cfg(test)]
 mod test {
 
-    use std::collections::HashSet;
+    use super::super::GeneratedFiles;
     use std::fs;
 
     #[test]
@@ -191,7 +191,7 @@ mod test {
         let dir_path = dir.path();
         let file_name = "test_merge.rs";
 
-        let mut merged_files = HashSet::new();
+        let mut tracker = GeneratedFiles::default();
 
         let mut file_path = dir_path.to_owned();
         file_path.push(file_name);
@@ -219,7 +219,7 @@ mod test {
             |section| Some(format!("Contents of section {}\n", section)),
             dir_path,
             file_name,
-            &mut merged_files,
+            &mut tracker,
         )?;
 
         let expected = r#"
@@ -291,13 +291,13 @@ Contents of section bar
 
         fs::write(&file_path, input)?;
 
-        let mut merged_files = HashSet::new();
+        let mut tracker = GeneratedFiles::default();
 
         let r = super::merge_file(
             |section| Some(format!("Contents of section {}\n", section)),
             dir_path,
             file_name,
-            &mut merged_files,
+            &mut tracker,
         );
 
         assert!(r.is_err());
