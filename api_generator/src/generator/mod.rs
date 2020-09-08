@@ -19,15 +19,15 @@
 use crate::generator::code_gen::url::url_builder::PathString;
 use serde::{
     de::{MapAccess, Visitor},
-    Deserialize, Deserializer,
+    Deserialize, Deserializer, Serialize,
 };
 use serde_json::Value;
 use std::{
-    collections::{BTreeMap, HashSet},
+    collections::{BTreeMap, BTreeSet, HashMap, HashSet},
     fmt,
-    fs::{self, File, OpenOptions},
+    fs::{self, File},
     hash::{Hash, Hasher},
-    io::{prelude::*, Read},
+    io::Read,
     marker::PhantomData,
     path::PathBuf,
     str::FromStr,
@@ -39,10 +39,23 @@ use semver::Version;
 use void::Void;
 
 pub mod code_gen;
+pub mod output;
+
+use output::{merge_file, write_file};
 
 lazy_static! {
     static ref VERSION: Version = semver::Version::parse(env!("CARGO_PKG_VERSION")).unwrap();
 }
+
+/// Record of generated files
+#[derive(Deserialize, Serialize, Default)]
+pub struct GeneratedFiles {
+    pub written: BTreeSet<String>,
+    pub merged: BTreeSet<String>,
+}
+
+/// Location of the record of generated files in the `src` directory.
+pub const GENERATED_TOML: &str = ".generated.toml";
 
 /// A complete API specification parsed from the REST API specs
 pub struct Api {
@@ -409,93 +422,76 @@ pub fn generate(
     let api = read_api(branch, download_dir)?;
 
     let docs_dir = {
-        let d = generated_dir.clone();
-        d.parent().unwrap().parent().unwrap().join("docs")
+        let d = download_dir.clone();
+        d.parent().unwrap().join("docs")
     };
 
+    // generated file tracking lists
+    let mut tracker = GeneratedFiles::default();
+
     // generate param enums
-    let params = code_gen::params::generate(&api)?;
-    write_file(params, generated_dir, "params.rs")?;
+    let mut sections = HashMap::new();
+    sections.insert("spec-params", code_gen::params::generate(&api)?);
+    merge_file(
+        |section| sections.remove(section),
+        generated_dir,
+        "params.rs",
+        &mut tracker,
+    )?;
 
-    // generate namespace clients
+    // generate namespace client modules
     let namespace_clients = code_gen::namespace_clients::generate(&api, &docs_dir)?;
-    let mut namespace_clients_dir = generated_dir.clone();
-    namespace_clients_dir.push("namespace_clients");
-    fs::create_dir_all(&namespace_clients_dir)?;
 
-    // generate the mod file to reference all namespace clients
-    let modules = namespace_clients
-        .iter()
-        .map(|(name, _)| format!("pub mod {};", name))
-        .collect::<Vec<_>>()
-        .join("\n");
-
-    write_file(modules, &namespace_clients_dir, "mod.rs")?;
+    let namespace_docs_dir = {
+        let mut p = docs_dir.clone();
+        p.push("namespaces");
+        p
+    };
 
     for (name, input) in namespace_clients {
+        let mut docs_file = namespace_docs_dir.clone();
+        docs_file.push(format!("{}.md", name));
         write_file(
             input,
-            &namespace_clients_dir,
+            Some(&docs_file),
+            &generated_dir,
             format!("{}.rs", name).as_str(),
+            &mut tracker,
         )?;
     }
 
     // generate functions on root of client
-    let root = code_gen::root::generate(&api, &docs_dir)?;
-    write_file(root, generated_dir, "root.rs")?;
+    let mut root = code_gen::root::generate(&api, &docs_dir)?;
+    root.push_str(
+        r#"
 
-    let generated_modules = fs::read_dir(generated_dir)?
-        .map(|r| {
-            let path = r.unwrap().path();
-            format!("pub mod {};", path.file_stem().unwrap().to_string_lossy())
-        })
+mod bulk;
+pub use bulk::*;
+    "#,
+    );
+    write_file(root, None, generated_dir, "root/mod.rs", &mut tracker)?;
+
+    // declare namespace modules in the top-level lib.rs
+    let mods = api
+        .namespaces
+        .keys()
+        .map(|ns| format!("pub mod {};", ns))
         .collect::<Vec<_>>()
         .join("\n");
 
-    write_file(generated_modules, &generated_dir, "mod.rs")?;
-
-    Ok(())
-}
-
-/// Writes the input to the specified file, preceded by a header comment indicating generated code
-fn write_file(input: String, dir: &PathBuf, file: &str) -> Result<(), failure::Error> {
-    let mut generated_path = dir.clone();
-    generated_path.push(file);
-    let path = generated_path.to_string_lossy().into_owned();
-
-    let mut file = File::create(&path)?;
-    file.write_all(
-        "/*
- * Licensed to Elasticsearch B.V. under one or more contributor
- * license agreements. See the NOTICE file distributed with
- * this work for additional information regarding copyright
- * ownership. Elasticsearch B.V. licenses this file to you under
- * the Apache License, Version 2.0 (the \"License\"); you may
- * not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *	http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-// -----------------------------------------------
-// This file is generated, Please do not edit it manually.
-// Run the following in the root of the repo to regenerate:
-//
-// cargo run -p api_generator
-// -----------------------------------------------
-"
-        .as_bytes(),
+    let mut sections = HashMap::new();
+    sections.insert("namespace-modules", mods);
+    merge_file(
+        |section| sections.remove(section),
+        generated_dir,
+        "lib.rs",
+        &mut tracker,
     )?;
 
-    let mut file = OpenOptions::new().append(true).write(true).open(&path)?;
-    file.write_all(input.as_bytes())?;
-    file.write_all(b"\n")?;
+    let mut generated = generated_dir.clone();
+    generated.push(GENERATED_TOML);
+
+    fs::write(generated, toml::to_string_pretty(&tracker)?)?;
 
     Ok(())
 }
