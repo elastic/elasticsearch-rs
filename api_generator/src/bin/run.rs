@@ -28,7 +28,7 @@ use std::{
 };
 
 fn main() -> Result<(), failure::Error> {
-    // This must be run from the repo root directory, with cargo run -p api_generator
+    // This must be run from the repo root directory, with cargo make generate-api
     let download_dir = fs::canonicalize(PathBuf::from("./api_generator/rest_specs"))?;
     let generated_dir = fs::canonicalize(PathBuf::from("./elasticsearch/src"))?;
     let last_downloaded_version =
