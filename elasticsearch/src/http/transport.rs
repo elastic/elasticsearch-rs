@@ -43,6 +43,10 @@ use std::{
     error, fmt,
     fmt::Debug,
     io::{self, Write},
+    sync::{
+        atomic::{AtomicUsize, Ordering},
+        Arc,
+    },
     time::Duration,
 };
 use url::Url;
@@ -401,6 +405,15 @@ impl Transport {
         Ok(transport)
     }
 
+    /// Creates a new instance of a [Transport] configured with a
+    /// [StaticNodeListConnectionPool]
+    pub fn static_node_list(urls: Vec<&str>) -> Result<Transport, Error> {
+        let urls = urls.iter().map(|url| Url::parse(url).unwrap()).collect();
+        let conn_pool = StaticNodeListConnectionPool::round_robin(urls);
+        let transport = TransportBuilder::new(conn_pool).build()?;
+        Ok(transport)
+    }
+
     /// Creates a new instance of a [Transport] configured for use with
     /// [Elasticsearch service in Elastic Cloud](https://www.elastic.co/cloud/).
     ///
@@ -672,11 +685,76 @@ impl ConnectionPool for CloudConnectionPool {
     }
 }
 
+/// A Connection Pool that manages a static connection of nodes
+#[derive(Debug, Clone)]
+pub struct StaticNodeListConnectionPool<TStrategy = RoundRobin> {
+    connections: Vec<Connection>,
+    strategy: TStrategy,
+}
+
+impl<TStrategy> ConnectionPool for StaticNodeListConnectionPool<TStrategy>
+where
+    TStrategy: Strategy + Clone,
+{
+    fn next(&self) -> &Connection {
+        self.strategy.try_next(&self.connections).unwrap()
+    }
+}
+
+impl StaticNodeListConnectionPool<RoundRobin> {
+    /** Use a round-robin strategy for balancing traffic over the given set of nodes. */
+    pub fn round_robin(urls: Vec<Url>) -> Self {
+        let connections: Vec<_> = urls.into_iter().map(Connection::new).collect();
+
+        let strategy = RoundRobin::default();
+
+        Self {
+            connections,
+            strategy,
+        }
+    }
+}
+
+/** The strategy selects an address from a given collection. */
+pub trait Strategy: Send + Sync + Debug {
+    /** Try get the next connection. */
+    fn try_next<'a>(&self, connections: &'a [Connection]) -> Result<&'a Connection, Error>;
+}
+
+/** A round-robin strategy cycles through nodes sequentially. */
+#[derive(Clone, Debug)]
+pub struct RoundRobin {
+    index: Arc<AtomicUsize>,
+}
+
+impl Default for RoundRobin {
+    fn default() -> Self {
+        RoundRobin {
+            index: Arc::new(AtomicUsize::new(0)),
+        }
+    }
+}
+
+impl Strategy for RoundRobin {
+    fn try_next<'a>(&self, connections: &'a [Connection]) -> Result<&'a Connection, Error> {
+        if connections.is_empty() {
+            Err(crate::error::lib("Connection list empty"))
+        } else {
+            let i = self.index.fetch_add(1, Ordering::Relaxed) % connections.len();
+            Ok(&connections[i])
+        }
+    }
+}
+
 #[cfg(test)]
 pub mod tests {
     use super::*;
     #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
     use crate::auth::ClientCertificate;
+    use crate::http::transport::{
+        CloudId, Connection, ConnectionPool, RoundRobin, SingleNodeConnectionPool,
+        StaticNodeListConnectionPool, TransportBuilder,
+    };
     use regex::Regex;
     use url::Url;
 
@@ -824,5 +902,48 @@ pub mod tests {
         let x: &str = CLIENT_META.as_str();
         println!("{}", x);
         assert!(re.is_match(x));
+    }
+
+    fn round_robin(addresses: Vec<Url>) -> StaticNodeListConnectionPool<RoundRobin> {
+        StaticNodeListConnectionPool::round_robin(addresses)
+    }
+
+    fn expected_addresses() -> Vec<Url> {
+        vec!["http://a:9200/", "http://b:9200/", "http://c:9200/"]
+            .iter()
+            .map(|addr| Url::parse(addr).unwrap())
+            .collect()
+    }
+
+    #[test]
+    fn round_robin_next_multi() {
+        let connections = round_robin(expected_addresses());
+
+        for _ in 0..10 {
+            for expected in expected_addresses() {
+                let actual = connections.next();
+
+                assert_eq!(expected.as_str(), actual.url.as_str());
+            }
+        }
+    }
+
+    #[test]
+    fn round_robin_next_single() {
+        let expected = Url::parse("http://a:9200/").unwrap();
+        let connections = round_robin(vec![expected.clone()]);
+
+        for _ in 0..10 {
+            let actual = connections.next();
+
+            assert_eq!(expected.as_str(), actual.url.as_str());
+        }
+    }
+
+    #[test]
+    #[should_panic]
+    fn round_robin_next_empty_fails() {
+        let connections = round_robin(vec![]);
+        connections.next();
     }
 }
