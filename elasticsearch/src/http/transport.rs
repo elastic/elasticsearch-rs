@@ -408,7 +408,10 @@ impl Transport {
     /// Creates a new instance of a [Transport] configured with a
     /// [StaticNodeListConnectionPool]
     pub fn static_node_list(urls: Vec<&str>) -> Result<Transport, Error> {
-        let urls = urls.iter().map(|url| Url::parse(url).unwrap()).collect();
+        let urls: Vec<Url> = urls
+            .iter()
+            .map(|url| Url::parse(url))
+            .collect::<Result<Vec<_>, _>>()?;
         let conn_pool = StaticNodeListConnectionPool::round_robin(urls);
         let transport = TransportBuilder::new(conn_pool).build()?;
         Ok(transport)
