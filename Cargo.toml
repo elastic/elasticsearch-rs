@@ -2,5 +2,6 @@
 members = [
     "api_generator",
     "elasticsearch",
-    "yaml_test_runner"
+    "yaml_test_runner",
+    "test_project"
 ]

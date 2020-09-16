@@ -1,0 +1,17 @@
+[package]
+name = "test-project"
+version = "0.1.0"
+authors = ["Sylvain Wallez <sylvain@elastic.co>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+#elasticsearch = { path = "../elasticsearch" }
+elasticsearch = { path = "../elasticsearch", default-features = false, features = ["native-tls", "async_search"]}
+
+
+tokio = { version = "0.2.0", default-features = false, features = ["macros", "tcp", "time"] }
+
+sysinfo = "0.15.2"
+url = "2.1.1"
