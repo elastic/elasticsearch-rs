@@ -28,7 +28,7 @@
 //!
 //! Provide general information about the installed X-Pack features and their usage.
 
-# ! [ allow ( unused_imports ) ]use crate::{
+# ! [ cfg ( feature = "xpack" ) ] # ! [ allow ( unused_imports ) ]use crate::{
     client::Elasticsearch,
     error::Error,
     http::{

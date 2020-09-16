@@ -30,7 +30,7 @@
 //! indices, [inferring relationships across documents](https://www.elastic.co/what-is/elasticsearch-graph),
 //! and allowing the [exploration of such relationships](https://www.elastic.co/guide/en/elasticsearch/reference/master/graph-explore-api.html).
 
-# ! [ allow ( unused_imports ) ]use crate::{
+# ! [ cfg ( feature = "graph" ) ] # ! [ allow ( unused_imports ) ]use crate::{
     client::Elasticsearch,
     error::Error,
     http::{

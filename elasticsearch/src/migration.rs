@@ -28,7 +28,7 @@
 //!
 //! [Simplify upgrading X-Pack indices from one version to another](https://www.elastic.co/guide/en/elasticsearch/reference/master/migration-api.html).
 
-# ! [ allow ( unused_imports ) ]use crate::{
+# ! [ cfg ( feature = "migration" ) ] # ! [ allow ( unused_imports ) ]use crate::{
     client::Elasticsearch,
     error::Error,
     http::{

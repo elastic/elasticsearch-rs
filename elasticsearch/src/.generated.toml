@@ -25,6 +25,7 @@ written = [
     'xpack.rs',
 ]
 merged = [
+    '../Cargo.toml',
     'lib.rs',
     'params.rs',
 ]

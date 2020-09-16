@@ -28,7 +28,7 @@
 //!
 //! [Manage tasks currently executing on one or more nodes in the cluster](https://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html).
 
-# ! [ allow ( unused_imports ) ]use crate::{
+# ! [ cfg ( feature = "tasks" ) ] # ! [ allow ( unused_imports ) ]use crate::{
     client::Elasticsearch,
     error::Error,
     http::{

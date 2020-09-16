@@ -119,7 +119,7 @@
 //! ```
 //!
 
-# ! [ allow ( unused_imports ) ]use crate::{
+# ! [ cfg ( feature = "cat" ) ] # ! [ allow ( unused_imports ) ]use crate::{
     client::Elasticsearch,
     error::Error,
     http::{

@@ -15,11 +15,42 @@ readme = "../README.md"
 all-features = true
 
 [features]
-default = ["native-tls"]
+default = ["native-tls", "all-apis"]
 
 # optional TLS
 native-tls = ["reqwest/native-tls"]
 rustls-tls = ["reqwest/rustls-tls"]
+
+# GENERATED-BEGIN:features
+# Generated code - do not edit until the next GENERATED-END marker
+
+all-apis = ["async_search", "cat", "ccr", "cluster", "dangling_indices", "enrich", "graph", "ilm", "indices", "ingest", "license", "migration", "ml", "nodes", "security", "slm", "snapshot", "sql", "ssl", "tasks", "transform", "watcher", "xpack"]
+"async_search" = []
+"cat" = []
+"ccr" = []
+"cluster" = []
+"dangling_indices" = []
+"enrich" = []
+"graph" = []
+"ilm" = []
+"indices" = []
+"ingest" = []
+"license" = []
+"migration" = []
+"ml" = []
+"nodes" = []
+"security" = []
+"slm" = []
+"snapshot" = []
+"sql" = []
+"ssl" = []
+"tasks" = []
+"transform" = []
+"watcher" = []
+"xpack" = []
+
+# GENERATED-END
+
 
 [dependencies]
 base64 = "^0.11"

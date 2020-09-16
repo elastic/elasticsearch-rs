@@ -29,7 +29,7 @@
 //! [Manage individual indices](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices.html),
 //! index settings, aliases, mappings, and index templates.
 
-# ! [ allow ( unused_imports ) ]use crate::{
+# ! [ cfg ( feature = "indices" ) ] # ! [ allow ( unused_imports ) ]use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
