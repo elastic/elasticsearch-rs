@@ -30,6 +30,9 @@ pub fn generate(api: &Api, docs_dir: &PathBuf) -> Result<Vec<(String, String)>, 
 
     for (namespace, namespace_methods) in &api.namespaces {
         let mut tokens = Tokens::new();
+        tokens.append(quote! {
+            #![cfg(feature = #namespace)]
+        });
         tokens.append(use_declarations());
 
         let namespace_pascal_case = namespace.to_pascal_case();

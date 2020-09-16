@@ -72,8 +72,8 @@ pub fn write_file(
 }
 
 lazy_static! {
-    static ref START_REGEX: Regex = Regex::new("// *GENERATED-BEGIN:([a-zA-Z0-9-_]+)").unwrap();
-    static ref END_REGEX: Regex = Regex::new("// *GENERATED-END").unwrap();
+    static ref START_REGEX: Regex = Regex::new("(//|#) *GENERATED-BEGIN:([a-zA-Z0-9-_]+)").unwrap();
+    static ref END_REGEX: Regex = Regex::new("(//|#) *GENERATED-END").unwrap();
 }
 
 /// Merge some generated content into an existing file. Content is fetch using the `get_content`
@@ -126,13 +126,15 @@ pub fn merge_file(
 
             // Output start marker
             output.push_str(&line);
-            output.push_str(
-                "\n// Generated code - do not edit until the next GENERATED-END marker\n\n",
-            );
+            output.push_str("\n");
+            output.push_str(captures.get(1).unwrap().as_str());
+            output
+                .push_str(" Generated code - do not edit until the next GENERATED-END marker\n\n");
+
             in_generated_section = true;
 
             // and content
-            let section = captures.get(1).unwrap().as_str();
+            let section = captures.get(2).unwrap().as_str();
 
             if let Some(text) = get_content(section) {
                 output.push_str(&text);
@@ -185,8 +187,9 @@ mod test {
     use super::super::GeneratedFiles;
     use std::fs;
 
+    /// Test a nominal merge with `//` comments (.rs files)
     #[test]
-    pub fn nominal_merge() -> Result<(), failure::Error> {
+    pub fn nominal_merge_slashes() -> Result<(), failure::Error> {
         let dir = tempfile::tempdir()?;
         let dir_path = dir.path();
         let file_name = "test_merge.rs";
@@ -241,6 +244,52 @@ Contents of section bar
 
 // GENERATED-END
 
+// End of file
+"#;
+
+        let generated = fs::read_to_string(&file_path)?;
+        assert_eq!(expected, generated);
+        Ok(())
+    }
+
+    /// Test a nominal merge with `#` comments (.toml files)
+    #[test]
+    fn nominal_merge_hash() -> Result<(), failure::Error> {
+        let dir = tempfile::tempdir()?;
+        let dir_path = dir.path();
+        let file_name = "test_merge.rs";
+
+        let mut tracker = GeneratedFiles::default();
+
+        let mut file_path = dir_path.to_owned();
+        file_path.push(file_name);
+
+        fs::write(
+            &file_path,
+            r#"
+// Start of file
+# GENERATED-BEGIN:foo - we can add a comment here
+this part will be replaced by the contents of the "foo" section
+# GENERATED-END
+// End of file
+"#,
+        )?;
+
+        super::merge_file(
+            |section| Some(format!("Contents of section {}\n", section)),
+            dir_path,
+            file_name,
+            &mut tracker,
+        )?;
+
+        let expected = r#"
+// Start of file
+# GENERATED-BEGIN:foo - we can add a comment here
+# Generated code - do not edit until the next GENERATED-END marker
+
+Contents of section foo
+
+# GENERATED-END
 // End of file
 "#;
 

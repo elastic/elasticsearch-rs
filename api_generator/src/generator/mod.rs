@@ -17,6 +17,7 @@
  * under the License.
  */
 use crate::generator::code_gen::url::url_builder::PathString;
+use itertools::Itertools;
 use serde::{
     de::{MapAccess, Visitor},
     Deserialize, Deserializer, Serialize,
@@ -459,6 +460,22 @@ pub fn generate(
             &mut tracker,
         )?;
     }
+
+    // generate feature list in Cargo.toml
+    let features_list = &api.namespaces.keys().join("\", \"");
+    let mut features = format!("all-apis = [\"{}\"]\n", features_list);
+    for feature in api.namespaces.keys().cloned() {
+        features.push_str(&format!("\"{}\" = []\n", feature));
+    }
+
+    let mut sections = HashMap::new();
+    sections.insert("features", features);
+    merge_file(
+        |section| sections.remove(section),
+        generated_dir,
+        "../Cargo.toml",
+        &mut tracker,
+    )?;
 
     // generate functions on root of client
     let mut root = code_gen::root::generate(&api, &docs_dir)?;
