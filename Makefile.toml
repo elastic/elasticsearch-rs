@@ -28,16 +28,14 @@ Runs yaml_test_runner package to generate tests from yaml files for a given Elas
 The commit to use is retrieved from the running Elasticsearch instance
 '''
 private = true
-script = ["cargo run -p yaml_test_runner -- -u ${ELASTICSEARCH_URL}"]
+command = "cargo"
+args = ["run", "-p", "yaml_test_runner", "--", "-u", "${ELASTICSEARCH_URL}"]
 dependencies = ["start-elasticsearch"]
-
-[tasks.run-yaml-test-runner.windows]
-script = ["cargo run -p yaml_test_runner -- -u %ELASTICSEARCH_URL%"]
 
 [tasks.test-yaml-test-runner]
 category = "Elasticsearch"
 private = true
-condition = { env_set = [ "ELASTICSEARCH_URL" ], env_not_set = ["CI"] }
+condition = { env_set = [ "ELASTICSEARCH_URL" ], env_false = ["CARGO_MAKE_CI"] }
 command = "cargo"
 args = ["test", "-p", "yaml_test_runner", "--", "--test-threads=1"]
 dependencies = ["generate-yaml-tests"]
@@ -45,7 +43,7 @@ dependencies = ["generate-yaml-tests"]
 [tasks.test-yaml-test-runner-ci]
 category = "Elasticsearch"
 private = true
-condition = { env_set = [ "ELASTICSEARCH_URL", "CI" ] }
+condition = { env_set = [ "ELASTICSEARCH_URL" ], env_true = ["CARGO_MAKE_CI"] }
 script = ["cargo test -p yaml_test_runner -- --test-threads=1 -Z unstable-options --format json | tee test_results/results.json"]
 dependencies = ["generate-yaml-tests"]
 
@@ -66,7 +64,7 @@ args = ["run", "-p", "api_generator"]
 [tasks.create-test-results-dir]
 category = "Elasticsearch"
 private = true
-condition = { env_set = [ "CI" ] }
+condition = { env_true = [ "CARGO_MAKE_CI" ] }
 script = ["[ -d test_results ] || mkdir -p test_results"]
 
 [tasks.install-cargo2junit]
@@ -77,33 +75,30 @@ script = ["cargo install cargo2junit"]
 [tasks.convert-test-results-junit]
 category = "Elasticsearch"
 private = true
-condition = { env_set = [ "CI" ] }
+condition = { env_true = [ "CARGO_MAKE_CI" ] }
 script = ["cat test_results/results.json | cargo2junit > test_results/cargo-junit.xml"]
 dependencies = ["install-cargo2junit"]
+
+[tasks.run-elasticsearch]
+category = "Elasticsearch"
+condition = { env_set = [ "STACK_VERSION", "TEST_SUITE" ], env_false = ["CARGO_MAKE_CI"] }
+script_runner = "bash"
+script = { file = "./.ci/run-elasticsearch.sh" }
+dependencies = ["set-oss-env", "set-xpack-env"]
 
 # ============
 # Public tasks
 # ============
 
 [tasks.start-elasticsearch]
-category = "Elasticsearch"
+extend = "run-elasticsearch"
 description = "Starts Elasticsearch docker container with the given version and distribution"
-condition = { env_set = [ "STACK_VERSION", "TEST_SUITE" ], env_not_set = ["CI"] }
-script = ["DETACH=true bash .ci/run-elasticsearch.sh"]
-dependencies = ["set-oss-env", "set-xpack-env"]
-
-[tasks.start-elasticsearch.windows]
-script = ["bash -c \"STACK_VERSION=%STACK_VERSION% TEST_SUITE=%TEST_SUITE% DETACH=true bash .ci/run-elasticsearch.sh\""]
+env = { "CLEANUP" = false, "DETACH" = true }
 
 [tasks.stop-elasticsearch]
-category = "Elasticsearch"
+extend = "run-elasticsearch"
 description = "Stops Elasticsearch docker container, if running"
-condition = { env_set = [ "STACK_VERSION", "TEST_SUITE" ], env_not_set = ["CI"] }
-script = ["CLEANUP=true bash .ci/run-elasticsearch.sh"]
-dependencies = ["set-oss-env", "set-xpack-env"]
-
-[tasks.stop-elasticsearch.windows]
-script = ["bash -c \"STACK_VERSION=%STACK_VERSION% TEST_SUITE=%TEST_SUITE% CLEANUP=true bash .ci/run-elasticsearch.sh\""]
+env = { "CLEANUP" = true, "DETACH" = false }
 
 [tasks.test-yaml]
 category = "Elasticsearch"
@@ -142,29 +137,9 @@ run_task = "format"
 
 [tasks.default]
 clear = true
+script_runner = "@duckscript"
 script = ['''
     echo
-    echo "Main tasks:"
-    echo "- generate-api: Generates Elasticsearch client from REST API specs"
-    echo "- start-elasticsearch: Starts Elasticsearch docker container with the given version and distribution"
-    echo "- stop-elasticsearch: Stops Elasticsearch docker container, if running"
-    echo "- test-yaml: Generates and runs yaml_test_runner package xpack/oss tests against a given Elasticsearch version"
-    echo "- test-generator: Generates and runs api_generator package tests"
-    echo "- test: Runs elasticsearch package tests against a given Elasticsearch version"
-    echo
-    echo "Most tasks use these environment variables:"
-    echo "- STACK_VERSION (default '$STACK_VERSION'): the version of Elasticsearch"
-    echo "- TEST_SUITE ('oss' or 'xpack', default '$TEST_SUITE'): the distribution of Elasticsearch"
-    echo "- CI (default not set): set when running on CI to determine whether to start Elasticsearch and format test output as JSON"
-    echo
-    echo "Run 'cargo make --list-all-steps' for a complete list of available tasks."
-    echo
-''']
-
-[tasks.default.windows]
-script = ['''
-    @echo off
-    echo.
     echo Main tasks:
     echo - generate-api: Generates Elasticsearch client from REST API specs
     echo - start-elasticsearch: Starts Elasticsearch docker container with the given version and distribution
@@ -172,12 +147,12 @@ script = ['''
     echo - test-yaml: Generates and runs yaml_test_runner package xpack/oss tests against a given Elasticsearch version
     echo - test-generator: Generates and runs api_generator package tests
     echo - test: Runs elasticsearch package tests against a given Elasticsearch version
-    echo.
+    echo
     echo Most tasks use these environment variables:
     echo - STACK_VERSION (default '$STACK_VERSION'): the version of Elasticsearch
     echo - TEST_SUITE ('oss' or 'xpack', default '$TEST_SUITE'): the distribution of Elasticsearch
     echo - CI (default not set): set when running on CI to determine whether to start Elasticsearch and format test output as JSON
-    echo.
+    echo
     echo Run 'cargo make --list-all-steps' for a complete list of available tasks.
-    echo.
+    echo
 ''']
