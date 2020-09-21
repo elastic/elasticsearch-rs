@@ -47,7 +47,7 @@ use std::{
         atomic::{AtomicUsize, Ordering},
         Arc, RwLock,
     },
-    time::Duration,
+    time::{Duration, Instant},
 };
 use url::Url;
 
@@ -412,7 +412,7 @@ impl Transport {
             .iter()
             .map(|url| Url::parse(url))
             .collect::<Result<Vec<_>, _>>()?;
-        let conn_pool = MultiNodeConnectionPool::round_robin(urls);
+        let conn_pool = MultiNodeConnectionPool::round_robin(urls, None);
         let transport = TransportBuilder::new(conn_pool).build()?;
         Ok(transport)
     }
@@ -443,6 +443,10 @@ impl Transport {
         B: Body,
         Q: Serialize + ?Sized,
     {
+        if self.conn_pool.reseedable() {
+            // Reseed nodes
+            println!("Reseeding!");
+        }
         let connection = self.conn_pool.next();
         let url = connection.url.join(path.trim_start_matches('/'))?;
         let reqwest_method = self.method(method);
@@ -533,6 +537,13 @@ impl Default for Transport {
 pub trait ConnectionPool: Debug + dyn_clone::DynClone + Sync + Send {
     /// Gets a reference to the next [Connection]
     fn next(&self) -> Connection;
+
+    fn reseedable(&self) -> bool {
+        false
+    }
+
+    // NOOP by default
+    fn reseed(&self, _connection: Vec<Connection>) {}
 }
 
 clone_trait_object!(ConnectionPool);
@@ -691,8 +702,15 @@ impl ConnectionPool for CloudConnectionPool {
 /// A Connection Pool that manages a static connection of nodes
 #[derive(Debug, Clone)]
 pub struct MultiNodeConnectionPool<TStrategy = RoundRobin> {
-    connections: Arc<RwLock<Vec<Connection>>>,
+    inner: Arc<RwLock<MultiNodeConnectionPoolInner>>,
+    wait: Option<Duration>,
     strategy: TStrategy,
+}
+
+#[derive(Debug, Clone)]
+pub struct MultiNodeConnectionPoolInner {
+    last_update: Option<Instant>,
+    connections: Vec<Connection>,
 }
 
 impl<TStrategy> ConnectionPool for MultiNodeConnectionPool<TStrategy>
@@ -700,22 +718,47 @@ where
     TStrategy: Strategy + Clone,
 {
     fn next(&self) -> Connection {
-        let inner = self.connections.read().expect("lock poisoned");
-        self.strategy.try_next(&inner).unwrap()
+        let inner = self.inner.read().expect("lock poisoned");
+        self.strategy.try_next(&inner.connections).unwrap()
+    }
+
+    fn reseedable(&self) -> bool {
+        let inner = self.inner.read().expect("lock poisoned");
+        let wait = match self.wait {
+            Some(wait) => wait,
+            None => return false,
+        };
+        let last_update_is_stale = inner
+            .last_update
+            .as_ref()
+            .map(|last_update| last_update.elapsed() > wait);
+        last_update_is_stale.unwrap_or(true)
+    }
+
+    fn reseed(&self, mut connection: Vec<Connection>) {
+        let mut inner = self.inner.write().expect("lock poisoned");
+        inner.last_update = Some(Instant::now());
+        inner.connections.clear();
+        inner.connections.append(&mut connection);
     }
 }
 
 impl MultiNodeConnectionPool<RoundRobin> {
     /** Use a round-robin strategy for balancing traffic over the given set of nodes. */
-    pub fn round_robin(urls: Vec<Url>) -> Self {
-        let connections: Arc<RwLock<Vec<_>>> =
-            Arc::new(RwLock::new(urls.into_iter().map(Connection::new).collect()));
+    pub fn round_robin(urls: Vec<Url>, wait: Option<Duration>) -> Self {
+        let connections = urls.into_iter().map(Connection::new).collect();
+
+        let inner: Arc<RwLock<MultiNodeConnectionPoolInner>> =
+            Arc::new(RwLock::new(MultiNodeConnectionPoolInner {
+                last_update: None,
+                connections,
+            }));
 
         let strategy = RoundRobin::default();
-
         Self {
-            connections,
+            inner,
             strategy,
+            wait,
         }
     }
 }
@@ -757,10 +800,11 @@ pub mod tests {
     #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
     use crate::auth::ClientCertificate;
     use crate::http::transport::{
-        CloudId, Connection, ConnectionPool, MultiNodeConnectionPool, RoundRobin,
-        SingleNodeConnectionPool, TransportBuilder,
+        CloudId, Connection, ConnectionPool, MultiNodeConnectionPool, SingleNodeConnectionPool,
+        TransportBuilder,
     };
     use regex::Regex;
+    use std::time::{Duration, Instant};
     use url::Url;
 
     #[test]
@@ -909,10 +953,6 @@ pub mod tests {
         assert!(re.is_match(x));
     }
 
-    fn round_robin(addresses: Vec<Url>) -> MultiNodeConnectionPool<RoundRobin> {
-        MultiNodeConnectionPool::round_robin(addresses)
-    }
-
     fn expected_addresses() -> Vec<Url> {
         vec!["http://a:9200/", "http://b:9200/", "http://c:9200/"]
             .iter()
@@ -921,8 +961,55 @@ pub mod tests {
     }
 
     #[test]
+    fn test_reseedable_false_on_no_duration() {
+        let connections = MultiNodeConnectionPool::round_robin(expected_addresses(), None);
+        assert!(!connections.reseedable());
+    }
+
+    #[test]
+    fn test_reseed() {
+        let connection_pool =
+            MultiNodeConnectionPool::round_robin(vec![], Some(Duration::from_secs(28800)));
+
+        let connections = expected_addresses()
+            .into_iter()
+            .map(Connection::new)
+            .collect();
+
+        connection_pool.reseeding();
+        connection_pool.reseed(connections);
+        for _ in 0..10 {
+            for expected in expected_addresses() {
+                let actual = connection_pool.next();
+
+                assert_eq!(expected.as_str(), actual.url.as_str());
+            }
+        }
+        // Check connection pool not reseedable after reseed
+        assert!(!connection_pool.reseedable());
+
+        let inner = connection_pool.inner.read().expect("lock poisoned");
+        assert!(!inner.reseeding);
+    }
+
+    #[test]
+    fn test_reseedable_after_duration() {
+        let connection_pool = MultiNodeConnectionPool::round_robin(
+            expected_addresses(),
+            Some(Duration::from_secs(30)),
+        );
+
+        // Set internal last_update to a minute ago
+        let mut inner = connection_pool.inner.write().expect("lock poisoned");
+        inner.last_update = Some(Instant::now() - Duration::from_secs(60));
+        drop(inner);
+
+        assert!(connection_pool.reseedable());
+    }
+
+    #[test]
     fn round_robin_next_multi() {
-        let connections = round_robin(expected_addresses());
+        let connections = MultiNodeConnectionPool::round_robin(expected_addresses(), None);
 
         for _ in 0..10 {
             for expected in expected_addresses() {
@@ -936,7 +1023,7 @@ pub mod tests {
     #[test]
     fn round_robin_next_single() {
         let expected = Url::parse("http://a:9200/").unwrap();
-        let connections = round_robin(vec![expected.clone()]);
+        let connections = MultiNodeConnectionPool::round_robin(vec![expected.clone()], None);
 
         for _ in 0..10 {
             let actual = connections.next();
@@ -948,7 +1035,7 @@ pub mod tests {
     #[test]
     #[should_panic]
     fn round_robin_next_empty_fails() {
-        let connections = round_robin(vec![]);
+        let connections = MultiNodeConnectionPool::round_robin(vec![], None);
         connections.next();
     }
 }
