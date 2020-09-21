@@ -6,6 +6,8 @@ default_to_workspace = false
 STACK_VERSION = "8.0.0-SNAPSHOT"
 # Determines the distribution of docker container used. Either xpack or oss
 TEST_SUITE = "xpack"
+# Set publish flags to dry-run by default, to force user to explicitly define for publishing
+CARGO_MAKE_CARGO_PUBLISH_FLAGS = "--dry-run"
 
 [tasks.set-oss-env]
 category = "Elasticsearch"
@@ -20,6 +22,12 @@ description = "Sets ELASTICSEARCH_URL environment variable if not already set fo
 private = true
 condition = { env = { "TEST_SUITE" = "xpack" }, env_not_set = ["ELASTICSEARCH_URL"] }
 env = { "ELASTICSEARCH_URL" = "https://elastic:changeme@localhost:9200" }
+
+[tasks.set-elasticsearch-crate-env]
+category = "Elasticsearch"
+description = "Sets CARGO_MAKE_WORKING_DIRECTORY environment variable to elasticsearch crate"
+private = true
+env = { "CARGO_MAKE_WORKING_DIRECTORY" = "${CARGO_MAKE_WORKSPACE_WORKING_DIRECTORY}/elasticsearch" }
 
 [tasks.run-yaml-test-runner]
 category = "Elasticsearch"
@@ -81,6 +89,19 @@ condition = { env_set = [ "CI" ] }
 script = ["cat test_results/results.json | cargo2junit > test_results/cargo-junit.xml"]
 dependencies = ["install-cargo2junit"]
 
+[tasks.publish-impl]
+description = "Runs the cargo publish command."
+category = "Elasticsearch"
+private = true
+script_runner = "@shell"
+script = [
+"""
+pushd elasticsearch
+cargo publish ${CARGO_MAKE_CARGO_PUBLISH_FLAGS}
+popd
+"""
+]
+
 # ============
 # Public tasks
 # ============
@@ -139,6 +160,57 @@ description = "Generates Elasticsearch client from REST API specs"
 dependencies = ["run-api-generator"]
 run_task = "format"
 
+[tasks.docs]
+description = "Generate Elasticsearch client documentation and opens in browser"
+clear = true
+category = "Elasticsearch"
+command = "cargo"
+args = ["doc", "-p", "elasticsearch", "--no-deps", "--open"]
+
+[tasks.generate-release-notes]
+category = "Elasticsearch"
+description = "Generates release notes for Elasticsearch client"
+# assumes clients-team repo is checked out as a sibling of elasticsearch-rs
+condition = { env_set = ["OLD_VERSION", "NEW_VERSION"], files_exist = [ "${CARGO_MAKE_WORKING_DIRECTORY}/../clients-team/scripts/release-notes-generator/Dockerfile" ] }
+script_runner = "bash"
+script = [
+"""
+pushd ./../clients-team/scripts/release-notes-generator
+docker build --file ./Dockerfile --tag clients-team/release_notes_generator .
+popd
+docker run -v "${CARGO_MAKE_WORKING_DIRECTORY}/.ci/release/config.yml:/usr/src/release_notes_generator/config.yml" --rm clients-team/release_notes_generator -o ${OLD_VERSION} -n ${NEW_VERSION}
+"""
+]
+
+[tasks.generate-release-notes.windows]
+script_runner = "cmd"
+script = [
+"""
+rem pushd needs backslash directory separators...
+pushd .\\..\\clients-team\\scripts\\release-notes-generator
+docker build --file ./Dockerfile --tag clients-team/release_notes_generator .
+popd
+docker run -v "%CARGO_MAKE_WORKING_DIRECTORY%/.ci/release/config.yml:/usr/src/release_notes_generator/config.yml" --rm clients-team/release_notes_generator -o %OLD_VERSION% -n %NEW_VERSION%
+"""
+]
+
+[tasks.publish]
+clear = true
+dependencies = [ "publish-impl" ]
+run_task = "generate-release-notes"
+
+[tasks.package]
+clear = true
+description = "Runs the cargo package command for elasticsearch crate."
+category = "Elasticsearch"
+script_runner = "@shell"
+script = [
+"""
+pushd elasticsearch
+cargo package ${CARGO_MAKE_CARGO_PACKAGE_FLAGS}
+popd
+"""
+]
 
 [tasks.default]
 clear = true
@@ -148,9 +220,14 @@ script = ['''
     echo "- generate-api: Generates Elasticsearch client from REST API specs"
     echo "- start-elasticsearch: Starts Elasticsearch docker container with the given version and distribution"
     echo "- stop-elasticsearch: Stops Elasticsearch docker container, if running"
+    echo
     echo "- test-yaml: Generates and runs yaml_test_runner package xpack/oss tests against a given Elasticsearch version"
     echo "- test-generator: Generates and runs api_generator package tests"
     echo "- test: Runs elasticsearch package tests against a given Elasticsearch version"
+    echo
+    echo "- generate-release-notes: Generates release notes for elasticsearch crate, with OLD_VERSION and NEW_VERSION matching release version GitHub labels e.g. v7.9.0-alpha.1"
+    echo "- package: Packages the elasticsearch crate. package flags can be overridden with CARGO_MAKE_CARGO_PACKAGE_FLAGS environment variable"
+    echo "- publish: Publishes the elasticsearch crate. By default, peforms a dry run by passing --dry-run, but publish flags can be overridden with CARGO_MAKE_CARGO_PUBLISH_FLAGS environment variable"
     echo
     echo "Most tasks use these environment variables:"
     echo "- STACK_VERSION (default '$STACK_VERSION'): the version of Elasticsearch"
@@ -173,9 +250,11 @@ script = ['''
     echo - test-generator: Generates and runs api_generator package tests
     echo - test: Runs elasticsearch package tests against a given Elasticsearch version
     echo.
+    echo - generate-release-notes: Generates release notes for elasticsearch crate, with OLD_VERSION and NEW_VERSION matching release version GitHub labels e.g. v7.9.0-alpha.1
+    echo .
     echo Most tasks use these environment variables:
-    echo - STACK_VERSION (default '$STACK_VERSION'): the version of Elasticsearch
-    echo - TEST_SUITE ('oss' or 'xpack', default '$TEST_SUITE'): the distribution of Elasticsearch
+    echo - STACK_VERSION (default '%STACK_VERSION%'): the version of Elasticsearch
+    echo - TEST_SUITE ('oss' or 'xpack', default '%TEST_SUITE%'): the distribution of Elasticsearch
     echo - CI (default not set): set when running on CI to determine whether to start Elasticsearch and format test output as JSON
     echo.
     echo Run 'cargo make --list-all-steps' for a complete list of available tasks.
