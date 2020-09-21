@@ -44,7 +44,7 @@ use std::{
     io::{self, Write},
     sync::{
         atomic::{AtomicUsize, Ordering},
-        Arc,
+        Arc, RwLock,
     },
     time::Duration,
 };
@@ -348,7 +348,7 @@ impl Transport {
             .iter()
             .map(|url| Url::parse(url))
             .collect::<Result<Vec<_>, _>>()?;
-        let conn_pool = StaticNodeListConnectionPool::round_robin(urls);
+        let conn_pool = MultiNodeConnectionPool::round_robin(urls);
         let transport = TransportBuilder::new(conn_pool).build()?;
         Ok(transport)
     }
@@ -461,7 +461,7 @@ impl Default for Transport {
 /// dynamically at runtime, based upon the response to API calls.
 pub trait ConnectionPool: Debug + dyn_clone::DynClone + Sync + Send {
     /// Gets a reference to the next [Connection]
-    fn next(&self) -> &Connection;
+    fn next(&self) -> Connection;
 }
 
 clone_trait_object!(ConnectionPool);
@@ -490,8 +490,8 @@ impl Default for SingleNodeConnectionPool {
 
 impl ConnectionPool for SingleNodeConnectionPool {
     /// Gets a reference to the next [Connection]
-    fn next(&self) -> &Connection {
-        &self.connection
+    fn next(&self) -> Connection {
+        self.connection.clone()
     }
 }
 
@@ -611,31 +611,33 @@ impl CloudConnectionPool {
 
 impl ConnectionPool for CloudConnectionPool {
     /// Gets a reference to the next [Connection]
-    fn next(&self) -> &Connection {
-        &self.connection
+    fn next(&self) -> Connection {
+        self.connection.clone()
     }
 }
 
 /// A Connection Pool that manages a static connection of nodes
 #[derive(Debug, Clone)]
-pub struct StaticNodeListConnectionPool<TStrategy = RoundRobin> {
-    connections: Vec<Connection>,
+pub struct MultiNodeConnectionPool<TStrategy = RoundRobin> {
+    connections: Arc<RwLock<Vec<Connection>>>,
     strategy: TStrategy,
 }
 
-impl<TStrategy> ConnectionPool for StaticNodeListConnectionPool<TStrategy>
+impl<TStrategy> ConnectionPool for MultiNodeConnectionPool<TStrategy>
 where
     TStrategy: Strategy + Clone,
 {
-    fn next(&self) -> &Connection {
-        self.strategy.try_next(&self.connections).unwrap()
+    fn next(&self) -> Connection {
+        let inner = self.connections.read().expect("lock poisoned");
+        self.strategy.try_next(&inner).unwrap()
     }
 }
 
-impl StaticNodeListConnectionPool<RoundRobin> {
+impl MultiNodeConnectionPool<RoundRobin> {
     /** Use a round-robin strategy for balancing traffic over the given set of nodes. */
     pub fn round_robin(urls: Vec<Url>) -> Self {
-        let connections: Vec<_> = urls.into_iter().map(Connection::new).collect();
+        let connections: Arc<RwLock<Vec<_>>> =
+            Arc::new(RwLock::new(urls.into_iter().map(Connection::new).collect()));
 
         let strategy = RoundRobin::default();
 
@@ -649,7 +651,7 @@ impl StaticNodeListConnectionPool<RoundRobin> {
 /** The strategy selects an address from a given collection. */
 pub trait Strategy: Send + Sync + Debug {
     /** Try get the next connection. */
-    fn try_next<'a>(&self, connections: &'a [Connection]) -> Result<&'a Connection, Error>;
+    fn try_next<'a>(&self, connections: &'a [Connection]) -> Result<Connection, Error>;
 }
 
 /** A round-robin strategy cycles through nodes sequentially. */
@@ -667,12 +669,12 @@ impl Default for RoundRobin {
 }
 
 impl Strategy for RoundRobin {
-    fn try_next<'a>(&self, connections: &'a [Connection]) -> Result<&'a Connection, Error> {
+    fn try_next<'a>(&self, connections: &'a [Connection]) -> Result<Connection, Error> {
         if connections.is_empty() {
             Err(crate::error::lib("Connection list empty"))
         } else {
             let i = self.index.fetch_add(1, Ordering::Relaxed) % connections.len();
-            Ok(&connections[i])
+            Ok(connections[i].clone())
         }
     }
 }
@@ -682,8 +684,8 @@ pub mod tests {
     #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
     use crate::auth::ClientCertificate;
     use crate::http::transport::{
-        CloudId, Connection, ConnectionPool, RoundRobin, SingleNodeConnectionPool,
-        StaticNodeListConnectionPool, TransportBuilder,
+        CloudId, Connection, ConnectionPool, MultiNodeConnectionPool, RoundRobin,
+        SingleNodeConnectionPool, TransportBuilder,
     };
     use url::Url;
 
@@ -795,8 +797,8 @@ pub mod tests {
         assert_eq!(conn.url.as_str(), "http://10.1.2.3/");
     }
 
-    fn round_robin(addresses: Vec<Url>) -> StaticNodeListConnectionPool<RoundRobin> {
-        StaticNodeListConnectionPool::round_robin(addresses)
+    fn round_robin(addresses: Vec<Url>) -> MultiNodeConnectionPool<RoundRobin> {
+        MultiNodeConnectionPool::round_robin(addresses)
     }
 
     fn expected_addresses() -> Vec<Url> {
