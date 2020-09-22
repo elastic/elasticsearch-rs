@@ -23,12 +23,6 @@ private = true
 condition = { env = { "TEST_SUITE" = "xpack" }, env_not_set = ["ELASTICSEARCH_URL"] }
 env = { "ELASTICSEARCH_URL" = "https://elastic:changeme@localhost:9200" }
 
-[tasks.set-elasticsearch-crate-env]
-category = "Elasticsearch"
-description = "Sets CARGO_MAKE_WORKING_DIRECTORY environment variable to elasticsearch crate"
-private = true
-env = { "CARGO_MAKE_WORKING_DIRECTORY" = "${CARGO_MAKE_WORKSPACE_WORKING_DIRECTORY}/elasticsearch" }
-
 [tasks.run-yaml-test-runner]
 category = "Elasticsearch"
 description = '''
@@ -89,16 +83,16 @@ condition = { env_set = [ "CI" ] }
 script = ["cat test_results/results.json | cargo2junit > test_results/cargo-junit.xml"]
 dependencies = ["install-cargo2junit"]
 
-[tasks.publish-impl]
+[tasks.publish-elasticsearch]
 description = "Runs the cargo publish command."
 category = "Elasticsearch"
 private = true
-script_runner = "@shell"
+script_runner = "@duckscript"
 script = [
 """
-pushd elasticsearch
-cargo publish ${CARGO_MAKE_CARGO_PUBLISH_FLAGS}
-popd
+cd elasticsearch
+echo "publishing elasticsearch crate: cargo publish %{CARGO_MAKE_CARGO_PUBLISH_FLAGS}"
+exec cargo publish %{CARGO_MAKE_CARGO_PUBLISH_FLAGS}
 """
 ]
 
@@ -169,46 +163,35 @@ args = ["doc", "-p", "elasticsearch", "--no-deps", "--open"]
 
 [tasks.generate-release-notes]
 category = "Elasticsearch"
-description = "Generates release notes for Elasticsearch client"
-# assumes clients-team repo is checked out as a sibling of elasticsearch-rs
+description = """
+Generates release notes for Elasticsearch client using a common release notes generator docker image.
+Assumes the clients-team repo is checked out as a sibling directory of elasticsearch-rs
+"""
 condition = { env_set = ["OLD_VERSION", "NEW_VERSION"], files_exist = [ "${CARGO_MAKE_WORKING_DIRECTORY}/../clients-team/scripts/release-notes-generator/Dockerfile" ] }
-script_runner = "bash"
+script_runner = "@shell"
 script = [
 """
-pushd ./../clients-team/scripts/release-notes-generator
+cd ./../clients-team/scripts/release-notes-generator
 docker build --file ./Dockerfile --tag clients-team/release_notes_generator .
-popd
 docker run -v "${CARGO_MAKE_WORKING_DIRECTORY}/.ci/release/config.yml:/usr/src/release_notes_generator/config.yml" --rm clients-team/release_notes_generator -o ${OLD_VERSION} -n ${NEW_VERSION}
-"""
-]
-
-[tasks.generate-release-notes.windows]
-script_runner = "cmd"
-script = [
-"""
-rem pushd needs backslash directory separators...
-pushd .\\..\\clients-team\\scripts\\release-notes-generator
-docker build --file ./Dockerfile --tag clients-team/release_notes_generator .
-popd
-docker run -v "%CARGO_MAKE_WORKING_DIRECTORY%/.ci/release/config.yml:/usr/src/release_notes_generator/config.yml" --rm clients-team/release_notes_generator -o %OLD_VERSION% -n %NEW_VERSION%
 """
 ]
 
 [tasks.publish]
 clear = true
-dependencies = [ "publish-impl" ]
+dependencies = [ "publish-elasticsearch" ]
 run_task = "generate-release-notes"
 
 [tasks.package]
 clear = true
 description = "Runs the cargo package command for elasticsearch crate."
 category = "Elasticsearch"
-script_runner = "@shell"
+script_runner = "@duckscript"
 script = [
 """
-pushd elasticsearch
-cargo package ${CARGO_MAKE_CARGO_PACKAGE_FLAGS}
-popd
+cd elasticsearch
+echo "packaging elasticsearch crate: cargo package %{CARGO_MAKE_CARGO_PACKAGE_FLAGS}"
+cargo package %{CARGO_MAKE_CARGO_PACKAGE_FLAGS}
 """
 ]
 
@@ -225,9 +208,12 @@ script = ['''
     echo "- test-generator: Generates and runs api_generator package tests"
     echo "- test: Runs elasticsearch package tests against a given Elasticsearch version"
     echo
-    echo "- generate-release-notes: Generates release notes for elasticsearch crate, with OLD_VERSION and NEW_VERSION matching release version GitHub labels e.g. v7.9.0-alpha.1"
-    echo "- package: Packages the elasticsearch crate. package flags can be overridden with CARGO_MAKE_CARGO_PACKAGE_FLAGS environment variable"
-    echo "- publish: Publishes the elasticsearch crate. By default, peforms a dry run by passing --dry-run, but publish flags can be overridden with CARGO_MAKE_CARGO_PUBLISH_FLAGS environment variable"
+    echo "- generate-release-notes: Generates release notes for elasticsearch crate."
+    echo "      pass OLD_VERSION and NEW_VERSION environment variables to match release version GitHub labels e.g. v7.9.0-alpha.1"
+    echo "- package: Packages the elasticsearch crate."
+    echo "      package flags can be overridden with CARGO_MAKE_CARGO_PACKAGE_FLAGS environment variable"
+    echo "- publish: Publishes the elasticsearch crate."
+    echo "      By default, peforms a dry run by passing --dry-run, but publish flags can be overridden with CARGO_MAKE_CARGO_PUBLISH_FLAGS environment variable"
     echo
     echo "Most tasks use these environment variables:"
     echo "- STACK_VERSION (default '$STACK_VERSION'): the version of Elasticsearch"
@@ -250,8 +236,13 @@ script = ['''
     echo - test-generator: Generates and runs api_generator package tests
     echo - test: Runs elasticsearch package tests against a given Elasticsearch version
     echo.
-    echo - generate-release-notes: Generates release notes for elasticsearch crate, with OLD_VERSION and NEW_VERSION matching release version GitHub labels e.g. v7.9.0-alpha.1
-    echo .
+    echo - generate-release-notes: Generates release notes for elasticsearch crate
+    echo       pass OLD_VERSION and NEW_VERSION environment variables to match release version GitHub labels e.g. v7.9.0-alpha.1
+    echo - package: Packages the elasticsearch crate.
+    echo       package flags can be overridden with CARGO_MAKE_CARGO_PACKAGE_FLAGS environment variable
+    echo - publish: Publishes the elasticsearch crate.
+    echo       By default, peforms a dry run by passing --dry-run, but publish flags can be overridden with CARGO_MAKE_CARGO_PUBLISH_FLAGS environment variable
+    echo.
     echo Most tasks use these environment variables:
     echo - STACK_VERSION (default '%STACK_VERSION%'): the version of Elasticsearch
     echo - TEST_SUITE ('oss' or 'xpack', default '%TEST_SUITE%'): the distribution of Elasticsearch
