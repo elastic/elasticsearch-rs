@@ -3,7 +3,7 @@ default_to_workspace = false
 
 [env]
 # Determines the version of Elasticsearch docker container used
-STACK_VERSION = "8.0.0-SNAPSHOT"
+STACK_VERSION = "7.x-SNAPSHOT"
 # Determines the distribution of docker container used. Either xpack or oss
 TEST_SUITE = "xpack"
 # Set publish flags to dry-run by default, to force user to explicitly define for publishing
