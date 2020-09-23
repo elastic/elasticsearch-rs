@@ -86,6 +86,10 @@ script_runner = "bash"
 script = { file = "./.ci/run-elasticsearch.sh" }
 dependencies = ["set-oss-env", "set-xpack-env"]
 
+[tasks.run-elasticsearch.windows]
+script_runner = "cmd"
+script = ["bash -c \"STACK_VERSION=%STACK_VERSION% TEST_SUITE=%TEST_SUITE% DETACH=%DETACH% CLEANUP=%CLEANUP% bash .ci/run-elasticsearch.sh\""]
+
 # ============
 # Public tasks
 # ============
