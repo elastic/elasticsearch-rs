@@ -202,13 +202,6 @@ cargo package %{CARGO_MAKE_CARGO_PACKAGE_FLAGS}
 clear = true
 script_runner = "@duckscript"
 script = ['''
-    env_prefix = set \\$
-    env_suffix = set ""
-    if is_windows
-        env_prefix = set %
-        env_suffix = set ${env_prefix}
-    end
-
     echo
     echo Main tasks:
     echo - generate-api: Generates Elasticsearch client from REST API specs
@@ -227,8 +220,13 @@ script = ['''
     echo       By default, peforms a dry run by passing --dry-run, but publish flags can be overridden with CARGO_MAKE_CARGO_PUBLISH_FLAGS environment variable
     echo
     echo Most tasks use these environment variables:
-    echo - STACK_VERSION (default '${env_prefix}STACK_VERSION${env_suffix}'): the version of Elasticsearch
-    echo - TEST_SUITE ('oss' or 'xpack', default '${env_prefix}TEST_SUITE${env_suffix}'): the distribution of Elasticsearch
+    if is_windows
+        echo - STACK_VERSION (default '%STACK_VERSION%'): the version of Elasticsearch
+        echo - TEST_SUITE ('oss' or 'xpack', default '%TEST_SUITE%'): the distribution of Elasticsearch
+    else
+        echo - STACK_VERSION (default '$STACK_VERSION'): the version of Elasticsearch
+        echo - TEST_SUITE ('oss' or 'xpack', default '$TEST_SUITE'): the distribution of Elasticsearch
+    end
     echo - CI (default not set): set when running on CI to determine whether to start Elasticsearch and format test output as JSON
     echo
     echo Run 'cargo make --list-all-steps' for a complete list of available tasks.
