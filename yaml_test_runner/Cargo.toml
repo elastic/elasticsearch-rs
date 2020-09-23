@@ -1,10 +1,12 @@
 [package]
 name = "yaml_test_runner"
 version = "8.0.0-alpha.1"
+publish = false
 edition = "2018"
 authors = ["Elastic and Contributors"]
 description = "Generates and runs tests from Elasticsearch's YAML test specs"
 repository = "https://github.com/elastic/elasticsearch-rs"
+license = "Apache-2.0"
 
 [dependencies]
 elasticsearch = { path = "./../elasticsearch" }
