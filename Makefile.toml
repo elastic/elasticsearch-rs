@@ -88,7 +88,11 @@ dependencies = ["set-oss-env", "set-xpack-env"]
 
 [tasks.run-elasticsearch.windows]
 script_runner = "cmd"
-script = ["bash -c \"STACK_VERSION=%STACK_VERSION% TEST_SUITE=%TEST_SUITE% DETACH=%DETACH% CLEANUP=%CLEANUP% bash .ci/run-elasticsearch.sh\""]
+script = [
+'''
+bash -c "STACK_VERSION=%STACK_VERSION% TEST_SUITE=%TEST_SUITE% DETACH=%DETACH% CLEANUP=%CLEANUP% bash .ci/run-elasticsearch.sh"
+'''
+]
 
 # ============
 # Public tasks
@@ -155,7 +159,7 @@ script = ['''
     echo Most tasks use these environment variables:
     echo - STACK_VERSION (default '$STACK_VERSION'): the version of Elasticsearch
     echo - TEST_SUITE ('oss' or 'xpack', default '$TEST_SUITE'): the distribution of Elasticsearch
-    echo - CARGO_MAKE_CI (default not set): set when running on CI to determine whether to start Elasticsearch and format test output as JSON
+    echo - CI (default not set): set when running on CI to determine whether to start Elasticsearch and format test output as JSON
     echo
     echo Run 'cargo make --list-all-steps' for a complete list of available tasks.
     echo
