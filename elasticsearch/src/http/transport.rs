@@ -44,7 +44,7 @@ use std::{
     fmt::Debug,
     io::{self, Write},
     sync::{
-        atomic::{AtomicUsize, Ordering},
+        atomic::{AtomicBool, AtomicUsize, Ordering},
         Arc, RwLock,
     },
     time::{Duration, Instant},
@@ -480,10 +480,6 @@ impl Transport {
     {
         // Threads will execute against old connection pool during reseed
         if self.conn_pool.reseedable() {
-            // Set as reseeding prevents another thread from attempting
-            // to reseed during es request and reseed
-            self.conn_pool.reseeding();
-
             let connection = self.conn_pool.next();
             let scheme = &connection.url.scheme();
             // Build node info request
@@ -553,9 +549,6 @@ pub trait ConnectionPool: Debug + dyn_clone::DynClone + Sync + Send {
     fn reseedable(&self) -> bool {
         false
     }
-
-    // NOOP
-    fn reseeding(&self) {}
 
     // NOOP by default
     fn reseed(&self, _connection: Vec<Connection>) {}
@@ -719,11 +712,11 @@ pub struct MultiNodeConnectionPool<LoadBalancing = RoundRobin> {
     inner: Arc<RwLock<MultiNodeConnectionPoolInner>>,
     reseed_frequency: Option<Duration>,
     load_balancing_strategy: LoadBalancing,
+    reseeding: Arc<AtomicBool>,
 }
 
 #[derive(Debug, Clone)]
 pub struct MultiNodeConnectionPoolInner {
-    reseeding: bool,
     last_update: Option<Instant>,
     connections: Vec<Connection>,
 }
@@ -749,12 +742,17 @@ where
             .last_update
             .as_ref()
             .map(|last_update| last_update.elapsed() > reseed_frequency);
-        last_update_is_stale.unwrap_or(true) && !inner.reseeding
-    }
+        let reseedable = last_update_is_stale.unwrap_or(true);
 
-    fn reseeding(&self) {
-        let mut inner = self.inner.write().expect("Lock Poisoned");
-        inner.reseeding = true
+        return if !reseedable {
+            false
+        } else {
+            // Check if refreshing is false if so, sets to true atomically and returns old value (false) meaning refreshable is true
+            // If refreshing is set to true, do nothing and return true, meaning refreshable is false
+            !self
+                .reseeding
+                .compare_and_swap(false, true, Ordering::Relaxed)
+        };
     }
 
     fn reseed(&self, mut connection: Vec<Connection>) {
@@ -762,7 +760,7 @@ where
         inner.last_update = Some(Instant::now());
         inner.connections.clear();
         inner.connections.append(&mut connection);
-        inner.reseeding = false;
+        self.reseeding.store(false, Ordering::Relaxed);
     }
 }
 
@@ -773,16 +771,17 @@ impl MultiNodeConnectionPool<RoundRobin> {
 
         let inner: Arc<RwLock<MultiNodeConnectionPoolInner>> =
             Arc::new(RwLock::new(MultiNodeConnectionPoolInner {
-                reseeding: false,
                 last_update: None,
                 connections,
             }));
+        let reseeding = Arc::new(AtomicBool::new(false));
 
         let load_balancing_strategy = RoundRobin::default();
         Self {
             inner,
             load_balancing_strategy,
             reseed_frequency,
+            reseeding,
         }
     }
 }
@@ -826,7 +825,10 @@ pub mod tests {
         CloudId, Connection, ConnectionPool, MultiNodeConnectionPool, SingleNodeConnectionPool,
         TransportBuilder,
     };
-    use std::time::{Duration, Instant};
+    use std::{
+        sync::atomic::Ordering,
+        time::{Duration, Instant},
+    };
     use url::Url;
 
     #[test]
@@ -959,8 +961,6 @@ pub mod tests {
             .into_iter()
             .map(Connection::new)
             .collect();
-
-        connection_pool.reseeding();
         connection_pool.reseed(connections);
         for _ in 0..10 {
             for expected in expected_addresses() {
@@ -971,9 +971,7 @@ pub mod tests {
         }
         // Check connection pool not reseedable after reseed
         assert!(!connection_pool.reseedable());
-
-        let inner = connection_pool.inner.read().expect("lock poisoned");
-        assert!(!inner.reseeding);
+        assert!(!connection_pool.reseeding.load(Ordering::Relaxed));
     }
 
     #[test]
@@ -989,6 +987,7 @@ pub mod tests {
         drop(inner);
 
         assert!(connection_pool.reseedable());
+        assert!(connection_pool.reseeding.load(Ordering::Relaxed));
     }
 
     #[test]
