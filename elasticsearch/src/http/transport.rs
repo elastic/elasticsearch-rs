@@ -373,10 +373,31 @@ impl Transport {
 
     /// Creates a new instance of a [Transport] configured with a
     /// [SingleNodeConnectionPool].
+    /// If the url contains credentials, these are removed and added
+    /// as [Credentials::Basic] to the [Transport]
     pub fn single_node(url: &str) -> Result<Transport, Error> {
-        let u = Url::parse(url)?;
+        let mut u = Url::parse(url)?;
+
+        // if username and password are specified in the url, remove them and use
+        // them to construct basic credentials. Not doing so can lead to a double
+        // Authorization header being sent by reqwest.
+        let credentials = if !u.username().is_empty() && u.password().is_some() {
+            let username = u.username().to_string();
+            let password = u.password().unwrap().to_string();
+            u.set_username("").unwrap();
+            u.set_password(None).unwrap();
+            Some(Credentials::Basic(username, password))
+        } else {
+            None
+        };
+
         let conn_pool = SingleNodeConnectionPool::new(u);
-        let transport = TransportBuilder::new(conn_pool).build()?;
+        let mut transport_builder = TransportBuilder::new(conn_pool);
+        if let Some(c) = credentials {
+            transport_builder = transport_builder.auth(c);
+        }
+
+        let transport = transport_builder.build()?;
         Ok(transport)
     }
 
