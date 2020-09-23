@@ -413,13 +413,30 @@ impl Transport {
     }
 
     /// Creates a new instance of a [Transport] configured with a
-    /// [StaticNodeListConnectionPool]
+    /// [MultiNodeConnectionPool] that does not refresh
     pub fn static_node_list(urls: Vec<&str>) -> Result<Transport, Error> {
         let urls: Vec<Url> = urls
             .iter()
             .map(|url| Url::parse(url))
             .collect::<Result<Vec<_>, _>>()?;
         let conn_pool = MultiNodeConnectionPool::round_robin(urls, None);
+        let transport = TransportBuilder::new(conn_pool).build()?;
+        Ok(transport)
+    }
+
+    /// Creates a new instance of a [Transport] configured with a
+    /// [MultiNodeConnectionPool]
+    ///
+    /// * `reseed_frequency` - frequency at which connections should be refreshed in seconds
+    pub fn sniffing_node_list(
+        urls: Vec<&str>,
+        reseed_frequency: Duration,
+    ) -> Result<Transport, Error> {
+        let urls: Vec<Url> = urls
+            .iter()
+            .map(|url| Url::parse(url))
+            .collect::<Result<Vec<_>, _>>()?;
+        let conn_pool = MultiNodeConnectionPool::round_robin(urls, Some(reseed_frequency));
         let transport = TransportBuilder::new(conn_pool).build()?;
         Ok(transport)
     }
