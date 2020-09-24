@@ -38,6 +38,7 @@ use crate::{
 use base64::{engine::general_purpose::STANDARD as BASE64_STANDARD, write::EncoderWriter, Engine};
 use bytes::BytesMut;
 use lazy_static::lazy_static;
+use regex::Regex;
 use serde::Serialize;
 use serde_json::Value;
 use std::{
@@ -102,6 +103,10 @@ impl fmt::Display for BuildError {
 
 /// Default address to Elasticsearch running on `https://localhost:9200`
 pub static DEFAULT_ADDRESS: &str = "https://localhost:9200";
+lazy_static! {
+    static ref ADDRESS_REGEX: Regex =
+        Regex::new(r"((?P<fqdn>[^/]+)/)?(?P<ip>[^:]+|\[[\da-fA-F:\.]+\]):(?P<port>\d+)$").unwrap();
+}
 
 lazy_static! {
     /// Client metadata header: service, language, transport, followed by additional information
@@ -453,7 +458,7 @@ impl Transport {
         Ok(transport)
     }
 
-    pub fn request_builder<B, Q>(
+    fn request_builder<B, Q>(
         &self,
         connection: &Connection,
         method: Method,
@@ -535,6 +540,28 @@ impl Transport {
         Ok(request_builder)
     }
 
+    fn parse_to_url(address: &str, scheme: &str) -> Result<Url, Error> {
+        if address.is_empty() {
+            return Err(crate::error::lib("Bound Address is empty"));
+        }
+
+        let matches = ADDRESS_REGEX
+            .captures(address)
+            .ok_or_else(|| crate::lib(format!("error parsing address into url: {}", address)))?;
+
+        let host = matches
+            .name("fqdn")
+            .or_else(|| Some(matches.name("ip").unwrap()))
+            .unwrap()
+            .as_str()
+            .trim();
+        let port = matches.name("port").unwrap().as_str().trim();
+
+        Ok(Url::parse(
+            format!("{}://{}:{}", scheme, host, port).as_str(),
+        )?)
+    }
+
     /// Creates an asynchronous request that can be awaited
     pub async fn send<B, Q>(
         &self,
@@ -557,7 +584,7 @@ impl Transport {
             let node_request = self.request_builder(
                 &connection,
                 Method::Get,
-                "_nodes/_all/http",
+                "_nodes/http?filter_path=nodes.*.http",
                 headers.clone(),
                 None::<&Q>,
                 None::<B>,
@@ -570,12 +597,17 @@ impl Transport {
                 .unwrap()
                 .iter()
                 .map(|h| {
-                    let url = format!(
-                        "{}://{}",
-                        scheme,
-                        h.1["http"]["publish_address"].as_str().unwrap()
-                    );
-                    let url = Url::parse(&url).unwrap();
+                    let address = h.1["http"]["publish_address"]
+                        .as_str()
+                        .or_else(|| {
+                            Some(
+                                h.1["http"]["bound_address"].as_array().unwrap()[0]
+                                    .as_str()
+                                    .unwrap(),
+                            )
+                        })
+                        .unwrap();
+                    let url = Self::parse_to_url(address, scheme).unwrap();
                     Connection::new(url)
                 })
                 .collect();
@@ -780,10 +812,10 @@ impl ConnectionPool for CloudConnectionPool {
 
 /// A Connection Pool that manages a static connection of nodes
 #[derive(Debug, Clone)]
-pub struct MultiNodeConnectionPool<LoadBalancing = RoundRobin> {
+pub struct MultiNodeConnectionPool<ConnSelector = RoundRobin> {
     inner: Arc<RwLock<MultiNodeConnectionPoolInner>>,
     reseed_frequency: Option<Duration>,
-    load_balancing_strategy: LoadBalancing,
+    load_balancing_strategy: ConnSelector,
     reseeding: Arc<AtomicBool>,
 }
 
@@ -793,9 +825,9 @@ pub struct MultiNodeConnectionPoolInner {
     connections: Vec<Connection>,
 }
 
-impl<LoadBalancing> ConnectionPool for MultiNodeConnectionPool<LoadBalancing>
+impl<ConnSelector> ConnectionPool for MultiNodeConnectionPool<ConnSelector>
 where
-    LoadBalancing: LoadBalancingStrategy + Clone,
+    ConnSelector: ConnectionSelector + Clone,
 {
     fn next(&self) -> Connection {
         let inner = self.inner.read().expect("lock poisoned");
@@ -859,9 +891,9 @@ impl MultiNodeConnectionPool<RoundRobin> {
 }
 
 /** The strategy selects an address from a given collection. */
-pub trait LoadBalancingStrategy: Send + Sync + Debug {
+pub trait ConnectionSelector: Send + Sync + Debug {
     /** Try get the next connection. */
-    fn try_next<'a>(&self, connections: &'a [Connection]) -> Result<Connection, Error>;
+    fn try_next(&self, connections: &[Connection]) -> Result<Connection, Error>;
 }
 
 /** A round-robin strategy cycles through nodes sequentially. */
@@ -878,8 +910,8 @@ impl Default for RoundRobin {
     }
 }
 
-impl LoadBalancingStrategy for RoundRobin {
-    fn try_next<'a>(&self, connections: &'a [Connection]) -> Result<Connection, Error> {
+impl ConnectionSelector for RoundRobin {
+    fn try_next(&self, connections: &[Connection]) -> Result<Connection, Error> {
         if connections.is_empty() {
             Err(crate::error::lib("Connection list empty"))
         } else {
@@ -896,7 +928,7 @@ pub mod tests {
     use crate::auth::ClientCertificate;
     use crate::http::transport::{
         CloudId, Connection, ConnectionPool, MultiNodeConnectionPool, SingleNodeConnectionPool,
-        TransportBuilder,
+        Transport, TransportBuilder,
     };
     use regex::Regex;
     use std::time::{Duration, Instant};
@@ -940,6 +972,24 @@ pub mod tests {
             Url::parse("https://3dadf823f05388497ea684236d918a1a.cloud-endpoint.example").unwrap(),
             cloud.url
         );
+    }
+
+    #[test]
+    fn test_url_parsing_where_hostname_and_ip_present() {
+        let url = Transport::parse_to_url("localhost/127.0.0.1:9200", "http").unwrap();
+        assert_eq!(url.into_string(), "http://localhost:9200/");
+    }
+
+    #[test]
+    fn test_url_parsing_where_only_ip_present() {
+        let url = Transport::parse_to_url("127.0.0.1:9200", "http").unwrap();
+        assert_eq!(url.into_string(), "http://127.0.0.1:9200/");
+    }
+
+    #[test]
+    fn test_url_parsing_where_only_hostname_present() {
+        let url = Transport::parse_to_url("localhost:9200", "http").unwrap();
+        assert_eq!(url.into_string(), "http://localhost:9200/");
     }
 
     #[test]
