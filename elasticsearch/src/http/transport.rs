@@ -48,6 +48,7 @@ use std::{
         atomic::{AtomicBool, AtomicUsize, Ordering},
         Arc, RwLock,
     },
+    thread::spawn,
     time::{Duration, Instant},
 };
 use url::Url;
@@ -278,7 +279,7 @@ impl TransportBuilder {
         let client = client_builder.build()?;
         Ok(Transport {
             client,
-            conn_pool: self.conn_pool,
+            conn_pool: Arc::new(self.conn_pool),
             credentials: self.credentials,
         })
     }
@@ -325,7 +326,7 @@ impl Connection {
 pub struct Transport {
     client: reqwest::Client,
     credentials: Option<Credentials>,
-    conn_pool: Box<dyn ConnectionPool>,
+    conn_pool: Arc<Box<dyn ConnectionPool>>,
 }
 
 impl Transport {
@@ -507,8 +508,9 @@ impl Transport {
     {
         // Threads will execute against old connection pool during reseed
         if self.conn_pool.reseedable() {
-            let connection = self.conn_pool.next();
-            let scheme = &connection.url.scheme();
+            let local_conn_pool = self.conn_pool.clone();
+            let connection = local_conn_pool.next();
+
             // Build node info request
             let node_request = self.request_builder(
                 &connection,
@@ -519,28 +521,36 @@ impl Transport {
                 None::<B>,
                 timeout,
             )?;
-            let resp = node_request.send().await?;
-            let json: Value = resp.json().await?;
-            let connections: Vec<Connection> = json["nodes"]
-                .as_object()
-                .unwrap()
-                .iter()
-                .map(|h| {
-                    let address = h.1["http"]["publish_address"]
-                        .as_str()
-                        .or_else(|| {
-                            Some(
-                                h.1["http"]["bound_address"].as_array().unwrap()[0]
-                                    .as_str()
-                                    .unwrap(),
-                            )
+
+            spawn(move || {
+                // TODO: Log reseed failures
+                let mut rt = tokio::runtime::Runtime::new().expect("Cannot create tokio runtime");
+                rt.block_on(async {
+                    let scheme = connection.url.scheme();
+                    let resp = node_request.send().await.unwrap();
+                    let json: Value = resp.json().await.unwrap();
+                    let connections: Vec<Connection> = json["nodes"]
+                        .as_object()
+                        .unwrap()
+                        .iter()
+                        .map(|h| {
+                            let address = h.1["http"]["publish_address"]
+                                .as_str()
+                                .or_else(|| {
+                                    Some(
+                                        h.1["http"]["bound_address"].as_array().unwrap()[0]
+                                            .as_str()
+                                            .unwrap(),
+                                    )
+                                })
+                                .unwrap();
+                            let url = Self::parse_to_url(address, scheme).unwrap();
+                            Connection::new(url)
                         })
-                        .unwrap();
-                    let url = Self::parse_to_url(address, scheme).unwrap();
-                    Connection::new(url)
+                        .collect();
+                    local_conn_pool.reseed(connections);
                 })
-                .collect();
-            self.conn_pool.reseed(connections);
+            });
         }
 
         let connection = self.conn_pool.next();
@@ -743,7 +753,7 @@ impl ConnectionPool for CloudConnectionPool {
 pub struct MultiNodeConnectionPool<ConnSelector = RoundRobin> {
     inner: Arc<RwLock<MultiNodeConnectionPoolInner>>,
     reseed_frequency: Option<Duration>,
-    load_balancing_strategy: ConnSelector,
+    connection_selector: ConnSelector,
     reseeding: Arc<AtomicBool>,
 }
 
@@ -759,7 +769,7 @@ where
 {
     fn next(&self) -> Connection {
         let inner = self.inner.read().expect("lock poisoned");
-        self.load_balancing_strategy
+        self.connection_selector
             .try_next(&inner.connections)
             .unwrap()
     }
@@ -808,10 +818,10 @@ impl MultiNodeConnectionPool<RoundRobin> {
             }));
         let reseeding = Arc::new(AtomicBool::new(false));
 
-        let load_balancing_strategy = RoundRobin::default();
+        let connection_selector = RoundRobin::default();
         Self {
             inner,
-            load_balancing_strategy,
+            connection_selector,
             reseed_frequency,
             reseeding,
         }
