@@ -301,14 +301,13 @@ pub struct Connection {
 impl Connection {
     /// Creates a new instance of a [Connection].
     ///
-    /// If the passed [url::Url] does not have a trailing forward slash, a new
-    /// url is constructed from the passed url, with a trailing slash.
+    /// If the passed [url::Url] path does not have a trailing forward slash, a trailing
+    /// forward slash will be appended
     pub fn new(url: Url) -> Self {
-        let url = if !url.path().ends_with('/') {
-            Url::parse(format!("{}/", url.as_str()).as_ref()).unwrap()
-        } else {
-            url
-        };
+        let mut url = url;
+        if !url.path().ends_with('/') {
+            url.set_path(&format!("{}/", url.path()));
+        }
 
         let url = Arc::new(url);
 
@@ -914,7 +913,7 @@ pub mod tests {
     }
 
     #[test]
-    fn can_parse_cloud_id() {
+    fn can_parse_cloud_id_with_kibana_uuid() {
         let base64 = base64::encode("cloud-endpoint.example$3dadf823f05388497ea684236d918a1a$3f26e1609cf54a0f80137a80de560da4");
         let cloud_id = format!("my_cluster:{}", base64);
         let result = CloudId::parse(&cloud_id);
@@ -923,6 +922,35 @@ pub mod tests {
         assert_eq!("my_cluster", cloud.name);
         assert_eq!(
             Url::parse("https://3dadf823f05388497ea684236d918a1a.cloud-endpoint.example").unwrap(),
+            cloud.url
+        );
+    }
+
+    #[test]
+    fn can_parse_cloud_id_without_kibana_uuid() {
+        let base64 = base64::encode("cloud-endpoint.example$3dadf823f05388497ea684236d918a1a$");
+        let cloud_id = format!("my_cluster:{}", base64);
+        let result = CloudId::parse(&cloud_id);
+        assert!(result.is_ok());
+        let cloud = result.unwrap();
+        assert_eq!("my_cluster", cloud.name);
+        assert_eq!(
+            Url::parse("https://3dadf823f05388497ea684236d918a1a.cloud-endpoint.example").unwrap(),
+            cloud.url
+        );
+    }
+
+    #[test]
+    fn can_parse_cloud_id_with_different_port() {
+        let base64 = base64::encode("cloud-endpoint.example:4463$3dadf823f05388497ea684236d918a1a$3f26e1609cf54a0f80137a80de560da4");
+        let cloud_id = format!("my_cluster:{}", base64);
+        let result = CloudId::parse(&cloud_id);
+        assert!(result.is_ok());
+        let cloud = result.unwrap();
+        assert_eq!("my_cluster", cloud.name);
+        assert_eq!(
+            Url::parse("https://3dadf823f05388497ea684236d918a1a.cloud-endpoint.example:4463")
+                .unwrap(),
             cloud.url
         );
     }
@@ -943,7 +971,7 @@ pub mod tests {
     }
 
     #[test]
-    fn cloud_id_first_cannot_be_empty() {
+    fn cloud_id_first_part_cannot_be_empty() {
         let base64 = base64::encode("cloud-endpoint.example$3dadf823f05388497ea684236d918a1a$3f26e1609cf54a0f80137a80de560da4");
         let cloud_id = format!(":{}", base64);
         let cloud = CloudId::parse(&cloud_id);
