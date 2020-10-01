@@ -220,13 +220,8 @@ script = ['''
     echo       By default, peforms a dry run by passing --dry-run, but publish flags can be overridden with CARGO_MAKE_CARGO_PUBLISH_FLAGS environment variable
     echo
     echo Most tasks use these environment variables:
-    if is_windows
-        echo - STACK_VERSION (default '%STACK_VERSION%'): the version of Elasticsearch
-        echo - TEST_SUITE ('oss' or 'xpack', default '%TEST_SUITE%'): the distribution of Elasticsearch
-    else
-        echo - STACK_VERSION (default '$STACK_VERSION'): the version of Elasticsearch
-        echo - TEST_SUITE ('oss' or 'xpack', default '$TEST_SUITE'): the distribution of Elasticsearch
-    end
+    echo - STACK_VERSION (default '${STACK_VERSION}'): the version of Elasticsearch
+    echo - TEST_SUITE ('oss' or 'xpack', default '${TEST_SUITE}'): the distribution of Elasticsearch
     echo - CI (default not set): set when running on CI to determine whether to start Elasticsearch and format test output as JSON
     echo
     echo Run 'cargo make --list-all-steps' for a complete list of available tasks.
