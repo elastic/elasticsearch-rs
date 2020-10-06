@@ -11,6 +11,17 @@ Further resources:
 
 
 [discrete]
+[[features]]
+=== Features
+
+* Fluent builders for all {es} REST API endpoints
+* Persistent keep-alive connections
+* TLS support with system or custom certificates
+* Proxy support with authentication
+* Async support with Tokio
+
+
+[discrete]
 === {es} Version Compatibility
 
 |===
