@@ -11,6 +11,11 @@ features:
 
 # tests to skip generating and compiling a test for
 tests:
+  xpack/api_key/10_basic.yml:
+    # Invalid regex: "^(${api_key_id_2}|${api_key_id_3})$"
+    # --> missing expansion of stashed values
+    - "Test invalidate api keys"
+
   xpack/ssl/10_basic.yml:
     # this test returns the CA cert before the cert, so always fails
     - "Test get SSL certificates"
@@ -24,9 +29,36 @@ tests:
     # this test always returns 3 buckets where 1 is expected
     - "Test overall buckets given overall_score filter"
 
+  xpack/ml/filter_crud.yml:
+    # Warning "this request accesses system indices..." to match is wrong on all tests
+    - "*"
+
+  xpack/ml/delete_expired_data.yml:
+    # Warning "this request accesses system indices..." to match is wrong.
+    - "Test delete expired data with job id"
+
+  xpack/runtime_fields/20_long.yml:
+    # expected value ... to match Number(40.0) but was Number(40)
+    - "terms agg"
+
   xpack/snapshot/10_basic.yml:
     # this test fails because it can't access snapshot to restore it
     - "Create a source only snapshot and then restore it"
+
+  # Test generator currently doesn't handle unsigned long values.
+  # We skip all tests as even the setup code will fail to compile.
+  xpack/unsigned_long/10_basic.yml:
+    - "*"
+  xpack/unsigned_long/20_null_value.yml:
+    - "*"
+  xpack/unsigned_long/30_multi_fields.yml:
+    - "*"
+  xpack/unsigned_long/40_different_numeric.yml:
+    - "*"
+  xpack/unsigned_long/50_script_values.yml:
+    - "*"
+  xpack/unsigned_long/60_collapse.yml:
+    - "*"
 
   oss/cat.aliases/10_basic.yml:
     # this test fails as the regex needs a \n before the ending $
