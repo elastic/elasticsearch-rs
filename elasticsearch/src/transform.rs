@@ -204,6 +204,7 @@ pub struct TransformGetTransform<'a, 'b> {
     parts: TransformGetTransformParts<'b>,
     allow_no_match: Option<bool>,
     error_trace: Option<bool>,
+    exclude_generated: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     from: Option<i32>,
     headers: HeaderMap,
@@ -223,6 +224,7 @@ impl<'a, 'b> TransformGetTransform<'a, 'b> {
             headers,
             allow_no_match: None,
             error_trace: None,
+            exclude_generated: None,
             filter_path: None,
             from: None,
             human: None,
@@ -240,6 +242,11 @@ impl<'a, 'b> TransformGetTransform<'a, 'b> {
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
         self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "Omits fields that are illegal to set on transform PUT"]
+    pub fn exclude_generated(mut self, exclude_generated: bool) -> Self {
+        self.exclude_generated = Some(exclude_generated);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -294,6 +301,7 @@ impl<'a, 'b> TransformGetTransform<'a, 'b> {
             struct QueryParams<'b> {
                 allow_no_match: Option<bool>,
                 error_trace: Option<bool>,
+                exclude_generated: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 from: Option<i32>,
@@ -305,6 +313,7 @@ impl<'a, 'b> TransformGetTransform<'a, 'b> {
             let query_params = QueryParams {
                 allow_no_match: self.allow_no_match,
                 error_trace: self.error_trace,
+                exclude_generated: self.exclude_generated,
                 filter_path: self.filter_path,
                 from: self.from,
                 human: self.human,

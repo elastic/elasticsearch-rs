@@ -2876,6 +2876,7 @@ pub struct MlGetDatafeeds<'a, 'b> {
     allow_no_datafeeds: Option<bool>,
     allow_no_match: Option<bool>,
     error_trace: Option<bool>,
+    exclude_generated: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
@@ -2894,6 +2895,7 @@ impl<'a, 'b> MlGetDatafeeds<'a, 'b> {
             allow_no_datafeeds: None,
             allow_no_match: None,
             error_trace: None,
+            exclude_generated: None,
             filter_path: None,
             human: None,
             pretty: None,
@@ -2914,6 +2916,11 @@ impl<'a, 'b> MlGetDatafeeds<'a, 'b> {
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
         self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "Omits fields that are illegal to set on datafeed PUT"]
+    pub fn exclude_generated(mut self, exclude_generated: bool) -> Self {
+        self.exclude_generated = Some(exclude_generated);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -2959,6 +2966,7 @@ impl<'a, 'b> MlGetDatafeeds<'a, 'b> {
                 allow_no_datafeeds: Option<bool>,
                 allow_no_match: Option<bool>,
                 error_trace: Option<bool>,
+                exclude_generated: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
@@ -2969,6 +2977,7 @@ impl<'a, 'b> MlGetDatafeeds<'a, 'b> {
                 allow_no_datafeeds: self.allow_no_datafeeds,
                 allow_no_match: self.allow_no_match,
                 error_trace: self.error_trace,
+                exclude_generated: self.exclude_generated,
                 filter_path: self.filter_path,
                 human: self.human,
                 pretty: self.pretty,
@@ -3523,6 +3532,7 @@ pub struct MlGetJobs<'a, 'b> {
     allow_no_jobs: Option<bool>,
     allow_no_match: Option<bool>,
     error_trace: Option<bool>,
+    exclude_generated: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
@@ -3541,6 +3551,7 @@ impl<'a, 'b> MlGetJobs<'a, 'b> {
             allow_no_jobs: None,
             allow_no_match: None,
             error_trace: None,
+            exclude_generated: None,
             filter_path: None,
             human: None,
             pretty: None,
@@ -3561,6 +3572,11 @@ impl<'a, 'b> MlGetJobs<'a, 'b> {
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
         self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "Omits fields that are illegal to set on job PUT"]
+    pub fn exclude_generated(mut self, exclude_generated: bool) -> Self {
+        self.exclude_generated = Some(exclude_generated);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -3606,6 +3622,7 @@ impl<'a, 'b> MlGetJobs<'a, 'b> {
                 allow_no_jobs: Option<bool>,
                 allow_no_match: Option<bool>,
                 error_trace: Option<bool>,
+                exclude_generated: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
@@ -3616,6 +3633,7 @@ impl<'a, 'b> MlGetJobs<'a, 'b> {
                 allow_no_jobs: self.allow_no_jobs,
                 allow_no_match: self.allow_no_match,
                 error_trace: self.error_trace,
+                exclude_generated: self.exclude_generated,
                 filter_path: self.filter_path,
                 human: self.human,
                 pretty: self.pretty,

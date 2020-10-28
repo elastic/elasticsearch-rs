@@ -210,6 +210,175 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Snapshot Clone API"]
+pub enum SnapshotCloneParts<'b> {
+    #[doc = "Repository, Snapshot and TargetSnapshot"]
+    RepositorySnapshotTargetSnapshot(&'b str, &'b str, &'b str),
+}
+impl<'b> SnapshotCloneParts<'b> {
+    #[doc = "Builds a relative URL path to the Snapshot Clone API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SnapshotCloneParts::RepositorySnapshotTargetSnapshot(
+                ref repository,
+                ref snapshot,
+                ref target_snapshot,
+            ) => {
+                let encoded_repository: Cow<str> =
+                    percent_encode(repository.as_bytes(), PARTS_ENCODED).into();
+                let encoded_snapshot: Cow<str> =
+                    percent_encode(snapshot.as_bytes(), PARTS_ENCODED).into();
+                let encoded_target_snapshot: Cow<str> =
+                    percent_encode(target_snapshot.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    20usize
+                        + encoded_repository.len()
+                        + encoded_snapshot.len()
+                        + encoded_target_snapshot.len(),
+                );
+                p.push_str("/_snapshot/");
+                p.push_str(encoded_repository.as_ref());
+                p.push_str("/");
+                p.push_str(encoded_snapshot.as_ref());
+                p.push_str("/_clone/");
+                p.push_str(encoded_target_snapshot.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Snapshot Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nClones indices from one snapshot into another snapshot in the same repository."]
+pub struct SnapshotClone<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: SnapshotCloneParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    master_timeout: Option<&'b str>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b, B> SnapshotClone<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [SnapshotClone] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: SnapshotCloneParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        SnapshotClone {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> SnapshotClone<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        SnapshotClone {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Snapshot Clone API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                master_timeout: Option<&'b str>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Snapshot Create API"]
 pub enum SnapshotCreateParts<'b> {
     #[doc = "Repository and Snapshot"]
@@ -1625,6 +1794,10 @@ impl<'a> Snapshot<'a> {
         parts: SnapshotCleanupRepositoryParts<'b>,
     ) -> SnapshotCleanupRepository<'a, 'b, ()> {
         SnapshotCleanupRepository::new(self.transport(), parts)
+    }
+    #[doc = "[Snapshot Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nClones indices from one snapshot into another snapshot in the same repository."]
+    pub fn clone<'b>(&'a self, parts: SnapshotCloneParts<'b>) -> SnapshotClone<'a, 'b, ()> {
+        SnapshotClone::new(self.transport(), parts)
     }
     #[doc = "[Snapshot Create API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nCreates a snapshot in a repository."]
     pub fn create<'b>(&'a self, parts: SnapshotCreateParts<'b>) -> SnapshotCreate<'a, 'b, ()> {
