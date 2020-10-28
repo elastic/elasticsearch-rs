@@ -291,7 +291,7 @@ impl ApiCall {
         // arguments for the API call
         for (k, v) in hash.iter() {
             match k.as_str().unwrap() {
-                "body" => body = Self::generate_body(endpoint, v),
+                "body" => body = Self::generate_body(endpoint, v)?,
                 "ignore" => {
                     ignore = match v.as_i64() {
                         Some(i) => Some(i as u16),
@@ -853,9 +853,9 @@ impl ApiCall {
     /// When reading a body from the YAML test, it'll be converted to a Yaml variant,
     /// usually a Hash. To get the JSON representation back requires converting
     /// back to JSON
-    fn generate_body(endpoint: &ApiEndpoint, v: &Yaml) -> Option<Tokens> {
+    fn generate_body(endpoint: &ApiEndpoint, v: &Yaml) -> Result<Option<Tokens>, failure::Error> {
         match v {
-            Yaml::Null => None,
+            Yaml::Null => Ok(None),
             Yaml::String(s) => {
                 let json = {
                     let json = replace_set(s);
@@ -884,10 +884,10 @@ impl ApiCall {
                             quote! { JsonBody::from(json!(#ident)) }
                         })
                         .collect();
-                    Some(quote!(.body(vec![#(#values),*])))
+                    Ok(Some(quote!(.body(vec![#(#values),*]))))
                 } else {
                     let ident = syn::Ident::from(json);
-                    Some(quote!(.body(json!{#ident})))
+                    Ok(Some(quote!(.body(json!{#ident}))))
                 }
             }
             _ => {
@@ -898,7 +898,7 @@ impl ApiCall {
                 }
 
                 if endpoint.supports_nd_body() {
-                    let values: Vec<serde_json::Value> = serde_yaml::from_str(&s).unwrap();
+                    let values: Vec<serde_json::Value> = serde_yaml::from_str(&s)?;
                     let json: Vec<Tokens> = values
                         .iter()
                         .map(|value| {
@@ -915,15 +915,15 @@ impl ApiCall {
                             }
                         })
                         .collect();
-                    Some(quote!(.body(vec![ #(#json),* ])))
+                    Ok(Some(quote!(.body(vec![ #(#json),* ]))))
                 } else {
-                    let value: serde_json::Value = serde_yaml::from_str(&s).unwrap();
-                    let mut json = serde_json::to_string_pretty(&value).unwrap();
+                    let value: serde_json::Value = serde_yaml::from_str(&s)?;
+                    let mut json = serde_json::to_string_pretty(&value)?;
                     json = replace_set(json);
                     json = replace_i64(json);
                     let ident = syn::Ident::from(json);
 
-                    Some(quote!(.body(json!{#ident})))
+                    Ok(Some(quote!(.body(json!{#ident}))))
                 }
             }
         }
