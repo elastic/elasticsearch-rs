@@ -10,7 +10,7 @@ script_path=$(dirname $(realpath -s $0))
 source $script_path/functions/imports.sh
 set -euo pipefail
 
-RUST_TOOLCHAIN=${RUST_TOOLCHAIN-nightly-2020-07-27}
+RUST_TOOLCHAIN=${RUST_TOOLCHAIN-latest}
 ELASTICSEARCH_URL=${ELASTICSEARCH_URL-"$elasticsearch_url"}
 elasticsearch_container=${elasticsearch_container-}
 

@@ -99,7 +99,7 @@ END
     --ulimit nofile=65536:65536 \
     --ulimit memlock=-1:-1 \
     --detach="$local_detach" \
-    --health-cmd="curl $cert_validation_flags --fail $elasticsearch_url/_cluster/health || exit 1" \
+    --health-cmd="curl $cert_validation_flags --silent --fail $elasticsearch_url/_cluster/health || exit 1" \
     --health-interval=2s \
     --health-retries=20 \
     --health-timeout=2s \
