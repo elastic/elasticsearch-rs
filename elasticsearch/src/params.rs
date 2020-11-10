@@ -120,7 +120,7 @@ pub enum OpType {
     Create,
 }
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
-#[doc = "If `true` then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` (the default) then do nothing with refreshes."]
+#[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
 pub enum Refresh {
     #[serde(rename = "true")]
     True,
@@ -200,6 +200,8 @@ pub enum VersionType {
     External,
     #[serde(rename = "external_gte")]
     ExternalGte,
+    #[serde(rename = "force")]
+    Force,
 }
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 #[doc = "Wait until all currently queued events with the given priority are processed"]

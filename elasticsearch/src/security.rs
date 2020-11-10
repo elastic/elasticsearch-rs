@@ -321,6 +321,150 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Security Clear Api Key Cache API"]
+pub enum SecurityClearApiKeyCacheParts<'b> {
+    #[doc = "Ids"]
+    Ids(&'b [&'b str]),
+}
+impl<'b> SecurityClearApiKeyCacheParts<'b> {
+    #[doc = "Builds a relative URL path to the Security Clear Api Key Cache API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SecurityClearApiKeyCacheParts::Ids(ref ids) => {
+                let ids_str = ids.join(",");
+                let encoded_ids: Cow<str> =
+                    percent_encode(ids_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(32usize + encoded_ids.len());
+                p.push_str("/_security/api_key/");
+                p.push_str(encoded_ids.as_ref());
+                p.push_str("/_clear_cache");
+                p.into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Security Clear Api Key Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-api-clear-api-key-cache.html)\n\nClear a subset or all entries from the API key cache."]
+pub struct SecurityClearApiKeyCache<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: SecurityClearApiKeyCacheParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b, B> SecurityClearApiKeyCache<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [SecurityClearApiKeyCache] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: SecurityClearApiKeyCacheParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        SecurityClearApiKeyCache {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> SecurityClearApiKeyCache<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        SecurityClearApiKeyCache {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Security Clear Api Key Cache API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Clear Cached Privileges API"]
 pub enum SecurityClearCachedPrivilegesParts<'b> {
     #[doc = "Application"]
@@ -2137,7 +2281,7 @@ impl<'a, 'b> SecurityGetPrivileges<'a, 'b> {
 #[doc = "API parts for the Security Get Role API"]
 pub enum SecurityGetRoleParts<'b> {
     #[doc = "Name"]
-    Name(&'b str),
+    Name(&'b [&'b str]),
     #[doc = "No parts"]
     None,
 }
@@ -2146,7 +2290,9 @@ impl<'b> SecurityGetRoleParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SecurityGetRoleParts::Name(ref name) => {
-                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_name.len());
                 p.push_str("/_security/role/");
                 p.push_str(encoded_name.as_ref());
@@ -2258,7 +2404,7 @@ impl<'a, 'b> SecurityGetRole<'a, 'b> {
 #[doc = "API parts for the Security Get Role Mapping API"]
 pub enum SecurityGetRoleMappingParts<'b> {
     #[doc = "Name"]
-    Name(&'b str),
+    Name(&'b [&'b str]),
     #[doc = "No parts"]
     None,
 }
@@ -2267,7 +2413,9 @@ impl<'b> SecurityGetRoleMappingParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SecurityGetRoleMappingParts::Name(ref name) => {
-                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(24usize + encoded_name.len());
                 p.push_str("/_security/role_mapping/");
                 p.push_str(encoded_name.as_ref());
@@ -2738,6 +2886,151 @@ impl<'a, 'b> SecurityGetUserPrivileges<'a, 'b> {
             Some(query_params)
         };
         let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Security Grant Api Key API"]
+pub enum SecurityGrantApiKeyParts {
+    #[doc = "No parts"]
+    None,
+}
+impl SecurityGrantApiKeyParts {
+    #[doc = "Builds a relative URL path to the Security Grant Api Key API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SecurityGrantApiKeyParts::None => "/_security/api_key/grant".into(),
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Security Grant Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-api-grant-api-key.html)\n\nCreates an API key on behalf of another user."]
+pub struct SecurityGrantApiKey<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: SecurityGrantApiKeyParts,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    refresh: Option<Refresh>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b, B> SecurityGrantApiKey<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [SecurityGrantApiKey]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        SecurityGrantApiKey {
+            transport,
+            parts: SecurityGrantApiKeyParts::None,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            refresh: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> SecurityGrantApiKey<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        SecurityGrantApiKey {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            refresh: self.refresh,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Refresh) -> Self {
+        self.refresh = Some(refresh);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Security Grant Api Key API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                refresh: Option<Refresh>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                refresh: self.refresh,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
         let response = self
             .transport
             .send(method, &path, headers, query_string.as_ref(), body, timeout)
@@ -3785,6 +4078,13 @@ impl<'a> Security<'a> {
     ) -> SecurityChangePassword<'a, 'b, ()> {
         SecurityChangePassword::new(self.transport(), parts)
     }
+    #[doc = "[Security Clear Api Key Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-api-clear-api-key-cache.html)\n\nClear a subset or all entries from the API key cache."]
+    pub fn clear_api_key_cache<'b>(
+        &'a self,
+        parts: SecurityClearApiKeyCacheParts<'b>,
+    ) -> SecurityClearApiKeyCache<'a, 'b, ()> {
+        SecurityClearApiKeyCache::new(self.transport(), parts)
+    }
     #[doc = "[Security Clear Cached Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-api-clear-privilege-cache.html)\n\nEvicts application privileges from the native application privileges cache."]
     pub fn clear_cached_privileges<'b>(
         &'a self,
@@ -3889,6 +4189,10 @@ impl<'a> Security<'a> {
     #[doc = "[Security Get User Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-api-get-privileges.html)\n\nRetrieves application privileges."]
     pub fn get_user_privileges<'b>(&'a self) -> SecurityGetUserPrivileges<'a, 'b> {
         SecurityGetUserPrivileges::new(self.transport())
+    }
+    #[doc = "[Security Grant Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-api-grant-api-key.html)\n\nCreates an API key on behalf of another user."]
+    pub fn grant_api_key<'b>(&'a self) -> SecurityGrantApiKey<'a, 'b, ()> {
+        SecurityGrantApiKey::new(self.transport())
     }
     #[doc = "[Security Has Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-api-has-privileges.html)\n\nDetermines whether the specified user has a specified list of privileges."]
     pub fn has_privileges<'b>(
