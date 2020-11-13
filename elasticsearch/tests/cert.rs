@@ -33,9 +33,12 @@ use common::*;
 use elasticsearch::cert::{Certificate, CertificateValidation};
 use os_type::OSType;
 
+#[allow(dead_code)]
 static CA_CERT: &[u8] = include_bytes!("../../.ci/certs/ca.crt");
+#[allow(dead_code)]
 static CA_CHAIN_CERT: &[u8] = include_bytes!("../../.ci/certs/ca-chain.crt");
 static TESTNODE_CERT: &[u8] = include_bytes!("../../.ci/certs/testnode.crt");
+#[cfg(feature = "native-tls")]
 static TESTNODE_NO_SAN_CERT: &[u8] = include_bytes!("../../.ci/certs/testnode_no_san.crt");
 
 fn expected_error_message() -> String {
@@ -116,7 +119,7 @@ async fn none_certificate_validation() -> Result<(), failure::Error> {
 /// Certificate provided by the server contains the one given to the client
 /// within the authority chain, and hostname matches
 #[tokio::test]
-#[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+#[cfg(all(not(target_os = "macos"), any(feature = "native-tls", feature = "rustls-tls")))]
 async fn full_certificate_ca_validation() -> Result<(), failure::Error> {
     let cert = Certificate::from_pem(CA_CERT)?;
     let builder =
@@ -128,7 +131,7 @@ async fn full_certificate_ca_validation() -> Result<(), failure::Error> {
 
 /// Try to load a certificate chain.
 #[tokio::test]
-#[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+#[cfg(all(any(feature = "native-tls", feature = "rustls-tls"), not(target_os = "macos")))]
 async fn full_certificate_ca_chain_validation() -> Result<(), failure::Error> {
     let mut cert = Certificate::from_pem(CA_CHAIN_CERT)?;
     cert.append(Certificate::from_pem(CA_CERT)?);
@@ -154,7 +157,7 @@ async fn full_certificate_validation() -> Result<(), failure::Error> {
 
 /// Certificate provided by the server is the one given to the client and hostname matches, using rustls-tls
 #[tokio::test]
-#[cfg(feature = "rustls-tls")]
+#[cfg(all(linux, feature = "rustls-tls"))]
 async fn full_certificate_validation_rustls_tls() -> Result<(), failure::Error> {
     let mut chain: Vec<u8> = Vec::with_capacity(TESTNODE_CERT.len() + CA_CERT.len());
     chain.extend(CA_CERT);
@@ -171,7 +174,7 @@ async fn full_certificate_validation_rustls_tls() -> Result<(), failure::Error> 
 /// Certificate provided by the server is the one given to the client. This fails on Linux because
 /// it appears that it also needs the CA for the cert
 #[tokio::test]
-#[cfg(all(unix, any(feature = "native-tls", feature = "rustls-tls")))]
+#[cfg(all(linux, any(feature = "native-tls", feature = "rustls-tls")))]
 async fn full_certificate_validation() -> Result<(), failure::Error> {
     let cert = Certificate::from_pem(TESTNODE_CERT)?;
     let builder =
@@ -228,10 +231,10 @@ async fn certificate_certificate_validation() -> Result<(), failure::Error> {
     let result = client.ping().send().await;
     let os_type = os_type::current_platform();
     match os_type.os_type {
-        OSType::OSX => match result {
-            Ok(_) => Ok(()),
-            Err(e) => Err(failure::err_msg(e.to_string())),
-        },
+        // OSType::OSX => match result {
+        //     Ok(_) => Ok(()),
+        //     Err(e) => Err(failure::err_msg(e.to_string())),
+        // },
         _ => match result {
             Ok(response) => Err(failure::err_msg(format!(
                 "Expected error but response was {}",
@@ -255,7 +258,7 @@ async fn certificate_certificate_validation() -> Result<(), failure::Error> {
 /// Certificate provided by the server contains the one given to the client
 /// within the authority chain
 #[tokio::test]
-#[cfg(feature = "native-tls")]
+#[cfg(all(feature = "native-tls", not(target_os = "macos")))]
 async fn certificate_certificate_ca_validation() -> Result<(), failure::Error> {
     let cert = Certificate::from_pem(CA_CERT)?;
     let builder =
