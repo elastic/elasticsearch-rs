@@ -193,7 +193,11 @@ script = [
 """
 cd elasticsearch
 echo "packaging elasticsearch crate: cargo package %{CARGO_MAKE_CARGO_PACKAGE_FLAGS}"
-cargo package %{CARGO_MAKE_CARGO_PACKAGE_FLAGS}
+if is_empty %{CARGO_MAKE_CARGO_PACKAGE_FLAGS}
+    exec cargo package
+else
+    exec cargo package %{CARGO_MAKE_CARGO_PACKAGE_FLAGS}
+end
 """
 ]
 
