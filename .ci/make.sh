@@ -42,11 +42,10 @@ esac
 
 docker run \
   --env "CI=true" \
-  --name test-runner \
+  --name make-elasticsearch-rs \
   --volume "${OUTPUT_DIR}:/usr/src/elasticsearch-rs/${output_folder}" \
   --volume ${repo}/test_results:/usr/src/elasticsearch-rs/test_results \
   --rm \
   elastic/elasticsearch-rs \
   echo 'something calling automation here using $TASK and $VERSION producing output in $OUTPUT_DIR'
-
 
