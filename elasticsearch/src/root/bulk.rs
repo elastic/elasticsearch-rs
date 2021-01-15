@@ -21,7 +21,7 @@ use crate::{
     params::{SourceFilter, VersionType},
     Error,
 };
-use bytes::{buf::BufMutExt, BufMut, Bytes, BytesMut};
+use bytes::{BufMut, Bytes, BytesMut};
 use serde::{
     ser::{SerializeMap, Serializer},
     Deserialize, Serialize,

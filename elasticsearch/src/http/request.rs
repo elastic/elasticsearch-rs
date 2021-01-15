@@ -19,7 +19,7 @@
 //! HTTP request components
 
 use crate::error::Error;
-use bytes::{buf::BufMutExt, BufMut, Bytes, BytesMut};
+use bytes::{BufMut, Bytes, BytesMut};
 use percent_encoding::AsciiSet;
 use serde::Serialize;
 
