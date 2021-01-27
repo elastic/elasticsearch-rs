@@ -83,9 +83,15 @@ dependencies = ["install-cargo2junit"]
 
 [tasks.run-elasticsearch]
 category = "Elasticsearch"
+private = true
 condition = { env_set = [ "STACK_VERSION", "TEST_SUITE" ], env_false = ["CARGO_MAKE_CI"] }
-command = "./.ci/run-elasticsearch.sh"
 dependencies = ["set-oss-env", "set-xpack-env"]
+
+[tasks.run-elasticsearch.linux]
+command = "./.ci/run-elasticsearch.sh"
+
+[tasks.run-elasticsearch.mac]
+command = "./.ci/run-elasticsearch.sh"
 
 [tasks.run-elasticsearch.windows]
 script_runner = "cmd"
