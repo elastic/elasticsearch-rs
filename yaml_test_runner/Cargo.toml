@@ -38,4 +38,4 @@ flate2 = "~1"
 globset = "~0.4"
 
 [dev-dependencies]
-tokio = { version = "0.2.0", default-features = false, features = ["macros", "tcp", "time"] }
+tokio = { version = "1.0", default-features = false, features = ["macros", "net", "time"] }
