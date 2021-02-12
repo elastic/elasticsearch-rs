@@ -17,6 +17,10 @@ all-features = true
 [features]
 default = ["native-tls"]
 
+# beta and experimental APIs
+beta-apis = []
+experimental-apis = ["beta-apis"]
+
 # optional TLS
 native-tls = ["reqwest/native-tls"]
 rustls-tls = ["reqwest/rustls-tls"]

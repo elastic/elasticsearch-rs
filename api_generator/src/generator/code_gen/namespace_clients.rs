@@ -28,12 +28,15 @@ use std::path::PathBuf;
 pub fn generate(api: &Api, docs_dir: &PathBuf) -> Result<Vec<(String, String)>, failure::Error> {
     let mut output = Vec::new();
 
-    for (namespace, namespace_methods) in &api.namespaces {
+    for (namespace_name, namespace) in &api.namespaces {
         let mut tokens = Tokens::new();
+        if let Some(attr) = namespace.stability.inner_cfg_attr() {
+            tokens.append(attr);
+        }
         tokens.append(use_declarations());
 
-        let namespace_pascal_case = namespace.to_pascal_case();
-        let namespace_replaced_pascal_case = namespace.replace("_", " ").to_pascal_case();
+        let namespace_pascal_case = namespace_name.to_pascal_case();
+        let namespace_replaced_pascal_case = namespace_name.replace("_", " ").to_pascal_case();
         let namespace_client_name = ident(&namespace_pascal_case);
         let name_for_docs = match namespace_replaced_pascal_case.as_ref() {
             "Ccr" => "Cross Cluster Replication",
@@ -53,9 +56,10 @@ pub fn generate(api: &Api, docs_dir: &PathBuf) -> Result<Vec<(String, String)>, 
             "Creates a new instance of [{}]",
             &namespace_pascal_case
         ));
-        let namespace_name = ident(namespace.to_string());
+        let namespace_name = ident(namespace_name.to_string());
 
-        let (builders, methods): (Vec<Tokens>, Vec<Tokens>) = namespace_methods
+        let (builders, methods): (Vec<Tokens>, Vec<Tokens>) = namespace
+            .endpoints()
             .iter()
             .map(|(name, endpoint)| {
                 let builder_name = format!("{}{}", &namespace_pascal_case, name.to_pascal_case());
@@ -72,14 +76,17 @@ pub fn generate(api: &Api, docs_dir: &PathBuf) -> Result<Vec<(String, String)>, 
             })
             .unzip();
 
+        let cfg_attr = namespace.stability.outer_cfg_attr();
         tokens.append(quote!(
             #(#builders)*
 
             #namespace_doc
+            #cfg_attr
             pub struct #namespace_client_name<'a> {
                 transport: &'a Transport
             }
 
+            #cfg_attr
             impl<'a> #namespace_client_name<'a> {
                 #new_namespace_client_doc
                 pub fn new(transport: &'a Transport) -> Self {
@@ -95,6 +102,7 @@ pub fn generate(api: &Api, docs_dir: &PathBuf) -> Result<Vec<(String, String)>, 
                 #(#methods)*
             }
 
+            #cfg_attr
             impl Elasticsearch {
                 #namespace_fn_doc
                 pub fn #namespace_name(&self) -> #namespace_client_name {
@@ -104,7 +112,7 @@ pub fn generate(api: &Api, docs_dir: &PathBuf) -> Result<Vec<(String, String)>, 
         ));
 
         let generated = tokens.to_string();
-        output.push((namespace.to_string(), generated));
+        output.push((namespace_name.to_string(), generated));
     }
 
     Ok(output)
