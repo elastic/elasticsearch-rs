@@ -3341,6 +3341,238 @@ impl<'a, 'b> GetScript<'a, 'b> {
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Get Script Context API"]
+pub enum GetScriptContextParts {
+    #[doc = "No parts"]
+    None,
+}
+#[cfg(feature = "experimental-apis")]
+impl GetScriptContextParts {
+    #[doc = "Builds a relative URL path to the Get Script Context API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            GetScriptContextParts::None => "/_script_context".into(),
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Get Script Context API](https://www.elastic.co/guide/en/elasticsearch/painless/8.0/painless-contexts.html)\n\nReturns all script contexts."]
+#[cfg(feature = "experimental-apis")]
+pub struct GetScriptContext<'a, 'b> {
+    transport: &'a Transport,
+    parts: GetScriptContextParts,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> GetScriptContext<'a, 'b> {
+    #[doc = "Creates a new instance of [GetScriptContext]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        GetScriptContext {
+            transport,
+            parts: GetScriptContextParts::None,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Get Script Context API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Get Script Languages API"]
+pub enum GetScriptLanguagesParts {
+    #[doc = "No parts"]
+    None,
+}
+#[cfg(feature = "experimental-apis")]
+impl GetScriptLanguagesParts {
+    #[doc = "Builds a relative URL path to the Get Script Languages API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            GetScriptLanguagesParts::None => "/_script_language".into(),
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Get Script Languages API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-scripting.html)\n\nReturns available script types, languages and contexts"]
+#[cfg(feature = "experimental-apis")]
+pub struct GetScriptLanguages<'a, 'b> {
+    transport: &'a Transport,
+    parts: GetScriptLanguagesParts,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> GetScriptLanguages<'a, 'b> {
+    #[doc = "Creates a new instance of [GetScriptLanguages]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        GetScriptLanguages {
+            transport,
+            parts: GetScriptLanguagesParts::None,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Get Script Languages API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Get Source API"]
 pub enum GetSourceParts<'b> {
@@ -5344,6 +5576,201 @@ where
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Rank Eval API"]
+pub enum RankEvalParts<'b> {
+    #[doc = "No parts"]
+    None,
+    #[doc = "Index"]
+    Index(&'b [&'b str]),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> RankEvalParts<'b> {
+    #[doc = "Builds a relative URL path to the Rank Eval API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            RankEvalParts::None => "/_rank_eval".into(),
+            RankEvalParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(12usize + encoded_index.len());
+                p.push_str("/");
+                p.push_str(encoded_index.as_ref());
+                p.push_str("/_rank_eval");
+                p.into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Rank Eval API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-rank-eval.html)\n\nAllows to evaluate the quality of ranked search results over a set of typical search queries"]
+#[cfg(feature = "experimental-apis")]
+pub struct RankEval<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: RankEvalParts<'b>,
+    allow_no_indices: Option<bool>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<&'b [ExpandWildcards]>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    search_type: Option<SearchType>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> RankEval<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [RankEval] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: RankEvalParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        RankEval {
+            transport,
+            parts,
+            headers,
+            allow_no_indices: None,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            pretty: None,
+            request_timeout: None,
+            search_type: None,
+            source: None,
+        }
+    }
+    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> RankEval<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        RankEval {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            allow_no_indices: self.allow_no_indices,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            search_type: self.search_type,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "Search operation type"]
+    pub fn search_type(mut self, search_type: SearchType) -> Self {
+        self.search_type = Some(search_type);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Rank Eval API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = match self.body {
+            Some(_) => Method::Post,
+            None => Method::Get,
+        };
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                allow_no_indices: Option<bool>,
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                expand_wildcards: Option<&'b [ExpandWildcards]>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                ignore_unavailable: Option<bool>,
+                pretty: Option<bool>,
+                search_type: Option<SearchType>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
+                expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
+                ignore_unavailable: self.ignore_unavailable,
+                pretty: self.pretty,
+                search_type: self.search_type,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Reindex API"]
 pub enum ReindexParts {
@@ -5859,6 +6286,148 @@ where
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Scripts Painless Execute API"]
+pub enum ScriptsPainlessExecuteParts {
+    #[doc = "No parts"]
+    None,
+}
+#[cfg(feature = "experimental-apis")]
+impl ScriptsPainlessExecuteParts {
+    #[doc = "Builds a relative URL path to the Scripts Painless Execute API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            ScriptsPainlessExecuteParts::None => "/_scripts/painless/_execute".into(),
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Scripts Painless Execute API](https://www.elastic.co/guide/en/elasticsearch/painless/8.0/painless-execute-api.html)\n\nAllows an arbitrary script to be executed and a result to be returned"]
+#[cfg(feature = "experimental-apis")]
+pub struct ScriptsPainlessExecute<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: ScriptsPainlessExecuteParts,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> ScriptsPainlessExecute<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [ScriptsPainlessExecute]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        ScriptsPainlessExecute {
+            transport,
+            parts: ScriptsPainlessExecuteParts::None,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> ScriptsPainlessExecute<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        ScriptsPainlessExecute {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Scripts Painless Execute API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = match self.body {
+            Some(_) => Method::Post,
+            None => Method::Get,
+        };
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Scroll API"]
 pub enum ScrollParts<'b> {
@@ -6092,6 +6661,7 @@ pub struct Search<'a, 'b, B> {
     ignore_unavailable: Option<bool>,
     lenient: Option<bool>,
     max_concurrent_shard_requests: Option<i64>,
+    min_compatible_shard_node: Option<&'b str>,
     pre_filter_shard_size: Option<i64>,
     preference: Option<&'b str>,
     pretty: Option<bool>,
@@ -6153,6 +6723,7 @@ where
             ignore_unavailable: None,
             lenient: None,
             max_concurrent_shard_requests: None,
+            min_compatible_shard_node: None,
             pre_filter_shard_size: None,
             preference: None,
             pretty: None,
@@ -6253,6 +6824,7 @@ where
             ignore_unavailable: self.ignore_unavailable,
             lenient: self.lenient,
             max_concurrent_shard_requests: self.max_concurrent_shard_requests,
+            min_compatible_shard_node: self.min_compatible_shard_node,
             pre_filter_shard_size: self.pre_filter_shard_size,
             preference: self.preference,
             pretty: self.pretty,
@@ -6354,6 +6926,11 @@ where
     #[doc = "The number of concurrent shard requests per node this search executes concurrently. This value should be used to limit the impact of the search on the cluster in order to limit the number of concurrent shard requests"]
     pub fn max_concurrent_shard_requests(mut self, max_concurrent_shard_requests: i64) -> Self {
         self.max_concurrent_shard_requests = Some(max_concurrent_shard_requests);
+        self
+    }
+    #[doc = "The minimum compatible version that all shards involved in search should have for this request to be successful"]
+    pub fn min_compatible_shard_node(mut self, min_compatible_shard_node: &'b str) -> Self {
+        self.min_compatible_shard_node = Some(min_compatible_shard_node);
         self
     }
     #[doc = "A threshold that enforces a pre-filter roundtrip to prefilter search shards based on query rewriting if the\u{a0}number of shards the search request expands to exceeds the threshold. This filter roundtrip can limit the number of shards significantly if for instance a shard can not match any documents based on its rewrite method ie. if date filters are mandatory to match but the shard bounds and the query are disjoint."]
@@ -6527,6 +7104,7 @@ where
                 ignore_unavailable: Option<bool>,
                 lenient: Option<bool>,
                 max_concurrent_shard_requests: Option<i64>,
+                min_compatible_shard_node: Option<&'b str>,
                 pre_filter_shard_size: Option<i64>,
                 preference: Option<&'b str>,
                 pretty: Option<bool>,
@@ -6580,6 +7158,7 @@ where
                 ignore_unavailable: self.ignore_unavailable,
                 lenient: self.lenient,
                 max_concurrent_shard_requests: self.max_concurrent_shard_requests,
+                min_compatible_shard_node: self.min_compatible_shard_node,
                 pre_filter_shard_size: self.pre_filter_shard_size,
                 preference: self.preference,
                 pretty: self.pretty,
@@ -8377,6 +8956,16 @@ impl Elasticsearch {
     pub fn get_script<'a, 'b>(&'a self, parts: GetScriptParts<'b>) -> GetScript<'a, 'b> {
         GetScript::new(self.transport(), parts)
     }
+    #[doc = "[Get Script Context API](https://www.elastic.co/guide/en/elasticsearch/painless/8.0/painless-contexts.html)\n\nReturns all script contexts."]
+    #[cfg(feature = "experimental-apis")]
+    pub fn get_script_context<'a, 'b>(&'a self) -> GetScriptContext<'a, 'b> {
+        GetScriptContext::new(self.transport())
+    }
+    #[doc = "[Get Script Languages API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-scripting.html)\n\nReturns available script types, languages and contexts"]
+    #[cfg(feature = "experimental-apis")]
+    pub fn get_script_languages<'a, 'b>(&'a self) -> GetScriptLanguages<'a, 'b> {
+        GetScriptLanguages::new(self.transport())
+    }
     #[doc = "[Get Source API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-get.html)\n\nReturns the source of a document."]
     pub fn get_source<'a, 'b>(&'a self, parts: GetSourceParts<'b>) -> GetSource<'a, 'b> {
         GetSource::new(self.transport(), parts)
@@ -8426,6 +9015,11 @@ impl Elasticsearch {
     pub fn put_script<'a, 'b>(&'a self, parts: PutScriptParts<'b>) -> PutScript<'a, 'b, ()> {
         PutScript::new(self.transport(), parts)
     }
+    #[doc = "[Rank Eval API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-rank-eval.html)\n\nAllows to evaluate the quality of ranked search results over a set of typical search queries"]
+    #[cfg(feature = "experimental-apis")]
+    pub fn rank_eval<'a, 'b>(&'a self, parts: RankEvalParts<'b>) -> RankEval<'a, 'b, ()> {
+        RankEval::new(self.transport(), parts)
+    }
     #[doc = "[Reindex API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-reindex.html)\n\nAllows to copy documents from one index to another, optionally filtering the source\ndocuments by a query, changing the destination index settings, or fetching the\ndocuments from a remote cluster."]
     pub fn reindex<'a, 'b>(&'a self) -> Reindex<'a, 'b, ()> {
         Reindex::new(self.transport())
@@ -8443,6 +9037,11 @@ impl Elasticsearch {
         parts: RenderSearchTemplateParts<'b>,
     ) -> RenderSearchTemplate<'a, 'b, ()> {
         RenderSearchTemplate::new(self.transport(), parts)
+    }
+    #[doc = "[Scripts Painless Execute API](https://www.elastic.co/guide/en/elasticsearch/painless/8.0/painless-execute-api.html)\n\nAllows an arbitrary script to be executed and a result to be returned"]
+    #[cfg(feature = "experimental-apis")]
+    pub fn scripts_painless_execute<'a, 'b>(&'a self) -> ScriptsPainlessExecute<'a, 'b, ()> {
+        ScriptsPainlessExecute::new(self.transport())
     }
     #[doc = "[Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-request-body.html#request-body-search-scroll)\n\nAllows to retrieve a large numbers of results from a single search request.\n\n# Examples\n\nTo initiate a scroll, make search API call with a specified `scroll` timeout,\nthen fetch the next set of hits using the `_scroll_id` returned in\nthe response. Once no more hits are returned, clear the scroll.\n\n```rust,no_run\n# use elasticsearch::{Elasticsearch, Error, SearchParts, ScrollParts, ClearScrollParts};\n# use serde_json::{json, Value};\n# async fn doc() -> Result<(), Box<dyn std::error::Error>> {\nlet client = Elasticsearch::default();\n\nfn print_hits(hits: &[Value]) {\n    for hit in hits {\n        println!(\n            \"id: '{}', source: '{}', score: '{}'\",\n            hit[\"_id\"].as_str().unwrap(),\n            hit[\"_source\"],\n            hit[\"_score\"].as_f64().unwrap()\n        );\n    }\n}\n\nlet scroll = \"1m\";\nlet mut response = client\n    .search(SearchParts::Index(&[\"tweets\"]))\n    .scroll(scroll)\n    .body(json!({\n        \"query\": {\n            \"match\": {\n                \"body\": {\n                    \"query\": \"Elasticsearch rust\",\n                    \"operator\": \"AND\"\n                }\n            }\n        }\n    }))\n    .send()\n    .await?;\n\nlet mut response_body = response.json::<Value>().await?;\nlet mut scroll_id = response_body[\"_scroll_id\"].as_str().unwrap();\nlet mut hits = response_body[\"hits\"][\"hits\"].as_array().unwrap();\n\nprint_hits(hits);\n\nwhile hits.len() > 0 {\n    response = client\n        .scroll(ScrollParts::None)\n        .body(json!({\n            \"scroll\": scroll,\n            \"scroll_id\": scroll_id\n        }))\n        .send()\n        .await?;\n\n    response_body = response.json::<Value>().await?;\n    scroll_id = response_body[\"_scroll_id\"].as_str().unwrap();\n    hits = response_body[\"hits\"][\"hits\"].as_array().unwrap();\n    print_hits(hits);\n}\n\nresponse = client\n    .clear_scroll(ClearScrollParts::None)\n    .body(json!({\n        \"scroll_id\": scroll_id\n    }))\n    .send()\n    .await?;\n    \n# Ok(())\n# }\n```"]
     pub fn scroll<'a, 'b>(&'a self, parts: ScrollParts<'b>) -> Scroll<'a, 'b, ()> {

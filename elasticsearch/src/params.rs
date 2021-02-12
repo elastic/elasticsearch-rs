@@ -81,6 +81,20 @@ pub enum ExpandWildcards {
     #[serde(rename = "all")]
     All,
 }
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
+#[doc = "Optional parameter to specify the high level file format"]
+pub enum Format {
+    #[serde(rename = "ndjson")]
+    Ndjson,
+    #[serde(rename = "xml")]
+    Xml,
+    #[serde(rename = "delimited")]
+    Delimited,
+    #[serde(rename = "semi_structured_text")]
+    SemiStructuredText,
+}
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 #[doc = "Group tasks by nodes or parent/child relationships"]
 pub enum GroupBy {
