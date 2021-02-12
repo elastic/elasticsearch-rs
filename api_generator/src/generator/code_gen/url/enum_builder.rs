@@ -311,7 +311,7 @@ mod tests {
     #![cfg_attr(rustfmt, rustfmt_skip)]
 
     use super::*;
-    use crate::generator::{Url, Path, HttpMethod, Body, Deprecated, Type, TypeKind, Documentation, ast_eq};
+    use crate::generator::{Url, Path, HttpMethod, Body, Deprecated, Type, TypeKind, Documentation, ast_eq, Stability};
     use std::collections::BTreeMap;
     use crate::generator::code_gen::url::url_builder::PathString;
 
@@ -326,7 +326,7 @@ mod tests {
                     description: None,
                     url: None,
                 },
-                stability: "stable".to_string(),
+                stability: Stability::Stable,
                 url: Url {
                     paths: vec![
                         Path {
