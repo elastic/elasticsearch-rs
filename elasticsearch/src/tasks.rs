@@ -28,6 +28,7 @@
 //!
 //! [Manage tasks currently executing on one or more nodes in the cluster](https://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html).
 
+#![cfg(feature = "experimental-apis")]
 #![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
@@ -44,6 +45,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Tasks Cancel API"]
 pub enum TasksCancelParts<'b> {
@@ -52,6 +54,7 @@ pub enum TasksCancelParts<'b> {
     #[doc = "TaskId"]
     TaskId(&'b str),
 }
+#[cfg(feature = "experimental-apis")]
 impl<'b> TasksCancelParts<'b> {
     #[doc = "Builds a relative URL path to the Tasks Cancel API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -71,6 +74,7 @@ impl<'b> TasksCancelParts<'b> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/tasks.html)\n\nCancels a task, if it can be cancelled through an API."]
+#[cfg(feature = "experimental-apis")]
 pub struct TasksCancel<'a, 'b, B> {
     transport: &'a Transport,
     parts: TasksCancelParts<'b>,
@@ -87,6 +91,7 @@ pub struct TasksCancel<'a, 'b, B> {
     source: Option<&'b str>,
     wait_for_completion: Option<bool>,
 }
+#[cfg(feature = "experimental-apis")]
 impl<'a, 'b, B> TasksCancel<'a, 'b, B>
 where
     B: Body,
@@ -232,12 +237,14 @@ where
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Tasks Get API"]
 pub enum TasksGetParts<'b> {
     #[doc = "TaskId"]
     TaskId(&'b str),
 }
+#[cfg(feature = "experimental-apis")]
 impl<'b> TasksGetParts<'b> {
     #[doc = "Builds a relative URL path to the Tasks Get API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -255,6 +262,7 @@ impl<'b> TasksGetParts<'b> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/tasks.html)\n\nReturns information about a task."]
+#[cfg(feature = "experimental-apis")]
 pub struct TasksGet<'a, 'b> {
     transport: &'a Transport,
     parts: TasksGetParts<'b>,
@@ -268,6 +276,7 @@ pub struct TasksGet<'a, 'b> {
     timeout: Option<&'b str>,
     wait_for_completion: Option<bool>,
 }
+#[cfg(feature = "experimental-apis")]
 impl<'a, 'b> TasksGet<'a, 'b> {
     #[doc = "Creates a new instance of [TasksGet] with the specified API parts"]
     pub fn new(transport: &'a Transport, parts: TasksGetParts<'b>) -> Self {
@@ -369,12 +378,14 @@ impl<'a, 'b> TasksGet<'a, 'b> {
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Tasks List API"]
 pub enum TasksListParts {
     #[doc = "No parts"]
     None,
 }
+#[cfg(feature = "experimental-apis")]
 impl TasksListParts {
     #[doc = "Builds a relative URL path to the Tasks List API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -385,6 +396,7 @@ impl TasksListParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/tasks.html)\n\nReturns a list of tasks."]
+#[cfg(feature = "experimental-apis")]
 pub struct TasksList<'a, 'b> {
     transport: &'a Transport,
     parts: TasksListParts,
@@ -403,6 +415,7 @@ pub struct TasksList<'a, 'b> {
     timeout: Option<&'b str>,
     wait_for_completion: Option<bool>,
 }
+#[cfg(feature = "experimental-apis")]
 impl<'a, 'b> TasksList<'a, 'b> {
     #[doc = "Creates a new instance of [TasksList]"]
     pub fn new(transport: &'a Transport) -> Self {
@@ -547,9 +560,11 @@ impl<'a, 'b> TasksList<'a, 'b> {
     }
 }
 #[doc = "Namespace client for Tasks APIs"]
+#[cfg(feature = "experimental-apis")]
 pub struct Tasks<'a> {
     transport: &'a Transport,
 }
+#[cfg(feature = "experimental-apis")]
 impl<'a> Tasks<'a> {
     #[doc = "Creates a new instance of [Tasks]"]
     pub fn new(transport: &'a Transport) -> Self {
@@ -559,18 +574,22 @@ impl<'a> Tasks<'a> {
         self.transport
     }
     #[doc = "[Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/tasks.html)\n\nCancels a task, if it can be cancelled through an API."]
+    #[cfg(feature = "experimental-apis")]
     pub fn cancel<'b>(&'a self, parts: TasksCancelParts<'b>) -> TasksCancel<'a, 'b, ()> {
         TasksCancel::new(self.transport(), parts)
     }
     #[doc = "[Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/tasks.html)\n\nReturns information about a task."]
+    #[cfg(feature = "experimental-apis")]
     pub fn get<'b>(&'a self, parts: TasksGetParts<'b>) -> TasksGet<'a, 'b> {
         TasksGet::new(self.transport(), parts)
     }
     #[doc = "[Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/tasks.html)\n\nReturns a list of tasks."]
+    #[cfg(feature = "experimental-apis")]
     pub fn list<'b>(&'a self) -> TasksList<'a, 'b> {
         TasksList::new(self.transport())
     }
 }
+#[cfg(feature = "experimental-apis")]
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Tasks APIs"]
     pub fn tasks(&self) -> Tasks {

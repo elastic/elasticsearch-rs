@@ -693,7 +693,7 @@ impl<'a, 'b> NodesStats<'a, 'b> {
             types: None,
         }
     }
-    #[doc = "A comma-separated list of fields for `fielddata` and `suggest` index metric (supports wildcards)"]
+    #[doc = "A comma-separated list of fields for the `completion` index metric (supports wildcards)"]
     pub fn completion_fields(mut self, completion_fields: &'b [&'b str]) -> Self {
         self.completion_fields = Some(completion_fields);
         self
@@ -703,7 +703,7 @@ impl<'a, 'b> NodesStats<'a, 'b> {
         self.error_trace = Some(error_trace);
         self
     }
-    #[doc = "A comma-separated list of fields for `fielddata` index metric (supports wildcards)"]
+    #[doc = "A comma-separated list of fields for the `fielddata` index metric (supports wildcards)"]
     pub fn fielddata_fields(mut self, fielddata_fields: &'b [&'b str]) -> Self {
         self.fielddata_fields = Some(fielddata_fields);
         self

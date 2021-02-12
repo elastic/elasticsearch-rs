@@ -1146,6 +1146,127 @@ impl<'a, 'b> SnapshotGet<'a, 'b> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Snapshot Get Features API"]
+pub enum SnapshotGetFeaturesParts {
+    #[doc = "No parts"]
+    None,
+}
+impl SnapshotGetFeaturesParts {
+    #[doc = "Builds a relative URL path to the Snapshot Get Features API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SnapshotGetFeaturesParts::None => "/_snapshottable_features".into(),
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Snapshot Get Features API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nReturns a list of features which can be snapshotted in this cluster."]
+pub struct SnapshotGetFeatures<'a, 'b> {
+    transport: &'a Transport,
+    parts: SnapshotGetFeaturesParts,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    master_timeout: Option<&'b str>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b> SnapshotGetFeatures<'a, 'b> {
+    #[doc = "Creates a new instance of [SnapshotGetFeatures]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        SnapshotGetFeatures {
+            transport,
+            parts: SnapshotGetFeaturesParts::None,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Snapshot Get Features API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                master_timeout: Option<&'b str>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Snapshot Get Repository API"]
 pub enum SnapshotGetRepositoryParts<'b> {
     #[doc = "No parts"]
@@ -1825,6 +1946,10 @@ impl<'a> Snapshot<'a> {
     #[doc = "[Snapshot Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nReturns information about a snapshot."]
     pub fn get<'b>(&'a self, parts: SnapshotGetParts<'b>) -> SnapshotGet<'a, 'b> {
         SnapshotGet::new(self.transport(), parts)
+    }
+    #[doc = "[Snapshot Get Features API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nReturns a list of features which can be snapshotted in this cluster."]
+    pub fn get_features<'b>(&'a self) -> SnapshotGetFeatures<'a, 'b> {
+        SnapshotGetFeatures::new(self.transport())
     }
     #[doc = "[Snapshot Get Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nReturns information about a repository."]
     pub fn get_repository<'b>(

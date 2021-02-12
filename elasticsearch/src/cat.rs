@@ -1241,7 +1241,6 @@ pub struct CatIndices<'a, 'b> {
     help: Option<bool>,
     human: Option<bool>,
     include_unloaded_segments: Option<bool>,
-    local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     pri: Option<bool>,
@@ -1271,7 +1270,6 @@ impl<'a, 'b> CatIndices<'a, 'b> {
             help: None,
             human: None,
             include_unloaded_segments: None,
-            local: None,
             master_timeout: None,
             pretty: None,
             pri: None,
@@ -1337,11 +1335,6 @@ impl<'a, 'b> CatIndices<'a, 'b> {
         self.include_unloaded_segments = Some(include_unloaded_segments);
         self
     }
-    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: bool) -> Self {
-        self.local = Some(local);
-        self
-    }
     #[doc = "Explicit operation timeout for connection to master node"]
     pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
@@ -1405,7 +1398,6 @@ impl<'a, 'b> CatIndices<'a, 'b> {
                 help: Option<bool>,
                 human: Option<bool>,
                 include_unloaded_segments: Option<bool>,
-                local: Option<bool>,
                 master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 pri: Option<bool>,
@@ -1426,7 +1418,6 @@ impl<'a, 'b> CatIndices<'a, 'b> {
                 help: self.help,
                 human: self.human,
                 include_unloaded_segments: self.include_unloaded_segments,
-                local: self.local,
                 master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 pri: self.pri,
@@ -3032,6 +3023,7 @@ pub struct CatPlugins<'a, 'b> {
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
+    include_bootstrap: Option<bool>,
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
@@ -3056,6 +3048,7 @@ impl<'a, 'b> CatPlugins<'a, 'b> {
             h: None,
             help: None,
             human: None,
+            include_bootstrap: None,
             local: None,
             master_timeout: None,
             pretty: None,
@@ -3098,6 +3091,11 @@ impl<'a, 'b> CatPlugins<'a, 'b> {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
+        self
+    }
+    #[doc = "Include bootstrap plugins in the response"]
+    pub fn include_bootstrap(mut self, include_bootstrap: bool) -> Self {
+        self.include_bootstrap = Some(include_bootstrap);
         self
     }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
@@ -3153,6 +3151,7 @@ impl<'a, 'b> CatPlugins<'a, 'b> {
                 h: Option<&'b [&'b str]>,
                 help: Option<bool>,
                 human: Option<bool>,
+                include_bootstrap: Option<bool>,
                 local: Option<bool>,
                 master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
@@ -3168,6 +3167,7 @@ impl<'a, 'b> CatPlugins<'a, 'b> {
                 h: self.h,
                 help: self.help,
                 human: self.human,
+                include_bootstrap: self.include_bootstrap,
                 local: self.local,
                 master_timeout: self.master_timeout,
                 pretty: self.pretty,
@@ -3801,7 +3801,6 @@ pub struct CatShards<'a, 'b> {
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
-    local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
@@ -3827,7 +3826,6 @@ impl<'a, 'b> CatShards<'a, 'b> {
             h: None,
             help: None,
             human: None,
-            local: None,
             master_timeout: None,
             pretty: None,
             request_timeout: None,
@@ -3875,11 +3873,6 @@ impl<'a, 'b> CatShards<'a, 'b> {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
-        self
-    }
-    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: bool) -> Self {
-        self.local = Some(local);
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
@@ -3936,7 +3929,6 @@ impl<'a, 'b> CatShards<'a, 'b> {
                 h: Option<&'b [&'b str]>,
                 help: Option<bool>,
                 human: Option<bool>,
-                local: Option<bool>,
                 master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
@@ -3953,7 +3945,6 @@ impl<'a, 'b> CatShards<'a, 'b> {
                 h: self.h,
                 help: self.help,
                 human: self.human,
-                local: self.local,
                 master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 s: self.s,
@@ -4170,12 +4161,14 @@ impl<'a, 'b> CatSnapshots<'a, 'b> {
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Tasks API"]
 pub enum CatTasksParts {
     #[doc = "No parts"]
     None,
 }
+#[cfg(feature = "experimental-apis")]
 impl CatTasksParts {
     #[doc = "Builds a relative URL path to the Cat Tasks API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -4186,6 +4179,7 @@ impl CatTasksParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/tasks.html)\n\nReturns information about the tasks currently executing on one or more nodes in the cluster."]
+#[cfg(feature = "experimental-apis")]
 pub struct CatTasks<'a, 'b> {
     transport: &'a Transport,
     parts: CatTasksParts,
@@ -4198,8 +4192,8 @@ pub struct CatTasks<'a, 'b> {
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
-    node_id: Option<&'b [&'b str]>,
-    parent_task: Option<i64>,
+    nodes: Option<&'b [&'b str]>,
+    parent_task_id: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
@@ -4207,6 +4201,7 @@ pub struct CatTasks<'a, 'b> {
     time: Option<Time>,
     v: Option<bool>,
 }
+#[cfg(feature = "experimental-apis")]
 impl<'a, 'b> CatTasks<'a, 'b> {
     #[doc = "Creates a new instance of [CatTasks]"]
     pub fn new(transport: &'a Transport) -> Self {
@@ -4225,8 +4220,8 @@ impl<'a, 'b> CatTasks<'a, 'b> {
             h: None,
             help: None,
             human: None,
-            node_id: None,
-            parent_task: None,
+            nodes: None,
+            parent_task_id: None,
             pretty: None,
             request_timeout: None,
             s: None,
@@ -4281,13 +4276,13 @@ impl<'a, 'b> CatTasks<'a, 'b> {
         self
     }
     #[doc = "A comma-separated list of node IDs or names to limit the returned information; use `_local` to return information from the node you're connecting to, leave empty to get information from all nodes"]
-    pub fn node_id(mut self, node_id: &'b [&'b str]) -> Self {
-        self.node_id = Some(node_id);
+    pub fn nodes(mut self, nodes: &'b [&'b str]) -> Self {
+        self.nodes = Some(nodes);
         self
     }
-    #[doc = "Return tasks with specified parent task id. Set to -1 to return all."]
-    pub fn parent_task(mut self, parent_task: i64) -> Self {
-        self.parent_task = Some(parent_task);
+    #[doc = "Return tasks with specified parent task id (node_id:task_number). Set to -1 to return all."]
+    pub fn parent_task_id(mut self, parent_task_id: &'b str) -> Self {
+        self.parent_task_id = Some(parent_task_id);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -4342,8 +4337,8 @@ impl<'a, 'b> CatTasks<'a, 'b> {
                 help: Option<bool>,
                 human: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                node_id: Option<&'b [&'b str]>,
-                parent_task: Option<i64>,
+                nodes: Option<&'b [&'b str]>,
+                parent_task_id: Option<&'b str>,
                 pretty: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 s: Option<&'b [&'b str]>,
@@ -4360,8 +4355,8 @@ impl<'a, 'b> CatTasks<'a, 'b> {
                 h: self.h,
                 help: self.help,
                 human: self.human,
-                node_id: self.node_id,
-                parent_task: self.parent_task,
+                nodes: self.nodes,
+                parent_task_id: self.parent_task_id,
                 pretty: self.pretty,
                 s: self.s,
                 source: self.source,
@@ -5075,6 +5070,7 @@ impl<'a> Cat<'a> {
         CatSnapshots::new(self.transport(), parts)
     }
     #[doc = "[Cat Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/tasks.html)\n\nReturns information about the tasks currently executing on one or more nodes in the cluster."]
+    #[cfg(feature = "experimental-apis")]
     pub fn tasks<'b>(&'a self) -> CatTasks<'a, 'b> {
         CatTasks::new(self.transport())
     }
