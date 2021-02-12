@@ -64,7 +64,10 @@ fn generate_param(tokens: &mut Tokens, e: &ApiEnum) {
         None => None,
     };
 
+    let cfg_attr = e.stability.outer_cfg_attr();
+
     let generated_enum_tokens = quote!(
+        #cfg_attr
         #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
         #doc
         pub enum #name {

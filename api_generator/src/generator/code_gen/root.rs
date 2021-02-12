@@ -32,6 +32,7 @@ pub fn generate(api: &Api, docs_dir: &PathBuf) -> Result<String, failure::Error>
     // AST for builder structs and methods
     let (builders, methods): (Vec<Tokens>, Vec<Tokens>) = api
         .root
+        .endpoints()
         .iter()
         .map(|(name, endpoint)| {
             let builder_name = name.to_pascal_case();
