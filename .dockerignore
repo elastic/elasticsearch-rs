@@ -6,6 +6,7 @@ target
 docs
 .vscode
 .idea
+*.iml
 
 api_generator/src/bin
 
