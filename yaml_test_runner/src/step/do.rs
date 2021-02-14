@@ -38,7 +38,7 @@ impl ToTokens for Catch {
     fn to_tokens(&self, tokens: &mut Tokens) {
         fn http_status_code(status_code: u16, tokens: &mut Tokens) {
             tokens.append(quote! {
-                assert_status_code!(response.status_code(), #status_code);
+                assert_response_status_code!(response, #status_code);
             });
         }
 

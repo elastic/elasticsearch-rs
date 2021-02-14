@@ -67,7 +67,7 @@ pub fn download_test_suites(branch: &str, download_dir: &PathBuf) -> Result<(), 
         let file = entry?;
         let path = file.path()?;
         if oss_test.is_match(&path) {
-            write_test_file(download_dir, "oss", file)?;
+            write_test_file(download_dir, "free", file)?;
         } else if xpack_test.is_match(&path) {
             write_test_file(download_dir, "xpack", file)?;
         }

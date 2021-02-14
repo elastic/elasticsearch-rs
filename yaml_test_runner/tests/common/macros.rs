@@ -17,14 +17,21 @@
  * under the License.
  */
 /// Asserts that a [Response] has a status code >=200 and <300
+
 #[macro_export]
 macro_rules! assert_response_success {
     ($response:ident) => {{
-        assert!(
-            $response.status_code().is_success(),
-            "expected response to be successful but was {}",
-            $response.status_code().as_u16()
-        );
+        let status_code = $response.status_code();
+        if !status_code.is_success() {
+            let text = $response
+                .text()
+                .await
+                .unwrap_or("[no response]".to_string());
+            panic!(
+                "expected response to be successful but was {}. Response: {}",
+                status_code, text
+            );
+        }
     }};
 }
 
@@ -32,12 +39,37 @@ macro_rules! assert_response_success {
 #[macro_export]
 macro_rules! assert_response_success_or {
     ($response:ident, $status:expr) => {{
-        assert!(
-            $response.status_code().is_success() || $response.status_code().as_u16() == $status,
-            "expected response to be successful or {} but was {}",
-            $status,
-            $response.status_code().as_u16()
-        );
+        let status_code = $response.status_code();
+        if !status_code.is_success() && status_code.as_u16() != $status {
+            let text = $response
+                .text()
+                .await
+                .unwrap_or("[no response]".to_string());
+            panic!(
+                "expected response to be successful or {} but was {}",
+                $status,
+                status_code.as_u16()
+            );
+        }
+    }};
+}
+
+/// Asserts that a [Response] has a status that matches the passed status
+#[macro_export]
+macro_rules! assert_response_status_code {
+    ($response:ident, $status:expr) => {{
+        let status_code = $response.status_code();
+        if status_code.as_u16() != $status {
+            let text = $response
+                .text()
+                .await
+                .unwrap_or("[no response]".to_string());
+            panic!(
+                "expected response to be {} but was {}",
+                $status,
+                status_code.as_u16()
+            );
+        }
     }};
 }
 
