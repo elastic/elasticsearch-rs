@@ -36,7 +36,7 @@ use yaml_rust::{Yaml, YamlLoader};
 /// The test suite to compile
 #[derive(Debug, PartialEq)]
 pub enum TestSuite {
-    Oss,
+    Free,
     XPack,
 }
 
@@ -121,7 +121,7 @@ impl<'a> YamlTests<'a> {
         let (setup_fn, setup_call) = Self::generate_fixture(&self.setup);
         let (teardown_fn, teardown_call) = Self::generate_fixture(&self.teardown);
         let general_setup_call = match self.suite {
-            TestSuite::Oss => quote!(client::general_oss_setup().await?;),
+            TestSuite::Free => quote!(client::general_oss_setup().await?;),
             TestSuite::XPack => quote!(client::general_xpack_setup().await?;),
         };
 
@@ -406,9 +406,9 @@ pub fn generate_tests_from_yaml(
                         }
 
                         match top_dir.as_str() {
-                            "oss" => TestSuite::Oss,
+                            "free" => TestSuite::Free,
                             "xpack" => TestSuite::XPack,
-                            _ => panic!("Unknown test suite"),
+                            _ => panic!("Unknown test suite {:?}", path),
                         }
                     };
 
