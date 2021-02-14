@@ -33,7 +33,8 @@
 //!
 //! The dangling indices APIs can list, import and delete dangling indices.
 
-# ! [ allow ( unused_imports ) ]use crate::{
+#![allow(unused_imports)]
+use crate::{
     client::Elasticsearch,
     error::Error,
     http::{

@@ -28,7 +28,8 @@
 //!
 //! [Perform machine learning anomaly detection activities](https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-apis.html).
 
-# ! [ allow ( unused_imports ) ]use crate::{
+#![allow(unused_imports)]
+use crate::{
     client::Elasticsearch,
     error::Error,
     http::{

@@ -31,7 +31,8 @@
 //! as part of an [ingest pipeline](../ingest/index.html), to add data from your existing indices
 //! to incoming documents during ingest.
 
-# ! [ allow ( unused_imports ) ]use crate::{
+#![allow(unused_imports)]
+use crate::{
     client::Elasticsearch,
     error::Error,
     http::{

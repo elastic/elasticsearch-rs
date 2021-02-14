@@ -34,7 +34,8 @@
 //! template used to create them. Update the policy to modify the lifecycle of both new
 //! and existing indices.
 
-# ! [ allow ( unused_imports ) ]use crate::{
+#![allow(unused_imports)]
+use crate::{
     client::Elasticsearch,
     error::Error,
     http::{

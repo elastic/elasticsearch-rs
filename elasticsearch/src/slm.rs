@@ -33,7 +33,8 @@
 //! indices. Snapshot Lifecycle Management can also perform deletion of older snapshots based on a
 //! configurable retention policy.
 
-# ! [ allow ( unused_imports ) ]use crate::{
+#![allow(unused_imports)]
+use crate::{
     client::Elasticsearch,
     error::Error,
     http::{

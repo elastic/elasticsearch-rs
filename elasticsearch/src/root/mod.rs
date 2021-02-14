@@ -24,7 +24,8 @@
 // cargo make generate-api
 // -----------------------------------------------
 
-# ! [ allow ( unused_imports ) ]use crate::{
+#![allow(unused_imports)]
+use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
