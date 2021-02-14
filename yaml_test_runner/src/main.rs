@@ -148,13 +148,14 @@ fn branch_suite_and_version_from_elasticsearch(
         .danger_accept_invalid_certs(true)
         .build()?;
 
+    let suite = match std::env::var("TEST_SUITE") {
+        Err(_) => panic!("Env var TEST_SUITE is not defined"),
+        Ok(ref s) if s == "free" => TestSuite::Free,
+        _ => TestSuite::XPack,
+    };
     let mut response = client.get(url).send()?;
     let json: Value = response.json()?;
     let branch = json["version"]["build_hash"].as_str().unwrap().to_string();
-    let suite = match json["version"]["build_flavor"].as_str().unwrap() {
-        "oss" => TestSuite::Oss,
-        _ => TestSuite::XPack,
-    };
 
     // any prerelease part needs to be trimmed because the semver crate only allows
     // a version with a prerelease to match against predicates, if at least one predicate
