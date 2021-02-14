@@ -4,23 +4,23 @@ default_to_workspace = false
 [env]
 # Determines the version of Elasticsearch docker container used
 STACK_VERSION = "8.0.0-SNAPSHOT"
-# Determines the distribution of docker container used. Either xpack or oss
-TEST_SUITE = "xpack"
+# Determines the distribution of docker container used. Either platinum or free
+TEST_SUITE = "platinum"
 # Set publish flags to dry-run by default, to force user to explicitly define for publishing
 CARGO_MAKE_CARGO_PUBLISH_FLAGS = "--dry-run"
 
-[tasks.set-oss-env]
+[tasks.set-free-env]
 category = "Elasticsearch"
-description = "Sets ELASTICSEARCH_URL environment variable if not already set for later tasks when oss test suite used"
+description = "Sets ELASTICSEARCH_URL environment variable if not already set for later tasks when free test suite used"
 private = true
-condition = { env = { "TEST_SUITE" = "oss" }, env_not_set = ["ELASTICSEARCH_URL"] }
+condition = { env = { "TEST_SUITE" = "free" }, env_not_set = ["ELASTICSEARCH_URL"] }
 env = { "ELASTICSEARCH_URL" = "http://localhost:9200" }
 
-[tasks.set-xpack-env]
+[tasks.set-platinum-env]
 category = "Elasticsearch"
-description = "Sets ELASTICSEARCH_URL environment variable if not already set for later tasks when xpack test suite used"
+description = "Sets ELASTICSEARCH_URL environment variable if not already set for later tasks when platinum test suite used"
 private = true
-condition = { env = { "TEST_SUITE" = "xpack" }, env_not_set = ["ELASTICSEARCH_URL"] }
+condition = { env = { "TEST_SUITE" = "platinum" }, env_not_set = ["ELASTICSEARCH_URL"] }
 env = { "ELASTICSEARCH_URL" = "https://elastic:changeme@localhost:9200" }
 
 [tasks.run-yaml-test-runner]
@@ -52,7 +52,7 @@ dependencies = ["generate-yaml-tests"]
 [tasks.test-elasticsearch]
 category = "Elasticsearch"
 private = true
-condition = { env_set = [ "ELASTICSEARCH_URL" ], env = { "TEST_SUITE" = "xpack" } }
+condition = { env_set = [ "ELASTICSEARCH_URL" ], env = { "TEST_SUITE" = "platinum" } }
 command = "cargo"
 args = ["test", "-p", "elasticsearch"]
 dependencies = ["start-elasticsearch"]
@@ -85,7 +85,7 @@ dependencies = ["install-cargo2junit"]
 category = "Elasticsearch"
 private = true
 condition = { env_set = [ "STACK_VERSION", "TEST_SUITE" ], env_false = ["CARGO_MAKE_CI"] }
-dependencies = ["set-oss-env", "set-xpack-env"]
+dependencies = ["set-free-env", "set-platinum-env"]
 
 [tasks.run-elasticsearch.linux]
 command = "./.ci/run-elasticsearch.sh"
@@ -120,17 +120,19 @@ exec cargo publish %{CARGO_MAKE_CARGO_PUBLISH_FLAGS}
 
 [tasks.start-elasticsearch]
 extend = "run-elasticsearch"
+private = false
 description = "Starts Elasticsearch docker container with the given version and distribution"
 env = { "CLEANUP" = false, "DETACH" = true }
 
 [tasks.stop-elasticsearch]
 extend = "run-elasticsearch"
+private = false
 description = "Stops Elasticsearch docker container, if running"
 env = { "CLEANUP" = true, "DETACH" = false }
 
 [tasks.test-yaml]
 category = "Elasticsearch"
-description = "Generates and runs yaml_test_runner package xpack/oss tests against a given Elasticsearch version"
+description = "Generates and runs yaml_test_runner package platinum/free tests against a given Elasticsearch version"
 condition = { env_set = [ "STACK_VERSION", "TEST_SUITE" ] }
 dependencies = ["generate-yaml-tests", "create-test-results-dir", "test-yaml-test-runner", "test-yaml-test-runner-ci", "convert-test-results-junit"]
 run_task = "stop-elasticsearch"
@@ -146,7 +148,7 @@ args = ["test", "-p", "api_generator"]
 category = "Elasticsearch"
 clear = true
 description = "Runs elasticsearch package tests against a given Elasticsearch version"
-env = { "TEST_SUITE" = { value = "xpack", condition = { env_set = ["TEST_SUITE"] } } }
+env = { "TEST_SUITE" = { value = "platinum", condition = { env_set = ["TEST_SUITE"] } } }
 dependencies = ["test-elasticsearch"]
 run_task = "stop-elasticsearch"
 
@@ -217,7 +219,7 @@ script = ['''
     echo - start-elasticsearch: Starts Elasticsearch docker container with the given version and distribution
     echo - stop-elasticsearch: Stops Elasticsearch docker container, if running
     echo
-    echo - test-yaml: Generates and runs yaml_test_runner package xpack/oss tests against a given Elasticsearch version
+    echo - test-yaml: Generates and runs yaml_test_runner package platinum/free tests against a given Elasticsearch version
     echo - test-generator: Generates and runs api_generator package tests
     echo - test: Runs elasticsearch package tests against a given Elasticsearch version
     echo
@@ -230,7 +232,7 @@ script = ['''
     echo
     echo Most tasks use these environment variables:
     echo - STACK_VERSION (default '${STACK_VERSION}'): the version of Elasticsearch
-    echo - TEST_SUITE ('oss' or 'xpack', default '${TEST_SUITE}'): the distribution of Elasticsearch
+    echo - TEST_SUITE ('free' or 'platinum', default '${TEST_SUITE}'): the distribution of Elasticsearch
     echo - CI (default not set): set when running on CI to determine whether to start Elasticsearch and format test output as JSON
     echo
     echo Run 'cargo make --list-all-steps' for a complete list of available tasks.

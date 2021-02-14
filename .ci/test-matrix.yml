@@ -4,8 +4,8 @@ STACK_VERSION:
   - 8.0.0-SNAPSHOT
 
 TEST_SUITE:
-  - oss
-  - xpack
+  - free
+  - platinum
 
 RUST_TOOLCHAIN:
   - latest
