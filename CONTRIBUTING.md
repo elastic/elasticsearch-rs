@@ -79,10 +79,10 @@ The `Elasticsearch` category of steps are specifically defined for this project 
 
   - `STACK_VERSION`: Elasticsearch version like `7.9.0` or can be
   a snapshot release like `7.x-SNAPSHOT`
-  - `TEST_SUITE`: Elasticsearch distribution of `oss` or `xpack`
+  - `TEST_SUITE`: Elasticsearch distribution of `free` or `platinum`
   
   ```sh
-  cargo make test-yaml --env STACK_VERSION=7.9.0 --env TEST_SUITE=oss
+  cargo make test-yaml --env STACK_VERSION=7.9.0 --env TEST_SUITE=free
   ```
 
 ### Packages
