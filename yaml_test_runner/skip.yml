@@ -11,6 +11,11 @@ features:
 
 # tests to skip generating and compiling a test for
 tests:
+
+  xpack/license/30_enterprise_license.yml:
+    # Warning "Including [accept_enterprise] in get license requests is deprecated" is no more present
+    - "Installing enterprise license"
+
   xpack/api_key/10_basic.yml:
     # Invalid regex: "^(${api_key_id_2}|${api_key_id_3})$"
     # --> missing expansion of stashed values
@@ -45,6 +50,11 @@ tests:
     # this test fails because it can't access snapshot to restore it
     - "Create a source only snapshot and then restore it"
 
+  xpack/snapshot/20_operator_privileges_disabled.yml:
+    # expected value json["persistent"]["xpack"]["security"]["http"]["filter"]["deny"] to match String("example.com")
+    # but was String("tutorial.com")
+    - "Operator only settings can be set and restored by non-operator user when operator privileges is disabled"
+
   # Test generator currently doesn't handle unsigned long values.
   # We skip all tests as even the setup code will fail to compile.
   xpack/unsigned_long/10_basic.yml:
@@ -60,32 +70,36 @@ tests:
   xpack/unsigned_long/60_collapse.yml:
     - "*"
 
-  oss/cat.aliases/10_basic.yml:
+  free/cat.aliases/10_basic.yml:
     # this test fails as the regex needs a \n before the ending $
     - "Multiple alias names"
 
-  oss/cat.indices/10_basic.yml:
+  free/cat.indices/10_basic.yml:
     # this test fails as the regex needs a \n before the ending $
     - "Test cat indices using health status"
 
-  oss/indices.shard_stores/10_basic.yml:
+  free/indices.shard_stores/10_basic.yml:
     # uses number as a key into object. serde_json::Value expects a string key
     - "basic index test"
     - "multiple indices test"
 
-  oss/indices.flush/10_basic.yml:
+  free/indices.flush/10_basic.yml:
     # uses number as a key into object. serde_json::Value expects a string key
     - "Index synced flush rest test"
 
-  oss/indices.segments/10_basic.yml:
+  free/indices.segments/10_basic.yml:
     # uses number as a key into object. serde_json::Value expects a string key
     - "basic segments test"
 
-  oss/indices.stats/12_level.yml:
+  free/indices.stats/12_level.yml:
     # uses number as a key into object. serde_json::Value expects a string key
     - "Level - shards"
 
-  oss/search.aggregation/250_moving_fn.yml:
+  free/nodes.info/10_basic.yml:
+    # node has a lot more roles than those checked in the test
+    - "node_info role test"
+
+  free/search.aggregation/250_moving_fn.yml:
     # The use of an invalid window interval results in a 400 response which looks like
     # it suppresses the sending of deprecation headers
     - "Bad window deprecated interval"
