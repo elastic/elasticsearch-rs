@@ -29,7 +29,8 @@
 //! [Manage settings](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster.html),
 //! perform operations, and retrieve information about an Elasticsearch cluster.
 
-# ! [ allow ( unused_imports ) ]use crate::{
+#![allow(unused_imports)]
+use crate::{
     client::Elasticsearch,
     error::Error,
     http::{

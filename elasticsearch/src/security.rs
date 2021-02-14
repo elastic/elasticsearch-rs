@@ -37,7 +37,8 @@
 //! - Authenticate users against an OpenID Connect or SAML authentication realm when using a
 //! custom web application other than Kibana
 
-# ! [ allow ( unused_imports ) ]use crate::{
+#![allow(unused_imports)]
+use crate::{
     client::Elasticsearch,
     error::Error,
     http::{

@@ -33,7 +33,8 @@
 //! - Start indefinite use of the Basic license features
 //! - Get the status of trial and basic license features
 
-# ! [ allow ( unused_imports ) ]use crate::{
+#![allow(unused_imports)]
+use crate::{
     client::Elasticsearch,
     error::Error,
     http::{

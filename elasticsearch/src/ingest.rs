@@ -42,7 +42,8 @@
 //! be conditionally executed, and failures within pipelines can be explicitly handled by defining
 //! processors to execute in the event of failure.
 
-# ! [ allow ( unused_imports ) ]use crate::{
+#![allow(unused_imports)]
+use crate::{
     client::Elasticsearch,
     error::Error,
     http::{

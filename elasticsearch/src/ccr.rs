@@ -32,7 +32,8 @@
 //! - Disaster recovery in case a primary cluster fails. A secondary cluster can serve as a hot backup
 //! - Geo-proximity so that reads can be served locally
 
-# ! [ allow ( unused_imports ) ]use crate::{
+#![allow(unused_imports)]
+use crate::{
     client::Elasticsearch,
     error::Error,
     http::{

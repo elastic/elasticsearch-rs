@@ -30,7 +30,8 @@
 //! can be used to copy data from source indices, transforms it, and persists it into an
 //! entity-centric destination index.
 
-# ! [ allow ( unused_imports ) ]use crate::{
+#![allow(unused_imports)]
+use crate::{
     client::Elasticsearch,
     error::Error,
     http::{

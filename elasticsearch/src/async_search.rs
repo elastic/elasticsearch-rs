@@ -30,7 +30,8 @@
 //! let you asynchronously execute a search request, monitor its progress, and retrieve
 //! partial results as they become available.
 
-# ! [ allow ( unused_imports ) ]use crate::{
+#![allow(unused_imports)]
+use crate::{
     client::Elasticsearch,
     error::Error,
     http::{

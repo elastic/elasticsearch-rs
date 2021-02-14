@@ -31,7 +31,8 @@
 //! indices or the entire cluster, stored in a repository on a shared filesystem or a remote repository
 //! on S3, HDFS, Azure, Google Cloud storage, and more.
 
-# ! [ allow ( unused_imports ) ]use crate::{
+#![allow(unused_imports)]
+use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
