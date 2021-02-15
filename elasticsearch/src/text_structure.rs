@@ -24,7 +24,13 @@
 // cargo make generate-api
 // -----------------------------------------------
 
+//! Text structure APIs
+//!
+//! Determines the structure of text and other information that will be useful to import its contents to an Elasticsearch
+//! index.
+
 #![cfg(feature = "experimental-apis")]
+#![doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
@@ -57,9 +63,10 @@ impl TextStructureFindStructureParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Text Structure Find Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/find-structure.html)\n\nFinds the structure of a text file. The text file must contain data that is suitable to be ingested into Elasticsearch."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
 pub struct TextStructureFindStructure<'a, 'b, B> {
     transport: &'a Transport,
     parts: TextStructureFindStructureParts,
@@ -322,6 +329,7 @@ where
     }
 }
 #[doc = "Namespace client for TextStructure APIs"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 pub struct TextStructure<'a> {
     transport: &'a Transport,
@@ -336,6 +344,7 @@ impl<'a> TextStructure<'a> {
         self.transport
     }
     #[doc = "[Text Structure Find Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/find-structure.html)\n\nFinds the structure of a text file. The text file must contain data that is suitable to be ingested into Elasticsearch."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn find_structure<'b>(&'a self) -> TextStructureFindStructure<'a, 'b, ()> {
         TextStructureFindStructure::new(self.transport())

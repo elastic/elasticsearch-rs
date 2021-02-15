@@ -78,8 +78,8 @@ impl<'b> IngestDeletePipelineParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/delete-pipeline-api.html)\n\nDeletes a pipeline."]
+#[derive(Clone, Debug)]
 pub struct IngestDeletePipeline<'a, 'b> {
     transport: &'a Transport,
     parts: IngestDeletePipelineParts<'b>,
@@ -217,8 +217,8 @@ impl<'b> IngestGetPipelineParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-pipeline-api.html)\n\nReturns a pipeline."]
+#[derive(Clone, Debug)]
 pub struct IngestGetPipeline<'a, 'b> {
     transport: &'a Transport,
     parts: IngestGetPipelineParts<'b>,
@@ -338,8 +338,8 @@ impl IngestProcessorGrokParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ingest Processor Grok API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/grok-processor.html#grok-processor-rest-get)\n\nReturns a list of the built-in patterns."]
+#[derive(Clone, Debug)]
 pub struct IngestProcessorGrok<'a, 'b> {
     transport: &'a Transport,
     parts: IngestProcessorGrokParts,
@@ -456,8 +456,8 @@ impl<'b> IngestPutPipelineParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/put-pipeline-api.html)\n\nCreates or updates a pipeline."]
+#[derive(Clone, Debug)]
 pub struct IngestPutPipeline<'a, 'b, B> {
     transport: &'a Transport,
     parts: IngestPutPipelineParts<'b>,
@@ -621,8 +621,8 @@ impl<'b> IngestSimulateParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/simulate-pipeline-api.html)\n\nAllows to simulate a pipeline with example documents."]
+#[derive(Clone, Debug)]
 pub struct IngestSimulate<'a, 'b, B> {
     transport: &'a Transport,
     parts: IngestSimulateParts<'b>,

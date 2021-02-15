@@ -367,7 +367,6 @@ pub mod cat;
 pub mod ccr;
 pub mod cluster;
 pub mod dangling_indices;
-pub mod data_frame_transform_deprecated;
 pub mod enrich;
 pub mod eql;
 pub mod graph;

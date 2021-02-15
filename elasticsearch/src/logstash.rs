@@ -24,6 +24,11 @@
 // cargo make generate-api
 // -----------------------------------------------
 
+//! Logstash APIs
+//!
+//! The [Logstash APIs](https://www.elastic.co/guide/en/elasticsearch/reference/master/logstash-apis.html) are used to
+//! manage Pipelines used by Logstash Central Management.
+
 #![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
@@ -60,8 +65,8 @@ impl<'b> LogstashDeletePipelineParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Logstash Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/logstash-api-delete-pipeline.html)\n\nDeletes Logstash Pipelines used by Central Management"]
+#[derive(Clone, Debug)]
 pub struct LogstashDeletePipeline<'a, 'b> {
     transport: &'a Transport,
     parts: LogstashDeletePipelineParts<'b>,
@@ -178,8 +183,8 @@ impl<'b> LogstashGetPipelineParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Logstash Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/logstash-api-get-pipeline.html)\n\nRetrieves Logstash Pipelines used by Central Management"]
+#[derive(Clone, Debug)]
 pub struct LogstashGetPipeline<'a, 'b> {
     transport: &'a Transport,
     parts: LogstashGetPipelineParts<'b>,
@@ -296,8 +301,8 @@ impl<'b> LogstashPutPipelineParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Logstash Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/logstash-api-put-pipeline.html)\n\nAdds and updates Logstash Pipelines used for Central Management"]
+#[derive(Clone, Debug)]
 pub struct LogstashPutPipeline<'a, 'b, B> {
     transport: &'a Transport,
     parts: LogstashPutPipelineParts<'b>,

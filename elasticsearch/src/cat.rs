@@ -160,8 +160,8 @@ impl<'b> CatAliasesParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-alias.html)\n\nShows information about currently configured aliases to indices including filter and routing infos."]
+#[derive(Clone, Debug)]
 pub struct CatAliases<'a, 'b> {
     transport: &'a Transport,
     parts: CatAliasesParts<'b>,
@@ -351,8 +351,8 @@ impl<'b> CatAllocationParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Allocation API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-allocation.html)\n\nProvides a snapshot of how many shards are allocated to each data node and how much disk space they are using."]
+#[derive(Clone, Debug)]
 pub struct CatAllocation<'a, 'b> {
     transport: &'a Transport,
     parts: CatAllocationParts<'b>,
@@ -550,8 +550,8 @@ impl<'b> CatCountParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Count API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-count.html)\n\nProvides quick access to the document count of the entire cluster, or individual indices."]
+#[derive(Clone, Debug)]
 pub struct CatCount<'a, 'b> {
     transport: &'a Transport,
     parts: CatCountParts<'b>,
@@ -722,8 +722,8 @@ impl<'b> CatFielddataParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Fielddata API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-fielddata.html)\n\nShows how much heap memory is currently being used by fielddata on every data node in the cluster."]
+#[derive(Clone, Debug)]
 pub struct CatFielddata<'a, 'b> {
     transport: &'a Transport,
     parts: CatFielddataParts<'b>,
@@ -902,8 +902,8 @@ impl CatHealthParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Health API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-health.html)\n\nReturns a concise representation of the cluster health."]
+#[derive(Clone, Debug)]
 pub struct CatHealth<'a, 'b> {
     transport: &'a Transport,
     parts: CatHealthParts,
@@ -1081,8 +1081,8 @@ impl CatHelpParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Help API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat.html)\n\nReturns help for the Cat APIs."]
+#[derive(Clone, Debug)]
 pub struct CatHelp<'a, 'b> {
     transport: &'a Transport,
     parts: CatHelpParts,
@@ -1225,8 +1225,8 @@ impl<'b> CatIndicesParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Indices API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-indices.html)\n\nReturns information about indices: number of primaries and replicas, document counts, disk size, ..."]
+#[derive(Clone, Debug)]
 pub struct CatIndices<'a, 'b> {
     transport: &'a Transport,
     parts: CatIndicesParts<'b>,
@@ -1450,8 +1450,8 @@ impl CatMasterParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Master API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-master.html)\n\nReturns information about the master node."]
+#[derive(Clone, Debug)]
 pub struct CatMaster<'a, 'b> {
     transport: &'a Transport,
     parts: CatMasterParts,
@@ -1638,8 +1638,8 @@ impl<'b> CatMlDataFrameAnalyticsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Ml Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-dfanalytics.html)\n\nGets configuration and usage information about data frame analytics jobs."]
+#[derive(Clone, Debug)]
 pub struct CatMlDataFrameAnalytics<'a, 'b> {
     transport: &'a Transport,
     parts: CatMlDataFrameAnalyticsParts<'b>,
@@ -1836,8 +1836,8 @@ impl<'b> CatMlDatafeedsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Ml Datafeeds API](http://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-datafeeds.html)\n\nGets configuration and usage information about datafeeds."]
+#[derive(Clone, Debug)]
 pub struct CatMlDatafeeds<'a, 'b> {
     transport: &'a Transport,
     parts: CatMlDatafeedsParts<'b>,
@@ -2034,8 +2034,8 @@ impl<'b> CatMlJobsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Ml Jobs API](http://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-anomaly-detectors.html)\n\nGets configuration and usage information about anomaly detection jobs."]
+#[derive(Clone, Debug)]
 pub struct CatMlJobs<'a, 'b> {
     transport: &'a Transport,
     parts: CatMlJobsParts<'b>,
@@ -2241,8 +2241,8 @@ impl<'b> CatMlTrainedModelsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Ml Trained Models API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-trained-model.html)\n\nGets configuration and usage information about inference trained models."]
+#[derive(Clone, Debug)]
 pub struct CatMlTrainedModels<'a, 'b> {
     transport: &'a Transport,
     parts: CatMlTrainedModelsParts<'b>,
@@ -2447,8 +2447,8 @@ impl CatNodeattrsParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Nodeattrs API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-nodeattrs.html)\n\nReturns information about custom node attributes."]
+#[derive(Clone, Debug)]
 pub struct CatNodeattrs<'a, 'b> {
     transport: &'a Transport,
     parts: CatNodeattrsParts,
@@ -2626,8 +2626,8 @@ impl CatNodesParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Nodes API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-nodes.html)\n\nReturns basic statistics about performance of cluster nodes."]
+#[derive(Clone, Debug)]
 pub struct CatNodes<'a, 'b> {
     transport: &'a Transport,
     parts: CatNodesParts,
@@ -2823,8 +2823,8 @@ impl CatPendingTasksParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-pending-tasks.html)\n\nReturns a concise representation of the cluster pending tasks."]
+#[derive(Clone, Debug)]
 pub struct CatPendingTasks<'a, 'b> {
     transport: &'a Transport,
     parts: CatPendingTasksParts,
@@ -3011,8 +3011,8 @@ impl CatPluginsParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Plugins API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-plugins.html)\n\nReturns information about installed plugins across nodes node."]
+#[derive(Clone, Debug)]
 pub struct CatPlugins<'a, 'b> {
     transport: &'a Transport,
     parts: CatPluginsParts,
@@ -3210,8 +3210,8 @@ impl<'b> CatRecoveryParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-recovery.html)\n\nReturns information about index shard recoveries, both on-going completed."]
+#[derive(Clone, Debug)]
 pub struct CatRecovery<'a, 'b> {
     transport: &'a Transport,
     parts: CatRecoveryParts<'b>,
@@ -3417,8 +3417,8 @@ impl CatRepositoriesParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Repositories API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-repositories.html)\n\nReturns information about snapshot repositories registered in the cluster."]
+#[derive(Clone, Debug)]
 pub struct CatRepositories<'a, 'b> {
     transport: &'a Transport,
     parts: CatRepositoriesParts,
@@ -3607,8 +3607,8 @@ impl<'b> CatSegmentsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-segments.html)\n\nProvides low-level information about the segments in the shards of an index."]
+#[derive(Clone, Debug)]
 pub struct CatSegments<'a, 'b> {
     transport: &'a Transport,
     parts: CatSegmentsParts<'b>,
@@ -3788,8 +3788,8 @@ impl<'b> CatShardsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-shards.html)\n\nProvides a detailed view of shard allocation on nodes."]
+#[derive(Clone, Debug)]
 pub struct CatShards<'a, 'b> {
     transport: &'a Transport,
     parts: CatShardsParts<'b>,
@@ -3987,8 +3987,8 @@ impl<'b> CatSnapshotsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Snapshots API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-snapshots.html)\n\nReturns all snapshots in a specific repository."]
+#[derive(Clone, Debug)]
 pub struct CatSnapshots<'a, 'b> {
     transport: &'a Transport,
     parts: CatSnapshotsParts<'b>,
@@ -4177,9 +4177,10 @@ impl CatTasksParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/tasks.html)\n\nReturns information about the tasks currently executing on one or more nodes in the cluster."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
 pub struct CatTasks<'a, 'b> {
     transport: &'a Transport,
     parts: CatTasksParts,
@@ -4396,8 +4397,8 @@ impl<'b> CatTemplatesParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Templates API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-templates.html)\n\nReturns information about existing templates."]
+#[derive(Clone, Debug)]
 pub struct CatTemplates<'a, 'b> {
     transport: &'a Transport,
     parts: CatTemplatesParts<'b>,
@@ -4586,8 +4587,8 @@ impl<'b> CatThreadPoolParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Thread Pool API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-thread-pool.html)\n\nReturns cluster-wide thread pool statistics per node.\nBy default the active, queue and rejected statistics are returned for all thread pools."]
+#[derive(Clone, Debug)]
 pub struct CatThreadPool<'a, 'b> {
     transport: &'a Transport,
     parts: CatThreadPoolParts<'b>,
@@ -4784,8 +4785,8 @@ impl<'b> CatTransformsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Transforms API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-transforms.html)\n\nGets configuration and usage information about transforms."]
+#[derive(Clone, Debug)]
 pub struct CatTransforms<'a, 'b> {
     transport: &'a Transport,
     parts: CatTransformsParts<'b>,
@@ -5070,6 +5071,7 @@ impl<'a> Cat<'a> {
         CatSnapshots::new(self.transport(), parts)
     }
     #[doc = "[Cat Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/tasks.html)\n\nReturns information about the tasks currently executing on one or more nodes in the cluster."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn tasks<'b>(&'a self) -> CatTasks<'a, 'b> {
         CatTasks::new(self.transport())

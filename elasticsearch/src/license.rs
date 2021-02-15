@@ -63,8 +63,8 @@ impl LicenseDeleteParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [License Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/delete-license.html)\n\nDeletes licensing information for the cluster"]
+#[derive(Clone, Debug)]
 pub struct LicenseDelete<'a, 'b> {
     transport: &'a Transport,
     parts: LicenseDeleteParts,
@@ -175,8 +175,8 @@ impl LicenseGetParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [License Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-license.html)\n\nRetrieves licensing information for the cluster"]
+#[derive(Clone, Debug)]
 pub struct LicenseGet<'a, 'b> {
     transport: &'a Transport,
     parts: LicenseGetParts,
@@ -305,8 +305,8 @@ impl LicenseGetBasicStatusParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [License Get Basic Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-basic-status.html)\n\nRetrieves information about the status of the basic license."]
+#[derive(Clone, Debug)]
 pub struct LicenseGetBasicStatus<'a, 'b> {
     transport: &'a Transport,
     parts: LicenseGetBasicStatusParts,
@@ -417,8 +417,8 @@ impl LicenseGetTrialStatusParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [License Get Trial Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-trial-status.html)\n\nRetrieves information about the status of the trial license."]
+#[derive(Clone, Debug)]
 pub struct LicenseGetTrialStatus<'a, 'b> {
     transport: &'a Transport,
     parts: LicenseGetTrialStatusParts,
@@ -529,8 +529,8 @@ impl LicensePostParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [License Post API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/update-license.html)\n\nUpdates the license for the cluster."]
+#[derive(Clone, Debug)]
 pub struct LicensePost<'a, 'b, B> {
     transport: &'a Transport,
     parts: LicensePostParts,
@@ -674,8 +674,8 @@ impl LicensePostStartBasicParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [License Post Start Basic API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/start-basic.html)\n\nStarts an indefinite basic license."]
+#[derive(Clone, Debug)]
 pub struct LicensePostStartBasic<'a, 'b, B> {
     transport: &'a Transport,
     parts: LicensePostStartBasicParts,
@@ -819,8 +819,8 @@ impl LicensePostStartTrialParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [License Post Start Trial API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/start-trial.html)\n\nstarts a limited time trial license."]
+#[derive(Clone, Debug)]
 pub struct LicensePostStartTrial<'a, 'b, B> {
     transport: &'a Transport,
     parts: LicensePostStartTrialParts,

@@ -25,8 +25,8 @@ use serde::{de, de::Visitor, Deserializer, Serializer};
 // Generated code - do not edit until the next GENERATED-END marker
 
 use serde::{Deserialize, Serialize};
-#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 #[doc = "The unit in which to display byte values"]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Bytes {
     #[serde(rename = "b")]
     B,
@@ -51,24 +51,24 @@ pub enum Bytes {
     #[serde(rename = "pb")]
     Pb,
 }
-#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 #[doc = "What to do when the delete by query hits version conflicts?"]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Conflicts {
     #[serde(rename = "abort")]
     Abort,
     #[serde(rename = "proceed")]
     Proceed,
 }
-#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 #[doc = "The default operator for query string query (AND or OR)"]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum DefaultOperator {
     #[serde(rename = "AND")]
     And,
     #[serde(rename = "OR")]
     Or,
 }
-#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum ExpandWildcards {
     #[serde(rename = "open")]
     Open,
@@ -81,9 +81,10 @@ pub enum ExpandWildcards {
     #[serde(rename = "all")]
     All,
 }
+#[doc = "Optional parameter to specify the high level file format"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
-#[doc = "Optional parameter to specify the high level file format"]
 pub enum Format {
     #[serde(rename = "ndjson")]
     Ndjson,
@@ -94,9 +95,10 @@ pub enum Format {
     #[serde(rename = "semi_structured_text")]
     SemiStructuredText,
 }
+#[doc = "Group tasks by nodes or parent/child relationships"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
-#[doc = "Group tasks by nodes or parent/child relationships"]
 pub enum GroupBy {
     #[serde(rename = "nodes")]
     Nodes,
@@ -105,8 +107,8 @@ pub enum GroupBy {
     #[serde(rename = "none")]
     None,
 }
-#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 #[doc = "A health status (\"green\", \"yellow\", or \"red\" to filter only indices matching the specified health status"]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Health {
     #[serde(rename = "green")]
     Green,
@@ -115,8 +117,8 @@ pub enum Health {
     #[serde(rename = "red")]
     Red,
 }
-#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 #[doc = "Specify the level of detail for returned information"]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Level {
     #[serde(rename = "cluster")]
     Cluster,
@@ -125,16 +127,16 @@ pub enum Level {
     #[serde(rename = "shards")]
     Shards,
 }
-#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 #[doc = "Explicit operation type. Defaults to `index` for requests with an explicit document ID, and to `create`for requests without an explicit document ID"]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum OpType {
     #[serde(rename = "index")]
     Index,
     #[serde(rename = "create")]
     Create,
 }
-#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Refresh {
     #[serde(rename = "true")]
     True,
@@ -143,16 +145,16 @@ pub enum Refresh {
     #[serde(rename = "wait_for")]
     WaitFor,
 }
-#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 #[doc = "Search operation type"]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum SearchType {
     #[serde(rename = "query_then_fetch")]
     QueryThenFetch,
     #[serde(rename = "dfs_query_then_fetch")]
     DfsQueryThenFetch,
 }
-#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 #[doc = "Specify suggest mode"]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum SuggestMode {
     #[serde(rename = "missing")]
     Missing,
@@ -161,8 +163,8 @@ pub enum SuggestMode {
     #[serde(rename = "always")]
     Always,
 }
-#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 #[doc = "The unit in which to display time values"]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Time {
     #[serde(rename = "d")]
     D,
@@ -179,8 +181,8 @@ pub enum Time {
     #[serde(rename = "nanos")]
     Nanos,
 }
-#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 #[doc = "The type to sample (default: cpu)"]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Type {
     #[serde(rename = "cpu")]
     Cpu,
@@ -189,8 +191,8 @@ pub enum Type {
     #[serde(rename = "block")]
     Block,
 }
-#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 #[doc = "Specific version type"]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum VersionType {
     #[serde(rename = "internal")]
     Internal,
@@ -199,8 +201,8 @@ pub enum VersionType {
     #[serde(rename = "external_gte")]
     ExternalGte,
 }
-#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 #[doc = "Wait until all currently queued events with the given priority are processed"]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum WaitForEvents {
     #[serde(rename = "immediate")]
     Immediate,
@@ -215,8 +217,8 @@ pub enum WaitForEvents {
     #[serde(rename = "languid")]
     Languid,
 }
-#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 #[doc = "Wait until cluster is in a specific state"]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum WaitForStatus {
     #[serde(rename = "green")]
     Green,

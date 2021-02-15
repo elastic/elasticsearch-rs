@@ -5,7 +5,6 @@ written = [
     'ccr.rs',
     'cluster.rs',
     'dangling_indices.rs',
-    'data_frame_transform_deprecated.rs',
     'enrich.rs',
     'eql.rs',
     'graph.rs',

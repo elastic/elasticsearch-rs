@@ -24,6 +24,13 @@
 // cargo make generate-api
 // -----------------------------------------------
 
+//! EQL APIs
+//!
+//! [Event Query Language (EQL)](https://www.elastic.co/guide/en/elasticsearch/reference/master/eql.html) is a query
+//! language for event-based time series data, such as logs, metrics, and traces.
+//!
+//!
+
 #![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
@@ -60,8 +67,8 @@ impl<'b> EqlDeleteParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Eql Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/eql-search-api.html)\n\nDeletes an async EQL search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
+#[derive(Clone, Debug)]
 pub struct EqlDelete<'a, 'b> {
     transport: &'a Transport,
     parts: EqlDeleteParts<'b>,
@@ -178,8 +185,8 @@ impl<'b> EqlGetParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Eql Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/eql-search-api.html)\n\nReturns async results from previously executed Event Query Language (EQL) search"]
+#[derive(Clone, Debug)]
 pub struct EqlGet<'a, 'b> {
     transport: &'a Transport,
     parts: EqlGetParts<'b>,
@@ -314,8 +321,8 @@ impl<'b> EqlGetStatusParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Eql Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/eql-search-api.html)\n\nReturns the status of a previously submitted async or stored Event Query Language (EQL) search"]
+#[derive(Clone, Debug)]
 pub struct EqlGetStatus<'a, 'b> {
     transport: &'a Transport,
     parts: EqlGetStatusParts<'b>,
@@ -434,8 +441,8 @@ impl<'b> EqlSearchParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Eql Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/eql-search-api.html)\n\nReturns results matching a query expressed in Event Query Language (EQL)"]
+#[derive(Clone, Debug)]
 pub struct EqlSearch<'a, 'b, B> {
     transport: &'a Transport,
     parts: EqlSearchParts<'b>,

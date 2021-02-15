@@ -66,8 +66,8 @@ impl<'b> MlCloseJobParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Close Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-close-job.html)\n\nCloses one or more anomaly detection jobs. A job can be opened and closed multiple times throughout its lifecycle."]
+#[derive(Clone, Debug)]
 pub struct MlCloseJob<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlCloseJobParts<'b>,
@@ -248,8 +248,8 @@ impl<'b> MlDeleteCalendarParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Delete Calendar API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-delete-calendar.html)\n\nDeletes a calendar."]
+#[derive(Clone, Debug)]
 pub struct MlDeleteCalendar<'a, 'b> {
     transport: &'a Transport,
     parts: MlDeleteCalendarParts<'b>,
@@ -373,8 +373,8 @@ impl<'b> MlDeleteCalendarEventParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Delete Calendar Event API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-delete-calendar-event.html)\n\nDeletes scheduled events from a calendar."]
+#[derive(Clone, Debug)]
 pub struct MlDeleteCalendarEvent<'a, 'b> {
     transport: &'a Transport,
     parts: MlDeleteCalendarEventParts<'b>,
@@ -498,8 +498,8 @@ impl<'b> MlDeleteCalendarJobParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Delete Calendar Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-delete-calendar-job.html)\n\nDeletes anomaly detection jobs from a calendar."]
+#[derive(Clone, Debug)]
 pub struct MlDeleteCalendarJob<'a, 'b> {
     transport: &'a Transport,
     parts: MlDeleteCalendarJobParts<'b>,
@@ -618,9 +618,10 @@ impl<'b> MlDeleteDataFrameAnalyticsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Delete Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/delete-dfanalytics.html)\n\nDeletes an existing data frame analytics job."]
+#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
 #[cfg(feature = "beta-apis")]
+#[derive(Clone, Debug)]
 pub struct MlDeleteDataFrameAnalytics<'a, 'b> {
     transport: &'a Transport,
     parts: MlDeleteDataFrameAnalyticsParts<'b>,
@@ -757,8 +758,8 @@ impl<'b> MlDeleteDatafeedParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Delete Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-delete-datafeed.html)\n\nDeletes an existing datafeed."]
+#[derive(Clone, Debug)]
 pub struct MlDeleteDatafeed<'a, 'b> {
     transport: &'a Transport,
     parts: MlDeleteDatafeedParts<'b>,
@@ -888,8 +889,8 @@ impl<'b> MlDeleteExpiredDataParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Delete Expired Data API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-delete-expired-data.html)\n\nDeletes expired and unused machine learning data."]
+#[derive(Clone, Debug)]
 pub struct MlDeleteExpiredData<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlDeleteExpiredDataParts<'b>,
@@ -1050,8 +1051,8 @@ impl<'b> MlDeleteFilterParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Delete Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-delete-filter.html)\n\nDeletes a filter."]
+#[derive(Clone, Debug)]
 pub struct MlDeleteFilter<'a, 'b> {
     transport: &'a Transport,
     parts: MlDeleteFilterParts<'b>,
@@ -1186,8 +1187,8 @@ impl<'b> MlDeleteForecastParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Delete Forecast API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-delete-forecast.html)\n\nDeletes forecasts from a machine learning job."]
+#[derive(Clone, Debug)]
 pub struct MlDeleteForecast<'a, 'b> {
     transport: &'a Transport,
     parts: MlDeleteForecastParts<'b>,
@@ -1323,8 +1324,8 @@ impl<'b> MlDeleteJobParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Delete Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-delete-job.html)\n\nDeletes an existing anomaly detection job."]
+#[derive(Clone, Debug)]
 pub struct MlDeleteJob<'a, 'b> {
     transport: &'a Transport,
     parts: MlDeleteJobParts<'b>,
@@ -1466,8 +1467,8 @@ impl<'b> MlDeleteModelSnapshotParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Delete Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-delete-snapshot.html)\n\nDeletes an existing model snapshot."]
+#[derive(Clone, Debug)]
 pub struct MlDeleteModelSnapshot<'a, 'b> {
     transport: &'a Transport,
     parts: MlDeleteModelSnapshotParts<'b>,
@@ -1587,9 +1588,10 @@ impl<'b> MlDeleteTrainedModelParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Delete Trained Model API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/delete-trained-models.html)\n\nDeletes an existing trained inference model that is currently not referenced by an ingest pipeline."]
+#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
 #[cfg(feature = "beta-apis")]
+#[derive(Clone, Debug)]
 pub struct MlDeleteTrainedModel<'a, 'b> {
     transport: &'a Transport,
     parts: MlDeleteTrainedModelParts<'b>,
@@ -1703,8 +1705,8 @@ impl MlEstimateModelMemoryParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Estimate Model Memory API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-apis.html)\n\nEstimates the model memory"]
+#[derive(Clone, Debug)]
 pub struct MlEstimateModelMemory<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlEstimateModelMemoryParts,
@@ -1840,9 +1842,10 @@ impl MlEvaluateDataFrameParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Evaluate Data Frame API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/evaluate-dfanalytics.html)\n\nEvaluates the data frame analytics for an annotated index."]
+#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
 #[cfg(feature = "beta-apis")]
+#[derive(Clone, Debug)]
 pub struct MlEvaluateDataFrame<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlEvaluateDataFrameParts,
@@ -1989,9 +1992,10 @@ impl<'b> MlExplainDataFrameAnalyticsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Explain Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/8.0/explain-dfanalytics.html)\n\nExplains a data frame analytics config."]
+#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
 #[cfg(feature = "beta-apis")]
+#[derive(Clone, Debug)]
 pub struct MlExplainDataFrameAnalytics<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlExplainDataFrameAnalyticsParts<'b>,
@@ -2137,8 +2141,8 @@ impl<'b> MlFlushJobParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Flush Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-flush-job.html)\n\nForces any buffered data to be processed by the job."]
+#[derive(Clone, Debug)]
 pub struct MlFlushJob<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlFlushJobParts<'b>,
@@ -2330,8 +2334,8 @@ impl<'b> MlForecastParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Forecast API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-forecast.html)\n\nPredicts the future behavior of a time series by using its historical behavior."]
+#[derive(Clone, Debug)]
 pub struct MlForecast<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlForecastParts<'b>,
@@ -2518,8 +2522,8 @@ impl<'b> MlGetBucketsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Buckets API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-get-bucket.html)\n\nRetrieves anomaly detection job results for one or more buckets."]
+#[derive(Clone, Debug)]
 pub struct MlGetBuckets<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlGetBucketsParts<'b>,
@@ -2754,8 +2758,8 @@ impl<'b> MlGetCalendarEventsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Calendar Events API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-get-calendar-event.html)\n\nRetrieves information about the scheduled events in calendars."]
+#[derive(Clone, Debug)]
 pub struct MlGetCalendarEvents<'a, 'b> {
     transport: &'a Transport,
     parts: MlGetCalendarEventsParts<'b>,
@@ -2921,8 +2925,8 @@ impl<'b> MlGetCalendarsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Calendars API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-get-calendar.html)\n\nRetrieves configuration information for calendars."]
+#[derive(Clone, Debug)]
 pub struct MlGetCalendars<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlGetCalendarsParts<'b>,
@@ -3104,8 +3108,8 @@ impl<'b> MlGetCategoriesParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Categories API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-get-category.html)\n\nRetrieves anomaly detection job results for one or more categories."]
+#[derive(Clone, Debug)]
 pub struct MlGetCategories<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlGetCategoriesParts<'b>,
@@ -3283,9 +3287,10 @@ impl<'b> MlGetDataFrameAnalyticsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-dfanalytics.html)\n\nRetrieves configuration information for data frame analytics jobs."]
+#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
 #[cfg(feature = "beta-apis")]
+#[derive(Clone, Debug)]
 pub struct MlGetDataFrameAnalytics<'a, 'b> {
     transport: &'a Transport,
     parts: MlGetDataFrameAnalyticsParts<'b>,
@@ -3445,9 +3450,10 @@ impl<'b> MlGetDataFrameAnalyticsStatsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Data Frame Analytics Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-dfanalytics-stats.html)\n\nRetrieves usage information for data frame analytics jobs."]
+#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
 #[cfg(feature = "beta-apis")]
+#[derive(Clone, Debug)]
 pub struct MlGetDataFrameAnalyticsStats<'a, 'b> {
     transport: &'a Transport,
     parts: MlGetDataFrameAnalyticsStatsParts<'b>,
@@ -3606,8 +3612,8 @@ impl<'b> MlGetDatafeedStatsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Datafeed Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-get-datafeed-stats.html)\n\nRetrieves usage information for datafeeds."]
+#[derive(Clone, Debug)]
 pub struct MlGetDatafeedStats<'a, 'b> {
     transport: &'a Transport,
     parts: MlGetDatafeedStatsParts<'b>,
@@ -3746,8 +3752,8 @@ impl<'b> MlGetDatafeedsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Datafeeds API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-get-datafeed.html)\n\nRetrieves configuration information for datafeeds."]
+#[derive(Clone, Debug)]
 pub struct MlGetDatafeeds<'a, 'b> {
     transport: &'a Transport,
     parts: MlGetDatafeedsParts<'b>,
@@ -3895,8 +3901,8 @@ impl<'b> MlGetFiltersParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Filters API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-get-filter.html)\n\nRetrieves filters."]
+#[derive(Clone, Debug)]
 pub struct MlGetFilters<'a, 'b> {
     transport: &'a Transport,
     parts: MlGetFiltersParts<'b>,
@@ -4033,8 +4039,8 @@ impl<'b> MlGetInfluencersParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Influencers API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-get-influencer.html)\n\nRetrieves anomaly detection job results for one or more influencers."]
+#[derive(Clone, Debug)]
 pub struct MlGetInfluencers<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlGetInfluencersParts<'b>,
@@ -4262,8 +4268,8 @@ impl<'b> MlGetJobStatsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Job Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-get-job-stats.html)\n\nRetrieves usage information for anomaly detection jobs."]
+#[derive(Clone, Debug)]
 pub struct MlGetJobStats<'a, 'b> {
     transport: &'a Transport,
     parts: MlGetJobStatsParts<'b>,
@@ -4402,8 +4408,8 @@ impl<'b> MlGetJobsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Jobs API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-get-job.html)\n\nRetrieves configuration information for anomaly detection jobs."]
+#[derive(Clone, Debug)]
 pub struct MlGetJobs<'a, 'b> {
     transport: &'a Transport,
     parts: MlGetJobsParts<'b>,
@@ -4565,8 +4571,8 @@ impl<'b> MlGetModelSnapshotsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Model Snapshots API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-get-snapshot.html)\n\nRetrieves information about model snapshots."]
+#[derive(Clone, Debug)]
 pub struct MlGetModelSnapshots<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlGetModelSnapshotsParts<'b>,
@@ -4771,8 +4777,8 @@ impl<'b> MlGetOverallBucketsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Overall Buckets API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-get-overall-buckets.html)\n\nRetrieves overall bucket results that summarize the bucket results of multiple anomaly detection jobs."]
+#[derive(Clone, Debug)]
 pub struct MlGetOverallBuckets<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlGetOverallBucketsParts<'b>,
@@ -4997,8 +5003,8 @@ impl<'b> MlGetRecordsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Records API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-get-record.html)\n\nRetrieves anomaly records for an anomaly detection job."]
+#[derive(Clone, Debug)]
 pub struct MlGetRecords<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlGetRecordsParts<'b>,
@@ -5227,9 +5233,10 @@ impl<'b> MlGetTrainedModelsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Trained Models API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-trained-models.html)\n\nRetrieves configuration information for a trained inference model."]
+#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
 #[cfg(feature = "beta-apis")]
+#[derive(Clone, Debug)]
 pub struct MlGetTrainedModels<'a, 'b> {
     transport: &'a Transport,
     parts: MlGetTrainedModelsParts<'b>,
@@ -5427,9 +5434,10 @@ impl<'b> MlGetTrainedModelsStatsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Trained Models Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-trained-models-stats.html)\n\nRetrieves usage information for trained inference models."]
+#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
 #[cfg(feature = "beta-apis")]
+#[derive(Clone, Debug)]
 pub struct MlGetTrainedModelsStats<'a, 'b> {
     transport: &'a Transport,
     parts: MlGetTrainedModelsStatsParts<'b>,
@@ -5568,8 +5576,8 @@ impl MlInfoParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-ml-info.html)\n\nReturns defaults and limits used by machine learning."]
+#[derive(Clone, Debug)]
 pub struct MlInfo<'a, 'b> {
     transport: &'a Transport,
     parts: MlInfoParts,
@@ -5688,8 +5696,8 @@ impl<'b> MlOpenJobParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Open Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-open-job.html)\n\nOpens one or more anomaly detection jobs."]
+#[derive(Clone, Debug)]
 pub struct MlOpenJob<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlOpenJobParts<'b>,
@@ -5831,8 +5839,8 @@ impl<'b> MlPostCalendarEventsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Post Calendar Events API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-post-calendar-event.html)\n\nPosts scheduled events in a calendar."]
+#[derive(Clone, Debug)]
 pub struct MlPostCalendarEvents<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlPostCalendarEventsParts<'b>,
@@ -5974,8 +5982,8 @@ impl<'b> MlPostDataParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Post Data API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-post-data.html)\n\nSends data to an anomaly detection job for analysis."]
+#[derive(Clone, Debug)]
 pub struct MlPostData<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlPostDataParts<'b>,
@@ -6137,8 +6145,8 @@ impl<'b> MlPreviewDatafeedParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Preview Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-preview-datafeed.html)\n\nPreviews a datafeed."]
+#[derive(Clone, Debug)]
 pub struct MlPreviewDatafeed<'a, 'b> {
     transport: &'a Transport,
     parts: MlPreviewDatafeedParts<'b>,
@@ -6256,8 +6264,8 @@ impl<'b> MlPutCalendarParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Put Calendar API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-put-calendar.html)\n\nInstantiates a calendar."]
+#[derive(Clone, Debug)]
 pub struct MlPutCalendar<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlPutCalendarParts<'b>,
@@ -6404,8 +6412,8 @@ impl<'b> MlPutCalendarJobParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Put Calendar Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-put-calendar-job.html)\n\nAdds an anomaly detection job to a calendar."]
+#[derive(Clone, Debug)]
 pub struct MlPutCalendarJob<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlPutCalendarJobParts<'b>,
@@ -6547,9 +6555,10 @@ impl<'b> MlPutDataFrameAnalyticsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Put Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/put-dfanalytics.html)\n\nInstantiates a data frame analytics job."]
+#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
 #[cfg(feature = "beta-apis")]
+#[derive(Clone, Debug)]
 pub struct MlPutDataFrameAnalytics<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlPutDataFrameAnalyticsParts<'b>,
@@ -6691,8 +6700,8 @@ impl<'b> MlPutDatafeedParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Put Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-put-datafeed.html)\n\nInstantiates a datafeed."]
+#[derive(Clone, Debug)]
 pub struct MlPutDatafeed<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlPutDatafeedParts<'b>,
@@ -6874,8 +6883,8 @@ impl<'b> MlPutFilterParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Put Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-put-filter.html)\n\nInstantiates a filter."]
+#[derive(Clone, Debug)]
 pub struct MlPutFilter<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlPutFilterParts<'b>,
@@ -7016,8 +7025,8 @@ impl<'b> MlPutJobParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Put Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-put-job.html)\n\nInstantiates an anomaly detection job."]
+#[derive(Clone, Debug)]
 pub struct MlPutJob<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlPutJobParts<'b>,
@@ -7160,9 +7169,10 @@ impl<'b> MlPutTrainedModelParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Put Trained Model API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/put-trained-models.html)\n\nCreates an inference trained model."]
+#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
 #[cfg(feature = "beta-apis")]
+#[derive(Clone, Debug)]
 pub struct MlPutTrainedModel<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlPutTrainedModelParts<'b>,
@@ -7311,8 +7321,8 @@ impl<'b> MlRevertModelSnapshotParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Revert Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-revert-snapshot.html)\n\nReverts to a specific snapshot."]
+#[derive(Clone, Debug)]
 pub struct MlRevertModelSnapshot<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlRevertModelSnapshotParts<'b>,
@@ -7456,8 +7466,8 @@ impl MlSetUpgradeModeParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Set Upgrade Mode API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-set-upgrade-mode.html)\n\nSets a cluster wide upgrade_mode setting that prepares machine learning indices for an upgrade."]
+#[derive(Clone, Debug)]
 pub struct MlSetUpgradeMode<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlSetUpgradeModeParts,
@@ -7620,9 +7630,10 @@ impl<'b> MlStartDataFrameAnalyticsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Start Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/start-dfanalytics.html)\n\nStarts a data frame analytics job."]
+#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
 #[cfg(feature = "beta-apis")]
+#[derive(Clone, Debug)]
 pub struct MlStartDataFrameAnalytics<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlStartDataFrameAnalyticsParts<'b>,
@@ -7775,8 +7786,8 @@ impl<'b> MlStartDatafeedParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Start Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-start-datafeed.html)\n\nStarts one or more datafeeds."]
+#[derive(Clone, Debug)]
 pub struct MlStartDatafeed<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlStartDatafeedParts<'b>,
@@ -7949,9 +7960,10 @@ impl<'b> MlStopDataFrameAnalyticsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Stop Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/stop-dfanalytics.html)\n\nStops one or more data frame analytics jobs."]
+#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
 #[cfg(feature = "beta-apis")]
+#[derive(Clone, Debug)]
 pub struct MlStopDataFrameAnalytics<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlStopDataFrameAnalyticsParts<'b>,
@@ -8124,8 +8136,8 @@ impl<'b> MlStopDatafeedParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Stop Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-stop-datafeed.html)\n\nStops one or more datafeeds."]
+#[derive(Clone, Debug)]
 pub struct MlStopDatafeed<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlStopDatafeedParts<'b>,
@@ -8308,9 +8320,10 @@ impl<'b> MlUpdateDataFrameAnalyticsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Update Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/update-dfanalytics.html)\n\nUpdates certain properties of a data frame analytics job."]
+#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
 #[cfg(feature = "beta-apis")]
+#[derive(Clone, Debug)]
 pub struct MlUpdateDataFrameAnalytics<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlUpdateDataFrameAnalyticsParts<'b>,
@@ -8453,8 +8466,8 @@ impl<'b> MlUpdateDatafeedParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Update Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-update-datafeed.html)\n\nUpdates certain properties of a datafeed."]
+#[derive(Clone, Debug)]
 pub struct MlUpdateDatafeed<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlUpdateDatafeedParts<'b>,
@@ -8637,8 +8650,8 @@ impl<'b> MlUpdateFilterParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Update Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-update-filter.html)\n\nUpdates the description of a filter, adds items, or removes items."]
+#[derive(Clone, Debug)]
 pub struct MlUpdateFilter<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlUpdateFilterParts<'b>,
@@ -8780,8 +8793,8 @@ impl<'b> MlUpdateJobParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Update Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-update-job.html)\n\nUpdates certain properties of an anomaly detection job."]
+#[derive(Clone, Debug)]
 pub struct MlUpdateJob<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlUpdateJobParts<'b>,
@@ -8929,8 +8942,8 @@ impl<'b> MlUpdateModelSnapshotParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Update Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-update-snapshot.html)\n\nUpdates certain properties of a snapshot."]
+#[derive(Clone, Debug)]
 pub struct MlUpdateModelSnapshot<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlUpdateModelSnapshotParts<'b>,
@@ -9078,8 +9091,8 @@ impl<'b> MlUpgradeJobSnapshotParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Upgrade Job Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-upgrade-job-model-snapshot.html)\n\nUpgrades a given job snapshot to the current major version."]
+#[derive(Clone, Debug)]
 pub struct MlUpgradeJobSnapshot<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlUpgradeJobSnapshotParts<'b>,
@@ -9233,8 +9246,8 @@ impl MlValidateParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Validate API](https://www.elastic.co/guide/en/machine-learning/8.0/ml-jobs.html)\n\nValidates an anomaly detection job."]
+#[derive(Clone, Debug)]
 pub struct MlValidate<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlValidateParts,
@@ -9368,8 +9381,8 @@ impl MlValidateDetectorParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Validate Detector API](https://www.elastic.co/guide/en/machine-learning/8.0/ml-jobs.html)\n\nValidates an anomaly detection detector."]
+#[derive(Clone, Debug)]
 pub struct MlValidateDetector<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlValidateDetectorParts,
@@ -9527,6 +9540,7 @@ impl<'a> Ml<'a> {
         MlDeleteCalendarJob::new(self.transport(), parts)
     }
     #[doc = "[Ml Delete Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/delete-dfanalytics.html)\n\nDeletes an existing data frame analytics job."]
+    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
     #[cfg(feature = "beta-apis")]
     pub fn delete_data_frame_analytics<'b>(
         &'a self,
@@ -9571,6 +9585,7 @@ impl<'a> Ml<'a> {
         MlDeleteModelSnapshot::new(self.transport(), parts)
     }
     #[doc = "[Ml Delete Trained Model API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/delete-trained-models.html)\n\nDeletes an existing trained inference model that is currently not referenced by an ingest pipeline."]
+    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
     #[cfg(feature = "beta-apis")]
     pub fn delete_trained_model<'b>(
         &'a self,
@@ -9583,11 +9598,13 @@ impl<'a> Ml<'a> {
         MlEstimateModelMemory::new(self.transport())
     }
     #[doc = "[Ml Evaluate Data Frame API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/evaluate-dfanalytics.html)\n\nEvaluates the data frame analytics for an annotated index."]
+    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
     #[cfg(feature = "beta-apis")]
     pub fn evaluate_data_frame<'b>(&'a self) -> MlEvaluateDataFrame<'a, 'b, ()> {
         MlEvaluateDataFrame::new(self.transport())
     }
     #[doc = "[Ml Explain Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/8.0/explain-dfanalytics.html)\n\nExplains a data frame analytics config."]
+    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
     #[cfg(feature = "beta-apis")]
     pub fn explain_data_frame_analytics<'b>(
         &'a self,
@@ -9629,6 +9646,7 @@ impl<'a> Ml<'a> {
         MlGetCategories::new(self.transport(), parts)
     }
     #[doc = "[Ml Get Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-dfanalytics.html)\n\nRetrieves configuration information for data frame analytics jobs."]
+    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
     #[cfg(feature = "beta-apis")]
     pub fn get_data_frame_analytics<'b>(
         &'a self,
@@ -9637,6 +9655,7 @@ impl<'a> Ml<'a> {
         MlGetDataFrameAnalytics::new(self.transport(), parts)
     }
     #[doc = "[Ml Get Data Frame Analytics Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-dfanalytics-stats.html)\n\nRetrieves usage information for data frame analytics jobs."]
+    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
     #[cfg(feature = "beta-apis")]
     pub fn get_data_frame_analytics_stats<'b>(
         &'a self,
@@ -9693,6 +9712,7 @@ impl<'a> Ml<'a> {
         MlGetRecords::new(self.transport(), parts)
     }
     #[doc = "[Ml Get Trained Models API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-trained-models.html)\n\nRetrieves configuration information for a trained inference model."]
+    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
     #[cfg(feature = "beta-apis")]
     pub fn get_trained_models<'b>(
         &'a self,
@@ -9701,6 +9721,7 @@ impl<'a> Ml<'a> {
         MlGetTrainedModels::new(self.transport(), parts)
     }
     #[doc = "[Ml Get Trained Models Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-trained-models-stats.html)\n\nRetrieves usage information for trained inference models."]
+    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
     #[cfg(feature = "beta-apis")]
     pub fn get_trained_models_stats<'b>(
         &'a self,
@@ -9746,6 +9767,7 @@ impl<'a> Ml<'a> {
         MlPutCalendarJob::new(self.transport(), parts)
     }
     #[doc = "[Ml Put Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/put-dfanalytics.html)\n\nInstantiates a data frame analytics job."]
+    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
     #[cfg(feature = "beta-apis")]
     pub fn put_data_frame_analytics<'b>(
         &'a self,
@@ -9766,6 +9788,7 @@ impl<'a> Ml<'a> {
         MlPutJob::new(self.transport(), parts)
     }
     #[doc = "[Ml Put Trained Model API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/put-trained-models.html)\n\nCreates an inference trained model."]
+    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
     #[cfg(feature = "beta-apis")]
     pub fn put_trained_model<'b>(
         &'a self,
@@ -9785,6 +9808,7 @@ impl<'a> Ml<'a> {
         MlSetUpgradeMode::new(self.transport())
     }
     #[doc = "[Ml Start Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/start-dfanalytics.html)\n\nStarts a data frame analytics job."]
+    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
     #[cfg(feature = "beta-apis")]
     pub fn start_data_frame_analytics<'b>(
         &'a self,
@@ -9800,6 +9824,7 @@ impl<'a> Ml<'a> {
         MlStartDatafeed::new(self.transport(), parts)
     }
     #[doc = "[Ml Stop Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/stop-dfanalytics.html)\n\nStops one or more data frame analytics jobs."]
+    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
     #[cfg(feature = "beta-apis")]
     pub fn stop_data_frame_analytics<'b>(
         &'a self,
@@ -9815,6 +9840,7 @@ impl<'a> Ml<'a> {
         MlStopDatafeed::new(self.transport(), parts)
     }
     #[doc = "[Ml Update Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/update-dfanalytics.html)\n\nUpdates certain properties of a data frame analytics job."]
+    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
     #[cfg(feature = "beta-apis")]
     pub fn update_data_frame_analytics<'b>(
         &'a self,

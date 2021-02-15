@@ -59,8 +59,8 @@ impl ClusterAllocationExplainParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Allocation Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-allocation-explain.html)\n\nProvides explanations for shard allocations in the cluster."]
+#[derive(Clone, Debug)]
 pub struct ClusterAllocationExplain<'a, 'b, B> {
     transport: &'a Transport,
     parts: ClusterAllocationExplainParts,
@@ -223,8 +223,8 @@ impl<'b> ClusterDeleteComponentTemplateParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Delete Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-component-template.html)\n\nDeletes a component template"]
+#[derive(Clone, Debug)]
 pub struct ClusterDeleteComponentTemplate<'a, 'b> {
     transport: &'a Transport,
     parts: ClusterDeleteComponentTemplateParts<'b>,
@@ -355,8 +355,8 @@ impl ClusterDeleteVotingConfigExclusionsParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Delete Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/voting-config-exclusions.html)\n\nClears cluster voting config exclusions."]
+#[derive(Clone, Debug)]
 pub struct ClusterDeleteVotingConfigExclusions<'a, 'b> {
     transport: &'a Transport,
     parts: ClusterDeleteVotingConfigExclusionsParts,
@@ -482,8 +482,8 @@ impl<'b> ClusterExistsComponentTemplateParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Exists Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-component-template.html)\n\nReturns information about whether a particular component template exist"]
+#[derive(Clone, Debug)]
 pub struct ClusterExistsComponentTemplate<'a, 'b> {
     transport: &'a Transport,
     parts: ClusterExistsComponentTemplateParts<'b>,
@@ -623,8 +623,8 @@ impl<'b> ClusterGetComponentTemplateParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Get Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-component-template.html)\n\nReturns one or more component templates"]
+#[derive(Clone, Debug)]
 pub struct ClusterGetComponentTemplate<'a, 'b> {
     transport: &'a Transport,
     parts: ClusterGetComponentTemplateParts<'b>,
@@ -753,8 +753,8 @@ impl ClusterGetSettingsParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-update-settings.html)\n\nReturns cluster settings."]
+#[derive(Clone, Debug)]
 pub struct ClusterGetSettings<'a, 'b> {
     transport: &'a Transport,
     parts: ClusterGetSettingsParts,
@@ -912,8 +912,8 @@ impl<'b> ClusterHealthParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-health.html)\n\nReturns basic information about the health of the cluster."]
+#[derive(Clone, Debug)]
 pub struct ClusterHealth<'a, 'b> {
     transport: &'a Transport,
     parts: ClusterHealthParts<'b>,
@@ -1127,8 +1127,8 @@ impl ClusterPendingTasksParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-pending.html)\n\nReturns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
+#[derive(Clone, Debug)]
 pub struct ClusterPendingTasks<'a, 'b> {
     transport: &'a Transport,
     parts: ClusterPendingTasksParts,
@@ -1259,8 +1259,8 @@ impl ClusterPostVotingConfigExclusionsParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Post Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/voting-config-exclusions.html)\n\nUpdates the cluster voting config exclusions by node ids or node names."]
+#[derive(Clone, Debug)]
 pub struct ClusterPostVotingConfigExclusions<'a, 'b, B> {
     transport: &'a Transport,
     parts: ClusterPostVotingConfigExclusionsParts,
@@ -1430,8 +1430,8 @@ impl<'b> ClusterPutComponentTemplateParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Put Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-component-template.html)\n\nCreates or updates a component template"]
+#[derive(Clone, Debug)]
 pub struct ClusterPutComponentTemplate<'a, 'b, B> {
     transport: &'a Transport,
     parts: ClusterPutComponentTemplateParts<'b>,
@@ -1595,8 +1595,8 @@ impl ClusterPutSettingsParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-update-settings.html)\n\nUpdates the cluster settings."]
+#[derive(Clone, Debug)]
 pub struct ClusterPutSettings<'a, 'b, B> {
     transport: &'a Transport,
     parts: ClusterPutSettingsParts,
@@ -1760,8 +1760,8 @@ impl ClusterRemoteInfoParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Remote Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-remote-info.html)\n\nReturns the information about configured remote clusters."]
+#[derive(Clone, Debug)]
 pub struct ClusterRemoteInfo<'a, 'b> {
     transport: &'a Transport,
     parts: ClusterRemoteInfoParts,
@@ -1872,8 +1872,8 @@ impl ClusterRerouteParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Reroute API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-reroute.html)\n\nAllows to manually change the allocation of individual shards in the cluster."]
+#[derive(Clone, Debug)]
 pub struct ClusterReroute<'a, 'b, B> {
     transport: &'a Transport,
     parts: ClusterRerouteParts,
@@ -2096,8 +2096,8 @@ impl<'b> ClusterStateParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-state.html)\n\nReturns a comprehensive information about the state of the cluster."]
+#[derive(Clone, Debug)]
 pub struct ClusterState<'a, 'b> {
     transport: &'a Transport,
     parts: ClusterStateParts<'b>,
@@ -2292,8 +2292,8 @@ impl<'b> ClusterStatsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-stats.html)\n\nReturns high-level overview of cluster statistics."]
+#[derive(Clone, Debug)]
 pub struct ClusterStats<'a, 'b> {
     transport: &'a Transport,
     parts: ClusterStatsParts<'b>,
