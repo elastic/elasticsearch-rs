@@ -22,7 +22,7 @@ pub mod request;
 pub mod root;
 pub mod url;
 
-use crate::generator::TypeKind;
+use crate::generator::{Stability, TypeKind};
 use inflector::Inflector;
 use quote::Tokens;
 use std::str;
@@ -69,6 +69,22 @@ fn doc<I: Into<String>>(comment: I) -> syn::Attribute {
         style: syn::AttrStyle::Outer,
         value: syn::MetaItem::NameValue(ident("doc".to_string()), lit(comment)),
         is_sugared_doc: true,
+    }
+}
+
+fn stability_doc(stability: Stability) -> Option<syn::Attribute> {
+    match stability {
+        Stability::Experimental => Some(doc(r#"&nbsp;
+# Optional, experimental
+This requires the `experimental-apis` feature. Can have breaking changes in future
+versions or might even be removed entirely.
+        "#)),
+        Stability::Beta => Some(doc(r#"&nbsp;
+# Optional, beta
+This requires the `beta-apis` feature. On track to become stable but breaking changes can
+happen in minor versions.
+        "#)),
+        Stability::Stable => None,
     }
 }
 

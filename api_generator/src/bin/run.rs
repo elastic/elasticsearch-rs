@@ -28,6 +28,11 @@ use std::{
 };
 
 fn main() -> Result<(), failure::Error> {
+    simple_logger::SimpleLogger::new()
+        .with_level(log::LevelFilter::Info)
+        .init()
+        .unwrap();
+
     // This must be run from the repo root directory, with cargo make generate-api
     let download_dir = fs::canonicalize(PathBuf::from("./api_generator/rest_specs"))?;
     let generated_dir = fs::canonicalize(PathBuf::from("./elasticsearch/src"))?;
