@@ -327,6 +327,7 @@ mod tests {
                     url: None,
                 },
                 stability: Stability::Stable,
+                deprecated: None,
                 url: Url {
                     paths: vec![
                         Path {

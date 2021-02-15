@@ -627,6 +627,7 @@ impl<'a> RequestBuilder<'a> {
         ));
 
         let cfg_attr = endpoint.stability.outer_cfg_attr();
+        let cfg_doc = stability_doc(endpoint.stability);
 
         quote! {
             #cfg_attr
@@ -635,9 +636,10 @@ impl<'a> RequestBuilder<'a> {
             #cfg_attr
             #enum_impl
 
-            #[derive(Clone, Debug)]
             #[doc = #builder_doc]
+            #cfg_doc
             #cfg_attr
+            #[derive(Clone, Debug)]
             pub struct #builder_expr {
                 transport: &'a Transport,
                 parts: #enum_ty,
@@ -676,6 +678,7 @@ impl<'a> RequestBuilder<'a> {
         enum_builder: &EnumBuilder,
     ) -> Tokens {
         let cfg_attr = endpoint.stability.outer_cfg_attr();
+        let cfg_doc = stability_doc(endpoint.stability);
 
         let builder_ident = ident(builder_name);
 
@@ -734,6 +737,7 @@ impl<'a> RequestBuilder<'a> {
         if enum_builder.contains_single_parameterless_part() {
             quote!(
                 #method_doc
+                #cfg_doc
                 #cfg_attr
                 pub fn #fn_name(&'a self) -> #builder_ident_ret {
                     #builder_ident::new(#clone_expr)
@@ -743,6 +747,7 @@ impl<'a> RequestBuilder<'a> {
             let (enum_ty, _, _) = enum_builder.clone().build();
             quote!(
                 #method_doc
+                #cfg_doc
                 #cfg_attr
                 pub fn #fn_name(&'a self, parts: #enum_ty) -> #builder_ident_ret {
                     #builder_ident::new(#clone_expr, parts)
