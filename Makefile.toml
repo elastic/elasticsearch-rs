@@ -169,7 +169,7 @@ description = "Generate Elasticsearch client documentation and opens in browser"
 clear = true
 category = "Elasticsearch"
 command = "cargo"
-args = ["doc", "-p", "elasticsearch", "--no-deps", "--open"]
+args = ["doc", "-p", "elasticsearch", "--no-deps", "--open", "--all-features"]
 
 [tasks.generate-release-notes]
 category = "Elasticsearch"
