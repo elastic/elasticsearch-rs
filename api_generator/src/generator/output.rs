@@ -59,6 +59,8 @@ pub fn write_file(
                 file.write_all(line.as_bytes())?;
                 file.write_all(b"\n")?;
             }
+        } else {
+            warn!("Missing docs file {:?}", docs)
         }
     }
 

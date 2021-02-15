@@ -42,7 +42,9 @@ use void::Void;
 pub mod code_gen;
 pub mod output;
 
+use itertools::Itertools;
 use output::{merge_file, write_file};
+use std::cmp::Ordering;
 
 lazy_static! {
     static ref VERSION: Version = semver::Version::parse(env!("CARGO_PKG_VERSION")).unwrap();
@@ -203,6 +205,37 @@ impl Default for TypeKind {
 pub struct Deprecated {
     pub version: String,
     pub description: String,
+}
+
+impl PartialOrd for Deprecated {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        match (
+            Version::parse(&self.version),
+            Version::parse(&other.version),
+        ) {
+            (Err(_), _) => None,
+            (_, Err(_)) => None,
+            (Ok(self_version), Ok(other_version)) => self_version.partial_cmp(&other_version),
+        }
+    }
+}
+
+impl Deprecated {
+    /// Combine optional deprecations, keeping either lack of deprecation or the highest version
+    pub fn combine<'a>(
+        left: &'a Option<Deprecated>,
+        right: &'a Option<Deprecated>,
+    ) -> &'a Option<Deprecated> {
+        if let (Some(leftd), Some(rightd)) = (left, right) {
+            if leftd > rightd {
+                left
+            } else {
+                right
+            }
+        } else {
+            &None
+        }
+    }
 }
 
 /// An API url path
@@ -392,6 +425,7 @@ pub struct ApiEndpoint {
     documentation: Documentation,
     pub stability: Stability,
     pub url: Url,
+    pub deprecated: Option<Deprecated>,
     #[serde(default = "BTreeMap::new")]
     pub params: BTreeMap<String, Type>,
     pub body: Option<Body>,
@@ -583,6 +617,11 @@ pub fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Er
             let mut file = File::open(&path)?;
             let (name, api_endpoint) = endpoint_from_file(display, &mut file)?;
 
+            if api_endpoint.stability != Stability::Stable && api_endpoint.deprecated.is_some() {
+                // Do not generate deprecated unstable endpoints
+                continue;
+            }
+
             let name_parts: Vec<&str> = name.splitn(2, '.').collect();
             let (namespace, method_name) = match name_parts.len() {
                 len if len > 1 => (name_parts[0].to_string(), name_parts[1].to_string()),
@@ -655,21 +694,37 @@ where
     R: Read,
 {
     // deserialize the map from the reader
-    let endpoint: BTreeMap<String, ApiEndpoint> =
+    let endpoints: BTreeMap<String, ApiEndpoint> =
         serde_json::from_reader(reader).map_err(|e| super::error::ParseError {
             message: format!("Failed to parse {} because: {}", name, e),
         })?;
 
     // get the first (and only) endpoint name and endpoint body
-    let mut first_endpoint = endpoint.into_iter().next().unwrap();
-    first_endpoint.1.full_name = Some(first_endpoint.0.clone());
+    let (name, mut endpoint) = endpoints.into_iter().next().unwrap();
+    endpoint.full_name = Some(name.clone());
 
     // sort the HTTP methods so that we can easily pattern match on them later
-    for path in first_endpoint.1.url.paths.iter_mut() {
+    for path in endpoint.url.paths.iter_mut() {
         path.methods.sort();
     }
 
-    Ok(first_endpoint)
+    // endpoint deprecation is the "least deprecated" of its paths
+    let deprecation = endpoint
+        .url
+        .paths
+        .iter()
+        .map(|p| &p.deprecated)
+        .fold1(|d1, d2| Deprecated::combine(d1, d2))
+        .unwrap_or(&None);
+
+    if let Some(deprecated) = deprecation {
+        endpoint.deprecated = Some(Deprecated {
+            version: deprecated.version.clone(),
+            description: "Deprecated via one of the child items".to_string(),
+        })
+    }
+
+    Ok((name, endpoint))
 }
 
 /// deserializes Common from a file
@@ -698,5 +753,21 @@ mod tests {
     fn stability_ordering() {
         assert!(Stability::Beta > Stability::Experimental);
         assert!(Stability::Stable > Stability::Beta);
+    }
+
+    #[test]
+    fn combine_deprecations() {
+        let d1 = Some(Deprecated {
+            version: "7.5.0".to_string(),
+            description: "foo".to_string(),
+        });
+
+        let d2 = Some(Deprecated {
+            version: "7.6.0".to_string(),
+            description: "foo".to_string(),
+        });
+
+        assert_eq!(&d2, Deprecated::combine(&d1, &d2));
+        assert_eq!(&None, Deprecated::combine(&d1, &None));
     }
 }

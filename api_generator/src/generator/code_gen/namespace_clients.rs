@@ -33,6 +33,11 @@ pub fn generate(api: &Api, docs_dir: &PathBuf) -> Result<Vec<(String, String)>, 
         if let Some(attr) = namespace.stability.inner_cfg_attr() {
             tokens.append(attr);
         }
+        if let Some(mut attr) = stability_doc(namespace.stability) {
+            attr.style = syn::AttrStyle::Inner;
+            tokens.append(quote! { #attr });
+        }
+
         tokens.append(use_declarations());
 
         let namespace_pascal_case = namespace_name.to_pascal_case();
@@ -77,10 +82,12 @@ pub fn generate(api: &Api, docs_dir: &PathBuf) -> Result<Vec<(String, String)>, 
             .unzip();
 
         let cfg_attr = namespace.stability.outer_cfg_attr();
+        let cfg_doc = stability_doc(namespace.stability);
         tokens.append(quote!(
             #(#builders)*
 
             #namespace_doc
+            #cfg_doc
             #cfg_attr
             pub struct #namespace_client_name<'a> {
                 transport: &'a Transport
