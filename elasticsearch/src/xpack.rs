@@ -58,8 +58,8 @@ impl XpackInfoParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
+#[derive(Clone, Debug)]
 pub struct XpackInfo<'a, 'b> {
     transport: &'a Transport,
     parts: XpackInfoParts,
@@ -189,8 +189,8 @@ impl XpackUsageParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
+#[derive(Clone, Debug)]
 pub struct XpackUsage<'a, 'b> {
     transport: &'a Transport,
     parts: XpackUsageParts,

@@ -69,8 +69,8 @@ impl<'b> SnapshotCleanupRepositoryParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Cleanup Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/clean-up-snapshot-repo-api.html)\n\nRemoves stale data from repository."]
+#[derive(Clone, Debug)]
 pub struct SnapshotCleanupRepository<'a, 'b, B> {
     transport: &'a Transport,
     parts: SnapshotCleanupRepositoryParts<'b>,
@@ -248,8 +248,8 @@ impl<'b> SnapshotCloneParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nClones indices from one snapshot into another snapshot in the same repository."]
+#[derive(Clone, Debug)]
 pub struct SnapshotClone<'a, 'b, B> {
     transport: &'a Transport,
     parts: SnapshotCloneParts<'b>,
@@ -406,8 +406,8 @@ impl<'b> SnapshotCreateParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Create API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nCreates a snapshot in a repository."]
+#[derive(Clone, Debug)]
 pub struct SnapshotCreate<'a, 'b, B> {
     transport: &'a Transport,
     parts: SnapshotCreateParts<'b>,
@@ -568,8 +568,8 @@ impl<'b> SnapshotCreateRepositoryParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Create Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nCreates a repository."]
+#[derive(Clone, Debug)]
 pub struct SnapshotCreateRepository<'a, 'b, B> {
     transport: &'a Transport,
     parts: SnapshotCreateRepositoryParts<'b>,
@@ -747,8 +747,8 @@ impl<'b> SnapshotDeleteParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nDeletes one or more snapshots."]
+#[derive(Clone, Debug)]
 pub struct SnapshotDelete<'a, 'b> {
     transport: &'a Transport,
     parts: SnapshotDeleteParts<'b>,
@@ -876,8 +876,8 @@ impl<'b> SnapshotDeleteRepositoryParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Delete Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nDeletes a repository."]
+#[derive(Clone, Debug)]
 pub struct SnapshotDeleteRepository<'a, 'b> {
     transport: &'a Transport,
     parts: SnapshotDeleteRepositoryParts<'b>,
@@ -1020,8 +1020,8 @@ impl<'b> SnapshotGetParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nReturns information about a snapshot."]
+#[derive(Clone, Debug)]
 pub struct SnapshotGet<'a, 'b> {
     transport: &'a Transport,
     parts: SnapshotGetParts<'b>,
@@ -1159,8 +1159,8 @@ impl SnapshotGetFeaturesParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Get Features API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nReturns a list of features which can be snapshotted in this cluster."]
+#[derive(Clone, Debug)]
 pub struct SnapshotGetFeatures<'a, 'b> {
     transport: &'a Transport,
     parts: SnapshotGetFeaturesParts,
@@ -1291,8 +1291,8 @@ impl<'b> SnapshotGetRepositoryParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Get Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nReturns information about a repository."]
+#[derive(Clone, Debug)]
 pub struct SnapshotGetRepository<'a, 'b> {
     transport: &'a Transport,
     parts: SnapshotGetRepositoryParts<'b>,
@@ -1435,8 +1435,8 @@ impl<'b> SnapshotRestoreParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Restore API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nRestores a snapshot."]
+#[derive(Clone, Debug)]
 pub struct SnapshotRestore<'a, 'b, B> {
     transport: &'a Transport,
     parts: SnapshotRestoreParts<'b>,
@@ -1619,8 +1619,8 @@ impl<'b> SnapshotStatusParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nReturns information about the status of a snapshot."]
+#[derive(Clone, Debug)]
 pub struct SnapshotStatus<'a, 'b> {
     transport: &'a Transport,
     parts: SnapshotStatusParts<'b>,
@@ -1757,8 +1757,8 @@ impl<'b> SnapshotVerifyRepositoryParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Verify Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nVerifies a repository."]
+#[derive(Clone, Debug)]
 pub struct SnapshotVerifyRepository<'a, 'b, B> {
     transport: &'a Transport,
     parts: SnapshotVerifyRepositoryParts<'b>,

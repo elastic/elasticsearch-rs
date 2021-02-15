@@ -66,8 +66,8 @@ impl<'b> AsyncSearchDeleteParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Async Search Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/async-search.html)\n\nDeletes an async search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
+#[derive(Clone, Debug)]
 pub struct AsyncSearchDelete<'a, 'b> {
     transport: &'a Transport,
     parts: AsyncSearchDeleteParts<'b>,
@@ -184,8 +184,8 @@ impl<'b> AsyncSearchGetParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Async Search Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/async-search.html)\n\nRetrieves the results of a previously submitted async search request given its ID."]
+#[derive(Clone, Debug)]
 pub struct AsyncSearchGet<'a, 'b> {
     transport: &'a Transport,
     parts: AsyncSearchGetParts<'b>,
@@ -329,8 +329,8 @@ impl<'b> AsyncSearchStatusParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Async Search Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/async-search.html)\n\nRetrieves the status of a previously submitted async search request given its ID."]
+#[derive(Clone, Debug)]
 pub struct AsyncSearchStatus<'a, 'b> {
     transport: &'a Transport,
     parts: AsyncSearchStatusParts<'b>,
@@ -453,8 +453,8 @@ impl<'b> AsyncSearchSubmitParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Async Search Submit API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/async-search.html)\n\nExecutes a search request asynchronously."]
+#[derive(Clone, Debug)]
 pub struct AsyncSearchSubmit<'a, 'b, B> {
     transport: &'a Transport,
     parts: AsyncSearchSubmitParts<'b>,

@@ -67,8 +67,8 @@ impl<'b> EnrichDeletePolicyParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Enrich Delete Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/delete-enrich-policy-api.html)\n\nDeletes an existing enrich policy and its enrich index."]
+#[derive(Clone, Debug)]
 pub struct EnrichDeletePolicy<'a, 'b> {
     transport: &'a Transport,
     parts: EnrichDeletePolicyParts<'b>,
@@ -186,8 +186,8 @@ impl<'b> EnrichExecutePolicyParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Enrich Execute Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/execute-enrich-policy-api.html)\n\nCreates the enrich index for an existing enrich policy."]
+#[derive(Clone, Debug)]
 pub struct EnrichExecutePolicy<'a, 'b, B> {
     transport: &'a Transport,
     parts: EnrichExecutePolicyParts<'b>,
@@ -342,8 +342,8 @@ impl<'b> EnrichGetPolicyParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Enrich Get Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-enrich-policy-api.html)\n\nGets information about an enrich policy."]
+#[derive(Clone, Debug)]
 pub struct EnrichGetPolicy<'a, 'b> {
     transport: &'a Transport,
     parts: EnrichGetPolicyParts<'b>,
@@ -460,8 +460,8 @@ impl<'b> EnrichPutPolicyParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Enrich Put Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/put-enrich-policy-api.html)\n\nCreates a new enrich policy."]
+#[derive(Clone, Debug)]
 pub struct EnrichPutPolicy<'a, 'b, B> {
     transport: &'a Transport,
     parts: EnrichPutPolicyParts<'b>,
@@ -595,8 +595,8 @@ impl EnrichStatsParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Enrich Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/enrich-stats-api.html)\n\nGets enrich coordinator statistics and information about enrich policies that are currently executing."]
+#[derive(Clone, Debug)]
 pub struct EnrichStats<'a, 'b> {
     transport: &'a Transport,
     parts: EnrichStatsParts,

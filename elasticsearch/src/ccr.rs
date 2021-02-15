@@ -68,8 +68,8 @@ impl<'b> CcrDeleteAutoFollowPatternParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Delete Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-delete-auto-follow-pattern.html)\n\nDeletes auto-follow patterns."]
+#[derive(Clone, Debug)]
 pub struct CcrDeleteAutoFollowPattern<'a, 'b> {
     transport: &'a Transport,
     parts: CcrDeleteAutoFollowPatternParts<'b>,
@@ -188,8 +188,8 @@ impl<'b> CcrFollowParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-put-follow.html)\n\nCreates a new follower index configured to follow the referenced leader index."]
+#[derive(Clone, Debug)]
 pub struct CcrFollow<'a, 'b, B> {
     transport: &'a Transport,
     parts: CcrFollowParts<'b>,
@@ -342,8 +342,8 @@ impl<'b> CcrFollowInfoParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Follow Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-get-follow-info.html)\n\nRetrieves information about all follower indices, including parameters and status for each follower index"]
+#[derive(Clone, Debug)]
 pub struct CcrFollowInfo<'a, 'b> {
     transport: &'a Transport,
     parts: CcrFollowInfoParts<'b>,
@@ -463,8 +463,8 @@ impl<'b> CcrFollowStatsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Follow Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-get-follow-stats.html)\n\nRetrieves follower stats. return shard-level stats about the following tasks associated with each shard for the specified indices."]
+#[derive(Clone, Debug)]
 pub struct CcrFollowStats<'a, 'b> {
     transport: &'a Transport,
     parts: CcrFollowStatsParts<'b>,
@@ -583,8 +583,8 @@ impl<'b> CcrForgetFollowerParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Forget Follower API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-post-forget-follower.html)\n\nRemoves the follower retention leases from the leader."]
+#[derive(Clone, Debug)]
 pub struct CcrForgetFollower<'a, 'b, B> {
     transport: &'a Transport,
     parts: CcrForgetFollowerParts<'b>,
@@ -727,8 +727,8 @@ impl<'b> CcrGetAutoFollowPatternParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Get Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-get-auto-follow-pattern.html)\n\nGets configured auto-follow patterns. Returns the specified auto-follow pattern collection."]
+#[derive(Clone, Debug)]
 pub struct CcrGetAutoFollowPattern<'a, 'b> {
     transport: &'a Transport,
     parts: CcrGetAutoFollowPatternParts<'b>,
@@ -846,8 +846,8 @@ impl<'b> CcrPauseAutoFollowPatternParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Pause Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-pause-auto-follow-pattern.html)\n\nPauses an auto-follow pattern"]
+#[derive(Clone, Debug)]
 pub struct CcrPauseAutoFollowPattern<'a, 'b, B> {
     transport: &'a Transport,
     parts: CcrPauseAutoFollowPatternParts<'b>,
@@ -989,8 +989,8 @@ impl<'b> CcrPauseFollowParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Pause Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-post-pause-follow.html)\n\nPauses a follower index. The follower index will not fetch any additional operations from the leader index."]
+#[derive(Clone, Debug)]
 pub struct CcrPauseFollow<'a, 'b, B> {
     transport: &'a Transport,
     parts: CcrPauseFollowParts<'b>,
@@ -1130,8 +1130,8 @@ impl<'b> CcrPutAutoFollowPatternParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Put Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-put-auto-follow-pattern.html)\n\nCreates a new named collection of auto-follow patterns against a specified remote cluster. Newly created indices on the remote cluster matching any of the specified patterns will be automatically configured as follower indices."]
+#[derive(Clone, Debug)]
 pub struct CcrPutAutoFollowPattern<'a, 'b, B> {
     transport: &'a Transport,
     parts: CcrPutAutoFollowPatternParts<'b>,
@@ -1272,8 +1272,8 @@ impl<'b> CcrResumeAutoFollowPatternParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Resume Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-resume-auto-follow-pattern.html)\n\nResumes an auto-follow pattern that has been paused"]
+#[derive(Clone, Debug)]
 pub struct CcrResumeAutoFollowPattern<'a, 'b, B> {
     transport: &'a Transport,
     parts: CcrResumeAutoFollowPatternParts<'b>,
@@ -1415,8 +1415,8 @@ impl<'b> CcrResumeFollowParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Resume Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-post-resume-follow.html)\n\nResumes a follower index that has been paused"]
+#[derive(Clone, Debug)]
 pub struct CcrResumeFollow<'a, 'b, B> {
     transport: &'a Transport,
     parts: CcrResumeFollowParts<'b>,
@@ -1550,8 +1550,8 @@ impl CcrStatsParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-get-stats.html)\n\nGets all stats related to cross-cluster replication."]
+#[derive(Clone, Debug)]
 pub struct CcrStats<'a, 'b> {
     transport: &'a Transport,
     parts: CcrStatsParts,
@@ -1670,8 +1670,8 @@ impl<'b> CcrUnfollowParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ccr Unfollow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ccr-post-unfollow.html)\n\nStops the following task associated with a follower index and removes index metadata and settings associated with cross-cluster replication."]
+#[derive(Clone, Debug)]
 pub struct CcrUnfollow<'a, 'b, B> {
     transport: &'a Transport,
     parts: CcrUnfollowParts<'b>,

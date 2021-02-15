@@ -70,8 +70,8 @@ impl<'b> DanglingIndicesDeleteDanglingIndexParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Dangling Indices Delete Dangling Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-gateway-dangling-indices.html)\n\nDeletes the specified dangling index"]
+#[derive(Clone, Debug)]
 pub struct DanglingIndicesDeleteDanglingIndex<'a, 'b> {
     transport: &'a Transport,
     parts: DanglingIndicesDeleteDanglingIndexParts<'b>,
@@ -219,8 +219,8 @@ impl<'b> DanglingIndicesImportDanglingIndexParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Dangling Indices Import Dangling Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-gateway-dangling-indices.html)\n\nImports the specified dangling index"]
+#[derive(Clone, Debug)]
 pub struct DanglingIndicesImportDanglingIndex<'a, 'b, B> {
     transport: &'a Transport,
     parts: DanglingIndicesImportDanglingIndexParts<'b>,
@@ -387,8 +387,8 @@ impl DanglingIndicesListDanglingIndicesParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Dangling Indices List Dangling Indices API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-gateway-dangling-indices.html)\n\nReturns all dangling indices."]
+#[derive(Clone, Debug)]
 pub struct DanglingIndicesListDanglingIndices<'a, 'b> {
     transport: &'a Transport,
     parts: DanglingIndicesListDanglingIndicesParts,

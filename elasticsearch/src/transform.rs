@@ -67,8 +67,8 @@ impl<'b> TransformDeleteTransformParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Transform Delete Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/delete-transform.html)\n\nDeletes an existing transform."]
+#[derive(Clone, Debug)]
 pub struct TransformDeleteTransform<'a, 'b> {
     transport: &'a Transport,
     parts: TransformDeleteTransformParts<'b>,
@@ -198,8 +198,8 @@ impl<'b> TransformGetTransformParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Transform Get Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-transform.html)\n\nRetrieves configuration information for transforms."]
+#[derive(Clone, Debug)]
 pub struct TransformGetTransform<'a, 'b> {
     transport: &'a Transport,
     parts: TransformGetTransformParts<'b>,
@@ -354,8 +354,8 @@ impl<'b> TransformGetTransformStatsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Transform Get Transform Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-transform-stats.html)\n\nRetrieves usage information for transforms."]
+#[derive(Clone, Debug)]
 pub struct TransformGetTransformStats<'a, 'b> {
     transport: &'a Transport,
     parts: TransformGetTransformStatsParts<'b>,
@@ -493,8 +493,8 @@ impl TransformPreviewTransformParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Transform Preview Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/preview-transform.html)\n\nPreviews a transform."]
+#[derive(Clone, Debug)]
 pub struct TransformPreviewTransform<'a, 'b, B> {
     transport: &'a Transport,
     parts: TransformPreviewTransformParts,
@@ -635,8 +635,8 @@ impl<'b> TransformPutTransformParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Transform Put Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/put-transform.html)\n\nInstantiates a transform."]
+#[derive(Clone, Debug)]
 pub struct TransformPutTransform<'a, 'b, B> {
     transport: &'a Transport,
     parts: TransformPutTransformParts<'b>,
@@ -788,8 +788,8 @@ impl<'b> TransformStartTransformParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Transform Start Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/start-transform.html)\n\nStarts one or more transforms."]
+#[derive(Clone, Debug)]
 pub struct TransformStartTransform<'a, 'b, B> {
     transport: &'a Transport,
     parts: TransformStartTransformParts<'b>,
@@ -941,8 +941,8 @@ impl<'b> TransformStopTransformParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Transform Stop Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/stop-transform.html)\n\nStops one or more transforms."]
+#[derive(Clone, Debug)]
 pub struct TransformStopTransform<'a, 'b, B> {
     transport: &'a Transport,
     parts: TransformStopTransformParts<'b>,
@@ -1134,8 +1134,8 @@ impl<'b> TransformUpdateTransformParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Transform Update Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/update-transform.html)\n\nUpdates certain properties of a transform."]
+#[derive(Clone, Debug)]
 pub struct TransformUpdateTransform<'a, 'b, B> {
     transport: &'a Transport,
     parts: TransformUpdateTransformParts<'b>,

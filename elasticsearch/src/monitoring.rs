@@ -24,7 +24,13 @@
 // cargo make generate-api
 // -----------------------------------------------
 
+//! Monitoring APIs
+//!
+//! The Elastic Stack [monitoring features](https://www.elastic.co/guide/en/elasticsearch/reference/master/monitor-elasticsearch-cluster.html)
+//! provide a way to keep a pulse on thehealth and performance of your Elasticsearch cluster.
+
 #![cfg(feature = "experimental-apis")]
+#![doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
@@ -67,9 +73,10 @@ impl<'b> MonitoringBulkParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/monitor-elasticsearch-cluster.html)\n\nUsed by the monitoring features to send monitoring data."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
 pub struct MonitoringBulk<'a, 'b, B> {
     transport: &'a Transport,
     parts: MonitoringBulkParts<'b>,
@@ -221,6 +228,7 @@ where
     }
 }
 #[doc = "Namespace client for Monitoring APIs"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 pub struct Monitoring<'a> {
     transport: &'a Transport,
@@ -235,6 +243,7 @@ impl<'a> Monitoring<'a> {
         self.transport
     }
     #[doc = "[Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/monitor-elasticsearch-cluster.html)\n\nUsed by the monitoring features to send monitoring data."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn bulk<'b>(&'a self, parts: MonitoringBulkParts<'b>) -> MonitoringBulk<'a, 'b, ()> {
         MonitoringBulk::new(self.transport(), parts)

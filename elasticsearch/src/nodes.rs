@@ -71,8 +71,8 @@ impl<'b> NodesHotThreadsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
+#[derive(Clone, Debug)]
 pub struct NodesHotThreads<'a, 'b> {
     transport: &'a Transport,
     parts: NodesHotThreadsParts<'b>,
@@ -277,8 +277,8 @@ impl<'b> NodesInfoParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
+#[derive(Clone, Debug)]
 pub struct NodesInfo<'a, 'b> {
     transport: &'a Transport,
     parts: NodesInfoParts<'b>,
@@ -419,8 +419,8 @@ impl<'b> NodesReloadSecureSettingsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
+#[derive(Clone, Debug)]
 pub struct NodesReloadSecureSettings<'a, 'b, B> {
     transport: &'a Transport,
     parts: NodesReloadSecureSettingsParts<'b>,
@@ -648,8 +648,8 @@ impl<'b> NodesStatsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
+#[derive(Clone, Debug)]
 pub struct NodesStats<'a, 'b> {
     transport: &'a Transport,
     parts: NodesStatsParts<'b>,
@@ -876,8 +876,8 @@ impl<'b> NodesUsageParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
+#[derive(Clone, Debug)]
 pub struct NodesUsage<'a, 'b> {
     transport: &'a Transport,
     parts: NodesUsageParts<'b>,

@@ -67,8 +67,8 @@ impl SecurityAuthenticateParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-authenticate.html)\n\nEnables authentication as a user and retrieve information about the authenticated user."]
+#[derive(Clone, Debug)]
 pub struct SecurityAuthenticate<'a, 'b> {
     transport: &'a Transport,
     parts: SecurityAuthenticateParts,
@@ -190,8 +190,8 @@ impl<'b> SecurityChangePasswordParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Change Password API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-change-password.html)\n\nChanges the passwords of users in the native realm and built-in users."]
+#[derive(Clone, Debug)]
 pub struct SecurityChangePassword<'a, 'b, B> {
     transport: &'a Transport,
     parts: SecurityChangePasswordParts<'b>,
@@ -344,8 +344,8 @@ impl<'b> SecurityClearApiKeyCacheParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Clear Api Key Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-clear-api-key-cache.html)\n\nClear a subset or all entries from the API key cache."]
+#[derive(Clone, Debug)]
 pub struct SecurityClearApiKeyCache<'a, 'b, B> {
     transport: &'a Transport,
     parts: SecurityClearApiKeyCacheParts<'b>,
@@ -488,8 +488,8 @@ impl<'b> SecurityClearCachedPrivilegesParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Clear Cached Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-clear-privilege-cache.html)\n\nEvicts application privileges from the native application privileges cache."]
+#[derive(Clone, Debug)]
 pub struct SecurityClearCachedPrivileges<'a, 'b, B> {
     transport: &'a Transport,
     parts: SecurityClearCachedPrivilegesParts<'b>,
@@ -632,8 +632,8 @@ impl<'b> SecurityClearCachedRealmsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Clear Cached Realms API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-clear-cache.html)\n\nEvicts users from the user cache. Can completely clear the cache or evict specific users."]
+#[derive(Clone, Debug)]
 pub struct SecurityClearCachedRealms<'a, 'b, B> {
     transport: &'a Transport,
     parts: SecurityClearCachedRealmsParts<'b>,
@@ -787,8 +787,8 @@ impl<'b> SecurityClearCachedRolesParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Clear Cached Roles API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-clear-role-cache.html)\n\nEvicts roles from the native role cache."]
+#[derive(Clone, Debug)]
 pub struct SecurityClearCachedRoles<'a, 'b, B> {
     transport: &'a Transport,
     parts: SecurityClearCachedRolesParts<'b>,
@@ -922,8 +922,8 @@ impl SecurityCreateApiKeyParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Create Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-create-api-key.html)\n\nCreates an API key for access without requiring basic authentication."]
+#[derive(Clone, Debug)]
 pub struct SecurityCreateApiKey<'a, 'b, B> {
     transport: &'a Transport,
     parts: SecurityCreateApiKeyParts,
@@ -1078,8 +1078,8 @@ impl<'b> SecurityDeletePrivilegesParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Delete Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-delete-privilege.html)\n\nRemoves application privileges."]
+#[derive(Clone, Debug)]
 pub struct SecurityDeletePrivileges<'a, 'b> {
     transport: &'a Transport,
     parts: SecurityDeletePrivilegesParts<'b>,
@@ -1205,8 +1205,8 @@ impl<'b> SecurityDeleteRoleParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Delete Role API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-delete-role.html)\n\nRemoves roles in the native realm."]
+#[derive(Clone, Debug)]
 pub struct SecurityDeleteRole<'a, 'b> {
     transport: &'a Transport,
     parts: SecurityDeleteRoleParts<'b>,
@@ -1332,8 +1332,8 @@ impl<'b> SecurityDeleteRoleMappingParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Delete Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-delete-role-mapping.html)\n\nRemoves role mappings."]
+#[derive(Clone, Debug)]
 pub struct SecurityDeleteRoleMapping<'a, 'b> {
     transport: &'a Transport,
     parts: SecurityDeleteRoleMappingParts<'b>,
@@ -1460,8 +1460,8 @@ impl<'b> SecurityDeleteUserParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Delete User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-delete-user.html)\n\nDeletes users from the native realm."]
+#[derive(Clone, Debug)]
 pub struct SecurityDeleteUser<'a, 'b> {
     transport: &'a Transport,
     parts: SecurityDeleteUserParts<'b>,
@@ -1589,8 +1589,8 @@ impl<'b> SecurityDisableUserParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Disable User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-disable-user.html)\n\nDisables users in the native realm."]
+#[derive(Clone, Debug)]
 pub struct SecurityDisableUser<'a, 'b, B> {
     transport: &'a Transport,
     parts: SecurityDisableUserParts<'b>,
@@ -1742,8 +1742,8 @@ impl<'b> SecurityEnableUserParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Enable User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-enable-user.html)\n\nEnables users in the native realm."]
+#[derive(Clone, Debug)]
 pub struct SecurityEnableUser<'a, 'b, B> {
     transport: &'a Transport,
     parts: SecurityEnableUserParts<'b>,
@@ -1887,8 +1887,8 @@ impl SecurityGetApiKeyParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Get Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-api-key.html)\n\nRetrieves information for one or more API keys."]
+#[derive(Clone, Debug)]
 pub struct SecurityGetApiKey<'a, 'b> {
     transport: &'a Transport,
     parts: SecurityGetApiKeyParts,
@@ -2044,8 +2044,8 @@ impl SecurityGetBuiltinPrivilegesParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Get Builtin Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-builtin-privileges.html)\n\nRetrieves the list of cluster privileges and index privileges that are available in this version of Elasticsearch."]
+#[derive(Clone, Debug)]
 pub struct SecurityGetBuiltinPrivileges<'a, 'b> {
     transport: &'a Transport,
     parts: SecurityGetBuiltinPrivilegesParts,
@@ -2180,8 +2180,8 @@ impl<'b> SecurityGetPrivilegesParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Get Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-privileges.html)\n\nRetrieves application privileges."]
+#[derive(Clone, Debug)]
 pub struct SecurityGetPrivileges<'a, 'b> {
     transport: &'a Transport,
     parts: SecurityGetPrivilegesParts<'b>,
@@ -2303,8 +2303,8 @@ impl<'b> SecurityGetRoleParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Get Role API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-role.html)\n\nRetrieves roles in the native realm."]
+#[derive(Clone, Debug)]
 pub struct SecurityGetRole<'a, 'b> {
     transport: &'a Transport,
     parts: SecurityGetRoleParts<'b>,
@@ -2426,8 +2426,8 @@ impl<'b> SecurityGetRoleMappingParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Get Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-role-mapping.html)\n\nRetrieves role mappings."]
+#[derive(Clone, Debug)]
 pub struct SecurityGetRoleMapping<'a, 'b> {
     transport: &'a Transport,
     parts: SecurityGetRoleMappingParts<'b>,
@@ -2538,8 +2538,8 @@ impl SecurityGetTokenParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Get Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-token.html)\n\nCreates a bearer token for access without requiring basic authentication."]
+#[derive(Clone, Debug)]
 pub struct SecurityGetToken<'a, 'b, B> {
     transport: &'a Transport,
     parts: SecurityGetTokenParts,
@@ -2684,8 +2684,8 @@ impl<'b> SecurityGetUserParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Get User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-user.html)\n\nRetrieves information about users in the native realm and built-in users."]
+#[derive(Clone, Debug)]
 pub struct SecurityGetUser<'a, 'b> {
     transport: &'a Transport,
     parts: SecurityGetUserParts<'b>,
@@ -2796,8 +2796,8 @@ impl SecurityGetUserPrivilegesParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Get User Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-privileges.html)\n\nRetrieves application privileges."]
+#[derive(Clone, Debug)]
 pub struct SecurityGetUserPrivileges<'a, 'b> {
     transport: &'a Transport,
     parts: SecurityGetUserPrivilegesParts,
@@ -2908,8 +2908,8 @@ impl SecurityGrantApiKeyParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Grant Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-grant-api-key.html)\n\nCreates an API key on behalf of another user."]
+#[derive(Clone, Debug)]
 pub struct SecurityGrantApiKey<'a, 'b, B> {
     transport: &'a Transport,
     parts: SecurityGrantApiKeyParts,
@@ -3063,8 +3063,8 @@ impl<'b> SecurityHasPrivilegesParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Has Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-has-privileges.html)\n\nDetermines whether the specified user has a specified list of privileges."]
+#[derive(Clone, Debug)]
 pub struct SecurityHasPrivileges<'a, 'b, B> {
     transport: &'a Transport,
     parts: SecurityHasPrivilegesParts<'b>,
@@ -3201,8 +3201,8 @@ impl SecurityInvalidateApiKeyParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Invalidate Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-invalidate-api-key.html)\n\nInvalidates one or more API keys."]
+#[derive(Clone, Debug)]
 pub struct SecurityInvalidateApiKey<'a, 'b, B> {
     transport: &'a Transport,
     parts: SecurityInvalidateApiKeyParts,
@@ -3336,8 +3336,8 @@ impl SecurityInvalidateTokenParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Invalidate Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-invalidate-token.html)\n\nInvalidates one or more access tokens or refresh tokens."]
+#[derive(Clone, Debug)]
 pub struct SecurityInvalidateToken<'a, 'b, B> {
     transport: &'a Transport,
     parts: SecurityInvalidateTokenParts,
@@ -3471,8 +3471,8 @@ impl SecurityPutPrivilegesParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Put Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-put-privileges.html)\n\nAdds or updates application privileges."]
+#[derive(Clone, Debug)]
 pub struct SecurityPutPrivileges<'a, 'b, B> {
     transport: &'a Transport,
     parts: SecurityPutPrivilegesParts,
@@ -3622,8 +3622,8 @@ impl<'b> SecurityPutRoleParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Put Role API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-put-role.html)\n\nAdds and updates roles in the native realm."]
+#[derive(Clone, Debug)]
 pub struct SecurityPutRole<'a, 'b, B> {
     transport: &'a Transport,
     parts: SecurityPutRoleParts<'b>,
@@ -3773,8 +3773,8 @@ impl<'b> SecurityPutRoleMappingParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Put Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-put-role-mapping.html)\n\nCreates and updates role mappings."]
+#[derive(Clone, Debug)]
 pub struct SecurityPutRoleMapping<'a, 'b, B> {
     transport: &'a Transport,
     parts: SecurityPutRoleMappingParts<'b>,
@@ -3925,8 +3925,8 @@ impl<'b> SecurityPutUserParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Put User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-put-user.html)\n\nAdds and updates users in the native realm. These users are commonly referred to as native users."]
+#[derive(Clone, Debug)]
 pub struct SecurityPutUser<'a, 'b, B> {
     transport: &'a Transport,
     parts: SecurityPutUserParts<'b>,

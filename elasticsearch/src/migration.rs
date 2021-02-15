@@ -69,8 +69,8 @@ impl<'b> MigrationDeprecationsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Migration Deprecations API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/migration-api-deprecation.html)\n\nRetrieves information about different cluster, node, and index level settings that use deprecated features that will be removed or changed in the next major version."]
+#[derive(Clone, Debug)]
 pub struct MigrationDeprecations<'a, 'b> {
     transport: &'a Transport,
     parts: MigrationDeprecationsParts<'b>,

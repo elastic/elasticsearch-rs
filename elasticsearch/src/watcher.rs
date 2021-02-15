@@ -84,8 +84,8 @@ impl<'b> WatcherAckWatchParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Watcher Ack Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-ack-watch.html)\n\nAcknowledges a watch, manually throttling the execution of the watch's actions."]
+#[derive(Clone, Debug)]
 pub struct WatcherAckWatch<'a, 'b, B> {
     transport: &'a Transport,
     parts: WatcherAckWatchParts<'b>,
@@ -227,8 +227,8 @@ impl<'b> WatcherActivateWatchParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Watcher Activate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-activate-watch.html)\n\nActivates a currently inactive watch."]
+#[derive(Clone, Debug)]
 pub struct WatcherActivateWatch<'a, 'b, B> {
     transport: &'a Transport,
     parts: WatcherActivateWatchParts<'b>,
@@ -370,8 +370,8 @@ impl<'b> WatcherDeactivateWatchParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Watcher Deactivate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-deactivate-watch.html)\n\nDeactivates a currently active watch."]
+#[derive(Clone, Debug)]
 pub struct WatcherDeactivateWatch<'a, 'b, B> {
     transport: &'a Transport,
     parts: WatcherDeactivateWatchParts<'b>,
@@ -511,8 +511,8 @@ impl<'b> WatcherDeleteWatchParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Watcher Delete Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-delete-watch.html)\n\nRemoves a watch from Watcher."]
+#[derive(Clone, Debug)]
 pub struct WatcherDeleteWatch<'a, 'b> {
     transport: &'a Transport,
     parts: WatcherDeleteWatchParts<'b>,
@@ -633,8 +633,8 @@ impl<'b> WatcherExecuteWatchParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Watcher Execute Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-execute-watch.html)\n\nForces the execution of a stored watch."]
+#[derive(Clone, Debug)]
 pub struct WatcherExecuteWatch<'a, 'b, B> {
     transport: &'a Transport,
     parts: WatcherExecuteWatchParts<'b>,
@@ -784,8 +784,8 @@ impl<'b> WatcherGetWatchParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Watcher Get Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-get-watch.html)\n\nRetrieves a watch by its ID."]
+#[derive(Clone, Debug)]
 pub struct WatcherGetWatch<'a, 'b> {
     transport: &'a Transport,
     parts: WatcherGetWatchParts<'b>,
@@ -902,8 +902,8 @@ impl<'b> WatcherPutWatchParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Watcher Put Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-put-watch.html)\n\nCreates a new watch, or updates an existing one."]
+#[derive(Clone, Debug)]
 pub struct WatcherPutWatch<'a, 'b, B> {
     transport: &'a Transport,
     parts: WatcherPutWatchParts<'b>,
@@ -1077,8 +1077,8 @@ impl WatcherQueryWatchesParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Watcher Query Watches API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-query-watches.html)\n\nRetrieves stored watches."]
+#[derive(Clone, Debug)]
 pub struct WatcherQueryWatches<'a, 'b, B> {
     transport: &'a Transport,
     parts: WatcherQueryWatchesParts,
@@ -1215,8 +1215,8 @@ impl WatcherStartParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Watcher Start API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-start.html)\n\nStarts Watcher if it is not already running."]
+#[derive(Clone, Debug)]
 pub struct WatcherStart<'a, 'b, B> {
     transport: &'a Transport,
     parts: WatcherStartParts,
@@ -1361,8 +1361,8 @@ impl<'b> WatcherStatsParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Watcher Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-stats.html)\n\nRetrieves the current Watcher metrics."]
+#[derive(Clone, Debug)]
 pub struct WatcherStats<'a, 'b> {
     transport: &'a Transport,
     parts: WatcherStatsParts<'b>,
@@ -1492,8 +1492,8 @@ impl WatcherStopParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Watcher Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/watcher-api-stop.html)\n\nStops Watcher if it is running."]
+#[derive(Clone, Debug)]
 pub struct WatcherStop<'a, 'b, B> {
     transport: &'a Transport,
     parts: WatcherStopParts,

@@ -58,8 +58,8 @@ impl SqlClearCursorParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Sql Clear Cursor API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/sql-pagination.html)\n\nClears the SQL cursor"]
+#[derive(Clone, Debug)]
 pub struct SqlClearCursor<'a, 'b, B> {
     transport: &'a Transport,
     parts: SqlClearCursorParts,
@@ -193,8 +193,8 @@ impl SqlQueryParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Sql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/sql-rest-overview.html)\n\nExecutes a SQL request"]
+#[derive(Clone, Debug)]
 pub struct SqlQuery<'a, 'b, B> {
     transport: &'a Transport,
     parts: SqlQueryParts,
@@ -341,8 +341,8 @@ impl SqlTranslateParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Sql Translate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/sql-translate.html)\n\nTranslates SQL into Elasticsearch queries"]
+#[derive(Clone, Debug)]
 pub struct SqlTranslate<'a, 'b, B> {
     transport: &'a Transport,
     parts: SqlTranslateParts,

@@ -24,6 +24,12 @@
 // cargo make generate-api
 // -----------------------------------------------
 
+//! Autoscaling APIs
+//!
+//! The [autoscaling feature](https://www.elastic.co/guide/en/elasticsearch/reference/master/xpack-autoscaling.html)
+//! enables an operator to configure tiers of nodes that self-monitor whether or not they need to scale based on an
+//! operator-defined policy.
+
 #![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
@@ -60,8 +66,8 @@ impl<'b> AutoscalingDeleteAutoscalingPolicyParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Autoscaling Delete Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/autoscaling-delete-autoscaling-policy.html)\n\nDeletes an autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+#[derive(Clone, Debug)]
 pub struct AutoscalingDeleteAutoscalingPolicy<'a, 'b> {
     transport: &'a Transport,
     parts: AutoscalingDeleteAutoscalingPolicyParts<'b>,
@@ -175,8 +181,8 @@ impl AutoscalingGetAutoscalingCapacityParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Autoscaling Get Autoscaling Capacity API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/autoscaling-get-autoscaling-capacity.html)\n\nGets the current autoscaling capacity based on the configured autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+#[derive(Clone, Debug)]
 pub struct AutoscalingGetAutoscalingCapacity<'a, 'b> {
     transport: &'a Transport,
     parts: AutoscalingGetAutoscalingCapacityParts,
@@ -293,8 +299,8 @@ impl<'b> AutoscalingGetAutoscalingPolicyParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Autoscaling Get Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/autoscaling-get-autoscaling-policy.html)\n\nRetrieves an autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+#[derive(Clone, Debug)]
 pub struct AutoscalingGetAutoscalingPolicy<'a, 'b> {
     transport: &'a Transport,
     parts: AutoscalingGetAutoscalingPolicyParts<'b>,
@@ -411,8 +417,8 @@ impl<'b> AutoscalingPutAutoscalingPolicyParts<'b> {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Autoscaling Put Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/autoscaling-put-autoscaling-policy.html)\n\nCreates a new autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+#[derive(Clone, Debug)]
 pub struct AutoscalingPutAutoscalingPolicy<'a, 'b, B> {
     transport: &'a Transport,
     parts: AutoscalingPutAutoscalingPolicyParts<'b>,

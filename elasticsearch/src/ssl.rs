@@ -58,8 +58,8 @@ impl SslCertificatesParts {
         }
     }
 }
-#[derive(Clone, Debug)]
 #[doc = "Builder for the [Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-ssl.html)\n\nRetrieves information about the X.509 certificates used to encrypt communications in the cluster."]
+#[derive(Clone, Debug)]
 pub struct SslCertificates<'a, 'b> {
     transport: &'a Transport,
     parts: SslCertificatesParts,
