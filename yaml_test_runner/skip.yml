@@ -21,6 +21,44 @@ tests:
     # --> missing expansion of stashed values
     - "Test invalidate api keys"
 
+  xpack/data_stream/10_basic.yml:
+    # expected value json[""][idx0name.as_str().unwrap()]["mappings"]["properties"]["@timestamp"]["type"] to match String("date") but was Null'
+    - "Create data stream"
+    # expected value at &json[""][idx0name.as_str().unwrap()]["settings"] to be true (not null) but was null
+    - "Delete data stream with backing indices"
+
+  xpack/data_stream/10_data_stream_resolvability.yml:
+    # expected value json[""][idx0name.as_str().unwrap()]["settings"]["index"]["lifecycle"]["name"] to match String("my_moveable_timeseries_lifecycle") but was Null'
+    - "Verify data stream resolvability in ILM remove policy API"
+
+  xpack/data_stream/40_supported_apis.yml:
+    # expected value at &json[""][idx0name.as_str().unwrap()]["settings"] to be true (not null) but was null
+    - "Open write index for data stream opens all backing indices"
+    # expected value at &json[""][idx0name.as_str().unwrap()] to be true (not null) but was null
+    - "Verify get field mappings api"
+    # expected value at &json[""][idx0name.as_str().unwrap()] to be true (not null) but was null
+    - "Verify get index api"
+    # expected value at &json[""][idx0name.as_str().unwrap()]["mappings"] to be true (not null) but was null
+    - "Verify get mapping api"
+    # expected value json["indices"][idx0name.as_str().unwrap()]["shards"][0]["stores"][0]["allocation"] to match String("primary") but was Null
+    - "Verify shard stores api"
+
+  xpack/data_stream/50_delete_backing_indices.yml:
+    # expected value at &json["acknowledged"] to be true (not null) but was null
+    - "Attempt to delete write index on data stream is rejected"
+    # expected value at &json["acknowledged"] to be true (not null) but was null
+    - "Delete backing index on data stream"
+
+  xpack/data_stream/60_get_backing_indices.yml:
+    # expected value at &json[""][idx0name.as_str().unwrap()]["settings"] to be true (not null) but was null
+    - "Get backing indices for data stream"
+
+  xpack/data_stream/80_resolve_index_data_streams.yml:
+    # expected value json["indices"][3]["name"] to match String("test_index1") but was String(".security-7")
+    - "Resolve index with hidden and closed indices"
+    # expected value json["indices"][0]["name"] to match String("test_index1") but was String(".security-7")'
+    - "Resolve index with indices, aliases, and data streams"
+
   xpack/ssl/10_basic.yml:
     # this test returns the CA cert before the cert, so always fails
     - "Test get SSL certificates"
@@ -78,6 +116,19 @@ tests:
     # this test fails as the regex needs a \n before the ending $
     - "Test cat indices using health status"
 
+  free/cat.templates/10_basic.yml:
+    # Regex do not account for hidden templates returned by the request
+    - "Multiple template"
+    - "No templates"
+    - "Sort templates"
+    # To many spaces in regex compared to API call result
+    - "Select columns"
+
+  free/indices.put_index_template/10_basic.yml:
+    # Succeeds when run individually but fails in the test suite?!?
+    # left: `Null`, right: `Array([String("test-*")])`
+    - "Put index template with 'create' flag"
+
   free/indices.shard_stores/10_basic.yml:
     # uses number as a key into object. serde_json::Value expects a string key
     - "basic index test"
@@ -103,3 +154,25 @@ tests:
     # The use of an invalid window interval results in a 400 response which looks like
     # it suppresses the sending of deprecation headers
     - "Bad window deprecated interval"
+
+  free/search/60_query_string.yml:
+    # Succeeds when run individually but fails in the test suite?!?
+    # expected value json["hits"]["total"] to match 1 but was Number(0)'
+    - "search with query_string parameters"
+
+  free/indices.simulate_template/10_basic.yml:
+    # Succeeds when run individually but fails in the test suite?!?
+    # left: `String("test")`, right: `String("v1_template")
+    - "Simulate template matches overlapping legacy and composable templates"
+    # expected value &json["overlapping"] to have length 0 but was 2'
+    - "Simulate replacing a template with a newer version"
+    # left: `String("winning_v2_template")`, right: `String("existing_test")
+    - "Simulate index template specifying a new template"
+    # Differing arrays
+    - "Simulate template without a template in the body"
+
+  free/indices.simulate_index_template/10_basic.yml:
+    # left: `Null`, right: `String("true")`
+    - "Simulate index template specifying a new template"
+    # left: `String("test")`, right: `String("v1_template")`
+    - "Simulate index matches overlapping legacy and composable templates"
