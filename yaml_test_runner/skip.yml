@@ -11,18 +11,20 @@ features:
 
 # tests to skip generating and compiling a test for
 tests:
-  xpack/ssl/10_basic.yml:
-    # this test returns the CA cert before the cert, so always fails
-    - "Test get SSL certificates"
 
-  xpack/transform/transforms_stats_continuous.yml:
-    # this test always returns "exponential_avg_checkpoint_duration_ms": 0.0 . seems like it might be missing data in
-    # the setup, fires quicker than any documents are processed, or the delay of 1m is too high?
-    - "Test get continuous transform stats"
+  xpack/api_key/10_basic.yml:
+    # Regex contains variable substitutions that the test harness doesn't support yet
+    - "Test invalidate api keys"
 
-  xpack/ml/jobs_get_result_overall_buckets.yml:
-    # this test always returns 3 buckets where 1 is expected
-    - "Test overall buckets given overall_score filter"
+  xpack/data_stream/40_supported_apis.yml:
+    # uses number as a key into object. serde_json::Value expects a string key
+    - "Verify shard stores api"
+
+  xpack/data_stream/80_resolve_index_data_streams.yml:
+    # Regex not properly interpreted by the test harness
+    - "Resolve index with hidden and closed indices"
+    # expected value json["indices"][0]["name"] to match String("test_index1") but was String(".security-7")
+    - "Resolve index with indices, aliases, and data streams"
 
   xpack/ml/filter_crud.yml:
     # Warning "this request accesses system indices..." to match is wrong on all tests
@@ -35,10 +37,15 @@ tests:
   xpack/runtime_fields/20_long.yml:
     # expected value ... to match Number(40.0) but was Number(40)
     - "terms agg"
+    -
+  xpack/ssl/10_basic.yml:
+    # this test returns the CA cert before the cert, so always fails
+    - "Test get SSL certificates"
 
-  xpack/snapshot/10_basic.yml:
-    # this test fails because it can't access snapshot to restore it
-    - "Create a source only snapshot and then restore it"
+  xpack/transform/transforms_stats_continuous.yml:
+    # this test always returns "exponential_avg_checkpoint_duration_ms": 0.0 . seems like it might be missing data in
+    # the setup, fires quicker than any documents are processed, or the delay of 1m is too high?
+    - "Test get continuous transform stats"
 
   # Test generator currently doesn't handle unsigned long values.
   # We skip all tests as even the setup code will fail to compile.
@@ -55,32 +62,42 @@ tests:
   xpack/unsigned_long/60_collapse.yml:
     - "*"
 
-  oss/cat.aliases/10_basic.yml:
+  free/cat.aliases/10_basic.yml:
     # this test fails as the regex needs a \n before the ending $
     - "Multiple alias names"
 
-  oss/cat.indices/10_basic.yml:
+  free/cat.indices/10_basic.yml:
     # this test fails as the regex needs a \n before the ending $
     - "Test cat indices using health status"
 
-  oss/indices.shard_stores/10_basic.yml:
+  free/cat.templates/10_basic.yml:
+    # Regex do not account for hidden templates returned by the request
+    - "Multiple template"
+    - "No templates"
+    - "Sort templates"
+
+  free/indices.flush/10_basic.yml:
+    # uses number as a key into object. serde_json::Value expects a string key
+    - "Index synced flush rest test"
+
+  free/indices.segments/10_basic.yml:
+    # uses number as a key into object. serde_json::Value expects a string key
+    - "basic segments test"
+
+  free/indices.shard_stores/10_basic.yml:
     # uses number as a key into object. serde_json::Value expects a string key
     - "basic index test"
     - "multiple indices test"
 
-  oss/indices.flush/10_basic.yml:
-    # uses number as a key into object. serde_json::Value expects a string key
-    - "Index synced flush rest test"
-
-  oss/indices.segments/10_basic.yml:
-    # uses number as a key into object. serde_json::Value expects a string key
-    - "basic segments test"
-
-  oss/indices.stats/12_level.yml:
+  free/indices.stats/12_level.yml:
     # uses number as a key into object. serde_json::Value expects a string key
     - "Level - shards"
 
-  oss/search.aggregation/250_moving_fn.yml:
+  free/nodes.info/10_basic.yml:
+    # node has a lot more roles than those checked in the test (expects "ingest", finds "data_cold")
+    - "node_info role test"
+
+  free/search.aggregation/250_moving_fn.yml:
     # The use of an invalid window interval results in a 400 response which looks like
     # it suppresses the sending of deprecation headers
     - "Bad window deprecated interval"
