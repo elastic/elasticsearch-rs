@@ -31,12 +31,18 @@ use std::{collections::BTreeMap, fmt, str::FromStr};
 use void::Void;
 
 /// A response from Elasticsearch
-pub struct Response(reqwest::Response, Method);
+pub struct Response {
+    response: reqwest::Response,
+    method: Method,
+}
 
 impl Response {
     /// Creates a new instance of an Elasticsearch response
     pub fn new(response: reqwest::Response, method: Method) -> Self {
-        Self(response, method)
+        Self {
+            response: response,
+            method: method,
+        }
     }
 
     /// Get the response content-length, if known.
@@ -47,12 +53,12 @@ impl Response {
     /// - The response is compressed and automatically decoded (thus changing
     ///   the actual decoded length).
     pub fn content_length(&self) -> Option<u64> {
-        self.0.content_length()
+        self.response.content_length()
     }
 
     /// Gets the response content-type.
     pub fn content_type(&self) -> &str {
-        self.0
+        self.response
             .headers()
             .get(crate::http::headers::CONTENT_TYPE)
             .and_then(|value| value.to_str().ok())
@@ -61,7 +67,7 @@ impl Response {
 
     /// Turn the response into an [Error] if Elasticsearch returned an error.
     pub fn error_for_status_code(self) -> Result<Self, ClientError> {
-        match self.0.error_for_status_ref() {
+        match self.response.error_for_status_ref() {
             Ok(_) => Ok(self),
             Err(err) => Err(err.into()),
         }
@@ -69,7 +75,7 @@ impl Response {
 
     /// Turn the response into an [Error] if Elasticsearch returned an error.
     pub fn error_for_status_code_ref(&self) -> Result<&Self, ClientError> {
-        match self.0.error_for_status_ref() {
+        match self.response.error_for_status_ref() {
             Ok(_) => Ok(self),
             Err(err) => Err(err.into()),
         }
@@ -95,36 +101,36 @@ impl Response {
     where
         B: DeserializeOwned,
     {
-        let body = self.0.json::<B>().await?;
+        let body = self.response.json::<B>().await?;
         Ok(body)
     }
 
     /// Gets the response headers.
     pub fn headers(&self) -> &HeaderMap {
-        self.0.headers()
+        self.response.headers()
     }
 
     /// Gets the request method.
     pub fn method(&self) -> Method {
-        self.1
+        self.method
     }
 
     /// Get the HTTP status code of the response
     pub fn status_code(&self) -> StatusCode {
-        self.0.status()
+        self.response.status()
     }
 
     /// Asynchronously reads the response body as plain text
     ///
     /// Reading the response body consumes `self`
     pub async fn text(self) -> Result<String, ClientError> {
-        let body = self.0.text().await?;
+        let body = self.response.text().await?;
         Ok(body)
     }
 
     /// Gets the request URL
     pub fn url(&self) -> &Url {
-        self.0.url()
+        self.response.url()
     }
 
     /// Gets the Deprecation warning response headers
@@ -132,7 +138,7 @@ impl Response {
     /// Deprecation headers signal the use of Elasticsearch functionality
     /// or features that are deprecated and will be removed in a future release.
     pub fn warning_headers(&self) -> impl Iterator<Item = &str> {
-        self.0.headers().get_all("Warning").iter().map(|w| {
+        self.response.headers().get_all("Warning").iter().map(|w| {
             let s = w.to_str().unwrap();
             let first_quote = s.find('"').unwrap();
             let last_quote = s.len() - 1;
