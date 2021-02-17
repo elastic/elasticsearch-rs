@@ -18,7 +18,7 @@
  */
 use elasticsearch::{
     auth::Credentials,
-    cat::{CatSnapshotsParts, CatTemplatesParts},
+    cat::CatTemplatesParts,
     cert::CertificateValidation,
     cluster::ClusterHealthParts,
     http::{
@@ -27,7 +27,10 @@ use elasticsearch::{
         Method, StatusCode,
     },
     ilm::IlmRemovePolicyParts,
-    indices::{IndicesDeleteParts, IndicesDeleteTemplateParts, IndicesRefreshParts},
+    indices::{
+        IndicesDeleteIndexTemplateParts, IndicesDeleteParts, IndicesDeleteTemplateParts,
+        IndicesRefreshParts,
+    },
     ml::{
         MlCloseJobParts, MlDeleteDatafeedParts, MlDeleteJobParts, MlGetDatafeedsParts,
         MlGetJobsParts, MlStopDatafeedParts,
@@ -138,41 +141,48 @@ pub async fn read_response(
 /// general setup step for an OSS yaml test
 pub async fn general_oss_setup() -> Result<(), Error> {
     let client = get();
+    delete_data_streams(client).await?;
     delete_indices(client).await?;
     delete_templates(client).await?;
+    delete_snapshots(client).await?;
 
-    let cat_snapshot_response = client
+    Ok(())
+}
+
+pub async fn delete_snapshots(client: &Elasticsearch) -> Result<(), Error> {
+    let cat_repo_response = client
         .cat()
-        .snapshots(CatSnapshotsParts::None)
-        .h(&["id", "repository"])
+        .repositories()
+        .h(&["id"])
         .send()
+        .await?
+        .error_for_status_code()?
+        .text()
         .await?;
 
-    if cat_snapshot_response.status_code().is_success() {
-        let cat_snapshot_text = cat_snapshot_response.text().await?;
+    if cat_repo_response.len() > 0 {
+        let repositories: Vec<&str> = cat_repo_response.split_terminator('\n').collect();
 
-        let all_snapshots: Vec<(&str, &str)> = cat_snapshot_text
-            .split('\n')
-            .map(|s| s.split(' ').collect::<Vec<&str>>())
-            .filter(|s| s.len() == 2)
-            .map(|s| (s[0].trim(), s[1].trim()))
-            .filter(|(id, repo)| !id.is_empty() && !repo.is_empty())
-            .collect();
-
-        for (id, repo) in all_snapshots {
-            let _snapshot_response = client
+        // Delete snapshots in each repository
+        for repo in repositories {
+            let delete_snapshots_response = client
                 .snapshot()
-                .delete(SnapshotDeleteParts::RepositorySnapshot(&repo, &id))
+                .delete(SnapshotDeleteParts::RepositorySnapshot(repo, "*"))
                 .send()
                 .await?;
-        }
-    }
 
-    let _delete_repo_response = client
-        .snapshot()
-        .delete_repository(SnapshotDeleteRepositoryParts::Repository(&["*"]))
-        .send()
-        .await?;
+            assert_response_success!(delete_snapshots_response);
+        }
+
+        // Delete all snapshot repositories
+        let delete_repo_response = client
+            .snapshot()
+            .delete_repository(SnapshotDeleteRepositoryParts::Repository(&["*"]))
+            .send()
+            .await?;
+
+        assert_response_success!(delete_repo_response);
+    }
 
     Ok(())
 }
@@ -180,7 +190,6 @@ pub async fn general_oss_setup() -> Result<(), Error> {
 /// general setup step for an xpack yaml test
 pub async fn general_xpack_setup() -> Result<(), Error> {
     let client = get();
-    delete_templates(client).await?;
 
     let _delete_watch_response = client
         .watcher()
@@ -193,11 +202,13 @@ pub async fn general_xpack_setup() -> Result<(), Error> {
     delete_privileges(client).await?;
     stop_and_delete_datafeeds(client).await?;
 
-    let _ = client
+    let response = client
         .ilm()
         .remove_policy(IlmRemovePolicyParts::Index("_all"))
         .send()
         .await?;
+
+    assert_response_success!(response);
 
     close_and_delete_jobs(client).await?;
 
@@ -206,9 +217,11 @@ pub async fn general_xpack_setup() -> Result<(), Error> {
     cancel_tasks(client).await?;
     stop_and_delete_transforms(client).await?;
     wait_for_yellow_status(client).await?;
+    delete_data_streams(client).await?;
     delete_indices(client).await?;
+    delete_templates(client).await?;
 
-    let _ = client
+    let response = client
         .security()
         .put_user(SecurityPutUserParts::Username("x_pack_rest_user"))
         .body(json!({
@@ -218,7 +231,9 @@ pub async fn general_xpack_setup() -> Result<(), Error> {
         .send()
         .await?;
 
-    let _ = client
+    assert_response_success!(response);
+
+    let response = client
         .indices()
         .refresh(IndicesRefreshParts::Index(&["_all"]))
         .expand_wildcards(&[
@@ -228,6 +243,8 @@ pub async fn general_xpack_setup() -> Result<(), Error> {
         ])
         .send()
         .await?;
+
+    assert_response_success!(response);
 
     wait_for_yellow_status(client).await?;
 
@@ -246,7 +263,7 @@ async fn wait_for_yellow_status(client: &Elasticsearch) -> Result<(), Error> {
     Ok(())
 }
 
-async fn delete_indices(client: &Elasticsearch) -> Result<(), Error> {
+async fn delete_data_streams(client: &Elasticsearch) -> Result<(), Error> {
     // Hand-crafted request as the indices.delete_data_stream spec doesn't yet have the
     // "expand_wildcards" parameter that is needed to delete ILM data streams
     //
@@ -276,6 +293,10 @@ async fn delete_indices(client: &Elasticsearch) -> Result<(), Error> {
 
     assert_response_success!(delete_response);
 
+    Ok(())
+}
+
+async fn delete_indices(client: &Elasticsearch) -> Result<(), Error> {
     let delete_response = client
         .indices()
         .delete(IndicesDeleteParts::Index(&["*"]))
@@ -302,17 +323,21 @@ async fn stop_and_delete_transforms(client: &Elasticsearch) -> Result<(), Error>
 
     for transform in transforms_response["transforms"].as_array().unwrap() {
         let id = transform["id"].as_str().unwrap();
-        let _ = client
+        let response = client
             .transform()
             .stop_transform(TransformStopTransformParts::TransformId(id))
             .send()
             .await?;
 
-        let _ = client
+        assert_response_success!(response);
+
+        let response = client
             .transform()
             .delete_transform(TransformDeleteTransformParts::TransformId(id))
             .send()
             .await?;
+
+        assert_response_success!(response);
     }
 
     Ok(())
@@ -325,11 +350,13 @@ async fn cancel_tasks(client: &Elasticsearch) -> Result<(), Error> {
         for (task_id, task) in nodes["tasks"].as_object().unwrap() {
             if let Some(b) = task["cancellable"].as_bool() {
                 if b {
-                    let _ = client
+                    let response = client
                         .tasks()
                         .cancel(TasksCancelParts::TaskId(task_id))
                         .send()
                         .await?;
+
+                    assert_response_success!(response);
                 }
             }
         }
@@ -339,6 +366,8 @@ async fn cancel_tasks(client: &Elasticsearch) -> Result<(), Error> {
 }
 
 async fn delete_templates(client: &Elasticsearch) -> Result<(), Error> {
+    // There are "legacy templates and "new templates"
+
     let cat_template_response = client
         .cat()
         .templates(CatTemplatesParts::Name("*"))
@@ -349,16 +378,32 @@ async fn delete_templates(client: &Elasticsearch) -> Result<(), Error> {
         .await?;
 
     let all_templates: Vec<&str> = cat_template_response
-        .split('\n')
-        .filter(|s| !s.is_empty() && !s.starts_with('.') && s != &"security-audit-log")
+        .split_terminator('\n')
+        .filter(|s| !s.starts_with('.') && s != &"security-audit-log")
         .collect();
 
     for template in all_templates {
-        let _delete_template_response = client
+        if template == "ilm-history" {
+            // We may need to extend this to mimic ESRestTestCase.isXPackTemplate() from the ES
+            // test harness
+            continue;
+        }
+
+        let mut delete_template_response = client
             .indices()
-            .delete_template(IndicesDeleteTemplateParts::Name(&template))
+            .delete_index_template(IndicesDeleteIndexTemplateParts::Name(&template))
             .send()
             .await?;
+
+        if delete_template_response.status_code().as_u16() == 404 {
+            // Certainly an old-style template
+            delete_template_response = client
+                .indices()
+                .delete_template(IndicesDeleteTemplateParts::Name(&template))
+                .send()
+                .await?;
+        }
+        assert_response_success!(delete_template_response);
     }
 
     Ok(())
@@ -376,11 +421,13 @@ async fn delete_users(client: &Elasticsearch) -> Result<(), Error> {
     for (k, v) in users_response.as_object().unwrap() {
         if let Some(b) = v["metadata"]["_reserved"].as_bool() {
             if !b {
-                let _ = client
+                let response = client
                     .security()
                     .delete_user(SecurityDeleteUserParts::Username(k))
                     .send()
                     .await?;
+
+                assert_response_success!(response);
             }
         }
     }
@@ -400,11 +447,13 @@ async fn delete_roles(client: &Elasticsearch) -> Result<(), Error> {
     for (k, v) in roles_response.as_object().unwrap() {
         if let Some(b) = v["metadata"]["_reserved"].as_bool() {
             if !b {
-                let _ = client
+                let response = client
                     .security()
                     .delete_role(SecurityDeleteRoleParts::Name(k))
                     .send()
                     .await?;
+
+                assert_response_success!(response);
             }
         }
     }
@@ -424,11 +473,13 @@ async fn delete_privileges(client: &Elasticsearch) -> Result<(), Error> {
     for (k, v) in privileges_response.as_object().unwrap() {
         if let Some(b) = v["metadata"]["_reserved"].as_bool() {
             if !b {
-                let _ = client
+                let response = client
                     .security()
                     .delete_privileges(SecurityDeletePrivilegesParts::ApplicationName(k, "_all"))
                     .send()
                     .await?;
+
+                assert_response_success!(response);
             }
         }
     }
@@ -437,11 +488,13 @@ async fn delete_privileges(client: &Elasticsearch) -> Result<(), Error> {
 }
 
 async fn stop_and_delete_datafeeds(client: &Elasticsearch) -> Result<(), Error> {
-    let _stop_data_feed_response = client
+    let stop_data_feed_response = client
         .ml()
         .stop_datafeed(MlStopDatafeedParts::DatafeedId("_all"))
         .send()
         .await?;
+
+    assert_response_success!(stop_data_feed_response);
 
     let get_data_feeds_response = client
         .ml()
@@ -464,11 +517,13 @@ async fn stop_and_delete_datafeeds(client: &Elasticsearch) -> Result<(), Error> 
 }
 
 async fn close_and_delete_jobs(client: &Elasticsearch) -> Result<(), Error> {
-    let _ = client
+    let response = client
         .ml()
         .close_job(MlCloseJobParts::JobId("_all"))
         .send()
         .await?;
+
+    assert_response_success!(response);
 
     let get_jobs_response = client
         .ml()
@@ -480,11 +535,13 @@ async fn close_and_delete_jobs(client: &Elasticsearch) -> Result<(), Error> {
 
     for job in get_jobs_response["jobs"].as_array().unwrap() {
         let id = job["job_id"].as_str().unwrap();
-        let _ = client
+        let response = client
             .ml()
             .delete_job(MlDeleteJobParts::JobId(id))
             .send()
             .await?;
+
+        assert_response_success!(response);
     }
 
     Ok(())

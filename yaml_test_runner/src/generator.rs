@@ -413,11 +413,7 @@ pub fn generate_tests_from_yaml(
                     };
 
                     if &test_suite != suite {
-                        info!(
-                            "skipping {}. compiling tests for {:?}",
-                            relative_path.to_slash_lossy(),
-                            suite
-                        );
+                        // Belongs to another test suite
                         continue;
                     }
 

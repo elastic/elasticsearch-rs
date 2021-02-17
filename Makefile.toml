@@ -8,6 +8,8 @@ STACK_VERSION = { value = "7.x-SNAPSHOT", condition = { env_not_set = ["STACK_VE
 TEST_SUITE = { value = "free", condition = { env_not_set = ["TEST_SUITE"] }}
 # Set publish flags to dry-run by default, to force user to explicitly define for publishing
 CARGO_MAKE_CARGO_PUBLISH_FLAGS = "--dry-run"
+# RUST_BACKTRACE is set to "full" in cargo make's builtin makefiles/stable.toml
+RUST_BACKTRACE = { value = "0", condition = { env_not_set = ["RUST_BACKTRACE"]}}
 
 [tasks.set-free-env]
 category = "Elasticsearch"
@@ -39,14 +41,14 @@ category = "Elasticsearch"
 private = true
 condition = { env_set = [ "ELASTICSEARCH_URL" ], env_false = ["CARGO_MAKE_CI"] }
 command = "cargo"
-args = ["test", "-p", "yaml_test_runner", "--", "--test-threads=1"]
+args = ["test", "-p", "yaml_test_runner", "--", "--test-threads", "1"]
 dependencies = ["generate-yaml-tests"]
 
 [tasks.test-yaml-test-runner-ci]
 category = "Elasticsearch"
 private = true
 condition = { env_set = [ "ELASTICSEARCH_URL" ], env_true = ["CARGO_MAKE_CI"] }
-script = ["cargo test -p yaml_test_runner -- --test-threads=1 -Z unstable-options --format json | tee test_results/results.json"]
+script = ["cargo test -p yaml_test_runner -- --test-threads 1 -Z unstable-options --format json | tee test_results/results.json"]
 dependencies = ["generate-yaml-tests"]
 
 [tasks.test-elasticsearch]
