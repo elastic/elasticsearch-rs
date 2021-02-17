@@ -963,7 +963,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Sets the number of active shards to wait for before the operation returns. Set to `index-setting` to wait according to the index setting `index.write.wait_for_active_shards`, or `all` to wait for all shards, or an integer. Defaults to `0`."]
+    #[doc = "Sets the number of active shards to wait for before the operation returns."]
     pub fn wait_for_active_shards(mut self, wait_for_active_shards: &'b str) -> Self {
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self

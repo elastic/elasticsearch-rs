@@ -289,7 +289,6 @@ pub struct SearchableSnapshotsMount<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
-    storage: Option<&'b str>,
     wait_for_completion: Option<bool>,
 }
 #[cfg(feature = "experimental-apis")]
@@ -312,7 +311,6 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
-            storage: None,
             wait_for_completion: None,
         }
     }
@@ -333,7 +331,6 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
-            storage: self.storage,
             wait_for_completion: self.wait_for_completion,
         }
     }
@@ -377,11 +374,6 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Selects the kind of local storage used to accelerate searches. Experimental, and defaults to `full_copy`"]
-    pub fn storage(mut self, storage: &'b str) -> Self {
-        self.storage = Some(storage);
-        self
-    }
     #[doc = "Should this request wait until the operation has completed before returning"]
     pub fn wait_for_completion(mut self, wait_for_completion: bool) -> Self {
         self.wait_for_completion = Some(wait_for_completion);
@@ -404,7 +396,6 @@ where
                 master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
-                storage: Option<&'b str>,
                 wait_for_completion: Option<bool>,
             }
             let query_params = QueryParams {
@@ -414,7 +405,6 @@ where
                 master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
-                storage: self.storage,
                 wait_for_completion: self.wait_for_completion,
             };
             Some(query_params)
@@ -594,7 +584,6 @@ pub struct SearchableSnapshotsStats<'a, 'b> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    level: Option<Level>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -611,7 +600,6 @@ impl<'a, 'b> SearchableSnapshotsStats<'a, 'b> {
             error_trace: None,
             filter_path: None,
             human: None,
-            level: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -635,11 +623,6 @@ impl<'a, 'b> SearchableSnapshotsStats<'a, 'b> {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
-        self
-    }
-    #[doc = "Return stats aggregated at cluster, index or shard level"]
-    pub fn level(mut self, level: Level) -> Self {
-        self.level = Some(level);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -671,7 +654,6 @@ impl<'a, 'b> SearchableSnapshotsStats<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
-                level: Option<Level>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -679,7 +661,6 @@ impl<'a, 'b> SearchableSnapshotsStats<'a, 'b> {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
-                level: self.level,
                 pretty: self.pretty,
                 source: self.source,
             };

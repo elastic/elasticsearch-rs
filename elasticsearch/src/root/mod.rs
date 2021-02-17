@@ -6888,7 +6888,6 @@ pub struct Search<'a, 'b, B> {
     ignore_unavailable: Option<bool>,
     lenient: Option<bool>,
     max_concurrent_shard_requests: Option<i64>,
-    min_compatible_shard_node: Option<&'b str>,
     pre_filter_shard_size: Option<i64>,
     preference: Option<&'b str>,
     pretty: Option<bool>,
@@ -6950,7 +6949,6 @@ where
             ignore_unavailable: None,
             lenient: None,
             max_concurrent_shard_requests: None,
-            min_compatible_shard_node: None,
             pre_filter_shard_size: None,
             preference: None,
             pretty: None,
@@ -7051,7 +7049,6 @@ where
             ignore_unavailable: self.ignore_unavailable,
             lenient: self.lenient,
             max_concurrent_shard_requests: self.max_concurrent_shard_requests,
-            min_compatible_shard_node: self.min_compatible_shard_node,
             pre_filter_shard_size: self.pre_filter_shard_size,
             preference: self.preference,
             pretty: self.pretty,
@@ -7153,11 +7150,6 @@ where
     #[doc = "The number of concurrent shard requests per node this search executes concurrently. This value should be used to limit the impact of the search on the cluster in order to limit the number of concurrent shard requests"]
     pub fn max_concurrent_shard_requests(mut self, max_concurrent_shard_requests: i64) -> Self {
         self.max_concurrent_shard_requests = Some(max_concurrent_shard_requests);
-        self
-    }
-    #[doc = "The minimum compatible version that all shards involved in search should have for this request to be successful"]
-    pub fn min_compatible_shard_node(mut self, min_compatible_shard_node: &'b str) -> Self {
-        self.min_compatible_shard_node = Some(min_compatible_shard_node);
         self
     }
     #[doc = "A threshold that enforces a pre-filter roundtrip to prefilter search shards based on query rewriting if the\u{a0}number of shards the search request expands to exceeds the threshold. This filter roundtrip can limit the number of shards significantly if for instance a shard can not match any documents based on its rewrite method ie. if date filters are mandatory to match but the shard bounds and the query are disjoint."]
@@ -7331,7 +7323,6 @@ where
                 ignore_unavailable: Option<bool>,
                 lenient: Option<bool>,
                 max_concurrent_shard_requests: Option<i64>,
-                min_compatible_shard_node: Option<&'b str>,
                 pre_filter_shard_size: Option<i64>,
                 preference: Option<&'b str>,
                 pretty: Option<bool>,
@@ -7385,7 +7376,6 @@ where
                 ignore_unavailable: self.ignore_unavailable,
                 lenient: self.lenient,
                 max_concurrent_shard_requests: self.max_concurrent_shard_requests,
-                min_compatible_shard_node: self.min_compatible_shard_node,
                 pre_filter_shard_size: self.pre_filter_shard_size,
                 preference: self.preference,
                 pretty: self.pretty,

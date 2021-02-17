@@ -3041,7 +3041,6 @@ pub struct CatPlugins<'a, 'b> {
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
-    include_bootstrap: Option<bool>,
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
@@ -3066,7 +3065,6 @@ impl<'a, 'b> CatPlugins<'a, 'b> {
             h: None,
             help: None,
             human: None,
-            include_bootstrap: None,
             local: None,
             master_timeout: None,
             pretty: None,
@@ -3109,11 +3107,6 @@ impl<'a, 'b> CatPlugins<'a, 'b> {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
-        self
-    }
-    #[doc = "Include bootstrap plugins in the response"]
-    pub fn include_bootstrap(mut self, include_bootstrap: bool) -> Self {
-        self.include_bootstrap = Some(include_bootstrap);
         self
     }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
@@ -3169,7 +3162,6 @@ impl<'a, 'b> CatPlugins<'a, 'b> {
                 h: Option<&'b [&'b str]>,
                 help: Option<bool>,
                 human: Option<bool>,
-                include_bootstrap: Option<bool>,
                 local: Option<bool>,
                 master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
@@ -3185,7 +3177,6 @@ impl<'a, 'b> CatPlugins<'a, 'b> {
                 h: self.h,
                 help: self.help,
                 human: self.human,
-                include_bootstrap: self.include_bootstrap,
                 local: self.local,
                 master_timeout: self.master_timeout,
                 pretty: self.pretty,

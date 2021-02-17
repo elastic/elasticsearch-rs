@@ -302,124 +302,6 @@ impl<'a, 'b> EqlGet<'a, 'b> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Eql Get Status API"]
-pub enum EqlGetStatusParts<'b> {
-    #[doc = "Id"]
-    Id(&'b str),
-}
-impl<'b> EqlGetStatusParts<'b> {
-    #[doc = "Builds a relative URL path to the Eql Get Status API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            EqlGetStatusParts::Id(ref id) => {
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(20usize + encoded_id.len());
-                p.push_str("/_eql/search/status/");
-                p.push_str(encoded_id.as_ref());
-                p.into()
-            }
-        }
-    }
-}
-#[doc = "Builder for the [Eql Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/eql-search-api.html)\n\nReturns the status of a previously submitted async or stored Event Query Language (EQL) search"]
-#[derive(Clone, Debug)]
-pub struct EqlGetStatus<'a, 'b> {
-    transport: &'a Transport,
-    parts: EqlGetStatusParts<'b>,
-    error_trace: Option<bool>,
-    filter_path: Option<&'b [&'b str]>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    request_timeout: Option<Duration>,
-    source: Option<&'b str>,
-}
-impl<'a, 'b> EqlGetStatus<'a, 'b> {
-    #[doc = "Creates a new instance of [EqlGetStatus] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: EqlGetStatusParts<'b>) -> Self {
-        let headers = HeaderMap::new();
-        EqlGetStatus {
-            transport,
-            parts,
-            headers,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            pretty: None,
-            request_timeout: None,
-            source: None,
-        }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
-    pub fn request_timeout(mut self, timeout: Duration) -> Self {
-        self.request_timeout = Some(timeout);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Eql Get Status API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = Method::Get;
-        let headers = self.headers;
-        let timeout = self.request_timeout;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                error_trace: Option<bool>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                filter_path: Option<&'b [&'b str]>,
-                human: Option<bool>,
-                pretty: Option<bool>,
-                source: Option<&'b str>,
-            }
-            let query_params = QueryParams {
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                human: self.human,
-                pretty: self.pretty,
-                source: self.source,
-            };
-            Some(query_params)
-        };
-        let body = Option::<()>::None;
-        let response = self
-            .transport
-            .send(method, &path, headers, query_string.as_ref(), body, timeout)
-            .await?;
-        Ok(response)
-    }
-}
-#[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Eql Search API"]
 pub enum EqlSearchParts<'b> {
     #[doc = "Index"]
@@ -614,10 +496,6 @@ impl<'a> Eql<'a> {
     #[doc = "[Eql Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/eql-search-api.html)\n\nReturns async results from previously executed Event Query Language (EQL) search"]
     pub fn get<'b>(&'a self, parts: EqlGetParts<'b>) -> EqlGet<'a, 'b> {
         EqlGet::new(self.transport(), parts)
-    }
-    #[doc = "[Eql Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/eql-search-api.html)\n\nReturns the status of a previously submitted async or stored Event Query Language (EQL) search"]
-    pub fn get_status<'b>(&'a self, parts: EqlGetStatusParts<'b>) -> EqlGetStatus<'a, 'b> {
-        EqlGetStatus::new(self.transport(), parts)
     }
     #[doc = "[Eql Search API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/eql-search-api.html)\n\nReturns results matching a query expressed in Event Query Language (EQL)"]
     pub fn search<'b>(&'a self, parts: EqlSearchParts<'b>) -> EqlSearch<'a, 'b, ()> {
