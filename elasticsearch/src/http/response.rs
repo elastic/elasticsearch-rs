@@ -21,6 +21,7 @@ use crate::{
     error::Error as ClientError,
     http::{headers::HeaderMap, Method, StatusCode, Url},
 };
+use bytes::Bytes;
 use serde::{
     de,
     de::{DeserializeOwned, MapAccess, Visitor},
@@ -126,6 +127,14 @@ impl Response {
     pub async fn text(self) -> Result<String, ClientError> {
         let body = self.response.text().await?;
         Ok(body)
+    }
+
+    /// Asynchronously reads the response body as bytes
+    ///
+    /// Reading the response body consumes `self`
+    pub async fn bytes(self) -> Result<Bytes, ClientError> {
+        let bytes: Bytes = self.response.bytes().await?;
+        Ok(bytes)
     }
 
     /// Gets the request URL
