@@ -28,7 +28,8 @@
 //!
 //! Provide general information about the installed X-Pack features and their usage.
 
-# ! [ allow ( unused_imports ) ]use crate::{
+#![allow(unused_imports)]
+use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
@@ -57,8 +58,8 @@ impl XpackInfoParts {
         }
     }
 }
+#[doc = "Builder for the [Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
 pub struct XpackInfo<'a, 'b> {
     transport: &'a Transport,
     parts: XpackInfoParts,
@@ -188,8 +189,8 @@ impl XpackUsageParts {
         }
     }
 }
+#[doc = "Builder for the [Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
 pub struct XpackUsage<'a, 'b> {
     transport: &'a Transport,
     parts: XpackUsageParts,
@@ -307,11 +308,11 @@ impl<'a> Xpack<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
+    #[doc = "[Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
     pub fn info<'b>(&'a self) -> XpackInfo<'a, 'b> {
         XpackInfo::new(self.transport())
     }
-    #[doc = "[Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
+    #[doc = "[Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
     pub fn usage<'b>(&'a self) -> XpackUsage<'a, 'b> {
         XpackUsage::new(self.transport())
     }
