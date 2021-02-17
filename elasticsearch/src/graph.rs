@@ -30,7 +30,8 @@
 //! indices, [inferring relationships across documents](https://www.elastic.co/what-is/elasticsearch-graph),
 //! and allowing the [exploration of such relationships](https://www.elastic.co/guide/en/elasticsearch/reference/master/graph-explore-api.html).
 
-# ! [ allow ( unused_imports ) ]use crate::{
+#![allow(unused_imports)]
+use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
@@ -84,8 +85,8 @@ impl<'b> GraphExploreParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
 pub struct GraphExplore<'a, 'b, B> {
     transport: &'a Transport,
     parts: GraphExploreParts<'b>,
@@ -240,7 +241,7 @@ impl<'a> Graph<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
+    #[doc = "[Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
     pub fn explore<'b>(&'a self, parts: GraphExploreParts<'b>) -> GraphExplore<'a, 'b, ()> {
         GraphExplore::new(self.transport(), parts)
     }

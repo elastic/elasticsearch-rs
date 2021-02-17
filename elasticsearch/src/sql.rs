@@ -28,7 +28,8 @@
 //!
 //! [Execute SQL queries against Elasticsearch indices and return results in tabular format](https://www.elastic.co/guide/en/elasticsearch/reference/master/xpack-sql.html).
 
-# ! [ allow ( unused_imports ) ]use crate::{
+#![allow(unused_imports)]
+use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
@@ -57,8 +58,8 @@ impl SqlClearCursorParts {
         }
     }
 }
+#[doc = "Builder for the [Sql Clear Cursor API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/sql-pagination.html)\n\nClears the SQL cursor"]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Sql Clear Cursor API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/sql-pagination.html)\n\nClears the SQL cursor"]
 pub struct SqlClearCursor<'a, 'b, B> {
     transport: &'a Transport,
     parts: SqlClearCursorParts,
@@ -192,8 +193,8 @@ impl SqlQueryParts {
         }
     }
 }
+#[doc = "Builder for the [Sql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/sql-rest-overview.html)\n\nExecutes a SQL request"]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Sql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/sql-rest-overview.html)\n\nExecutes a SQL request"]
 pub struct SqlQuery<'a, 'b, B> {
     transport: &'a Transport,
     parts: SqlQueryParts,
@@ -340,8 +341,8 @@ impl SqlTranslateParts {
         }
     }
 }
+#[doc = "Builder for the [Sql Translate API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/sql-translate.html)\n\nTranslates SQL into Elasticsearch queries"]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Sql Translate API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/sql-translate.html)\n\nTranslates SQL into Elasticsearch queries"]
 pub struct SqlTranslate<'a, 'b, B> {
     transport: &'a Transport,
     parts: SqlTranslateParts,
@@ -476,15 +477,15 @@ impl<'a> Sql<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Sql Clear Cursor API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/sql-pagination.html)\n\nClears the SQL cursor"]
+    #[doc = "[Sql Clear Cursor API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/sql-pagination.html)\n\nClears the SQL cursor"]
     pub fn clear_cursor<'b>(&'a self) -> SqlClearCursor<'a, 'b, ()> {
         SqlClearCursor::new(self.transport())
     }
-    #[doc = "[Sql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/sql-rest-overview.html)\n\nExecutes a SQL request"]
+    #[doc = "[Sql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/sql-rest-overview.html)\n\nExecutes a SQL request"]
     pub fn query<'b>(&'a self) -> SqlQuery<'a, 'b, ()> {
         SqlQuery::new(self.transport())
     }
-    #[doc = "[Sql Translate API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/sql-translate.html)\n\nTranslates SQL into Elasticsearch queries"]
+    #[doc = "[Sql Translate API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/sql-translate.html)\n\nTranslates SQL into Elasticsearch queries"]
     pub fn translate<'b>(&'a self) -> SqlTranslate<'a, 'b, ()> {
         SqlTranslate::new(self.transport())
     }

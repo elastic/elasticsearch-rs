@@ -29,7 +29,8 @@
 //! Manage settings, perform operations, and retrieve information about the
 //! [nodes in an Elasticsearch cluster](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster.html).
 
-# ! [ allow ( unused_imports ) ]use crate::{
+#![allow(unused_imports)]
+use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
@@ -70,8 +71,8 @@ impl<'b> NodesHotThreadsParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
 pub struct NodesHotThreads<'a, 'b> {
     transport: &'a Transport,
     parts: NodesHotThreadsParts<'b>,
@@ -276,8 +277,8 @@ impl<'b> NodesInfoParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
 pub struct NodesInfo<'a, 'b> {
     transport: &'a Transport,
     parts: NodesInfoParts<'b>,
@@ -418,8 +419,8 @@ impl<'b> NodesReloadSecureSettingsParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
 pub struct NodesReloadSecureSettings<'a, 'b, B> {
     transport: &'a Transport,
     parts: NodesReloadSecureSettingsParts<'b>,
@@ -647,8 +648,8 @@ impl<'b> NodesStatsParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
 pub struct NodesStats<'a, 'b> {
     transport: &'a Transport,
     parts: NodesStatsParts<'b>,
@@ -875,8 +876,8 @@ impl<'b> NodesUsageParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
 pub struct NodesUsage<'a, 'b> {
     transport: &'a Transport,
     parts: NodesUsageParts<'b>,
@@ -994,26 +995,26 @@ impl<'a> Nodes<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
+    #[doc = "[Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
     pub fn hot_threads<'b>(&'a self, parts: NodesHotThreadsParts<'b>) -> NodesHotThreads<'a, 'b> {
         NodesHotThreads::new(self.transport(), parts)
     }
-    #[doc = "[Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
+    #[doc = "[Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
     pub fn info<'b>(&'a self, parts: NodesInfoParts<'b>) -> NodesInfo<'a, 'b> {
         NodesInfo::new(self.transport(), parts)
     }
-    #[doc = "[Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
+    #[doc = "[Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
     pub fn reload_secure_settings<'b>(
         &'a self,
         parts: NodesReloadSecureSettingsParts<'b>,
     ) -> NodesReloadSecureSettings<'a, 'b, ()> {
         NodesReloadSecureSettings::new(self.transport(), parts)
     }
-    #[doc = "[Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
+    #[doc = "[Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
     pub fn stats<'b>(&'a self, parts: NodesStatsParts<'b>) -> NodesStats<'a, 'b> {
         NodesStats::new(self.transport(), parts)
     }
-    #[doc = "[Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
+    #[doc = "[Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
     pub fn usage<'b>(&'a self, parts: NodesUsageParts<'b>) -> NodesUsage<'a, 'b> {
         NodesUsage::new(self.transport(), parts)
     }

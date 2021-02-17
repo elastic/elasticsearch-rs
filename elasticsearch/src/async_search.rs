@@ -30,7 +30,8 @@
 //! let you asynchronously execute a search request, monitor its progress, and retrieve
 //! partial results as they become available.
 
-# ! [ allow ( unused_imports ) ]use crate::{
+#![allow(unused_imports)]
+use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
@@ -65,8 +66,8 @@ impl<'b> AsyncSearchDeleteParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Async Search Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/async-search.html)\n\nDeletes an async search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Async Search Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/async-search.html)\n\nDeletes an async search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
 pub struct AsyncSearchDelete<'a, 'b> {
     transport: &'a Transport,
     parts: AsyncSearchDeleteParts<'b>,
@@ -183,8 +184,8 @@ impl<'b> AsyncSearchGetParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Async Search Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/async-search.html)\n\nRetrieves the results of a previously submitted async search request given its ID."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Async Search Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/async-search.html)\n\nRetrieves the results of a previously submitted async search request given its ID."]
 pub struct AsyncSearchGet<'a, 'b> {
     transport: &'a Transport,
     parts: AsyncSearchGetParts<'b>,
@@ -309,6 +310,124 @@ impl<'a, 'b> AsyncSearchGet<'a, 'b> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Async Search Status API"]
+pub enum AsyncSearchStatusParts<'b> {
+    #[doc = "Id"]
+    Id(&'b str),
+}
+impl<'b> AsyncSearchStatusParts<'b> {
+    #[doc = "Builds a relative URL path to the Async Search Status API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            AsyncSearchStatusParts::Id(ref id) => {
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(22usize + encoded_id.len());
+                p.push_str("/_async_search/status/");
+                p.push_str(encoded_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Async Search Status API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/async-search.html)\n\nRetrieves the status of a previously submitted async search request given its ID."]
+#[derive(Clone, Debug)]
+pub struct AsyncSearchStatus<'a, 'b> {
+    transport: &'a Transport,
+    parts: AsyncSearchStatusParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b> AsyncSearchStatus<'a, 'b> {
+    #[doc = "Creates a new instance of [AsyncSearchStatus] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: AsyncSearchStatusParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        AsyncSearchStatus {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Async Search Status API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Async Search Submit API"]
 pub enum AsyncSearchSubmitParts<'b> {
     #[doc = "No parts"]
@@ -334,8 +453,8 @@ impl<'b> AsyncSearchSubmitParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Async Search Submit API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/async-search.html)\n\nExecutes a search request asynchronously."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Async Search Submit API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/async-search.html)\n\nExecutes a search request asynchronously."]
 pub struct AsyncSearchSubmit<'a, 'b, B> {
     transport: &'a Transport,
     parts: AsyncSearchSubmitParts<'b>,
@@ -886,15 +1005,19 @@ impl<'a> AsyncSearch<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Async Search Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/async-search.html)\n\nDeletes an async search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
+    #[doc = "[Async Search Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/async-search.html)\n\nDeletes an async search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
     pub fn delete<'b>(&'a self, parts: AsyncSearchDeleteParts<'b>) -> AsyncSearchDelete<'a, 'b> {
         AsyncSearchDelete::new(self.transport(), parts)
     }
-    #[doc = "[Async Search Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/async-search.html)\n\nRetrieves the results of a previously submitted async search request given its ID."]
+    #[doc = "[Async Search Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/async-search.html)\n\nRetrieves the results of a previously submitted async search request given its ID."]
     pub fn get<'b>(&'a self, parts: AsyncSearchGetParts<'b>) -> AsyncSearchGet<'a, 'b> {
         AsyncSearchGet::new(self.transport(), parts)
     }
-    #[doc = "[Async Search Submit API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/async-search.html)\n\nExecutes a search request asynchronously."]
+    #[doc = "[Async Search Status API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/async-search.html)\n\nRetrieves the status of a previously submitted async search request given its ID."]
+    pub fn status<'b>(&'a self, parts: AsyncSearchStatusParts<'b>) -> AsyncSearchStatus<'a, 'b> {
+        AsyncSearchStatus::new(self.transport(), parts)
+    }
+    #[doc = "[Async Search Submit API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/async-search.html)\n\nExecutes a search request asynchronously."]
     pub fn submit<'b>(
         &'a self,
         parts: AsyncSearchSubmitParts<'b>,

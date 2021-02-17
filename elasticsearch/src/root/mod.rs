@@ -24,7 +24,8 @@
 // cargo make generate-api
 // -----------------------------------------------
 
-# ! [ allow ( unused_imports ) ]use crate::{
+#![allow(unused_imports)]
+use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
@@ -78,8 +79,8 @@ impl<'b> BulkParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-bulk.html)\n\nAllows to perform multiple index/update/delete operations in a single request."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-bulk.html)\n\nAllows to perform multiple index/update/delete operations in a single request."]
 pub struct Bulk<'a, 'b, B> {
     transport: &'a Transport,
     parts: BulkParts<'b>,
@@ -328,8 +329,8 @@ impl<'b> ClearScrollParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Clear Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/clear-scroll-api.html)\n\nExplicitly clears the search context for a scroll."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Clear Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/clear-scroll-api.html)\n\nExplicitly clears the search context for a scroll."]
 pub struct ClearScroll<'a, 'b, B> {
     transport: &'a Transport,
     parts: ClearScrollParts<'b>,
@@ -450,6 +451,141 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Close Point In Time API"]
+pub enum ClosePointInTimeParts {
+    #[doc = "No parts"]
+    None,
+}
+impl ClosePointInTimeParts {
+    #[doc = "Builds a relative URL path to the Close Point In Time API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            ClosePointInTimeParts::None => "/_pit".into(),
+        }
+    }
+}
+#[doc = "Builder for the [Close Point In Time API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/point-in-time-api.html)\n\nClose a point in time"]
+#[derive(Clone, Debug)]
+pub struct ClosePointInTime<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: ClosePointInTimeParts,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b, B> ClosePointInTime<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [ClosePointInTime]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        ClosePointInTime {
+            transport,
+            parts: ClosePointInTimeParts::None,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> ClosePointInTime<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        ClosePointInTime {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Close Point In Time API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Count API"]
 pub enum CountParts<'b> {
     #[doc = "No parts"]
@@ -491,8 +627,8 @@ impl<'b> CountParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Count API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-count.html)\n\nReturns number of documents matching a query."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Count API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-count.html)\n\nReturns number of documents matching a query."]
 pub struct Count<'a, 'b, B> {
     transport: &'a Transport,
     parts: CountParts<'b>,
@@ -800,8 +936,8 @@ impl<'b> CreateParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Create API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-index_.html)\n\nCreates a new document in the index.\n\nReturns a 409 response when a document with a same ID already exists in the index."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Create API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-index_.html)\n\nCreates a new document in the index.\n\nReturns a 409 response when a document with a same ID already exists in the index."]
 pub struct Create<'a, 'b, B> {
     transport: &'a Transport,
     parts: CreateParts<'b>,
@@ -1033,8 +1169,8 @@ impl<'b> DeleteParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-delete.html)\n\nRemoves a document from the index."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-delete.html)\n\nRemoves a document from the index."]
 pub struct Delete<'a, 'b> {
     transport: &'a Transport,
     parts: DeleteParts<'b>,
@@ -1242,8 +1378,8 @@ impl<'b> DeleteByQueryParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Delete By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-delete-by-query.html)\n\nDeletes documents matching the provided query."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Delete By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-delete-by-query.html)\n\nDeletes documents matching the provided query."]
 pub struct DeleteByQuery<'a, 'b, B> {
     transport: &'a Transport,
     parts: DeleteByQueryParts<'b>,
@@ -1722,8 +1858,8 @@ impl<'b> DeleteByQueryRethrottleParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Delete By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-delete-by-query.html)\n\nChanges the number of requests per second for a particular Delete By Query operation."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Delete By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-delete-by-query.html)\n\nChanges the number of requests per second for a particular Delete By Query operation."]
 pub struct DeleteByQueryRethrottle<'a, 'b, B> {
     transport: &'a Transport,
     parts: DeleteByQueryRethrottleParts<'b>,
@@ -1873,8 +2009,8 @@ impl<'b> DeleteScriptParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Delete Script API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/modules-scripting.html)\n\nDeletes a script."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Delete Script API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/modules-scripting.html)\n\nDeletes a script."]
 pub struct DeleteScript<'a, 'b> {
     transport: &'a Transport,
     parts: DeleteScriptParts<'b>,
@@ -2031,8 +2167,8 @@ impl<'b> ExistsParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-get.html)\n\nReturns information about whether a document exists in an index."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-get.html)\n\nReturns information about whether a document exists in an index."]
 pub struct Exists<'a, 'b> {
     transport: &'a Transport,
     parts: ExistsParts<'b>,
@@ -2266,8 +2402,8 @@ impl<'b> ExistsSourceParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Exists Source API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-get.html)\n\nReturns information about whether a document source exists in an index."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Exists Source API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-get.html)\n\nReturns information about whether a document source exists in an index."]
 pub struct ExistsSource<'a, 'b> {
     transport: &'a Transport,
     parts: ExistsSourceParts<'b>,
@@ -2491,8 +2627,8 @@ impl<'b> ExplainParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-explain.html)\n\nReturns information about why a specific matches (or doesn't match) a query."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-explain.html)\n\nReturns information about why a specific matches (or doesn't match) a query."]
 pub struct Explain<'a, 'b, B> {
     transport: &'a Transport,
     parts: ExplainParts<'b>,
@@ -2765,8 +2901,8 @@ impl<'b> FieldCapsParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Field Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-field-caps.html)\n\nReturns the information about the capabilities of fields among multiple indices."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Field Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-field-caps.html)\n\nReturns the information about the capabilities of fields among multiple indices."]
 pub struct FieldCaps<'a, 'b, B> {
     transport: &'a Transport,
     parts: FieldCapsParts<'b>,
@@ -2983,8 +3119,8 @@ impl<'b> GetParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-get.html)\n\nReturns a document."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-get.html)\n\nReturns a document."]
 pub struct Get<'a, 'b> {
     transport: &'a Transport,
     parts: GetParts<'b>,
@@ -3195,8 +3331,8 @@ impl<'b> GetScriptParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Get Script API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/modules-scripting.html)\n\nReturns a script."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Get Script API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/modules-scripting.html)\n\nReturns a script."]
 pub struct GetScript<'a, 'b> {
     transport: &'a Transport,
     parts: GetScriptParts<'b>,
@@ -3302,6 +3438,240 @@ impl<'a, 'b> GetScript<'a, 'b> {
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Get Script Context API"]
+pub enum GetScriptContextParts {
+    #[doc = "No parts"]
+    None,
+}
+#[cfg(feature = "experimental-apis")]
+impl GetScriptContextParts {
+    #[doc = "Builds a relative URL path to the Get Script Context API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            GetScriptContextParts::None => "/_script_context".into(),
+        }
+    }
+}
+#[doc = "Builder for the [Get Script Context API](https://www.elastic.co/guide/en/elasticsearch/painless/7.11/painless-contexts.html)\n\nReturns all script contexts."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct GetScriptContext<'a, 'b> {
+    transport: &'a Transport,
+    parts: GetScriptContextParts,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> GetScriptContext<'a, 'b> {
+    #[doc = "Creates a new instance of [GetScriptContext]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        GetScriptContext {
+            transport,
+            parts: GetScriptContextParts::None,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Get Script Context API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Get Script Languages API"]
+pub enum GetScriptLanguagesParts {
+    #[doc = "No parts"]
+    None,
+}
+#[cfg(feature = "experimental-apis")]
+impl GetScriptLanguagesParts {
+    #[doc = "Builds a relative URL path to the Get Script Languages API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            GetScriptLanguagesParts::None => "/_script_language".into(),
+        }
+    }
+}
+#[doc = "Builder for the [Get Script Languages API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/modules-scripting.html)\n\nReturns available script types, languages and contexts"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct GetScriptLanguages<'a, 'b> {
+    transport: &'a Transport,
+    parts: GetScriptLanguagesParts,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> GetScriptLanguages<'a, 'b> {
+    #[doc = "Creates a new instance of [GetScriptLanguages]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        GetScriptLanguages {
+            transport,
+            parts: GetScriptLanguagesParts::None,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Get Script Languages API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Get Source API"]
 pub enum GetSourceParts<'b> {
@@ -3345,8 +3715,8 @@ impl<'b> GetSourceParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Get Source API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-get.html)\n\nReturns the source of a document."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Get Source API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-get.html)\n\nReturns the source of a document."]
 pub struct GetSource<'a, 'b> {
     transport: &'a Transport,
     parts: GetSourceParts<'b>,
@@ -3593,8 +3963,8 @@ impl<'b> IndexParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Index API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-index_.html)\n\nCreates or updates a document in an index."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Index API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-index_.html)\n\nCreates or updates a document in an index."]
 pub struct Index<'a, 'b, B> {
     transport: &'a Transport,
     parts: IndexParts<'b>,
@@ -3838,8 +4208,8 @@ impl InfoParts {
         }
     }
 }
+#[doc = "Builder for the [Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/index.html)\n\nReturns basic information about the cluster."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/index.html)\n\nReturns basic information about the cluster."]
 pub struct Info<'a, 'b> {
     transport: &'a Transport,
     parts: InfoParts,
@@ -3975,8 +4345,8 @@ impl<'b> MgetParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Mget API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-multi-get.html)\n\nAllows to get multiple documents in one request."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Mget API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-multi-get.html)\n\nAllows to get multiple documents in one request."]
 pub struct Mget<'a, 'b, B> {
     transport: &'a Transport,
     parts: MgetParts<'b>,
@@ -4225,8 +4595,8 @@ impl<'b> MsearchParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Msearch API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-multi-search.html)\n\nAllows to execute several search operations in one request."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Msearch API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-multi-search.html)\n\nAllows to execute several search operations in one request."]
 pub struct Msearch<'a, 'b, B> {
     transport: &'a Transport,
     parts: MsearchParts<'b>,
@@ -4461,8 +4831,8 @@ impl<'b> MsearchTemplateParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Msearch Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-multi-search.html)\n\nAllows to execute several search template operations in one request."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Msearch Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-multi-search.html)\n\nAllows to execute several search template operations in one request."]
 pub struct MsearchTemplate<'a, 'b, B> {
     transport: &'a Transport,
     parts: MsearchTemplateParts<'b>,
@@ -4674,8 +5044,8 @@ impl<'b> MtermvectorsParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Mtermvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-multi-termvectors.html)\n\nReturns multiple termvectors in one request."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Mtermvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-multi-termvectors.html)\n\nReturns multiple termvectors in one request."]
 pub struct Mtermvectors<'a, 'b, B> {
     transport: &'a Transport,
     parts: MtermvectorsParts<'b>,
@@ -4921,6 +5291,204 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Open Point In Time API"]
+pub enum OpenPointInTimeParts<'b> {
+    #[doc = "No parts"]
+    None,
+    #[doc = "Index"]
+    Index(&'b [&'b str]),
+}
+impl<'b> OpenPointInTimeParts<'b> {
+    #[doc = "Builds a relative URL path to the Open Point In Time API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            OpenPointInTimeParts::None => "/_pit".into(),
+            OpenPointInTimeParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(6usize + encoded_index.len());
+                p.push_str("/");
+                p.push_str(encoded_index.as_ref());
+                p.push_str("/_pit");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Open Point In Time API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/point-in-time-api.html)\n\nOpen a point in time that can be used in subsequent searches"]
+#[derive(Clone, Debug)]
+pub struct OpenPointInTime<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: OpenPointInTimeParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<&'b [ExpandWildcards]>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    keep_alive: Option<&'b str>,
+    preference: Option<&'b str>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    routing: Option<&'b str>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b, B> OpenPointInTime<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [OpenPointInTime] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: OpenPointInTimeParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        OpenPointInTime {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            keep_alive: None,
+            preference: None,
+            pretty: None,
+            request_timeout: None,
+            routing: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> OpenPointInTime<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        OpenPointInTime {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            keep_alive: self.keep_alive,
+            preference: self.preference,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            routing: self.routing,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
+        self
+    }
+    #[doc = "Specific the time to live for the point in time"]
+    pub fn keep_alive(mut self, keep_alive: &'b str) -> Self {
+        self.keep_alive = Some(keep_alive);
+        self
+    }
+    #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
+    pub fn preference(mut self, preference: &'b str) -> Self {
+        self.preference = Some(preference);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "Specific routing value"]
+    pub fn routing(mut self, routing: &'b str) -> Self {
+        self.routing = Some(routing);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Open Point In Time API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                expand_wildcards: Option<&'b [ExpandWildcards]>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                ignore_unavailable: Option<bool>,
+                keep_alive: Option<&'b str>,
+                preference: Option<&'b str>,
+                pretty: Option<bool>,
+                routing: Option<&'b str>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
+                ignore_unavailable: self.ignore_unavailable,
+                keep_alive: self.keep_alive,
+                preference: self.preference,
+                pretty: self.pretty,
+                routing: self.routing,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ping API"]
 pub enum PingParts {
     #[doc = "No parts"]
@@ -4934,8 +5502,8 @@ impl PingParts {
         }
     }
 }
+#[doc = "Builder for the [Ping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/index.html)\n\nReturns whether the cluster is running."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/index.html)\n\nReturns whether the cluster is running."]
 pub struct Ping<'a, 'b> {
     transport: &'a Transport,
     parts: PingParts,
@@ -5066,8 +5634,8 @@ impl<'b> PutScriptParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Put Script API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/modules-scripting.html)\n\nCreates or updates a script."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Put Script API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/modules-scripting.html)\n\nCreates or updates a script."]
 pub struct PutScript<'a, 'b, B> {
     transport: &'a Transport,
     parts: PutScriptParts<'b>,
@@ -5217,6 +5785,202 @@ where
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Rank Eval API"]
+pub enum RankEvalParts<'b> {
+    #[doc = "No parts"]
+    None,
+    #[doc = "Index"]
+    Index(&'b [&'b str]),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> RankEvalParts<'b> {
+    #[doc = "Builds a relative URL path to the Rank Eval API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            RankEvalParts::None => "/_rank_eval".into(),
+            RankEvalParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(12usize + encoded_index.len());
+                p.push_str("/");
+                p.push_str(encoded_index.as_ref());
+                p.push_str("/_rank_eval");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Rank Eval API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-rank-eval.html)\n\nAllows to evaluate the quality of ranked search results over a set of typical search queries"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct RankEval<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: RankEvalParts<'b>,
+    allow_no_indices: Option<bool>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<&'b [ExpandWildcards]>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    search_type: Option<SearchType>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> RankEval<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [RankEval] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: RankEvalParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        RankEval {
+            transport,
+            parts,
+            headers,
+            allow_no_indices: None,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            pretty: None,
+            request_timeout: None,
+            search_type: None,
+            source: None,
+        }
+    }
+    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> RankEval<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        RankEval {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            allow_no_indices: self.allow_no_indices,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            search_type: self.search_type,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "Search operation type"]
+    pub fn search_type(mut self, search_type: SearchType) -> Self {
+        self.search_type = Some(search_type);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Rank Eval API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = match self.body {
+            Some(_) => Method::Post,
+            None => Method::Get,
+        };
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                allow_no_indices: Option<bool>,
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                expand_wildcards: Option<&'b [ExpandWildcards]>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                ignore_unavailable: Option<bool>,
+                pretty: Option<bool>,
+                search_type: Option<SearchType>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
+                expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
+                ignore_unavailable: self.ignore_unavailable,
+                pretty: self.pretty,
+                search_type: self.search_type,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Reindex API"]
 pub enum ReindexParts {
@@ -5231,8 +5995,8 @@ impl ReindexParts {
         }
     }
 }
+#[doc = "Builder for the [Reindex API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-reindex.html)\n\nAllows to copy documents from one index to another, optionally filtering the source\ndocuments by a query, changing the destination index settings, or fetching the\ndocuments from a remote cluster."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Reindex API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-reindex.html)\n\nAllows to copy documents from one index to another, optionally filtering the source\ndocuments by a query, changing the destination index settings, or fetching the\ndocuments from a remote cluster."]
 pub struct Reindex<'a, 'b, B> {
     transport: &'a Transport,
     parts: ReindexParts,
@@ -5454,8 +6218,8 @@ impl<'b> ReindexRethrottleParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Reindex Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-reindex.html)\n\nChanges the number of requests per second for a particular Reindex operation."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Reindex Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-reindex.html)\n\nChanges the number of requests per second for a particular Reindex operation."]
 pub struct ReindexRethrottle<'a, 'b, B> {
     transport: &'a Transport,
     parts: ReindexRethrottleParts<'b>,
@@ -5608,8 +6372,8 @@ impl<'b> RenderSearchTemplateParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Render Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-template.html#_validating_templates)\n\nAllows to use the Mustache language to pre-render a search definition."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Render Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-template.html#_validating_templates)\n\nAllows to use the Mustache language to pre-render a search definition."]
 pub struct RenderSearchTemplate<'a, 'b, B> {
     transport: &'a Transport,
     parts: RenderSearchTemplateParts<'b>,
@@ -5732,6 +6496,149 @@ where
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Scripts Painless Execute API"]
+pub enum ScriptsPainlessExecuteParts {
+    #[doc = "No parts"]
+    None,
+}
+#[cfg(feature = "experimental-apis")]
+impl ScriptsPainlessExecuteParts {
+    #[doc = "Builds a relative URL path to the Scripts Painless Execute API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            ScriptsPainlessExecuteParts::None => "/_scripts/painless/_execute".into(),
+        }
+    }
+}
+#[doc = "Builder for the [Scripts Painless Execute API](https://www.elastic.co/guide/en/elasticsearch/painless/7.11/painless-execute-api.html)\n\nAllows an arbitrary script to be executed and a result to be returned"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct ScriptsPainlessExecute<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: ScriptsPainlessExecuteParts,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> ScriptsPainlessExecute<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [ScriptsPainlessExecute]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        ScriptsPainlessExecute {
+            transport,
+            parts: ScriptsPainlessExecuteParts::None,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> ScriptsPainlessExecute<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        ScriptsPainlessExecute {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Scripts Painless Execute API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = match self.body {
+            Some(_) => Method::Post,
+            None => Method::Get,
+        };
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Scroll API"]
 pub enum ScrollParts<'b> {
@@ -5756,8 +6663,8 @@ impl<'b> ScrollParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-request-body.html#request-body-search-scroll)\n\nAllows to retrieve a large numbers of results from a single search request."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-request-body.html#request-body-search-scroll)\n\nAllows to retrieve a large numbers of results from a single search request."]
 pub struct Scroll<'a, 'b, B> {
     transport: &'a Transport,
     parts: ScrollParts<'b>,
@@ -5952,8 +6859,8 @@ impl<'b> SearchParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Search API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-search.html)\n\nReturns results matching a query."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Search API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-search.html)\n\nReturns results matching a query."]
 pub struct Search<'a, 'b, B> {
     transport: &'a Transport,
     parts: SearchParts<'b>,
@@ -5981,6 +6888,7 @@ pub struct Search<'a, 'b, B> {
     ignore_unavailable: Option<bool>,
     lenient: Option<bool>,
     max_concurrent_shard_requests: Option<i64>,
+    min_compatible_shard_node: Option<&'b str>,
     pre_filter_shard_size: Option<i64>,
     preference: Option<&'b str>,
     pretty: Option<bool>,
@@ -6042,6 +6950,7 @@ where
             ignore_unavailable: None,
             lenient: None,
             max_concurrent_shard_requests: None,
+            min_compatible_shard_node: None,
             pre_filter_shard_size: None,
             preference: None,
             pretty: None,
@@ -6142,6 +7051,7 @@ where
             ignore_unavailable: self.ignore_unavailable,
             lenient: self.lenient,
             max_concurrent_shard_requests: self.max_concurrent_shard_requests,
+            min_compatible_shard_node: self.min_compatible_shard_node,
             pre_filter_shard_size: self.pre_filter_shard_size,
             preference: self.preference,
             pretty: self.pretty,
@@ -6243,6 +7153,11 @@ where
     #[doc = "The number of concurrent shard requests per node this search executes concurrently. This value should be used to limit the impact of the search on the cluster in order to limit the number of concurrent shard requests"]
     pub fn max_concurrent_shard_requests(mut self, max_concurrent_shard_requests: i64) -> Self {
         self.max_concurrent_shard_requests = Some(max_concurrent_shard_requests);
+        self
+    }
+    #[doc = "The minimum compatible version that all shards involved in search should have for this request to be successful"]
+    pub fn min_compatible_shard_node(mut self, min_compatible_shard_node: &'b str) -> Self {
+        self.min_compatible_shard_node = Some(min_compatible_shard_node);
         self
     }
     #[doc = "A threshold that enforces a pre-filter roundtrip to prefilter search shards based on query rewriting if the\u{a0}number of shards the search request expands to exceeds the threshold. This filter roundtrip can limit the number of shards significantly if for instance a shard can not match any documents based on its rewrite method ie. if date filters are mandatory to match but the shard bounds and the query are disjoint."]
@@ -6416,6 +7331,7 @@ where
                 ignore_unavailable: Option<bool>,
                 lenient: Option<bool>,
                 max_concurrent_shard_requests: Option<i64>,
+                min_compatible_shard_node: Option<&'b str>,
                 pre_filter_shard_size: Option<i64>,
                 preference: Option<&'b str>,
                 pretty: Option<bool>,
@@ -6469,6 +7385,7 @@ where
                 ignore_unavailable: self.ignore_unavailable,
                 lenient: self.lenient,
                 max_concurrent_shard_requests: self.max_concurrent_shard_requests,
+                min_compatible_shard_node: self.min_compatible_shard_node,
                 pre_filter_shard_size: self.pre_filter_shard_size,
                 preference: self.preference,
                 pretty: self.pretty,
@@ -6531,8 +7448,8 @@ impl<'b> SearchShardsParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Search Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-shards.html)\n\nReturns information about the indices and shards that a search request would be executed against."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Search Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-shards.html)\n\nReturns information about the indices and shards that a search request would be executed against."]
 pub struct SearchShards<'a, 'b, B> {
     transport: &'a Transport,
     parts: SearchShardsParts<'b>,
@@ -6758,8 +7675,8 @@ impl<'b> SearchTemplateParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-template.html)\n\nAllows to use the Mustache language to pre-render a search definition."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-template.html)\n\nAllows to use the Mustache language to pre-render a search definition."]
 pub struct SearchTemplate<'a, 'b, B> {
     transport: &'a Transport,
     parts: SearchTemplateParts<'b>,
@@ -7082,8 +7999,8 @@ impl<'b> TermvectorsParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Termvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-termvectors.html)\n\nReturns information and statistics about terms in the fields of a particular document."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Termvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-termvectors.html)\n\nReturns information and statistics about terms in the fields of a particular document."]
 pub struct Termvectors<'a, 'b, B> {
     transport: &'a Transport,
     parts: TermvectorsParts<'b>,
@@ -7360,8 +8277,8 @@ impl<'b> UpdateParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Update API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-update.html)\n\nUpdates a document with a script or partial document."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Update API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-update.html)\n\nUpdates a document with a script or partial document."]
 pub struct Update<'a, 'b, B> {
     transport: &'a Transport,
     parts: UpdateParts<'b>,
@@ -7643,8 +8560,8 @@ impl<'b> UpdateByQueryParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Update By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-update-by-query.html)\n\nPerforms an update on every document in the index without changing the source,\nfor example to pick up a mapping change."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Update By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-update-by-query.html)\n\nPerforms an update on every document in the index without changing the source,\nfor example to pick up a mapping change."]
 pub struct UpdateByQuery<'a, 'b, B> {
     transport: &'a Transport,
     parts: UpdateByQueryParts<'b>,
@@ -8143,8 +9060,8 @@ impl<'b> UpdateByQueryRethrottleParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Update By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-update-by-query.html)\n\nChanges the number of requests per second for a particular Update By Query operation."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Update By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-update-by-query.html)\n\nChanges the number of requests per second for a particular Update By Query operation."]
 pub struct UpdateByQueryRethrottle<'a, 'b, B> {
     transport: &'a Transport,
     parts: UpdateByQueryRethrottleParts<'b>,
@@ -8275,166 +9192,201 @@ where
     }
 }
 impl Elasticsearch {
-    #[doc = "[Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-bulk.html)\n\nAllows to perform multiple index/update/delete operations in a single request."]
+    #[doc = "[Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-bulk.html)\n\nAllows to perform multiple index/update/delete operations in a single request."]
     pub fn bulk<'a, 'b>(&'a self, parts: BulkParts<'b>) -> Bulk<'a, 'b, ()> {
         Bulk::new(self.transport(), parts)
     }
-    #[doc = "[Clear Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/clear-scroll-api.html)\n\nExplicitly clears the search context for a scroll."]
+    #[doc = "[Clear Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/clear-scroll-api.html)\n\nExplicitly clears the search context for a scroll."]
     pub fn clear_scroll<'a, 'b>(&'a self, parts: ClearScrollParts<'b>) -> ClearScroll<'a, 'b, ()> {
         ClearScroll::new(self.transport(), parts)
     }
-    #[doc = "[Count API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-count.html)\n\nReturns number of documents matching a query."]
+    #[doc = "[Close Point In Time API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/point-in-time-api.html)\n\nClose a point in time"]
+    pub fn close_point_in_time<'a, 'b>(&'a self) -> ClosePointInTime<'a, 'b, ()> {
+        ClosePointInTime::new(self.transport())
+    }
+    #[doc = "[Count API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-count.html)\n\nReturns number of documents matching a query."]
     pub fn count<'a, 'b>(&'a self, parts: CountParts<'b>) -> Count<'a, 'b, ()> {
         Count::new(self.transport(), parts)
     }
-    #[doc = "[Create API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-index_.html)\n\nCreates a new document in the index.\n\nReturns a 409 response when a document with a same ID already exists in the index."]
+    #[doc = "[Create API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-index_.html)\n\nCreates a new document in the index.\n\nReturns a 409 response when a document with a same ID already exists in the index."]
     pub fn create<'a, 'b>(&'a self, parts: CreateParts<'b>) -> Create<'a, 'b, ()> {
         Create::new(self.transport(), parts)
     }
-    #[doc = "[Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-delete.html)\n\nRemoves a document from the index."]
+    #[doc = "[Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-delete.html)\n\nRemoves a document from the index."]
     pub fn delete<'a, 'b>(&'a self, parts: DeleteParts<'b>) -> Delete<'a, 'b> {
         Delete::new(self.transport(), parts)
     }
-    #[doc = "[Delete By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-delete-by-query.html)\n\nDeletes documents matching the provided query."]
+    #[doc = "[Delete By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-delete-by-query.html)\n\nDeletes documents matching the provided query."]
     pub fn delete_by_query<'a, 'b>(
         &'a self,
         parts: DeleteByQueryParts<'b>,
     ) -> DeleteByQuery<'a, 'b, ()> {
         DeleteByQuery::new(self.transport(), parts)
     }
-    #[doc = "[Delete By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-delete-by-query.html)\n\nChanges the number of requests per second for a particular Delete By Query operation."]
+    #[doc = "[Delete By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-delete-by-query.html)\n\nChanges the number of requests per second for a particular Delete By Query operation."]
     pub fn delete_by_query_rethrottle<'a, 'b>(
         &'a self,
         parts: DeleteByQueryRethrottleParts<'b>,
     ) -> DeleteByQueryRethrottle<'a, 'b, ()> {
         DeleteByQueryRethrottle::new(self.transport(), parts)
     }
-    #[doc = "[Delete Script API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/modules-scripting.html)\n\nDeletes a script."]
+    #[doc = "[Delete Script API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/modules-scripting.html)\n\nDeletes a script."]
     pub fn delete_script<'a, 'b>(&'a self, parts: DeleteScriptParts<'b>) -> DeleteScript<'a, 'b> {
         DeleteScript::new(self.transport(), parts)
     }
-    #[doc = "[Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-get.html)\n\nReturns information about whether a document exists in an index."]
+    #[doc = "[Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-get.html)\n\nReturns information about whether a document exists in an index."]
     pub fn exists<'a, 'b>(&'a self, parts: ExistsParts<'b>) -> Exists<'a, 'b> {
         Exists::new(self.transport(), parts)
     }
-    #[doc = "[Exists Source API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-get.html)\n\nReturns information about whether a document source exists in an index."]
+    #[doc = "[Exists Source API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-get.html)\n\nReturns information about whether a document source exists in an index."]
     pub fn exists_source<'a, 'b>(&'a self, parts: ExistsSourceParts<'b>) -> ExistsSource<'a, 'b> {
         ExistsSource::new(self.transport(), parts)
     }
-    #[doc = "[Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-explain.html)\n\nReturns information about why a specific matches (or doesn't match) a query."]
+    #[doc = "[Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-explain.html)\n\nReturns information about why a specific matches (or doesn't match) a query."]
     pub fn explain<'a, 'b>(&'a self, parts: ExplainParts<'b>) -> Explain<'a, 'b, ()> {
         Explain::new(self.transport(), parts)
     }
-    #[doc = "[Field Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-field-caps.html)\n\nReturns the information about the capabilities of fields among multiple indices."]
+    #[doc = "[Field Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-field-caps.html)\n\nReturns the information about the capabilities of fields among multiple indices."]
     pub fn field_caps<'a, 'b>(&'a self, parts: FieldCapsParts<'b>) -> FieldCaps<'a, 'b, ()> {
         FieldCaps::new(self.transport(), parts)
     }
-    #[doc = "[Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-get.html)\n\nReturns a document."]
+    #[doc = "[Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-get.html)\n\nReturns a document."]
     pub fn get<'a, 'b>(&'a self, parts: GetParts<'b>) -> Get<'a, 'b> {
         Get::new(self.transport(), parts)
     }
-    #[doc = "[Get Script API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/modules-scripting.html)\n\nReturns a script."]
+    #[doc = "[Get Script API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/modules-scripting.html)\n\nReturns a script."]
     pub fn get_script<'a, 'b>(&'a self, parts: GetScriptParts<'b>) -> GetScript<'a, 'b> {
         GetScript::new(self.transport(), parts)
     }
-    #[doc = "[Get Source API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-get.html)\n\nReturns the source of a document."]
+    #[doc = "[Get Script Context API](https://www.elastic.co/guide/en/elasticsearch/painless/7.11/painless-contexts.html)\n\nReturns all script contexts."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn get_script_context<'a, 'b>(&'a self) -> GetScriptContext<'a, 'b> {
+        GetScriptContext::new(self.transport())
+    }
+    #[doc = "[Get Script Languages API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/modules-scripting.html)\n\nReturns available script types, languages and contexts"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn get_script_languages<'a, 'b>(&'a self) -> GetScriptLanguages<'a, 'b> {
+        GetScriptLanguages::new(self.transport())
+    }
+    #[doc = "[Get Source API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-get.html)\n\nReturns the source of a document."]
     pub fn get_source<'a, 'b>(&'a self, parts: GetSourceParts<'b>) -> GetSource<'a, 'b> {
         GetSource::new(self.transport(), parts)
     }
-    #[doc = "[Index API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-index_.html)\n\nCreates or updates a document in an index."]
+    #[doc = "[Index API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-index_.html)\n\nCreates or updates a document in an index."]
     pub fn index<'a, 'b>(&'a self, parts: IndexParts<'b>) -> Index<'a, 'b, ()> {
         Index::new(self.transport(), parts)
     }
-    #[doc = "[Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/index.html)\n\nReturns basic information about the cluster."]
+    #[doc = "[Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/index.html)\n\nReturns basic information about the cluster."]
     pub fn info<'a, 'b>(&'a self) -> Info<'a, 'b> {
         Info::new(self.transport())
     }
-    #[doc = "[Mget API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-multi-get.html)\n\nAllows to get multiple documents in one request."]
+    #[doc = "[Mget API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-multi-get.html)\n\nAllows to get multiple documents in one request."]
     pub fn mget<'a, 'b>(&'a self, parts: MgetParts<'b>) -> Mget<'a, 'b, ()> {
         Mget::new(self.transport(), parts)
     }
-    #[doc = "[Msearch API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-multi-search.html)\n\nAllows to execute several search operations in one request."]
+    #[doc = "[Msearch API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-multi-search.html)\n\nAllows to execute several search operations in one request."]
     pub fn msearch<'a, 'b>(&'a self, parts: MsearchParts<'b>) -> Msearch<'a, 'b, ()> {
         Msearch::new(self.transport(), parts)
     }
-    #[doc = "[Msearch Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-multi-search.html)\n\nAllows to execute several search template operations in one request."]
+    #[doc = "[Msearch Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-multi-search.html)\n\nAllows to execute several search template operations in one request."]
     pub fn msearch_template<'a, 'b>(
         &'a self,
         parts: MsearchTemplateParts<'b>,
     ) -> MsearchTemplate<'a, 'b, ()> {
         MsearchTemplate::new(self.transport(), parts)
     }
-    #[doc = "[Mtermvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-multi-termvectors.html)\n\nReturns multiple termvectors in one request."]
+    #[doc = "[Mtermvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-multi-termvectors.html)\n\nReturns multiple termvectors in one request."]
     pub fn mtermvectors<'a, 'b>(
         &'a self,
         parts: MtermvectorsParts<'b>,
     ) -> Mtermvectors<'a, 'b, ()> {
         Mtermvectors::new(self.transport(), parts)
     }
-    #[doc = "[Ping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/index.html)\n\nReturns whether the cluster is running."]
+    #[doc = "[Open Point In Time API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/point-in-time-api.html)\n\nOpen a point in time that can be used in subsequent searches"]
+    pub fn open_point_in_time<'a, 'b>(
+        &'a self,
+        parts: OpenPointInTimeParts<'b>,
+    ) -> OpenPointInTime<'a, 'b, ()> {
+        OpenPointInTime::new(self.transport(), parts)
+    }
+    #[doc = "[Ping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/index.html)\n\nReturns whether the cluster is running."]
     pub fn ping<'a, 'b>(&'a self) -> Ping<'a, 'b> {
         Ping::new(self.transport())
     }
-    #[doc = "[Put Script API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/modules-scripting.html)\n\nCreates or updates a script."]
+    #[doc = "[Put Script API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/modules-scripting.html)\n\nCreates or updates a script."]
     pub fn put_script<'a, 'b>(&'a self, parts: PutScriptParts<'b>) -> PutScript<'a, 'b, ()> {
         PutScript::new(self.transport(), parts)
     }
-    #[doc = "[Reindex API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-reindex.html)\n\nAllows to copy documents from one index to another, optionally filtering the source\ndocuments by a query, changing the destination index settings, or fetching the\ndocuments from a remote cluster."]
+    #[doc = "[Rank Eval API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-rank-eval.html)\n\nAllows to evaluate the quality of ranked search results over a set of typical search queries"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn rank_eval<'a, 'b>(&'a self, parts: RankEvalParts<'b>) -> RankEval<'a, 'b, ()> {
+        RankEval::new(self.transport(), parts)
+    }
+    #[doc = "[Reindex API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-reindex.html)\n\nAllows to copy documents from one index to another, optionally filtering the source\ndocuments by a query, changing the destination index settings, or fetching the\ndocuments from a remote cluster."]
     pub fn reindex<'a, 'b>(&'a self) -> Reindex<'a, 'b, ()> {
         Reindex::new(self.transport())
     }
-    #[doc = "[Reindex Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-reindex.html)\n\nChanges the number of requests per second for a particular Reindex operation."]
+    #[doc = "[Reindex Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-reindex.html)\n\nChanges the number of requests per second for a particular Reindex operation."]
     pub fn reindex_rethrottle<'a, 'b>(
         &'a self,
         parts: ReindexRethrottleParts<'b>,
     ) -> ReindexRethrottle<'a, 'b, ()> {
         ReindexRethrottle::new(self.transport(), parts)
     }
-    #[doc = "[Render Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-template.html#_validating_templates)\n\nAllows to use the Mustache language to pre-render a search definition."]
+    #[doc = "[Render Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-template.html#_validating_templates)\n\nAllows to use the Mustache language to pre-render a search definition."]
     pub fn render_search_template<'a, 'b>(
         &'a self,
         parts: RenderSearchTemplateParts<'b>,
     ) -> RenderSearchTemplate<'a, 'b, ()> {
         RenderSearchTemplate::new(self.transport(), parts)
     }
-    #[doc = "[Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-request-body.html#request-body-search-scroll)\n\nAllows to retrieve a large numbers of results from a single search request.\n\n# Examples\n\nTo initiate a scroll, make search API call with a specified `scroll` timeout,\nthen fetch the next set of hits using the `_scroll_id` returned in\nthe response. Once no more hits are returned, clear the scroll.\n\n```rust,no_run\n# use elasticsearch::{Elasticsearch, Error, SearchParts, ScrollParts, ClearScrollParts};\n# use serde_json::{json, Value};\n# async fn doc() -> Result<(), Box<dyn std::error::Error>> {\nlet client = Elasticsearch::default();\n\nfn print_hits(hits: &[Value]) {\n    for hit in hits {\n        println!(\n            \"id: '{}', source: '{}', score: '{}'\",\n            hit[\"_id\"].as_str().unwrap(),\n            hit[\"_source\"],\n            hit[\"_score\"].as_f64().unwrap()\n        );\n    }\n}\n\nlet scroll = \"1m\";\nlet mut response = client\n    .search(SearchParts::Index(&[\"tweets\"]))\n    .scroll(scroll)\n    .body(json!({\n        \"query\": {\n            \"match\": {\n                \"body\": {\n                    \"query\": \"Elasticsearch rust\",\n                    \"operator\": \"AND\"\n                }\n            }\n        }\n    }))\n    .send()\n    .await?;\n\nlet mut response_body = response.json::<Value>().await?;\nlet mut scroll_id = response_body[\"_scroll_id\"].as_str().unwrap();\nlet mut hits = response_body[\"hits\"][\"hits\"].as_array().unwrap();\n\nprint_hits(hits);\n\nwhile hits.len() > 0 {\n    response = client\n        .scroll(ScrollParts::None)\n        .body(json!({\n            \"scroll\": scroll,\n            \"scroll_id\": scroll_id\n        }))\n        .send()\n        .await?;\n\n    response_body = response.json::<Value>().await?;\n    scroll_id = response_body[\"_scroll_id\"].as_str().unwrap();\n    hits = response_body[\"hits\"][\"hits\"].as_array().unwrap();\n    print_hits(hits);\n}\n\nresponse = client\n    .clear_scroll(ClearScrollParts::None)\n    .body(json!({\n        \"scroll_id\": scroll_id\n    }))\n    .send()\n    .await?;\n    \n# Ok(())\n# }\n```"]
+    #[doc = "[Scripts Painless Execute API](https://www.elastic.co/guide/en/elasticsearch/painless/7.11/painless-execute-api.html)\n\nAllows an arbitrary script to be executed and a result to be returned"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn scripts_painless_execute<'a, 'b>(&'a self) -> ScriptsPainlessExecute<'a, 'b, ()> {
+        ScriptsPainlessExecute::new(self.transport())
+    }
+    #[doc = "[Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-request-body.html#request-body-search-scroll)\n\nAllows to retrieve a large numbers of results from a single search request.\n\n# Examples\n\nTo initiate a scroll, make search API call with a specified `scroll` timeout,\nthen fetch the next set of hits using the `_scroll_id` returned in\nthe response. Once no more hits are returned, clear the scroll.\n\n```rust,no_run\n# use elasticsearch::{Elasticsearch, Error, SearchParts, ScrollParts, ClearScrollParts};\n# use serde_json::{json, Value};\n# async fn doc() -> Result<(), Box<dyn std::error::Error>> {\nlet client = Elasticsearch::default();\n\nfn print_hits(hits: &[Value]) {\n    for hit in hits {\n        println!(\n            \"id: '{}', source: '{}', score: '{}'\",\n            hit[\"_id\"].as_str().unwrap(),\n            hit[\"_source\"],\n            hit[\"_score\"].as_f64().unwrap()\n        );\n    }\n}\n\nlet scroll = \"1m\";\nlet mut response = client\n    .search(SearchParts::Index(&[\"tweets\"]))\n    .scroll(scroll)\n    .body(json!({\n        \"query\": {\n            \"match\": {\n                \"body\": {\n                    \"query\": \"Elasticsearch rust\",\n                    \"operator\": \"AND\"\n                }\n            }\n        }\n    }))\n    .send()\n    .await?;\n\nlet mut response_body = response.json::<Value>().await?;\nlet mut scroll_id = response_body[\"_scroll_id\"].as_str().unwrap();\nlet mut hits = response_body[\"hits\"][\"hits\"].as_array().unwrap();\n\nprint_hits(hits);\n\nwhile hits.len() > 0 {\n    response = client\n        .scroll(ScrollParts::None)\n        .body(json!({\n            \"scroll\": scroll,\n            \"scroll_id\": scroll_id\n        }))\n        .send()\n        .await?;\n\n    response_body = response.json::<Value>().await?;\n    scroll_id = response_body[\"_scroll_id\"].as_str().unwrap();\n    hits = response_body[\"hits\"][\"hits\"].as_array().unwrap();\n    print_hits(hits);\n}\n\nresponse = client\n    .clear_scroll(ClearScrollParts::None)\n    .body(json!({\n        \"scroll_id\": scroll_id\n    }))\n    .send()\n    .await?;\n    \n# Ok(())\n# }\n```"]
     pub fn scroll<'a, 'b>(&'a self, parts: ScrollParts<'b>) -> Scroll<'a, 'b, ()> {
         Scroll::new(self.transport(), parts)
     }
-    #[doc = "[Search API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-search.html)\n\nReturns results matching a query."]
+    #[doc = "[Search API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-search.html)\n\nReturns results matching a query."]
     pub fn search<'a, 'b>(&'a self, parts: SearchParts<'b>) -> Search<'a, 'b, ()> {
         Search::new(self.transport(), parts)
     }
-    #[doc = "[Search Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-shards.html)\n\nReturns information about the indices and shards that a search request would be executed against."]
+    #[doc = "[Search Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-shards.html)\n\nReturns information about the indices and shards that a search request would be executed against."]
     pub fn search_shards<'a, 'b>(
         &'a self,
         parts: SearchShardsParts<'b>,
     ) -> SearchShards<'a, 'b, ()> {
         SearchShards::new(self.transport(), parts)
     }
-    #[doc = "[Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-template.html)\n\nAllows to use the Mustache language to pre-render a search definition."]
+    #[doc = "[Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-template.html)\n\nAllows to use the Mustache language to pre-render a search definition."]
     pub fn search_template<'a, 'b>(
         &'a self,
         parts: SearchTemplateParts<'b>,
     ) -> SearchTemplate<'a, 'b, ()> {
         SearchTemplate::new(self.transport(), parts)
     }
-    #[doc = "[Termvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-termvectors.html)\n\nReturns information and statistics about terms in the fields of a particular document."]
+    #[doc = "[Termvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-termvectors.html)\n\nReturns information and statistics about terms in the fields of a particular document."]
     pub fn termvectors<'a, 'b>(&'a self, parts: TermvectorsParts<'b>) -> Termvectors<'a, 'b, ()> {
         Termvectors::new(self.transport(), parts)
     }
-    #[doc = "[Update API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-update.html)\n\nUpdates a document with a script or partial document."]
+    #[doc = "[Update API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-update.html)\n\nUpdates a document with a script or partial document."]
     pub fn update<'a, 'b>(&'a self, parts: UpdateParts<'b>) -> Update<'a, 'b, ()> {
         Update::new(self.transport(), parts)
     }
-    #[doc = "[Update By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-update-by-query.html)\n\nPerforms an update on every document in the index without changing the source,\nfor example to pick up a mapping change."]
+    #[doc = "[Update By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-update-by-query.html)\n\nPerforms an update on every document in the index without changing the source,\nfor example to pick up a mapping change."]
     pub fn update_by_query<'a, 'b>(
         &'a self,
         parts: UpdateByQueryParts<'b>,
     ) -> UpdateByQuery<'a, 'b, ()> {
         UpdateByQuery::new(self.transport(), parts)
     }
-    #[doc = "[Update By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/docs-update-by-query.html)\n\nChanges the number of requests per second for a particular Update By Query operation."]
+    #[doc = "[Update By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/docs-update-by-query.html)\n\nChanges the number of requests per second for a particular Update By Query operation."]
     pub fn update_by_query_rethrottle<'a, 'b>(
         &'a self,
         parts: UpdateByQueryRethrottleParts<'b>,

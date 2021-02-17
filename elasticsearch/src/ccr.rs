@@ -32,7 +32,8 @@
 //! - Disaster recovery in case a primary cluster fails. A secondary cluster can serve as a hot backup
 //! - Geo-proximity so that reads can be served locally
 
-# ! [ allow ( unused_imports ) ]use crate::{
+#![allow(unused_imports)]
+use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
@@ -67,8 +68,8 @@ impl<'b> CcrDeleteAutoFollowPatternParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Ccr Delete Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-delete-auto-follow-pattern.html)\n\nDeletes auto-follow patterns."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Delete Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-delete-auto-follow-pattern.html)\n\nDeletes auto-follow patterns."]
 pub struct CcrDeleteAutoFollowPattern<'a, 'b> {
     transport: &'a Transport,
     parts: CcrDeleteAutoFollowPatternParts<'b>,
@@ -187,8 +188,8 @@ impl<'b> CcrFollowParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Ccr Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-put-follow.html)\n\nCreates a new follower index configured to follow the referenced leader index."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-put-follow.html)\n\nCreates a new follower index configured to follow the referenced leader index."]
 pub struct CcrFollow<'a, 'b, B> {
     transport: &'a Transport,
     parts: CcrFollowParts<'b>,
@@ -341,8 +342,8 @@ impl<'b> CcrFollowInfoParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Ccr Follow Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-get-follow-info.html)\n\nRetrieves information about all follower indices, including parameters and status for each follower index"]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Follow Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-get-follow-info.html)\n\nRetrieves information about all follower indices, including parameters and status for each follower index"]
 pub struct CcrFollowInfo<'a, 'b> {
     transport: &'a Transport,
     parts: CcrFollowInfoParts<'b>,
@@ -462,8 +463,8 @@ impl<'b> CcrFollowStatsParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Ccr Follow Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-get-follow-stats.html)\n\nRetrieves follower stats. return shard-level stats about the following tasks associated with each shard for the specified indices."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Follow Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-get-follow-stats.html)\n\nRetrieves follower stats. return shard-level stats about the following tasks associated with each shard for the specified indices."]
 pub struct CcrFollowStats<'a, 'b> {
     transport: &'a Transport,
     parts: CcrFollowStatsParts<'b>,
@@ -582,8 +583,8 @@ impl<'b> CcrForgetFollowerParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Ccr Forget Follower API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-post-forget-follower.html)\n\nRemoves the follower retention leases from the leader."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Forget Follower API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-post-forget-follower.html)\n\nRemoves the follower retention leases from the leader."]
 pub struct CcrForgetFollower<'a, 'b, B> {
     transport: &'a Transport,
     parts: CcrForgetFollowerParts<'b>,
@@ -726,8 +727,8 @@ impl<'b> CcrGetAutoFollowPatternParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Ccr Get Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-get-auto-follow-pattern.html)\n\nGets configured auto-follow patterns. Returns the specified auto-follow pattern collection."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Get Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-get-auto-follow-pattern.html)\n\nGets configured auto-follow patterns. Returns the specified auto-follow pattern collection."]
 pub struct CcrGetAutoFollowPattern<'a, 'b> {
     transport: &'a Transport,
     parts: CcrGetAutoFollowPatternParts<'b>,
@@ -845,8 +846,8 @@ impl<'b> CcrPauseAutoFollowPatternParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Ccr Pause Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-pause-auto-follow-pattern.html)\n\nPauses an auto-follow pattern"]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Pause Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-pause-auto-follow-pattern.html)\n\nPauses an auto-follow pattern"]
 pub struct CcrPauseAutoFollowPattern<'a, 'b, B> {
     transport: &'a Transport,
     parts: CcrPauseAutoFollowPatternParts<'b>,
@@ -988,8 +989,8 @@ impl<'b> CcrPauseFollowParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Ccr Pause Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-post-pause-follow.html)\n\nPauses a follower index. The follower index will not fetch any additional operations from the leader index."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Pause Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-post-pause-follow.html)\n\nPauses a follower index. The follower index will not fetch any additional operations from the leader index."]
 pub struct CcrPauseFollow<'a, 'b, B> {
     transport: &'a Transport,
     parts: CcrPauseFollowParts<'b>,
@@ -1129,8 +1130,8 @@ impl<'b> CcrPutAutoFollowPatternParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Ccr Put Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-put-auto-follow-pattern.html)\n\nCreates a new named collection of auto-follow patterns against a specified remote cluster. Newly created indices on the remote cluster matching any of the specified patterns will be automatically configured as follower indices."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Put Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-put-auto-follow-pattern.html)\n\nCreates a new named collection of auto-follow patterns against a specified remote cluster. Newly created indices on the remote cluster matching any of the specified patterns will be automatically configured as follower indices."]
 pub struct CcrPutAutoFollowPattern<'a, 'b, B> {
     transport: &'a Transport,
     parts: CcrPutAutoFollowPatternParts<'b>,
@@ -1271,8 +1272,8 @@ impl<'b> CcrResumeAutoFollowPatternParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Ccr Resume Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-resume-auto-follow-pattern.html)\n\nResumes an auto-follow pattern that has been paused"]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Resume Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-resume-auto-follow-pattern.html)\n\nResumes an auto-follow pattern that has been paused"]
 pub struct CcrResumeAutoFollowPattern<'a, 'b, B> {
     transport: &'a Transport,
     parts: CcrResumeAutoFollowPatternParts<'b>,
@@ -1414,8 +1415,8 @@ impl<'b> CcrResumeFollowParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Ccr Resume Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-post-resume-follow.html)\n\nResumes a follower index that has been paused"]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Resume Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-post-resume-follow.html)\n\nResumes a follower index that has been paused"]
 pub struct CcrResumeFollow<'a, 'b, B> {
     transport: &'a Transport,
     parts: CcrResumeFollowParts<'b>,
@@ -1549,8 +1550,8 @@ impl CcrStatsParts {
         }
     }
 }
+#[doc = "Builder for the [Ccr Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-get-stats.html)\n\nGets all stats related to cross-cluster replication."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-get-stats.html)\n\nGets all stats related to cross-cluster replication."]
 pub struct CcrStats<'a, 'b> {
     transport: &'a Transport,
     parts: CcrStatsParts,
@@ -1669,8 +1670,8 @@ impl<'b> CcrUnfollowParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Ccr Unfollow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-post-unfollow.html)\n\nStops the following task associated with a follower index and removes index metadata and settings associated with cross-cluster replication."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Unfollow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-post-unfollow.html)\n\nStops the following task associated with a follower index and removes index metadata and settings associated with cross-cluster replication."]
 pub struct CcrUnfollow<'a, 'b, B> {
     transport: &'a Transport,
     parts: CcrUnfollowParts<'b>,
@@ -1802,79 +1803,79 @@ impl<'a> Ccr<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Ccr Delete Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-delete-auto-follow-pattern.html)\n\nDeletes auto-follow patterns."]
+    #[doc = "[Ccr Delete Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-delete-auto-follow-pattern.html)\n\nDeletes auto-follow patterns."]
     pub fn delete_auto_follow_pattern<'b>(
         &'a self,
         parts: CcrDeleteAutoFollowPatternParts<'b>,
     ) -> CcrDeleteAutoFollowPattern<'a, 'b> {
         CcrDeleteAutoFollowPattern::new(self.transport(), parts)
     }
-    #[doc = "[Ccr Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-put-follow.html)\n\nCreates a new follower index configured to follow the referenced leader index."]
+    #[doc = "[Ccr Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-put-follow.html)\n\nCreates a new follower index configured to follow the referenced leader index."]
     pub fn follow<'b>(&'a self, parts: CcrFollowParts<'b>) -> CcrFollow<'a, 'b, ()> {
         CcrFollow::new(self.transport(), parts)
     }
-    #[doc = "[Ccr Follow Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-get-follow-info.html)\n\nRetrieves information about all follower indices, including parameters and status for each follower index"]
+    #[doc = "[Ccr Follow Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-get-follow-info.html)\n\nRetrieves information about all follower indices, including parameters and status for each follower index"]
     pub fn follow_info<'b>(&'a self, parts: CcrFollowInfoParts<'b>) -> CcrFollowInfo<'a, 'b> {
         CcrFollowInfo::new(self.transport(), parts)
     }
-    #[doc = "[Ccr Follow Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-get-follow-stats.html)\n\nRetrieves follower stats. return shard-level stats about the following tasks associated with each shard for the specified indices."]
+    #[doc = "[Ccr Follow Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-get-follow-stats.html)\n\nRetrieves follower stats. return shard-level stats about the following tasks associated with each shard for the specified indices."]
     pub fn follow_stats<'b>(&'a self, parts: CcrFollowStatsParts<'b>) -> CcrFollowStats<'a, 'b> {
         CcrFollowStats::new(self.transport(), parts)
     }
-    #[doc = "[Ccr Forget Follower API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-post-forget-follower.html)\n\nRemoves the follower retention leases from the leader."]
+    #[doc = "[Ccr Forget Follower API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-post-forget-follower.html)\n\nRemoves the follower retention leases from the leader."]
     pub fn forget_follower<'b>(
         &'a self,
         parts: CcrForgetFollowerParts<'b>,
     ) -> CcrForgetFollower<'a, 'b, ()> {
         CcrForgetFollower::new(self.transport(), parts)
     }
-    #[doc = "[Ccr Get Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-get-auto-follow-pattern.html)\n\nGets configured auto-follow patterns. Returns the specified auto-follow pattern collection."]
+    #[doc = "[Ccr Get Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-get-auto-follow-pattern.html)\n\nGets configured auto-follow patterns. Returns the specified auto-follow pattern collection."]
     pub fn get_auto_follow_pattern<'b>(
         &'a self,
         parts: CcrGetAutoFollowPatternParts<'b>,
     ) -> CcrGetAutoFollowPattern<'a, 'b> {
         CcrGetAutoFollowPattern::new(self.transport(), parts)
     }
-    #[doc = "[Ccr Pause Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-pause-auto-follow-pattern.html)\n\nPauses an auto-follow pattern"]
+    #[doc = "[Ccr Pause Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-pause-auto-follow-pattern.html)\n\nPauses an auto-follow pattern"]
     pub fn pause_auto_follow_pattern<'b>(
         &'a self,
         parts: CcrPauseAutoFollowPatternParts<'b>,
     ) -> CcrPauseAutoFollowPattern<'a, 'b, ()> {
         CcrPauseAutoFollowPattern::new(self.transport(), parts)
     }
-    #[doc = "[Ccr Pause Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-post-pause-follow.html)\n\nPauses a follower index. The follower index will not fetch any additional operations from the leader index."]
+    #[doc = "[Ccr Pause Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-post-pause-follow.html)\n\nPauses a follower index. The follower index will not fetch any additional operations from the leader index."]
     pub fn pause_follow<'b>(
         &'a self,
         parts: CcrPauseFollowParts<'b>,
     ) -> CcrPauseFollow<'a, 'b, ()> {
         CcrPauseFollow::new(self.transport(), parts)
     }
-    #[doc = "[Ccr Put Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-put-auto-follow-pattern.html)\n\nCreates a new named collection of auto-follow patterns against a specified remote cluster. Newly created indices on the remote cluster matching any of the specified patterns will be automatically configured as follower indices."]
+    #[doc = "[Ccr Put Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-put-auto-follow-pattern.html)\n\nCreates a new named collection of auto-follow patterns against a specified remote cluster. Newly created indices on the remote cluster matching any of the specified patterns will be automatically configured as follower indices."]
     pub fn put_auto_follow_pattern<'b>(
         &'a self,
         parts: CcrPutAutoFollowPatternParts<'b>,
     ) -> CcrPutAutoFollowPattern<'a, 'b, ()> {
         CcrPutAutoFollowPattern::new(self.transport(), parts)
     }
-    #[doc = "[Ccr Resume Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-resume-auto-follow-pattern.html)\n\nResumes an auto-follow pattern that has been paused"]
+    #[doc = "[Ccr Resume Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-resume-auto-follow-pattern.html)\n\nResumes an auto-follow pattern that has been paused"]
     pub fn resume_auto_follow_pattern<'b>(
         &'a self,
         parts: CcrResumeAutoFollowPatternParts<'b>,
     ) -> CcrResumeAutoFollowPattern<'a, 'b, ()> {
         CcrResumeAutoFollowPattern::new(self.transport(), parts)
     }
-    #[doc = "[Ccr Resume Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-post-resume-follow.html)\n\nResumes a follower index that has been paused"]
+    #[doc = "[Ccr Resume Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-post-resume-follow.html)\n\nResumes a follower index that has been paused"]
     pub fn resume_follow<'b>(
         &'a self,
         parts: CcrResumeFollowParts<'b>,
     ) -> CcrResumeFollow<'a, 'b, ()> {
         CcrResumeFollow::new(self.transport(), parts)
     }
-    #[doc = "[Ccr Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-get-stats.html)\n\nGets all stats related to cross-cluster replication."]
+    #[doc = "[Ccr Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-get-stats.html)\n\nGets all stats related to cross-cluster replication."]
     pub fn stats<'b>(&'a self) -> CcrStats<'a, 'b> {
         CcrStats::new(self.transport())
     }
-    #[doc = "[Ccr Unfollow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-post-unfollow.html)\n\nStops the following task associated with a follower index and removes index metadata and settings associated with cross-cluster replication."]
+    #[doc = "[Ccr Unfollow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/ccr-post-unfollow.html)\n\nStops the following task associated with a follower index and removes index metadata and settings associated with cross-cluster replication."]
     pub fn unfollow<'b>(&'a self, parts: CcrUnfollowParts<'b>) -> CcrUnfollow<'a, 'b, ()> {
         CcrUnfollow::new(self.transport(), parts)
     }

@@ -33,7 +33,8 @@
 //! indices. Snapshot Lifecycle Management can also perform deletion of older snapshots based on a
 //! configurable retention policy.
 
-# ! [ allow ( unused_imports ) ]use crate::{
+#![allow(unused_imports)]
+use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
@@ -69,8 +70,8 @@ impl<'b> SlmDeleteLifecycleParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Slm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/slm-api-delete-policy.html)\n\nDeletes an existing snapshot lifecycle policy."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Slm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/slm-api-delete-policy.html)\n\nDeletes an existing snapshot lifecycle policy."]
 pub struct SlmDeleteLifecycle<'a, 'b> {
     transport: &'a Transport,
     parts: SlmDeleteLifecycleParts<'b>,
@@ -189,8 +190,8 @@ impl<'b> SlmExecuteLifecycleParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Slm Execute Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/slm-api-execute-lifecycle.html)\n\nImmediately creates a snapshot according to the lifecycle policy, without waiting for the scheduled time."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Slm Execute Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/slm-api-execute-lifecycle.html)\n\nImmediately creates a snapshot according to the lifecycle policy, without waiting for the scheduled time."]
 pub struct SlmExecuteLifecycle<'a, 'b, B> {
     transport: &'a Transport,
     parts: SlmExecuteLifecycleParts<'b>,
@@ -324,8 +325,8 @@ impl SlmExecuteRetentionParts {
         }
     }
 }
+#[doc = "Builder for the [Slm Execute Retention API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/slm-api-execute-retention.html)\n\nDeletes any snapshots that are expired according to the policy's retention rules."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Slm Execute Retention API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/slm-api-execute-retention.html)\n\nDeletes any snapshots that are expired according to the policy's retention rules."]
 pub struct SlmExecuteRetention<'a, 'b, B> {
     transport: &'a Transport,
     parts: SlmExecuteRetentionParts,
@@ -470,8 +471,8 @@ impl<'b> SlmGetLifecycleParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Slm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/slm-api-get-policy.html)\n\nRetrieves one or more snapshot lifecycle policy definitions and information about the latest snapshot attempts."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Slm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/slm-api-get-policy.html)\n\nRetrieves one or more snapshot lifecycle policy definitions and information about the latest snapshot attempts."]
 pub struct SlmGetLifecycle<'a, 'b> {
     transport: &'a Transport,
     parts: SlmGetLifecycleParts<'b>,
@@ -582,8 +583,8 @@ impl SlmGetStatsParts {
         }
     }
 }
+#[doc = "Builder for the [Slm Get Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/slm-api-get-stats.html)\n\nReturns global and policy-level statistics about actions taken by snapshot lifecycle management."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Slm Get Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/slm-api-get-stats.html)\n\nReturns global and policy-level statistics about actions taken by snapshot lifecycle management."]
 pub struct SlmGetStats<'a, 'b> {
     transport: &'a Transport,
     parts: SlmGetStatsParts,
@@ -694,8 +695,8 @@ impl SlmGetStatusParts {
         }
     }
 }
+#[doc = "Builder for the [Slm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/slm-api-get-status.html)\n\nRetrieves the status of snapshot lifecycle management (SLM)."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Slm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/slm-api-get-status.html)\n\nRetrieves the status of snapshot lifecycle management (SLM)."]
 pub struct SlmGetStatus<'a, 'b> {
     transport: &'a Transport,
     parts: SlmGetStatusParts,
@@ -813,8 +814,8 @@ impl<'b> SlmPutLifecycleParts<'b> {
         }
     }
 }
+#[doc = "Builder for the [Slm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/slm-api-put-policy.html)\n\nCreates or updates a snapshot lifecycle policy."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Slm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/slm-api-put-policy.html)\n\nCreates or updates a snapshot lifecycle policy."]
 pub struct SlmPutLifecycle<'a, 'b, B> {
     transport: &'a Transport,
     parts: SlmPutLifecycleParts<'b>,
@@ -948,8 +949,8 @@ impl SlmStartParts {
         }
     }
 }
+#[doc = "Builder for the [Slm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/slm-api-start.html)\n\nTurns on snapshot lifecycle management (SLM)."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Slm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/slm-api-start.html)\n\nTurns on snapshot lifecycle management (SLM)."]
 pub struct SlmStart<'a, 'b, B> {
     transport: &'a Transport,
     parts: SlmStartParts,
@@ -1083,8 +1084,8 @@ impl SlmStopParts {
         }
     }
 }
+#[doc = "Builder for the [Slm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/slm-api-stop.html)\n\nTurns off snapshot lifecycle management (SLM)."]
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Slm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/slm-api-stop.html)\n\nTurns off snapshot lifecycle management (SLM)."]
 pub struct SlmStop<'a, 'b, B> {
     transport: &'a Transport,
     parts: SlmStopParts,
@@ -1216,48 +1217,48 @@ impl<'a> Slm<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Slm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/slm-api-delete-policy.html)\n\nDeletes an existing snapshot lifecycle policy."]
+    #[doc = "[Slm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/slm-api-delete-policy.html)\n\nDeletes an existing snapshot lifecycle policy."]
     pub fn delete_lifecycle<'b>(
         &'a self,
         parts: SlmDeleteLifecycleParts<'b>,
     ) -> SlmDeleteLifecycle<'a, 'b> {
         SlmDeleteLifecycle::new(self.transport(), parts)
     }
-    #[doc = "[Slm Execute Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/slm-api-execute-lifecycle.html)\n\nImmediately creates a snapshot according to the lifecycle policy, without waiting for the scheduled time."]
+    #[doc = "[Slm Execute Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/slm-api-execute-lifecycle.html)\n\nImmediately creates a snapshot according to the lifecycle policy, without waiting for the scheduled time."]
     pub fn execute_lifecycle<'b>(
         &'a self,
         parts: SlmExecuteLifecycleParts<'b>,
     ) -> SlmExecuteLifecycle<'a, 'b, ()> {
         SlmExecuteLifecycle::new(self.transport(), parts)
     }
-    #[doc = "[Slm Execute Retention API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/slm-api-execute-retention.html)\n\nDeletes any snapshots that are expired according to the policy's retention rules."]
+    #[doc = "[Slm Execute Retention API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/slm-api-execute-retention.html)\n\nDeletes any snapshots that are expired according to the policy's retention rules."]
     pub fn execute_retention<'b>(&'a self) -> SlmExecuteRetention<'a, 'b, ()> {
         SlmExecuteRetention::new(self.transport())
     }
-    #[doc = "[Slm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/slm-api-get-policy.html)\n\nRetrieves one or more snapshot lifecycle policy definitions and information about the latest snapshot attempts."]
+    #[doc = "[Slm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/slm-api-get-policy.html)\n\nRetrieves one or more snapshot lifecycle policy definitions and information about the latest snapshot attempts."]
     pub fn get_lifecycle<'b>(&'a self, parts: SlmGetLifecycleParts<'b>) -> SlmGetLifecycle<'a, 'b> {
         SlmGetLifecycle::new(self.transport(), parts)
     }
-    #[doc = "[Slm Get Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/slm-api-get-stats.html)\n\nReturns global and policy-level statistics about actions taken by snapshot lifecycle management."]
+    #[doc = "[Slm Get Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/slm-api-get-stats.html)\n\nReturns global and policy-level statistics about actions taken by snapshot lifecycle management."]
     pub fn get_stats<'b>(&'a self) -> SlmGetStats<'a, 'b> {
         SlmGetStats::new(self.transport())
     }
-    #[doc = "[Slm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/slm-api-get-status.html)\n\nRetrieves the status of snapshot lifecycle management (SLM)."]
+    #[doc = "[Slm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/slm-api-get-status.html)\n\nRetrieves the status of snapshot lifecycle management (SLM)."]
     pub fn get_status<'b>(&'a self) -> SlmGetStatus<'a, 'b> {
         SlmGetStatus::new(self.transport())
     }
-    #[doc = "[Slm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/slm-api-put-policy.html)\n\nCreates or updates a snapshot lifecycle policy."]
+    #[doc = "[Slm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/slm-api-put-policy.html)\n\nCreates or updates a snapshot lifecycle policy."]
     pub fn put_lifecycle<'b>(
         &'a self,
         parts: SlmPutLifecycleParts<'b>,
     ) -> SlmPutLifecycle<'a, 'b, ()> {
         SlmPutLifecycle::new(self.transport(), parts)
     }
-    #[doc = "[Slm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/slm-api-start.html)\n\nTurns on snapshot lifecycle management (SLM)."]
+    #[doc = "[Slm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/slm-api-start.html)\n\nTurns on snapshot lifecycle management (SLM)."]
     pub fn start<'b>(&'a self) -> SlmStart<'a, 'b, ()> {
         SlmStart::new(self.transport())
     }
-    #[doc = "[Slm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/slm-api-stop.html)\n\nTurns off snapshot lifecycle management (SLM)."]
+    #[doc = "[Slm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/slm-api-stop.html)\n\nTurns off snapshot lifecycle management (SLM)."]
     pub fn stop<'b>(&'a self) -> SlmStop<'a, 'b, ()> {
         SlmStop::new(self.transport())
     }
