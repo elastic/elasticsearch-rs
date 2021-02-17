@@ -12,52 +12,36 @@ features:
 # tests to skip generating and compiling a test for
 tests:
 
+  xpack/api_key/10_basic.yml:
+    # Regex contains variable substitutions that the test harness doesn't support yet
+    - "Test invalidate api keys"
+
+  xpack/data_stream/40_supported_apis.yml:
+    # uses number as a key into object. serde_json::Value expects a string key
+    - "Verify shard stores api"
+
+  xpack/data_stream/80_resolve_index_data_streams.yml:
+    # Regex not properly interpreted by the test harness
+    - "Resolve index with hidden and closed indices"
+    # expected value json["indices"][0]["name"] to match String("test_index1") but was String(".security-7")
+    - "Resolve index with indices, aliases, and data streams"
+
   xpack/license/30_enterprise_license.yml:
     # Warning "Including [accept_enterprise] in get license requests is deprecated" is no more present
     - "Installing enterprise license"
 
-  xpack/api_key/10_basic.yml:
-    # Invalid regex: "^(${api_key_id_2}|${api_key_id_3})$"
-    # --> missing expansion of stashed values
-    - "Test invalidate api keys"
+  xpack/ml/filter_crud.yml:
+    # Warning "this request accesses system indices..." to match is wrong on all tests
+    - "*"
 
-  xpack/data_stream/10_basic.yml:
-    # expected value json[""][idx0name.as_str().unwrap()]["mappings"]["properties"]["@timestamp"]["type"] to match String("date") but was Null'
-    - "Create data stream"
-    # expected value at &json[""][idx0name.as_str().unwrap()]["settings"] to be true (not null) but was null
-    - "Delete data stream with backing indices"
+  xpack/runtime_fields/20_long.yml:
+    # expected value ... to match Number(40.0) but was Number(40)
+    - "terms agg"
 
-  xpack/data_stream/10_data_stream_resolvability.yml:
-    # expected value json[""][idx0name.as_str().unwrap()]["settings"]["index"]["lifecycle"]["name"] to match String("my_moveable_timeseries_lifecycle") but was Null'
-    - "Verify data stream resolvability in ILM remove policy API"
-
-  xpack/data_stream/40_supported_apis.yml:
-    # expected value at &json[""][idx0name.as_str().unwrap()]["settings"] to be true (not null) but was null
-    - "Open write index for data stream opens all backing indices"
-    # expected value at &json[""][idx0name.as_str().unwrap()] to be true (not null) but was null
-    - "Verify get field mappings api"
-    # expected value at &json[""][idx0name.as_str().unwrap()] to be true (not null) but was null
-    - "Verify get index api"
-    # expected value at &json[""][idx0name.as_str().unwrap()]["mappings"] to be true (not null) but was null
-    - "Verify get mapping api"
-    # expected value json["indices"][idx0name.as_str().unwrap()]["shards"][0]["stores"][0]["allocation"] to match String("primary") but was Null
-    - "Verify shard stores api"
-
-  xpack/data_stream/50_delete_backing_indices.yml:
-    # expected value at &json["acknowledged"] to be true (not null) but was null
-    - "Attempt to delete write index on data stream is rejected"
-    # expected value at &json["acknowledged"] to be true (not null) but was null
-    - "Delete backing index on data stream"
-
-  xpack/data_stream/60_get_backing_indices.yml:
-    # expected value at &json[""][idx0name.as_str().unwrap()]["settings"] to be true (not null) but was null
-    - "Get backing indices for data stream"
-
-  xpack/data_stream/80_resolve_index_data_streams.yml:
-    # expected value json["indices"][3]["name"] to match String("test_index1") but was String(".security-7")
-    - "Resolve index with hidden and closed indices"
-    # expected value json["indices"][0]["name"] to match String("test_index1") but was String(".security-7")'
-    - "Resolve index with indices, aliases, and data streams"
+  xpack/snapshot/20_operator_privileges_disabled.yml:
+    # expected value json["persistent"]["xpack"]["security"]["http"]["filter"]["deny"] to match String("example.com")
+    # but was String("tutorial.com")
+    - "Operator only settings can be set and restored by non-operator user when operator privileges is disabled"
 
   xpack/ssl/10_basic.yml:
     # this test returns the CA cert before the cert, so always fails
@@ -68,30 +52,9 @@ tests:
     # the setup, fires quicker than any documents are processed, or the delay of 1m is too high?
     - "Test get continuous transform stats"
 
-  xpack/ml/jobs_get_result_overall_buckets.yml:
-    # this test always returns 3 buckets where 1 is expected
-    - "Test overall buckets given overall_score filter"
-
-  xpack/ml/filter_crud.yml:
-    # Warning "this request accesses system indices..." to match is wrong on all tests
-    - "*"
-
-  xpack/ml/delete_expired_data.yml:
-    # Warning "this request accesses system indices..." to match is wrong.
-    - "Test delete expired data with job id"
-
-  xpack/runtime_fields/20_long.yml:
-    # expected value ... to match Number(40.0) but was Number(40)
-    - "terms agg"
-
-  xpack/snapshot/10_basic.yml:
-    # this test fails because it can't access snapshot to restore it
-    - "Create a source only snapshot and then restore it"
-
-  xpack/snapshot/20_operator_privileges_disabled.yml:
-    # expected value json["persistent"]["xpack"]["security"]["http"]["filter"]["deny"] to match String("example.com")
-    # but was String("tutorial.com")
-    - "Operator only settings can be set and restored by non-operator user when operator privileges is disabled"
+  xpack/transform/transforms_update.yml:
+    # In setup: 409 Conflict - Cannot delete transform [airline-transform-stats-continuous] as the task is running.
+    - "Test alias scenarios"
 
   # Test generator currently doesn't handle unsigned long values.
   # We skip all tests as even the setup code will fail to compile.
@@ -108,71 +71,38 @@ tests:
   xpack/unsigned_long/60_collapse.yml:
     - "*"
 
+  xpack/xpack/20_info.yml:
+    # Expects "trial" license but gets "enterprise"
+    - "XPack Info API"
+
   free/cat.aliases/10_basic.yml:
     # this test fails as the regex needs a \n before the ending $
     - "Multiple alias names"
-
-  free/cat.indices/10_basic.yml:
-    # this test fails as the regex needs a \n before the ending $
-    - "Test cat indices using health status"
 
   free/cat.templates/10_basic.yml:
     # Regex do not account for hidden templates returned by the request
     - "Multiple template"
     - "No templates"
     - "Sort templates"
-    # To many spaces in regex compared to API call result
-    - "Select columns"
 
-  free/indices.put_index_template/10_basic.yml:
-    # Succeeds when run individually but fails in the test suite?!?
-    # left: `Null`, right: `Array([String("test-*")])`
-    - "Put index template with 'create' flag"
+  free/indices.segments/10_basic.yml:
+    # uses number as a key into object. serde_json::Value expects a string key
+    - "basic segments test"
 
   free/indices.shard_stores/10_basic.yml:
     # uses number as a key into object. serde_json::Value expects a string key
     - "basic index test"
     - "multiple indices test"
 
-  free/indices.flush/10_basic.yml:
-    # uses number as a key into object. serde_json::Value expects a string key
-    - "Index synced flush rest test"
-
-  free/indices.segments/10_basic.yml:
-    # uses number as a key into object. serde_json::Value expects a string key
-    - "basic segments test"
-
   free/indices.stats/12_level.yml:
     # uses number as a key into object. serde_json::Value expects a string key
     - "Level - shards"
 
   free/nodes.info/10_basic.yml:
-    # node has a lot more roles than those checked in the test
+    # node has a lot more roles than those checked in the test (expects "ingest", finds "data_cold")
     - "node_info role test"
 
   free/search.aggregation/250_moving_fn.yml:
     # The use of an invalid window interval results in a 400 response which looks like
     # it suppresses the sending of deprecation headers
     - "Bad window deprecated interval"
-
-  free/search/60_query_string.yml:
-    # Succeeds when run individually but fails in the test suite?!?
-    # expected value json["hits"]["total"] to match 1 but was Number(0)'
-    - "search with query_string parameters"
-
-  free/indices.simulate_template/10_basic.yml:
-    # Succeeds when run individually but fails in the test suite?!?
-    # left: `String("test")`, right: `String("v1_template")
-    - "Simulate template matches overlapping legacy and composable templates"
-    # expected value &json["overlapping"] to have length 0 but was 2'
-    - "Simulate replacing a template with a newer version"
-    # left: `String("winning_v2_template")`, right: `String("existing_test")
-    - "Simulate index template specifying a new template"
-    # Differing arrays
-    - "Simulate template without a template in the body"
-
-  free/indices.simulate_index_template/10_basic.yml:
-    # left: `Null`, right: `String("true")`
-    - "Simulate index template specifying a new template"
-    # left: `String("test")`, right: `String("v1_template")`
-    - "Simulate index matches overlapping legacy and composable templates"
