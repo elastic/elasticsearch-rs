@@ -341,6 +341,9 @@
 //! # }
 //! ```
 
+#![doc(
+    html_logo_url = "https://raw.githubusercontent.com/elastic/elasticsearch-rs/master/docs/images/logo.png"
+)]
 // TODO: turn on before releasing :) Will require adding documentation within all REST API specs
 // #![deny(missing_docs)]
 
