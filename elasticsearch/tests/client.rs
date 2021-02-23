@@ -32,6 +32,7 @@ use elasticsearch::{
 };
 
 use crate::common::client::index_documents;
+use bytes::Bytes;
 use hyper::Method;
 use serde_json::{json, Value};
 use std::time::Duration;
@@ -310,6 +311,32 @@ async fn search_with_no_body() -> Result<(), failure::Error> {
     assert!(response_body["took"].as_i64().is_some());
 
     for hit in response_body["hits"]["hits"].as_array().unwrap() {
+        assert!(hit["_source"]["title"].as_str().is_some());
+    }
+
+    Ok(())
+}
+
+#[tokio::test]
+async fn read_response_as_bytes() -> Result<(), failure::Error> {
+    let client = client::create_default();
+    let _ = index_documents(&client).await?;
+    let response = client
+        .search(SearchParts::None)
+        .pretty(true)
+        .q("title:Elasticsearch")
+        .send()
+        .await?;
+
+    assert_eq!(response.status_code(), StatusCode::OK);
+    assert_eq!(response.method(), elasticsearch::http::Method::Get);
+
+    let response: Bytes = response.bytes().await?;
+    let json: Value = serde_json::from_slice(&response).unwrap();
+
+    assert!(json["took"].as_i64().is_some());
+
+    for hit in json["hits"]["hits"].as_array().unwrap() {
         assert!(hit["_source"]["title"].as_str().is_some());
     }
 
