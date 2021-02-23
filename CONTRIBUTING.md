@@ -10,7 +10,7 @@ to address it, please assign the issue to yourself, so that others know that you
 
 ## Sign the Contributor License Agreement
 
-We do ask that you sign the [Contiributor License Agreement](https://www.elastic.co/contributor-agreement) 
+We do ask that you sign the [Contiributor License Agreement](https://www.elastic.co/contributor-agreement)
 before we can accept pull requests from you.
 
 ## Development
@@ -23,21 +23,24 @@ The project makes use of the following, which should be installed
 
 - [**Docker**](https://www.docker.com/)
 
-  Docker is used to start instances of Elasticsearch by using 
+  Docker is used to start instances of Elasticsearch by using
   [Elastic's Elasticsearch docker images](https://container-library.elastic.co/).
   For Windows, use [Docker with WSL 2 backend](https://docs.docker.com/docker-for-windows/wsl/).
-  
+
 - [**Cargo make**](https://sagiegurari.github.io/cargo-make/)
 
-  Cargo make is used to define and configure a set of tasks, and run them as a flow. This helps with performing actions 
+  Cargo make is used to define and configure a set of tasks, and run them as a flow. This helps with performing actions
   such as starting an Elasticsearch instance for integration tests
-  
+
   Cargo make can be installed with
-  
+
   ```sh
   cargo install --force cargo-make
   ```
-   
+
+
+If you are running the tests in Docker, [set `vm.max_map_count` for your platform](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_set_vm_max_map_count_to_at_least_262144) to allow Elasticsearch to start.
+
 ### Cargo make
 
 Cargo make is used to define and configure a set of tasks, and run them as a flow. To see all of the Elasticsearch
@@ -64,7 +67,7 @@ The `Elasticsearch` category of steps are specifically defined for this project 
 
 - Run Elasticsearch package tests
 
-  Optionally pass 
+  Optionally pass
 
   - `STACK_VERSION`: Elasticsearch version like `7.9.0` or can be
   a snapshot release like `7.x-SNAPSHOT`
@@ -75,12 +78,12 @@ The `Elasticsearch` category of steps are specifically defined for this project 
 
 - Run YAML tests
 
-  Optionally pass 
+  Optionally pass
 
   - `STACK_VERSION`: Elasticsearch version like `7.9.0` or can be
   a snapshot release like `7.x-SNAPSHOT`
   - `TEST_SUITE`: Elasticsearch distribution of `free` or `platinum`
-  
+
   ```sh
   cargo make test-yaml --env STACK_VERSION=7.9.0 --env TEST_SUITE=free
   ```
@@ -96,9 +99,9 @@ the root client, `Elasticsearch`, or on one of the _namespaced clients_, such as
 are based on the grouping of APIs within the [Elasticsearch](https://github.com/elastic/elasticsearch/tree/master/rest-api-spec) and [X-Pack](https://github.com/elastic/elasticsearch/tree/master/x-pack/plugin/src/test/resources/rest-api-spec/api) REST API specs from which much of the client is generated.
 All API functions are `async` only, and can be `await`ed.
 
-- #### `api_generator` 
+- #### `api_generator`
 
-  A small executable that downloads REST API specs from GitHub and generates much of the client package from the specs. 
+  A small executable that downloads REST API specs from GitHub and generates much of the client package from the specs.
 The minimum REST API spec version compatible with the generator is `v7.4.0`.
 
   The `api_generator` package makes heavy use of the [`syn`](https://docs.rs/syn/1.0.5/syn/) and [`quote`](https://docs.rs/quote/1.0.2/quote/) crates to generate Rust code from the REST API specs.
@@ -110,11 +113,11 @@ can be `to_string()`'ed and written to disk, and this is used to create much of 
 
   A small executable that downloads YAML tests from GitHub and generates client tests from the YAML tests. The
   version of YAML tests to download are determined from the commit hash of a running Elasticsearch instance.
-  
+
   The `yaml_test_runner` package can be run with `cargo make test-yaml` to run the generated client tests,
   passing environment variables `TEST_SUITE` and `STACK_VERSION` to control the distribution and version,
   respectively.
-  
+
 ### Design principles
 
 1. Generate as much of the client as feasible from the REST API specs
@@ -124,8 +127,8 @@ can be `to_string()`'ed and written to disk, and this is used to create much of 
     - accepted HTTP methods e.g. `GET`, `POST`
     - the URL query string parameters
     - whether the API accepts a body
-    
-2. Prefer generation methods that produce ASTs and token streams over strings. 
+
+2. Prefer generation methods that produce ASTs and token streams over strings.
 The `quote` and `syn` crates help
 
 3. Get it working, then refine/refactor
@@ -134,14 +137,14 @@ The `quote` and `syn` crates help
     - Design of the API is conducive to ease of use
     - Asynchronous only
     - Control API invariants through arguments on API function. For example
-    
+
       ```no_run
       client.delete_script(DeleteScriptParts::Id("script_id"))
           .send()
           .await?;
       ```
-    
-      An id must always be provided for a delete script API call, so the `delete_script()` function 
+
+      An id must always be provided for a delete script API call, so the `delete_script()` function
       must accept it as a value.
 
 ### Coding style guide
@@ -172,7 +175,7 @@ cargo make clippy
 
 ### Running MSVC debugger in VS Code
 
-From [Bryce Van Dyk's blog post](https://www.brycevandyk.com/debug-rust-on-windows-with-visual-studio-code-and-the-msvc-debugger/), 
+From [Bryce Van Dyk's blog post](https://www.brycevandyk.com/debug-rust-on-windows-with-visual-studio-code-and-the-msvc-debugger/),
 if wishing to use the MSVC debugger with Rust in VS code, which may be preferred on Windows
 
 1. Install [C/C++ VS Code extensions](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
@@ -182,7 +185,7 @@ if wishing to use the MSVC debugger with Rust in VS code, which may be preferred
     ```json
     {
         "version": "0.2.0",
-        "configurations": [   
+        "configurations": [
             {
                 "name": "Debug api_generator",
                 "type": "cppvsdbg",
@@ -197,5 +200,5 @@ if wishing to use the MSVC debugger with Rust in VS code, which may be preferred
         ]
     }
     ```
-    
+
 3. Add `"debug.allowBreakpointsEverywhere": true` to VS code settings.json
