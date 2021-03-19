@@ -20,7 +20,8 @@ extern crate rustc_version;
 use rustc_version::{version_meta, Channel};
 
 fn main() {
-    match version_meta().unwrap().channel {
+    let version = version_meta().unwrap();
+    match version.channel {
         Channel::Stable => {
             println!("cargo:rustc-cfg=RUSTC_IS_STABLE");
         }
@@ -34,4 +35,11 @@ fn main() {
             println!("cargo:rustc-cfg=RUSTC_IS_DEV");
         }
     }
+
+    let semver = version.semver;
+    let mut rustcv: String = format!("{}.{}.{}", semver.major, semver.minor, semver.patch);
+    if version.channel != Channel::Stable {
+        rustcv.push('p');
+    }
+    println!("cargo:rustc-env=RUSTC_VERSION={}", rustcv);
 }
