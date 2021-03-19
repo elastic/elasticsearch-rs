@@ -37,6 +37,7 @@ use crate::{
 };
 use base64::write::EncoderWriter as Base64Encoder;
 use bytes::BytesMut;
+use lazy_static::lazy_static;
 use serde::Serialize;
 use std::{
     error, fmt,
@@ -97,6 +98,37 @@ impl fmt::Display for BuildError {
 /// Default address to Elasticsearch running on `http://localhost:9200`
 pub static DEFAULT_ADDRESS: &str = "http://localhost:9200";
 
+lazy_static! {
+    /// Client metadata header: service, language, transport, followed by additional information
+    static ref CLIENT_META: String = build_meta();
+}
+
+fn build_meta() -> String {
+    let mut version_parts = env!("CARGO_PKG_VERSION").split(&['.', '-'][..]);
+    let mut version = String::new();
+
+    // major.minor.patch followed with an optional 'p' for preliminary versions
+    version.push_str(version_parts.next().unwrap());
+    version.push('.');
+    version.push_str(version_parts.next().unwrap());
+    version.push('.');
+    version.push_str(version_parts.next().unwrap());
+    if version_parts.next().is_some() {
+        version.push('p');
+    }
+
+    let rustc = env!("RUSTC_VERSION");
+    let mut meta = format!("es={},rs={},t={}", version, rustc, version);
+
+    if cfg!(feature = "native-tls") {
+        meta.push_str(",tls=n");
+    } else if cfg!(feature = "rustls-tls") {
+        meta.push_str(",tls=r");
+    }
+
+    meta
+}
+
 /// Builds a HTTP transport to make API calls to Elasticsearch
 pub struct TransportBuilder {
     client_builder: reqwest::ClientBuilder,
@@ -108,6 +140,7 @@ pub struct TransportBuilder {
     proxy_credentials: Option<Credentials>,
     disable_proxy: bool,
     headers: HeaderMap,
+    meta_header: bool,
     timeout: Option<Duration>,
 }
 
@@ -128,6 +161,7 @@ impl TransportBuilder {
             proxy_credentials: None,
             disable_proxy: false,
             headers: HeaderMap::new(),
+            meta_header: true,
             timeout: None,
         }
     }
@@ -184,6 +218,16 @@ impl TransportBuilder {
         for (key, value) in headers.iter() {
             self.headers.insert(key, value.clone());
         }
+        self
+    }
+
+    /// Whether to send a `x-elastic-client-meta` header that describes the runtime environment.
+    ///
+    /// This header contains information that is similar to what could be found in `User-Agent`. Using a separate
+    /// header allows applications to use `User-Agent` for their own needs, e.g. to identify application version
+    /// or other environment information. Defaults to `true`.
+    pub fn enable_meta_header(mut self, enable: bool) -> Self {
+        self.meta_header = enable;
         self
     }
 
@@ -270,6 +314,7 @@ impl TransportBuilder {
             client,
             conn_pool: self.conn_pool,
             credentials: self.credentials,
+            send_meta: self.meta_header,
         })
     }
 }
@@ -309,6 +354,7 @@ pub struct Transport {
     client: reqwest::Client,
     credentials: Option<Credentials>,
     conn_pool: Box<dyn ConnectionPool>,
+    send_meta: bool,
 }
 
 impl Transport {
@@ -396,12 +442,19 @@ impl Transport {
         }
 
         // default headers first, overwrite with any provided
-        let mut request_headers = HeaderMap::with_capacity(3 + headers.len());
+        let mut request_headers = HeaderMap::with_capacity(4 + headers.len());
         request_headers.insert(CONTENT_TYPE, HeaderValue::from_static(DEFAULT_CONTENT_TYPE));
         request_headers.insert(ACCEPT, HeaderValue::from_static(DEFAULT_ACCEPT));
         request_headers.insert(USER_AGENT, HeaderValue::from_static(DEFAULT_USER_AGENT));
         for (name, value) in headers {
             request_headers.insert(name.unwrap(), value);
+        }
+        // if meta header enabled, send it last so that it's not overridden.
+        if self.send_meta {
+            request_headers.insert(
+                "x-elastic-client-meta",
+                HeaderValue::from_static(CLIENT_META.as_str()),
+            );
         }
 
         request_builder = request_builder.headers(request_headers);
@@ -601,9 +654,10 @@ impl ConnectionPool for CloudConnectionPool {
 
 #[cfg(test)]
 pub mod tests {
+    use super::*;
     #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
     use crate::auth::ClientCertificate;
-    use crate::http::transport::{CloudId, Connection, SingleNodeConnectionPool, TransportBuilder};
+    use regex::Regex;
     use url::Url;
 
     #[test]
@@ -741,5 +795,13 @@ pub mod tests {
         let url = Url::parse("http://10.1.2.3/").unwrap();
         let conn = Connection::new(url);
         assert_eq!(conn.url.as_str(), "http://10.1.2.3/");
+    }
+
+    #[test]
+    pub fn test_meta_header() {
+        let re = Regex::new(r"^es=[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,3}p?,rs=[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,3}p?,t=[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,3}p?(,tls=[rn])?$").unwrap();
+        let x: &str = CLIENT_META.as_str();
+        println!("{}", x);
+        assert!(re.is_match(x));
     }
 }
