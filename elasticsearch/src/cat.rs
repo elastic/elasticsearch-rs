@@ -2649,6 +2649,7 @@ pub struct CatNodes<'a, 'b> {
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
+    include_unloaded_segments: Option<bool>,
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
@@ -2676,6 +2677,7 @@ impl<'a, 'b> CatNodes<'a, 'b> {
             h: None,
             help: None,
             human: None,
+            include_unloaded_segments: None,
             local: None,
             master_timeout: None,
             pretty: None,
@@ -2729,6 +2731,11 @@ impl<'a, 'b> CatNodes<'a, 'b> {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
+        self
+    }
+    #[doc = "If set to true segment stats will include stats for segments that are not currently loaded into memory"]
+    pub fn include_unloaded_segments(mut self, include_unloaded_segments: bool) -> Self {
+        self.include_unloaded_segments = Some(include_unloaded_segments);
         self
     }
     #[doc = "Calculate the selected nodes using the local cluster state rather than the state from master node (default: false)"]
@@ -2791,6 +2798,7 @@ impl<'a, 'b> CatNodes<'a, 'b> {
                 h: Option<&'b [&'b str]>,
                 help: Option<bool>,
                 human: Option<bool>,
+                include_unloaded_segments: Option<bool>,
                 local: Option<bool>,
                 master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
@@ -2809,6 +2817,7 @@ impl<'a, 'b> CatNodes<'a, 'b> {
                 h: self.h,
                 help: self.help,
                 human: self.human,
+                include_unloaded_segments: self.include_unloaded_segments,
                 local: self.local,
                 master_timeout: self.master_timeout,
                 pretty: self.pretty,
