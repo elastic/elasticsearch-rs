@@ -18,7 +18,6 @@
  */
 use flate2::read::GzDecoder;
 use globset::Glob;
-use io::Write;
 use reqwest::{
     header::{HeaderMap, HeaderValue, USER_AGENT},
     Response,
@@ -63,20 +62,21 @@ pub fn download_test_suites(branch: &str, download_dir: &PathBuf) -> Result<(), 
     let xpack_test = Glob::new("**/x-pack/plugin/src/test/resources/rest-api-spec/test/**/*.yml")?
         .compile_matcher();
 
+    let mut count = 0;
     for entry in archive.entries()? {
         let file = entry?;
         let path = file.path()?;
         if oss_test.is_match(&path) {
+            count += 1;
             write_test_file(download_dir, "free", file)?;
         } else if xpack_test.is_match(&path) {
+            count += 1;
             write_test_file(download_dir, "xpack", file)?;
         }
     }
 
-    info!("Downloaded yaml tests from {}", &branch);
-    File::create(last_downloaded_version)
-        .expect("failed to create last_downloaded_version file")
-        .write_all(branch.as_bytes())
+    info!("Downloaded {} yaml tests from {}", count, &branch);
+    fs::write(last_downloaded_version, branch)
         .expect("unable to write branch to last_downloaded_version file");
 
     Ok(())
@@ -89,18 +89,14 @@ fn write_test_file(
 ) -> Result<(), failure::Error> {
     let path = entry.path()?;
 
-    let mut dir = {
-        let mut dir = download_dir.clone();
-        dir.push(suite_dir);
-        let parent = path.parent().unwrap().file_name().unwrap();
-        dir.push(parent);
-        dir
-    };
+    let mut file = download_dir.clone();
+    file.push(suite_dir);
+    file.push(path);
 
-    fs::create_dir_all(&dir)?;
-    dir.push(path.file_name().unwrap());
-    let mut file = File::create(&dir)?;
-    io::copy(&mut entry, &mut file)?;
+    fs::create_dir_all(file.parent().unwrap())?;
+
+    let mut out = File::create(&file)?;
+    io::copy(&mut entry, &mut out)?;
 
     Ok(())
 }
