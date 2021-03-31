@@ -120,6 +120,17 @@ exec cargo publish %{CARGO_MAKE_CARGO_PUBLISH_FLAGS}
 # Public tasks
 # ============
 
+[tasks.log-env]
+script_runner = "@duckscript"
+script = """
+rust_version = exec rustc --version
+rust_version = trim ${rust_version.stdout}
+echo rustc --version: ${rust_version}
+echo RUST_VERSION: ${RUST_VERSION}
+echo STACK_VERSION: ${STACK_VERSION}
+echo TEST_SUITE: ${TEST_SUITE}
+"""
+
 [tasks.start-elasticsearch]
 extend = "run-elasticsearch"
 private = false
@@ -136,7 +147,7 @@ env = { "CLEANUP" = true, "DETACH" = false }
 category = "Elasticsearch"
 description = "Generates and runs yaml_test_runner package platinum/free tests against a given Elasticsearch version"
 condition = { env_set = [ "STACK_VERSION", "TEST_SUITE" ] }
-dependencies = ["generate-yaml-tests", "create-test-results-dir", "test-yaml-test-runner", "test-yaml-test-runner-ci", "convert-test-results-junit"]
+dependencies = ["log-env", "generate-yaml-tests", "create-test-results-dir", "test-yaml-test-runner", "test-yaml-test-runner-ci", "convert-test-results-junit"]
 run_task = "stop-elasticsearch"
 
 [tasks.test-generator]
