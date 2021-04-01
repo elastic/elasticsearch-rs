@@ -7,6 +7,7 @@ written = [
     'dangling_indices.rs',
     'enrich.rs',
     'eql.rs',
+    'features.rs',
     'graph.rs',
     'ilm.rs',
     'indices.rs',
