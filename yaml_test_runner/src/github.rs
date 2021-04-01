@@ -54,6 +54,10 @@ pub fn download_test_suites(branch: &str, download_dir: &PathBuf) -> Result<(), 
         .unwrap();
 
     let response = client.get(&url).send()?;
+
+    info!("tarball response status: {}", response.status().as_u16());
+    info!("tarball response headers: {:?}", response.headers());
+
     let tar = GzDecoder::new(response);
     let mut archive = Archive::new(tar);
 
@@ -62,22 +66,24 @@ pub fn download_test_suites(branch: &str, download_dir: &PathBuf) -> Result<(), 
     let xpack_test = Glob::new("**/x-pack/plugin/src/test/resources/rest-api-spec/test/**/*.yml")?
         .compile_matcher();
 
-    let mut count = 0;
+    let mut entry_count = 0;
+    let mut test_count = 0;
     for entry in archive.entries()? {
+        entry_count += 1;
         let file = entry?;
         let path = file.path()?;
         if oss_test.is_match(&path) {
-            count += 1;
+            test_count += 1;
             write_test_file(download_dir, "free", file)?;
         } else if xpack_test.is_match(&path) {
-            count += 1;
+            test_count += 1;
             write_test_file(download_dir, "xpack", file)?;
         }
     }
 
-    info!("Downloaded {} yaml tests from {}", count, &branch);
-    fs::write(last_downloaded_version, branch)
-        .expect("unable to write branch to last_downloaded_version file");
+    info!("Downloaded {} yaml tests (out of {} files) from {}", test_count, entry_count, &branch);
+    fs::write(&last_downloaded_version, branch)
+        .expect(&format!("Unable to write branch to {:?}", &last_downloaded_version));
 
     Ok(())
 }
@@ -93,10 +99,13 @@ fn write_test_file(
     file.push(suite_dir);
     file.push(path);
 
-    fs::create_dir_all(file.parent().unwrap())?;
+    let parent = file.parent().unwrap();
+    fs::create_dir_all(parent)
+        .expect(&format!("Cannot create directory {:?}", &parent));
 
     let mut out = File::create(&file)?;
-    io::copy(&mut entry, &mut out)?;
+    io::copy(&mut entry, &mut out)
+        .expect(&format!("Cannot write to {:?}", &file));
 
     Ok(())
 }
