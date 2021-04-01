@@ -137,7 +137,7 @@ impl GetPath for syn::Ty {
     fn get_path(&self) -> &syn::Path {
         match *self {
             syn::Ty::Path(_, ref p) => &p,
-            ref p => panic!(format!("Expected syn::Ty::Path, but found {:?}", p)),
+            ref p => panic!("Expected syn::Ty::Path, but found {:?}", p),
         }
     }
 }
