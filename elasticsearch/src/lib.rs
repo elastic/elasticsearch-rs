@@ -372,6 +372,7 @@ pub mod cluster;
 pub mod dangling_indices;
 pub mod enrich;
 pub mod eql;
+pub mod features;
 pub mod graph;
 pub mod ilm;
 pub mod indices;
