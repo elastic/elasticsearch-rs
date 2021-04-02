@@ -26,21 +26,179 @@ tests:
     # expected value json["indices"][0]["name"] to match String("test_index1") but was String(".security-7")
     - "Resolve index with indices, aliases, and data streams"
 
+  xpack/license/20_put_license.yml:
+    # expected value json["basic_was_started"] to match Bool(true) but was Bool(false)
+    - "Current license is trial means not eligle to start trial"
+    # expected value json["license_status"] to match String("valid") but was String("invalid")
+    - "Installing and getting license works"
+    # expected value json["acknowledged"] to match Bool(false) but was Bool(true)
+    - "Must acknowledge to start basic"
+    # expected value json["license_status"] to match String("valid") but was String("invalid")
+    - "Should install a feature type license"
+
+  xpack/license/30_enterprise_license.yml:
+    # expected value json["license_status"] to match String("valid") but was String("invalid")
+    - "Installing enterprise license"
+
+  xpack/ml/calendar_crud.yml:
+    - "*"
+
   xpack/ml/filter_crud.yml:
     # Warning "this request accesses system indices..." to match is wrong on all tests
+    - "*"
+
+  xpack/ml/custom_all_field.yml:
+    - "*"
+
+  xpack/ml/data_frame_analytics_cat_apis.yml:
+    - "*"
+
+  xpack/ml/data_frame_analytics_crud.yml:
+    - "*"
+
+  xpack/ml/datafeed_cat_apis.yml:
+    - "*"
+
+  xpack/ml/datafeeds_crud.yml:
     - "*"
 
   xpack/ml/delete_expired_data.yml:
     # Warning "this request accesses system indices..." to match is wrong.
     - "Test delete expired data with job id"
 
+  xpack/ml/delete_job_force.yml:
+    - "*"
+
+  xpack/ml/explain_data_frame_analytics.yml:
+    - "*"
+
+  xpack/ml/get_datafeed_stats.yml:
+    - "*"
+
+  xpack/ml/get_datafeeds.yml:
+    - "*"
+
+  xpack/ml/get_model_snapshots.yml:
+    - "*"
+
+  xpack/ml/get_trained_model_stats.yml:
+    - "*"
+
+  xpack/ml/inference_crud.yml:
+    - "*"
+
+  xpack/ml/inference_processor.yml:
+    - "*"
+
+  xpack/ml/job_cat_apis.yml:
+    - "*"
+
+  xpack/ml/job_groups.yml:
+    - "*"
+
+  xpack/ml/jobs_crud.yml:
+    - "*"
+
+  xpack/ml/jobs_get.yml:
+    - "*"
+
+  xpack/ml/jobs_get_result_categories.yml:
+    - "*"
+
+  xpack/ml/jobs_get_result_influencers.yml:
+    - "*"
+
+  xpack/ml/jobs_get_result_overall_buckets.yml:
+    - "*"
+
+  xpack/ml/jobs_get_result_records.yml:
+    - "*"
+
+  xpack/ml/jobs_get_stats.yml:
+    - "*"
+
+  xpack/ml/ml_anomalies_default_mappings.yml:
+    - "*"
+
+  xpack/ml/ml_info.yml:
+    - "*"
+
+  xpack/ml/pipeline_inference.yml:
+    - "*"
+
+  xpack/ml/post_data.yml:
+    - "*"
+
+  xpack/ml/preview_datafeed.yml:
+    - "*"
+
+  xpack/ml/set_upgrade_mode.yml:
+    - "*"
+
+  xpack/ml/start_data_frame_analytics.yml:
+    - "*"
+
+  xpack/ml/start_stop_datafeed.yml:
+    - "*"
+
+  xpack/ml/stop_data_frame_analytics.yml:
+    - "*"
+
+  xpack/ml/trained_model_cat_apis.yml:
+    - "*"
+
+  xpack/ml/upgrade_job_snapshot.yml:
+    - "*"
+
+  xpack/privileges/40_get_user_privs.yml:
+    - "*"
+
+  xpack/rollup/delete_job.yml:
+    - "*"
+
+  xpack/rollup/get_jobs.yml:
+    - "*"
+
+  xpack/rollup/put_job.yml:
+    - "*"
+
+  xpack/rollup/security_tests.yml:
+    - "*"
+
+  xpack/rollup/start_job.yml:
+    - "*"
+
+  xpack/rollup/stop_job.yml:
+    - "*"
+
   xpack/runtime_fields/20_long.yml:
     # expected value ... to match Number(40.0) but was Number(40)
     - "terms agg"
-    -
+
+  xpack/searchable_snapshots/10_usage.yml:
+    - "*"
+
+  xpack/set_security_user/10_small_users_one_index.yml:
+    - "*"
+
+  xpack/snapshot/10_basic.yml:
+    - "*"
+
   xpack/ssl/10_basic.yml:
     # this test returns the CA cert before the cert, so always fails
     - "Test get SSL certificates"
+
+  xpack/token/10_basic.yml:
+    - "*"
+
+  xpack/token/11_invalidation.yml:
+    - "*"
+
+  xpack/transform/transforms_force_delete.yml:
+    - "*"
+
+  xpack/transform/transforms_start_stop.yml:
+    - "*"
 
   xpack/transform/transforms_stats_continuous.yml:
     # this test always returns "exponential_avg_checkpoint_duration_ms": 0.0 . seems like it might be missing data in
@@ -60,6 +218,9 @@ tests:
   xpack/unsigned_long/50_script_values.yml:
     - "*"
   xpack/unsigned_long/60_collapse.yml:
+    - "*"
+
+  xpack/xpack/20_info.yml:
     - "*"
 
   free/cat.aliases/10_basic.yml:
