@@ -347,11 +347,19 @@
 // TODO: turn on before releasing :) Will require adding documentation within all REST API specs
 // #![deny(missing_docs)]
 
-// also test examples in README when using rust nightly.
-// required as external_doc feature requires nightly
-#![cfg_attr(RUSTC_IS_NIGHTLY, feature(external_doc))]
-#[cfg_attr(RUSTC_IS_NIGHTLY, doc(include = "../../README.md"), cfg(doctest))]
-type _DoctestReadme = ();
+// also test examples in README
+// source: https://github.com/rust-lang/cargo/issues/383#issuecomment-720873790
+#[cfg(doctest)]
+mod readme {
+    macro_rules! external_doc_test {
+        ($x:expr) => {
+            #[doc = $x]
+            extern "C" {}
+        };
+    }
+
+    external_doc_test!(include_str!("../../README.md"));
+}
 
 #[macro_use]
 extern crate dyn_clone;
