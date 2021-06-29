@@ -53,6 +53,11 @@
 //!
 //! - **native-tls** *(enabled by default)*: Enables TLS functionality provided by `native-tls`.
 //! - **rustls-tls**: Enables TLS functionality provided by `rustls`.
+//! - **beta-apis**: Enables beta APIs. Beta APIs are on track to become stable and permanent features. Use them with
+//!    caution because it is possible that breaking changes are made to these APIs in a minor version.
+//! - **experimental-apis**: Enables experimental APIs. Experimental APIs are just that - an experiment. An experimental
+//!   API might have breaking changes in any future version, or it might even be removed entirely. This feature also
+//!   enables `beta-apis`.
 //!
 //! # Getting started
 //!
