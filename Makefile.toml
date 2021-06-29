@@ -112,7 +112,11 @@ script = [
 """
 cd elasticsearch
 echo "publishing elasticsearch crate: cargo publish %{CARGO_MAKE_CARGO_PUBLISH_FLAGS}"
-exec cargo publish %{CARGO_MAKE_CARGO_PUBLISH_FLAGS}
+if is_empty %{CARGO_MAKE_CARGO_PUBLISH_FLAGS}
+    exec cargo publish
+else
+    exec cargo publish %{CARGO_MAKE_CARGO_PUBLISH_FLAGS}
+end
 """
 ]
 
