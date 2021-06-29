@@ -211,6 +211,100 @@ end
 """
 ]
 
+[tasks.update-version]
+description = "Updates the package versions and version in docs"
+condition = { env_set = ["NEW_VERSION"] }
+script_runner = "@rust"
+script = '''
+//! ```cargo
+//! [dependencies]
+//! envmnt = "*"
+//! glob = "0.3.0"
+//! semver = "0.11.0"
+//! toml_edit = "0.2.0"
+//! ```
+extern crate glob;
+extern crate semver;
+
+use std::fs::{File, OpenOptions};
+use std::io::{Read, Write};
+use std::path::Path;
+use glob::glob;
+use semver::Version;
+fn main() {
+    let new_version = {
+        let v = envmnt::get_or_panic("NEW_VERSION");
+        v.parse::<Version>().expect("NEW_VERSION must be a valid semantic version")
+    };
+    let old_version = update_cargo_toml(&new_version);
+    update_docs(&old_version, &new_version);
+}
+
+fn update_docs(old_version: &str, new_version: &Version) {
+    for entry in glob("docs/*.asciidoc").unwrap()
+        .chain(glob("README.md").unwrap())
+        .chain(glob("elasticsearch/src/lib.rs").unwrap()) {
+        match entry {
+            Ok(path) => {
+                let mut content = read_file(&path);
+                content = content.replace(
+                    &format!("elasticsearch = \"{}\"", old_version),
+                    &format!("elasticsearch = \"{}\"", new_version.to_string()));
+                write_file(&path, content);
+            }
+            Err(e) => panic!("{:?}", e),
+        }
+    }
+}
+
+fn update_cargo_toml(new_version: &Version) -> String {
+    let mut old_version = String::new();
+    for entry in glob("**/Cargo.toml").unwrap() {
+        match entry {
+            Ok(path) => {
+                // skip workspace and target tomls
+                if path.starts_with("target") || path.to_string_lossy() == "Cargo.toml" {
+                    continue;
+                }
+
+                let content = read_file(&path);
+                let mut toml = content.parse::<toml_edit::Document>().expect("Could not parse Cargo.toml");
+                let name = toml["package"]["name"].as_str().expect("toml has name");
+
+                // store the version from the elasticsearch package to target replacement in docs
+                if name == "elasticsearch" {
+                    old_version = toml["package"]["version"]
+                        .as_str()
+                        .expect("toml has version")
+                        .to_string();
+                }
+
+                toml["package"]["version"] = toml_edit::value(new_version.to_string());
+                write_file(&path, toml.to_string());
+            },
+            Err(e) => panic!("{:?}", e),
+        }
+    }
+    old_version
+}
+
+fn read_file<P: AsRef<Path>>(path: P) -> String {
+    let mut file = File::open(path).unwrap();
+    let mut raw_data = String::new();
+    file.read_to_string(&mut raw_data).unwrap();
+    raw_data
+}
+
+fn write_file<P: AsRef<Path>>(path: P, content: String) {
+    let mut file = OpenOptions::new()
+        .write(true)
+        .truncate(true)
+        .open(path)
+        .unwrap();
+    file.write_all(content.as_bytes()).unwrap();
+}
+'''
+
 [tasks.default]
 clear = true
 script_runner = "@duckscript"
@@ -225,6 +319,8 @@ script = ['''
     echo - test-generator: Generates and runs api_generator package tests
     echo - test: Runs elasticsearch package tests against a given Elasticsearch version
     echo
+    echo - update-version: Updates the version
+    echo       pass NEW_VERSION environment variable for version
     echo - generate-release-notes: Generates release notes for elasticsearch crate.
     echo       pass OLD_VERSION and NEW_VERSION environment variables to match release version GitHub labels e.g. v7.9.0-alpha.1
     echo - package: Packages the elasticsearch crate.
