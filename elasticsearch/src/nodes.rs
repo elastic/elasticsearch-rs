@@ -662,6 +662,7 @@ pub struct NodesStats<'a, 'b> {
     headers: HeaderMap,
     human: Option<bool>,
     include_segment_file_sizes: Option<bool>,
+    include_unloaded_segments: Option<bool>,
     level: Option<Level>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
@@ -685,6 +686,7 @@ impl<'a, 'b> NodesStats<'a, 'b> {
             groups: None,
             human: None,
             include_segment_file_sizes: None,
+            include_unloaded_segments: None,
             level: None,
             pretty: None,
             request_timeout: None,
@@ -736,6 +738,11 @@ impl<'a, 'b> NodesStats<'a, 'b> {
     #[doc = "Whether to report the aggregated disk usage of each one of the Lucene index files (only applies if segment stats are requested)"]
     pub fn include_segment_file_sizes(mut self, include_segment_file_sizes: bool) -> Self {
         self.include_segment_file_sizes = Some(include_segment_file_sizes);
+        self
+    }
+    #[doc = "If set to true segment stats will include stats for segments that are not currently loaded into memory"]
+    pub fn include_unloaded_segments(mut self, include_unloaded_segments: bool) -> Self {
+        self.include_unloaded_segments = Some(include_unloaded_segments);
         self
     }
     #[doc = "Return indices stats aggregated at index, node or shard level"]
@@ -790,6 +797,7 @@ impl<'a, 'b> NodesStats<'a, 'b> {
                 groups: Option<bool>,
                 human: Option<bool>,
                 include_segment_file_sizes: Option<bool>,
+                include_unloaded_segments: Option<bool>,
                 level: Option<Level>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
@@ -806,6 +814,7 @@ impl<'a, 'b> NodesStats<'a, 'b> {
                 groups: self.groups,
                 human: self.human,
                 include_segment_file_sizes: self.include_segment_file_sizes,
+                include_unloaded_segments: self.include_unloaded_segments,
                 level: self.level,
                 pretty: self.pretty,
                 source: self.source,

@@ -18,7 +18,6 @@
  */
 use flate2::read::GzDecoder;
 use globset::Glob;
-use io::Write;
 use reqwest::{
     header::{HeaderMap, HeaderValue, USER_AGENT},
     Response,
@@ -55,6 +54,10 @@ pub fn download_test_suites(branch: &str, download_dir: &PathBuf) -> Result<(), 
         .unwrap();
 
     let response = client.get(&url).send()?;
+
+    info!("tarball response status: {}", response.status().as_u16());
+    info!("tarball response headers: {:?}", response.headers());
+
     let tar = GzDecoder::new(response);
     let mut archive = Archive::new(tar);
 
@@ -63,21 +66,24 @@ pub fn download_test_suites(branch: &str, download_dir: &PathBuf) -> Result<(), 
     let xpack_test = Glob::new("**/x-pack/plugin/src/test/resources/rest-api-spec/test/**/*.yml")?
         .compile_matcher();
 
+    let mut entry_count = 0;
+    let mut test_count = 0;
     for entry in archive.entries()? {
+        entry_count += 1;
         let file = entry?;
         let path = file.path()?;
         if oss_test.is_match(&path) {
+            test_count += 1;
             write_test_file(download_dir, "free", file)?;
         } else if xpack_test.is_match(&path) {
+            test_count += 1;
             write_test_file(download_dir, "xpack", file)?;
         }
     }
 
-    info!("Downloaded yaml tests from {}", &branch);
-    File::create(last_downloaded_version)
-        .expect("failed to create last_downloaded_version file")
-        .write_all(branch.as_bytes())
-        .expect("unable to write branch to last_downloaded_version file");
+    info!("Downloaded {} yaml tests (out of {} files) from {}", test_count, entry_count, &branch);
+    fs::write(&last_downloaded_version, branch)
+        .expect(&format!("Unable to write branch to {:?}", &last_downloaded_version));
 
     Ok(())
 }
@@ -89,18 +95,17 @@ fn write_test_file(
 ) -> Result<(), failure::Error> {
     let path = entry.path()?;
 
-    let mut dir = {
-        let mut dir = download_dir.clone();
-        dir.push(suite_dir);
-        let parent = path.parent().unwrap().file_name().unwrap();
-        dir.push(parent);
-        dir
-    };
+    let mut file = download_dir.clone();
+    file.push(suite_dir);
+    file.push(path);
 
-    fs::create_dir_all(&dir)?;
-    dir.push(path.file_name().unwrap());
-    let mut file = File::create(&dir)?;
-    io::copy(&mut entry, &mut file)?;
+    let parent = file.parent().unwrap();
+    fs::create_dir_all(parent)
+        .expect(&format!("Cannot create directory {:?}", &parent));
+
+    let mut out = File::create(&file)?;
+    io::copy(&mut entry, &mut out)
+        .expect(&format!("Cannot write to {:?}", &file));
 
     Ok(())
 }

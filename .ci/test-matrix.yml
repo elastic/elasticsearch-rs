@@ -8,6 +8,6 @@ TEST_SUITE:
   - platinum
 
 RUST_TOOLCHAIN:
-  - latest
+  - "1.50"
 
 exclude: ~
