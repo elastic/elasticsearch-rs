@@ -1,6 +1,6 @@
 [workspace]
 members = [
     "api_generator",
-    "elasticsearch",
+    "opensearch",
     "yaml_test_runner"
 ]

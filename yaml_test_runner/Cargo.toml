@@ -9,7 +9,7 @@ repository = "https://github.com/elastic/elasticsearch-rs"
 license = "Apache-2.0"
 
 [dependencies]
-elasticsearch = { path = "./../elasticsearch", features = ["experimental-apis"]}
+elasticsearch = { path = "../opensearch", features = ["experimental-apis"]}
 api_generator = { path = "./../api_generator" }
 
 base64 = "^0.11"
