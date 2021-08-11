@@ -371,7 +371,7 @@ impl Cause {
 #[cfg(test)]
 pub mod tests {
     use crate::http::response::Exception;
-    use serde_json::json;
+    use serde_json::{json, Value};
 
     #[test]
     fn deserialize_error_string() -> Result<(), failure::Error> {
@@ -517,6 +517,41 @@ pub mod tests {
             error.root_cause()[0].ty(),
             Some("index_not_found_exception")
         );
+        Ok(())
+    }
+
+    #[test]
+    fn can_deserialize_response_with_null_value() -> Result<(), failure::Error> {
+        let json = r#"{
+          "took": 410,
+          "timed_out": false,
+          "_shards": {
+            "total": 450,
+            "successful": 450,
+            "skipped": 435,
+            "failed": 0
+          },
+          "hits": {
+            "total": {
+              "value": 10000,
+              "relation": "gte"
+            },
+            "max_score": null,
+            "hits": []
+          },
+          "aggregations": {
+            "ingestLag": {
+              "buckets": [{
+                    "key": 60.0,
+                    "doc_count": 530540
+                  }]
+            }
+          }
+        }"#;
+
+        let value: Value = serde_json::from_str(json)?;
+
+        assert!(value["hits"]["max_score"].is_null());
         Ok(())
     }
 }
