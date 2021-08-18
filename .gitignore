@@ -11,3 +11,6 @@ yaml_test_runner/tests/oss
 yaml_test_runner/tests/xpack
 yaml_test_runner/tests/mod.rs
 test_results/
+
+# clients make output
+.ci/output
