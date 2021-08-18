@@ -1,7 +1,7 @@
 [[overview]]
 == Overview
 
-This is the official Rust client for {es}. Full documentation is hosted on 
+This is the official Rust client for {es}. Full documentation is hosted on
 https://docs.rs/elasticsearch[docs.rs] -- this page provides _only_ an overview.
 
 Further resources:
@@ -24,33 +24,7 @@ Further resources:
 [discrete]
 === {es} Version Compatibility
 
-|===
-| Rust client | Elasticsearch
-| 7.x         | 7.x
-|===
-
-A major version of the client is compatible with the same major version of {es}.
-Since {es} is developed following https://semver.org/[Semantic Versioning] 
-principles, any minor/patch version of the client can be used against any 
-minor/patch version of {es} **within the same major version lineage**. For 
-example,
-
-- A `7.5.0` client can be used against `7.0.0` Elasticsearch
-- A `7.5.0` client can be used against `7.6.0` Elasticsearch
-
-In the former case, a 7.5.0 client may contain additional API functions that are 
-not available in 7.0.0 {es}. In this case, these APIs cannot be used, but for 
-any APIs available in {es}, the respective API functions on the client will be 
-compatible.
-
-In the latter case, a 7.5.0 client won't contain API functions for APIs that are 
-introduced in {es} 7.6.0+, but for all other APIs available in {es}, the 
-respective API functions on the client will be compatible.
-
-**No compatibility assurances are given between different major versions of the 
-client and {es}.** Major differences likely exist between major versions of 
-{es}, particularly around request and response object formats, but also around 
-API urls and behaviour.
+The Elasticsearch Rust client is forward compatible; meaning that the client supports communicating with greater minor versions of Elasticsearch. Elasticsearch language clients are also backwards compatible with lesser supported minor Elasticsearch versions.
 
 
 [discrete]
