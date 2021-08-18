@@ -11,34 +11,12 @@ Official Rust Client for [Elasticsearch](https://github.com/elastic/elasticsearc
 
 Full documentation is available at https://docs.rs/elasticsearch
 
-The project is still very much a _work in progress_ and in an _alpha_ state; 
+The project is still very much a _work in progress_ and in an _alpha_ state;
 input and contributions welcome!
 
-## Versions and Compatibility
+## Compatibility
 
-| Rust client | Elasticsearch | Status |
-|-------------|---------------|--------|
-| 7.x         | 7.x           | alpha  |
-
-A major version of the client is compatible with the same major version of Elasticsearch.
-Since Elasticsearch is developed following [Semantic Versioning](https://semver.org/) principles,
-Any minor/patch version of the client can be used against any minor/patch version of Elasticsearch
-**within the same major version lineage**. For example,
-
-- A `7.5.0` client can be used against `7.0.0` Elasticsearch
-- A `7.5.0` client can be used against `7.6.0` Elasticsearch
-
-In the former case, a 7.5.0 client may contain additional API functions that are not available
-in 7.0.0 Elasticsearch. In this case, these APIs cannot be used, but for any APIs available in
-Elasticsearch, the respective API functions on the client will be compatible.
-
-In the latter case, a 7.5.0 client won't contain API functions for APIs that are introduced in
-Elasticsearch 7.6.0+, but for all other APIs available in Elasticsearch, the respective API
-functions on the client will be compatible.
-
-**No compatibility assurances are given between different major versions of the client and
-Elasticsearch**. Major differences likely exist between major versions of Elasticsearch, particularly
-around request and response object formats, but also around API urls and behaviour.
+The Elasticsearch Rust client is forward compatible; meaning that the client supports communicating with greater minor versions of Elasticsearch. Elasticsearch language clients are also backwards compatible with lesser supported minor Elasticsearch versions.
 
 ## Features
 
@@ -46,7 +24,7 @@ The following are a list of Cargo features that can be enabled or disabled:
 
 - **native-tls** *(enabled by default)*: Enables TLS functionality provided by `native-tls`.
 - **rustls-tls**: Enables TLS functionality provided by `rustls`.
-- **beta-apis**: Enables beta APIs. Beta APIs are on track to become stable and permanent features. Use them with 
+- **beta-apis**: Enables beta APIs. Beta APIs are on track to become stable and permanent features. Use them with
    caution because it is possible that breaking changes are made to these APIs in a minor version.
 - **experimental-apis**: Enables experimental APIs. Experimental APIs are just that - an experiment. An experimental
   API might have breaking changes in any future version, or it might even be removed entirely. This feature also
@@ -80,7 +58,7 @@ serde_json = "~1"
 
 #### Async support with tokio
 
-The client uses [`reqwest`](https://crates.io/crates/reqwest) to make HTTP calls, which internally uses 
+The client uses [`reqwest`](https://crates.io/crates/reqwest) to make HTTP calls, which internally uses
 the [`tokio`](https://crates.io/crates/tokio) runtime for async support. As such, you may require to take a dependency on `tokio`
 in order to use the client. For example, in Cargo.toml, you may need the following dependency,
 
@@ -112,7 +90,7 @@ async fn my_test() -> Result<(), Box<dyn std::error::Error>> {
 
 ### Create a client
 
-Build a transport to make API requests to Elasticsearch using the `TransportBuilder`, 
+Build a transport to make API requests to Elasticsearch using the `TransportBuilder`,
 which allows setting of proxies, authentication schemes, certificate validation, and
 other transport related settings.
 
@@ -129,7 +107,7 @@ Alternatively, you can create a client to make API calls against Elasticsearch r
 
 ```rust,no_run
 use elasticsearch::{
-    Elasticsearch, Error, 
+    Elasticsearch, Error,
     http::transport::Transport
 };
 
