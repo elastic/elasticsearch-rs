@@ -19,107 +19,43 @@
 extern crate api_generator;
 extern crate dialoguer;
 
-use api_generator::{generator, rest_spec};
-use dialoguer::Input;
-use std::{
-    fs::{self, File},
-    io::Write,
-    path::PathBuf,
-};
+use anyhow::{bail, Context};
+use api_generator::generator;
+use std::{fs, path::PathBuf};
 
-fn main() -> Result<(), failure::Error> {
+fn main() -> anyhow::Result<()> {
     simple_logger::SimpleLogger::new()
         .with_level(log::LevelFilter::Info)
         .init()
         .unwrap();
 
+    let stack_version = std::env::var("STACK_VERSION").context("Missing STACK_VERSION env var")?;
+
     // This must be run from the repo root directory, with cargo make generate-api
-    let download_dir = fs::canonicalize(PathBuf::from("./api_generator/rest_specs"))?;
+    let download_dir = PathBuf::from(&format!("./checkout/{}/rest-api-spec/api", stack_version));
+
+    if !download_dir.is_dir() {
+        bail!("No specs found at {:?}", download_dir);
+    }
+
+    // let download_dir = fs::canonicalize(PathBuf::from("./api_generator/rest_specs"))?;
     let generated_dir = fs::canonicalize(PathBuf::from("./elasticsearch/src"))?;
-    let last_downloaded_version =
-        PathBuf::from("./api_generator/rest_specs/last_downloaded_version");
 
-    let mut download_specs = false;
-    let mut answer = String::new();
-    let default_branch = if last_downloaded_version.exists() {
-        fs::read_to_string(&last_downloaded_version)?
-    } else {
-        String::from("master")
-    };
-    let mut branch = default_branch.clone();
+    // Delete previously generated files
+    let mut generated = generated_dir.clone();
+    generated.push(generator::GENERATED_TOML);
+    if generated.exists() {
+        let files = toml::from_str::<generator::GeneratedFiles>(&fs::read_to_string(generated)?)?;
 
-    while answer != "y" && answer != "n" {
-        answer = Input::new()
-            .default(String::from("n"))
-            .show_default(false)
-            .with_prompt("Download rest specifications [y/N]")
-            .interact()
-            .unwrap()
-            .to_lowercase();
-        download_specs = answer == "y";
-    }
-
-    if download_specs {
-        branch = Input::new()
-            .default(default_branch.clone())
-            .show_default(false)
-            .with_prompt(
-                format!(
-                    "Branch to download specification from [default {}]",
-                    default_branch
-                )
-                .as_str(),
-            )
-            .interact()
-            .unwrap();
-
-        fs::remove_dir_all(&download_dir)?;
-        fs::create_dir_all(&download_dir)?;
-        rest_spec::download_specs(&branch, &download_dir)?;
-        File::create(&last_downloaded_version)?.write_all(branch.as_bytes())?;
-    }
-
-    // only offer to generate if there are downloaded specs
-    if download_dir
-        .read_dir()
-        .map(|mut r| r.next().is_some())
-        .unwrap_or(false)
-    {
-        let mut generate_code = true;
-        answer = String::new();
-        while answer != "y" && answer != "n" {
-            answer = Input::new()
-                .default(String::from("y"))
-                .show_default(false)
-                .with_prompt(
-                    format!("Generate code from rest specifications {} [Y/n]", branch).as_str(),
-                )
-                .interact()
-                .unwrap()
-                .to_lowercase();
-            generate_code = answer == "y";
-        }
-
-        if generate_code {
-            // Delete previously generated files
-            let mut generated = generated_dir.clone();
-            generated.push(generator::GENERATED_TOML);
-
-            if generated.exists() {
-                let files =
-                    toml::from_str::<generator::GeneratedFiles>(&fs::read_to_string(generated)?)?;
-
-                for f in files.written {
-                    let mut generated_file = generated_dir.clone();
-                    generated_file.push(f);
-                    let _ = fs::remove_file(generated_file); // ignore missing files
-                }
-            }
-
-            // and generate!
-            generator::generate(&branch, &download_dir, &generated_dir)?;
+        for f in files.written {
+            let mut generated_file = generated_dir.clone();
+            generated_file.push(f);
+            let _ = fs::remove_file(generated_file); // ignore missing files
         }
     }
+
+    // and generate!
+    generator::generate(&download_dir, &generated_dir)?;
 
     Ok(())
 }

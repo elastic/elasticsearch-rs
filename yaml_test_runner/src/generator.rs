@@ -371,7 +371,7 @@ pub fn generate_tests_from_yaml(
     base_download_dir: &PathBuf,
     download_dir: &PathBuf,
     generated_dir: &PathBuf,
-) -> Result<(), failure::Error> {
+) -> anyhow::Result<()> {
     let skips = serde_yaml::from_str::<GlobalSkip>(include_str!("./../skip.yml"))?;
     let paths = fs::read_dir(download_dir)?;
     for entry in paths {
@@ -407,8 +407,8 @@ pub fn generate_tests_from_yaml(
 
                         match top_dir.as_str() {
                             "free" => TestSuite::Free,
-                            "xpack" => TestSuite::XPack,
-                            _ => panic!("Unknown test suite {:?}", path),
+                            "xpack" | "platinum" => TestSuite::XPack,
+                            dir => panic!("Unknown test suite '{}' {:?}", dir, path),
                         }
                     };
 
@@ -486,7 +486,7 @@ pub fn generate_tests_from_yaml(
 }
 
 /// Writes a mod.rs file in each generated directory
-fn write_mod_files(generated_dir: &PathBuf, toplevel: bool) -> Result<(), failure::Error> {
+fn write_mod_files(generated_dir: &PathBuf, toplevel: bool) -> anyhow::Result<()> {
     if !generated_dir.exists() {
         fs::create_dir(generated_dir)?;
     }
@@ -531,7 +531,7 @@ fn write_mod_files(generated_dir: &PathBuf, toplevel: bool) -> Result<(), failur
     Ok(())
 }
 
-fn test_file_path(relative_path: &Path) -> Result<PathBuf, failure::Error> {
+fn test_file_path(relative_path: &Path) -> anyhow::Result<PathBuf> {
     let mut relative = relative_path.to_path_buf();
     relative.set_extension("");
     // directories and files will form the module names so ensure they're valid module names
@@ -555,7 +555,7 @@ fn write_test_file(
     test: YamlTests,
     relative_path: &Path,
     generated_dir: &PathBuf,
-) -> Result<(), failure::Error> {
+) -> anyhow::Result<()> {
     if test.skip_test("*") {
         info!(
             r#"skipping all tests in {} because it's included in skip.yml"#,

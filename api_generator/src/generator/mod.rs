@@ -62,7 +62,6 @@ pub const GENERATED_TOML: &str = ".generated.toml";
 
 /// A complete API specification parsed from the REST API specs
 pub struct Api {
-    pub commit: String,
     /// parameters that are common to all API methods
     pub common_params: BTreeMap<String, Type>,
     /// root API methods e.g. Search, Index
@@ -513,18 +512,11 @@ impl PartialEq for ApiEnum {
 impl Eq for ApiEnum {}
 
 /// Generates all client source code from the REST API spec
-pub fn generate(
-    branch: &str,
-    download_dir: &PathBuf,
-    generated_dir: &PathBuf,
-) -> Result<(), failure::Error> {
+pub fn generate(download_dir: &PathBuf, generated_dir: &PathBuf) -> anyhow::Result<()> {
     // read the Api from file
-    let api = read_api(branch, download_dir)?;
+    let api = read_api(download_dir)?;
 
-    let docs_dir = {
-        let d = download_dir.clone();
-        d.parent().unwrap().join("docs")
-    };
+    let docs_dir = PathBuf::from("./api_generator/docs");
 
     // generated file tracking lists
     let mut tracker = GeneratedFiles::default();
@@ -597,7 +589,7 @@ pub use bulk::*;
 }
 
 /// Reads Api from a directory of REST Api specs
-pub fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error> {
+pub fn read_api(download_dir: &PathBuf) -> anyhow::Result<Api> {
     let paths = fs::read_dir(download_dir)?;
     let mut namespaces = BTreeMap::<String, ApiNamespace>::new();
     let mut enums: HashSet<ApiEnum> = HashSet::new();
@@ -677,7 +669,6 @@ pub fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Er
     sorted_enums.sort_by(|a, b| a.name.cmp(&b.name));
 
     Ok(Api {
-        commit: branch.to_string(),
         common_params,
         root,
         namespaces,
@@ -686,10 +677,7 @@ pub fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Er
 }
 
 /// deserializes an ApiEndpoint from a file
-fn endpoint_from_file<R>(
-    name: String,
-    reader: &mut R,
-) -> Result<(String, ApiEndpoint), failure::Error>
+fn endpoint_from_file<R>(name: String, reader: &mut R) -> anyhow::Result<(String, ApiEndpoint)>
 where
     R: Read,
 {
@@ -728,7 +716,7 @@ where
 }
 
 /// deserializes Common from a file
-fn common_params_from_file<R>(name: String, reader: &mut R) -> Result<Common, failure::Error>
+fn common_params_from_file<R>(name: String, reader: &mut R) -> anyhow::Result<Common>
 where
     R: Read,
 {

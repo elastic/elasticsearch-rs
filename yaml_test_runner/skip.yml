@@ -12,55 +12,95 @@ features:
 # tests to skip generating and compiling a test for
 tests:
 
-  xpack/api_key/10_basic.yml:
+  platinum/api_key/10_basic.yml:
     # Regex contains variable substitutions that the test harness doesn't support yet
     - "Test invalidate api keys"
 
-  xpack/data_stream/40_supported_apis.yml:
+  platinum/analytics/histogram.yml:
+    # Regex doesn't match. Could be either the leading space or escaping of '['
+    - "Histogram requires values in increasing order"
+
+  platinum/data_stream/40_supported_apis.yml:
     # uses number as a key into object. serde_json::Value expects a string key
     - "Verify shard stores api"
 
-  xpack/data_stream/80_resolve_index_data_streams.yml:
+  platinum/data_stream/80_resolve_index_data_streams.yml:
     # Regex not properly interpreted by the test harness
     - "Resolve index with hidden and closed indices"
     # expected value json["indices"][0]["name"] to match String("test_index1") but was String(".security-7")
     - "Resolve index with indices, aliases, and data streams"
 
-  xpack/ml/filter_crud.yml:
+  platinum/license/30_enterprise_license.yml:
+    # Warning "Including [accept_enterprise] in get license requests is deprecated" is no more present
+    - "Installing enterprise license"
+
+  platinum/ml/bucket_correlation_agg.yml:
+    # Expects true, got 0 (i.e. falsy)
+    - "Test correlation bucket agg simple"
+
+  platinum/ml/filter_crud.yml:
     # Warning "this request accesses system indices..." to match is wrong on all tests
     - "*"
 
-  xpack/ml/delete_expired_data.yml:
-    # Warning "this request accesses system indices..." to match is wrong.
-    - "Test delete expired data with job id"
+  platinum/ml/inference_crud.yml:
+    # expected response to be 404 but was 200
+    # Missing cleanup as running on a fresh ES server succeeds
+    - "Test delete model alias with missing alias"
+    - "Test delete model alias where alias points to different model"
+    - "Test update model alias with model id referring to missing model"
 
-  xpack/runtime_fields/20_long.yml:
+  platinum/runtime_fields/20_long.yml:
     # expected value ... to match Number(40.0) but was Number(40)
     - "terms agg"
-    -
-  xpack/ssl/10_basic.yml:
+
+  platinum/searchable_snapshots/10_usage.yml:
+    # 2nd test fails and causes subsequent tests to timeout. Need to see if some extra cleanup is needed.
+    - "*"
+
+  platinum/service_accounts/10_basic.yml:
+    # expected value json["count"] to match 2 but was Number(1)
+    - "Test service account tokens"
+
+  platinum/snapshot/10_basic.yml:
+    # Expect 1 but got 2
+    - "Create a source only snapshot and then restore it"
+
+  platinum/snapshot/20_operator_privileges_disabled.yml:
+    # expected value json["persistent"]["xpack"]["security"]["http"]["filter"]["deny"] to match String("example.com")
+    # but was String("tutorial.com")
+    - "Operator only settings can be set and restored by non-operator user when operator privileges is disabled"
+
+  platinum/ssl/10_basic.yml:
     # this test returns the CA cert before the cert, so always fails
     - "Test get SSL certificates"
 
-  xpack/transform/transforms_stats_continuous.yml:
+  platinum/transform/transforms_stats_continuous.yml:
     # this test always returns "exponential_avg_checkpoint_duration_ms": 0.0 . seems like it might be missing data in
     # the setup, fires quicker than any documents are processed, or the delay of 1m is too high?
     - "Test get continuous transform stats"
 
+  platinum/transform/transforms_update.yml:
+    # In setup: 409 Conflict - Cannot delete transform [airline-transform-stats-continuous] as the task is running.
+    - "Test alias scenarios"
+
   # Test generator currently doesn't handle unsigned long values.
   # We skip all tests as even the setup code will fail to compile.
-  xpack/unsigned_long/10_basic.yml:
+  platinum/unsigned_long/10_basic.yml:
     - "*"
-  xpack/unsigned_long/20_null_value.yml:
+  platinum/unsigned_long/20_null_value.yml:
     - "*"
-  xpack/unsigned_long/30_multi_fields.yml:
+  platinum/unsigned_long/30_multi_fields.yml:
     - "*"
-  xpack/unsigned_long/40_different_numeric.yml:
+  platinum/unsigned_long/40_different_numeric.yml:
     - "*"
-  xpack/unsigned_long/50_script_values.yml:
+  platinum/unsigned_long/50_script_values.yml:
     - "*"
-  xpack/unsigned_long/60_collapse.yml:
+  platinum/unsigned_long/60_collapse.yml:
     - "*"
+
+  platinum/xpack/20_info.yml:
+    # Expects "trial" license but gets "enterprise"
+    - "XPack Info API"
 
   free/cat.aliases/10_basic.yml:
     # this test fails as the regex needs a \n before the ending $
@@ -83,6 +123,10 @@ tests:
   free/indices.segments/10_basic.yml:
     # uses number as a key into object. serde_json::Value expects a string key
     - "basic segments test"
+
+  free/indices.get_alias/10_basic.yml:
+    # expected value at &json["test_index_2"] to be false but was Object({"aliases": Object({"test_alias": Object({})})})
+    - "Get alias against closed indices"
 
   free/indices.shard_stores/10_basic.yml:
     # uses number as a key into object. serde_json::Value expects a string key

@@ -2,5 +2,11 @@
 members = [
     "api_generator",
     "elasticsearch",
-    "yaml_test_runner"
+    "yaml_test_runner",
+    "xtask"
 ]
+
+# See https://jakedeichert.com/blog/reducing-rust-incremental-compilation-times-on-macos-by-70-percent/
+# and https://github.com/rust-lang/cargo/pull/9298
+[profile.dev]
+split-debuginfo = "unpacked"

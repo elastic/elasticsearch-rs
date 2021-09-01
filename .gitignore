@@ -6,8 +6,8 @@ Cargo.lock
 *.iml
 .vscode/
 *.log
-yaml_test_runner/yaml/
-yaml_test_runner/tests/oss
+yaml_test_runner/tests/free
 yaml_test_runner/tests/xpack
 yaml_test_runner/tests/mod.rs
 test_results/
+checkout/

@@ -22,7 +22,7 @@ use inflector::Inflector;
 use quote::Tokens;
 use regex::Regex;
 
-pub fn generate(api: &Api) -> Result<String, failure::Error> {
+pub fn generate(api: &Api) -> anyhow::Result<String> {
     let mut tokens = quote!(
         use serde::{Serialize, Deserialize};
     );
