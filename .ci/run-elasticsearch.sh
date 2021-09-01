@@ -7,13 +7,18 @@
 # Export the TEST_SUITE variable, eg. 'free' or 'platinum' defaults to 'free'.
 # Export the NUMBER_OF_NODES variable to start more than 1 node
 
-# Version 1.1.0
+# Version 1.5.0
 # - Initial version of the run-elasticsearch.sh script
 # - Deleting the volume should not dependent on the container still running
 # - Fixed `ES_JAVA_OPTS` config
 # - Moved to STACK_VERSION and TEST_VERSION
 # - Refactored into functions and imports
 # - Support NUMBER_OF_NODES
+# - Added 5 retries on docker pull for fixing transient network errors
+# - Added flags to make local CCR configurations work
+# - Added action.destructive_requires_name=false as the default will be true in v8
+# - Added ingest.geoip.downloader.enabled=false as it causes false positives in testing
+# - Moved ELASTIC_PASSWORD to the base arguments for "Security On by default"
 
 script_path=$(dirname $(realpath -s $0))
 source $script_path/functions/imports.sh
@@ -27,6 +32,7 @@ cluster_name=${moniker}${suffix}
 
 declare -a volumes
 environment=($(cat <<-END
+  --env ELASTIC_PASSWORD=$elastic_password
   --env node.name=$es_node_name
   --env cluster.name=$cluster_name
   --env cluster.initial_master_nodes=$master_node_name
@@ -36,6 +42,8 @@ environment=($(cat <<-END
   --env node.attr.testattr=test
   --env path.repo=/tmp
   --env repositories.url.allowed_urls=http://snapshot.test*
+  --env action.destructive_requires_name=false
+  --env ingest.geoip.downloader.enabled=false
 END
 ))
 if [[ "$TEST_SUITE" == "platinum" ]]; then
@@ -49,6 +57,7 @@ if [[ "$TEST_SUITE" == "platinum" ]]; then
     --env xpack.security.http.ssl.certificate=certs/testnode.crt
     --env xpack.security.http.ssl.certificate_authorities=certs/ca.crt
     --env xpack.security.transport.ssl.enabled=true
+    --env xpack.security.transport.ssl.verification_mode=certificate
     --env xpack.security.transport.ssl.key=certs/testnode.key
     --env xpack.security.transport.ssl.certificate=certs/testnode.crt
     --env xpack.security.transport.ssl.certificate_authorities=certs/ca.crt
@@ -66,6 +75,17 @@ cert_validation_flags=""
 if [[ "$TEST_SUITE" == "platinum" ]]; then
   cert_validation_flags="--insecure --cacert /usr/share/elasticsearch/config/certs/ca.crt --resolve ${es_node_name}:443:127.0.0.1"
 fi
+
+# Pull the container, retry on failures up to 5 times with
+# short delays between each attempt. Fixes most transient network errors.
+docker_pull_attempts=0
+until [ "$docker_pull_attempts" -ge 5 ]
+do
+   docker pull docker.elastic.co/elasticsearch/"$elasticsearch_container" && break
+   docker_pull_attempts=$((docker_pull_attempts+1))
+   echo "Failed to pull image, retrying in 10 seconds (retry $docker_pull_attempts/5)..."
+   sleep 10
+done
 
 NUMBER_OF_NODES=${NUMBER_OF_NODES-1}
 http_port=9200
@@ -92,7 +112,7 @@ END
   docker run \
     --name "$node_name" \
     --network "$network_name" \
-    --env "ES_JAVA_OPTS=-Xms1g -Xmx1g" \
+    --env "ES_JAVA_OPTS=-Xms1g -Xmx1g -da:org.elasticsearch.xpack.ccr.index.engine.FollowingEngineAssertions" \
     "${environment[@]}" \
     "${volumes[@]}" \
     --publish "$http_port":9200 \
@@ -112,4 +132,3 @@ END
   fi
 
 done
-

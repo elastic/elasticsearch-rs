@@ -25,7 +25,7 @@ use quote::Tokens;
 use std::path::PathBuf;
 
 /// Generates the source code for the methods on the root of Elasticsearch
-pub fn generate(api: &Api, docs_dir: &PathBuf) -> Result<String, failure::Error> {
+pub fn generate(api: &Api, docs_dir: &PathBuf) -> anyhow::Result<String> {
     let mut tokens = Tokens::new();
     tokens.append(use_declarations());
 

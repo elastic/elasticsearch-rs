@@ -24,7 +24,7 @@ use reqwest::Response;
 use std::{fs::File, io, path::PathBuf};
 use tar::{Archive, Entry};
 
-pub fn download_specs(branch: &str, download_dir: &PathBuf) -> Result<(), failure::Error> {
+pub fn download_specs(branch: &str, download_dir: &PathBuf) -> anyhow::Result<()> {
     let url = format!(
         "https://api.github.com/repos/elastic/elasticsearch/tarball/{}",
         branch
@@ -63,7 +63,7 @@ pub fn download_specs(branch: &str, download_dir: &PathBuf) -> Result<(), failur
 fn write_spec_file(
     download_dir: &PathBuf,
     mut entry: Entry<GzDecoder<Response>>,
-) -> Result<(), failure::Error> {
+) -> anyhow::Result<()> {
     let path = entry.path()?;
     let mut dir = download_dir.clone();
     dir.push(path.file_name().unwrap());
