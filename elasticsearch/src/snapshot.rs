@@ -1030,6 +1030,8 @@ pub struct SnapshotGet<'a, 'b> {
     headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
+    include_repository: Option<bool>,
+    index_details: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
@@ -1048,6 +1050,8 @@ impl<'a, 'b> SnapshotGet<'a, 'b> {
             filter_path: None,
             human: None,
             ignore_unavailable: None,
+            include_repository: None,
+            index_details: None,
             master_timeout: None,
             pretty: None,
             request_timeout: None,
@@ -1078,6 +1082,16 @@ impl<'a, 'b> SnapshotGet<'a, 'b> {
     #[doc = "Whether to ignore unavailable snapshots, defaults to false which means a SnapshotMissingException is thrown"]
     pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
         self.ignore_unavailable = Some(ignore_unavailable);
+        self
+    }
+    #[doc = "Whether to include the repository name in the snapshot info. Defaults to true."]
+    pub fn include_repository(mut self, include_repository: bool) -> Self {
+        self.include_repository = Some(include_repository);
+        self
+    }
+    #[doc = "Whether to include details of each index in the snapshot, if those details are available. Defaults to false."]
+    pub fn index_details(mut self, index_details: bool) -> Self {
+        self.index_details = Some(index_details);
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
@@ -1120,6 +1134,8 @@ impl<'a, 'b> SnapshotGet<'a, 'b> {
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
                 ignore_unavailable: Option<bool>,
+                include_repository: Option<bool>,
+                index_details: Option<bool>,
                 master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
@@ -1130,131 +1146,12 @@ impl<'a, 'b> SnapshotGet<'a, 'b> {
                 filter_path: self.filter_path,
                 human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
+                include_repository: self.include_repository,
+                index_details: self.index_details,
                 master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
                 verbose: self.verbose,
-            };
-            Some(query_params)
-        };
-        let body = Option::<()>::None;
-        let response = self
-            .transport
-            .send(method, &path, headers, query_string.as_ref(), body, timeout)
-            .await?;
-        Ok(response)
-    }
-}
-#[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Snapshot Get Features API"]
-pub enum SnapshotGetFeaturesParts {
-    #[doc = "No parts"]
-    None,
-}
-impl SnapshotGetFeaturesParts {
-    #[doc = "Builds a relative URL path to the Snapshot Get Features API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            SnapshotGetFeaturesParts::None => "/_snapshottable_features".into(),
-        }
-    }
-}
-#[doc = "Builder for the [Snapshot Get Features API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nReturns a list of features which can be snapshotted in this cluster."]
-#[derive(Clone, Debug)]
-pub struct SnapshotGetFeatures<'a, 'b> {
-    transport: &'a Transport,
-    parts: SnapshotGetFeaturesParts,
-    error_trace: Option<bool>,
-    filter_path: Option<&'b [&'b str]>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    master_timeout: Option<&'b str>,
-    pretty: Option<bool>,
-    request_timeout: Option<Duration>,
-    source: Option<&'b str>,
-}
-impl<'a, 'b> SnapshotGetFeatures<'a, 'b> {
-    #[doc = "Creates a new instance of [SnapshotGetFeatures]"]
-    pub fn new(transport: &'a Transport) -> Self {
-        let headers = HeaderMap::new();
-        SnapshotGetFeatures {
-            transport,
-            parts: SnapshotGetFeaturesParts::None,
-            headers,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            master_timeout: None,
-            pretty: None,
-            request_timeout: None,
-            source: None,
-        }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
-        self.master_timeout = Some(master_timeout);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
-    pub fn request_timeout(mut self, timeout: Duration) -> Self {
-        self.request_timeout = Some(timeout);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Snapshot Get Features API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = Method::Get;
-        let headers = self.headers;
-        let timeout = self.request_timeout;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                error_trace: Option<bool>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                filter_path: Option<&'b [&'b str]>,
-                human: Option<bool>,
-                master_timeout: Option<&'b str>,
-                pretty: Option<bool>,
-                source: Option<&'b str>,
-            }
-            let query_params = QueryParams {
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                human: self.human,
-                master_timeout: self.master_timeout,
-                pretty: self.pretty,
-                source: self.source,
             };
             Some(query_params)
         };
@@ -1400,6 +1297,259 @@ impl<'a, 'b> SnapshotGetRepository<'a, 'b> {
             Some(query_params)
         };
         let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Snapshot Repository Analyze API"]
+pub enum SnapshotRepositoryAnalyzeParts<'b> {
+    #[doc = "Repository"]
+    Repository(&'b str),
+}
+impl<'b> SnapshotRepositoryAnalyzeParts<'b> {
+    #[doc = "Builds a relative URL path to the Snapshot Repository Analyze API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SnapshotRepositoryAnalyzeParts::Repository(ref repository) => {
+                let encoded_repository: Cow<str> =
+                    percent_encode(repository.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(20usize + encoded_repository.len());
+                p.push_str("/_snapshot/");
+                p.push_str(encoded_repository.as_ref());
+                p.push_str("/_analyze");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Snapshot Repository Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nAnalyzes a repository for correctness and performance"]
+#[derive(Clone, Debug)]
+pub struct SnapshotRepositoryAnalyze<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: SnapshotRepositoryAnalyzeParts<'b>,
+    blob_count: Option<i64>,
+    body: Option<B>,
+    concurrency: Option<i64>,
+    detailed: Option<bool>,
+    early_read_node_count: Option<i64>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    max_blob_size: Option<&'b str>,
+    max_total_data_size: Option<&'b str>,
+    pretty: Option<bool>,
+    rare_action_probability: Option<i64>,
+    rarely_abort_writes: Option<bool>,
+    read_node_count: Option<i64>,
+    request_timeout: Option<Duration>,
+    seed: Option<i64>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
+}
+impl<'a, 'b, B> SnapshotRepositoryAnalyze<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [SnapshotRepositoryAnalyze] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: SnapshotRepositoryAnalyzeParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        SnapshotRepositoryAnalyze {
+            transport,
+            parts,
+            headers,
+            blob_count: None,
+            body: None,
+            concurrency: None,
+            detailed: None,
+            early_read_node_count: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            max_blob_size: None,
+            max_total_data_size: None,
+            pretty: None,
+            rare_action_probability: None,
+            rarely_abort_writes: None,
+            read_node_count: None,
+            request_timeout: None,
+            seed: None,
+            source: None,
+            timeout: None,
+        }
+    }
+    #[doc = "Number of blobs to create during the test. Defaults to 100."]
+    pub fn blob_count(mut self, blob_count: i64) -> Self {
+        self.blob_count = Some(blob_count);
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> SnapshotRepositoryAnalyze<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        SnapshotRepositoryAnalyze {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            blob_count: self.blob_count,
+            concurrency: self.concurrency,
+            detailed: self.detailed,
+            early_read_node_count: self.early_read_node_count,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            max_blob_size: self.max_blob_size,
+            max_total_data_size: self.max_total_data_size,
+            pretty: self.pretty,
+            rare_action_probability: self.rare_action_probability,
+            rarely_abort_writes: self.rarely_abort_writes,
+            read_node_count: self.read_node_count,
+            request_timeout: self.request_timeout,
+            seed: self.seed,
+            source: self.source,
+            timeout: self.timeout,
+        }
+    }
+    #[doc = "Number of operations to run concurrently during the test. Defaults to 10."]
+    pub fn concurrency(mut self, concurrency: i64) -> Self {
+        self.concurrency = Some(concurrency);
+        self
+    }
+    #[doc = "Whether to return detailed results or a summary. Defaults to 'false' so that only the summary is returned."]
+    pub fn detailed(mut self, detailed: bool) -> Self {
+        self.detailed = Some(detailed);
+        self
+    }
+    #[doc = "Number of nodes on which to perform an early read on a blob, i.e. before writing has completed. Early reads are rare actions so the 'rare_action_probability' parameter is also relevant. Defaults to 2."]
+    pub fn early_read_node_count(mut self, early_read_node_count: i64) -> Self {
+        self.early_read_node_count = Some(early_read_node_count);
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Maximum size of a blob to create during the test, e.g '1gb' or '100mb'. Defaults to '10mb'."]
+    pub fn max_blob_size(mut self, max_blob_size: &'b str) -> Self {
+        self.max_blob_size = Some(max_blob_size);
+        self
+    }
+    #[doc = "Maximum total size of all blobs to create during the test, e.g '1tb' or '100gb'. Defaults to '1gb'."]
+    pub fn max_total_data_size(mut self, max_total_data_size: &'b str) -> Self {
+        self.max_total_data_size = Some(max_total_data_size);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Probability of taking a rare action such as an early read or an overwrite. Defaults to 0.02."]
+    pub fn rare_action_probability(mut self, rare_action_probability: i64) -> Self {
+        self.rare_action_probability = Some(rare_action_probability);
+        self
+    }
+    #[doc = "Whether to rarely abort writes before they complete. Defaults to 'true'."]
+    pub fn rarely_abort_writes(mut self, rarely_abort_writes: bool) -> Self {
+        self.rarely_abort_writes = Some(rarely_abort_writes);
+        self
+    }
+    #[doc = "Number of nodes on which to read a blob after writing. Defaults to 10."]
+    pub fn read_node_count(mut self, read_node_count: i64) -> Self {
+        self.read_node_count = Some(read_node_count);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "Seed for the random number generator used to create the test workload. Defaults to a random value."]
+    pub fn seed(mut self, seed: i64) -> Self {
+        self.seed = Some(seed);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Explicit operation timeout. Defaults to '30s'."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Snapshot Repository Analyze API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                blob_count: Option<i64>,
+                concurrency: Option<i64>,
+                detailed: Option<bool>,
+                early_read_node_count: Option<i64>,
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                max_blob_size: Option<&'b str>,
+                max_total_data_size: Option<&'b str>,
+                pretty: Option<bool>,
+                rare_action_probability: Option<i64>,
+                rarely_abort_writes: Option<bool>,
+                read_node_count: Option<i64>,
+                seed: Option<i64>,
+                source: Option<&'b str>,
+                timeout: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                blob_count: self.blob_count,
+                concurrency: self.concurrency,
+                detailed: self.detailed,
+                early_read_node_count: self.early_read_node_count,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                max_blob_size: self.max_blob_size,
+                max_total_data_size: self.max_total_data_size,
+                pretty: self.pretty,
+                rare_action_probability: self.rare_action_probability,
+                rarely_abort_writes: self.rarely_abort_writes,
+                read_node_count: self.read_node_count,
+                seed: self.seed,
+                source: self.source,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
         let response = self
             .transport
             .send(method, &path, headers, query_string.as_ref(), body, timeout)
@@ -1947,16 +2097,19 @@ impl<'a> Snapshot<'a> {
     pub fn get<'b>(&'a self, parts: SnapshotGetParts<'b>) -> SnapshotGet<'a, 'b> {
         SnapshotGet::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Get Features API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nReturns a list of features which can be snapshotted in this cluster."]
-    pub fn get_features<'b>(&'a self) -> SnapshotGetFeatures<'a, 'b> {
-        SnapshotGetFeatures::new(self.transport())
-    }
     #[doc = "[Snapshot Get Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nReturns information about a repository."]
     pub fn get_repository<'b>(
         &'a self,
         parts: SnapshotGetRepositoryParts<'b>,
     ) -> SnapshotGetRepository<'a, 'b> {
         SnapshotGetRepository::new(self.transport(), parts)
+    }
+    #[doc = "[Snapshot Repository Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nAnalyzes a repository for correctness and performance"]
+    pub fn repository_analyze<'b>(
+        &'a self,
+        parts: SnapshotRepositoryAnalyzeParts<'b>,
+    ) -> SnapshotRepositoryAnalyze<'a, 'b, ()> {
+        SnapshotRepositoryAnalyze::new(self.transport(), parts)
     }
     #[doc = "[Snapshot Restore API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-snapshots.html)\n\nRestores a snapshot."]
     pub fn restore<'b>(&'a self, parts: SnapshotRestoreParts<'b>) -> SnapshotRestore<'a, 'b, ()> {

@@ -542,6 +542,151 @@ impl<'a, 'b> IlmGetStatus<'a, 'b> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Ilm Migrate To Data Tiers API"]
+pub enum IlmMigrateToDataTiersParts {
+    #[doc = "No parts"]
+    None,
+}
+impl IlmMigrateToDataTiersParts {
+    #[doc = "Builds a relative URL path to the Ilm Migrate To Data Tiers API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            IlmMigrateToDataTiersParts::None => "/_ilm/migrate_to_data_tiers".into(),
+        }
+    }
+}
+#[doc = "Builder for the [Ilm Migrate To Data Tiers API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-migrate-to-data-tiers.html)\n\nMigrates the indices and ILM policies away from custom node attribute allocation routing to data tiers routing"]
+#[derive(Clone, Debug)]
+pub struct IlmMigrateToDataTiers<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: IlmMigrateToDataTiersParts,
+    body: Option<B>,
+    dry_run: Option<bool>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b, B> IlmMigrateToDataTiers<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [IlmMigrateToDataTiers]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        IlmMigrateToDataTiers {
+            transport,
+            parts: IlmMigrateToDataTiersParts::None,
+            headers,
+            body: None,
+            dry_run: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> IlmMigrateToDataTiers<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        IlmMigrateToDataTiers {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            dry_run: self.dry_run,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "If set to true it will simulate the migration, providing a way to retrieve the ILM policies and indices that need to be migrated. The default is false"]
+    pub fn dry_run(mut self, dry_run: bool) -> Self {
+        self.dry_run = Some(dry_run);
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Ilm Migrate To Data Tiers API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                dry_run: Option<bool>,
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                dry_run: self.dry_run,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ilm Move To Step API"]
 pub enum IlmMoveToStepParts<'b> {
     #[doc = "Index"]
@@ -1414,6 +1559,10 @@ impl<'a> Ilm<'a> {
     #[doc = "[Ilm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-get-status.html)\n\nRetrieves the current index lifecycle management (ILM) status."]
     pub fn get_status<'b>(&'a self) -> IlmGetStatus<'a, 'b> {
         IlmGetStatus::new(self.transport())
+    }
+    #[doc = "[Ilm Migrate To Data Tiers API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-migrate-to-data-tiers.html)\n\nMigrates the indices and ILM policies away from custom node attribute allocation routing to data tiers routing"]
+    pub fn migrate_to_data_tiers<'b>(&'a self) -> IlmMigrateToDataTiers<'a, 'b, ()> {
+        IlmMigrateToDataTiers::new(self.transport())
     }
     #[doc = "[Ilm Move To Step API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ilm-move-to-step.html)\n\nManually moves an index into the specified step and executes that step."]
     pub fn move_to_step<'b>(&'a self, parts: IlmMoveToStepParts<'b>) -> IlmMoveToStep<'a, 'b, ()> {

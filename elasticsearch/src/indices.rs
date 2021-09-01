@@ -2164,6 +2164,205 @@ impl<'a, 'b> IndicesDeleteTemplate<'a, 'b> {
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Indices Disk Usage API"]
+pub enum IndicesDiskUsageParts<'b> {
+    #[doc = "Index"]
+    Index(&'b str),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> IndicesDiskUsageParts<'b> {
+    #[doc = "Builds a relative URL path to the Indices Disk Usage API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            IndicesDiskUsageParts::Index(ref index) => {
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(13usize + encoded_index.len());
+                p.push_str("/");
+                p.push_str(encoded_index.as_ref());
+                p.push_str("/_disk_usage");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Indices Disk Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-disk-usage.html)\n\nAnalyzes the disk usage of each field of an index or data stream"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct IndicesDiskUsage<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: IndicesDiskUsageParts<'b>,
+    allow_no_indices: Option<bool>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<&'b [ExpandWildcards]>,
+    filter_path: Option<&'b [&'b str]>,
+    flush: Option<bool>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    run_expensive_tasks: Option<bool>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> IndicesDiskUsage<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [IndicesDiskUsage] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: IndicesDiskUsageParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        IndicesDiskUsage {
+            transport,
+            parts,
+            headers,
+            allow_no_indices: None,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            flush: None,
+            human: None,
+            ignore_unavailable: None,
+            pretty: None,
+            request_timeout: None,
+            run_expensive_tasks: None,
+            source: None,
+        }
+    }
+    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> IndicesDiskUsage<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        IndicesDiskUsage {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            allow_no_indices: self.allow_no_indices,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            flush: self.flush,
+            headers: self.headers,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            run_expensive_tasks: self.run_expensive_tasks,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Whether flush or not before analyzing the index disk usage. Defaults to true"]
+    pub fn flush(mut self, flush: bool) -> Self {
+        self.flush = Some(flush);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "Must be set to [true] in order for the task to be performed. Defaults to false."]
+    pub fn run_expensive_tasks(mut self, run_expensive_tasks: bool) -> Self {
+        self.run_expensive_tasks = Some(run_expensive_tasks);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Indices Disk Usage API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                allow_no_indices: Option<bool>,
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                expand_wildcards: Option<&'b [ExpandWildcards]>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                flush: Option<bool>,
+                human: Option<bool>,
+                ignore_unavailable: Option<bool>,
+                pretty: Option<bool>,
+                run_expensive_tasks: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
+                expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                flush: self.flush,
+                human: self.human,
+                ignore_unavailable: self.ignore_unavailable,
+                pretty: self.pretty,
+                run_expensive_tasks: self.run_expensive_tasks,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Exists API"]
 pub enum IndicesExistsParts<'b> {
@@ -2953,6 +3152,169 @@ impl<'a, 'b> IndicesExistsType<'a, 'b> {
                 human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 local: self.local,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Indices Field Usage Stats API"]
+pub enum IndicesFieldUsageStatsParts<'b> {
+    #[doc = "Index"]
+    Index(&'b str),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> IndicesFieldUsageStatsParts<'b> {
+    #[doc = "Builds a relative URL path to the Indices Field Usage Stats API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            IndicesFieldUsageStatsParts::Index(ref index) => {
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(20usize + encoded_index.len());
+                p.push_str("/");
+                p.push_str(encoded_index.as_ref());
+                p.push_str("/_field_usage_stats");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Indices Field Usage Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/field-usage-stats.html)\n\nReturns the field usage stats for each field of an index"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct IndicesFieldUsageStats<'a, 'b> {
+    transport: &'a Transport,
+    parts: IndicesFieldUsageStatsParts<'b>,
+    allow_no_indices: Option<bool>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<&'b [ExpandWildcards]>,
+    fields: Option<&'b [&'b str]>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> IndicesFieldUsageStats<'a, 'b> {
+    #[doc = "Creates a new instance of [IndicesFieldUsageStats] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: IndicesFieldUsageStatsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        IndicesFieldUsageStats {
+            transport,
+            parts,
+            headers,
+            allow_no_indices: None,
+            error_trace: None,
+            expand_wildcards: None,
+            fields: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
+        self
+    }
+    #[doc = "A comma-separated list of fields to include in the stats if only a subset of fields should be returned (supports wildcards)"]
+    pub fn fields(mut self, fields: &'b [&'b str]) -> Self {
+        self.fields = Some(fields);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Indices Field Usage Stats API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                allow_no_indices: Option<bool>,
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                expand_wildcards: Option<&'b [ExpandWildcards]>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                fields: Option<&'b [&'b str]>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                ignore_unavailable: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
+                expand_wildcards: self.expand_wildcards,
+                fields: self.fields,
+                filter_path: self.filter_path,
+                human: self.human,
+                ignore_unavailable: self.ignore_unavailable,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -9208,6 +9570,15 @@ impl<'a> Indices<'a> {
     ) -> IndicesDeleteTemplate<'a, 'b> {
         IndicesDeleteTemplate::new(self.transport(), parts)
     }
+    #[doc = "[Indices Disk Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-disk-usage.html)\n\nAnalyzes the disk usage of each field of an index or data stream"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn disk_usage<'b>(
+        &'a self,
+        parts: IndicesDiskUsageParts<'b>,
+    ) -> IndicesDiskUsage<'a, 'b, ()> {
+        IndicesDiskUsage::new(self.transport(), parts)
+    }
     #[doc = "[Indices Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-exists.html)\n\nReturns information about whether a particular index exists."]
     pub fn exists<'b>(&'a self, parts: IndicesExistsParts<'b>) -> IndicesExists<'a, 'b> {
         IndicesExists::new(self.transport(), parts)
@@ -9239,6 +9610,15 @@ impl<'a> Indices<'a> {
         parts: IndicesExistsTypeParts<'b>,
     ) -> IndicesExistsType<'a, 'b> {
         IndicesExistsType::new(self.transport(), parts)
+    }
+    #[doc = "[Indices Field Usage Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/field-usage-stats.html)\n\nReturns the field usage stats for each field of an index"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn field_usage_stats<'b>(
+        &'a self,
+        parts: IndicesFieldUsageStatsParts<'b>,
+    ) -> IndicesFieldUsageStats<'a, 'b> {
+        IndicesFieldUsageStats::new(self.transport(), parts)
     }
     #[doc = "[Indices Flush API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-flush.html)\n\nPerforms the flush operation on one or more indices."]
     pub fn flush<'b>(&'a self, parts: IndicesFlushParts<'b>) -> IndicesFlush<'a, 'b, ()> {

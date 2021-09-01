@@ -29,8 +29,6 @@
 //! Determines the structure of text and other information that will be useful to import its contents to an Elasticsearch
 //! index.
 
-#![cfg(feature = "experimental-apis")]
-#![doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
@@ -47,14 +45,12 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Text Structure Find Structure API"]
 pub enum TextStructureFindStructureParts {
     #[doc = "No parts"]
     None,
 }
-#[cfg(feature = "experimental-apis")]
 impl TextStructureFindStructureParts {
     #[doc = "Builds a relative URL path to the Text Structure Find Structure API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -64,8 +60,6 @@ impl TextStructureFindStructureParts {
     }
 }
 #[doc = "Builder for the [Text Structure Find Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/find-structure.html)\n\nFinds the structure of a text file. The text file must contain data that is suitable to be ingested into Elasticsearch."]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
 pub struct TextStructureFindStructure<'a, 'b, B> {
     transport: &'a Transport,
@@ -93,7 +87,6 @@ pub struct TextStructureFindStructure<'a, 'b, B> {
     timestamp_field: Option<&'b str>,
     timestamp_format: Option<&'b str>,
 }
-#[cfg(feature = "experimental-apis")]
 impl<'a, 'b, B> TextStructureFindStructure<'a, 'b, B>
 where
     B: Body,
@@ -329,12 +322,9 @@ where
     }
 }
 #[doc = "Namespace client for TextStructure APIs"]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
 pub struct TextStructure<'a> {
     transport: &'a Transport,
 }
-#[cfg(feature = "experimental-apis")]
 impl<'a> TextStructure<'a> {
     #[doc = "Creates a new instance of [TextStructure]"]
     pub fn new(transport: &'a Transport) -> Self {
@@ -344,13 +334,10 @@ impl<'a> TextStructure<'a> {
         self.transport
     }
     #[doc = "[Text Structure Find Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/find-structure.html)\n\nFinds the structure of a text file. The text file must contain data that is suitable to be ingested into Elasticsearch."]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
     pub fn find_structure<'b>(&'a self) -> TextStructureFindStructure<'a, 'b, ()> {
         TextStructureFindStructure::new(self.transport())
     }
 }
-#[cfg(feature = "experimental-apis")]
 impl Elasticsearch {
     #[doc = "Creates a namespace client for TextStructure APIs"]
     pub fn text_structure(&self) -> TextStructure {

@@ -195,6 +195,118 @@ impl<'a, 'b> IngestDeletePipeline<'a, 'b> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Ingest Geo Ip Stats API"]
+pub enum IngestGeoIpStatsParts {
+    #[doc = "No parts"]
+    None,
+}
+impl IngestGeoIpStatsParts {
+    #[doc = "Builds a relative URL path to the Ingest Geo Ip Stats API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            IngestGeoIpStatsParts::None => "/_ingest/geoip/stats".into(),
+        }
+    }
+}
+#[doc = "Builder for the [Ingest Geo Ip Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/geoip-stats-api.html)\n\nReturns statistical information about geoip databases"]
+#[derive(Clone, Debug)]
+pub struct IngestGeoIpStats<'a, 'b> {
+    transport: &'a Transport,
+    parts: IngestGeoIpStatsParts,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b> IngestGeoIpStats<'a, 'b> {
+    #[doc = "Creates a new instance of [IngestGeoIpStats]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        IngestGeoIpStats {
+            transport,
+            parts: IngestGeoIpStatsParts::None,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Ingest Geo Ip Stats API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ingest Get Pipeline API"]
 pub enum IngestGetPipelineParts<'b> {
     #[doc = "No parts"]
@@ -230,6 +342,7 @@ pub struct IngestGetPipeline<'a, 'b> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    summary: Option<bool>,
 }
 impl<'a, 'b> IngestGetPipeline<'a, 'b> {
     #[doc = "Creates a new instance of [IngestGetPipeline] with the specified API parts"]
@@ -246,6 +359,7 @@ impl<'a, 'b> IngestGetPipeline<'a, 'b> {
             pretty: None,
             request_timeout: None,
             source: None,
+            summary: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -288,6 +402,11 @@ impl<'a, 'b> IngestGetPipeline<'a, 'b> {
         self.source = Some(source);
         self
     }
+    #[doc = "Return pipelines without their definitions (default: false)"]
+    pub fn summary(mut self, summary: bool) -> Self {
+        self.summary = Some(summary);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Ingest Get Pipeline API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -305,6 +424,7 @@ impl<'a, 'b> IngestGetPipeline<'a, 'b> {
                 master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                summary: Option<bool>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -313,6 +433,7 @@ impl<'a, 'b> IngestGetPipeline<'a, 'b> {
                 master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
+                summary: self.summary,
             };
             Some(query_params)
         };
@@ -773,6 +894,10 @@ impl<'a> Ingest<'a> {
         parts: IngestDeletePipelineParts<'b>,
     ) -> IngestDeletePipeline<'a, 'b> {
         IngestDeletePipeline::new(self.transport(), parts)
+    }
+    #[doc = "[Ingest Geo Ip Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/geoip-stats-api.html)\n\nReturns statistical information about geoip databases"]
+    pub fn geo_ip_stats<'b>(&'a self) -> IngestGeoIpStats<'a, 'b> {
+        IngestGeoIpStats::new(self.transport())
     }
     #[doc = "[Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-pipeline-api.html)\n\nReturns a pipeline."]
     pub fn get_pipeline<'b>(

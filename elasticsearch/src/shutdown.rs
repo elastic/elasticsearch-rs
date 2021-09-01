@@ -24,11 +24,8 @@
 // cargo make generate-api
 // -----------------------------------------------
 
-//! Logstash APIs
-//!
-//! The [Logstash APIs](https://www.elastic.co/guide/en/elasticsearch/reference/master/logstash-apis.html) are used to
-//! manage pipelines used by Logstash Central Management.
-
+#![cfg(feature = "experimental-apis")]
+#![doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
@@ -45,31 +42,37 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Logstash Delete Pipeline API"]
-pub enum LogstashDeletePipelineParts<'b> {
-    #[doc = "Id"]
-    Id(&'b str),
+#[doc = "API parts for the Shutdown Delete Node API"]
+pub enum ShutdownDeleteNodeParts<'b> {
+    #[doc = "NodeId"]
+    NodeId(&'b str),
 }
-impl<'b> LogstashDeletePipelineParts<'b> {
-    #[doc = "Builds a relative URL path to the Logstash Delete Pipeline API"]
+#[cfg(feature = "experimental-apis")]
+impl<'b> ShutdownDeleteNodeParts<'b> {
+    #[doc = "Builds a relative URL path to the Shutdown Delete Node API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            LogstashDeletePipelineParts::Id(ref id) => {
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(20usize + encoded_id.len());
-                p.push_str("/_logstash/pipeline/");
-                p.push_str(encoded_id.as_ref());
+            ShutdownDeleteNodeParts::NodeId(ref node_id) => {
+                let encoded_node_id: Cow<str> =
+                    percent_encode(node_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(17usize + encoded_node_id.len());
+                p.push_str("/_nodes/");
+                p.push_str(encoded_node_id.as_ref());
+                p.push_str("/shutdown");
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Logstash Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/logstash-api-delete-pipeline.html)\n\nDeletes Logstash Pipelines used by Central Management"]
+#[doc = "Builder for the [Shutdown Delete Node API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0)\n\nRemoves a node from the shutdown list"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
-pub struct LogstashDeletePipeline<'a, 'b> {
+pub struct ShutdownDeleteNode<'a, 'b> {
     transport: &'a Transport,
-    parts: LogstashDeletePipelineParts<'b>,
+    parts: ShutdownDeleteNodeParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -78,11 +81,12 @@ pub struct LogstashDeletePipeline<'a, 'b> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-impl<'a, 'b> LogstashDeletePipeline<'a, 'b> {
-    #[doc = "Creates a new instance of [LogstashDeletePipeline] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: LogstashDeletePipelineParts<'b>) -> Self {
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> ShutdownDeleteNode<'a, 'b> {
+    #[doc = "Creates a new instance of [ShutdownDeleteNode] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: ShutdownDeleteNodeParts<'b>) -> Self {
         let headers = HeaderMap::new();
-        LogstashDeletePipeline {
+        ShutdownDeleteNode {
             transport,
             parts,
             headers,
@@ -129,7 +133,7 @@ impl<'a, 'b> LogstashDeletePipeline<'a, 'b> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous call to the Logstash Delete Pipeline API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Shutdown Delete Node API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Delete;
@@ -163,31 +167,40 @@ impl<'a, 'b> LogstashDeletePipeline<'a, 'b> {
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Logstash Get Pipeline API"]
-pub enum LogstashGetPipelineParts<'b> {
-    #[doc = "Id"]
-    Id(&'b str),
+#[doc = "API parts for the Shutdown Get Node API"]
+pub enum ShutdownGetNodeParts<'b> {
+    #[doc = "No parts"]
+    None,
+    #[doc = "NodeId"]
+    NodeId(&'b str),
 }
-impl<'b> LogstashGetPipelineParts<'b> {
-    #[doc = "Builds a relative URL path to the Logstash Get Pipeline API"]
+#[cfg(feature = "experimental-apis")]
+impl<'b> ShutdownGetNodeParts<'b> {
+    #[doc = "Builds a relative URL path to the Shutdown Get Node API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            LogstashGetPipelineParts::Id(ref id) => {
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(20usize + encoded_id.len());
-                p.push_str("/_logstash/pipeline/");
-                p.push_str(encoded_id.as_ref());
+            ShutdownGetNodeParts::None => "/_nodes/shutdown".into(),
+            ShutdownGetNodeParts::NodeId(ref node_id) => {
+                let encoded_node_id: Cow<str> =
+                    percent_encode(node_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(17usize + encoded_node_id.len());
+                p.push_str("/_nodes/");
+                p.push_str(encoded_node_id.as_ref());
+                p.push_str("/shutdown");
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Logstash Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/logstash-api-get-pipeline.html)\n\nRetrieves Logstash Pipelines used by Central Management"]
+#[doc = "Builder for the [Shutdown Get Node API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0)\n\nRetrieve status of a node or nodes that are currently marked as shutting down"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
-pub struct LogstashGetPipeline<'a, 'b> {
+pub struct ShutdownGetNode<'a, 'b> {
     transport: &'a Transport,
-    parts: LogstashGetPipelineParts<'b>,
+    parts: ShutdownGetNodeParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -196,11 +209,12 @@ pub struct LogstashGetPipeline<'a, 'b> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-impl<'a, 'b> LogstashGetPipeline<'a, 'b> {
-    #[doc = "Creates a new instance of [LogstashGetPipeline] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: LogstashGetPipelineParts<'b>) -> Self {
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> ShutdownGetNode<'a, 'b> {
+    #[doc = "Creates a new instance of [ShutdownGetNode] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: ShutdownGetNodeParts<'b>) -> Self {
         let headers = HeaderMap::new();
-        LogstashGetPipeline {
+        ShutdownGetNode {
             transport,
             parts,
             headers,
@@ -247,7 +261,7 @@ impl<'a, 'b> LogstashGetPipeline<'a, 'b> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous call to the Logstash Get Pipeline API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Shutdown Get Node API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
@@ -281,31 +295,37 @@ impl<'a, 'b> LogstashGetPipeline<'a, 'b> {
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Logstash Put Pipeline API"]
-pub enum LogstashPutPipelineParts<'b> {
-    #[doc = "Id"]
-    Id(&'b str),
+#[doc = "API parts for the Shutdown Put Node API"]
+pub enum ShutdownPutNodeParts<'b> {
+    #[doc = "NodeId"]
+    NodeId(&'b str),
 }
-impl<'b> LogstashPutPipelineParts<'b> {
-    #[doc = "Builds a relative URL path to the Logstash Put Pipeline API"]
+#[cfg(feature = "experimental-apis")]
+impl<'b> ShutdownPutNodeParts<'b> {
+    #[doc = "Builds a relative URL path to the Shutdown Put Node API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            LogstashPutPipelineParts::Id(ref id) => {
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(20usize + encoded_id.len());
-                p.push_str("/_logstash/pipeline/");
-                p.push_str(encoded_id.as_ref());
+            ShutdownPutNodeParts::NodeId(ref node_id) => {
+                let encoded_node_id: Cow<str> =
+                    percent_encode(node_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(17usize + encoded_node_id.len());
+                p.push_str("/_nodes/");
+                p.push_str(encoded_node_id.as_ref());
+                p.push_str("/shutdown");
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Logstash Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/logstash-api-put-pipeline.html)\n\nAdds and updates Logstash Pipelines used for Central Management"]
+#[doc = "Builder for the [Shutdown Put Node API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0)\n\nAdds a node to be shut down"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
-pub struct LogstashPutPipeline<'a, 'b, B> {
+pub struct ShutdownPutNode<'a, 'b, B> {
     transport: &'a Transport,
-    parts: LogstashPutPipelineParts<'b>,
+    parts: ShutdownPutNodeParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -315,14 +335,15 @@ pub struct LogstashPutPipeline<'a, 'b, B> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-impl<'a, 'b, B> LogstashPutPipeline<'a, 'b, B>
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> ShutdownPutNode<'a, 'b, B>
 where
     B: Body,
 {
-    #[doc = "Creates a new instance of [LogstashPutPipeline] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: LogstashPutPipelineParts<'b>) -> Self {
+    #[doc = "Creates a new instance of [ShutdownPutNode] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: ShutdownPutNodeParts<'b>) -> Self {
         let headers = HeaderMap::new();
-        LogstashPutPipeline {
+        ShutdownPutNode {
             transport,
             parts,
             headers,
@@ -336,11 +357,11 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> LogstashPutPipeline<'a, 'b, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> ShutdownPutNode<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
-        LogstashPutPipeline {
+        ShutdownPutNode {
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
@@ -388,7 +409,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous call to the Logstash Put Pipeline API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Shutdown Put Node API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Put;
@@ -422,43 +443,47 @@ where
         Ok(response)
     }
 }
-#[doc = "Namespace client for Logstash APIs"]
-pub struct Logstash<'a> {
+#[doc = "Namespace client for Shutdown APIs"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+pub struct Shutdown<'a> {
     transport: &'a Transport,
 }
-impl<'a> Logstash<'a> {
-    #[doc = "Creates a new instance of [Logstash]"]
+#[cfg(feature = "experimental-apis")]
+impl<'a> Shutdown<'a> {
+    #[doc = "Creates a new instance of [Shutdown]"]
     pub fn new(transport: &'a Transport) -> Self {
         Self { transport }
     }
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Logstash Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/logstash-api-delete-pipeline.html)\n\nDeletes Logstash Pipelines used by Central Management"]
-    pub fn delete_pipeline<'b>(
+    #[doc = "[Shutdown Delete Node API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0)\n\nRemoves a node from the shutdown list"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn delete_node<'b>(
         &'a self,
-        parts: LogstashDeletePipelineParts<'b>,
-    ) -> LogstashDeletePipeline<'a, 'b> {
-        LogstashDeletePipeline::new(self.transport(), parts)
+        parts: ShutdownDeleteNodeParts<'b>,
+    ) -> ShutdownDeleteNode<'a, 'b> {
+        ShutdownDeleteNode::new(self.transport(), parts)
     }
-    #[doc = "[Logstash Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/logstash-api-get-pipeline.html)\n\nRetrieves Logstash Pipelines used by Central Management"]
-    pub fn get_pipeline<'b>(
-        &'a self,
-        parts: LogstashGetPipelineParts<'b>,
-    ) -> LogstashGetPipeline<'a, 'b> {
-        LogstashGetPipeline::new(self.transport(), parts)
+    #[doc = "[Shutdown Get Node API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0)\n\nRetrieve status of a node or nodes that are currently marked as shutting down"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn get_node<'b>(&'a self, parts: ShutdownGetNodeParts<'b>) -> ShutdownGetNode<'a, 'b> {
+        ShutdownGetNode::new(self.transport(), parts)
     }
-    #[doc = "[Logstash Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/logstash-api-put-pipeline.html)\n\nAdds and updates Logstash Pipelines used for Central Management"]
-    pub fn put_pipeline<'b>(
-        &'a self,
-        parts: LogstashPutPipelineParts<'b>,
-    ) -> LogstashPutPipeline<'a, 'b, ()> {
-        LogstashPutPipeline::new(self.transport(), parts)
+    #[doc = "[Shutdown Put Node API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0)\n\nAdds a node to be shut down"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn put_node<'b>(&'a self, parts: ShutdownPutNodeParts<'b>) -> ShutdownPutNode<'a, 'b, ()> {
+        ShutdownPutNode::new(self.transport(), parts)
     }
 }
+#[cfg(feature = "experimental-apis")]
 impl Elasticsearch {
-    #[doc = "Creates a namespace client for Logstash APIs"]
-    pub fn logstash(&self) -> Logstash {
-        Logstash::new(self.transport())
+    #[doc = "Creates a namespace client for Shutdown APIs"]
+    pub fn shutdown(&self) -> Shutdown {
+        Shutdown::new(self.transport())
     }
 }
