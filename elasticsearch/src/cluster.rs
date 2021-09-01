@@ -753,7 +753,7 @@ impl ClusterGetSettingsParts {
         }
     }
 }
-#[doc = "Builder for the [Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-update-settings.html)\n\nReturns cluster settings."]
+#[doc = "Builder for the [Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-get-settings.html)\n\nReturns cluster settings."]
 #[derive(Clone, Debug)]
 pub struct ClusterGetSettings<'a, 'b> {
     transport: &'a Transport,
@@ -2451,7 +2451,7 @@ impl<'a> Cluster<'a> {
     ) -> ClusterGetComponentTemplate<'a, 'b> {
         ClusterGetComponentTemplate::new(self.transport(), parts)
     }
-    #[doc = "[Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-update-settings.html)\n\nReturns cluster settings."]
+    #[doc = "[Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-get-settings.html)\n\nReturns cluster settings."]
     pub fn get_settings<'b>(&'a self) -> ClusterGetSettings<'a, 'b> {
         ClusterGetSettings::new(self.transport())
     }

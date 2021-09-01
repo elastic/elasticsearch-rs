@@ -51,6 +51,135 @@ use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
 #[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Searchable Snapshots Cache Stats API"]
+pub enum SearchableSnapshotsCacheStatsParts<'b> {
+    #[doc = "No parts"]
+    None,
+    #[doc = "NodeId"]
+    NodeId(&'b [&'b str]),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> SearchableSnapshotsCacheStatsParts<'b> {
+    #[doc = "Builds a relative URL path to the Searchable Snapshots Cache Stats API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SearchableSnapshotsCacheStatsParts::None => "/_searchable_snapshots/cache/stats".into(),
+            SearchableSnapshotsCacheStatsParts::NodeId(ref node_id) => {
+                let node_id_str = node_id.join(",");
+                let encoded_node_id: Cow<str> =
+                    percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(35usize + encoded_node_id.len());
+                p.push_str("/_searchable_snapshots/");
+                p.push_str(encoded_node_id.as_ref());
+                p.push_str("/cache/stats");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Searchable Snapshots Cache Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/searchable-snapshots-apis.html)\n\nRetrieve node-level cache statistics about searchable snapshots."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct SearchableSnapshotsCacheStats<'a, 'b> {
+    transport: &'a Transport,
+    parts: SearchableSnapshotsCacheStatsParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> SearchableSnapshotsCacheStats<'a, 'b> {
+    #[doc = "Creates a new instance of [SearchableSnapshotsCacheStats] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: SearchableSnapshotsCacheStatsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        SearchableSnapshotsCacheStats {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Searchable Snapshots Cache Stats API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Searchable Snapshots Clear Cache API"]
 pub enum SearchableSnapshotsClearCacheParts<'b> {
     #[doc = "No parts"]
@@ -455,7 +584,7 @@ impl<'b> SearchableSnapshotsStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Searchable Snapshots Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/searchable-snapshots-apis.html)\n\nRetrieve various statistics about searchable snapshots."]
+#[doc = "Builder for the [Searchable Snapshots Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/searchable-snapshots-apis.html)\n\nRetrieve shard-level statistics about searchable snapshots."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -580,6 +709,15 @@ impl<'a> SearchableSnapshots<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
+    #[doc = "[Searchable Snapshots Cache Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/searchable-snapshots-apis.html)\n\nRetrieve node-level cache statistics about searchable snapshots."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn cache_stats<'b>(
+        &'a self,
+        parts: SearchableSnapshotsCacheStatsParts<'b>,
+    ) -> SearchableSnapshotsCacheStats<'a, 'b> {
+        SearchableSnapshotsCacheStats::new(self.transport(), parts)
+    }
     #[doc = "[Searchable Snapshots Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/searchable-snapshots-apis.html)\n\nClear the cache of searchable snapshots."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
@@ -598,7 +736,7 @@ impl<'a> SearchableSnapshots<'a> {
     ) -> SearchableSnapshotsMount<'a, 'b, ()> {
         SearchableSnapshotsMount::new(self.transport(), parts)
     }
-    #[doc = "[Searchable Snapshots Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/searchable-snapshots-apis.html)\n\nRetrieve various statistics about searchable snapshots."]
+    #[doc = "[Searchable Snapshots Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/searchable-snapshots-apis.html)\n\nRetrieve shard-level statistics about searchable snapshots."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn stats<'b>(

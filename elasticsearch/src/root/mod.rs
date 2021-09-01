@@ -6165,7 +6165,7 @@ impl<'b> RenderSearchTemplateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Render Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-template.html#_validating_templates)\n\nAllows to use the Mustache language to pre-render a search definition."]
+#[doc = "Builder for the [Render Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/render-search-template-api.html)\n\nAllows to use the Mustache language to pre-render a search definition."]
 #[derive(Clone, Debug)]
 pub struct RenderSearchTemplate<'a, 'b, B> {
     transport: &'a Transport,
@@ -7199,6 +7199,231 @@ where
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Search Mvt API"]
+pub enum SearchMvtParts<'b> {
+    #[doc = "Index, Field, Zoom, X and Y"]
+    IndexFieldZoomXY(&'b [&'b str], &'b str, i32, i32, i32),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> SearchMvtParts<'b> {
+    #[doc = "Builds a relative URL path to the Search Mvt API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SearchMvtParts::IndexFieldZoomXY(ref index, ref field, ref zoom, ref x, ref y) => {
+                let index_str = index.join(",");
+                let zoom_str = zoom.to_string();
+                let x_str = x.to_string();
+                let y_str = y.to_string();
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_field: Cow<str> =
+                    percent_encode(field.as_bytes(), PARTS_ENCODED).into();
+                let encoded_zoom: Cow<str> =
+                    percent_encode(zoom_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_x: Cow<str> = percent_encode(x_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_y: Cow<str> = percent_encode(y_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    10usize
+                        + encoded_index.len()
+                        + encoded_field.len()
+                        + encoded_zoom.len()
+                        + encoded_x.len()
+                        + encoded_y.len(),
+                );
+                p.push_str("/");
+                p.push_str(encoded_index.as_ref());
+                p.push_str("/_mvt/");
+                p.push_str(encoded_field.as_ref());
+                p.push_str("/");
+                p.push_str(encoded_zoom.as_ref());
+                p.push_str("/");
+                p.push_str(encoded_x.as_ref());
+                p.push_str("/");
+                p.push_str(encoded_y.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Search Mvt API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-vector-tile-api.html)\n\nSearches a vector tile for geospatial values. Returns results as a binary Mapbox vector tile."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct SearchMvt<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: SearchMvtParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    exact_bounds: Option<bool>,
+    extent: Option<i32>,
+    filter_path: Option<&'b [&'b str]>,
+    grid_precision: Option<i32>,
+    grid_type: Option<GridType>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    size: Option<i32>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> SearchMvt<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [SearchMvt] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: SearchMvtParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        SearchMvt {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            exact_bounds: None,
+            extent: None,
+            filter_path: None,
+            grid_precision: None,
+            grid_type: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            size: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> SearchMvt<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        SearchMvt {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            exact_bounds: self.exact_bounds,
+            extent: self.extent,
+            filter_path: self.filter_path,
+            grid_precision: self.grid_precision,
+            grid_type: self.grid_type,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            size: self.size,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "If false, the meta layer's feature is the bounding box of the tile. If true, the meta layer's feature is a bounding box resulting from a `geo_bounds` aggregation."]
+    pub fn exact_bounds(mut self, exact_bounds: bool) -> Self {
+        self.exact_bounds = Some(exact_bounds);
+        self
+    }
+    #[doc = "Size, in pixels, of a side of the vector tile."]
+    pub fn extent(mut self, extent: i32) -> Self {
+        self.extent = Some(extent);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Additional zoom levels available through the aggs layer. Accepts 0-8."]
+    pub fn grid_precision(mut self, grid_precision: i32) -> Self {
+        self.grid_precision = Some(grid_precision);
+        self
+    }
+    #[doc = "Determines the geometry type for features in the aggs layer."]
+    pub fn grid_type(mut self, grid_type: GridType) -> Self {
+        self.grid_type = Some(grid_type);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "Maximum number of features to return in the hits layer. Accepts 0-10000."]
+    pub fn size(mut self, size: i32) -> Self {
+        self.size = Some(size);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Search Mvt API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = match self.body {
+            Some(_) => Method::Post,
+            None => Method::Get,
+        };
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                exact_bounds: Option<bool>,
+                extent: Option<i32>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                grid_precision: Option<i32>,
+                grid_type: Option<GridType>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                size: Option<i32>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                exact_bounds: self.exact_bounds,
+                extent: self.extent,
+                filter_path: self.filter_path,
+                grid_precision: self.grid_precision,
+                grid_type: self.grid_type,
+                human: self.human,
+                pretty: self.pretty,
+                size: self.size,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Search Shards API"]
 pub enum SearchShardsParts<'b> {
@@ -7681,6 +7906,158 @@ where
                 search_type: self.search_type,
                 source: self.source,
                 typed_keys: self.typed_keys,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "beta-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Terms Enum API"]
+pub enum TermsEnumParts<'b> {
+    #[doc = "Index"]
+    Index(&'b [&'b str]),
+}
+#[cfg(feature = "beta-apis")]
+impl<'b> TermsEnumParts<'b> {
+    #[doc = "Builds a relative URL path to the Terms Enum API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            TermsEnumParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(13usize + encoded_index.len());
+                p.push_str("/");
+                p.push_str(encoded_index.as_ref());
+                p.push_str("/_terms_enum");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Terms Enum API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-terms-enum.html)\n\nThe terms enum API  can be used to discover terms in the index that begin with the provided string. It is designed for low-latency look-ups used in auto-complete scenarios."]
+#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
+#[cfg(feature = "beta-apis")]
+#[derive(Clone, Debug)]
+pub struct TermsEnum<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: TermsEnumParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "beta-apis")]
+impl<'a, 'b, B> TermsEnum<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [TermsEnum] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: TermsEnumParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        TermsEnum {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> TermsEnum<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        TermsEnum {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Terms Enum API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = match self.body {
+            Some(_) => Method::Post,
+            None => Method::Get,
+        };
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -9038,7 +9415,7 @@ impl Elasticsearch {
     ) -> ReindexRethrottle<'a, 'b, ()> {
         ReindexRethrottle::new(self.transport(), parts)
     }
-    #[doc = "[Render Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-template.html#_validating_templates)\n\nAllows to use the Mustache language to pre-render a search definition."]
+    #[doc = "[Render Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/render-search-template-api.html)\n\nAllows to use the Mustache language to pre-render a search definition."]
     pub fn render_search_template<'a, 'b>(
         &'a self,
         parts: RenderSearchTemplateParts<'b>,
@@ -9059,6 +9436,12 @@ impl Elasticsearch {
     pub fn search<'a, 'b>(&'a self, parts: SearchParts<'b>) -> Search<'a, 'b, ()> {
         Search::new(self.transport(), parts)
     }
+    #[doc = "[Search Mvt API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-vector-tile-api.html)\n\nSearches a vector tile for geospatial values. Returns results as a binary Mapbox vector tile."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn search_mvt<'a, 'b>(&'a self, parts: SearchMvtParts<'b>) -> SearchMvt<'a, 'b, ()> {
+        SearchMvt::new(self.transport(), parts)
+    }
     #[doc = "[Search Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-shards.html)\n\nReturns information about the indices and shards that a search request would be executed against."]
     pub fn search_shards<'a, 'b>(
         &'a self,
@@ -9072,6 +9455,12 @@ impl Elasticsearch {
         parts: SearchTemplateParts<'b>,
     ) -> SearchTemplate<'a, 'b, ()> {
         SearchTemplate::new(self.transport(), parts)
+    }
+    #[doc = "[Terms Enum API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-terms-enum.html)\n\nThe terms enum API  can be used to discover terms in the index that begin with the provided string. It is designed for low-latency look-ups used in auto-complete scenarios."]
+    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
+    #[cfg(feature = "beta-apis")]
+    pub fn terms_enum<'a, 'b>(&'a self, parts: TermsEnumParts<'b>) -> TermsEnum<'a, 'b, ()> {
+        TermsEnum::new(self.transport(), parts)
     }
     #[doc = "[Termvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-termvectors.html)\n\nReturns information and statistics about terms in the fields of a particular document."]
     pub fn termvectors<'a, 'b>(&'a self, parts: TermvectorsParts<'b>) -> Termvectors<'a, 'b, ()> {

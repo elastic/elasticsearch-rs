@@ -481,14 +481,25 @@ impl<'a, 'b> TransformGetTransformStats<'a, 'b> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Transform Preview Transform API"]
-pub enum TransformPreviewTransformParts {
+pub enum TransformPreviewTransformParts<'b> {
+    #[doc = "TransformId"]
+    TransformId(&'b str),
     #[doc = "No parts"]
     None,
 }
-impl TransformPreviewTransformParts {
+impl<'b> TransformPreviewTransformParts<'b> {
     #[doc = "Builds a relative URL path to the Transform Preview Transform API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
+            TransformPreviewTransformParts::TransformId(ref transform_id) => {
+                let encoded_transform_id: Cow<str> =
+                    percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(21usize + encoded_transform_id.len());
+                p.push_str("/_transform/");
+                p.push_str(encoded_transform_id.as_ref());
+                p.push_str("/_preview");
+                p.into()
+            }
             TransformPreviewTransformParts::None => "/_transform/_preview".into(),
         }
     }
@@ -497,7 +508,7 @@ impl TransformPreviewTransformParts {
 #[derive(Clone, Debug)]
 pub struct TransformPreviewTransform<'a, 'b, B> {
     transport: &'a Transport,
-    parts: TransformPreviewTransformParts,
+    parts: TransformPreviewTransformParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -511,12 +522,12 @@ impl<'a, 'b, B> TransformPreviewTransform<'a, 'b, B>
 where
     B: Body,
 {
-    #[doc = "Creates a new instance of [TransformPreviewTransform]"]
-    pub fn new(transport: &'a Transport) -> Self {
+    #[doc = "Creates a new instance of [TransformPreviewTransform] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: TransformPreviewTransformParts<'b>) -> Self {
         let headers = HeaderMap::new();
         TransformPreviewTransform {
             transport,
-            parts: TransformPreviewTransformParts::None,
+            parts,
             headers,
             body: None,
             error_trace: None,
@@ -583,7 +594,10 @@ where
     #[doc = "Creates an asynchronous call to the Transform Preview Transform API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = match self.body {
+            Some(_) => Method::Post,
+            None => Method::Get,
+        };
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1299,8 +1313,11 @@ impl<'a> Transform<'a> {
         TransformGetTransformStats::new(self.transport(), parts)
     }
     #[doc = "[Transform Preview Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/preview-transform.html)\n\nPreviews a transform."]
-    pub fn preview_transform<'b>(&'a self) -> TransformPreviewTransform<'a, 'b, ()> {
-        TransformPreviewTransform::new(self.transport())
+    pub fn preview_transform<'b>(
+        &'a self,
+        parts: TransformPreviewTransformParts<'b>,
+    ) -> TransformPreviewTransform<'a, 'b, ()> {
+        TransformPreviewTransform::new(self.transport(), parts)
     }
     #[doc = "[Transform Put Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/put-transform.html)\n\nInstantiates a transform."]
     pub fn put_transform<'b>(

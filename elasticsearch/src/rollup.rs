@@ -30,6 +30,8 @@
 //! provide a means to summarize and store historical data so that it can still be used for analysis, but at a fraction of
 //! the storage cost of raw data.
 
+#![cfg(feature = "experimental-apis")]
+#![doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
@@ -692,12 +694,14 @@ where
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Rollup Rollup API"]
 pub enum RollupRollupParts<'b> {
     #[doc = "Index and RollupIndex"]
     IndexRollupIndex(&'b str, &'b str),
 }
+#[cfg(feature = "experimental-apis")]
 impl<'b> RollupRollupParts<'b> {
     #[doc = "Builds a relative URL path to the Rollup Rollup API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -719,7 +723,9 @@ impl<'b> RollupRollupParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Rollup Rollup API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/rollup-api.html)\n\nRollup an index"]
+#[doc = "Builder for the [Rollup Rollup API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/xpack-rollup.html)\n\nRollup an index"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
 pub struct RollupRollup<'a, 'b, B> {
     transport: &'a Transport,
@@ -733,6 +739,7 @@ pub struct RollupRollup<'a, 'b, B> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
+#[cfg(feature = "experimental-apis")]
 impl<'a, 'b, B> RollupRollup<'a, 'b, B>
 where
     B: Body,
@@ -1342,9 +1349,12 @@ where
     }
 }
 #[doc = "Namespace client for Rollup APIs"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 pub struct Rollup<'a> {
     transport: &'a Transport,
 }
+#[cfg(feature = "experimental-apis")]
 impl<'a> Rollup<'a> {
     #[doc = "Creates a new instance of [Rollup]"]
     pub fn new(transport: &'a Transport) -> Self {
@@ -1389,7 +1399,9 @@ impl<'a> Rollup<'a> {
     pub fn put_job<'b>(&'a self, parts: RollupPutJobParts<'b>) -> RollupPutJob<'a, 'b, ()> {
         RollupPutJob::new(self.transport(), parts)
     }
-    #[doc = "[Rollup Rollup API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/rollup-api.html)\n\nRollup an index"]
+    #[doc = "[Rollup Rollup API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/xpack-rollup.html)\n\nRollup an index"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
     pub fn rollup<'b>(&'a self, parts: RollupRollupParts<'b>) -> RollupRollup<'a, 'b, ()> {
         RollupRollup::new(self.transport(), parts)
     }
@@ -1415,6 +1427,7 @@ impl<'a> Rollup<'a> {
         RollupStopJob::new(self.transport(), parts)
     }
 }
+#[cfg(feature = "experimental-apis")]
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Rollup APIs"]
     pub fn rollup(&self) -> Rollup {
