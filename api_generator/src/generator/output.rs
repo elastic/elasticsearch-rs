@@ -1,4 +1,5 @@
 use super::GeneratedFiles;
+use anyhow::bail;
 use path_slash::*;
 use regex::Regex;
 use std::fs::File;
@@ -14,7 +15,7 @@ pub fn write_file(
     dir: &PathBuf,
     file_name: &str,
     tracker: &mut GeneratedFiles,
-) -> Result<(), failure::Error> {
+) -> anyhow::Result<()> {
     let mut path = dir.clone();
     path.push(PathBuf::from_slash(file_name));
 
@@ -105,7 +106,7 @@ pub fn merge_file(
     dir: &Path,
     file_name: &str,
     tracker: &mut GeneratedFiles,
-) -> Result<(), failure::Error> {
+) -> anyhow::Result<()> {
     let mut path = dir.to_owned();
     path.push(PathBuf::from_slash(file_name));
 
@@ -119,11 +120,11 @@ pub fn merge_file(
 
         if let Some(captures) = START_REGEX.captures(&line) {
             if in_generated_section {
-                return Err(failure::format_err!(
+                bail!(
                     "{}:{} - Previous generated section wasn't closed",
                     file_name,
                     line_no
-                ));
+                );
             }
 
             // Output start marker
@@ -139,20 +140,16 @@ pub fn merge_file(
             if let Some(text) = get_content(section) {
                 output.push_str(&text);
             } else {
-                return Err(failure::format_err!(
+                bail!(
                     "{}:{} - No content found to generate section '{}'",
                     file_name,
                     line_no,
                     section
-                ));
+                );
             }
         } else if END_REGEX.is_match(&line) {
             if !in_generated_section {
-                return Err(failure::format_err!(
-                    "{}:{} - Missing GENERATED-START marker",
-                    file_name,
-                    line_no
-                ));
+                bail!("{}:{} - Missing GENERATED-START marker", file_name, line_no);
             }
 
             // Output end marker
@@ -168,10 +165,10 @@ pub fn merge_file(
     }
 
     if in_generated_section {
-        return Err(failure::format_err!(
+        bail!(
             "{} - Missing GENERATED-END marker at end of file",
             file_name
-        ));
+        );
     }
 
     std::fs::write(&path, output)?;
@@ -188,7 +185,7 @@ mod test {
     use std::fs;
 
     #[test]
-    pub fn nominal_merge() -> Result<(), failure::Error> {
+    pub fn nominal_merge() -> anyhow::Result<()> {
         let dir = tempfile::tempdir()?;
         let dir_path = dir.path();
         let file_name = "test_merge.rs";
@@ -252,7 +249,7 @@ Contents of section bar
     }
 
     #[test]
-    fn unbalanced_sections() -> Result<(), failure::Error> {
+    fn unbalanced_sections() -> anyhow::Result<()> {
         merge_should_fail(
             r#"
 // GENERATED-BEGIN:foo
@@ -283,7 +280,7 @@ Contents of section bar
         Ok(())
     }
 
-    fn merge_should_fail(input: &str) -> Result<(), failure::Error> {
+    fn merge_should_fail(input: &str) -> anyhow::Result<()> {
         let dir = tempfile::tempdir()?;
         let dir_path = dir.path();
         let file_name = "test_merge.rs";

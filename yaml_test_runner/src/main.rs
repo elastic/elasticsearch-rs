@@ -28,19 +28,19 @@ extern crate quote;
 
 extern crate simple_logger;
 
+use anyhow::bail;
 use clap::{App, Arg};
 use log::LevelFilter;
 use serde_json::Value;
 use std::{fs, path::PathBuf, process::exit};
 
 mod generator;
-mod github;
 mod regex;
 mod step;
 
 use generator::TestSuite;
 
-fn main() -> Result<(), failure::Error> {
+fn main() -> anyhow::Result<()> {
     simple_logger::SimpleLogger::new()
         .with_level(LevelFilter::Info)
         .init()
@@ -58,58 +58,41 @@ fn main() -> Result<(), failure::Error> {
         .get_matches();
 
     let url = matches.value_of("url").expect("missing 'url' argument");
-    let (branch, suite, version) = match branch_suite_and_version_from_elasticsearch(url) {
-        Ok(v) => v,
-        Err(e) => {
-            error!(
-                "Problem getting values from Elasticsearch at {}. {:?}",
-                url, e
-            );
-            exit(1);
-        }
-    };
+    let (branch, suite, version, sem_version) =
+        match branch_suite_and_version_from_elasticsearch(url) {
+            Ok(v) => v,
+            Err(e) => {
+                error!(
+                    "Problem getting values from Elasticsearch at {}. {:?}",
+                    url, e
+                );
+                exit(1);
+            }
+        };
 
-    info!("Using version {}", &version.to_string());
+    info!("Using version {}", &version);
     info!("Using branch {}", &branch);
     info!("Using test_suite {:?}", &suite);
 
-    let rest_specs_dir = PathBuf::from("./api_generator/rest_specs");
+    let stack_version = std::env::var("STACK_VERSION").expect("Missing STACK_VERSION env var");
 
-    if !rest_specs_dir.exists()
-        || rest_specs_dir
-            .read_dir()
-            .map(|mut e| e.next().is_none())
-            .unwrap_or_else(|_| true)
-    {
-        error!(
-            "No rest specs found at {}. Run api_generator project to download rest specs",
-            rest_specs_dir.to_str().unwrap()
+    if version != stack_version {
+        bail!(
+            "ES server version {} is inconsistent with STACK_VERSION={}",
+            version,
+            stack_version
         );
-        exit(1);
     }
 
-    let last_downloaded_rest_spec_branch = {
-        let mut p = rest_specs_dir.clone();
-        p.push("last_downloaded_version");
-        p
-    };
-
-    if !last_downloaded_rest_spec_branch.exists() {
-        error!(
-            "No last downloaded rest version found at {}.",
-            last_downloaded_rest_spec_branch.to_str().unwrap()
-        );
-        exit(1);
+    let rest_specs_dir = PathBuf::from(format!("./checkout/{}/rest-api-spec/api", stack_version));
+    if !rest_specs_dir.is_dir() {
+        bail!("No specs found at {:?}", rest_specs_dir);
     }
-    let rest_spec_version = fs::read_to_string(last_downloaded_rest_spec_branch)?;
-    info!("Using rest specs from {}", &rest_spec_version);
 
-    let download_dir = PathBuf::from(format!("./{}/yaml", env!("CARGO_PKG_NAME")));
+    let download_dir = PathBuf::from(format!("./checkout/{}/rest-api-spec/test", stack_version));
     let generated_dir = PathBuf::from(format!("./{}/tests", env!("CARGO_PKG_NAME")));
 
-    github::download_test_suites(&branch, &download_dir)?;
-
-    let api = api_generator::generator::read_api(&branch, &rest_specs_dir)?;
+    let api = api_generator::generator::read_api(&rest_specs_dir)?;
 
     // delete everything under the generated_dir except common dir
     if generated_dir.exists() {
@@ -132,7 +115,7 @@ fn main() -> Result<(), failure::Error> {
     generator::generate_tests_from_yaml(
         &api,
         &suite,
-        &version,
+        &sem_version,
         &download_dir,
         &download_dir,
         &generated_dir,
@@ -143,7 +126,7 @@ fn main() -> Result<(), failure::Error> {
 
 fn branch_suite_and_version_from_elasticsearch(
     url: &str,
-) -> Result<(String, TestSuite, semver::Version), failure::Error> {
+) -> Result<(String, TestSuite, String, semver::Version), failure::Error> {
     let client = reqwest::ClientBuilder::new()
         .danger_accept_invalid_certs(true)
         .build()?;
@@ -161,10 +144,10 @@ fn branch_suite_and_version_from_elasticsearch(
     // a version with a prerelease to match against predicates, if at least one predicate
     // has a prerelease. See
     // https://github.com/steveklabnik/semver/blob/afa5fc853cb4d6d2b1329579e5528f86f3b550f9/src/version_req.rs#L319-L331
-    let version = json["version"]["number"]
-        .as_str()
-        .unwrap()
-        .trim_end_matches(|c: char| c.is_alphabetic() || c == '-');
+    let version = json["version"]["number"].as_str().unwrap().to_string();
 
-    Ok((branch, suite, semver::Version::parse(version)?))
+    let sem_version =
+        semver::Version::parse(version.trim_end_matches(|c: char| c.is_alphabetic() || c == '-'))?;
+
+    Ok((branch, suite, version, sem_version))
 }
