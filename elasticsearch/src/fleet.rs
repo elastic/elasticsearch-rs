@@ -24,6 +24,8 @@
 // cargo make generate-api
 // -----------------------------------------------
 
+//! [The Fleet APIs](https://www.elastic.co/guide/en/elasticsearch/reference/master/fleet-apis.html) support the use of Elasticsearch as a data store for internal agent and action data. These APIs are experimental and for internal use by Fleet only.
+
 #![cfg(feature = "experimental-apis")]
 #![doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #![allow(unused_imports)]
