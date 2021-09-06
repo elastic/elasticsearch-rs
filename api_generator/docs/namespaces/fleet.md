@@ -1,0 +1,1 @@
+[The Fleet APIs](https://www.elastic.co/guide/en/elasticsearch/reference/master/fleet-apis.html) support the use of Elasticsearch as a data store for internal agent and action data. These APIs are experimental and for internal use by Fleet only.
