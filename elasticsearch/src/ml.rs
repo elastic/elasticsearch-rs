@@ -7754,6 +7754,7 @@ pub struct MlPutTrainedModel<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlPutTrainedModelParts<'b>,
     body: Option<B>,
+    defer_definition_decompression: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -7774,6 +7775,7 @@ where
             parts,
             headers,
             body: None,
+            defer_definition_decompression: None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -7791,6 +7793,7 @@ where
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
+            defer_definition_decompression: self.defer_definition_decompression,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             headers: self.headers,
@@ -7799,6 +7802,11 @@ where
             request_timeout: self.request_timeout,
             source: self.source,
         }
+    }
+    #[doc = "If set to `true` and a `compressed_definition` is provided, the request defers definition decompression and skips relevant validations."]
+    pub fn defer_definition_decompression(mut self, defer_definition_decompression: bool) -> Self {
+        self.defer_definition_decompression = Some(defer_definition_decompression);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -7845,6 +7853,7 @@ where
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                defer_definition_decompression: Option<bool>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -7853,6 +7862,7 @@ where
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
+                defer_definition_decompression: self.defer_definition_decompression,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
