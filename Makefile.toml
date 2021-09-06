@@ -27,7 +27,7 @@ env = { "ELASTICSEARCH_URL" = "https://elastic:changeme@localhost:9200" }
 
 [tasks.download-specs]
 category = "Elasticsearch"
-description = '''Donwload Rest API specs and YAML tests'''
+description = '''Download Rest API specs and YAML tests'''
 private = true
 command = "cargo"
 # cargo-make insists on installing cargo-xtask and ignores .cargo/config.toml
