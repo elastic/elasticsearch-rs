@@ -84,8 +84,10 @@ pub fn download(commit_hash: Option<String>, url: Option<String>) -> anyhow::Res
 
     let specs_url = project
         .packages
-        .get(&format!("rest-resources-zip-{}.zip", *STACK_VERSION))
+        .iter()
+        .find(|(name, _)| name.starts_with("rest-resources-zip-"))
         .with_context(|| "Package 'rest-resources-zip' not found")?
+        .1
         .url
         .clone();
 

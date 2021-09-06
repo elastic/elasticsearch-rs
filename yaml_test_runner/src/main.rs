@@ -76,7 +76,13 @@ fn main() -> anyhow::Result<()> {
 
     let stack_version = std::env::var("STACK_VERSION").expect("Missing STACK_VERSION env var");
 
-    if version != stack_version {
+    let valid_version = if let Some(pos) = stack_version.find(".x-SNAPSHOT") {
+        &version[0..pos] == &stack_version[0..pos] && version.ends_with("-SNAPSHOT")
+    } else {
+        version != stack_version
+    };
+
+    if !valid_version {
         bail!(
             "ES server version {} is inconsistent with STACK_VERSION={}",
             version,
