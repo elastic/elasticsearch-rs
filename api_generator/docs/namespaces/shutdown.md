@@ -1,0 +1,1 @@
+The [shutdown APIs](https://www.elastic.co/guide/en/elasticsearch/reference/master/node-lifecycle-api.html) allows preparing nodes for temporary or permanent shutdown, monitor the shutdown status, and enable a previously shut-down node to resume normal operations.
