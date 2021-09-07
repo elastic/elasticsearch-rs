@@ -77,7 +77,7 @@ impl<'b> SearchableSnapshotsCacheStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Searchable Snapshots Cache Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/searchable-snapshots-apis.html)\n\nRetrieve node-level cache statistics about searchable snapshots."]
+#[doc = "Builder for the [Searchable Snapshots Cache Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.14/searchable-snapshots-apis.html)\n\nRetrieve node-level cache statistics about searchable snapshots."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -206,7 +206,7 @@ impl<'b> SearchableSnapshotsClearCacheParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Searchable Snapshots Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/searchable-snapshots-apis.html)\n\nClear the cache of searchable snapshots."]
+#[doc = "Builder for the [Searchable Snapshots Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/7.14/searchable-snapshots-apis.html)\n\nClear the cache of searchable snapshots."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -402,7 +402,7 @@ impl<'b> SearchableSnapshotsMountParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Searchable Snapshots Mount API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/searchable-snapshots-api-mount-snapshot.html)\n\nMount a snapshot as a searchable index."]
+#[doc = "Builder for the [Searchable Snapshots Mount API](https://www.elastic.co/guide/en/elasticsearch/reference/7.14/searchable-snapshots-api-mount-snapshot.html)\n\nMount a snapshot as a searchable index."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -580,7 +580,7 @@ impl<'b> SearchableSnapshotsRepositoryStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Searchable Snapshots Repository Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/searchable-snapshots-apis.html)\n\nDEPRECATED: This API is replaced by the Repositories Metering API."]
+#[doc = "Builder for the [Searchable Snapshots Repository Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.14/searchable-snapshots-apis.html)\n\nDEPRECATED: This API is replaced by the Repositories Metering API."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -712,7 +712,7 @@ impl<'b> SearchableSnapshotsStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Searchable Snapshots Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/searchable-snapshots-apis.html)\n\nRetrieve shard-level statistics about searchable snapshots."]
+#[doc = "Builder for the [Searchable Snapshots Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.14/searchable-snapshots-apis.html)\n\nRetrieve shard-level statistics about searchable snapshots."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -837,7 +837,7 @@ impl<'a> SearchableSnapshots<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Searchable Snapshots Cache Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/searchable-snapshots-apis.html)\n\nRetrieve node-level cache statistics about searchable snapshots."]
+    #[doc = "[Searchable Snapshots Cache Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.14/searchable-snapshots-apis.html)\n\nRetrieve node-level cache statistics about searchable snapshots."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn cache_stats<'b>(
@@ -846,7 +846,7 @@ impl<'a> SearchableSnapshots<'a> {
     ) -> SearchableSnapshotsCacheStats<'a, 'b> {
         SearchableSnapshotsCacheStats::new(self.transport(), parts)
     }
-    #[doc = "[Searchable Snapshots Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/searchable-snapshots-apis.html)\n\nClear the cache of searchable snapshots."]
+    #[doc = "[Searchable Snapshots Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/7.14/searchable-snapshots-apis.html)\n\nClear the cache of searchable snapshots."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn clear_cache<'b>(
@@ -855,7 +855,7 @@ impl<'a> SearchableSnapshots<'a> {
     ) -> SearchableSnapshotsClearCache<'a, 'b, ()> {
         SearchableSnapshotsClearCache::new(self.transport(), parts)
     }
-    #[doc = "[Searchable Snapshots Mount API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/searchable-snapshots-api-mount-snapshot.html)\n\nMount a snapshot as a searchable index."]
+    #[doc = "[Searchable Snapshots Mount API](https://www.elastic.co/guide/en/elasticsearch/reference/7.14/searchable-snapshots-api-mount-snapshot.html)\n\nMount a snapshot as a searchable index."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn mount<'b>(
@@ -864,7 +864,7 @@ impl<'a> SearchableSnapshots<'a> {
     ) -> SearchableSnapshotsMount<'a, 'b, ()> {
         SearchableSnapshotsMount::new(self.transport(), parts)
     }
-    #[doc = "[Searchable Snapshots Repository Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/searchable-snapshots-apis.html)\n\nDEPRECATED: This API is replaced by the Repositories Metering API."]
+    #[doc = "[Searchable Snapshots Repository Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.14/searchable-snapshots-apis.html)\n\nDEPRECATED: This API is replaced by the Repositories Metering API."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn repository_stats<'b>(
@@ -873,7 +873,7 @@ impl<'a> SearchableSnapshots<'a> {
     ) -> SearchableSnapshotsRepositoryStats<'a, 'b> {
         SearchableSnapshotsRepositoryStats::new(self.transport(), parts)
     }
-    #[doc = "[Searchable Snapshots Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/searchable-snapshots-apis.html)\n\nRetrieve shard-level statistics about searchable snapshots."]
+    #[doc = "[Searchable Snapshots Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.14/searchable-snapshots-apis.html)\n\nRetrieve shard-level statistics about searchable snapshots."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn stats<'b>(

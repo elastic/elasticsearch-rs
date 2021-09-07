@@ -59,7 +59,7 @@ impl TextStructureFindStructureParts {
         }
     }
 }
-#[doc = "Builder for the [Text Structure Find Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/find-structure.html)\n\nFinds the structure of a text file. The text file must contain data that is suitable to be ingested into Elasticsearch."]
+#[doc = "Builder for the [Text Structure Find Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/7.14/find-structure.html)\n\nFinds the structure of a text file. The text file must contain data that is suitable to be ingested into Elasticsearch."]
 #[derive(Clone, Debug)]
 pub struct TextStructureFindStructure<'a, 'b, B> {
     transport: &'a Transport,
@@ -333,7 +333,7 @@ impl<'a> TextStructure<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Text Structure Find Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/find-structure.html)\n\nFinds the structure of a text file. The text file must contain data that is suitable to be ingested into Elasticsearch."]
+    #[doc = "[Text Structure Find Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/7.14/find-structure.html)\n\nFinds the structure of a text file. The text file must contain data that is suitable to be ingested into Elasticsearch."]
     pub fn find_structure<'b>(&'a self) -> TextStructureFindStructure<'a, 'b, ()> {
         TextStructureFindStructure::new(self.transport())
     }
