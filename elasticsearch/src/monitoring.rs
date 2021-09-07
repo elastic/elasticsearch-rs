@@ -73,7 +73,7 @@ impl<'b> MonitoringBulkParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/monitor-elasticsearch-cluster.html)\n\nUsed by the monitoring features to send monitoring data."]
+#[doc = "Builder for the [Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/monitor-elasticsearch-cluster.html)\n\nUsed by the monitoring features to send monitoring data."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -242,7 +242,7 @@ impl<'a> Monitoring<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/monitor-elasticsearch-cluster.html)\n\nUsed by the monitoring features to send monitoring data."]
+    #[doc = "[Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/monitor-elasticsearch-cluster.html)\n\nUsed by the monitoring features to send monitoring data."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn bulk<'b>(&'a self, parts: MonitoringBulkParts<'b>) -> MonitoringBulk<'a, 'b, ()> {

@@ -71,7 +71,7 @@ impl<'b> NodesHotThreadsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
+#[doc = "Builder for the [Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
 #[derive(Clone, Debug)]
 pub struct NodesHotThreads<'a, 'b> {
     transport: &'a Transport,
@@ -277,7 +277,7 @@ impl<'b> NodesInfoParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
+#[doc = "Builder for the [Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
 #[derive(Clone, Debug)]
 pub struct NodesInfo<'a, 'b> {
     transport: &'a Transport,
@@ -419,7 +419,7 @@ impl<'b> NodesReloadSecureSettingsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
+#[doc = "Builder for the [Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
 #[derive(Clone, Debug)]
 pub struct NodesReloadSecureSettings<'a, 'b, B> {
     transport: &'a Transport,
@@ -648,7 +648,7 @@ impl<'b> NodesStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
+#[doc = "Builder for the [Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
 #[derive(Clone, Debug)]
 pub struct NodesStats<'a, 'b> {
     transport: &'a Transport,
@@ -662,6 +662,7 @@ pub struct NodesStats<'a, 'b> {
     headers: HeaderMap,
     human: Option<bool>,
     include_segment_file_sizes: Option<bool>,
+    include_unloaded_segments: Option<bool>,
     level: Option<Level>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
@@ -685,6 +686,7 @@ impl<'a, 'b> NodesStats<'a, 'b> {
             groups: None,
             human: None,
             include_segment_file_sizes: None,
+            include_unloaded_segments: None,
             level: None,
             pretty: None,
             request_timeout: None,
@@ -736,6 +738,11 @@ impl<'a, 'b> NodesStats<'a, 'b> {
     #[doc = "Whether to report the aggregated disk usage of each one of the Lucene index files (only applies if segment stats are requested)"]
     pub fn include_segment_file_sizes(mut self, include_segment_file_sizes: bool) -> Self {
         self.include_segment_file_sizes = Some(include_segment_file_sizes);
+        self
+    }
+    #[doc = "If set to true segment stats will include stats for segments that are not currently loaded into memory"]
+    pub fn include_unloaded_segments(mut self, include_unloaded_segments: bool) -> Self {
+        self.include_unloaded_segments = Some(include_unloaded_segments);
         self
     }
     #[doc = "Return indices stats aggregated at index, node or shard level"]
@@ -790,6 +797,7 @@ impl<'a, 'b> NodesStats<'a, 'b> {
                 groups: Option<bool>,
                 human: Option<bool>,
                 include_segment_file_sizes: Option<bool>,
+                include_unloaded_segments: Option<bool>,
                 level: Option<Level>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
@@ -806,6 +814,7 @@ impl<'a, 'b> NodesStats<'a, 'b> {
                 groups: self.groups,
                 human: self.human,
                 include_segment_file_sizes: self.include_segment_file_sizes,
+                include_unloaded_segments: self.include_unloaded_segments,
                 level: self.level,
                 pretty: self.pretty,
                 source: self.source,
@@ -876,7 +885,7 @@ impl<'b> NodesUsageParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
+#[doc = "Builder for the [Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
 #[derive(Clone, Debug)]
 pub struct NodesUsage<'a, 'b> {
     transport: &'a Transport,
@@ -995,26 +1004,26 @@ impl<'a> Nodes<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
+    #[doc = "[Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
     pub fn hot_threads<'b>(&'a self, parts: NodesHotThreadsParts<'b>) -> NodesHotThreads<'a, 'b> {
         NodesHotThreads::new(self.transport(), parts)
     }
-    #[doc = "[Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
+    #[doc = "[Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
     pub fn info<'b>(&'a self, parts: NodesInfoParts<'b>) -> NodesInfo<'a, 'b> {
         NodesInfo::new(self.transport(), parts)
     }
-    #[doc = "[Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
+    #[doc = "[Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
     pub fn reload_secure_settings<'b>(
         &'a self,
         parts: NodesReloadSecureSettingsParts<'b>,
     ) -> NodesReloadSecureSettings<'a, 'b, ()> {
         NodesReloadSecureSettings::new(self.transport(), parts)
     }
-    #[doc = "[Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
+    #[doc = "[Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
     pub fn stats<'b>(&'a self, parts: NodesStatsParts<'b>) -> NodesStats<'a, 'b> {
         NodesStats::new(self.transport(), parts)
     }
-    #[doc = "[Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
+    #[doc = "[Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
     pub fn usage<'b>(&'a self, parts: NodesUsageParts<'b>) -> NodesUsage<'a, 'b> {
         NodesUsage::new(self.transport(), parts)
     }

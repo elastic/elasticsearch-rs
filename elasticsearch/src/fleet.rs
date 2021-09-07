@@ -24,10 +24,10 @@
 // cargo make generate-api
 // -----------------------------------------------
 
-//! Migration APIs
-//!
-//! [Simplify upgrading X-Pack indices from one version to another](https://www.elastic.co/guide/en/elasticsearch/reference/master/migration-api.html).
+//! [The Fleet APIs](https://www.elastic.co/guide/en/elasticsearch/reference/master/fleet-apis.html) support the use of Elasticsearch as a data store for internal agent and action data. These APIs are experimental and for internal use by Fleet only.
 
+#![cfg(feature = "experimental-apis")]
+#![doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
@@ -44,36 +44,38 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Migration Deprecations API"]
-pub enum MigrationDeprecationsParts<'b> {
-    #[doc = "No parts"]
-    None,
+#[doc = "API parts for the Fleet Global Checkpoints API"]
+pub enum FleetGlobalCheckpointsParts<'b> {
     #[doc = "Index"]
     Index(&'b str),
 }
-impl<'b> MigrationDeprecationsParts<'b> {
-    #[doc = "Builds a relative URL path to the Migration Deprecations API"]
+#[cfg(feature = "experimental-apis")]
+impl<'b> FleetGlobalCheckpointsParts<'b> {
+    #[doc = "Builds a relative URL path to the Fleet Global Checkpoints API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MigrationDeprecationsParts::None => "/_migration/deprecations".into(),
-            MigrationDeprecationsParts::Index(ref index) => {
+            FleetGlobalCheckpointsParts::Index(ref index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(25usize + encoded_index.len());
+                let mut p = String::with_capacity(27usize + encoded_index.len());
                 p.push_str("/");
                 p.push_str(encoded_index.as_ref());
-                p.push_str("/_migration/deprecations");
+                p.push_str("/_fleet/global_checkpoints");
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Migration Deprecations API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/migration-api-deprecation.html)\n\nRetrieves information about different cluster, node, and index level settings that use deprecated features that will be removed or changed in the next major version."]
+#[doc = "Builder for the Fleet Global Checkpoints API\n\nReturns the current global checkpoints for an index. This API is design for internal use by the fleet server project."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
-pub struct MigrationDeprecations<'a, 'b> {
+pub struct FleetGlobalCheckpoints<'a, 'b> {
     transport: &'a Transport,
-    parts: MigrationDeprecationsParts<'b>,
+    parts: FleetGlobalCheckpointsParts<'b>,
+    checkpoints: Option<&'b [&'b str]>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -81,22 +83,35 @@ pub struct MigrationDeprecations<'a, 'b> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
+    wait_for_advance: Option<bool>,
+    wait_for_index: Option<bool>,
 }
-impl<'a, 'b> MigrationDeprecations<'a, 'b> {
-    #[doc = "Creates a new instance of [MigrationDeprecations] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: MigrationDeprecationsParts<'b>) -> Self {
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> FleetGlobalCheckpoints<'a, 'b> {
+    #[doc = "Creates a new instance of [FleetGlobalCheckpoints] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: FleetGlobalCheckpointsParts<'b>) -> Self {
         let headers = HeaderMap::new();
-        MigrationDeprecations {
+        FleetGlobalCheckpoints {
             transport,
             parts,
             headers,
+            checkpoints: None,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
+            wait_for_advance: None,
+            wait_for_index: None,
         }
+    }
+    #[doc = "Comma separated list of checkpoints"]
+    pub fn checkpoints(mut self, checkpoints: &'b [&'b str]) -> Self {
+        self.checkpoints = Some(checkpoints);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -133,7 +148,22 @@ impl<'a, 'b> MigrationDeprecations<'a, 'b> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous call to the Migration Deprecations API that can be awaited"]
+    #[doc = "Timeout to wait for global checkpoint to advance"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
+    #[doc = "Whether to wait for the global checkpoint to advance past the specified current checkpoints"]
+    pub fn wait_for_advance(mut self, wait_for_advance: bool) -> Self {
+        self.wait_for_advance = Some(wait_for_advance);
+        self
+    }
+    #[doc = "Whether to wait for the target index to exist and all primary shards be active"]
+    pub fn wait_for_index(mut self, wait_for_index: bool) -> Self {
+        self.wait_for_index = Some(wait_for_index);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Fleet Global Checkpoints API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
@@ -143,19 +173,28 @@ impl<'a, 'b> MigrationDeprecations<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                checkpoints: Option<&'b [&'b str]>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
+                wait_for_advance: Option<bool>,
+                wait_for_index: Option<bool>,
             }
             let query_params = QueryParams {
+                checkpoints: self.checkpoints,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
+                wait_for_advance: self.wait_for_advance,
+                wait_for_index: self.wait_for_index,
             };
             Some(query_params)
         };
@@ -167,29 +206,35 @@ impl<'a, 'b> MigrationDeprecations<'a, 'b> {
         Ok(response)
     }
 }
-#[doc = "Namespace client for Migration APIs"]
-pub struct Migration<'a> {
+#[doc = "Namespace client for Fleet APIs"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+pub struct Fleet<'a> {
     transport: &'a Transport,
 }
-impl<'a> Migration<'a> {
-    #[doc = "Creates a new instance of [Migration]"]
+#[cfg(feature = "experimental-apis")]
+impl<'a> Fleet<'a> {
+    #[doc = "Creates a new instance of [Fleet]"]
     pub fn new(transport: &'a Transport) -> Self {
         Self { transport }
     }
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Migration Deprecations API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/migration-api-deprecation.html)\n\nRetrieves information about different cluster, node, and index level settings that use deprecated features that will be removed or changed in the next major version."]
-    pub fn deprecations<'b>(
+    #[doc = "Fleet Global Checkpoints API\n\nReturns the current global checkpoints for an index. This API is design for internal use by the fleet server project."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn global_checkpoints<'b>(
         &'a self,
-        parts: MigrationDeprecationsParts<'b>,
-    ) -> MigrationDeprecations<'a, 'b> {
-        MigrationDeprecations::new(self.transport(), parts)
+        parts: FleetGlobalCheckpointsParts<'b>,
+    ) -> FleetGlobalCheckpoints<'a, 'b> {
+        FleetGlobalCheckpoints::new(self.transport(), parts)
     }
 }
+#[cfg(feature = "experimental-apis")]
 impl Elasticsearch {
-    #[doc = "Creates a namespace client for Migration APIs"]
-    pub fn migration(&self) -> Migration {
-        Migration::new(self.transport())
+    #[doc = "Creates a namespace client for Fleet APIs"]
+    pub fn fleet(&self) -> Fleet {
+        Fleet::new(self.transport())
     }
 }

@@ -82,8 +82,6 @@ pub enum ExpandWildcards {
     All,
 }
 #[doc = "Optional parameter to specify the high level file format"]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Format {
     #[serde(rename = "ndjson")]
