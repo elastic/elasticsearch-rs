@@ -45,6 +45,267 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Nodes Clear Metering Archive API"]
+pub enum NodesClearMeteringArchiveParts<'b> {
+    #[doc = "NodeId and MaxArchiveVersion"]
+    NodeIdMaxArchiveVersion(&'b [&'b str], i64),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> NodesClearMeteringArchiveParts<'b> {
+    #[doc = "Builds a relative URL path to the Nodes Clear Metering Archive API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            NodesClearMeteringArchiveParts::NodeIdMaxArchiveVersion(
+                ref node_id,
+                ref max_archive_version,
+            ) => {
+                let node_id_str = node_id.join(",");
+                let max_archive_version_str = max_archive_version.to_string();
+                let encoded_node_id: Cow<str> =
+                    percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_max_archive_version: Cow<str> =
+                    percent_encode(max_archive_version_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    32usize + encoded_node_id.len() + encoded_max_archive_version.len(),
+                );
+                p.push_str("/_nodes/");
+                p.push_str(encoded_node_id.as_ref());
+                p.push_str("/_repositories_metering/");
+                p.push_str(encoded_max_archive_version.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Nodes Clear Metering Archive API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/clear-repositories-metering-archive-api.html)\n\nRemoves the archived repositories metering information present in the cluster."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct NodesClearMeteringArchive<'a, 'b> {
+    transport: &'a Transport,
+    parts: NodesClearMeteringArchiveParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> NodesClearMeteringArchive<'a, 'b> {
+    #[doc = "Creates a new instance of [NodesClearMeteringArchive] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: NodesClearMeteringArchiveParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        NodesClearMeteringArchive {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Nodes Clear Metering Archive API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Nodes Get Metering Info API"]
+pub enum NodesGetMeteringInfoParts<'b> {
+    #[doc = "NodeId"]
+    NodeId(&'b [&'b str]),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> NodesGetMeteringInfoParts<'b> {
+    #[doc = "Builds a relative URL path to the Nodes Get Metering Info API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            NodesGetMeteringInfoParts::NodeId(ref node_id) => {
+                let node_id_str = node_id.join(",");
+                let encoded_node_id: Cow<str> =
+                    percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(31usize + encoded_node_id.len());
+                p.push_str("/_nodes/");
+                p.push_str(encoded_node_id.as_ref());
+                p.push_str("/_repositories_metering");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Nodes Get Metering Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/get-repositories-metering-api.html)\n\nReturns cluster repositories metering information."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct NodesGetMeteringInfo<'a, 'b> {
+    transport: &'a Transport,
+    parts: NodesGetMeteringInfoParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> NodesGetMeteringInfo<'a, 'b> {
+    #[doc = "Creates a new instance of [NodesGetMeteringInfo] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: NodesGetMeteringInfoParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        NodesGetMeteringInfo {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Nodes Get Metering Info API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Nodes Hot Threads API"]
 pub enum NodesHotThreadsParts<'b> {
@@ -71,7 +332,7 @@ impl<'b> NodesHotThreadsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
+#[doc = "Builder for the [Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
 #[derive(Clone, Debug)]
 pub struct NodesHotThreads<'a, 'b> {
     transport: &'a Transport,
@@ -277,7 +538,7 @@ impl<'b> NodesInfoParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
+#[doc = "Builder for the [Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
 #[derive(Clone, Debug)]
 pub struct NodesInfo<'a, 'b> {
     transport: &'a Transport,
@@ -419,7 +680,7 @@ impl<'b> NodesReloadSecureSettingsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
+#[doc = "Builder for the [Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
 #[derive(Clone, Debug)]
 pub struct NodesReloadSecureSettings<'a, 'b, B> {
     transport: &'a Transport,
@@ -648,7 +909,7 @@ impl<'b> NodesStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
+#[doc = "Builder for the [Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
 #[derive(Clone, Debug)]
 pub struct NodesStats<'a, 'b> {
     transport: &'a Transport,
@@ -662,6 +923,7 @@ pub struct NodesStats<'a, 'b> {
     headers: HeaderMap,
     human: Option<bool>,
     include_segment_file_sizes: Option<bool>,
+    include_unloaded_segments: Option<bool>,
     level: Option<Level>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
@@ -685,6 +947,7 @@ impl<'a, 'b> NodesStats<'a, 'b> {
             groups: None,
             human: None,
             include_segment_file_sizes: None,
+            include_unloaded_segments: None,
             level: None,
             pretty: None,
             request_timeout: None,
@@ -736,6 +999,11 @@ impl<'a, 'b> NodesStats<'a, 'b> {
     #[doc = "Whether to report the aggregated disk usage of each one of the Lucene index files (only applies if segment stats are requested)"]
     pub fn include_segment_file_sizes(mut self, include_segment_file_sizes: bool) -> Self {
         self.include_segment_file_sizes = Some(include_segment_file_sizes);
+        self
+    }
+    #[doc = "If set to true segment stats will include stats for segments that are not currently loaded into memory"]
+    pub fn include_unloaded_segments(mut self, include_unloaded_segments: bool) -> Self {
+        self.include_unloaded_segments = Some(include_unloaded_segments);
         self
     }
     #[doc = "Return indices stats aggregated at index, node or shard level"]
@@ -790,6 +1058,7 @@ impl<'a, 'b> NodesStats<'a, 'b> {
                 groups: Option<bool>,
                 human: Option<bool>,
                 include_segment_file_sizes: Option<bool>,
+                include_unloaded_segments: Option<bool>,
                 level: Option<Level>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
@@ -806,6 +1075,7 @@ impl<'a, 'b> NodesStats<'a, 'b> {
                 groups: self.groups,
                 human: self.human,
                 include_segment_file_sizes: self.include_segment_file_sizes,
+                include_unloaded_segments: self.include_unloaded_segments,
                 level: self.level,
                 pretty: self.pretty,
                 source: self.source,
@@ -876,7 +1146,7 @@ impl<'b> NodesUsageParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
+#[doc = "Builder for the [Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
 #[derive(Clone, Debug)]
 pub struct NodesUsage<'a, 'b> {
     transport: &'a Transport,
@@ -995,26 +1265,44 @@ impl<'a> Nodes<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
+    #[doc = "[Nodes Clear Metering Archive API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/clear-repositories-metering-archive-api.html)\n\nRemoves the archived repositories metering information present in the cluster."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn clear_metering_archive<'b>(
+        &'a self,
+        parts: NodesClearMeteringArchiveParts<'b>,
+    ) -> NodesClearMeteringArchive<'a, 'b> {
+        NodesClearMeteringArchive::new(self.transport(), parts)
+    }
+    #[doc = "[Nodes Get Metering Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/get-repositories-metering-api.html)\n\nReturns cluster repositories metering information."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn get_metering_info<'b>(
+        &'a self,
+        parts: NodesGetMeteringInfoParts<'b>,
+    ) -> NodesGetMeteringInfo<'a, 'b> {
+        NodesGetMeteringInfo::new(self.transport(), parts)
+    }
+    #[doc = "[Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
     pub fn hot_threads<'b>(&'a self, parts: NodesHotThreadsParts<'b>) -> NodesHotThreads<'a, 'b> {
         NodesHotThreads::new(self.transport(), parts)
     }
-    #[doc = "[Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
+    #[doc = "[Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
     pub fn info<'b>(&'a self, parts: NodesInfoParts<'b>) -> NodesInfo<'a, 'b> {
         NodesInfo::new(self.transport(), parts)
     }
-    #[doc = "[Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
+    #[doc = "[Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
     pub fn reload_secure_settings<'b>(
         &'a self,
         parts: NodesReloadSecureSettingsParts<'b>,
     ) -> NodesReloadSecureSettings<'a, 'b, ()> {
         NodesReloadSecureSettings::new(self.transport(), parts)
     }
-    #[doc = "[Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
+    #[doc = "[Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
     pub fn stats<'b>(&'a self, parts: NodesStatsParts<'b>) -> NodesStats<'a, 'b> {
         NodesStats::new(self.transport(), parts)
     }
-    #[doc = "[Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.11/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
+    #[doc = "[Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
     pub fn usage<'b>(&'a self, parts: NodesUsageParts<'b>) -> NodesUsage<'a, 'b> {
         NodesUsage::new(self.transport(), parts)
     }
