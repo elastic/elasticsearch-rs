@@ -16,10 +16,6 @@ tests:
     # Regex contains variable substitutions that the test harness doesn't support yet
     - "Test invalidate api keys"
 
-  platinum/analytics/histogram.yml:
-    # Regex doesn't match. Could be either the leading space or escaping of '['
-    - "Histogram requires values in increasing order"
-
   platinum/data_stream/40_supported_apis.yml:
     # uses number as a key into object. serde_json::Value expects a string key
     - "Verify shard stores api"
@@ -29,10 +25,6 @@ tests:
     - "Resolve index with hidden and closed indices"
     # expected value json["indices"][0]["name"] to match String("test_index1") but was String(".security-7")
     - "Resolve index with indices, aliases, and data streams"
-
-  platinum/license/30_enterprise_license.yml:
-    # Warning "Including [accept_enterprise] in get license requests is deprecated" is no more present
-    - "Installing enterprise license"
 
   platinum/ml/bucket_correlation_agg.yml:
     # Expects true, got 0 (i.e. falsy)
@@ -46,8 +38,12 @@ tests:
     # expected response to be 404 but was 200
     # Missing cleanup as running on a fresh ES server succeeds
     - "Test delete model alias with missing alias"
-    - "Test delete model alias where alias points to different model"
+    #- "Test delete model alias where alias points to different model"
     - "Test update model alias with model id referring to missing model"
+
+  platinum/ml/delete_expired_data.yml:
+    # Warning "this request accesses system indices..." to match is wrong.
+    - "Test delete expired data with job id"
 
   platinum/runtime_fields/20_long.yml:
     # expected value ... to match Number(40.0) but was Number(40)
@@ -79,10 +75,6 @@ tests:
     # the setup, fires quicker than any documents are processed, or the delay of 1m is too high?
     - "Test get continuous transform stats"
 
-  platinum/transform/transforms_update.yml:
-    # In setup: 409 Conflict - Cannot delete transform [airline-transform-stats-continuous] as the task is running.
-    - "Test alias scenarios"
-
   # Test generator currently doesn't handle unsigned long values.
   # We skip all tests as even the setup code will fail to compile.
   platinum/unsigned_long/10_basic.yml:
@@ -97,10 +89,6 @@ tests:
     - "*"
   platinum/unsigned_long/60_collapse.yml:
     - "*"
-
-  platinum/xpack/20_info.yml:
-    # Expects "trial" license but gets "enterprise"
-    - "XPack Info API"
 
   free/cat.aliases/10_basic.yml:
     # this test fails as the regex needs a \n before the ending $
