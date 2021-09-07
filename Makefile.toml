@@ -7,7 +7,7 @@ STACK_VERSION = { value = "7.x-SNAPSHOT", condition = { env_not_set = ["STACK_VE
 # Determines the distribution of docker container used. Either platinum or free
 TEST_SUITE = { value = "free", condition = { env_not_set = ["TEST_SUITE"] }}
 # Set publish flags to dry-run by default, to force user to explicitly define for publishing
-CARGO_MAKE_CARGO_PUBLISH_FLAGS = "--dry-run"
+CARGO_MAKE_CARGO_PUBLISH_FLAGS = { value = "--dry-run", condition = { env_not_set = ["CARGO_MAKE_CARGO_PUBLISH_FLAGS"] }}
 # RUST_BACKTRACE is set to "full" in cargo make's builtin makefiles/stable.toml
 RUST_BACKTRACE = { value = "0", condition = { env_not_set = ["RUST_BACKTRACE"]}}
 
