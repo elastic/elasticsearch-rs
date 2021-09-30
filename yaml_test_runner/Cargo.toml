@@ -1,6 +1,6 @@
 [package]
 name = "yaml_test_runner"
-version = "7.13.0-alpha.1"
+version = "7.15.0-alpha.1"
 publish = false
 edition = "2018"
 authors = ["Elastic and Contributors"]
