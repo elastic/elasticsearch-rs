@@ -17,8 +17,8 @@ function wait_for_container {
     sleep 2;
   done;
 
-  # Always show logs if the container is running, this is very useful both on CI as well as while developing
-  if container_running $1; then
+  # Always show logs, this is very useful both on CI as well as while developing
+  if container_exists $1; then
     docker logs $1
   fi
 

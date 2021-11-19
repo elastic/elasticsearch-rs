@@ -13,6 +13,18 @@ function cleanup_volume {
     (docker volume rm "$1") || true
   fi
 }
+function cleanup_container {
+  if [[ "$(docker container ls -q -f name=$1)" ]]; then
+    echo -e "\033[34;1mINFO:\033[0m Removing container $1\033[0m"
+    (docker container rm --force --volumes "$1") || true
+  fi
+}
+function container_exists {
+  if [[ -n "$(docker container ls -a -q -f name=$1)" ]]; then
+    return 0;
+    else return 1;
+  fi
+}
 function container_running {
   if [[ "$(docker ps -q -f name=$1)" ]]; then
     return 0;
@@ -20,11 +32,8 @@ function container_running {
   fi
 }
 function cleanup_node {
-  if container_running "$1"; then
-    echo -e "\033[34;1mINFO:\033[0m Removing container $1\033[0m"
-    (docker container rm --force --volumes "$1") || true
-  fi
   if [[ -n "$1" ]]; then
+    cleanup_container "$1"
     echo -e "\033[34;1mINFO:\033[0m Removing volume $1-${suffix}-data\033[0m"
     cleanup_volume "$1-${suffix}-data"
   fi
@@ -58,6 +67,7 @@ function cleanup_all_in_network {
     echo -e "\033[34;1mINFO:\033[0m $1 is already deleted\033[0m"
     return 0
   fi
+  # Note that this will only clean up containers attached to the network (i.e. running)
   containers=$(docker network inspect -f '{{ range $key, $value := .Containers }}{{ printf "%s\n" .Name}}{{ end }}' $1)
   while read -r container; do
     cleanup_node "$container"
