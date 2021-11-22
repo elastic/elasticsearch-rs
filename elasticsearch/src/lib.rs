@@ -370,9 +370,6 @@ mod readme {
 #[macro_use]
 extern crate dyn_clone;
 
-#[macro_use]
-extern crate lazy_static;
-
 pub mod auth;
 pub mod cert;
 pub mod http;

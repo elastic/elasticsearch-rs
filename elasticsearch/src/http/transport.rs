@@ -595,7 +595,7 @@ impl Transport {
 
             spawn(move || {
                 // TODO: Log reseed failures
-                let mut rt = tokio::runtime::Runtime::new().expect("Cannot create tokio runtime");
+                let rt = tokio::runtime::Runtime::new().expect("Cannot create tokio runtime");
                 rt.block_on(async {
                     let scheme = connection.url.scheme();
                     let resp = node_request.send().await.unwrap();
@@ -865,7 +865,10 @@ where
             // If refreshing is set to true, do nothing and return true, meaning refreshable is false
             !self
                 .reseeding
-                .compare_and_swap(false, true, Ordering::Relaxed)
+                .compare_exchange(false, true, Ordering::Relaxed, Ordering::Relaxed)
+                // This can be replaced with `.into_ok_or_err` once stable.
+                // https://doc.rust-lang.org/std/result/enum.Result.html#method.into_ok_or_err
+                .unwrap_or(true)
         };
     }
 
@@ -941,11 +944,8 @@ pub mod tests {
         Transport, TransportBuilder,
     };
     use regex::Regex;
+    use std::sync::atomic::Ordering;
     use std::time::{Duration, Instant};
-    use std::{
-        sync::atomic::Ordering,
-        time::{Duration, Instant},
-    };
     use url::Url;
 
     #[test]
@@ -987,19 +987,19 @@ pub mod tests {
     #[test]
     fn test_url_parsing_where_hostname_and_ip_present() {
         let url = Transport::parse_to_url("localhost/127.0.0.1:9200", "http").unwrap();
-        assert_eq!(url.into_string(), "http://localhost:9200/");
+        assert_eq!(url, Url::parse("http://localhost:9200/").unwrap());
     }
 
     #[test]
     fn test_url_parsing_where_only_ip_present() {
         let url = Transport::parse_to_url("127.0.0.1:9200", "http").unwrap();
-        assert_eq!(url.into_string(), "http://127.0.0.1:9200/");
+        assert_eq!(url, Url::parse("http://127.0.0.1:9200/").unwrap());
     }
 
     #[test]
     fn test_url_parsing_where_only_hostname_present() {
         let url = Transport::parse_to_url("localhost:9200", "http").unwrap();
-        assert_eq!(url.into_string(), "http://localhost:9200/");
+        assert_eq!(url, Url::parse("http://localhost:9200/").unwrap());
     }
 
     #[test]
