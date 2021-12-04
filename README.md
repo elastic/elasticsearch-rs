@@ -50,8 +50,8 @@ elasticsearch = "8.0.0-alpha.1"
 The following _optional_ dependencies may also be useful to create requests and read responses
 
 ```toml
-serde = "~1"
-serde_json = "~1"
+serde = "1"
+serde_json = "1"
 ```
 
 ----
