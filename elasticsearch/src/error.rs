@@ -45,7 +45,7 @@ pub struct Error {
 }
 
 #[derive(Debug)]
-enum Kind {
+pub enum Kind {
     /// An error building the client
     Build(BuildError),
 
