@@ -162,11 +162,8 @@ where
     B: Serialize,
 {
     /// Creates a new instance of a [bulk create operation](BulkCreateOperation)
-    pub fn create<S>(id: S, source: B) -> BulkCreateOperation<B>
-    where
-        S: Into<String>,
-    {
-        BulkCreateOperation::new(id, source)
+    pub fn create(source: B) -> BulkCreateOperation<B> {
+        BulkCreateOperation::new(source)
     }
 
     /// Creates a new instance of a [bulk index operation](BulkIndexOperation)
@@ -217,22 +214,28 @@ pub struct BulkCreateOperation<B> {
 
 impl<B> BulkCreateOperation<B> {
     /// Creates a new instance of [BulkCreateOperation]
-    pub fn new<S>(id: S, source: B) -> Self
-    where
-        S: Into<String>,
-    {
+    pub fn new(source: B) -> Self {
         Self {
             operation: BulkOperation {
                 header: BulkHeader {
                     action: BulkAction::Create,
-                    metadata: BulkMetadata {
-                        _id: Some(id.into()),
-                        ..Default::default()
-                    },
+                    metadata: BulkMetadata::default(),
                 },
                 source: Some(source),
             },
         }
+    }
+
+    /// Specify the id for the document
+    ///
+    /// If an id is not specified, Elasticsearch will generate an id for the document
+    /// which will be returned in the response.
+    pub fn id<S>(mut self, id: S) -> Self
+    where
+        S: Into<String>,
+    {
+        self.operation.header.metadata._id = Some(id.into());
+        self
     }
 
     /// Specify the name of the index to perform the bulk update operation against.
@@ -697,7 +700,8 @@ mod tests {
                 .into(),
         );
         ops.push(
-            BulkOperation::create("2", json!({ "bar": "create" }))
+            BulkOperation::create(json!({ "bar": "create" }))
+                .id("2")
                 .pipeline("pipeline")
                 .routing("routing")
                 .index("create_index")
@@ -779,7 +783,7 @@ mod tests {
                 .index("index_doc")
                 .routing("routing"),
         )?;
-        ops.push(BulkOperation::create("2", CreateDoc { bar: "create" }))?;
+        ops.push(BulkOperation::create(CreateDoc { bar: "create" }).id("2"))?;
         ops.push(BulkOperation::update("3", UpdateDoc { baz: "update" }))?;
         ops.push(BulkOperation::<()>::delete("4"))?;
 
