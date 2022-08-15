@@ -306,7 +306,7 @@ impl DocumentationUrlString {
                             .as_str(),
                     );
                 }
-                u.into_string()
+                u.into()
             }
             Err(_) => s,
         }
