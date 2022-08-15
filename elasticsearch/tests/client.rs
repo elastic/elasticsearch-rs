@@ -27,6 +27,7 @@ use elasticsearch::{
         },
         StatusCode,
     },
+    indices::{IndicesCloseParts, IndicesCreateParts, IndicesDeleteParts},
     params::TrackTotalHits,
     SearchParts,
 };
@@ -183,37 +184,40 @@ async fn call_request_timeout_supersedes_global_timeout() {
 #[tokio::test]
 async fn deprecation_warning_headers() -> Result<(), failure::Error> {
     let client = client::create_default();
-    let _ = index_documents(&client).await?;
-    let response = client
-        .search(SearchParts::None)
-        .body(json! {
-            {
-              "aggs": {
-                "test": {
-                  "composite": {
-                    "sources": [
-                      {
-                        "date": {
-                          "date_histogram": {
-                            "field": "date",
-                            "interval": "1d",
-                            "format": "yyyy-MM-dd"
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              },
-              "size": 0
-            }
-        })
+    let index = "deprecation-warnings";
+    let _delete_response = client
+        .indices()
+        .delete(IndicesDeleteParts::Index(&[index]))
         .send()
         .await?;
 
+    let _create_response = client
+        .indices()
+        .create(IndicesCreateParts::Index(index))
+        .send()
+        .await?;
+
+    let response = client
+        .indices()
+        .close(IndicesCloseParts::Index(&[index]))
+        .wait_for_active_shards("index-setting")
+        .send()
+        .await?;
+
+    assert_eq!(response.status_code(), StatusCode::OK);
     let warnings = response.warning_headers().collect::<Vec<&str>>();
     assert!(warnings.len() > 0);
-    assert!(warnings.iter().any(|&w| w.contains("deprecated")));
+    assert!(
+        warnings.iter().any(|&w| w.contains("unsupported")),
+        "warnings= {:?}",
+        &warnings
+    );
+
+    let _delete_response = client
+        .indices()
+        .delete(IndicesDeleteParts::Index(&[index]))
+        .send()
+        .await?;
 
     Ok(())
 }
