@@ -70,6 +70,30 @@ tests:
     # but was String("tutorial.com")
     - "Operator only settings can be set and restored by non-operator user when operator privileges is disabled"
 
+  platinum/spatial/20_geo_centroid.yml:
+    # mixed Body types in bulk call setup
+    - "*"
+
+  platinum/spatial/30_geotile_grid.yml:
+    # mixed Body types in bulk call setup
+    - "*"
+
+  platinum/spatial/40_geohash_grid.yml:
+    # mixed Body types in bulk call setup
+    - "*"
+
+  platinum/spatial/60_geo_line.yml:
+    # mixed Body types in bulk call setup
+    - "*"
+
+  platinum/spatial/80_geohex_grid.yml:
+    # mixed Body types in bulk call setup
+    - "*"
+
+  platinum/spatial/90_geo_grid_query.yml:
+    # mixed Body types in bulk call setup
+    - "*"
+
   platinum/ssl/10_basic.yml:
     # this test returns the CA cert before the cert, so always fails
     - "Test get SSL certificates"
@@ -96,6 +120,14 @@ tests:
   platinum/unsigned_long/50_script_values.yml:
     - "*"
   platinum/unsigned_long/60_collapse.yml:
+    - "*"
+
+  platinum/vector-tile/10_basic.yml:
+    # expected `i32`, found `&str`
+    - "*"
+
+  platinum/vector-tile/20_aggregations.yml:
+    # expected `i32`, found `&str`
     - "*"
 
   platinum/xpack/20_info.yml:
