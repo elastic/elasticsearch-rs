@@ -47,17 +47,17 @@ use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
 #[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Nodes Clear Metering Archive API"]
-pub enum NodesClearMeteringArchiveParts<'b> {
+#[doc = "API parts for the Nodes Clear Repositories Metering Archive API"]
+pub enum NodesClearRepositoriesMeteringArchiveParts<'b> {
     #[doc = "NodeId and MaxArchiveVersion"]
     NodeIdMaxArchiveVersion(&'b [&'b str], i64),
 }
 #[cfg(feature = "experimental-apis")]
-impl<'b> NodesClearMeteringArchiveParts<'b> {
-    #[doc = "Builds a relative URL path to the Nodes Clear Metering Archive API"]
+impl<'b> NodesClearRepositoriesMeteringArchiveParts<'b> {
+    #[doc = "Builds a relative URL path to the Nodes Clear Repositories Metering Archive API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            NodesClearMeteringArchiveParts::NodeIdMaxArchiveVersion(
+            NodesClearRepositoriesMeteringArchiveParts::NodeIdMaxArchiveVersion(
                 ref node_id,
                 ref max_archive_version,
             ) => {
@@ -79,13 +79,13 @@ impl<'b> NodesClearMeteringArchiveParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Nodes Clear Metering Archive API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/clear-repositories-metering-archive-api.html)\n\nRemoves the archived repositories metering information present in the cluster."]
+#[doc = "Builder for the [Nodes Clear Repositories Metering Archive API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/clear-repositories-metering-archive-api.html)\n\nRemoves the archived repositories metering information present in the cluster."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
-pub struct NodesClearMeteringArchive<'a, 'b> {
+pub struct NodesClearRepositoriesMeteringArchive<'a, 'b> {
     transport: &'a Transport,
-    parts: NodesClearMeteringArchiveParts<'b>,
+    parts: NodesClearRepositoriesMeteringArchiveParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -95,11 +95,14 @@ pub struct NodesClearMeteringArchive<'a, 'b> {
     source: Option<&'b str>,
 }
 #[cfg(feature = "experimental-apis")]
-impl<'a, 'b> NodesClearMeteringArchive<'a, 'b> {
-    #[doc = "Creates a new instance of [NodesClearMeteringArchive] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: NodesClearMeteringArchiveParts<'b>) -> Self {
+impl<'a, 'b> NodesClearRepositoriesMeteringArchive<'a, 'b> {
+    #[doc = "Creates a new instance of [NodesClearRepositoriesMeteringArchive] with the specified API parts"]
+    pub fn new(
+        transport: &'a Transport,
+        parts: NodesClearRepositoriesMeteringArchiveParts<'b>,
+    ) -> Self {
         let headers = HeaderMap::new();
-        NodesClearMeteringArchive {
+        NodesClearRepositoriesMeteringArchive {
             transport,
             parts,
             headers,
@@ -146,7 +149,7 @@ impl<'a, 'b> NodesClearMeteringArchive<'a, 'b> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous call to the Nodes Clear Metering Archive API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Nodes Clear Repositories Metering Archive API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Delete;
@@ -182,17 +185,17 @@ impl<'a, 'b> NodesClearMeteringArchive<'a, 'b> {
 }
 #[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Nodes Get Metering Info API"]
-pub enum NodesGetMeteringInfoParts<'b> {
+#[doc = "API parts for the Nodes Get Repositories Metering Info API"]
+pub enum NodesGetRepositoriesMeteringInfoParts<'b> {
     #[doc = "NodeId"]
     NodeId(&'b [&'b str]),
 }
 #[cfg(feature = "experimental-apis")]
-impl<'b> NodesGetMeteringInfoParts<'b> {
-    #[doc = "Builds a relative URL path to the Nodes Get Metering Info API"]
+impl<'b> NodesGetRepositoriesMeteringInfoParts<'b> {
+    #[doc = "Builds a relative URL path to the Nodes Get Repositories Metering Info API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            NodesGetMeteringInfoParts::NodeId(ref node_id) => {
+            NodesGetRepositoriesMeteringInfoParts::NodeId(ref node_id) => {
                 let node_id_str = node_id.join(",");
                 let encoded_node_id: Cow<str> =
                     percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
@@ -205,13 +208,13 @@ impl<'b> NodesGetMeteringInfoParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Nodes Get Metering Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-repositories-metering-api.html)\n\nReturns cluster repositories metering information."]
+#[doc = "Builder for the [Nodes Get Repositories Metering Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-repositories-metering-api.html)\n\nReturns cluster repositories metering information."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
-pub struct NodesGetMeteringInfo<'a, 'b> {
+pub struct NodesGetRepositoriesMeteringInfo<'a, 'b> {
     transport: &'a Transport,
-    parts: NodesGetMeteringInfoParts<'b>,
+    parts: NodesGetRepositoriesMeteringInfoParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -221,11 +224,11 @@ pub struct NodesGetMeteringInfo<'a, 'b> {
     source: Option<&'b str>,
 }
 #[cfg(feature = "experimental-apis")]
-impl<'a, 'b> NodesGetMeteringInfo<'a, 'b> {
-    #[doc = "Creates a new instance of [NodesGetMeteringInfo] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: NodesGetMeteringInfoParts<'b>) -> Self {
+impl<'a, 'b> NodesGetRepositoriesMeteringInfo<'a, 'b> {
+    #[doc = "Creates a new instance of [NodesGetRepositoriesMeteringInfo] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: NodesGetRepositoriesMeteringInfoParts<'b>) -> Self {
         let headers = HeaderMap::new();
-        NodesGetMeteringInfo {
+        NodesGetRepositoriesMeteringInfo {
             transport,
             parts,
             headers,
@@ -272,7 +275,7 @@ impl<'a, 'b> NodesGetMeteringInfo<'a, 'b> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous call to the Nodes Get Metering Info API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Nodes Get Repositories Metering Info API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
@@ -346,6 +349,7 @@ pub struct NodesHotThreads<'a, 'b> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     snapshots: Option<i64>,
+    sort: Option<Sort>,
     source: Option<&'b str>,
     threads: Option<i64>,
     timeout: Option<&'b str>,
@@ -367,6 +371,7 @@ impl<'a, 'b> NodesHotThreads<'a, 'b> {
             pretty: None,
             request_timeout: None,
             snapshots: None,
+            sort: None,
             source: None,
             threads: None,
             timeout: None,
@@ -418,6 +423,11 @@ impl<'a, 'b> NodesHotThreads<'a, 'b> {
         self.snapshots = Some(snapshots);
         self
     }
+    #[doc = "The sort order for 'cpu' type (default: total)"]
+    pub fn sort(mut self, sort: Sort) -> Self {
+        self.sort = Some(sort);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -456,6 +466,7 @@ impl<'a, 'b> NodesHotThreads<'a, 'b> {
                 interval: Option<&'b str>,
                 pretty: Option<bool>,
                 snapshots: Option<i64>,
+                sort: Option<Sort>,
                 source: Option<&'b str>,
                 threads: Option<i64>,
                 timeout: Option<&'b str>,
@@ -470,6 +481,7 @@ impl<'a, 'b> NodesHotThreads<'a, 'b> {
                 interval: self.interval,
                 pretty: self.pretty,
                 snapshots: self.snapshots,
+                sort: self.sort,
                 source: self.source,
                 threads: self.threads,
                 timeout: self.timeout,
@@ -1265,23 +1277,23 @@ impl<'a> Nodes<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Nodes Clear Metering Archive API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/clear-repositories-metering-archive-api.html)\n\nRemoves the archived repositories metering information present in the cluster."]
+    #[doc = "[Nodes Clear Repositories Metering Archive API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/clear-repositories-metering-archive-api.html)\n\nRemoves the archived repositories metering information present in the cluster."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
-    pub fn clear_metering_archive<'b>(
+    pub fn clear_repositories_metering_archive<'b>(
         &'a self,
-        parts: NodesClearMeteringArchiveParts<'b>,
-    ) -> NodesClearMeteringArchive<'a, 'b> {
-        NodesClearMeteringArchive::new(self.transport(), parts)
+        parts: NodesClearRepositoriesMeteringArchiveParts<'b>,
+    ) -> NodesClearRepositoriesMeteringArchive<'a, 'b> {
+        NodesClearRepositoriesMeteringArchive::new(self.transport(), parts)
     }
-    #[doc = "[Nodes Get Metering Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-repositories-metering-api.html)\n\nReturns cluster repositories metering information."]
+    #[doc = "[Nodes Get Repositories Metering Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-repositories-metering-api.html)\n\nReturns cluster repositories metering information."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
-    pub fn get_metering_info<'b>(
+    pub fn get_repositories_metering_info<'b>(
         &'a self,
-        parts: NodesGetMeteringInfoParts<'b>,
-    ) -> NodesGetMeteringInfo<'a, 'b> {
-        NodesGetMeteringInfo::new(self.transport(), parts)
+        parts: NodesGetRepositoriesMeteringInfoParts<'b>,
+    ) -> NodesGetRepositoriesMeteringInfo<'a, 'b> {
+        NodesGetRepositoriesMeteringInfo::new(self.transport(), parts)
     }
     #[doc = "[Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
     pub fn hot_threads<'b>(&'a self, parts: NodesHotThreadsParts<'b>) -> NodesHotThreads<'a, 'b> {

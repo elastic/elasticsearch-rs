@@ -364,6 +364,7 @@ pub struct ClusterDeleteVotingConfigExclusions<'a, 'b> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -380,6 +381,7 @@ impl<'a, 'b> ClusterDeleteVotingConfigExclusions<'a, 'b> {
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -404,6 +406,11 @@ impl<'a, 'b> ClusterDeleteVotingConfigExclusions<'a, 'b> {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
+        self
+    }
+    #[doc = "Timeout for submitting request to master"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -440,6 +447,7 @@ impl<'a, 'b> ClusterDeleteVotingConfigExclusions<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
                 wait_for_removal: Option<bool>,
@@ -448,6 +456,7 @@ impl<'a, 'b> ClusterDeleteVotingConfigExclusions<'a, 'b> {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
                 wait_for_removal: self.wait_for_removal,
@@ -1269,6 +1278,7 @@ pub struct ClusterPostVotingConfigExclusions<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     node_ids: Option<&'b str>,
     node_names: Option<&'b str>,
     pretty: Option<bool>,
@@ -1291,6 +1301,7 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             node_ids: None,
             node_names: None,
             pretty: None,
@@ -1312,6 +1323,7 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             node_ids: self.node_ids,
             node_names: self.node_names,
             pretty: self.pretty,
@@ -1338,6 +1350,11 @@ where
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
+        self
+    }
+    #[doc = "Timeout for submitting request to master"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "A comma-separated list of the persistent ids of the nodes to exclude from the voting configuration. If specified, you may not also specify ?node_names."]
@@ -1384,6 +1401,7 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 node_ids: Option<&'b str>,
                 node_names: Option<&'b str>,
                 pretty: Option<bool>,
@@ -1394,6 +1412,7 @@ where
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 node_ids: self.node_ids,
                 node_names: self.node_names,
                 pretty: self.pretty,

@@ -1032,6 +1032,7 @@ pub struct SnapshotGet<'a, 'b> {
     ignore_unavailable: Option<bool>,
     include_repository: Option<bool>,
     index_details: Option<bool>,
+    index_names: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
@@ -1052,6 +1053,7 @@ impl<'a, 'b> SnapshotGet<'a, 'b> {
             ignore_unavailable: None,
             include_repository: None,
             index_details: None,
+            index_names: None,
             master_timeout: None,
             pretty: None,
             request_timeout: None,
@@ -1092,6 +1094,11 @@ impl<'a, 'b> SnapshotGet<'a, 'b> {
     #[doc = "Whether to include details of each index in the snapshot, if those details are available. Defaults to false."]
     pub fn index_details(mut self, index_details: bool) -> Self {
         self.index_details = Some(index_details);
+        self
+    }
+    #[doc = "Whether to include the name of each index in the snapshot. Defaults to true."]
+    pub fn index_names(mut self, index_names: bool) -> Self {
+        self.index_names = Some(index_names);
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
@@ -1136,6 +1143,7 @@ impl<'a, 'b> SnapshotGet<'a, 'b> {
                 ignore_unavailable: Option<bool>,
                 include_repository: Option<bool>,
                 index_details: Option<bool>,
+                index_names: Option<bool>,
                 master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
@@ -1148,6 +1156,7 @@ impl<'a, 'b> SnapshotGet<'a, 'b> {
                 ignore_unavailable: self.ignore_unavailable,
                 include_repository: self.include_repository,
                 index_details: self.index_details,
+                index_names: self.index_names,
                 master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,

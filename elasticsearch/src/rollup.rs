@@ -853,8 +853,6 @@ where
 pub enum RollupRollupSearchParts<'b> {
     #[doc = "Index"]
     Index(&'b [&'b str]),
-    #[doc = "Index and Type"]
-    IndexType(&'b [&'b str], &'b str),
 }
 #[cfg(feature = "experimental-apis")]
 impl<'b> RollupRollupSearchParts<'b> {
@@ -868,19 +866,6 @@ impl<'b> RollupRollupSearchParts<'b> {
                 let mut p = String::with_capacity(16usize + encoded_index.len());
                 p.push_str("/");
                 p.push_str(encoded_index.as_ref());
-                p.push_str("/_rollup_search");
-                p.into()
-            }
-            RollupRollupSearchParts::IndexType(ref index, ref ty) => {
-                let index_str = index.join(",");
-                let encoded_index: Cow<str> =
-                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(17usize + encoded_index.len() + encoded_ty.len());
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_rollup_search");
                 p.into()
             }

@@ -81,6 +81,16 @@ pub enum ExpandWildcards {
     #[serde(rename = "all")]
     All,
 }
+#[doc = "Return only information on specified index features"]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
+pub enum Features {
+    #[serde(rename = "aliases")]
+    Aliases,
+    #[serde(rename = "mappings")]
+    Mappings,
+    #[serde(rename = "settings")]
+    Settings,
+}
 #[doc = "Optional parameter to specify the high level file format"]
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Format {
@@ -102,6 +112,8 @@ pub enum GridType {
     Grid,
     #[serde(rename = "point")]
     Point,
+    #[serde(rename = "centroid")]
+    Centroid,
 }
 #[doc = "Group tasks by nodes or parent/child relationships"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
@@ -143,7 +155,7 @@ pub enum OpType {
     #[serde(rename = "create")]
     Create,
 }
-#[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+#[doc = "If `true` then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` (the default) then do nothing with refreshes."]
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Refresh {
     #[serde(rename = "true")]
@@ -160,6 +172,14 @@ pub enum SearchType {
     QueryThenFetch,
     #[serde(rename = "dfs_query_then_fetch")]
     DfsQueryThenFetch,
+}
+#[doc = "The sort order for 'cpu' type (default: total)"]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
+pub enum Sort {
+    #[serde(rename = "cpu")]
+    Cpu,
+    #[serde(rename = "total")]
+    Total,
 }
 #[doc = "Specify suggest mode"]
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
@@ -198,6 +218,8 @@ pub enum Type {
     Wait,
     #[serde(rename = "block")]
     Block,
+    #[serde(rename = "mem")]
+    Mem,
 }
 #[doc = "Specific version type"]
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]

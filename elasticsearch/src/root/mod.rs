@@ -47,8 +47,6 @@ pub enum BulkParts<'b> {
     None,
     #[doc = "Index"]
     Index(&'b str),
-    #[doc = "Index and Type"]
-    IndexType(&'b str, &'b str),
 }
 impl<'b> BulkParts<'b> {
     #[doc = "Builds a relative URL path to the Bulk API"]
@@ -61,18 +59,6 @@ impl<'b> BulkParts<'b> {
                 let mut p = String::with_capacity(7usize + encoded_index.len());
                 p.push_str("/");
                 p.push_str(encoded_index.as_ref());
-                p.push_str("/_bulk");
-                p.into()
-            }
-            BulkParts::IndexType(ref index, ref ty) => {
-                let encoded_index: Cow<str> =
-                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(8usize + encoded_index.len() + encoded_ty.len());
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_bulk");
                 p.into()
             }
@@ -882,8 +868,6 @@ where
 pub enum CreateParts<'b> {
     #[doc = "Index and Id"]
     IndexId(&'b str, &'b str),
-    #[doc = "Index, Type and Id"]
-    IndexTypeId(&'b str, &'b str, &'b str),
 }
 impl<'b> CreateParts<'b> {
     #[doc = "Builds a relative URL path to the Create API"]
@@ -898,23 +882,6 @@ impl<'b> CreateParts<'b> {
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_create/");
                 p.push_str(encoded_id.as_ref());
-                p.into()
-            }
-            CreateParts::IndexTypeId(ref index, ref ty, ref id) => {
-                let encoded_index: Cow<str> =
-                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(
-                    11usize + encoded_index.len() + encoded_ty.len() + encoded_id.len(),
-                );
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_id.as_ref());
-                p.push_str("/_create");
                 p.into()
             }
         }
@@ -1116,8 +1083,6 @@ where
 pub enum DeleteParts<'b> {
     #[doc = "Index and Id"]
     IndexId(&'b str, &'b str),
-    #[doc = "Index, Type and Id"]
-    IndexTypeId(&'b str, &'b str, &'b str),
 }
 impl<'b> DeleteParts<'b> {
     #[doc = "Builds a relative URL path to the Delete API"]
@@ -1131,22 +1096,6 @@ impl<'b> DeleteParts<'b> {
                 p.push_str("/");
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_doc/");
-                p.push_str(encoded_id.as_ref());
-                p.into()
-            }
-            DeleteParts::IndexTypeId(ref index, ref ty, ref id) => {
-                let encoded_index: Cow<str> =
-                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(
-                    3usize + encoded_index.len() + encoded_ty.len() + encoded_id.len(),
-                );
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
-                p.push_str("/");
                 p.push_str(encoded_id.as_ref());
                 p.into()
             }
@@ -1351,9 +1300,6 @@ impl<'b> DeleteByQueryParts<'b> {
 pub struct DeleteByQuery<'a, 'b, B> {
     transport: &'a Transport,
     parts: DeleteByQueryParts<'b>,
-    _source: Option<&'b [&'b str]>,
-    _source_excludes: Option<&'b [&'b str]>,
-    _source_includes: Option<&'b [&'b str]>,
     allow_no_indices: Option<bool>,
     analyze_wildcard: Option<bool>,
     analyzer: Option<&'b str>,
@@ -1403,9 +1349,6 @@ where
             transport,
             parts,
             headers,
-            _source: None,
-            _source_excludes: None,
-            _source_includes: None,
             allow_no_indices: None,
             analyze_wildcard: None,
             analyzer: None,
@@ -1444,21 +1387,6 @@ where
             wait_for_completion: None,
         }
     }
-    #[doc = "True or false to return the _source field or not, or a list of fields to return"]
-    pub fn _source(mut self, _source: &'b [&'b str]) -> Self {
-        self._source = Some(_source);
-        self
-    }
-    #[doc = "A list of fields to exclude from the returned _source field"]
-    pub fn _source_excludes(mut self, _source_excludes: &'b [&'b str]) -> Self {
-        self._source_excludes = Some(_source_excludes);
-        self
-    }
-    #[doc = "A list of fields to extract and return from the _source field"]
-    pub fn _source_includes(mut self, _source_includes: &'b [&'b str]) -> Self {
-        self._source_includes = Some(_source_includes);
-        self
-    }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
         self.allow_no_indices = Some(allow_no_indices);
@@ -1483,9 +1411,6 @@ where
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
-            _source: self._source,
-            _source_excludes: self._source_excludes,
-            _source_includes: self._source_includes,
             allow_no_indices: self.allow_no_indices,
             analyze_wildcard: self.analyze_wildcard,
             analyzer: self.analyzer,
@@ -1699,12 +1624,6 @@ where
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                _source: Option<&'b [&'b str]>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                _source_excludes: Option<&'b [&'b str]>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                _source_includes: Option<&'b [&'b str]>,
                 allow_no_indices: Option<bool>,
                 analyze_wildcard: Option<bool>,
                 analyzer: Option<&'b str>,
@@ -1746,9 +1665,6 @@ where
                 wait_for_completion: Option<bool>,
             }
             let query_params = QueryParams {
-                _source: self._source,
-                _source_excludes: self._source_excludes,
-                _source_includes: self._source_includes,
                 allow_no_indices: self.allow_no_indices,
                 analyze_wildcard: self.analyze_wildcard,
                 analyzer: self.analyzer,
@@ -2304,8 +2220,6 @@ impl<'a, 'b> Exists<'a, 'b> {
 pub enum ExistsSourceParts<'b> {
     #[doc = "Index and Id"]
     IndexId(&'b str, &'b str),
-    #[doc = "Index, Type and Id"]
-    IndexTypeId(&'b str, &'b str, &'b str),
 }
 impl<'b> ExistsSourceParts<'b> {
     #[doc = "Builds a relative URL path to the Exists Source API"]
@@ -2320,23 +2234,6 @@ impl<'b> ExistsSourceParts<'b> {
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_source/");
                 p.push_str(encoded_id.as_ref());
-                p.into()
-            }
-            ExistsSourceParts::IndexTypeId(ref index, ref ty, ref id) => {
-                let encoded_index: Cow<str> =
-                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(
-                    11usize + encoded_index.len() + encoded_ty.len() + encoded_id.len(),
-                );
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_id.as_ref());
-                p.push_str("/_source");
                 p.into()
             }
         }
@@ -2833,6 +2730,7 @@ pub struct FieldCaps<'a, 'b, B> {
     expand_wildcards: Option<&'b [ExpandWildcards]>,
     fields: Option<&'b [&'b str]>,
     filter_path: Option<&'b [&'b str]>,
+    filters: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
@@ -2840,6 +2738,7 @@ pub struct FieldCaps<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    types: Option<&'b [&'b str]>,
 }
 impl<'a, 'b, B> FieldCaps<'a, 'b, B>
 where
@@ -2858,12 +2757,14 @@ where
             expand_wildcards: None,
             fields: None,
             filter_path: None,
+            filters: None,
             human: None,
             ignore_unavailable: None,
             include_unmapped: None,
             pretty: None,
             request_timeout: None,
             source: None,
+            types: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
@@ -2885,6 +2786,7 @@ where
             expand_wildcards: self.expand_wildcards,
             fields: self.fields,
             filter_path: self.filter_path,
+            filters: self.filters,
             headers: self.headers,
             human: self.human,
             ignore_unavailable: self.ignore_unavailable,
@@ -2892,6 +2794,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            types: self.types,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2912,6 +2815,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "An optional set of filters: can include +metadata,-metadata,-nested,-multifield,-parent"]
+    pub fn filters(mut self, filters: &'b [&'b str]) -> Self {
+        self.filters = Some(filters);
         self
     }
     #[doc = "Adds a HTTP header"]
@@ -2949,6 +2857,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Only return results for fields that have one of the types in the list"]
+    pub fn types(mut self, types: &'b [&'b str]) -> Self {
+        self.types = Some(types);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Field Caps API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -2970,11 +2883,15 @@ where
                 fields: Option<&'b [&'b str]>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filters: Option<&'b [&'b str]>,
                 human: Option<bool>,
                 ignore_unavailable: Option<bool>,
                 include_unmapped: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                types: Option<&'b [&'b str]>,
             }
             let query_params = QueryParams {
                 allow_no_indices: self.allow_no_indices,
@@ -2982,11 +2899,13 @@ where
                 expand_wildcards: self.expand_wildcards,
                 fields: self.fields,
                 filter_path: self.filter_path,
+                filters: self.filters,
                 human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 include_unmapped: self.include_unmapped,
                 pretty: self.pretty,
                 source: self.source,
+                types: self.types,
             };
             Some(query_params)
         };
@@ -3341,14 +3260,12 @@ impl<'a, 'b> GetScript<'a, 'b> {
         Ok(response)
     }
 }
-#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Get Script Context API"]
 pub enum GetScriptContextParts {
     #[doc = "No parts"]
     None,
 }
-#[cfg(feature = "experimental-apis")]
 impl GetScriptContextParts {
     #[doc = "Builds a relative URL path to the Get Script Context API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -3358,8 +3275,6 @@ impl GetScriptContextParts {
     }
 }
 #[doc = "Builder for the [Get Script Context API](https://www.elastic.co/guide/en/elasticsearch/painless/8.0/painless-contexts.html)\n\nReturns all script contexts."]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
 pub struct GetScriptContext<'a, 'b> {
     transport: &'a Transport,
@@ -3372,7 +3287,6 @@ pub struct GetScriptContext<'a, 'b> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "experimental-apis")]
 impl<'a, 'b> GetScriptContext<'a, 'b> {
     #[doc = "Creates a new instance of [GetScriptContext]"]
     pub fn new(transport: &'a Transport) -> Self {
@@ -3458,14 +3372,12 @@ impl<'a, 'b> GetScriptContext<'a, 'b> {
         Ok(response)
     }
 }
-#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Get Script Languages API"]
 pub enum GetScriptLanguagesParts {
     #[doc = "No parts"]
     None,
 }
-#[cfg(feature = "experimental-apis")]
 impl GetScriptLanguagesParts {
     #[doc = "Builds a relative URL path to the Get Script Languages API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -3475,8 +3387,6 @@ impl GetScriptLanguagesParts {
     }
 }
 #[doc = "Builder for the [Get Script Languages API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-scripting.html)\n\nReturns available script types, languages and contexts"]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
 pub struct GetScriptLanguages<'a, 'b> {
     transport: &'a Transport,
@@ -3489,7 +3399,6 @@ pub struct GetScriptLanguages<'a, 'b> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "experimental-apis")]
 impl<'a, 'b> GetScriptLanguages<'a, 'b> {
     #[doc = "Creates a new instance of [GetScriptLanguages]"]
     pub fn new(transport: &'a Transport) -> Self {
@@ -4152,6 +4061,169 @@ impl<'a, 'b> Info<'a, 'b> {
             Some(query_params)
         };
         let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Knn Search API"]
+pub enum KnnSearchParts<'b> {
+    #[doc = "Index"]
+    Index(&'b [&'b str]),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> KnnSearchParts<'b> {
+    #[doc = "Builds a relative URL path to the Knn Search API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            KnnSearchParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(13usize + encoded_index.len());
+                p.push_str("/");
+                p.push_str(encoded_index.as_ref());
+                p.push_str("/_knn_search");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Knn Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-search.html)\n\nPerforms a kNN search."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct KnnSearch<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: KnnSearchParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    routing: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> KnnSearch<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [KnnSearch] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: KnnSearchParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        KnnSearch {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            routing: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> KnnSearch<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        KnnSearch {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            routing: self.routing,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "A comma-separated list of specific routing values"]
+    pub fn routing(mut self, routing: &'b [&'b str]) -> Self {
+        self.routing = Some(routing);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Knn Search API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = match self.body {
+            Some(_) => Method::Post,
+            None => Method::Get,
+        };
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                routing: Option<&'b [&'b str]>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                routing: self.routing,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
         let response = self
             .transport
             .send(method, &path, headers, query_string.as_ref(), body, timeout)
@@ -5086,8 +5158,6 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Open Point In Time API"]
 pub enum OpenPointInTimeParts<'b> {
-    #[doc = "No parts"]
-    None,
     #[doc = "Index"]
     Index(&'b [&'b str]),
 }
@@ -5095,7 +5165,6 @@ impl<'b> OpenPointInTimeParts<'b> {
     #[doc = "Builds a relative URL path to the Open Point In Time API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            OpenPointInTimeParts::None => "/_pit".into(),
             OpenPointInTimeParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
@@ -5578,7 +5647,6 @@ where
         Ok(response)
     }
 }
-#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Rank Eval API"]
 pub enum RankEvalParts<'b> {
@@ -5587,7 +5655,6 @@ pub enum RankEvalParts<'b> {
     #[doc = "Index"]
     Index(&'b [&'b str]),
 }
-#[cfg(feature = "experimental-apis")]
 impl<'b> RankEvalParts<'b> {
     #[doc = "Builds a relative URL path to the Rank Eval API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -5607,8 +5674,6 @@ impl<'b> RankEvalParts<'b> {
     }
 }
 #[doc = "Builder for the [Rank Eval API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-rank-eval.html)\n\nAllows to evaluate the quality of ranked search results over a set of typical search queries"]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
 pub struct RankEval<'a, 'b, B> {
     transport: &'a Transport,
@@ -5626,7 +5691,6 @@ pub struct RankEval<'a, 'b, B> {
     search_type: Option<SearchType>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "experimental-apis")]
 impl<'a, 'b, B> RankEval<'a, 'b, B>
 where
     B: Body,
@@ -7267,6 +7331,8 @@ pub struct SearchMvt<'a, 'b, B> {
     request_timeout: Option<Duration>,
     size: Option<i32>,
     source: Option<&'b str>,
+    track_total_hits: Option<TrackTotalHits>,
+    with_labels: Option<bool>,
 }
 #[cfg(feature = "experimental-apis")]
 impl<'a, 'b, B> SearchMvt<'a, 'b, B>
@@ -7292,6 +7358,8 @@ where
             request_timeout: None,
             size: None,
             source: None,
+            track_total_hits: None,
+            with_labels: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -7315,6 +7383,8 @@ where
             request_timeout: self.request_timeout,
             size: self.size,
             source: self.source,
+            track_total_hits: self.track_total_hits,
+            with_labels: self.with_labels,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -7377,6 +7447,16 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Indicate if the number of documents that match the query should be tracked. A number can also be specified, to accurately track the total hit count up to the number."]
+    pub fn track_total_hits<T: Into<TrackTotalHits>>(mut self, track_total_hits: T) -> Self {
+        self.track_total_hits = Some(track_total_hits.into());
+        self
+    }
+    #[doc = "If true, the hits and aggs layers will contain additional point features with suggested label positions for the original features."]
+    pub fn with_labels(mut self, with_labels: bool) -> Self {
+        self.with_labels = Some(with_labels);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Search Mvt API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -7401,6 +7481,8 @@ where
                 pretty: Option<bool>,
                 size: Option<i32>,
                 source: Option<&'b str>,
+                track_total_hits: Option<TrackTotalHits>,
+                with_labels: Option<bool>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -7413,6 +7495,8 @@ where
                 pretty: self.pretty,
                 size: self.size,
                 source: self.source,
+                track_total_hits: self.track_total_hits,
+                with_labels: self.with_labels,
             };
             Some(query_params)
         };
@@ -7917,14 +8001,12 @@ where
         Ok(response)
     }
 }
-#[cfg(feature = "beta-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Terms Enum API"]
 pub enum TermsEnumParts<'b> {
     #[doc = "Index"]
     Index(&'b [&'b str]),
 }
-#[cfg(feature = "beta-apis")]
 impl<'b> TermsEnumParts<'b> {
     #[doc = "Builds a relative URL path to the Terms Enum API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -7943,8 +8025,6 @@ impl<'b> TermsEnumParts<'b> {
     }
 }
 #[doc = "Builder for the [Terms Enum API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-terms-enum.html)\n\nThe terms enum API  can be used to discover terms in the index that begin with the provided string. It is designed for low-latency look-ups used in auto-complete scenarios."]
-#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
-#[cfg(feature = "beta-apis")]
 #[derive(Clone, Debug)]
 pub struct TermsEnum<'a, 'b, B> {
     transport: &'a Transport,
@@ -7958,7 +8038,6 @@ pub struct TermsEnum<'a, 'b, B> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "beta-apis")]
 impl<'a, 'b, B> TermsEnum<'a, 'b, B>
 where
     B: Body,
@@ -8344,8 +8423,6 @@ where
 pub enum UpdateParts<'b> {
     #[doc = "Index and Id"]
     IndexId(&'b str, &'b str),
-    #[doc = "Index, Type and Id"]
-    IndexTypeId(&'b str, &'b str, &'b str),
 }
 impl<'b> UpdateParts<'b> {
     #[doc = "Builds a relative URL path to the Update API"]
@@ -8360,23 +8437,6 @@ impl<'b> UpdateParts<'b> {
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_update/");
                 p.push_str(encoded_id.as_ref());
-                p.into()
-            }
-            UpdateParts::IndexTypeId(ref index, ref ty, ref id) => {
-                let encoded_index: Cow<str> =
-                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(
-                    11usize + encoded_index.len() + encoded_ty.len() + encoded_id.len(),
-                );
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_id.as_ref());
-                p.push_str("/_update");
                 p.into()
             }
         }
@@ -8654,9 +8714,6 @@ impl<'b> UpdateByQueryParts<'b> {
 pub struct UpdateByQuery<'a, 'b, B> {
     transport: &'a Transport,
     parts: UpdateByQueryParts<'b>,
-    _source: Option<&'b [&'b str]>,
-    _source_excludes: Option<&'b [&'b str]>,
-    _source_includes: Option<&'b [&'b str]>,
     allow_no_indices: Option<bool>,
     analyze_wildcard: Option<bool>,
     analyzer: Option<&'b str>,
@@ -8708,9 +8765,6 @@ where
             transport,
             parts,
             headers,
-            _source: None,
-            _source_excludes: None,
-            _source_includes: None,
             allow_no_indices: None,
             analyze_wildcard: None,
             analyzer: None,
@@ -8751,21 +8805,6 @@ where
             wait_for_completion: None,
         }
     }
-    #[doc = "True or false to return the _source field or not, or a list of fields to return"]
-    pub fn _source(mut self, _source: &'b [&'b str]) -> Self {
-        self._source = Some(_source);
-        self
-    }
-    #[doc = "A list of fields to exclude from the returned _source field"]
-    pub fn _source_excludes(mut self, _source_excludes: &'b [&'b str]) -> Self {
-        self._source_excludes = Some(_source_excludes);
-        self
-    }
-    #[doc = "A list of fields to extract and return from the _source field"]
-    pub fn _source_includes(mut self, _source_includes: &'b [&'b str]) -> Self {
-        self._source_includes = Some(_source_includes);
-        self
-    }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
         self.allow_no_indices = Some(allow_no_indices);
@@ -8790,9 +8829,6 @@ where
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
-            _source: self._source,
-            _source_excludes: self._source_excludes,
-            _source_includes: self._source_includes,
             allow_no_indices: self.allow_no_indices,
             analyze_wildcard: self.analyze_wildcard,
             analyzer: self.analyzer,
@@ -9018,12 +9054,6 @@ where
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                _source: Option<&'b [&'b str]>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                _source_excludes: Option<&'b [&'b str]>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                _source_includes: Option<&'b [&'b str]>,
                 allow_no_indices: Option<bool>,
                 analyze_wildcard: Option<bool>,
                 analyzer: Option<&'b str>,
@@ -9067,9 +9097,6 @@ where
                 wait_for_completion: Option<bool>,
             }
             let query_params = QueryParams {
-                _source: self._source,
-                _source_excludes: self._source_excludes,
-                _source_includes: self._source_includes,
                 allow_no_indices: self.allow_no_indices,
                 analyze_wildcard: self.analyze_wildcard,
                 analyzer: self.analyzer,
@@ -9338,14 +9365,10 @@ impl Elasticsearch {
         GetScript::new(self.transport(), parts)
     }
     #[doc = "[Get Script Context API](https://www.elastic.co/guide/en/elasticsearch/painless/8.0/painless-contexts.html)\n\nReturns all script contexts."]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
     pub fn get_script_context<'a, 'b>(&'a self) -> GetScriptContext<'a, 'b> {
         GetScriptContext::new(self.transport())
     }
     #[doc = "[Get Script Languages API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-scripting.html)\n\nReturns available script types, languages and contexts"]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
     pub fn get_script_languages<'a, 'b>(&'a self) -> GetScriptLanguages<'a, 'b> {
         GetScriptLanguages::new(self.transport())
     }
@@ -9360,6 +9383,12 @@ impl Elasticsearch {
     #[doc = "[Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/index.html)\n\nReturns basic information about the cluster."]
     pub fn info<'a, 'b>(&'a self) -> Info<'a, 'b> {
         Info::new(self.transport())
+    }
+    #[doc = "[Knn Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-search.html)\n\nPerforms a kNN search."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn knn_search<'a, 'b>(&'a self, parts: KnnSearchParts<'b>) -> KnnSearch<'a, 'b, ()> {
+        KnnSearch::new(self.transport(), parts)
     }
     #[doc = "[Mget API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/docs-multi-get.html)\n\nAllows to get multiple documents in one request."]
     pub fn mget<'a, 'b>(&'a self, parts: MgetParts<'b>) -> Mget<'a, 'b, ()> {
@@ -9399,8 +9428,6 @@ impl Elasticsearch {
         PutScript::new(self.transport(), parts)
     }
     #[doc = "[Rank Eval API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-rank-eval.html)\n\nAllows to evaluate the quality of ranked search results over a set of typical search queries"]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
     pub fn rank_eval<'a, 'b>(&'a self, parts: RankEvalParts<'b>) -> RankEval<'a, 'b, ()> {
         RankEval::new(self.transport(), parts)
     }
@@ -9457,8 +9484,6 @@ impl Elasticsearch {
         SearchTemplate::new(self.transport(), parts)
     }
     #[doc = "[Terms Enum API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/search-terms-enum.html)\n\nThe terms enum API  can be used to discover terms in the index that begin with the provided string. It is designed for low-latency look-ups used in auto-complete scenarios."]
-    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
-    #[cfg(feature = "beta-apis")]
     pub fn terms_enum<'a, 'b>(&'a self, parts: TermsEnumParts<'b>) -> TermsEnum<'a, 'b, ()> {
         TermsEnum::new(self.transport(), parts)
     }
