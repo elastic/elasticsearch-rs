@@ -526,6 +526,194 @@ impl<'a, 'b> CatAllocation<'a, 'b> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Cat Component Templates API"]
+pub enum CatComponentTemplatesParts<'b> {
+    #[doc = "No parts"]
+    None,
+    #[doc = "Name"]
+    Name(&'b str),
+}
+impl<'b> CatComponentTemplatesParts<'b> {
+    #[doc = "Builds a relative URL path to the Cat Component Templates API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            CatComponentTemplatesParts::None => "/_cat/component_templates".into(),
+            CatComponentTemplatesParts::Name(ref name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(26usize + encoded_name.len());
+                p.push_str("/_cat/component_templates/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Cat Component Templates API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-compoentn-templates.html)\n\nReturns information about existing component_templates templates."]
+#[derive(Clone, Debug)]
+pub struct CatComponentTemplates<'a, 'b> {
+    transport: &'a Transport,
+    parts: CatComponentTemplatesParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    format: Option<&'b str>,
+    h: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    help: Option<bool>,
+    human: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<&'b str>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    s: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
+    v: Option<bool>,
+}
+impl<'a, 'b> CatComponentTemplates<'a, 'b> {
+    #[doc = "Creates a new instance of [CatComponentTemplates] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: CatComponentTemplatesParts<'b>) -> Self {
+        let mut headers = HeaderMap::with_capacity(2);
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+        headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
+        CatComponentTemplates {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            format: None,
+            h: None,
+            help: None,
+            human: None,
+            local: None,
+            master_timeout: None,
+            pretty: None,
+            request_timeout: None,
+            s: None,
+            source: None,
+            v: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: &'b str) -> Self {
+        self.format = Some(format);
+        self
+    }
+    #[doc = "Comma-separated list of column names to display"]
+    pub fn h(mut self, h: &'b [&'b str]) -> Self {
+        self.h = Some(h);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: bool) -> Self {
+        self.help = Some(help);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: bool) -> Self {
+        self.local = Some(local);
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: &'b [&'b str]) -> Self {
+        self.s = Some(s);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Verbose mode. Display column headers"]
+    pub fn v(mut self, v: bool) -> Self {
+        self.v = Some(v);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Cat Component Templates API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                format: Option<&'b str>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                h: Option<&'b [&'b str]>,
+                help: Option<bool>,
+                human: Option<bool>,
+                local: Option<bool>,
+                master_timeout: Option<&'b str>,
+                pretty: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                s: Option<&'b [&'b str]>,
+                source: Option<&'b str>,
+                v: Option<bool>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                format: self.format,
+                h: self.h,
+                help: self.help,
+                human: self.human,
+                local: self.local,
+                master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                s: self.s,
+                source: self.source,
+                v: self.v,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Count API"]
 pub enum CatCountParts<'b> {
     #[doc = "No parts"]
@@ -1841,7 +2029,6 @@ impl<'b> CatMlDatafeedsParts<'b> {
 pub struct CatMlDatafeeds<'a, 'b> {
     transport: &'a Transport,
     parts: CatMlDatafeedsParts<'b>,
-    allow_no_datafeeds: Option<bool>,
     allow_no_match: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -1867,7 +2054,6 @@ impl<'a, 'b> CatMlDatafeeds<'a, 'b> {
             transport,
             parts,
             headers,
-            allow_no_datafeeds: None,
             allow_no_match: None,
             error_trace: None,
             filter_path: None,
@@ -1882,11 +2068,6 @@ impl<'a, 'b> CatMlDatafeeds<'a, 'b> {
             time: None,
             v: None,
         }
-    }
-    #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
-    pub fn allow_no_datafeeds(mut self, allow_no_datafeeds: bool) -> Self {
-        self.allow_no_datafeeds = Some(allow_no_datafeeds);
-        self
     }
     #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
     pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
@@ -1968,7 +2149,6 @@ impl<'a, 'b> CatMlDatafeeds<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                allow_no_datafeeds: Option<bool>,
                 allow_no_match: Option<bool>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
@@ -1986,7 +2166,6 @@ impl<'a, 'b> CatMlDatafeeds<'a, 'b> {
                 v: Option<bool>,
             }
             let query_params = QueryParams {
-                allow_no_datafeeds: self.allow_no_datafeeds,
                 allow_no_match: self.allow_no_match,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
@@ -2039,7 +2218,6 @@ impl<'b> CatMlJobsParts<'b> {
 pub struct CatMlJobs<'a, 'b> {
     transport: &'a Transport,
     parts: CatMlJobsParts<'b>,
-    allow_no_jobs: Option<bool>,
     allow_no_match: Option<bool>,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
@@ -2066,7 +2244,6 @@ impl<'a, 'b> CatMlJobs<'a, 'b> {
             transport,
             parts,
             headers,
-            allow_no_jobs: None,
             allow_no_match: None,
             bytes: None,
             error_trace: None,
@@ -2082,11 +2259,6 @@ impl<'a, 'b> CatMlJobs<'a, 'b> {
             time: None,
             v: None,
         }
-    }
-    #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
-    pub fn allow_no_jobs(mut self, allow_no_jobs: bool) -> Self {
-        self.allow_no_jobs = Some(allow_no_jobs);
-        self
     }
     #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
     pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
@@ -2173,7 +2345,6 @@ impl<'a, 'b> CatMlJobs<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                allow_no_jobs: Option<bool>,
                 allow_no_match: Option<bool>,
                 bytes: Option<Bytes>,
                 error_trace: Option<bool>,
@@ -2192,7 +2363,6 @@ impl<'a, 'b> CatMlJobs<'a, 'b> {
                 v: Option<bool>,
             }
             let query_params = QueryParams {
-                allow_no_jobs: self.allow_no_jobs,
                 allow_no_match: self.allow_no_match,
                 bytes: self.bytes,
                 error_trace: self.error_trace,
@@ -4996,6 +5166,13 @@ impl<'a> Cat<'a> {
     #[doc = "[Cat Allocation API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-allocation.html)\n\nProvides a snapshot of how many shards are allocated to each data node and how much disk space they are using."]
     pub fn allocation<'b>(&'a self, parts: CatAllocationParts<'b>) -> CatAllocation<'a, 'b> {
         CatAllocation::new(self.transport(), parts)
+    }
+    #[doc = "[Cat Component Templates API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-compoentn-templates.html)\n\nReturns information about existing component_templates templates."]
+    pub fn component_templates<'b>(
+        &'a self,
+        parts: CatComponentTemplatesParts<'b>,
+    ) -> CatComponentTemplates<'a, 'b> {
+        CatComponentTemplates::new(self.transport(), parts)
     }
     #[doc = "[Cat Count API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cat-count.html)\n\nProvides quick access to the document count of the entire cluster, or individual indices."]
     pub fn count<'b>(&'a self, parts: CatCountParts<'b>) -> CatCount<'a, 'b> {

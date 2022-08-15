@@ -1523,7 +1523,7 @@ impl<'a, 'b> IndicesDelete<'a, 'b> {
         self.error_trace = Some(error_trace);
         self
     }
-    #[doc = "Whether wildcard expressions should get expanded to open or closed indices (default: open)"]
+    #[doc = "Whether wildcard expressions should get expanded to open, closed, or hidden indices"]
     pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
         self.expand_wildcards = Some(expand_wildcards);
         self
@@ -3004,167 +3004,6 @@ impl<'a, 'b> IndicesExistsTemplate<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Indices Exists Type API"]
-pub enum IndicesExistsTypeParts<'b> {
-    #[doc = "Index and Type"]
-    IndexType(&'b [&'b str], &'b [&'b str]),
-}
-impl<'b> IndicesExistsTypeParts<'b> {
-    #[doc = "Builds a relative URL path to the Indices Exists Type API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            IndicesExistsTypeParts::IndexType(ref index, ref ty) => {
-                let index_str = index.join(",");
-                let ty_str = ty.join(",");
-                let encoded_index: Cow<str> =
-                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(11usize + encoded_index.len() + encoded_ty.len());
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/_mapping/");
-                p.push_str(encoded_ty.as_ref());
-                p.into()
-            }
-        }
-    }
-}
-#[doc = "Builder for the [Indices Exists Type API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-types-exists.html)\n\nReturns information about whether a particular document type exists. (DEPRECATED)"]
-#[derive(Clone, Debug)]
-pub struct IndicesExistsType<'a, 'b> {
-    transport: &'a Transport,
-    parts: IndicesExistsTypeParts<'b>,
-    allow_no_indices: Option<bool>,
-    error_trace: Option<bool>,
-    expand_wildcards: Option<&'b [ExpandWildcards]>,
-    filter_path: Option<&'b [&'b str]>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    ignore_unavailable: Option<bool>,
-    local: Option<bool>,
-    pretty: Option<bool>,
-    request_timeout: Option<Duration>,
-    source: Option<&'b str>,
-}
-impl<'a, 'b> IndicesExistsType<'a, 'b> {
-    #[doc = "Creates a new instance of [IndicesExistsType] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesExistsTypeParts<'b>) -> Self {
-        let headers = HeaderMap::new();
-        IndicesExistsType {
-            transport,
-            parts,
-            headers,
-            allow_no_indices: None,
-            error_trace: None,
-            expand_wildcards: None,
-            filter_path: None,
-            human: None,
-            ignore_unavailable: None,
-            local: None,
-            pretty: None,
-            request_timeout: None,
-            source: None,
-        }
-    }
-    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
-        self.allow_no_indices = Some(allow_no_indices);
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
-        self.expand_wildcards = Some(expand_wildcards);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
-        self.ignore_unavailable = Some(ignore_unavailable);
-        self
-    }
-    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: bool) -> Self {
-        self.local = Some(local);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
-    pub fn request_timeout(mut self, timeout: Duration) -> Self {
-        self.request_timeout = Some(timeout);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Indices Exists Type API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = Method::Head;
-        let headers = self.headers;
-        let timeout = self.request_timeout;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                allow_no_indices: Option<bool>,
-                error_trace: Option<bool>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                filter_path: Option<&'b [&'b str]>,
-                human: Option<bool>,
-                ignore_unavailable: Option<bool>,
-                local: Option<bool>,
-                pretty: Option<bool>,
-                source: Option<&'b str>,
-            }
-            let query_params = QueryParams {
-                allow_no_indices: self.allow_no_indices,
-                error_trace: self.error_trace,
-                expand_wildcards: self.expand_wildcards,
-                filter_path: self.filter_path,
-                human: self.human,
-                ignore_unavailable: self.ignore_unavailable,
-                local: self.local,
-                pretty: self.pretty,
-                source: self.source,
-            };
-            Some(query_params)
-        };
-        let body = Option::<()>::None;
-        let response = self
-            .transport
-            .send(method, &path, headers, query_string.as_ref(), body, timeout)
-            .await?;
-        Ok(response)
-    }
-}
 #[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Field Usage Stats API"]
@@ -3574,6 +3413,7 @@ pub struct IndicesForcemerge<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    wait_for_completion: Option<bool>,
 }
 impl<'a, 'b, B> IndicesForcemerge<'a, 'b, B>
 where
@@ -3599,6 +3439,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            wait_for_completion: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
@@ -3628,6 +3469,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            wait_for_completion: self.wait_for_completion,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -3690,6 +3532,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Should the request wait until the force merge is completed."]
+    pub fn wait_for_completion(mut self, wait_for_completion: bool) -> Self {
+        self.wait_for_completion = Some(wait_for_completion);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Indices Forcemerge API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -3713,6 +3560,7 @@ where
                 only_expunge_deletes: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                wait_for_completion: Option<bool>,
             }
             let query_params = QueryParams {
                 allow_no_indices: self.allow_no_indices,
@@ -3726,210 +3574,7 @@ where
                 only_expunge_deletes: self.only_expunge_deletes,
                 pretty: self.pretty,
                 source: self.source,
-            };
-            Some(query_params)
-        };
-        let body = self.body;
-        let response = self
-            .transport
-            .send(method, &path, headers, query_string.as_ref(), body, timeout)
-            .await?;
-        Ok(response)
-    }
-}
-#[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Indices Freeze API"]
-pub enum IndicesFreezeParts<'b> {
-    #[doc = "Index"]
-    Index(&'b str),
-}
-impl<'b> IndicesFreezeParts<'b> {
-    #[doc = "Builds a relative URL path to the Indices Freeze API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            IndicesFreezeParts::Index(ref index) => {
-                let encoded_index: Cow<str> =
-                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(9usize + encoded_index.len());
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/_freeze");
-                p.into()
-            }
-        }
-    }
-}
-#[doc = "Builder for the [Indices Freeze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/freeze-index-api.html)\n\nFreezes an index. A frozen index has almost no overhead on the cluster (except for maintaining its metadata in memory) and is read-only."]
-#[derive(Clone, Debug)]
-pub struct IndicesFreeze<'a, 'b, B> {
-    transport: &'a Transport,
-    parts: IndicesFreezeParts<'b>,
-    allow_no_indices: Option<bool>,
-    body: Option<B>,
-    error_trace: Option<bool>,
-    expand_wildcards: Option<&'b [ExpandWildcards]>,
-    filter_path: Option<&'b [&'b str]>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    ignore_unavailable: Option<bool>,
-    master_timeout: Option<&'b str>,
-    pretty: Option<bool>,
-    request_timeout: Option<Duration>,
-    source: Option<&'b str>,
-    timeout: Option<&'b str>,
-    wait_for_active_shards: Option<&'b str>,
-}
-impl<'a, 'b, B> IndicesFreeze<'a, 'b, B>
-where
-    B: Body,
-{
-    #[doc = "Creates a new instance of [IndicesFreeze] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesFreezeParts<'b>) -> Self {
-        let headers = HeaderMap::new();
-        IndicesFreeze {
-            transport,
-            parts,
-            headers,
-            allow_no_indices: None,
-            body: None,
-            error_trace: None,
-            expand_wildcards: None,
-            filter_path: None,
-            human: None,
-            ignore_unavailable: None,
-            master_timeout: None,
-            pretty: None,
-            request_timeout: None,
-            source: None,
-            timeout: None,
-            wait_for_active_shards: None,
-        }
-    }
-    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
-        self.allow_no_indices = Some(allow_no_indices);
-        self
-    }
-    #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesFreeze<'a, 'b, JsonBody<T>>
-    where
-        T: Serialize,
-    {
-        IndicesFreeze {
-            transport: self.transport,
-            parts: self.parts,
-            body: Some(body.into()),
-            allow_no_indices: self.allow_no_indices,
-            error_trace: self.error_trace,
-            expand_wildcards: self.expand_wildcards,
-            filter_path: self.filter_path,
-            headers: self.headers,
-            human: self.human,
-            ignore_unavailable: self.ignore_unavailable,
-            master_timeout: self.master_timeout,
-            pretty: self.pretty,
-            request_timeout: self.request_timeout,
-            source: self.source,
-            timeout: self.timeout,
-            wait_for_active_shards: self.wait_for_active_shards,
-        }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
-        self.expand_wildcards = Some(expand_wildcards);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
-        self.ignore_unavailable = Some(ignore_unavailable);
-        self
-    }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
-        self.master_timeout = Some(master_timeout);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
-    pub fn request_timeout(mut self, timeout: Duration) -> Self {
-        self.request_timeout = Some(timeout);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: &'b str) -> Self {
-        self.timeout = Some(timeout);
-        self
-    }
-    #[doc = "Sets the number of active shards to wait for before the operation returns."]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: &'b str) -> Self {
-        self.wait_for_active_shards = Some(wait_for_active_shards);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Indices Freeze API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = Method::Post;
-        let headers = self.headers;
-        let timeout = self.request_timeout;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                allow_no_indices: Option<bool>,
-                error_trace: Option<bool>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                expand_wildcards: Option<&'b [ExpandWildcards]>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                filter_path: Option<&'b [&'b str]>,
-                human: Option<bool>,
-                ignore_unavailable: Option<bool>,
-                master_timeout: Option<&'b str>,
-                pretty: Option<bool>,
-                source: Option<&'b str>,
-                timeout: Option<&'b str>,
-                wait_for_active_shards: Option<&'b str>,
-            }
-            let query_params = QueryParams {
-                allow_no_indices: self.allow_no_indices,
-                error_trace: self.error_trace,
-                expand_wildcards: self.expand_wildcards,
-                filter_path: self.filter_path,
-                human: self.human,
-                ignore_unavailable: self.ignore_unavailable,
-                master_timeout: self.master_timeout,
-                pretty: self.pretty,
-                source: self.source,
-                timeout: self.timeout,
-                wait_for_active_shards: self.wait_for_active_shards,
+                wait_for_completion: self.wait_for_completion,
             };
             Some(query_params)
         };
@@ -3971,6 +3616,7 @@ pub struct IndicesGet<'a, 'b> {
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<&'b [ExpandWildcards]>,
+    features: Option<Features>,
     filter_path: Option<&'b [&'b str]>,
     flat_settings: Option<bool>,
     headers: HeaderMap,
@@ -3994,6 +3640,7 @@ impl<'a, 'b> IndicesGet<'a, 'b> {
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
+            features: None,
             filter_path: None,
             flat_settings: None,
             human: None,
@@ -4019,6 +3666,11 @@ impl<'a, 'b> IndicesGet<'a, 'b> {
     #[doc = "Whether wildcard expressions should get expanded to open or closed indices (default: open)"]
     pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
         self.expand_wildcards = Some(expand_wildcards);
+        self
+    }
+    #[doc = "Return only information on specified index features"]
+    pub fn features(mut self, features: Features) -> Self {
+        self.features = Some(features);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -4090,6 +3742,7 @@ impl<'a, 'b> IndicesGet<'a, 'b> {
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
+                features: Option<Features>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 flat_settings: Option<bool>,
@@ -4105,6 +3758,7 @@ impl<'a, 'b> IndicesGet<'a, 'b> {
                 allow_no_indices: self.allow_no_indices,
                 error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                features: self.features,
                 filter_path: self.filter_path,
                 flat_settings: self.flat_settings,
                 human: self.human,
@@ -4636,7 +4290,7 @@ pub enum IndicesGetIndexTemplateParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "Name"]
-    Name(&'b [&'b str]),
+    Name(&'b str),
 }
 impl<'b> IndicesGetIndexTemplateParts<'b> {
     #[doc = "Builds a relative URL path to the Indices Get Index Template API"]
@@ -4644,9 +4298,7 @@ impl<'b> IndicesGetIndexTemplateParts<'b> {
         match self {
             IndicesGetIndexTemplateParts::None => "/_index_template".into(),
             IndicesGetIndexTemplateParts::Name(ref name) => {
-                let name_str = name.join(",");
-                let encoded_name: Cow<str> =
-                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(17usize + encoded_name.len());
                 p.push_str("/_index_template/");
                 p.push_str(encoded_name.as_ref());
@@ -5424,6 +5076,141 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Migrate To Data Stream API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Indices Modify Data Stream API"]
+pub enum IndicesModifyDataStreamParts {
+    #[doc = "No parts"]
+    None,
+}
+impl IndicesModifyDataStreamParts {
+    #[doc = "Builds a relative URL path to the Indices Modify Data Stream API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            IndicesModifyDataStreamParts::None => "/_data_stream/_modify".into(),
+        }
+    }
+}
+#[doc = "Builder for the [Indices Modify Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/data-streams.html)\n\nModifies a data stream"]
+#[derive(Clone, Debug)]
+pub struct IndicesModifyDataStream<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: IndicesModifyDataStreamParts,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b, B> IndicesModifyDataStream<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [IndicesModifyDataStream]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        IndicesModifyDataStream {
+            transport,
+            parts: IndicesModifyDataStreamParts::None,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> IndicesModifyDataStream<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        IndicesModifyDataStream {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Indices Modify Data Stream API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
@@ -7236,14 +7023,12 @@ where
         Ok(response)
     }
 }
-#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Resolve Index API"]
 pub enum IndicesResolveIndexParts<'b> {
     #[doc = "Name"]
     Name(&'b [&'b str]),
 }
-#[cfg(feature = "experimental-apis")]
 impl<'b> IndicesResolveIndexParts<'b> {
     #[doc = "Builds a relative URL path to the Indices Resolve Index API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -7261,8 +7046,6 @@ impl<'b> IndicesResolveIndexParts<'b> {
     }
 }
 #[doc = "Builder for the [Indices Resolve Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-resolve-index-api.html)\n\nReturns information about any matching indices, aliases, and data streams"]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
 pub struct IndicesResolveIndex<'a, 'b> {
     transport: &'a Transport,
@@ -7276,7 +7059,6 @@ pub struct IndicesResolveIndex<'a, 'b> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "experimental-apis")]
 impl<'a, 'b> IndicesResolveIndex<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesResolveIndex] with the specified API parts"]
     pub fn new(transport: &'a Transport, parts: IndicesResolveIndexParts<'b>) -> Self {
@@ -8666,7 +8448,6 @@ pub struct IndicesStats<'a, 'b> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
-    types: Option<&'b [&'b str]>,
 }
 impl<'a, 'b> IndicesStats<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesStats] with the specified API parts"]
@@ -8691,7 +8472,6 @@ impl<'a, 'b> IndicesStats<'a, 'b> {
             pretty: None,
             request_timeout: None,
             source: None,
-            types: None,
         }
     }
     #[doc = "A comma-separated list of fields for the `completion` index metric (supports wildcards)"]
@@ -8774,11 +8554,6 @@ impl<'a, 'b> IndicesStats<'a, 'b> {
         self.source = Some(source);
         self
     }
-    #[doc = "A comma-separated list of document types for the `indexing` index metric"]
-    pub fn types(mut self, types: &'b [&'b str]) -> Self {
-        self.types = Some(types);
-        self
-    }
     #[doc = "Creates an asynchronous call to the Indices Stats API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -8809,8 +8584,6 @@ impl<'a, 'b> IndicesStats<'a, 'b> {
                 level: Option<Level>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                types: Option<&'b [&'b str]>,
             }
             let query_params = QueryParams {
                 completion_fields: self.completion_fields,
@@ -8827,7 +8600,6 @@ impl<'a, 'b> IndicesStats<'a, 'b> {
                 level: self.level,
                 pretty: self.pretty,
                 source: self.source,
-                types: self.types,
             };
             Some(query_params)
         };
@@ -9205,8 +8977,6 @@ pub enum IndicesValidateQueryParts<'b> {
     None,
     #[doc = "Index"]
     Index(&'b [&'b str]),
-    #[doc = "Index and Type"]
-    IndexType(&'b [&'b str], &'b [&'b str]),
 }
 impl<'b> IndicesValidateQueryParts<'b> {
     #[doc = "Builds a relative URL path to the Indices Validate Query API"]
@@ -9220,20 +8990,6 @@ impl<'b> IndicesValidateQueryParts<'b> {
                 let mut p = String::with_capacity(17usize + encoded_index.len());
                 p.push_str("/");
                 p.push_str(encoded_index.as_ref());
-                p.push_str("/_validate/query");
-                p.into()
-            }
-            IndicesValidateQueryParts::IndexType(ref index, ref ty) => {
-                let index_str = index.join(",");
-                let ty_str = ty.join(",");
-                let encoded_index: Cow<str> =
-                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
-                let encoded_ty: Cow<str> = percent_encode(ty_str.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(18usize + encoded_index.len() + encoded_ty.len());
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/");
-                p.push_str(encoded_ty.as_ref());
                 p.push_str("/_validate/query");
                 p.into()
             }
@@ -9604,13 +9360,6 @@ impl<'a> Indices<'a> {
     ) -> IndicesExistsTemplate<'a, 'b> {
         IndicesExistsTemplate::new(self.transport(), parts)
     }
-    #[doc = "[Indices Exists Type API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-types-exists.html)\n\nReturns information about whether a particular document type exists. (DEPRECATED)"]
-    pub fn exists_type<'b>(
-        &'a self,
-        parts: IndicesExistsTypeParts<'b>,
-    ) -> IndicesExistsType<'a, 'b> {
-        IndicesExistsType::new(self.transport(), parts)
-    }
     #[doc = "[Indices Field Usage Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/field-usage-stats.html)\n\nReturns the field usage stats for each field of an index"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
@@ -9630,10 +9379,6 @@ impl<'a> Indices<'a> {
         parts: IndicesForcemergeParts<'b>,
     ) -> IndicesForcemerge<'a, 'b, ()> {
         IndicesForcemerge::new(self.transport(), parts)
-    }
-    #[doc = "[Indices Freeze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/freeze-index-api.html)\n\nFreezes an index. A frozen index has almost no overhead on the cluster (except for maintaining its metadata in memory) and is read-only."]
-    pub fn freeze<'b>(&'a self, parts: IndicesFreezeParts<'b>) -> IndicesFreeze<'a, 'b, ()> {
-        IndicesFreeze::new(self.transport(), parts)
     }
     #[doc = "[Indices Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-get-index.html)\n\nReturns information about one or more indices."]
     pub fn get<'b>(&'a self, parts: IndicesGetParts<'b>) -> IndicesGet<'a, 'b> {
@@ -9691,6 +9436,10 @@ impl<'a> Indices<'a> {
         parts: IndicesMigrateToDataStreamParts<'b>,
     ) -> IndicesMigrateToDataStream<'a, 'b, ()> {
         IndicesMigrateToDataStream::new(self.transport(), parts)
+    }
+    #[doc = "[Indices Modify Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/data-streams.html)\n\nModifies a data stream"]
+    pub fn modify_data_stream<'b>(&'a self) -> IndicesModifyDataStream<'a, 'b, ()> {
+        IndicesModifyDataStream::new(self.transport())
     }
     #[doc = "[Indices Open API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-open-close.html)\n\nOpens an index."]
     pub fn open<'b>(&'a self, parts: IndicesOpenParts<'b>) -> IndicesOpen<'a, 'b, ()> {
@@ -9751,8 +9500,6 @@ impl<'a> Indices<'a> {
         IndicesReloadSearchAnalyzers::new(self.transport(), parts)
     }
     #[doc = "[Indices Resolve Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/indices-resolve-index-api.html)\n\nReturns information about any matching indices, aliases, and data streams"]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
     pub fn resolve_index<'b>(
         &'a self,
         parts: IndicesResolveIndexParts<'b>,

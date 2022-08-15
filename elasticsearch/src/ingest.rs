@@ -587,6 +587,7 @@ pub struct IngestPutPipeline<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    if_version: Option<i32>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
@@ -608,6 +609,7 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            if_version: None,
             master_timeout: None,
             pretty: None,
             request_timeout: None,
@@ -628,6 +630,7 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            if_version: self.if_version,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
@@ -653,6 +656,11 @@ where
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
+        self
+    }
+    #[doc = "Required version for optimistic concurrency control for pipeline updates"]
+    pub fn if_version(mut self, if_version: i32) -> Self {
+        self.if_version = Some(if_version);
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
@@ -694,6 +702,7 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                if_version: Option<i32>,
                 master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
@@ -703,6 +712,7 @@ where
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                if_version: self.if_version,
                 master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,

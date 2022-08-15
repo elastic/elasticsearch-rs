@@ -71,7 +71,6 @@ impl<'b> MlCloseJobParts<'b> {
 pub struct MlCloseJob<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlCloseJobParts<'b>,
-    allow_no_jobs: Option<bool>,
     allow_no_match: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -95,7 +94,6 @@ where
             transport,
             parts,
             headers,
-            allow_no_jobs: None,
             allow_no_match: None,
             body: None,
             error_trace: None,
@@ -107,11 +105,6 @@ where
             source: None,
             timeout: None,
         }
-    }
-    #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
-    pub fn allow_no_jobs(mut self, allow_no_jobs: bool) -> Self {
-        self.allow_no_jobs = Some(allow_no_jobs);
-        self
     }
     #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
     pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
@@ -127,7 +120,6 @@ where
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
-            allow_no_jobs: self.allow_no_jobs,
             allow_no_match: self.allow_no_match,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -195,7 +187,6 @@ where
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                allow_no_jobs: Option<bool>,
                 allow_no_match: Option<bool>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
@@ -207,7 +198,6 @@ where
                 timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
-                allow_no_jobs: self.allow_no_jobs,
                 allow_no_match: self.allow_no_match,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
@@ -1588,11 +1578,13 @@ pub struct MlDeleteTrainedModel<'a, 'b> {
     parts: MlDeleteTrainedModelParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
+    force: Option<bool>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b> MlDeleteTrainedModel<'a, 'b> {
     #[doc = "Creates a new instance of [MlDeleteTrainedModel] with the specified API parts"]
@@ -1604,10 +1596,12 @@ impl<'a, 'b> MlDeleteTrainedModel<'a, 'b> {
             headers,
             error_trace: None,
             filter_path: None,
+            force: None,
             human: None,
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1618,6 +1612,11 @@ impl<'a, 'b> MlDeleteTrainedModel<'a, 'b> {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "True if the model should be forcefully deleted"]
+    pub fn force(mut self, force: bool) -> Self {
+        self.force = Some(force);
         self
     }
     #[doc = "Adds a HTTP header"]
@@ -1645,6 +1644,11 @@ impl<'a, 'b> MlDeleteTrainedModel<'a, 'b> {
         self.source = Some(source);
         self
     }
+    #[doc = "Controls the amount of time to wait for the model to be deleted."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Ml Delete Trained Model API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -1658,16 +1662,20 @@ impl<'a, 'b> MlDeleteTrainedModel<'a, 'b> {
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
+                force: Option<bool>,
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
+                force: self.force,
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -3712,7 +3720,6 @@ impl<'b> MlGetDatafeedStatsParts<'b> {
 pub struct MlGetDatafeedStats<'a, 'b> {
     transport: &'a Transport,
     parts: MlGetDatafeedStatsParts<'b>,
-    allow_no_datafeeds: Option<bool>,
     allow_no_match: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -3730,7 +3737,6 @@ impl<'a, 'b> MlGetDatafeedStats<'a, 'b> {
             transport,
             parts,
             headers,
-            allow_no_datafeeds: None,
             allow_no_match: None,
             error_trace: None,
             filter_path: None,
@@ -3739,11 +3745,6 @@ impl<'a, 'b> MlGetDatafeedStats<'a, 'b> {
             request_timeout: None,
             source: None,
         }
-    }
-    #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
-    pub fn allow_no_datafeeds(mut self, allow_no_datafeeds: bool) -> Self {
-        self.allow_no_datafeeds = Some(allow_no_datafeeds);
-        self
     }
     #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
     pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
@@ -3795,7 +3796,6 @@ impl<'a, 'b> MlGetDatafeedStats<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                allow_no_datafeeds: Option<bool>,
                 allow_no_match: Option<bool>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
@@ -3805,7 +3805,6 @@ impl<'a, 'b> MlGetDatafeedStats<'a, 'b> {
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
-                allow_no_datafeeds: self.allow_no_datafeeds,
                 allow_no_match: self.allow_no_match,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
@@ -3852,7 +3851,6 @@ impl<'b> MlGetDatafeedsParts<'b> {
 pub struct MlGetDatafeeds<'a, 'b> {
     transport: &'a Transport,
     parts: MlGetDatafeedsParts<'b>,
-    allow_no_datafeeds: Option<bool>,
     allow_no_match: Option<bool>,
     error_trace: Option<bool>,
     exclude_generated: Option<bool>,
@@ -3871,7 +3869,6 @@ impl<'a, 'b> MlGetDatafeeds<'a, 'b> {
             transport,
             parts,
             headers,
-            allow_no_datafeeds: None,
             allow_no_match: None,
             error_trace: None,
             exclude_generated: None,
@@ -3881,11 +3878,6 @@ impl<'a, 'b> MlGetDatafeeds<'a, 'b> {
             request_timeout: None,
             source: None,
         }
-    }
-    #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
-    pub fn allow_no_datafeeds(mut self, allow_no_datafeeds: bool) -> Self {
-        self.allow_no_datafeeds = Some(allow_no_datafeeds);
-        self
     }
     #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
     pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
@@ -3942,7 +3934,6 @@ impl<'a, 'b> MlGetDatafeeds<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                allow_no_datafeeds: Option<bool>,
                 allow_no_match: Option<bool>,
                 error_trace: Option<bool>,
                 exclude_generated: Option<bool>,
@@ -3953,7 +3944,6 @@ impl<'a, 'b> MlGetDatafeeds<'a, 'b> {
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
-                allow_no_datafeeds: self.allow_no_datafeeds,
                 allow_no_match: self.allow_no_match,
                 error_trace: self.error_trace,
                 exclude_generated: self.exclude_generated,
@@ -4368,7 +4358,6 @@ impl<'b> MlGetJobStatsParts<'b> {
 pub struct MlGetJobStats<'a, 'b> {
     transport: &'a Transport,
     parts: MlGetJobStatsParts<'b>,
-    allow_no_jobs: Option<bool>,
     allow_no_match: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -4386,7 +4375,6 @@ impl<'a, 'b> MlGetJobStats<'a, 'b> {
             transport,
             parts,
             headers,
-            allow_no_jobs: None,
             allow_no_match: None,
             error_trace: None,
             filter_path: None,
@@ -4395,11 +4383,6 @@ impl<'a, 'b> MlGetJobStats<'a, 'b> {
             request_timeout: None,
             source: None,
         }
-    }
-    #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
-    pub fn allow_no_jobs(mut self, allow_no_jobs: bool) -> Self {
-        self.allow_no_jobs = Some(allow_no_jobs);
-        self
     }
     #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
     pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
@@ -4451,7 +4434,6 @@ impl<'a, 'b> MlGetJobStats<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                allow_no_jobs: Option<bool>,
                 allow_no_match: Option<bool>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
@@ -4461,7 +4443,6 @@ impl<'a, 'b> MlGetJobStats<'a, 'b> {
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
-                allow_no_jobs: self.allow_no_jobs,
                 allow_no_match: self.allow_no_match,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
@@ -4508,7 +4489,6 @@ impl<'b> MlGetJobsParts<'b> {
 pub struct MlGetJobs<'a, 'b> {
     transport: &'a Transport,
     parts: MlGetJobsParts<'b>,
-    allow_no_jobs: Option<bool>,
     allow_no_match: Option<bool>,
     error_trace: Option<bool>,
     exclude_generated: Option<bool>,
@@ -4527,7 +4507,6 @@ impl<'a, 'b> MlGetJobs<'a, 'b> {
             transport,
             parts,
             headers,
-            allow_no_jobs: None,
             allow_no_match: None,
             error_trace: None,
             exclude_generated: None,
@@ -4537,11 +4516,6 @@ impl<'a, 'b> MlGetJobs<'a, 'b> {
             request_timeout: None,
             source: None,
         }
-    }
-    #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
-    pub fn allow_no_jobs(mut self, allow_no_jobs: bool) -> Self {
-        self.allow_no_jobs = Some(allow_no_jobs);
-        self
     }
     #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
     pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
@@ -4598,7 +4572,6 @@ impl<'a, 'b> MlGetJobs<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                allow_no_jobs: Option<bool>,
                 allow_no_match: Option<bool>,
                 error_trace: Option<bool>,
                 exclude_generated: Option<bool>,
@@ -4609,10 +4582,285 @@ impl<'a, 'b> MlGetJobs<'a, 'b> {
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
-                allow_no_jobs: self.allow_no_jobs,
                 allow_no_match: self.allow_no_match,
                 error_trace: self.error_trace,
                 exclude_generated: self.exclude_generated,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Ml Get Memory Stats API"]
+pub enum MlGetMemoryStatsParts<'b> {
+    #[doc = "No parts"]
+    None,
+    #[doc = "NodeId"]
+    NodeId(&'b str),
+}
+impl<'b> MlGetMemoryStatsParts<'b> {
+    #[doc = "Builds a relative URL path to the Ml Get Memory Stats API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            MlGetMemoryStatsParts::None => "/_ml/memory/_stats".into(),
+            MlGetMemoryStatsParts::NodeId(ref node_id) => {
+                let encoded_node_id: Cow<str> =
+                    percent_encode(node_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(19usize + encoded_node_id.len());
+                p.push_str("/_ml/memory/");
+                p.push_str(encoded_node_id.as_ref());
+                p.push_str("/_stats");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Ml Get Memory Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-ml-memory.html)\n\nReturns information on how ML is using memory."]
+#[derive(Clone, Debug)]
+pub struct MlGetMemoryStats<'a, 'b> {
+    transport: &'a Transport,
+    parts: MlGetMemoryStatsParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    master_timeout: Option<&'b str>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
+}
+impl<'a, 'b> MlGetMemoryStats<'a, 'b> {
+    #[doc = "Creates a new instance of [MlGetMemoryStats] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: MlGetMemoryStatsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        MlGetMemoryStats {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+            timeout: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Ml Get Memory Stats API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                master_timeout: Option<&'b str>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+                timeout: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Ml Get Model Snapshot Upgrade Stats API"]
+pub enum MlGetModelSnapshotUpgradeStatsParts<'b> {
+    #[doc = "JobId and SnapshotId"]
+    JobIdSnapshotId(&'b str, &'b str),
+}
+impl<'b> MlGetModelSnapshotUpgradeStatsParts<'b> {
+    #[doc = "Builds a relative URL path to the Ml Get Model Snapshot Upgrade Stats API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            MlGetModelSnapshotUpgradeStatsParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
+                let encoded_job_id: Cow<str> =
+                    percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
+                let encoded_snapshot_id: Cow<str> =
+                    percent_encode(snapshot_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    56usize + encoded_job_id.len() + encoded_snapshot_id.len(),
+                );
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(encoded_job_id.as_ref());
+                p.push_str("/model_snapshots/");
+                p.push_str(encoded_snapshot_id.as_ref());
+                p.push_str("/_upgrade/_stats");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Ml Get Model Snapshot Upgrade Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-get-job-model-snapshot-upgrade-stats.html)\n\nGets stats for anomaly detection job model snapshot upgrades that are in progress."]
+#[derive(Clone, Debug)]
+pub struct MlGetModelSnapshotUpgradeStats<'a, 'b> {
+    transport: &'a Transport,
+    parts: MlGetModelSnapshotUpgradeStatsParts<'b>,
+    allow_no_match: Option<bool>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b> MlGetModelSnapshotUpgradeStats<'a, 'b> {
+    #[doc = "Creates a new instance of [MlGetModelSnapshotUpgradeStats] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: MlGetModelSnapshotUpgradeStatsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        MlGetModelSnapshotUpgradeStats {
+            transport,
+            parts,
+            headers,
+            allow_no_match: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Whether to ignore if a wildcard expression matches no jobs or no snapshots. (This includes the `_all` string.)"]
+    pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
+        self.allow_no_match = Some(allow_no_match);
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Ml Get Model Snapshot Upgrade Stats API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                allow_no_match: Option<bool>,
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                allow_no_match: self.allow_no_match,
+                error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
                 pretty: self.pretty,
@@ -4877,7 +5125,6 @@ impl<'b> MlGetOverallBucketsParts<'b> {
 pub struct MlGetOverallBuckets<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlGetOverallBucketsParts<'b>,
-    allow_no_jobs: Option<bool>,
     allow_no_match: Option<bool>,
     body: Option<B>,
     bucket_span: Option<&'b str>,
@@ -4905,7 +5152,6 @@ where
             transport,
             parts,
             headers,
-            allow_no_jobs: None,
             allow_no_match: None,
             body: None,
             bucket_span: None,
@@ -4923,11 +5169,6 @@ where
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
-    pub fn allow_no_jobs(mut self, allow_no_jobs: bool) -> Self {
-        self.allow_no_jobs = Some(allow_no_jobs);
-        self
-    }
-    #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
     pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
         self.allow_no_match = Some(allow_no_match);
         self
@@ -4941,7 +5182,6 @@ where
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
-            allow_no_jobs: self.allow_no_jobs,
             allow_no_match: self.allow_no_match,
             bucket_span: self.bucket_span,
             end: self.end,
@@ -5036,7 +5276,6 @@ where
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                allow_no_jobs: Option<bool>,
                 allow_no_match: Option<bool>,
                 bucket_span: Option<&'b str>,
                 end: Option<&'b str>,
@@ -5052,7 +5291,6 @@ where
                 top_n: Option<i32>,
             }
             let query_params = QueryParams {
-                allow_no_jobs: self.allow_no_jobs,
                 allow_no_match: self.allow_no_match,
                 bucket_span: self.bucket_span,
                 end: self.end,
@@ -5295,131 +5533,6 @@ where
             Some(query_params)
         };
         let body = self.body;
-        let response = self
-            .transport
-            .send(method, &path, headers, query_string.as_ref(), body, timeout)
-            .await?;
-        Ok(response)
-    }
-}
-#[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Ml Get Trained Model Deployment Stats API"]
-pub enum MlGetTrainedModelDeploymentStatsParts<'b> {
-    #[doc = "ModelId"]
-    ModelId(&'b str),
-}
-#[cfg(feature = "experimental-apis")]
-impl<'b> MlGetTrainedModelDeploymentStatsParts<'b> {
-    #[doc = "Builds a relative URL path to the Ml Get Trained Model Deployment Stats API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            MlGetTrainedModelDeploymentStatsParts::ModelId(ref model_id) => {
-                let encoded_model_id: Cow<str> =
-                    percent_encode(model_id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(38usize + encoded_model_id.len());
-                p.push_str("/_ml/trained_models/");
-                p.push_str(encoded_model_id.as_ref());
-                p.push_str("/deployment/_stats");
-                p.into()
-            }
-        }
-    }
-}
-#[doc = "Builder for the [Ml Get Trained Model Deployment Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-get-trained-model-deployment-stats.html)\n\nGet information about trained model deployments."]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
-#[derive(Clone, Debug)]
-pub struct MlGetTrainedModelDeploymentStats<'a, 'b> {
-    transport: &'a Transport,
-    parts: MlGetTrainedModelDeploymentStatsParts<'b>,
-    error_trace: Option<bool>,
-    filter_path: Option<&'b [&'b str]>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    request_timeout: Option<Duration>,
-    source: Option<&'b str>,
-}
-#[cfg(feature = "experimental-apis")]
-impl<'a, 'b> MlGetTrainedModelDeploymentStats<'a, 'b> {
-    #[doc = "Creates a new instance of [MlGetTrainedModelDeploymentStats] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: MlGetTrainedModelDeploymentStatsParts<'b>) -> Self {
-        let headers = HeaderMap::new();
-        MlGetTrainedModelDeploymentStats {
-            transport,
-            parts,
-            headers,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            pretty: None,
-            request_timeout: None,
-            source: None,
-        }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
-    pub fn request_timeout(mut self, timeout: Duration) -> Self {
-        self.request_timeout = Some(timeout);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Ml Get Trained Model Deployment Stats API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = Method::Get;
-        let headers = self.headers;
-        let timeout = self.request_timeout;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                error_trace: Option<bool>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                filter_path: Option<&'b [&'b str]>,
-                human: Option<bool>,
-                pretty: Option<bool>,
-                source: Option<&'b str>,
-            }
-            let query_params = QueryParams {
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                human: self.human,
-                pretty: self.pretty,
-                source: self.source,
-            };
-            Some(query_params)
-        };
-        let body = Option::<()>::None;
         let response = self
             .transport
             .send(method, &path, headers, query_string.as_ref(), body, timeout)
@@ -5774,35 +5887,35 @@ impl<'a, 'b> MlGetTrainedModelsStats<'a, 'b> {
 }
 #[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Ml Infer Trained Model Deployment API"]
-pub enum MlInferTrainedModelDeploymentParts<'b> {
+#[doc = "API parts for the Ml Infer Trained Model API"]
+pub enum MlInferTrainedModelParts<'b> {
     #[doc = "ModelId"]
     ModelId(&'b str),
 }
 #[cfg(feature = "experimental-apis")]
-impl<'b> MlInferTrainedModelDeploymentParts<'b> {
-    #[doc = "Builds a relative URL path to the Ml Infer Trained Model Deployment API"]
+impl<'b> MlInferTrainedModelParts<'b> {
+    #[doc = "Builds a relative URL path to the Ml Infer Trained Model API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlInferTrainedModelDeploymentParts::ModelId(ref model_id) => {
+            MlInferTrainedModelParts::ModelId(ref model_id) => {
                 let encoded_model_id: Cow<str> =
                     percent_encode(model_id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(38usize + encoded_model_id.len());
+                let mut p = String::with_capacity(27usize + encoded_model_id.len());
                 p.push_str("/_ml/trained_models/");
                 p.push_str(encoded_model_id.as_ref());
-                p.push_str("/deployment/_infer");
+                p.push_str("/_infer");
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Ml Infer Trained Model Deployment API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/infer-trained-model-deployment.html)\n\nEvaluate a trained model."]
+#[doc = "Builder for the [Ml Infer Trained Model API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/infer-trained-model.html)\n\nEvaluate a trained model."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
-pub struct MlInferTrainedModelDeployment<'a, 'b, B> {
+pub struct MlInferTrainedModel<'a, 'b, B> {
     transport: &'a Transport,
-    parts: MlInferTrainedModelDeploymentParts<'b>,
+    parts: MlInferTrainedModelParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -5814,14 +5927,14 @@ pub struct MlInferTrainedModelDeployment<'a, 'b, B> {
     timeout: Option<&'b str>,
 }
 #[cfg(feature = "experimental-apis")]
-impl<'a, 'b, B> MlInferTrainedModelDeployment<'a, 'b, B>
+impl<'a, 'b, B> MlInferTrainedModel<'a, 'b, B>
 where
     B: Body,
 {
-    #[doc = "Creates a new instance of [MlInferTrainedModelDeployment] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: MlInferTrainedModelDeploymentParts<'b>) -> Self {
+    #[doc = "Creates a new instance of [MlInferTrainedModel] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: MlInferTrainedModelParts<'b>) -> Self {
         let headers = HeaderMap::new();
-        MlInferTrainedModelDeployment {
+        MlInferTrainedModel {
             transport,
             parts,
             headers,
@@ -5836,11 +5949,11 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlInferTrainedModelDeployment<'a, 'b, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlInferTrainedModel<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
-        MlInferTrainedModelDeployment {
+        MlInferTrainedModel {
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
@@ -5894,7 +6007,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous call to the Ml Infer Trained Model Deployment API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Infer Trained Model API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
@@ -6670,6 +6783,7 @@ pub struct MlPreviewDatafeed<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlPreviewDatafeedParts<'b>,
     body: Option<B>,
+    end: Option<&'b str>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -6677,6 +6791,7 @@ pub struct MlPreviewDatafeed<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    start: Option<&'b str>,
 }
 impl<'a, 'b, B> MlPreviewDatafeed<'a, 'b, B>
 where
@@ -6690,12 +6805,14 @@ where
             parts,
             headers,
             body: None,
+            end: None,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
             request_timeout: None,
             source: None,
+            start: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -6707,6 +6824,7 @@ where
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
+            end: self.end,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             headers: self.headers,
@@ -6714,7 +6832,13 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            start: self.start,
         }
+    }
+    #[doc = "The end time when the datafeed preview should stop"]
+    pub fn end(mut self, end: &'b str) -> Self {
+        self.end = Some(end);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -6751,6 +6875,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "The start time from where the datafeed preview should begin"]
+    pub fn start(mut self, start: &'b str) -> Self {
+        self.start = Some(start);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Ml Preview Datafeed API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -6764,19 +6893,23 @@ where
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                end: Option<&'b str>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                start: Option<&'b str>,
             }
             let query_params = QueryParams {
+                end: self.end,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                start: self.start,
             };
             Some(query_params)
         };
@@ -8037,6 +8170,307 @@ where
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Ml Put Trained Model Definition Part API"]
+pub enum MlPutTrainedModelDefinitionPartParts<'b> {
+    #[doc = "ModelId and Part"]
+    ModelIdPart(&'b str, i32),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> MlPutTrainedModelDefinitionPartParts<'b> {
+    #[doc = "Builds a relative URL path to the Ml Put Trained Model Definition Part API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            MlPutTrainedModelDefinitionPartParts::ModelIdPart(ref model_id, ref part) => {
+                let part_str = part.to_string();
+                let encoded_model_id: Cow<str> =
+                    percent_encode(model_id.as_bytes(), PARTS_ENCODED).into();
+                let encoded_part: Cow<str> =
+                    percent_encode(part_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p =
+                    String::with_capacity(32usize + encoded_model_id.len() + encoded_part.len());
+                p.push_str("/_ml/trained_models/");
+                p.push_str(encoded_model_id.as_ref());
+                p.push_str("/definition/");
+                p.push_str(encoded_part.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Ml Put Trained Model Definition Part API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/put-trained-model-definition-part.html)\n\nCreates part of a trained model definition"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct MlPutTrainedModelDefinitionPart<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: MlPutTrainedModelDefinitionPartParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> MlPutTrainedModelDefinitionPart<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [MlPutTrainedModelDefinitionPart] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: MlPutTrainedModelDefinitionPartParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        MlPutTrainedModelDefinitionPart {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> MlPutTrainedModelDefinitionPart<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        MlPutTrainedModelDefinitionPart {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Ml Put Trained Model Definition Part API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Ml Put Trained Model Vocabulary API"]
+pub enum MlPutTrainedModelVocabularyParts<'b> {
+    #[doc = "ModelId"]
+    ModelId(&'b str),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> MlPutTrainedModelVocabularyParts<'b> {
+    #[doc = "Builds a relative URL path to the Ml Put Trained Model Vocabulary API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            MlPutTrainedModelVocabularyParts::ModelId(ref model_id) => {
+                let encoded_model_id: Cow<str> =
+                    percent_encode(model_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(31usize + encoded_model_id.len());
+                p.push_str("/_ml/trained_models/");
+                p.push_str(encoded_model_id.as_ref());
+                p.push_str("/vocabulary");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Ml Put Trained Model Vocabulary API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/put-trained-model-vocabulary.html)\n\nCreates a trained model vocabulary"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct MlPutTrainedModelVocabulary<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: MlPutTrainedModelVocabularyParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> MlPutTrainedModelVocabulary<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [MlPutTrainedModelVocabulary] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: MlPutTrainedModelVocabularyParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        MlPutTrainedModelVocabulary {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> MlPutTrainedModelVocabulary<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        MlPutTrainedModelVocabulary {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Ml Put Trained Model Vocabulary API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Reset Job API"]
 pub enum MlResetJobParts<'b> {
@@ -8865,10 +9299,14 @@ pub struct MlStartTrainedModelDeployment<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    number_of_allocations: Option<i32>,
     pretty: Option<bool>,
+    queue_capacity: Option<i32>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    threads_per_allocation: Option<i32>,
     timeout: Option<&'b str>,
+    wait_for: Option<&'b str>,
 }
 #[cfg(feature = "experimental-apis")]
 impl<'a, 'b, B> MlStartTrainedModelDeployment<'a, 'b, B>
@@ -8886,10 +9324,14 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            number_of_allocations: None,
             pretty: None,
+            queue_capacity: None,
             request_timeout: None,
             source: None,
+            threads_per_allocation: None,
             timeout: None,
+            wait_for: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -8905,10 +9347,14 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            number_of_allocations: self.number_of_allocations,
             pretty: self.pretty,
+            queue_capacity: self.queue_capacity,
             request_timeout: self.request_timeout,
             source: self.source,
+            threads_per_allocation: self.threads_per_allocation,
             timeout: self.timeout,
+            wait_for: self.wait_for,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -8931,9 +9377,19 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "The number of model allocations on each node where the model is deployed."]
+    pub fn number_of_allocations(mut self, number_of_allocations: i32) -> Self {
+        self.number_of_allocations = Some(number_of_allocations);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Controls how many inference requests are allowed in the queue at a time."]
+    pub fn queue_capacity(mut self, queue_capacity: i32) -> Self {
+        self.queue_capacity = Some(queue_capacity);
         self
     }
     #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
@@ -8946,9 +9402,19 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "The number of threads used by each model allocation during inference."]
+    pub fn threads_per_allocation(mut self, threads_per_allocation: i32) -> Self {
+        self.threads_per_allocation = Some(threads_per_allocation);
+        self
+    }
     #[doc = "Controls the amount of time to wait for the model to deploy."]
     pub fn timeout(mut self, timeout: &'b str) -> Self {
         self.timeout = Some(timeout);
+        self
+    }
+    #[doc = "The allocation status for which to wait"]
+    pub fn wait_for(mut self, wait_for: &'b str) -> Self {
+        self.wait_for = Some(wait_for);
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Start Trained Model Deployment API that can be awaited"]
@@ -8965,17 +9431,25 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                number_of_allocations: Option<i32>,
                 pretty: Option<bool>,
+                queue_capacity: Option<i32>,
                 source: Option<&'b str>,
+                threads_per_allocation: Option<i32>,
                 timeout: Option<&'b str>,
+                wait_for: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                number_of_allocations: self.number_of_allocations,
                 pretty: self.pretty,
+                queue_capacity: self.queue_capacity,
                 source: self.source,
+                threads_per_allocation: self.threads_per_allocation,
                 timeout: self.timeout,
+                wait_for: self.wait_for,
             };
             Some(query_params)
         };
@@ -9373,9 +9847,11 @@ impl<'b> MlStopTrainedModelDeploymentParts<'b> {
 pub struct MlStopTrainedModelDeployment<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlStopTrainedModelDeploymentParts<'b>,
+    allow_no_match: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
+    force: Option<bool>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
@@ -9394,14 +9870,21 @@ where
             transport,
             parts,
             headers,
+            allow_no_match: None,
             body: None,
             error_trace: None,
             filter_path: None,
+            force: None,
             human: None,
             pretty: None,
             request_timeout: None,
             source: None,
         }
+    }
+    #[doc = "Whether to ignore if a wildcard expression matches no deployments. (This includes `_all` string or when no deployments have been specified)"]
+    pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
+        self.allow_no_match = Some(allow_no_match);
+        self
     }
     #[doc = "The body for the API call"]
     pub fn body<T>(self, body: T) -> MlStopTrainedModelDeployment<'a, 'b, JsonBody<T>>
@@ -9412,8 +9895,10 @@ where
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
+            allow_no_match: self.allow_no_match,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            force: self.force,
             headers: self.headers,
             human: self.human,
             pretty: self.pretty,
@@ -9429,6 +9914,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "True if the deployment should be forcefully stopped"]
+    pub fn force(mut self, force: bool) -> Self {
+        self.force = Some(force);
         self
     }
     #[doc = "Adds a HTTP header"]
@@ -9466,16 +9956,20 @@ where
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                allow_no_match: Option<bool>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
+                force: Option<bool>,
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
+                allow_no_match: self.allow_no_match,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
+                force: self.force,
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
@@ -10876,6 +11370,20 @@ impl<'a> Ml<'a> {
     pub fn get_jobs<'b>(&'a self, parts: MlGetJobsParts<'b>) -> MlGetJobs<'a, 'b> {
         MlGetJobs::new(self.transport(), parts)
     }
+    #[doc = "[Ml Get Memory Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-ml-memory.html)\n\nReturns information on how ML is using memory."]
+    pub fn get_memory_stats<'b>(
+        &'a self,
+        parts: MlGetMemoryStatsParts<'b>,
+    ) -> MlGetMemoryStats<'a, 'b> {
+        MlGetMemoryStats::new(self.transport(), parts)
+    }
+    #[doc = "[Ml Get Model Snapshot Upgrade Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-get-job-model-snapshot-upgrade-stats.html)\n\nGets stats for anomaly detection job model snapshot upgrades that are in progress."]
+    pub fn get_model_snapshot_upgrade_stats<'b>(
+        &'a self,
+        parts: MlGetModelSnapshotUpgradeStatsParts<'b>,
+    ) -> MlGetModelSnapshotUpgradeStats<'a, 'b> {
+        MlGetModelSnapshotUpgradeStats::new(self.transport(), parts)
+    }
     #[doc = "[Ml Get Model Snapshots API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-get-snapshot.html)\n\nRetrieves information about model snapshots."]
     pub fn get_model_snapshots<'b>(
         &'a self,
@@ -10894,15 +11402,6 @@ impl<'a> Ml<'a> {
     pub fn get_records<'b>(&'a self, parts: MlGetRecordsParts<'b>) -> MlGetRecords<'a, 'b, ()> {
         MlGetRecords::new(self.transport(), parts)
     }
-    #[doc = "[Ml Get Trained Model Deployment Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-get-trained-model-deployment-stats.html)\n\nGet information about trained model deployments."]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
-    pub fn get_trained_model_deployment_stats<'b>(
-        &'a self,
-        parts: MlGetTrainedModelDeploymentStatsParts<'b>,
-    ) -> MlGetTrainedModelDeploymentStats<'a, 'b> {
-        MlGetTrainedModelDeploymentStats::new(self.transport(), parts)
-    }
     #[doc = "[Ml Get Trained Models API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-trained-models.html)\n\nRetrieves configuration information for a trained inference model."]
     pub fn get_trained_models<'b>(
         &'a self,
@@ -10917,14 +11416,14 @@ impl<'a> Ml<'a> {
     ) -> MlGetTrainedModelsStats<'a, 'b> {
         MlGetTrainedModelsStats::new(self.transport(), parts)
     }
-    #[doc = "[Ml Infer Trained Model Deployment API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/infer-trained-model-deployment.html)\n\nEvaluate a trained model."]
+    #[doc = "[Ml Infer Trained Model API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/infer-trained-model.html)\n\nEvaluate a trained model."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
-    pub fn infer_trained_model_deployment<'b>(
+    pub fn infer_trained_model<'b>(
         &'a self,
-        parts: MlInferTrainedModelDeploymentParts<'b>,
-    ) -> MlInferTrainedModelDeployment<'a, 'b, ()> {
-        MlInferTrainedModelDeployment::new(self.transport(), parts)
+        parts: MlInferTrainedModelParts<'b>,
+    ) -> MlInferTrainedModel<'a, 'b, ()> {
+        MlInferTrainedModel::new(self.transport(), parts)
     }
     #[doc = "[Ml Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/get-ml-info.html)\n\nReturns defaults and limits used by machine learning."]
     pub fn info<'b>(&'a self) -> MlInfo<'a, 'b> {
@@ -11002,6 +11501,24 @@ impl<'a> Ml<'a> {
         parts: MlPutTrainedModelAliasParts<'b>,
     ) -> MlPutTrainedModelAlias<'a, 'b, ()> {
         MlPutTrainedModelAlias::new(self.transport(), parts)
+    }
+    #[doc = "[Ml Put Trained Model Definition Part API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/put-trained-model-definition-part.html)\n\nCreates part of a trained model definition"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn put_trained_model_definition_part<'b>(
+        &'a self,
+        parts: MlPutTrainedModelDefinitionPartParts<'b>,
+    ) -> MlPutTrainedModelDefinitionPart<'a, 'b, ()> {
+        MlPutTrainedModelDefinitionPart::new(self.transport(), parts)
+    }
+    #[doc = "[Ml Put Trained Model Vocabulary API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/put-trained-model-vocabulary.html)\n\nCreates a trained model vocabulary"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn put_trained_model_vocabulary<'b>(
+        &'a self,
+        parts: MlPutTrainedModelVocabularyParts<'b>,
+    ) -> MlPutTrainedModelVocabulary<'a, 'b, ()> {
+        MlPutTrainedModelVocabulary::new(self.transport(), parts)
     }
     #[doc = "[Ml Reset Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/ml-reset-job.html)\n\nResets an existing anomaly detection job."]
     pub fn reset_job<'b>(&'a self, parts: MlResetJobParts<'b>) -> MlResetJob<'a, 'b, ()> {

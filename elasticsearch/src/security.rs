@@ -53,6 +53,146 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Security Activate User Profile API"]
+pub enum SecurityActivateUserProfileParts {
+    #[doc = "No parts"]
+    None,
+}
+#[cfg(feature = "experimental-apis")]
+impl SecurityActivateUserProfileParts {
+    #[doc = "Builds a relative URL path to the Security Activate User Profile API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SecurityActivateUserProfileParts::None => "/_security/profile/_activate".into(),
+        }
+    }
+}
+#[doc = "Builder for the [Security Activate User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-activate-user-profile.html)\n\nCreates or updates the user profile on behalf of another user."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct SecurityActivateUserProfile<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: SecurityActivateUserProfileParts,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> SecurityActivateUserProfile<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [SecurityActivateUserProfile]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        SecurityActivateUserProfile {
+            transport,
+            parts: SecurityActivateUserProfileParts::None,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> SecurityActivateUserProfile<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        SecurityActivateUserProfile {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Security Activate User Profile API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Authenticate API"]
 pub enum SecurityAuthenticateParts {
@@ -908,14 +1048,12 @@ where
         Ok(response)
     }
 }
-#[cfg(feature = "beta-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Clear Cached Service Tokens API"]
 pub enum SecurityClearCachedServiceTokensParts<'b> {
     #[doc = "Namespace, Service and Name"]
     NamespaceServiceName(&'b str, &'b str, &'b [&'b str]),
 }
-#[cfg(feature = "beta-apis")]
 impl<'b> SecurityClearCachedServiceTokensParts<'b> {
     #[doc = "Builds a relative URL path to the Security Clear Cached Service Tokens API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -948,8 +1086,6 @@ impl<'b> SecurityClearCachedServiceTokensParts<'b> {
     }
 }
 #[doc = "Builder for the [Security Clear Cached Service Tokens API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-clear-service-token-caches.html)\n\nEvicts tokens from the service account token caches."]
-#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
-#[cfg(feature = "beta-apis")]
 #[derive(Clone, Debug)]
 pub struct SecurityClearCachedServiceTokens<'a, 'b, B> {
     transport: &'a Transport,
@@ -963,7 +1099,6 @@ pub struct SecurityClearCachedServiceTokens<'a, 'b, B> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "beta-apis")]
 impl<'a, 'b, B> SecurityClearCachedServiceTokens<'a, 'b, B>
 where
     B: Body,
@@ -1216,7 +1351,6 @@ where
         Ok(response)
     }
 }
-#[cfg(feature = "beta-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Create Service Token API"]
 pub enum SecurityCreateServiceTokenParts<'b> {
@@ -1225,7 +1359,6 @@ pub enum SecurityCreateServiceTokenParts<'b> {
     #[doc = "Namespace and Service"]
     NamespaceService(&'b str, &'b str),
 }
-#[cfg(feature = "beta-apis")]
 impl<'b> SecurityCreateServiceTokenParts<'b> {
     #[doc = "Builds a relative URL path to the Security Create Service Token API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -1270,8 +1403,6 @@ impl<'b> SecurityCreateServiceTokenParts<'b> {
     }
 }
 #[doc = "Builder for the [Security Create Service Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-create-service-token.html)\n\nCreates a service account token for access without requiring basic authentication."]
-#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
-#[cfg(feature = "beta-apis")]
 #[derive(Clone, Debug)]
 pub struct SecurityCreateServiceToken<'a, 'b, B> {
     transport: &'a Transport,
@@ -1286,7 +1417,6 @@ pub struct SecurityCreateServiceToken<'a, 'b, B> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "beta-apis")]
 impl<'a, 'b, B> SecurityCreateServiceToken<'a, 'b, B>
 where
     B: Body,
@@ -1789,14 +1919,12 @@ impl<'a, 'b> SecurityDeleteRoleMapping<'a, 'b> {
         Ok(response)
     }
 }
-#[cfg(feature = "beta-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Delete Service Token API"]
 pub enum SecurityDeleteServiceTokenParts<'b> {
     #[doc = "Namespace, Service and Name"]
     NamespaceServiceName(&'b str, &'b str, &'b str),
 }
-#[cfg(feature = "beta-apis")]
 impl<'b> SecurityDeleteServiceTokenParts<'b> {
     #[doc = "Builds a relative URL path to the Security Delete Service Token API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -1826,8 +1954,6 @@ impl<'b> SecurityDeleteServiceTokenParts<'b> {
     }
 }
 #[doc = "Builder for the [Security Delete Service Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-delete-service-token.html)\n\nDeletes a service account token."]
-#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
-#[cfg(feature = "beta-apis")]
 #[derive(Clone, Debug)]
 pub struct SecurityDeleteServiceToken<'a, 'b> {
     transport: &'a Transport,
@@ -1841,7 +1967,6 @@ pub struct SecurityDeleteServiceToken<'a, 'b> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "beta-apis")]
 impl<'a, 'b> SecurityDeleteServiceToken<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityDeleteServiceToken] with the specified API parts"]
     pub fn new(transport: &'a Transport, parts: SecurityDeleteServiceTokenParts<'b>) -> Self {
@@ -2216,6 +2341,163 @@ where
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Security Disable User Profile API"]
+pub enum SecurityDisableUserProfileParts<'b> {
+    #[doc = "Uid"]
+    Uid(&'b str),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> SecurityDisableUserProfileParts<'b> {
+    #[doc = "Builds a relative URL path to the Security Disable User Profile API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SecurityDisableUserProfileParts::Uid(ref uid) => {
+                let encoded_uid: Cow<str> = percent_encode(uid.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(28usize + encoded_uid.len());
+                p.push_str("/_security/profile/");
+                p.push_str(encoded_uid.as_ref());
+                p.push_str("/_disable");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Security Disable User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-disable-user-profile.html)\n\nDisables a user profile so it's not visible in user profile searches."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct SecurityDisableUserProfile<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: SecurityDisableUserProfileParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    refresh: Option<Refresh>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> SecurityDisableUserProfile<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [SecurityDisableUserProfile] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: SecurityDisableUserProfileParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        SecurityDisableUserProfile {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            refresh: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> SecurityDisableUserProfile<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        SecurityDisableUserProfile {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            refresh: self.refresh,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "If `true` then refresh the affected shards to make this operation visible to search, if `wait_for` (the default) then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Refresh) -> Self {
+        self.refresh = Some(refresh);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Security Disable User Profile API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                refresh: Option<Refresh>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                refresh: self.refresh,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Enable User API"]
 pub enum SecurityEnableUserParts<'b> {
@@ -2334,6 +2616,163 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Security Enable User API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                refresh: Option<Refresh>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                refresh: self.refresh,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Security Enable User Profile API"]
+pub enum SecurityEnableUserProfileParts<'b> {
+    #[doc = "Uid"]
+    Uid(&'b str),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> SecurityEnableUserProfileParts<'b> {
+    #[doc = "Builds a relative URL path to the Security Enable User Profile API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SecurityEnableUserProfileParts::Uid(ref uid) => {
+                let encoded_uid: Cow<str> = percent_encode(uid.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(27usize + encoded_uid.len());
+                p.push_str("/_security/profile/");
+                p.push_str(encoded_uid.as_ref());
+                p.push_str("/_enable");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Security Enable User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-enable-user-profile.html)\n\nEnables a user profile so it's visible in user profile searches."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct SecurityEnableUserProfile<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: SecurityEnableUserProfileParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    refresh: Option<Refresh>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> SecurityEnableUserProfile<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [SecurityEnableUserProfile] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: SecurityEnableUserProfileParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        SecurityEnableUserProfile {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            refresh: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> SecurityEnableUserProfile<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        SecurityEnableUserProfile {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            refresh: self.refresh,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "If `true` then refresh the affected shards to make this operation visible to search, if `wait_for` (the default) then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Refresh) -> Self {
+        self.refresh = Some(refresh);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Security Enable User Profile API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
@@ -3244,7 +3683,6 @@ impl<'a, 'b> SecurityGetRoleMapping<'a, 'b> {
         Ok(response)
     }
 }
-#[cfg(feature = "beta-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Get Service Accounts API"]
 pub enum SecurityGetServiceAccountsParts<'b> {
@@ -3255,7 +3693,6 @@ pub enum SecurityGetServiceAccountsParts<'b> {
     #[doc = "No parts"]
     None,
 }
-#[cfg(feature = "beta-apis")]
 impl<'b> SecurityGetServiceAccountsParts<'b> {
     #[doc = "Builds a relative URL path to the Security Get Service Accounts API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -3287,8 +3724,6 @@ impl<'b> SecurityGetServiceAccountsParts<'b> {
     }
 }
 #[doc = "Builder for the [Security Get Service Accounts API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-service-accounts.html)\n\nRetrieves information about service accounts."]
-#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
-#[cfg(feature = "beta-apis")]
 #[derive(Clone, Debug)]
 pub struct SecurityGetServiceAccounts<'a, 'b> {
     transport: &'a Transport,
@@ -3301,7 +3736,6 @@ pub struct SecurityGetServiceAccounts<'a, 'b> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "beta-apis")]
 impl<'a, 'b> SecurityGetServiceAccounts<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetServiceAccounts] with the specified API parts"]
     pub fn new(transport: &'a Transport, parts: SecurityGetServiceAccountsParts<'b>) -> Self {
@@ -3387,14 +3821,12 @@ impl<'a, 'b> SecurityGetServiceAccounts<'a, 'b> {
         Ok(response)
     }
 }
-#[cfg(feature = "beta-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Get Service Credentials API"]
 pub enum SecurityGetServiceCredentialsParts<'b> {
     #[doc = "Namespace and Service"]
     NamespaceService(&'b str, &'b str),
 }
-#[cfg(feature = "beta-apis")]
 impl<'b> SecurityGetServiceCredentialsParts<'b> {
     #[doc = "Builds a relative URL path to the Security Get Service Credentials API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -3418,8 +3850,6 @@ impl<'b> SecurityGetServiceCredentialsParts<'b> {
     }
 }
 #[doc = "Builder for the [Security Get Service Credentials API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-service-credentials.html)\n\nRetrieves information of all service credentials for a service account."]
-#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
-#[cfg(feature = "beta-apis")]
 #[derive(Clone, Debug)]
 pub struct SecurityGetServiceCredentials<'a, 'b> {
     transport: &'a Transport,
@@ -3432,7 +3862,6 @@ pub struct SecurityGetServiceCredentials<'a, 'b> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "beta-apis")]
 impl<'a, 'b> SecurityGetServiceCredentials<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetServiceCredentials] with the specified API parts"]
     pub fn new(transport: &'a Transport, parts: SecurityGetServiceCredentialsParts<'b>) -> Self {
@@ -3888,6 +4317,139 @@ impl<'a, 'b> SecurityGetUserPrivileges<'a, 'b> {
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Security Get User Profile API"]
+pub enum SecurityGetUserProfileParts<'b> {
+    #[doc = "Uid"]
+    Uid(&'b str),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> SecurityGetUserProfileParts<'b> {
+    #[doc = "Builds a relative URL path to the Security Get User Profile API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SecurityGetUserProfileParts::Uid(ref uid) => {
+                let encoded_uid: Cow<str> = percent_encode(uid.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(19usize + encoded_uid.len());
+                p.push_str("/_security/profile/");
+                p.push_str(encoded_uid.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Security Get User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-user-profile.html)\n\nRetrieves user profile for the given unique ID."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct SecurityGetUserProfile<'a, 'b> {
+    transport: &'a Transport,
+    parts: SecurityGetUserProfileParts<'b>,
+    data: Option<&'b [&'b str]>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> SecurityGetUserProfile<'a, 'b> {
+    #[doc = "Creates a new instance of [SecurityGetUserProfile] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: SecurityGetUserProfileParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        SecurityGetUserProfile {
+            transport,
+            parts,
+            headers,
+            data: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "A comma-separated list of keys for which the corresponding application data are retrieved."]
+    pub fn data(mut self, data: &'b [&'b str]) -> Self {
+        self.data = Some(data);
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Security Get User Profile API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                data: Option<&'b [&'b str]>,
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                data: self.data,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Grant Api Key API"]
 pub enum SecurityGrantApiKeyParts {
@@ -4181,6 +4743,151 @@ where
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Security Has Privileges User Profile API"]
+pub enum SecurityHasPrivilegesUserProfileParts {
+    #[doc = "No parts"]
+    None,
+}
+#[cfg(feature = "experimental-apis")]
+impl SecurityHasPrivilegesUserProfileParts {
+    #[doc = "Builds a relative URL path to the Security Has Privileges User Profile API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SecurityHasPrivilegesUserProfileParts::None => {
+                "/_security/profile/_has_privileges".into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Security Has Privileges User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-has-privileges-user-profile.html)\n\nDetermines whether the users associated with the specified profile IDs have all the requested privileges."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct SecurityHasPrivilegesUserProfile<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: SecurityHasPrivilegesUserProfileParts,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> SecurityHasPrivilegesUserProfile<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [SecurityHasPrivilegesUserProfile]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        SecurityHasPrivilegesUserProfile {
+            transport,
+            parts: SecurityHasPrivilegesUserProfileParts::None,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> SecurityHasPrivilegesUserProfile<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        SecurityHasPrivilegesUserProfile {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Security Has Privileges User Profile API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = match self.body {
+            Some(_) => Method::Post,
+            None => Method::Get,
+        };
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Invalidate Api Key API"]
 pub enum SecurityInvalidateApiKeyParts {
@@ -4421,6 +5128,411 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Delete;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Security Oidc Authenticate API"]
+pub enum SecurityOidcAuthenticateParts {
+    #[doc = "No parts"]
+    None,
+}
+impl SecurityOidcAuthenticateParts {
+    #[doc = "Builds a relative URL path to the Security Oidc Authenticate API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SecurityOidcAuthenticateParts::None => "/_security/oidc/authenticate".into(),
+        }
+    }
+}
+#[doc = "Builder for the [Security Oidc Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-oidc-authenticate.html)\n\nExchanges an OpenID Connection authentication response message for an Elasticsearch access token and refresh token pair"]
+#[derive(Clone, Debug)]
+pub struct SecurityOidcAuthenticate<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: SecurityOidcAuthenticateParts,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b, B> SecurityOidcAuthenticate<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [SecurityOidcAuthenticate]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        SecurityOidcAuthenticate {
+            transport,
+            parts: SecurityOidcAuthenticateParts::None,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> SecurityOidcAuthenticate<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        SecurityOidcAuthenticate {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Security Oidc Authenticate API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Security Oidc Logout API"]
+pub enum SecurityOidcLogoutParts {
+    #[doc = "No parts"]
+    None,
+}
+impl SecurityOidcLogoutParts {
+    #[doc = "Builds a relative URL path to the Security Oidc Logout API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SecurityOidcLogoutParts::None => "/_security/oidc/logout".into(),
+        }
+    }
+}
+#[doc = "Builder for the [Security Oidc Logout API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-oidc-logout.html)\n\nInvalidates a refresh token and access token that was generated from the OpenID Connect Authenticate API"]
+#[derive(Clone, Debug)]
+pub struct SecurityOidcLogout<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: SecurityOidcLogoutParts,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b, B> SecurityOidcLogout<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [SecurityOidcLogout]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        SecurityOidcLogout {
+            transport,
+            parts: SecurityOidcLogoutParts::None,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> SecurityOidcLogout<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        SecurityOidcLogout {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Security Oidc Logout API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Security Oidc Prepare Authentication API"]
+pub enum SecurityOidcPrepareAuthenticationParts {
+    #[doc = "No parts"]
+    None,
+}
+impl SecurityOidcPrepareAuthenticationParts {
+    #[doc = "Builds a relative URL path to the Security Oidc Prepare Authentication API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SecurityOidcPrepareAuthenticationParts::None => "/_security/oidc/prepare".into(),
+        }
+    }
+}
+#[doc = "Builder for the [Security Oidc Prepare Authentication API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-oidc-prepare-authentication.html)\n\nCreates an OAuth 2.0 authentication request as a URL string"]
+#[derive(Clone, Debug)]
+pub struct SecurityOidcPrepareAuthentication<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: SecurityOidcPrepareAuthenticationParts,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b, B> SecurityOidcPrepareAuthentication<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [SecurityOidcPrepareAuthentication]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        SecurityOidcPrepareAuthentication {
+            transport,
+            parts: SecurityOidcPrepareAuthenticationParts::None,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> SecurityOidcPrepareAuthentication<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        SecurityOidcPrepareAuthentication {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Security Oidc Prepare Authentication API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -5985,6 +7097,337 @@ impl<'a, 'b> SecuritySamlServiceProviderMetadata<'a, 'b> {
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Security Suggest User Profiles API"]
+pub enum SecuritySuggestUserProfilesParts {
+    #[doc = "No parts"]
+    None,
+}
+#[cfg(feature = "experimental-apis")]
+impl SecuritySuggestUserProfilesParts {
+    #[doc = "Builds a relative URL path to the Security Suggest User Profiles API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SecuritySuggestUserProfilesParts::None => "/_security/profile/_suggest".into(),
+        }
+    }
+}
+#[doc = "Builder for the [Security Suggest User Profiles API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-suggest-user-profile.html)\n\nGet suggestions for user profiles that match specified search criteria."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct SecuritySuggestUserProfiles<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: SecuritySuggestUserProfilesParts,
+    body: Option<B>,
+    data: Option<&'b [&'b str]>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> SecuritySuggestUserProfiles<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [SecuritySuggestUserProfiles]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        SecuritySuggestUserProfiles {
+            transport,
+            parts: SecuritySuggestUserProfilesParts::None,
+            headers,
+            body: None,
+            data: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> SecuritySuggestUserProfiles<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        SecuritySuggestUserProfiles {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            data: self.data,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "A comma-separated list of keys for which the corresponding application data are retrieved."]
+    pub fn data(mut self, data: &'b [&'b str]) -> Self {
+        self.data = Some(data);
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Security Suggest User Profiles API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = match self.body {
+            Some(_) => Method::Post,
+            None => Method::Get,
+        };
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                data: Option<&'b [&'b str]>,
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                data: self.data,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Security Update User Profile Data API"]
+pub enum SecurityUpdateUserProfileDataParts<'b> {
+    #[doc = "Uid"]
+    Uid(&'b str),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> SecurityUpdateUserProfileDataParts<'b> {
+    #[doc = "Builds a relative URL path to the Security Update User Profile Data API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SecurityUpdateUserProfileDataParts::Uid(ref uid) => {
+                let encoded_uid: Cow<str> = percent_encode(uid.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(25usize + encoded_uid.len());
+                p.push_str("/_security/profile/");
+                p.push_str(encoded_uid.as_ref());
+                p.push_str("/_data");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Security Update User Profile Data API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-update-user-profile-data.html)\n\nUpdate application specific data for the user profile of the given unique ID."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct SecurityUpdateUserProfileData<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: SecurityUpdateUserProfileDataParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    if_primary_term: Option<i64>,
+    if_seq_no: Option<i64>,
+    pretty: Option<bool>,
+    refresh: Option<Refresh>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> SecurityUpdateUserProfileData<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [SecurityUpdateUserProfileData] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: SecurityUpdateUserProfileDataParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        SecurityUpdateUserProfileData {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            if_primary_term: None,
+            if_seq_no: None,
+            pretty: None,
+            refresh: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> SecurityUpdateUserProfileData<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        SecurityUpdateUserProfileData {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            if_primary_term: self.if_primary_term,
+            if_seq_no: self.if_seq_no,
+            pretty: self.pretty,
+            refresh: self.refresh,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "only perform the update operation if the last operation that has changed the document has the specified primary term"]
+    pub fn if_primary_term(mut self, if_primary_term: i64) -> Self {
+        self.if_primary_term = Some(if_primary_term);
+        self
+    }
+    #[doc = "only perform the update operation if the last operation that has changed the document has the specified sequence number"]
+    pub fn if_seq_no(mut self, if_seq_no: i64) -> Self {
+        self.if_seq_no = Some(if_seq_no);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Refresh) -> Self {
+        self.refresh = Some(refresh);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Security Update User Profile Data API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                if_primary_term: Option<i64>,
+                if_seq_no: Option<i64>,
+                pretty: Option<bool>,
+                refresh: Option<Refresh>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                if_primary_term: self.if_primary_term,
+                if_seq_no: self.if_seq_no,
+                pretty: self.pretty,
+                refresh: self.refresh,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
 #[doc = "Namespace client for Security APIs"]
 pub struct Security<'a> {
     transport: &'a Transport,
@@ -5996,6 +7439,12 @@ impl<'a> Security<'a> {
     }
     pub fn transport(&self) -> &Transport {
         self.transport
+    }
+    #[doc = "[Security Activate User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-activate-user-profile.html)\n\nCreates or updates the user profile on behalf of another user."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn activate_user_profile<'b>(&'a self) -> SecurityActivateUserProfile<'a, 'b, ()> {
+        SecurityActivateUserProfile::new(self.transport())
     }
     #[doc = "[Security Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-authenticate.html)\n\nEnables authentication as a user and retrieve information about the authenticated user."]
     pub fn authenticate<'b>(&'a self) -> SecurityAuthenticate<'a, 'b> {
@@ -6037,8 +7486,6 @@ impl<'a> Security<'a> {
         SecurityClearCachedRoles::new(self.transport(), parts)
     }
     #[doc = "[Security Clear Cached Service Tokens API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-clear-service-token-caches.html)\n\nEvicts tokens from the service account token caches."]
-    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
-    #[cfg(feature = "beta-apis")]
     pub fn clear_cached_service_tokens<'b>(
         &'a self,
         parts: SecurityClearCachedServiceTokensParts<'b>,
@@ -6050,8 +7497,6 @@ impl<'a> Security<'a> {
         SecurityCreateApiKey::new(self.transport())
     }
     #[doc = "[Security Create Service Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-create-service-token.html)\n\nCreates a service account token for access without requiring basic authentication."]
-    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
-    #[cfg(feature = "beta-apis")]
     pub fn create_service_token<'b>(
         &'a self,
         parts: SecurityCreateServiceTokenParts<'b>,
@@ -6080,8 +7525,6 @@ impl<'a> Security<'a> {
         SecurityDeleteRoleMapping::new(self.transport(), parts)
     }
     #[doc = "[Security Delete Service Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-delete-service-token.html)\n\nDeletes a service account token."]
-    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
-    #[cfg(feature = "beta-apis")]
     pub fn delete_service_token<'b>(
         &'a self,
         parts: SecurityDeleteServiceTokenParts<'b>,
@@ -6102,12 +7545,30 @@ impl<'a> Security<'a> {
     ) -> SecurityDisableUser<'a, 'b, ()> {
         SecurityDisableUser::new(self.transport(), parts)
     }
+    #[doc = "[Security Disable User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-disable-user-profile.html)\n\nDisables a user profile so it's not visible in user profile searches."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn disable_user_profile<'b>(
+        &'a self,
+        parts: SecurityDisableUserProfileParts<'b>,
+    ) -> SecurityDisableUserProfile<'a, 'b, ()> {
+        SecurityDisableUserProfile::new(self.transport(), parts)
+    }
     #[doc = "[Security Enable User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-enable-user.html)\n\nEnables users in the native realm."]
     pub fn enable_user<'b>(
         &'a self,
         parts: SecurityEnableUserParts<'b>,
     ) -> SecurityEnableUser<'a, 'b, ()> {
         SecurityEnableUser::new(self.transport(), parts)
+    }
+    #[doc = "[Security Enable User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-enable-user-profile.html)\n\nEnables a user profile so it's visible in user profile searches."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn enable_user_profile<'b>(
+        &'a self,
+        parts: SecurityEnableUserProfileParts<'b>,
+    ) -> SecurityEnableUserProfile<'a, 'b, ()> {
+        SecurityEnableUserProfile::new(self.transport(), parts)
     }
     #[doc = "[Security Enroll Kibana API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-kibana-enrollment.html)\n\nAllows a kibana instance to configure itself to communicate with a secured elasticsearch cluster."]
     pub fn enroll_kibana<'b>(&'a self) -> SecurityEnrollKibana<'a, 'b> {
@@ -6144,8 +7605,6 @@ impl<'a> Security<'a> {
         SecurityGetRoleMapping::new(self.transport(), parts)
     }
     #[doc = "[Security Get Service Accounts API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-service-accounts.html)\n\nRetrieves information about service accounts."]
-    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
-    #[cfg(feature = "beta-apis")]
     pub fn get_service_accounts<'b>(
         &'a self,
         parts: SecurityGetServiceAccountsParts<'b>,
@@ -6153,8 +7612,6 @@ impl<'a> Security<'a> {
         SecurityGetServiceAccounts::new(self.transport(), parts)
     }
     #[doc = "[Security Get Service Credentials API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-service-credentials.html)\n\nRetrieves information of all service credentials for a service account."]
-    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
-    #[cfg(feature = "beta-apis")]
     pub fn get_service_credentials<'b>(
         &'a self,
         parts: SecurityGetServiceCredentialsParts<'b>,
@@ -6173,6 +7630,15 @@ impl<'a> Security<'a> {
     pub fn get_user_privileges<'b>(&'a self) -> SecurityGetUserPrivileges<'a, 'b> {
         SecurityGetUserPrivileges::new(self.transport())
     }
+    #[doc = "[Security Get User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-user-profile.html)\n\nRetrieves user profile for the given unique ID."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn get_user_profile<'b>(
+        &'a self,
+        parts: SecurityGetUserProfileParts<'b>,
+    ) -> SecurityGetUserProfile<'a, 'b> {
+        SecurityGetUserProfile::new(self.transport(), parts)
+    }
     #[doc = "[Security Grant Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-grant-api-key.html)\n\nCreates an API key on behalf of another user."]
     pub fn grant_api_key<'b>(&'a self) -> SecurityGrantApiKey<'a, 'b, ()> {
         SecurityGrantApiKey::new(self.transport())
@@ -6184,6 +7650,14 @@ impl<'a> Security<'a> {
     ) -> SecurityHasPrivileges<'a, 'b, ()> {
         SecurityHasPrivileges::new(self.transport(), parts)
     }
+    #[doc = "[Security Has Privileges User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-has-privileges-user-profile.html)\n\nDetermines whether the users associated with the specified profile IDs have all the requested privileges."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn has_privileges_user_profile<'b>(
+        &'a self,
+    ) -> SecurityHasPrivilegesUserProfile<'a, 'b, ()> {
+        SecurityHasPrivilegesUserProfile::new(self.transport())
+    }
     #[doc = "[Security Invalidate Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-invalidate-api-key.html)\n\nInvalidates one or more API keys."]
     pub fn invalidate_api_key<'b>(&'a self) -> SecurityInvalidateApiKey<'a, 'b, ()> {
         SecurityInvalidateApiKey::new(self.transport())
@@ -6191,6 +7665,20 @@ impl<'a> Security<'a> {
     #[doc = "[Security Invalidate Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-invalidate-token.html)\n\nInvalidates one or more access tokens or refresh tokens."]
     pub fn invalidate_token<'b>(&'a self) -> SecurityInvalidateToken<'a, 'b, ()> {
         SecurityInvalidateToken::new(self.transport())
+    }
+    #[doc = "[Security Oidc Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-oidc-authenticate.html)\n\nExchanges an OpenID Connection authentication response message for an Elasticsearch access token and refresh token pair"]
+    pub fn oidc_authenticate<'b>(&'a self) -> SecurityOidcAuthenticate<'a, 'b, ()> {
+        SecurityOidcAuthenticate::new(self.transport())
+    }
+    #[doc = "[Security Oidc Logout API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-oidc-logout.html)\n\nInvalidates a refresh token and access token that was generated from the OpenID Connect Authenticate API"]
+    pub fn oidc_logout<'b>(&'a self) -> SecurityOidcLogout<'a, 'b, ()> {
+        SecurityOidcLogout::new(self.transport())
+    }
+    #[doc = "[Security Oidc Prepare Authentication API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-oidc-prepare-authentication.html)\n\nCreates an OAuth 2.0 authentication request as a URL string"]
+    pub fn oidc_prepare_authentication<'b>(
+        &'a self,
+    ) -> SecurityOidcPrepareAuthentication<'a, 'b, ()> {
+        SecurityOidcPrepareAuthentication::new(self.transport())
     }
     #[doc = "[Security Put Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-put-privileges.html)\n\nAdds or updates application privileges."]
     pub fn put_privileges<'b>(&'a self) -> SecurityPutPrivileges<'a, 'b, ()> {
@@ -6243,6 +7731,21 @@ impl<'a> Security<'a> {
         parts: SecuritySamlServiceProviderMetadataParts<'b>,
     ) -> SecuritySamlServiceProviderMetadata<'a, 'b> {
         SecuritySamlServiceProviderMetadata::new(self.transport(), parts)
+    }
+    #[doc = "[Security Suggest User Profiles API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-suggest-user-profile.html)\n\nGet suggestions for user profiles that match specified search criteria."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn suggest_user_profiles<'b>(&'a self) -> SecuritySuggestUserProfiles<'a, 'b, ()> {
+        SecuritySuggestUserProfiles::new(self.transport())
+    }
+    #[doc = "[Security Update User Profile Data API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-update-user-profile-data.html)\n\nUpdate application specific data for the user profile of the given unique ID."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn update_user_profile_data<'b>(
+        &'a self,
+        parts: SecurityUpdateUserProfileDataParts<'b>,
+    ) -> SecurityUpdateUserProfileData<'a, 'b, ()> {
+        SecurityUpdateUserProfileData::new(self.transport(), parts)
     }
 }
 impl Elasticsearch {
