@@ -122,14 +122,6 @@ tests:
   platinum/unsigned_long/60_collapse.yml:
     - "*"
 
-  platinum/vector-tile/10_basic.yml:
-    # expected `i32`, found `&str`
-    - "*"
-
-  platinum/vector-tile/20_aggregations.yml:
-    # expected `i32`, found `&str`
-    - "*"
-
   platinum/xpack/20_info.yml:
     # Expects "trial" license but gets "enterprise"
     - "XPack Info API"
