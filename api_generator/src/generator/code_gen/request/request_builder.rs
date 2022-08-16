@@ -263,7 +263,7 @@ impl<'a> RequestBuilder<'a> {
         let (fn_arg, field_arg, ret_ty) = if accepts_nd_body {
             (
                 syn::parse_type("Vec<T>").unwrap(),
-                quote!(Some(NdBody(body))),
+                quote!(Some(NdBody::new(body))),
                 syn::FunctionRetTy::Ty(code_gen::ty(
                     format!("{}<'a, 'b, NdBody<T>> where T: Body", &builder_name).as_ref(),
                 )),

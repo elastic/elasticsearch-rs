@@ -910,16 +910,18 @@ impl ApiCall {
                             if value.is_string() {
                                 json = replace_set(&json);
                                 let ident = syn::Ident::from(json);
-                                quote!(#ident)
+                                quote!(Box::new(String::from(#ident)))
                             } else {
                                 json = replace_set(json);
                                 json = replace_i64(json);
                                 let ident = syn::Ident::from(json);
-                                quote!(JsonBody::from(json!(#ident)))
+                                quote!(Box::new(JsonBody::from(json!(#ident))))
                             }
                         })
                         .collect();
-                    Ok(Some(quote!(.body(vec![ #(#json),* ]))))
+                    Ok(Some(
+                        quote!(.body({ let mut v: Vec<Box<dyn Body>> = Vec::new(); v.append(&mut vec![ #(#json),* ]); v  })),
+                    ))
                 } else {
                     let value: serde_json::Value = serde_yaml::from_str(&s)?;
                     let mut json = serde_json::to_string_pretty(&value)?;

@@ -725,7 +725,7 @@ mod tests {
         );
         ops.push(BulkOperation::delete("7").into());
 
-        let body = NdBody(ops);
+        let body = NdBody::new(ops);
         let _ = body.write(&mut bytes)?;
 
         let mut expected = BytesMut::new();
@@ -783,7 +783,7 @@ mod tests {
         ops.push(BulkOperation::update("3", UpdateDoc { baz: "update" }))?;
         ops.push(BulkOperation::<()>::delete("4"))?;
 
-        let body = NdBody(vec![ops]);
+        let body = NdBody::new(vec![ops]);
         let _ = body.write(&mut bytes)?;
 
         let mut expected = BytesMut::new();
