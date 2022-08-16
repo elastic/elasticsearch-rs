@@ -69,7 +69,7 @@ impl<'b> MonitoringBulkParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/monitor-elasticsearch-cluster.html)\n\nUsed by the monitoring features to send monitoring data."]
+#[doc = "Builder for the [Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/monitor-elasticsearch-cluster.html)\n\nUsed by the monitoring features to send monitoring data."]
 #[derive(Clone, Debug)]
 pub struct MonitoringBulk<'a, 'b, B> {
     transport: &'a Transport,
@@ -117,7 +117,7 @@ where
         MonitoringBulk {
             transport: self.transport,
             parts: self.parts,
-            body: Some(NdBody(body)),
+            body: Some(NdBody::new(body)),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             headers: self.headers,
@@ -232,7 +232,7 @@ impl<'a> Monitoring<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/monitor-elasticsearch-cluster.html)\n\nUsed by the monitoring features to send monitoring data."]
+    #[doc = "[Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/monitor-elasticsearch-cluster.html)\n\nUsed by the monitoring features to send monitoring data."]
     pub fn bulk<'b>(&'a self, parts: MonitoringBulkParts<'b>) -> MonitoringBulk<'a, 'b, ()> {
         MonitoringBulk::new(self.transport(), parts)
     }

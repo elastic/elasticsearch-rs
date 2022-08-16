@@ -99,7 +99,7 @@ where
 }
 
 /// A Newline-delimited body of an API call
-pub struct NdBody<T>(pub(crate) Vec<T>);
+pub struct NdBody<T>(Vec<T>);
 
 impl<T> NdBody<T>
 where
@@ -184,6 +184,15 @@ impl Body for () {
     }
 }
 
+impl<T> Body for Box<T>
+where
+    T: Body + ?Sized,
+{
+    fn write(&self, bytes: &mut BytesMut) -> Result<(), Error> {
+        (**self).write(bytes)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::http::request::{Body, JsonBody, NdBody};
@@ -207,6 +216,20 @@ mod tests {
         let mut bodies: Vec<JsonBody<_>> = Vec::with_capacity(2);
         bodies.push(json!({"item":1}).into());
         bodies.push(json!({"item":2}).into());
+
+        let body = NdBody(bodies);
+        let _ = body.write(&mut bytes)?;
+        assert_eq!(b"{\"item\":1}\n{\"item\":2}\n", &bytes[..]);
+
+        Ok(())
+    }
+
+    #[test]
+    fn boxed_bodies_into_ndbody_writes_to_bytes() -> Result<(), failure::Error> {
+        let mut bytes = BytesMut::new();
+        let mut bodies: Vec<Box<dyn Body>> = Vec::with_capacity(2);
+        bodies.push(Box::new(JsonBody::from(json!({"item":1}))));
+        bodies.push(Box::new(String::from("{\"item\":2}")));
 
         let body = NdBody(bodies);
         let _ = body.write(&mut bytes)?;

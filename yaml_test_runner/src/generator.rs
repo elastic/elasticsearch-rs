@@ -142,7 +142,7 @@ impl<'a> YamlTests<'a> {
             use elasticsearch::*;
             use elasticsearch::http::{
                 headers::{HeaderName, HeaderValue},
-                request::JsonBody,
+                request::{JsonBody, Body},
                 Method,
             };
             use elasticsearch::params::*;

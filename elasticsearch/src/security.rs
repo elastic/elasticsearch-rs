@@ -69,7 +69,7 @@ impl SecurityActivateUserProfileParts {
         }
     }
 }
-#[doc = "Builder for the [Security Activate User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-activate-user-profile.html)\n\nCreates or updates the user profile on behalf of another user."]
+#[doc = "Builder for the [Security Activate User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-activate-user-profile.html)\n\nCreates or updates the user profile on behalf of another user."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -207,7 +207,7 @@ impl SecurityAuthenticateParts {
         }
     }
 }
-#[doc = "Builder for the [Security Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-authenticate.html)\n\nEnables authentication as a user and retrieve information about the authenticated user."]
+#[doc = "Builder for the [Security Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-authenticate.html)\n\nEnables authentication as a user and retrieve information about the authenticated user."]
 #[derive(Clone, Debug)]
 pub struct SecurityAuthenticate<'a, 'b> {
     transport: &'a Transport,
@@ -330,7 +330,7 @@ impl<'b> SecurityChangePasswordParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Change Password API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-change-password.html)\n\nChanges the passwords of users in the native realm and built-in users."]
+#[doc = "Builder for the [Security Change Password API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-change-password.html)\n\nChanges the passwords of users in the native realm and built-in users."]
 #[derive(Clone, Debug)]
 pub struct SecurityChangePassword<'a, 'b, B> {
     transport: &'a Transport,
@@ -484,7 +484,7 @@ impl<'b> SecurityClearApiKeyCacheParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Clear Api Key Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-clear-api-key-cache.html)\n\nClear a subset or all entries from the API key cache."]
+#[doc = "Builder for the [Security Clear Api Key Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-clear-api-key-cache.html)\n\nClear a subset or all entries from the API key cache."]
 #[derive(Clone, Debug)]
 pub struct SecurityClearApiKeyCache<'a, 'b, B> {
     transport: &'a Transport,
@@ -628,7 +628,7 @@ impl<'b> SecurityClearCachedPrivilegesParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Clear Cached Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-clear-privilege-cache.html)\n\nEvicts application privileges from the native application privileges cache."]
+#[doc = "Builder for the [Security Clear Cached Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-clear-privilege-cache.html)\n\nEvicts application privileges from the native application privileges cache."]
 #[derive(Clone, Debug)]
 pub struct SecurityClearCachedPrivileges<'a, 'b, B> {
     transport: &'a Transport,
@@ -772,7 +772,7 @@ impl<'b> SecurityClearCachedRealmsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Clear Cached Realms API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-clear-cache.html)\n\nEvicts users from the user cache. Can completely clear the cache or evict specific users."]
+#[doc = "Builder for the [Security Clear Cached Realms API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-clear-cache.html)\n\nEvicts users from the user cache. Can completely clear the cache or evict specific users."]
 #[derive(Clone, Debug)]
 pub struct SecurityClearCachedRealms<'a, 'b, B> {
     transport: &'a Transport,
@@ -927,7 +927,7 @@ impl<'b> SecurityClearCachedRolesParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Clear Cached Roles API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-clear-role-cache.html)\n\nEvicts roles from the native role cache."]
+#[doc = "Builder for the [Security Clear Cached Roles API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-clear-role-cache.html)\n\nEvicts roles from the native role cache."]
 #[derive(Clone, Debug)]
 pub struct SecurityClearCachedRoles<'a, 'b, B> {
     transport: &'a Transport,
@@ -1085,7 +1085,7 @@ impl<'b> SecurityClearCachedServiceTokensParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Clear Cached Service Tokens API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-clear-service-token-caches.html)\n\nEvicts tokens from the service account token caches."]
+#[doc = "Builder for the [Security Clear Cached Service Tokens API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-clear-service-token-caches.html)\n\nEvicts tokens from the service account token caches."]
 #[derive(Clone, Debug)]
 pub struct SecurityClearCachedServiceTokens<'a, 'b, B> {
     transport: &'a Transport,
@@ -1220,7 +1220,7 @@ impl SecurityCreateApiKeyParts {
         }
     }
 }
-#[doc = "Builder for the [Security Create Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-create-api-key.html)\n\nCreates an API key for access without requiring basic authentication."]
+#[doc = "Builder for the [Security Create Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-create-api-key.html)\n\nCreates an API key for access without requiring basic authentication."]
 #[derive(Clone, Debug)]
 pub struct SecurityCreateApiKey<'a, 'b, B> {
     transport: &'a Transport,
@@ -1402,7 +1402,7 @@ impl<'b> SecurityCreateServiceTokenParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Create Service Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-create-service-token.html)\n\nCreates a service account token for access without requiring basic authentication."]
+#[doc = "Builder for the [Security Create Service Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-create-service-token.html)\n\nCreates a service account token for access without requiring basic authentication."]
 #[derive(Clone, Debug)]
 pub struct SecurityCreateServiceToken<'a, 'b, B> {
     transport: &'a Transport,
@@ -1558,7 +1558,7 @@ impl<'b> SecurityDeletePrivilegesParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Delete Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-delete-privilege.html)\n\nRemoves application privileges."]
+#[doc = "Builder for the [Security Delete Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-delete-privilege.html)\n\nRemoves application privileges."]
 #[derive(Clone, Debug)]
 pub struct SecurityDeletePrivileges<'a, 'b> {
     transport: &'a Transport,
@@ -1685,7 +1685,7 @@ impl<'b> SecurityDeleteRoleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Delete Role API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-delete-role.html)\n\nRemoves roles in the native realm."]
+#[doc = "Builder for the [Security Delete Role API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-delete-role.html)\n\nRemoves roles in the native realm."]
 #[derive(Clone, Debug)]
 pub struct SecurityDeleteRole<'a, 'b> {
     transport: &'a Transport,
@@ -1812,7 +1812,7 @@ impl<'b> SecurityDeleteRoleMappingParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Delete Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-delete-role-mapping.html)\n\nRemoves role mappings."]
+#[doc = "Builder for the [Security Delete Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-delete-role-mapping.html)\n\nRemoves role mappings."]
 #[derive(Clone, Debug)]
 pub struct SecurityDeleteRoleMapping<'a, 'b> {
     transport: &'a Transport,
@@ -1953,7 +1953,7 @@ impl<'b> SecurityDeleteServiceTokenParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Delete Service Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-delete-service-token.html)\n\nDeletes a service account token."]
+#[doc = "Builder for the [Security Delete Service Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-delete-service-token.html)\n\nDeletes a service account token."]
 #[derive(Clone, Debug)]
 pub struct SecurityDeleteServiceToken<'a, 'b> {
     transport: &'a Transport,
@@ -2081,7 +2081,7 @@ impl<'b> SecurityDeleteUserParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Delete User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-delete-user.html)\n\nDeletes users from the native realm."]
+#[doc = "Builder for the [Security Delete User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-delete-user.html)\n\nDeletes users from the native realm."]
 #[derive(Clone, Debug)]
 pub struct SecurityDeleteUser<'a, 'b> {
     transport: &'a Transport,
@@ -2210,7 +2210,7 @@ impl<'b> SecurityDisableUserParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Disable User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-disable-user.html)\n\nDisables users in the native realm."]
+#[doc = "Builder for the [Security Disable User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-disable-user.html)\n\nDisables users in the native realm."]
 #[derive(Clone, Debug)]
 pub struct SecurityDisableUser<'a, 'b, B> {
     transport: &'a Transport,
@@ -2364,7 +2364,7 @@ impl<'b> SecurityDisableUserProfileParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Disable User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-disable-user-profile.html)\n\nDisables a user profile so it's not visible in user profile searches."]
+#[doc = "Builder for the [Security Disable User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-disable-user-profile.html)\n\nDisables a user profile so it's not visible in user profile searches."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -2520,7 +2520,7 @@ impl<'b> SecurityEnableUserParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Enable User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-enable-user.html)\n\nEnables users in the native realm."]
+#[doc = "Builder for the [Security Enable User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-enable-user.html)\n\nEnables users in the native realm."]
 #[derive(Clone, Debug)]
 pub struct SecurityEnableUser<'a, 'b, B> {
     transport: &'a Transport,
@@ -2674,7 +2674,7 @@ impl<'b> SecurityEnableUserProfileParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Enable User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-enable-user-profile.html)\n\nEnables a user profile so it's visible in user profile searches."]
+#[doc = "Builder for the [Security Enable User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-enable-user-profile.html)\n\nEnables a user profile so it's visible in user profile searches."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -2822,7 +2822,7 @@ impl SecurityEnrollKibanaParts {
         }
     }
 }
-#[doc = "Builder for the [Security Enroll Kibana API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-kibana-enrollment.html)\n\nAllows a kibana instance to configure itself to communicate with a secured elasticsearch cluster."]
+#[doc = "Builder for the [Security Enroll Kibana API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-kibana-enrollment.html)\n\nAllows a kibana instance to configure itself to communicate with a secured elasticsearch cluster."]
 #[derive(Clone, Debug)]
 pub struct SecurityEnrollKibana<'a, 'b> {
     transport: &'a Transport,
@@ -2934,7 +2934,7 @@ impl SecurityEnrollNodeParts {
         }
     }
 }
-#[doc = "Builder for the [Security Enroll Node API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-node-enrollment.html)\n\nAllows a new node to enroll to an existing cluster with security enabled."]
+#[doc = "Builder for the [Security Enroll Node API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-node-enrollment.html)\n\nAllows a new node to enroll to an existing cluster with security enabled."]
 #[derive(Clone, Debug)]
 pub struct SecurityEnrollNode<'a, 'b> {
     transport: &'a Transport,
@@ -3046,7 +3046,7 @@ impl SecurityGetApiKeyParts {
         }
     }
 }
-#[doc = "Builder for the [Security Get Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-api-key.html)\n\nRetrieves information for one or more API keys."]
+#[doc = "Builder for the [Security Get Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-get-api-key.html)\n\nRetrieves information for one or more API keys."]
 #[derive(Clone, Debug)]
 pub struct SecurityGetApiKey<'a, 'b> {
     transport: &'a Transport,
@@ -3203,7 +3203,7 @@ impl SecurityGetBuiltinPrivilegesParts {
         }
     }
 }
-#[doc = "Builder for the [Security Get Builtin Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-builtin-privileges.html)\n\nRetrieves the list of cluster privileges and index privileges that are available in this version of Elasticsearch."]
+#[doc = "Builder for the [Security Get Builtin Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-get-builtin-privileges.html)\n\nRetrieves the list of cluster privileges and index privileges that are available in this version of Elasticsearch."]
 #[derive(Clone, Debug)]
 pub struct SecurityGetBuiltinPrivileges<'a, 'b> {
     transport: &'a Transport,
@@ -3339,7 +3339,7 @@ impl<'b> SecurityGetPrivilegesParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Get Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-privileges.html)\n\nRetrieves application privileges."]
+#[doc = "Builder for the [Security Get Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-get-privileges.html)\n\nRetrieves application privileges."]
 #[derive(Clone, Debug)]
 pub struct SecurityGetPrivileges<'a, 'b> {
     transport: &'a Transport,
@@ -3462,7 +3462,7 @@ impl<'b> SecurityGetRoleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Get Role API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-role.html)\n\nRetrieves roles in the native realm."]
+#[doc = "Builder for the [Security Get Role API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-get-role.html)\n\nRetrieves roles in the native realm."]
 #[derive(Clone, Debug)]
 pub struct SecurityGetRole<'a, 'b> {
     transport: &'a Transport,
@@ -3585,7 +3585,7 @@ impl<'b> SecurityGetRoleMappingParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Get Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-role-mapping.html)\n\nRetrieves role mappings."]
+#[doc = "Builder for the [Security Get Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-get-role-mapping.html)\n\nRetrieves role mappings."]
 #[derive(Clone, Debug)]
 pub struct SecurityGetRoleMapping<'a, 'b> {
     transport: &'a Transport,
@@ -3723,7 +3723,7 @@ impl<'b> SecurityGetServiceAccountsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Get Service Accounts API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-service-accounts.html)\n\nRetrieves information about service accounts."]
+#[doc = "Builder for the [Security Get Service Accounts API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-get-service-accounts.html)\n\nRetrieves information about service accounts."]
 #[derive(Clone, Debug)]
 pub struct SecurityGetServiceAccounts<'a, 'b> {
     transport: &'a Transport,
@@ -3849,7 +3849,7 @@ impl<'b> SecurityGetServiceCredentialsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Get Service Credentials API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-service-credentials.html)\n\nRetrieves information of all service credentials for a service account."]
+#[doc = "Builder for the [Security Get Service Credentials API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-get-service-credentials.html)\n\nRetrieves information of all service credentials for a service account."]
 #[derive(Clone, Debug)]
 pub struct SecurityGetServiceCredentials<'a, 'b> {
     transport: &'a Transport,
@@ -3961,7 +3961,7 @@ impl SecurityGetTokenParts {
         }
     }
 }
-#[doc = "Builder for the [Security Get Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-token.html)\n\nCreates a bearer token for access without requiring basic authentication."]
+#[doc = "Builder for the [Security Get Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-get-token.html)\n\nCreates a bearer token for access without requiring basic authentication."]
 #[derive(Clone, Debug)]
 pub struct SecurityGetToken<'a, 'b, B> {
     transport: &'a Transport,
@@ -4107,7 +4107,7 @@ impl<'b> SecurityGetUserParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Get User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-user.html)\n\nRetrieves information about users in the native realm and built-in users."]
+#[doc = "Builder for the [Security Get User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-get-user.html)\n\nRetrieves information about users in the native realm and built-in users."]
 #[derive(Clone, Debug)]
 pub struct SecurityGetUser<'a, 'b> {
     transport: &'a Transport,
@@ -4219,7 +4219,7 @@ impl SecurityGetUserPrivilegesParts {
         }
     }
 }
-#[doc = "Builder for the [Security Get User Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-user-privileges.html)\n\nRetrieves security privileges for the logged in user."]
+#[doc = "Builder for the [Security Get User Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-get-user-privileges.html)\n\nRetrieves security privileges for the logged in user."]
 #[derive(Clone, Debug)]
 pub struct SecurityGetUserPrivileges<'a, 'b> {
     transport: &'a Transport,
@@ -4339,7 +4339,7 @@ impl<'b> SecurityGetUserProfileParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Get User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-user-profile.html)\n\nRetrieves user profile for the given unique ID."]
+#[doc = "Builder for the [Security Get User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-get-user-profile.html)\n\nRetrieves user profile for the given unique ID."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -4464,7 +4464,7 @@ impl SecurityGrantApiKeyParts {
         }
     }
 }
-#[doc = "Builder for the [Security Grant Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-grant-api-key.html)\n\nCreates an API key on behalf of another user."]
+#[doc = "Builder for the [Security Grant Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-grant-api-key.html)\n\nCreates an API key on behalf of another user."]
 #[derive(Clone, Debug)]
 pub struct SecurityGrantApiKey<'a, 'b, B> {
     transport: &'a Transport,
@@ -4619,7 +4619,7 @@ impl<'b> SecurityHasPrivilegesParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Has Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-has-privileges.html)\n\nDetermines whether the specified user has a specified list of privileges."]
+#[doc = "Builder for the [Security Has Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-has-privileges.html)\n\nDetermines whether the specified user has a specified list of privileges."]
 #[derive(Clone, Debug)]
 pub struct SecurityHasPrivileges<'a, 'b, B> {
     transport: &'a Transport,
@@ -4761,7 +4761,7 @@ impl SecurityHasPrivilegesUserProfileParts {
         }
     }
 }
-#[doc = "Builder for the [Security Has Privileges User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-has-privileges-user-profile.html)\n\nDetermines whether the users associated with the specified profile IDs have all the requested privileges."]
+#[doc = "Builder for the [Security Has Privileges User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-has-privileges-user-profile.html)\n\nDetermines whether the users associated with the specified profile IDs have all the requested privileges."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -4902,7 +4902,7 @@ impl SecurityInvalidateApiKeyParts {
         }
     }
 }
-#[doc = "Builder for the [Security Invalidate Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-invalidate-api-key.html)\n\nInvalidates one or more API keys."]
+#[doc = "Builder for the [Security Invalidate Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-invalidate-api-key.html)\n\nInvalidates one or more API keys."]
 #[derive(Clone, Debug)]
 pub struct SecurityInvalidateApiKey<'a, 'b, B> {
     transport: &'a Transport,
@@ -5037,7 +5037,7 @@ impl SecurityInvalidateTokenParts {
         }
     }
 }
-#[doc = "Builder for the [Security Invalidate Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-invalidate-token.html)\n\nInvalidates one or more access tokens or refresh tokens."]
+#[doc = "Builder for the [Security Invalidate Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-invalidate-token.html)\n\nInvalidates one or more access tokens or refresh tokens."]
 #[derive(Clone, Debug)]
 pub struct SecurityInvalidateToken<'a, 'b, B> {
     transport: &'a Transport,
@@ -5172,7 +5172,7 @@ impl SecurityOidcAuthenticateParts {
         }
     }
 }
-#[doc = "Builder for the [Security Oidc Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-oidc-authenticate.html)\n\nExchanges an OpenID Connection authentication response message for an Elasticsearch access token and refresh token pair"]
+#[doc = "Builder for the [Security Oidc Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-oidc-authenticate.html)\n\nExchanges an OpenID Connection authentication response message for an Elasticsearch access token and refresh token pair"]
 #[derive(Clone, Debug)]
 pub struct SecurityOidcAuthenticate<'a, 'b, B> {
     transport: &'a Transport,
@@ -5307,7 +5307,7 @@ impl SecurityOidcLogoutParts {
         }
     }
 }
-#[doc = "Builder for the [Security Oidc Logout API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-oidc-logout.html)\n\nInvalidates a refresh token and access token that was generated from the OpenID Connect Authenticate API"]
+#[doc = "Builder for the [Security Oidc Logout API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-oidc-logout.html)\n\nInvalidates a refresh token and access token that was generated from the OpenID Connect Authenticate API"]
 #[derive(Clone, Debug)]
 pub struct SecurityOidcLogout<'a, 'b, B> {
     transport: &'a Transport,
@@ -5442,7 +5442,7 @@ impl SecurityOidcPrepareAuthenticationParts {
         }
     }
 }
-#[doc = "Builder for the [Security Oidc Prepare Authentication API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-oidc-prepare-authentication.html)\n\nCreates an OAuth 2.0 authentication request as a URL string"]
+#[doc = "Builder for the [Security Oidc Prepare Authentication API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-oidc-prepare-authentication.html)\n\nCreates an OAuth 2.0 authentication request as a URL string"]
 #[derive(Clone, Debug)]
 pub struct SecurityOidcPrepareAuthentication<'a, 'b, B> {
     transport: &'a Transport,
@@ -5577,7 +5577,7 @@ impl SecurityPutPrivilegesParts {
         }
     }
 }
-#[doc = "Builder for the [Security Put Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-put-privileges.html)\n\nAdds or updates application privileges."]
+#[doc = "Builder for the [Security Put Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-put-privileges.html)\n\nAdds or updates application privileges."]
 #[derive(Clone, Debug)]
 pub struct SecurityPutPrivileges<'a, 'b, B> {
     transport: &'a Transport,
@@ -5728,7 +5728,7 @@ impl<'b> SecurityPutRoleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Put Role API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-put-role.html)\n\nAdds and updates roles in the native realm."]
+#[doc = "Builder for the [Security Put Role API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-put-role.html)\n\nAdds and updates roles in the native realm."]
 #[derive(Clone, Debug)]
 pub struct SecurityPutRole<'a, 'b, B> {
     transport: &'a Transport,
@@ -5879,7 +5879,7 @@ impl<'b> SecurityPutRoleMappingParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Put Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-put-role-mapping.html)\n\nCreates and updates role mappings."]
+#[doc = "Builder for the [Security Put Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-put-role-mapping.html)\n\nCreates and updates role mappings."]
 #[derive(Clone, Debug)]
 pub struct SecurityPutRoleMapping<'a, 'b, B> {
     transport: &'a Transport,
@@ -6031,7 +6031,7 @@ impl<'b> SecurityPutUserParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Put User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-put-user.html)\n\nAdds and updates users in the native realm. These users are commonly referred to as native users."]
+#[doc = "Builder for the [Security Put User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-put-user.html)\n\nAdds and updates users in the native realm. These users are commonly referred to as native users."]
 #[derive(Clone, Debug)]
 pub struct SecurityPutUser<'a, 'b, B> {
     transport: &'a Transport,
@@ -6176,7 +6176,7 @@ impl SecurityQueryApiKeysParts {
         }
     }
 }
-#[doc = "Builder for the [Security Query Api Keys API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-query-api-key.html)\n\nRetrieves information for API keys using a subset of query DSL"]
+#[doc = "Builder for the [Security Query Api Keys API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-query-api-key.html)\n\nRetrieves information for API keys using a subset of query DSL"]
 #[derive(Clone, Debug)]
 pub struct SecurityQueryApiKeys<'a, 'b, B> {
     transport: &'a Transport,
@@ -6314,7 +6314,7 @@ impl SecuritySamlAuthenticateParts {
         }
     }
 }
-#[doc = "Builder for the [Security Saml Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-saml-authenticate.html)\n\nExchanges a SAML Response message for an Elasticsearch access token and refresh token pair"]
+#[doc = "Builder for the [Security Saml Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-saml-authenticate.html)\n\nExchanges a SAML Response message for an Elasticsearch access token and refresh token pair"]
 #[derive(Clone, Debug)]
 pub struct SecuritySamlAuthenticate<'a, 'b, B> {
     transport: &'a Transport,
@@ -6449,7 +6449,7 @@ impl SecuritySamlCompleteLogoutParts {
         }
     }
 }
-#[doc = "Builder for the [Security Saml Complete Logout API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-saml-complete-logout.html)\n\nVerifies the logout response sent from the SAML IdP"]
+#[doc = "Builder for the [Security Saml Complete Logout API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-saml-complete-logout.html)\n\nVerifies the logout response sent from the SAML IdP"]
 #[derive(Clone, Debug)]
 pub struct SecuritySamlCompleteLogout<'a, 'b, B> {
     transport: &'a Transport,
@@ -6584,7 +6584,7 @@ impl SecuritySamlInvalidateParts {
         }
     }
 }
-#[doc = "Builder for the [Security Saml Invalidate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-saml-invalidate.html)\n\nConsumes a SAML LogoutRequest"]
+#[doc = "Builder for the [Security Saml Invalidate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-saml-invalidate.html)\n\nConsumes a SAML LogoutRequest"]
 #[derive(Clone, Debug)]
 pub struct SecuritySamlInvalidate<'a, 'b, B> {
     transport: &'a Transport,
@@ -6719,7 +6719,7 @@ impl SecuritySamlLogoutParts {
         }
     }
 }
-#[doc = "Builder for the [Security Saml Logout API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-saml-logout.html)\n\nInvalidates an access token and a refresh token that were generated via the SAML Authenticate API"]
+#[doc = "Builder for the [Security Saml Logout API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-saml-logout.html)\n\nInvalidates an access token and a refresh token that were generated via the SAML Authenticate API"]
 #[derive(Clone, Debug)]
 pub struct SecuritySamlLogout<'a, 'b, B> {
     transport: &'a Transport,
@@ -6854,7 +6854,7 @@ impl SecuritySamlPrepareAuthenticationParts {
         }
     }
 }
-#[doc = "Builder for the [Security Saml Prepare Authentication API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-saml-prepare-authentication.html)\n\nCreates a SAML authentication request"]
+#[doc = "Builder for the [Security Saml Prepare Authentication API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-saml-prepare-authentication.html)\n\nCreates a SAML authentication request"]
 #[derive(Clone, Debug)]
 pub struct SecuritySamlPrepareAuthentication<'a, 'b, B> {
     transport: &'a Transport,
@@ -6996,7 +6996,7 @@ impl<'b> SecuritySamlServiceProviderMetadataParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Saml Service Provider Metadata API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-saml-sp-metadata.html)\n\nGenerates SAML metadata for the Elastic stack SAML 2.0 Service Provider"]
+#[doc = "Builder for the [Security Saml Service Provider Metadata API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-saml-sp-metadata.html)\n\nGenerates SAML metadata for the Elastic stack SAML 2.0 Service Provider"]
 #[derive(Clone, Debug)]
 pub struct SecuritySamlServiceProviderMetadata<'a, 'b> {
     transport: &'a Transport,
@@ -7113,7 +7113,7 @@ impl SecuritySuggestUserProfilesParts {
         }
     }
 }
-#[doc = "Builder for the [Security Suggest User Profiles API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-suggest-user-profile.html)\n\nGet suggestions for user profiles that match specified search criteria."]
+#[doc = "Builder for the [Security Suggest User Profiles API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-suggest-user-profile.html)\n\nGet suggestions for user profiles that match specified search criteria."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -7274,7 +7274,7 @@ impl<'b> SecurityUpdateUserProfileDataParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Security Update User Profile Data API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-update-user-profile-data.html)\n\nUpdate application specific data for the user profile of the given unique ID."]
+#[doc = "Builder for the [Security Update User Profile Data API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-update-user-profile-data.html)\n\nUpdate application specific data for the user profile of the given unique ID."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -7440,112 +7440,112 @@ impl<'a> Security<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Security Activate User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-activate-user-profile.html)\n\nCreates or updates the user profile on behalf of another user."]
+    #[doc = "[Security Activate User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-activate-user-profile.html)\n\nCreates or updates the user profile on behalf of another user."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn activate_user_profile<'b>(&'a self) -> SecurityActivateUserProfile<'a, 'b, ()> {
         SecurityActivateUserProfile::new(self.transport())
     }
-    #[doc = "[Security Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-authenticate.html)\n\nEnables authentication as a user and retrieve information about the authenticated user."]
+    #[doc = "[Security Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-authenticate.html)\n\nEnables authentication as a user and retrieve information about the authenticated user."]
     pub fn authenticate<'b>(&'a self) -> SecurityAuthenticate<'a, 'b> {
         SecurityAuthenticate::new(self.transport())
     }
-    #[doc = "[Security Change Password API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-change-password.html)\n\nChanges the passwords of users in the native realm and built-in users."]
+    #[doc = "[Security Change Password API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-change-password.html)\n\nChanges the passwords of users in the native realm and built-in users."]
     pub fn change_password<'b>(
         &'a self,
         parts: SecurityChangePasswordParts<'b>,
     ) -> SecurityChangePassword<'a, 'b, ()> {
         SecurityChangePassword::new(self.transport(), parts)
     }
-    #[doc = "[Security Clear Api Key Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-clear-api-key-cache.html)\n\nClear a subset or all entries from the API key cache."]
+    #[doc = "[Security Clear Api Key Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-clear-api-key-cache.html)\n\nClear a subset or all entries from the API key cache."]
     pub fn clear_api_key_cache<'b>(
         &'a self,
         parts: SecurityClearApiKeyCacheParts<'b>,
     ) -> SecurityClearApiKeyCache<'a, 'b, ()> {
         SecurityClearApiKeyCache::new(self.transport(), parts)
     }
-    #[doc = "[Security Clear Cached Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-clear-privilege-cache.html)\n\nEvicts application privileges from the native application privileges cache."]
+    #[doc = "[Security Clear Cached Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-clear-privilege-cache.html)\n\nEvicts application privileges from the native application privileges cache."]
     pub fn clear_cached_privileges<'b>(
         &'a self,
         parts: SecurityClearCachedPrivilegesParts<'b>,
     ) -> SecurityClearCachedPrivileges<'a, 'b, ()> {
         SecurityClearCachedPrivileges::new(self.transport(), parts)
     }
-    #[doc = "[Security Clear Cached Realms API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-clear-cache.html)\n\nEvicts users from the user cache. Can completely clear the cache or evict specific users."]
+    #[doc = "[Security Clear Cached Realms API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-clear-cache.html)\n\nEvicts users from the user cache. Can completely clear the cache or evict specific users."]
     pub fn clear_cached_realms<'b>(
         &'a self,
         parts: SecurityClearCachedRealmsParts<'b>,
     ) -> SecurityClearCachedRealms<'a, 'b, ()> {
         SecurityClearCachedRealms::new(self.transport(), parts)
     }
-    #[doc = "[Security Clear Cached Roles API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-clear-role-cache.html)\n\nEvicts roles from the native role cache."]
+    #[doc = "[Security Clear Cached Roles API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-clear-role-cache.html)\n\nEvicts roles from the native role cache."]
     pub fn clear_cached_roles<'b>(
         &'a self,
         parts: SecurityClearCachedRolesParts<'b>,
     ) -> SecurityClearCachedRoles<'a, 'b, ()> {
         SecurityClearCachedRoles::new(self.transport(), parts)
     }
-    #[doc = "[Security Clear Cached Service Tokens API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-clear-service-token-caches.html)\n\nEvicts tokens from the service account token caches."]
+    #[doc = "[Security Clear Cached Service Tokens API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-clear-service-token-caches.html)\n\nEvicts tokens from the service account token caches."]
     pub fn clear_cached_service_tokens<'b>(
         &'a self,
         parts: SecurityClearCachedServiceTokensParts<'b>,
     ) -> SecurityClearCachedServiceTokens<'a, 'b, ()> {
         SecurityClearCachedServiceTokens::new(self.transport(), parts)
     }
-    #[doc = "[Security Create Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-create-api-key.html)\n\nCreates an API key for access without requiring basic authentication."]
+    #[doc = "[Security Create Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-create-api-key.html)\n\nCreates an API key for access without requiring basic authentication."]
     pub fn create_api_key<'b>(&'a self) -> SecurityCreateApiKey<'a, 'b, ()> {
         SecurityCreateApiKey::new(self.transport())
     }
-    #[doc = "[Security Create Service Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-create-service-token.html)\n\nCreates a service account token for access without requiring basic authentication."]
+    #[doc = "[Security Create Service Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-create-service-token.html)\n\nCreates a service account token for access without requiring basic authentication."]
     pub fn create_service_token<'b>(
         &'a self,
         parts: SecurityCreateServiceTokenParts<'b>,
     ) -> SecurityCreateServiceToken<'a, 'b, ()> {
         SecurityCreateServiceToken::new(self.transport(), parts)
     }
-    #[doc = "[Security Delete Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-delete-privilege.html)\n\nRemoves application privileges."]
+    #[doc = "[Security Delete Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-delete-privilege.html)\n\nRemoves application privileges."]
     pub fn delete_privileges<'b>(
         &'a self,
         parts: SecurityDeletePrivilegesParts<'b>,
     ) -> SecurityDeletePrivileges<'a, 'b> {
         SecurityDeletePrivileges::new(self.transport(), parts)
     }
-    #[doc = "[Security Delete Role API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-delete-role.html)\n\nRemoves roles in the native realm."]
+    #[doc = "[Security Delete Role API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-delete-role.html)\n\nRemoves roles in the native realm."]
     pub fn delete_role<'b>(
         &'a self,
         parts: SecurityDeleteRoleParts<'b>,
     ) -> SecurityDeleteRole<'a, 'b> {
         SecurityDeleteRole::new(self.transport(), parts)
     }
-    #[doc = "[Security Delete Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-delete-role-mapping.html)\n\nRemoves role mappings."]
+    #[doc = "[Security Delete Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-delete-role-mapping.html)\n\nRemoves role mappings."]
     pub fn delete_role_mapping<'b>(
         &'a self,
         parts: SecurityDeleteRoleMappingParts<'b>,
     ) -> SecurityDeleteRoleMapping<'a, 'b> {
         SecurityDeleteRoleMapping::new(self.transport(), parts)
     }
-    #[doc = "[Security Delete Service Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-delete-service-token.html)\n\nDeletes a service account token."]
+    #[doc = "[Security Delete Service Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-delete-service-token.html)\n\nDeletes a service account token."]
     pub fn delete_service_token<'b>(
         &'a self,
         parts: SecurityDeleteServiceTokenParts<'b>,
     ) -> SecurityDeleteServiceToken<'a, 'b> {
         SecurityDeleteServiceToken::new(self.transport(), parts)
     }
-    #[doc = "[Security Delete User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-delete-user.html)\n\nDeletes users from the native realm."]
+    #[doc = "[Security Delete User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-delete-user.html)\n\nDeletes users from the native realm."]
     pub fn delete_user<'b>(
         &'a self,
         parts: SecurityDeleteUserParts<'b>,
     ) -> SecurityDeleteUser<'a, 'b> {
         SecurityDeleteUser::new(self.transport(), parts)
     }
-    #[doc = "[Security Disable User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-disable-user.html)\n\nDisables users in the native realm."]
+    #[doc = "[Security Disable User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-disable-user.html)\n\nDisables users in the native realm."]
     pub fn disable_user<'b>(
         &'a self,
         parts: SecurityDisableUserParts<'b>,
     ) -> SecurityDisableUser<'a, 'b, ()> {
         SecurityDisableUser::new(self.transport(), parts)
     }
-    #[doc = "[Security Disable User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-disable-user-profile.html)\n\nDisables a user profile so it's not visible in user profile searches."]
+    #[doc = "[Security Disable User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-disable-user-profile.html)\n\nDisables a user profile so it's not visible in user profile searches."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn disable_user_profile<'b>(
@@ -7554,14 +7554,14 @@ impl<'a> Security<'a> {
     ) -> SecurityDisableUserProfile<'a, 'b, ()> {
         SecurityDisableUserProfile::new(self.transport(), parts)
     }
-    #[doc = "[Security Enable User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-enable-user.html)\n\nEnables users in the native realm."]
+    #[doc = "[Security Enable User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-enable-user.html)\n\nEnables users in the native realm."]
     pub fn enable_user<'b>(
         &'a self,
         parts: SecurityEnableUserParts<'b>,
     ) -> SecurityEnableUser<'a, 'b, ()> {
         SecurityEnableUser::new(self.transport(), parts)
     }
-    #[doc = "[Security Enable User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-enable-user-profile.html)\n\nEnables a user profile so it's visible in user profile searches."]
+    #[doc = "[Security Enable User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-enable-user-profile.html)\n\nEnables a user profile so it's visible in user profile searches."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn enable_user_profile<'b>(
@@ -7570,67 +7570,67 @@ impl<'a> Security<'a> {
     ) -> SecurityEnableUserProfile<'a, 'b, ()> {
         SecurityEnableUserProfile::new(self.transport(), parts)
     }
-    #[doc = "[Security Enroll Kibana API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-kibana-enrollment.html)\n\nAllows a kibana instance to configure itself to communicate with a secured elasticsearch cluster."]
+    #[doc = "[Security Enroll Kibana API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-kibana-enrollment.html)\n\nAllows a kibana instance to configure itself to communicate with a secured elasticsearch cluster."]
     pub fn enroll_kibana<'b>(&'a self) -> SecurityEnrollKibana<'a, 'b> {
         SecurityEnrollKibana::new(self.transport())
     }
-    #[doc = "[Security Enroll Node API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-node-enrollment.html)\n\nAllows a new node to enroll to an existing cluster with security enabled."]
+    #[doc = "[Security Enroll Node API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-node-enrollment.html)\n\nAllows a new node to enroll to an existing cluster with security enabled."]
     pub fn enroll_node<'b>(&'a self) -> SecurityEnrollNode<'a, 'b> {
         SecurityEnrollNode::new(self.transport())
     }
-    #[doc = "[Security Get Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-api-key.html)\n\nRetrieves information for one or more API keys."]
+    #[doc = "[Security Get Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-get-api-key.html)\n\nRetrieves information for one or more API keys."]
     pub fn get_api_key<'b>(&'a self) -> SecurityGetApiKey<'a, 'b> {
         SecurityGetApiKey::new(self.transport())
     }
-    #[doc = "[Security Get Builtin Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-builtin-privileges.html)\n\nRetrieves the list of cluster privileges and index privileges that are available in this version of Elasticsearch."]
+    #[doc = "[Security Get Builtin Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-get-builtin-privileges.html)\n\nRetrieves the list of cluster privileges and index privileges that are available in this version of Elasticsearch."]
     pub fn get_builtin_privileges<'b>(&'a self) -> SecurityGetBuiltinPrivileges<'a, 'b> {
         SecurityGetBuiltinPrivileges::new(self.transport())
     }
-    #[doc = "[Security Get Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-privileges.html)\n\nRetrieves application privileges."]
+    #[doc = "[Security Get Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-get-privileges.html)\n\nRetrieves application privileges."]
     pub fn get_privileges<'b>(
         &'a self,
         parts: SecurityGetPrivilegesParts<'b>,
     ) -> SecurityGetPrivileges<'a, 'b> {
         SecurityGetPrivileges::new(self.transport(), parts)
     }
-    #[doc = "[Security Get Role API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-role.html)\n\nRetrieves roles in the native realm."]
+    #[doc = "[Security Get Role API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-get-role.html)\n\nRetrieves roles in the native realm."]
     pub fn get_role<'b>(&'a self, parts: SecurityGetRoleParts<'b>) -> SecurityGetRole<'a, 'b> {
         SecurityGetRole::new(self.transport(), parts)
     }
-    #[doc = "[Security Get Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-role-mapping.html)\n\nRetrieves role mappings."]
+    #[doc = "[Security Get Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-get-role-mapping.html)\n\nRetrieves role mappings."]
     pub fn get_role_mapping<'b>(
         &'a self,
         parts: SecurityGetRoleMappingParts<'b>,
     ) -> SecurityGetRoleMapping<'a, 'b> {
         SecurityGetRoleMapping::new(self.transport(), parts)
     }
-    #[doc = "[Security Get Service Accounts API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-service-accounts.html)\n\nRetrieves information about service accounts."]
+    #[doc = "[Security Get Service Accounts API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-get-service-accounts.html)\n\nRetrieves information about service accounts."]
     pub fn get_service_accounts<'b>(
         &'a self,
         parts: SecurityGetServiceAccountsParts<'b>,
     ) -> SecurityGetServiceAccounts<'a, 'b> {
         SecurityGetServiceAccounts::new(self.transport(), parts)
     }
-    #[doc = "[Security Get Service Credentials API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-service-credentials.html)\n\nRetrieves information of all service credentials for a service account."]
+    #[doc = "[Security Get Service Credentials API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-get-service-credentials.html)\n\nRetrieves information of all service credentials for a service account."]
     pub fn get_service_credentials<'b>(
         &'a self,
         parts: SecurityGetServiceCredentialsParts<'b>,
     ) -> SecurityGetServiceCredentials<'a, 'b> {
         SecurityGetServiceCredentials::new(self.transport(), parts)
     }
-    #[doc = "[Security Get Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-token.html)\n\nCreates a bearer token for access without requiring basic authentication."]
+    #[doc = "[Security Get Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-get-token.html)\n\nCreates a bearer token for access without requiring basic authentication."]
     pub fn get_token<'b>(&'a self) -> SecurityGetToken<'a, 'b, ()> {
         SecurityGetToken::new(self.transport())
     }
-    #[doc = "[Security Get User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-user.html)\n\nRetrieves information about users in the native realm and built-in users."]
+    #[doc = "[Security Get User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-get-user.html)\n\nRetrieves information about users in the native realm and built-in users."]
     pub fn get_user<'b>(&'a self, parts: SecurityGetUserParts<'b>) -> SecurityGetUser<'a, 'b> {
         SecurityGetUser::new(self.transport(), parts)
     }
-    #[doc = "[Security Get User Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-user-privileges.html)\n\nRetrieves security privileges for the logged in user."]
+    #[doc = "[Security Get User Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-get-user-privileges.html)\n\nRetrieves security privileges for the logged in user."]
     pub fn get_user_privileges<'b>(&'a self) -> SecurityGetUserPrivileges<'a, 'b> {
         SecurityGetUserPrivileges::new(self.transport())
     }
-    #[doc = "[Security Get User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-get-user-profile.html)\n\nRetrieves user profile for the given unique ID."]
+    #[doc = "[Security Get User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-get-user-profile.html)\n\nRetrieves user profile for the given unique ID."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn get_user_profile<'b>(
@@ -7639,18 +7639,18 @@ impl<'a> Security<'a> {
     ) -> SecurityGetUserProfile<'a, 'b> {
         SecurityGetUserProfile::new(self.transport(), parts)
     }
-    #[doc = "[Security Grant Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-grant-api-key.html)\n\nCreates an API key on behalf of another user."]
+    #[doc = "[Security Grant Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-grant-api-key.html)\n\nCreates an API key on behalf of another user."]
     pub fn grant_api_key<'b>(&'a self) -> SecurityGrantApiKey<'a, 'b, ()> {
         SecurityGrantApiKey::new(self.transport())
     }
-    #[doc = "[Security Has Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-has-privileges.html)\n\nDetermines whether the specified user has a specified list of privileges."]
+    #[doc = "[Security Has Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-has-privileges.html)\n\nDetermines whether the specified user has a specified list of privileges."]
     pub fn has_privileges<'b>(
         &'a self,
         parts: SecurityHasPrivilegesParts<'b>,
     ) -> SecurityHasPrivileges<'a, 'b, ()> {
         SecurityHasPrivileges::new(self.transport(), parts)
     }
-    #[doc = "[Security Has Privileges User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-has-privileges-user-profile.html)\n\nDetermines whether the users associated with the specified profile IDs have all the requested privileges."]
+    #[doc = "[Security Has Privileges User Profile API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-has-privileges-user-profile.html)\n\nDetermines whether the users associated with the specified profile IDs have all the requested privileges."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn has_privileges_user_profile<'b>(
@@ -7658,87 +7658,87 @@ impl<'a> Security<'a> {
     ) -> SecurityHasPrivilegesUserProfile<'a, 'b, ()> {
         SecurityHasPrivilegesUserProfile::new(self.transport())
     }
-    #[doc = "[Security Invalidate Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-invalidate-api-key.html)\n\nInvalidates one or more API keys."]
+    #[doc = "[Security Invalidate Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-invalidate-api-key.html)\n\nInvalidates one or more API keys."]
     pub fn invalidate_api_key<'b>(&'a self) -> SecurityInvalidateApiKey<'a, 'b, ()> {
         SecurityInvalidateApiKey::new(self.transport())
     }
-    #[doc = "[Security Invalidate Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-invalidate-token.html)\n\nInvalidates one or more access tokens or refresh tokens."]
+    #[doc = "[Security Invalidate Token API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-invalidate-token.html)\n\nInvalidates one or more access tokens or refresh tokens."]
     pub fn invalidate_token<'b>(&'a self) -> SecurityInvalidateToken<'a, 'b, ()> {
         SecurityInvalidateToken::new(self.transport())
     }
-    #[doc = "[Security Oidc Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-oidc-authenticate.html)\n\nExchanges an OpenID Connection authentication response message for an Elasticsearch access token and refresh token pair"]
+    #[doc = "[Security Oidc Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-oidc-authenticate.html)\n\nExchanges an OpenID Connection authentication response message for an Elasticsearch access token and refresh token pair"]
     pub fn oidc_authenticate<'b>(&'a self) -> SecurityOidcAuthenticate<'a, 'b, ()> {
         SecurityOidcAuthenticate::new(self.transport())
     }
-    #[doc = "[Security Oidc Logout API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-oidc-logout.html)\n\nInvalidates a refresh token and access token that was generated from the OpenID Connect Authenticate API"]
+    #[doc = "[Security Oidc Logout API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-oidc-logout.html)\n\nInvalidates a refresh token and access token that was generated from the OpenID Connect Authenticate API"]
     pub fn oidc_logout<'b>(&'a self) -> SecurityOidcLogout<'a, 'b, ()> {
         SecurityOidcLogout::new(self.transport())
     }
-    #[doc = "[Security Oidc Prepare Authentication API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-oidc-prepare-authentication.html)\n\nCreates an OAuth 2.0 authentication request as a URL string"]
+    #[doc = "[Security Oidc Prepare Authentication API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-oidc-prepare-authentication.html)\n\nCreates an OAuth 2.0 authentication request as a URL string"]
     pub fn oidc_prepare_authentication<'b>(
         &'a self,
     ) -> SecurityOidcPrepareAuthentication<'a, 'b, ()> {
         SecurityOidcPrepareAuthentication::new(self.transport())
     }
-    #[doc = "[Security Put Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-put-privileges.html)\n\nAdds or updates application privileges."]
+    #[doc = "[Security Put Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-put-privileges.html)\n\nAdds or updates application privileges."]
     pub fn put_privileges<'b>(&'a self) -> SecurityPutPrivileges<'a, 'b, ()> {
         SecurityPutPrivileges::new(self.transport())
     }
-    #[doc = "[Security Put Role API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-put-role.html)\n\nAdds and updates roles in the native realm."]
+    #[doc = "[Security Put Role API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-put-role.html)\n\nAdds and updates roles in the native realm."]
     pub fn put_role<'b>(&'a self, parts: SecurityPutRoleParts<'b>) -> SecurityPutRole<'a, 'b, ()> {
         SecurityPutRole::new(self.transport(), parts)
     }
-    #[doc = "[Security Put Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-put-role-mapping.html)\n\nCreates and updates role mappings."]
+    #[doc = "[Security Put Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-put-role-mapping.html)\n\nCreates and updates role mappings."]
     pub fn put_role_mapping<'b>(
         &'a self,
         parts: SecurityPutRoleMappingParts<'b>,
     ) -> SecurityPutRoleMapping<'a, 'b, ()> {
         SecurityPutRoleMapping::new(self.transport(), parts)
     }
-    #[doc = "[Security Put User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-put-user.html)\n\nAdds and updates users in the native realm. These users are commonly referred to as native users."]
+    #[doc = "[Security Put User API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-put-user.html)\n\nAdds and updates users in the native realm. These users are commonly referred to as native users."]
     pub fn put_user<'b>(&'a self, parts: SecurityPutUserParts<'b>) -> SecurityPutUser<'a, 'b, ()> {
         SecurityPutUser::new(self.transport(), parts)
     }
-    #[doc = "[Security Query Api Keys API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-query-api-key.html)\n\nRetrieves information for API keys using a subset of query DSL"]
+    #[doc = "[Security Query Api Keys API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-query-api-key.html)\n\nRetrieves information for API keys using a subset of query DSL"]
     pub fn query_api_keys<'b>(&'a self) -> SecurityQueryApiKeys<'a, 'b, ()> {
         SecurityQueryApiKeys::new(self.transport())
     }
-    #[doc = "[Security Saml Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-saml-authenticate.html)\n\nExchanges a SAML Response message for an Elasticsearch access token and refresh token pair"]
+    #[doc = "[Security Saml Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-saml-authenticate.html)\n\nExchanges a SAML Response message for an Elasticsearch access token and refresh token pair"]
     pub fn saml_authenticate<'b>(&'a self) -> SecuritySamlAuthenticate<'a, 'b, ()> {
         SecuritySamlAuthenticate::new(self.transport())
     }
-    #[doc = "[Security Saml Complete Logout API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-saml-complete-logout.html)\n\nVerifies the logout response sent from the SAML IdP"]
+    #[doc = "[Security Saml Complete Logout API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-saml-complete-logout.html)\n\nVerifies the logout response sent from the SAML IdP"]
     pub fn saml_complete_logout<'b>(&'a self) -> SecuritySamlCompleteLogout<'a, 'b, ()> {
         SecuritySamlCompleteLogout::new(self.transport())
     }
-    #[doc = "[Security Saml Invalidate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-saml-invalidate.html)\n\nConsumes a SAML LogoutRequest"]
+    #[doc = "[Security Saml Invalidate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-saml-invalidate.html)\n\nConsumes a SAML LogoutRequest"]
     pub fn saml_invalidate<'b>(&'a self) -> SecuritySamlInvalidate<'a, 'b, ()> {
         SecuritySamlInvalidate::new(self.transport())
     }
-    #[doc = "[Security Saml Logout API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-saml-logout.html)\n\nInvalidates an access token and a refresh token that were generated via the SAML Authenticate API"]
+    #[doc = "[Security Saml Logout API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-saml-logout.html)\n\nInvalidates an access token and a refresh token that were generated via the SAML Authenticate API"]
     pub fn saml_logout<'b>(&'a self) -> SecuritySamlLogout<'a, 'b, ()> {
         SecuritySamlLogout::new(self.transport())
     }
-    #[doc = "[Security Saml Prepare Authentication API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-saml-prepare-authentication.html)\n\nCreates a SAML authentication request"]
+    #[doc = "[Security Saml Prepare Authentication API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-saml-prepare-authentication.html)\n\nCreates a SAML authentication request"]
     pub fn saml_prepare_authentication<'b>(
         &'a self,
     ) -> SecuritySamlPrepareAuthentication<'a, 'b, ()> {
         SecuritySamlPrepareAuthentication::new(self.transport())
     }
-    #[doc = "[Security Saml Service Provider Metadata API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-saml-sp-metadata.html)\n\nGenerates SAML metadata for the Elastic stack SAML 2.0 Service Provider"]
+    #[doc = "[Security Saml Service Provider Metadata API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-saml-sp-metadata.html)\n\nGenerates SAML metadata for the Elastic stack SAML 2.0 Service Provider"]
     pub fn saml_service_provider_metadata<'b>(
         &'a self,
         parts: SecuritySamlServiceProviderMetadataParts<'b>,
     ) -> SecuritySamlServiceProviderMetadata<'a, 'b> {
         SecuritySamlServiceProviderMetadata::new(self.transport(), parts)
     }
-    #[doc = "[Security Suggest User Profiles API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-suggest-user-profile.html)\n\nGet suggestions for user profiles that match specified search criteria."]
+    #[doc = "[Security Suggest User Profiles API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-suggest-user-profile.html)\n\nGet suggestions for user profiles that match specified search criteria."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn suggest_user_profiles<'b>(&'a self) -> SecuritySuggestUserProfiles<'a, 'b, ()> {
         SecuritySuggestUserProfiles::new(self.transport())
     }
-    #[doc = "[Security Update User Profile Data API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/security-api-update-user-profile-data.html)\n\nUpdate application specific data for the user profile of the given unique ID."]
+    #[doc = "[Security Update User Profile Data API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-update-user-profile-data.html)\n\nUpdate application specific data for the user profile of the given unique ID."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn update_user_profile_data<'b>(
