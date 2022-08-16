@@ -791,10 +791,14 @@ impl ApiCall {
                         let s = b.to_string();
                         Ok(quote! { #s })
                     }
-                    Yaml::Integer(i) => match ty.ty {
-                        TypeKind::Long => Ok(quote! { #i }),
+                    Yaml::Integer(l) => match ty.ty {
+                        TypeKind::Long => Ok(quote! { #l }),
+                        TypeKind::Integer => {
+                            let i = *l as i32;
+                            Ok(quote! { #i })
+                        }
                         _ => {
-                            let s = i.to_string();
+                            let s = l.to_string();
                             Ok(quote! { #s })
                         }
                     },
