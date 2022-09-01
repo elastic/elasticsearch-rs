@@ -95,8 +95,8 @@ impl fmt::Display for BuildError {
     }
 }
 
-/// Default address to Elasticsearch running on `http://localhost:9200`
-pub static DEFAULT_ADDRESS: &str = "http://localhost:9200";
+/// Default address to Elasticsearch running on `https://localhost:9200`
+pub static DEFAULT_ADDRESS: &str = "https://localhost:9200";
 
 lazy_static! {
     /// Client metadata header: service, language, transport, followed by additional information

@@ -2951,6 +2951,7 @@ pub struct Get<'a, 'b> {
     _source_includes: Option<&'b [&'b str]>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
+    force_synthetic_source: Option<bool>,
     headers: HeaderMap,
     human: Option<bool>,
     preference: Option<&'b str>,
@@ -2977,6 +2978,7 @@ impl<'a, 'b> Get<'a, 'b> {
             _source_includes: None,
             error_trace: None,
             filter_path: None,
+            force_synthetic_source: None,
             human: None,
             preference: None,
             pretty: None,
@@ -3013,6 +3015,11 @@ impl<'a, 'b> Get<'a, 'b> {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Should this request force synthetic _source? Use this to test if the mapping supports synthetic _source and to get a sense of the worst case performance. Fetches with this enabled will be slower the enabling synthetic source natively in the index."]
+    pub fn force_synthetic_source(mut self, force_synthetic_source: bool) -> Self {
+        self.force_synthetic_source = Some(force_synthetic_source);
         self
     }
     #[doc = "Adds a HTTP header"]
@@ -3094,6 +3101,7 @@ impl<'a, 'b> Get<'a, 'b> {
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
+                force_synthetic_source: Option<bool>,
                 human: Option<bool>,
                 preference: Option<&'b str>,
                 pretty: Option<bool>,
@@ -3112,6 +3120,7 @@ impl<'a, 'b> Get<'a, 'b> {
                 _source_includes: self._source_includes,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
+                force_synthetic_source: self.force_synthetic_source,
                 human: self.human,
                 preference: self.preference,
                 pretty: self.pretty,
@@ -4267,6 +4276,7 @@ pub struct Mget<'a, 'b, B> {
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
+    force_synthetic_source: Option<bool>,
     headers: HeaderMap,
     human: Option<bool>,
     preference: Option<&'b str>,
@@ -4295,6 +4305,7 @@ where
             body: None,
             error_trace: None,
             filter_path: None,
+            force_synthetic_source: None,
             human: None,
             preference: None,
             pretty: None,
@@ -4335,6 +4346,7 @@ where
             _source_includes: self._source_includes,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            force_synthetic_source: self.force_synthetic_source,
             headers: self.headers,
             human: self.human,
             preference: self.preference,
@@ -4355,6 +4367,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Should this request force synthetic _source? Use this to test if the mapping supports synthetic _source and to get a sense of the worst case performance. Fetches with this enabled will be slower the enabling synthetic source natively in the index."]
+    pub fn force_synthetic_source(mut self, force_synthetic_source: bool) -> Self {
+        self.force_synthetic_source = Some(force_synthetic_source);
         self
     }
     #[doc = "Adds a HTTP header"]
@@ -4429,6 +4446,7 @@ where
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
+                force_synthetic_source: Option<bool>,
                 human: Option<bool>,
                 preference: Option<&'b str>,
                 pretty: Option<bool>,
@@ -4445,6 +4463,7 @@ where
                 _source_includes: self._source_includes,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
+                force_synthetic_source: self.force_synthetic_source,
                 human: self.human,
                 preference: self.preference,
                 pretty: self.pretty,
@@ -6722,6 +6741,7 @@ pub struct Search<'a, 'b, B> {
     expand_wildcards: Option<&'b [ExpandWildcards]>,
     explain: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
+    force_synthetic_source: Option<bool>,
     from: Option<i64>,
     headers: HeaderMap,
     human: Option<bool>,
@@ -6785,6 +6805,7 @@ where
             expand_wildcards: None,
             explain: None,
             filter_path: None,
+            force_synthetic_source: None,
             from: None,
             human: None,
             ignore_throttled: None,
@@ -6885,6 +6906,7 @@ where
             expand_wildcards: self.expand_wildcards,
             explain: self.explain,
             filter_path: self.filter_path,
+            force_synthetic_source: self.force_synthetic_source,
             from: self.from,
             headers: self.headers,
             human: self.human,
@@ -6959,6 +6981,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Should this request force synthetic _source? Use this to test if the mapping supports synthetic _source and to get a sense of the worst case performance. Fetches with this enabled will be slower the enabling synthetic source natively in the index."]
+    pub fn force_synthetic_source(mut self, force_synthetic_source: bool) -> Self {
+        self.force_synthetic_source = Some(force_synthetic_source);
         self
     }
     #[doc = "Starting offset (default: 0)"]
@@ -7166,6 +7193,7 @@ where
                 explain: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
+                force_synthetic_source: Option<bool>,
                 from: Option<i64>,
                 human: Option<bool>,
                 ignore_throttled: Option<bool>,
@@ -7220,6 +7248,7 @@ where
                 expand_wildcards: self.expand_wildcards,
                 explain: self.explain,
                 filter_path: self.filter_path,
+                force_synthetic_source: self.force_synthetic_source,
                 from: self.from,
                 human: self.human,
                 ignore_throttled: self.ignore_throttled,

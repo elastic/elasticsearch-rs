@@ -35,8 +35,6 @@ environment=($(cat <<-END
   --env ELASTIC_PASSWORD=$elastic_password
   --env node.name=$es_node_name
   --env cluster.name=$cluster_name
-  --env cluster.initial_master_nodes=$master_node_name
-  --env discovery.seed_hosts=$master_node_name
   --env cluster.routing.allocation.disk.threshold_enabled=false
   --env bootstrap.memory_lock=true
   --env node.attr.testattr=test
@@ -44,6 +42,8 @@ environment=($(cat <<-END
   --env repositories.url.allowed_urls=http://snapshot.test*
   --env action.destructive_requires_name=false
   --env ingest.geoip.downloader.enabled=false
+  --env xpack.security.transport.ssl.enabled=false
+  --env discovery.type=single-node
 END
 ))
 if [[ "$TEST_SUITE" == "platinum" ]]; then

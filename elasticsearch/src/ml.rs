@@ -9295,6 +9295,7 @@ pub struct MlStartTrainedModelDeployment<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlStartTrainedModelDeploymentParts<'b>,
     body: Option<B>,
+    cache_size: Option<&'b str>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -9321,6 +9322,7 @@ where
             parts,
             headers,
             body: None,
+            cache_size: None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -9343,6 +9345,7 @@ where
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
+            cache_size: self.cache_size,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             headers: self.headers,
@@ -9356,6 +9359,11 @@ where
             timeout: self.timeout,
             wait_for: self.wait_for,
         }
+    }
+    #[doc = "A byte-size value for configuring the inference cache size. For example, 20mb."]
+    pub fn cache_size(mut self, cache_size: &'b str) -> Self {
+        self.cache_size = Some(cache_size);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -9427,6 +9435,7 @@ where
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                cache_size: Option<&'b str>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -9440,6 +9449,7 @@ where
                 wait_for: Option<&'b str>,
             }
             let query_params = QueryParams {
+                cache_size: self.cache_size,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,

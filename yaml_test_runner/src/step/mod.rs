@@ -143,7 +143,12 @@ impl Expr {
                 match ch {
                     '\\' => {
                         // consume the next character too
-                        if let Some(next) = chars.next() {
+                        let mut maybe_next = chars.next();
+                        if let Some('\\') = maybe_next {
+                            // Some paths use a double backslash to escape dots
+                            maybe_next = chars.next();
+                        }
+                        if let Some(next) = maybe_next {
                             value.push(next);
                         }
                     }
@@ -251,4 +256,30 @@ pub fn json_string_from_yaml(yaml: &Yaml) -> String {
     json = replace_set(json);
     json = replace_i64(json);
     json
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_expr() {
+        let expr = Expr::new("$body");
+        assert!(expr.is_body());
+
+        let expr = Expr::new("a.b.c");
+        assert_eq!(r#"["a"]["b"]["c"]"#, expr.expression());
+
+        let expr = Expr::new(r#"a.b\.c"#);
+        assert_eq!(r#"["a"]["b.c"]"#, expr.expression());
+
+        let expr = Expr::new(r#"a.b\\.c"#);
+        assert_eq!(r#"["a"]["b.c"]"#, expr.expression());
+
+        let expr = Expr::new("a.0");
+        assert_eq!(r#"["a"][0]"#, expr.expression());
+
+        let expr = Expr::new("a.${b}.c");
+        assert_eq!(r#"["a"][b.as_str().unwrap()]["c"]"#, expr.expression());
+    }
 }

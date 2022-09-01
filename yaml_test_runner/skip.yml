@@ -133,7 +133,15 @@ tests:
     # node has a lot more roles than those checked in the test (expects "ingest", finds "data_cold")
     - "node_info role test"
 
+  free/search.aggregation/40_range.yml:
+    # Setup uses 64 bits longs, and the code generator expects 32 bits
+    - "*"
+
   free/search.aggregation/250_moving_fn.yml:
     # The use of an invalid window interval results in a 400 response which looks like
     # it suppresses the sending of deprecation headers
     - "Bad window deprecated interval"
+
+  free/tsdb/80_index_resize.yml:
+    # Undeclared "node_id" variable in setup
+    - "*"

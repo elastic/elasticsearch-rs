@@ -1025,8 +1025,10 @@ impl<'b> SnapshotGetParts<'b> {
 pub struct SnapshotGet<'a, 'b> {
     transport: &'a Transport,
     parts: SnapshotGetParts<'b>,
+    after: Option<&'b str>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
+    from_sort_value: Option<&'b str>,
     headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
@@ -1034,8 +1036,13 @@ pub struct SnapshotGet<'a, 'b> {
     index_details: Option<bool>,
     index_names: Option<bool>,
     master_timeout: Option<&'b str>,
+    offset: Option<&'b str>,
+    order: Option<Order>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
+    size: Option<&'b str>,
+    slm_policy_filter: Option<&'b str>,
+    sort: Option<Sort>,
     source: Option<&'b str>,
     verbose: Option<bool>,
 }
@@ -1047,19 +1054,31 @@ impl<'a, 'b> SnapshotGet<'a, 'b> {
             transport,
             parts,
             headers,
+            after: None,
             error_trace: None,
             filter_path: None,
+            from_sort_value: None,
             human: None,
             ignore_unavailable: None,
             include_repository: None,
             index_details: None,
             index_names: None,
             master_timeout: None,
+            offset: None,
+            order: None,
             pretty: None,
             request_timeout: None,
+            size: None,
+            slm_policy_filter: None,
+            sort: None,
             source: None,
             verbose: None,
         }
+    }
+    #[doc = "Offset identifier to start pagination from as returned by the 'next' field in the response body."]
+    pub fn after(mut self, after: &'b str) -> Self {
+        self.after = Some(after);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -1069,6 +1088,11 @@ impl<'a, 'b> SnapshotGet<'a, 'b> {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Value of the current sort column at which to start retrieval."]
+    pub fn from_sort_value(mut self, from_sort_value: &'b str) -> Self {
+        self.from_sort_value = Some(from_sort_value);
         self
     }
     #[doc = "Adds a HTTP header"]
@@ -1106,6 +1130,16 @@ impl<'a, 'b> SnapshotGet<'a, 'b> {
         self.master_timeout = Some(master_timeout);
         self
     }
+    #[doc = "Numeric offset to start pagination based on the snapshots matching the request. Defaults to 0"]
+    pub fn offset(mut self, offset: &'b str) -> Self {
+        self.offset = Some(offset);
+        self
+    }
+    #[doc = "Sort order"]
+    pub fn order(mut self, order: Order) -> Self {
+        self.order = Some(order);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -1114,6 +1148,21 @@ impl<'a, 'b> SnapshotGet<'a, 'b> {
     #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "Maximum number of snapshots to return. Defaults to 0 which means return all that match without limit."]
+    pub fn size(mut self, size: &'b str) -> Self {
+        self.size = Some(size);
+        self
+    }
+    #[doc = "Filter snapshots by a comma-separated list of SLM policy names that snapshots belong to. Accepts wildcards. Use the special pattern '_none' to match snapshots without an SLM policy"]
+    pub fn slm_policy_filter(mut self, slm_policy_filter: &'b str) -> Self {
+        self.slm_policy_filter = Some(slm_policy_filter);
+        self
+    }
+    #[doc = "Allows setting a sort order for the result. Defaults to start_time"]
+    pub fn sort(mut self, sort: Sort) -> Self {
+        self.sort = Some(sort);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -1136,29 +1185,43 @@ impl<'a, 'b> SnapshotGet<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                after: Option<&'b str>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
+                from_sort_value: Option<&'b str>,
                 human: Option<bool>,
                 ignore_unavailable: Option<bool>,
                 include_repository: Option<bool>,
                 index_details: Option<bool>,
                 index_names: Option<bool>,
                 master_timeout: Option<&'b str>,
+                offset: Option<&'b str>,
+                order: Option<Order>,
                 pretty: Option<bool>,
+                size: Option<&'b str>,
+                slm_policy_filter: Option<&'b str>,
+                sort: Option<Sort>,
                 source: Option<&'b str>,
                 verbose: Option<bool>,
             }
             let query_params = QueryParams {
+                after: self.after,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
+                from_sort_value: self.from_sort_value,
                 human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 include_repository: self.include_repository,
                 index_details: self.index_details,
                 index_names: self.index_names,
                 master_timeout: self.master_timeout,
+                offset: self.offset,
+                order: self.order,
                 pretty: self.pretty,
+                size: self.size,
+                slm_policy_filter: self.slm_policy_filter,
+                sort: self.sort,
                 source: self.source,
                 verbose: self.verbose,
             };

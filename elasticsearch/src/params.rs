@@ -155,7 +155,15 @@ pub enum OpType {
     #[serde(rename = "create")]
     Create,
 }
-#[doc = "If `true` then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` (the default) then do nothing with refreshes."]
+#[doc = "Sort order"]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
+pub enum Order {
+    #[serde(rename = "asc")]
+    Asc,
+    #[serde(rename = "desc")]
+    Desc,
+}
+#[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Refresh {
     #[serde(rename = "true")]
@@ -173,13 +181,23 @@ pub enum SearchType {
     #[serde(rename = "dfs_query_then_fetch")]
     DfsQueryThenFetch,
 }
-#[doc = "The sort order for 'cpu' type (default: total)"]
+#[doc = "Allows setting a sort order for the result. Defaults to start_time"]
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Sort {
-    #[serde(rename = "cpu")]
-    Cpu,
-    #[serde(rename = "total")]
-    Total,
+    #[serde(rename = "start_time")]
+    StartTime,
+    #[serde(rename = "duration")]
+    Duration,
+    #[serde(rename = "name")]
+    Name,
+    #[serde(rename = "repository")]
+    Repository,
+    #[serde(rename = "index_count")]
+    IndexCount,
+    #[serde(rename = "shard_count")]
+    ShardCount,
+    #[serde(rename = "failed_shard_count")]
+    FailedShardCount,
 }
 #[doc = "Specify suggest mode"]
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
