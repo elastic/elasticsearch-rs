@@ -127,7 +127,7 @@ fn main() -> anyhow::Result<()> {
 fn branch_suite_and_version_from_elasticsearch(
     url: &str,
 ) -> Result<(String, TestSuite, String, semver::Version), failure::Error> {
-    let client = reqwest::ClientBuilder::new()
+    let client = reqwest::blocking::ClientBuilder::new()
         .danger_accept_invalid_certs(true)
         .build()?;
 
@@ -136,7 +136,7 @@ fn branch_suite_and_version_from_elasticsearch(
         Ok(ref s) if s == "free" => TestSuite::Free,
         _ => TestSuite::XPack,
     };
-    let mut response = client.get(url).send()?;
+    let response = client.get(url).send()?;
     let json: Value = response.json()?;
     let branch = json["version"]["build_hash"].as_str().unwrap().to_string();
 
