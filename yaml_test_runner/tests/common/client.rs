@@ -65,7 +65,7 @@ fn cluster_addr() -> String {
 /// Determines if Fiddler.exe proxy process is running
 fn running_proxy() -> bool {
     let system = sysinfo::System::new();
-    !system.get_process_by_name("Fiddler").is_empty()
+    system.processes_by_name("Fiddler").count() > 0
 }
 
 static GLOBAL_CLIENT: Lazy<Elasticsearch> = Lazy::new(|| {

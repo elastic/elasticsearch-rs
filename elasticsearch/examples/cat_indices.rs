@@ -54,7 +54,7 @@ fn create_client() -> Result<Elasticsearch, Error> {
     /// Determines if Fiddler.exe proxy process is running
     fn running_proxy() -> bool {
         let system = sysinfo::System::new();
-        !system.get_process_by_name("Fiddler").is_empty()
+        system.processes_by_name("Fiddler").count() > 0
     }
 
     let mut url = Url::parse(cluster_addr().as_ref()).unwrap();
