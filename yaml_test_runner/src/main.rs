@@ -49,7 +49,7 @@ fn main() -> anyhow::Result<()> {
     let matches = App::new(env!("CARGO_PKG_NAME"))
         .about(env!("CARGO_PKG_DESCRIPTION"))
         .arg(Arg::with_name("url")
-            .short("u")
+            .short('u')
             .long("url")
             .value_name("ELASTICSEARCH_URL")
             .help("The url of a running Elasticsearch cluster. Used to determine the version, test suite and branch to use to compile tests")
