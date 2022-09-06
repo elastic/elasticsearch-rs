@@ -55,7 +55,7 @@ pub async fn main() -> Result<(), Box<dyn std::error::Error>> {
         )
         .arg(
             Arg::with_name("path")
-                .short("p")
+                .short('p')
                 .long("path")
                 .value_name("PATH")
                 .help("The path to the Posts.xml file containing questions and answers. Can be obtained from https://archive.org/download/stackexchange/stackoverflow.com-Posts.7z (large file)")
@@ -64,7 +64,7 @@ pub async fn main() -> Result<(), Box<dyn std::error::Error>> {
         )
         .arg(
             Arg::with_name("limit")
-                .short("l")
+                .short('l')
                 .long("limit")
                 .value_name("LIMIT")
                 .help("The number of questions and answers from Posts.xml to index")
@@ -73,7 +73,7 @@ pub async fn main() -> Result<(), Box<dyn std::error::Error>> {
         )
         .arg(
             Arg::with_name("size")
-                .short("s")
+                .short('s')
                 .long("size")
                 .value_name("SIZE")
                 .help("The number of documents in each bulk request")
@@ -82,7 +82,7 @@ pub async fn main() -> Result<(), Box<dyn std::error::Error>> {
         )
         .arg(
             Arg::with_name("delete")
-                .short("d")
+                .short('d')
                 .long("delete")
                 .help("Whether to delete the index before indexing")
                 .required(false)
