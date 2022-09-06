@@ -60,9 +60,8 @@ impl<'a> YamlTests<'a> {
         suite: TestSuite,
         len: usize,
     ) -> Self {
-        let path = path.to_slash_lossy();
         Self {
-            path,
+            path: path.to_slash_lossy().into_owned(),
             version,
             skip,
             suite,
