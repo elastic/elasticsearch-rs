@@ -102,6 +102,8 @@ pub enum GridType {
     Grid,
     #[serde(rename = "point")]
     Point,
+    #[serde(rename = "centroid")]
+    Centroid,
 }
 #[doc = "Group tasks by nodes or parent/child relationships"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
@@ -143,6 +145,14 @@ pub enum OpType {
     #[serde(rename = "create")]
     Create,
 }
+#[doc = "Sort order"]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
+pub enum Order {
+    #[serde(rename = "asc")]
+    Asc,
+    #[serde(rename = "desc")]
+    Desc,
+}
 #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Refresh {
@@ -176,6 +186,24 @@ pub enum Size {
     T,
     #[serde(rename = "p")]
     P,
+}
+#[doc = "Allows setting a sort order for the result. Defaults to start_time"]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
+pub enum Sort {
+    #[serde(rename = "start_time")]
+    StartTime,
+    #[serde(rename = "duration")]
+    Duration,
+    #[serde(rename = "name")]
+    Name,
+    #[serde(rename = "repository")]
+    Repository,
+    #[serde(rename = "index_count")]
+    IndexCount,
+    #[serde(rename = "shard_count")]
+    ShardCount,
+    #[serde(rename = "failed_shard_count")]
+    FailedShardCount,
 }
 #[doc = "Specify suggest mode"]
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
@@ -214,6 +242,8 @@ pub enum Type {
     Wait,
     #[serde(rename = "block")]
     Block,
+    #[serde(rename = "mem")]
+    Mem,
 }
 #[doc = "Specific version type"]
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]

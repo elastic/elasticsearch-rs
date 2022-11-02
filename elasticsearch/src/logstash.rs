@@ -65,7 +65,7 @@ impl<'b> LogstashDeletePipelineParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Logstash Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/logstash-api-delete-pipeline.html)\n\nDeletes Logstash Pipelines used by Central Management"]
+#[doc = "Builder for the [Logstash Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/logstash-api-delete-pipeline.html)\n\nDeletes Logstash Pipelines used by Central Management"]
 #[derive(Clone, Debug)]
 pub struct LogstashDeletePipeline<'a, 'b> {
     transport: &'a Transport,
@@ -183,7 +183,7 @@ impl<'b> LogstashGetPipelineParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Logstash Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/logstash-api-get-pipeline.html)\n\nRetrieves Logstash Pipelines used by Central Management"]
+#[doc = "Builder for the [Logstash Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/logstash-api-get-pipeline.html)\n\nRetrieves Logstash Pipelines used by Central Management"]
 #[derive(Clone, Debug)]
 pub struct LogstashGetPipeline<'a, 'b> {
     transport: &'a Transport,
@@ -301,7 +301,7 @@ impl<'b> LogstashPutPipelineParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Logstash Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/logstash-api-put-pipeline.html)\n\nAdds and updates Logstash Pipelines used for Central Management"]
+#[doc = "Builder for the [Logstash Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/logstash-api-put-pipeline.html)\n\nAdds and updates Logstash Pipelines used for Central Management"]
 #[derive(Clone, Debug)]
 pub struct LogstashPutPipeline<'a, 'b, B> {
     transport: &'a Transport,
@@ -434,21 +434,21 @@ impl<'a> Logstash<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Logstash Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/logstash-api-delete-pipeline.html)\n\nDeletes Logstash Pipelines used by Central Management"]
+    #[doc = "[Logstash Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/logstash-api-delete-pipeline.html)\n\nDeletes Logstash Pipelines used by Central Management"]
     pub fn delete_pipeline<'b>(
         &'a self,
         parts: LogstashDeletePipelineParts<'b>,
     ) -> LogstashDeletePipeline<'a, 'b> {
         LogstashDeletePipeline::new(self.transport(), parts)
     }
-    #[doc = "[Logstash Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/logstash-api-get-pipeline.html)\n\nRetrieves Logstash Pipelines used by Central Management"]
+    #[doc = "[Logstash Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/logstash-api-get-pipeline.html)\n\nRetrieves Logstash Pipelines used by Central Management"]
     pub fn get_pipeline<'b>(
         &'a self,
         parts: LogstashGetPipelineParts<'b>,
     ) -> LogstashGetPipeline<'a, 'b> {
         LogstashGetPipeline::new(self.transport(), parts)
     }
-    #[doc = "[Logstash Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/logstash-api-put-pipeline.html)\n\nAdds and updates Logstash Pipelines used for Central Management"]
+    #[doc = "[Logstash Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/logstash-api-put-pipeline.html)\n\nAdds and updates Logstash Pipelines used for Central Management"]
     pub fn put_pipeline<'b>(
         &'a self,
         parts: LogstashPutPipelineParts<'b>,

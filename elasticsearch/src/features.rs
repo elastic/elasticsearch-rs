@@ -58,7 +58,7 @@ impl FeaturesGetFeaturesParts {
         }
     }
 }
-#[doc = "Builder for the [Features Get Features API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/get-features-api.html)\n\nGets a list of features which can be included in snapshots using the feature_states field when creating a snapshot"]
+#[doc = "Builder for the [Features Get Features API](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/get-features-api.html)\n\nGets a list of features which can be included in snapshots using the feature_states field when creating a snapshot"]
 #[derive(Clone, Debug)]
 pub struct FeaturesGetFeatures<'a, 'b> {
     transport: &'a Transport,
@@ -181,7 +181,7 @@ impl FeaturesResetFeaturesParts {
         }
     }
 }
-#[doc = "Builder for the [Features Reset Features API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/modules-snapshots.html)\n\nResets the internal state of features, usually by deleting system indices"]
+#[doc = "Builder for the [Features Reset Features API](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/modules-snapshots.html)\n\nResets the internal state of features, usually by deleting system indices"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -317,11 +317,11 @@ impl<'a> Features<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Features Get Features API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/get-features-api.html)\n\nGets a list of features which can be included in snapshots using the feature_states field when creating a snapshot"]
+    #[doc = "[Features Get Features API](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/get-features-api.html)\n\nGets a list of features which can be included in snapshots using the feature_states field when creating a snapshot"]
     pub fn get_features<'b>(&'a self) -> FeaturesGetFeatures<'a, 'b> {
         FeaturesGetFeatures::new(self.transport())
     }
-    #[doc = "[Features Reset Features API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/modules-snapshots.html)\n\nResets the internal state of features, usually by deleting system indices"]
+    #[doc = "[Features Reset Features API](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/modules-snapshots.html)\n\nResets the internal state of features, usually by deleting system indices"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn reset_features<'b>(&'a self) -> FeaturesResetFeatures<'a, 'b, ()> {

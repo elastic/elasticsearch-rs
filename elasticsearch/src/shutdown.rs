@@ -26,8 +26,6 @@
 
 //! The [shutdown APIs](https://www.elastic.co/guide/en/elasticsearch/reference/master/node-lifecycle-api.html) allows preparing nodes for temporary or permanent shutdown, monitor the shutdown status, and enable a previously shut-down node to resume normal operations.
 
-#![cfg(feature = "experimental-apis")]
-#![doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
@@ -44,14 +42,12 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Shutdown Delete Node API"]
 pub enum ShutdownDeleteNodeParts<'b> {
     #[doc = "NodeId"]
     NodeId(&'b str),
 }
-#[cfg(feature = "experimental-apis")]
 impl<'b> ShutdownDeleteNodeParts<'b> {
     #[doc = "Builds a relative URL path to the Shutdown Delete Node API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -68,9 +64,7 @@ impl<'b> ShutdownDeleteNodeParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Shutdown Delete Node API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13)\n\nRemoves a node from the shutdown list"]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
+#[doc = "Builder for the [Shutdown Delete Node API](https://www.elastic.co/guide/en/elasticsearch/reference/7.17)\n\nRemoves a node from the shutdown list. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
 #[derive(Clone, Debug)]
 pub struct ShutdownDeleteNode<'a, 'b> {
     transport: &'a Transport,
@@ -83,7 +77,6 @@ pub struct ShutdownDeleteNode<'a, 'b> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "experimental-apis")]
 impl<'a, 'b> ShutdownDeleteNode<'a, 'b> {
     #[doc = "Creates a new instance of [ShutdownDeleteNode] with the specified API parts"]
     pub fn new(transport: &'a Transport, parts: ShutdownDeleteNodeParts<'b>) -> Self {
@@ -169,7 +162,6 @@ impl<'a, 'b> ShutdownDeleteNode<'a, 'b> {
         Ok(response)
     }
 }
-#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Shutdown Get Node API"]
 pub enum ShutdownGetNodeParts<'b> {
@@ -178,7 +170,6 @@ pub enum ShutdownGetNodeParts<'b> {
     #[doc = "NodeId"]
     NodeId(&'b str),
 }
-#[cfg(feature = "experimental-apis")]
 impl<'b> ShutdownGetNodeParts<'b> {
     #[doc = "Builds a relative URL path to the Shutdown Get Node API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -196,9 +187,7 @@ impl<'b> ShutdownGetNodeParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Shutdown Get Node API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13)\n\nRetrieve status of a node or nodes that are currently marked as shutting down"]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
+#[doc = "Builder for the [Shutdown Get Node API](https://www.elastic.co/guide/en/elasticsearch/reference/7.17)\n\nRetrieve status of a node or nodes that are currently marked as shutting down. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
 #[derive(Clone, Debug)]
 pub struct ShutdownGetNode<'a, 'b> {
     transport: &'a Transport,
@@ -211,7 +200,6 @@ pub struct ShutdownGetNode<'a, 'b> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "experimental-apis")]
 impl<'a, 'b> ShutdownGetNode<'a, 'b> {
     #[doc = "Creates a new instance of [ShutdownGetNode] with the specified API parts"]
     pub fn new(transport: &'a Transport, parts: ShutdownGetNodeParts<'b>) -> Self {
@@ -297,14 +285,12 @@ impl<'a, 'b> ShutdownGetNode<'a, 'b> {
         Ok(response)
     }
 }
-#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Shutdown Put Node API"]
 pub enum ShutdownPutNodeParts<'b> {
     #[doc = "NodeId"]
     NodeId(&'b str),
 }
-#[cfg(feature = "experimental-apis")]
 impl<'b> ShutdownPutNodeParts<'b> {
     #[doc = "Builds a relative URL path to the Shutdown Put Node API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -321,9 +307,7 @@ impl<'b> ShutdownPutNodeParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Shutdown Put Node API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13)\n\nAdds a node to be shut down"]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
+#[doc = "Builder for the [Shutdown Put Node API](https://www.elastic.co/guide/en/elasticsearch/reference/7.17)\n\nAdds a node to be shut down. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
 #[derive(Clone, Debug)]
 pub struct ShutdownPutNode<'a, 'b, B> {
     transport: &'a Transport,
@@ -337,7 +321,6 @@ pub struct ShutdownPutNode<'a, 'b, B> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "experimental-apis")]
 impl<'a, 'b, B> ShutdownPutNode<'a, 'b, B>
 where
     B: Body,
@@ -446,12 +429,9 @@ where
     }
 }
 #[doc = "Namespace client for Shutdown APIs"]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
 pub struct Shutdown<'a> {
     transport: &'a Transport,
 }
-#[cfg(feature = "experimental-apis")]
 impl<'a> Shutdown<'a> {
     #[doc = "Creates a new instance of [Shutdown]"]
     pub fn new(transport: &'a Transport) -> Self {
@@ -460,29 +440,22 @@ impl<'a> Shutdown<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Shutdown Delete Node API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13)\n\nRemoves a node from the shutdown list"]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
+    #[doc = "[Shutdown Delete Node API](https://www.elastic.co/guide/en/elasticsearch/reference/7.17)\n\nRemoves a node from the shutdown list. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
     pub fn delete_node<'b>(
         &'a self,
         parts: ShutdownDeleteNodeParts<'b>,
     ) -> ShutdownDeleteNode<'a, 'b> {
         ShutdownDeleteNode::new(self.transport(), parts)
     }
-    #[doc = "[Shutdown Get Node API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13)\n\nRetrieve status of a node or nodes that are currently marked as shutting down"]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
+    #[doc = "[Shutdown Get Node API](https://www.elastic.co/guide/en/elasticsearch/reference/7.17)\n\nRetrieve status of a node or nodes that are currently marked as shutting down. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
     pub fn get_node<'b>(&'a self, parts: ShutdownGetNodeParts<'b>) -> ShutdownGetNode<'a, 'b> {
         ShutdownGetNode::new(self.transport(), parts)
     }
-    #[doc = "[Shutdown Put Node API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13)\n\nAdds a node to be shut down"]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
+    #[doc = "[Shutdown Put Node API](https://www.elastic.co/guide/en/elasticsearch/reference/7.17)\n\nAdds a node to be shut down. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
     pub fn put_node<'b>(&'a self, parts: ShutdownPutNodeParts<'b>) -> ShutdownPutNode<'a, 'b, ()> {
         ShutdownPutNode::new(self.transport(), parts)
     }
 }
-#[cfg(feature = "experimental-apis")]
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Shutdown APIs"]
     pub fn shutdown(&self) -> Shutdown {

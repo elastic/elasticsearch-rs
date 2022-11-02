@@ -29,8 +29,6 @@
 //! The Elastic Stack [monitoring features](https://www.elastic.co/guide/en/elasticsearch/reference/master/monitor-elasticsearch-cluster.html)
 //! provide a way to keep a pulse on thehealth and performance of your Elasticsearch cluster.
 
-#![cfg(feature = "experimental-apis")]
-#![doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
@@ -47,7 +45,6 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Monitoring Bulk API"]
 pub enum MonitoringBulkParts<'b> {
@@ -56,7 +53,6 @@ pub enum MonitoringBulkParts<'b> {
     #[doc = "Type"]
     Type(&'b str),
 }
-#[cfg(feature = "experimental-apis")]
 impl<'b> MonitoringBulkParts<'b> {
     #[doc = "Builds a relative URL path to the Monitoring Bulk API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -73,9 +69,7 @@ impl<'b> MonitoringBulkParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/monitor-elasticsearch-cluster.html)\n\nUsed by the monitoring features to send monitoring data."]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
+#[doc = "Builder for the [Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/monitor-elasticsearch-cluster.html)\n\nUsed by the monitoring features to send monitoring data."]
 #[derive(Clone, Debug)]
 pub struct MonitoringBulk<'a, 'b, B> {
     transport: &'a Transport,
@@ -92,7 +86,6 @@ pub struct MonitoringBulk<'a, 'b, B> {
     system_api_version: Option<&'b str>,
     system_id: Option<&'b str>,
 }
-#[cfg(feature = "experimental-apis")]
 impl<'a, 'b, B> MonitoringBulk<'a, 'b, B>
 where
     B: Body,
@@ -228,12 +221,9 @@ where
     }
 }
 #[doc = "Namespace client for Monitoring APIs"]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
 pub struct Monitoring<'a> {
     transport: &'a Transport,
 }
-#[cfg(feature = "experimental-apis")]
 impl<'a> Monitoring<'a> {
     #[doc = "Creates a new instance of [Monitoring]"]
     pub fn new(transport: &'a Transport) -> Self {
@@ -242,14 +232,11 @@ impl<'a> Monitoring<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/7.13/monitor-elasticsearch-cluster.html)\n\nUsed by the monitoring features to send monitoring data."]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
+    #[doc = "[Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/monitor-elasticsearch-cluster.html)\n\nUsed by the monitoring features to send monitoring data."]
     pub fn bulk<'b>(&'a self, parts: MonitoringBulkParts<'b>) -> MonitoringBulk<'a, 'b, ()> {
         MonitoringBulk::new(self.transport(), parts)
     }
 }
-#[cfg(feature = "experimental-apis")]
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Monitoring APIs"]
     pub fn monitoring(&self) -> Monitoring {
