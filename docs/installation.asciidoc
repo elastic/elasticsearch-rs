@@ -7,7 +7,7 @@ compatible with the version of {es} you are using:
 [source,toml]
 ----
 [dependencies]
-elasticsearch = "7.15.0-alpha.1"
+elasticsearch = "7.17.7-alpha.1"
 ----
 
 The following _optional_ dependencies may also be useful to create requests and 
