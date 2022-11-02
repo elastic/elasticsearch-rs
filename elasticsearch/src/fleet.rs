@@ -64,7 +64,7 @@ impl<'b> FleetGlobalCheckpointsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Fleet Global Checkpoints API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-global-checkpoints.html)\n\nReturns the current global checkpoints for an index. This API is design for internal use by the fleet server project."]
+#[doc = "Builder for the [Fleet Global Checkpoints API](https://www.elastic.co/guide/en/elasticsearch/reference/8.5/get-global-checkpoints.html)\n\nReturns the current global checkpoints for an index. This API is design for internal use by the fleet server project."]
 #[derive(Clone, Debug)]
 pub struct FleetGlobalCheckpoints<'a, 'b> {
     transport: &'a Transport,
@@ -547,7 +547,7 @@ impl<'a> Fleet<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Fleet Global Checkpoints API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-global-checkpoints.html)\n\nReturns the current global checkpoints for an index. This API is design for internal use by the fleet server project."]
+    #[doc = "[Fleet Global Checkpoints API](https://www.elastic.co/guide/en/elasticsearch/reference/8.5/get-global-checkpoints.html)\n\nReturns the current global checkpoints for an index. This API is design for internal use by the fleet server project."]
     pub fn global_checkpoints<'b>(
         &'a self,
         parts: FleetGlobalCheckpointsParts<'b>,

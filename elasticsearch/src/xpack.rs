@@ -58,7 +58,7 @@ impl XpackInfoParts {
         }
     }
 }
-#[doc = "Builder for the [Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
+#[doc = "Builder for the [Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.5/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
 #[derive(Clone, Debug)]
 pub struct XpackInfo<'a, 'b> {
     transport: &'a Transport,
@@ -189,7 +189,7 @@ impl XpackUsageParts {
         }
     }
 }
-#[doc = "Builder for the [Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
+#[doc = "Builder for the [Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/8.5/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
 #[derive(Clone, Debug)]
 pub struct XpackUsage<'a, 'b> {
     transport: &'a Transport,
@@ -308,11 +308,11 @@ impl<'a> Xpack<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
+    #[doc = "[Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.5/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
     pub fn info<'b>(&'a self) -> XpackInfo<'a, 'b> {
         XpackInfo::new(self.transport())
     }
-    #[doc = "[Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
+    #[doc = "[Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/8.5/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
     pub fn usage<'b>(&'a self) -> XpackUsage<'a, 'b> {
         XpackUsage::new(self.transport())
     }
