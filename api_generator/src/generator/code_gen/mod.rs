@@ -206,7 +206,8 @@ fn typekind_to_ty(name: &str, kind: &TypeKind, required: bool, fn_arg: bool) -> 
         TypeKind::Time => v.push_str(str_type),
         TypeKind::Union(u) => match name {
             "slices" => v.push_str("Slices"),
-            _ => panic!("unsupported union type: {:?}", u),
+            "track_total_hits" => v.push_str("TrackTotalHits"),
+            _ => panic!("unsupported union type: {} {:?}", name, u),
         },
     };
 
