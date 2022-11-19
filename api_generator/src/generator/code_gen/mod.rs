@@ -72,6 +72,10 @@ fn doc<I: Into<String>>(comment: I) -> syn::Attribute {
     }
 }
 
+fn doc_escaped<S: ?Sized + AsRef<str>>(comment: &S) -> syn::Attribute {
+    doc(html_escape::encode_text(comment))
+}
+
 fn stability_doc(stability: Stability) -> Option<syn::Attribute> {
     match stability {
         Stability::Experimental => Some(doc(r#"&nbsp;
