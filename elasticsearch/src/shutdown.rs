@@ -42,7 +42,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Shutdown Delete Node API"]
 pub enum ShutdownDeleteNodeParts<'b> {
     #[doc = "NodeId"]
@@ -52,7 +52,7 @@ impl<'b> ShutdownDeleteNodeParts<'b> {
     #[doc = "Builds a relative URL path to the Shutdown Delete Node API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ShutdownDeleteNodeParts::NodeId(ref node_id) => {
+            ShutdownDeleteNodeParts::NodeId(node_id) => {
                 let encoded_node_id: Cow<str> =
                     percent_encode(node_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(17usize + encoded_node_id.len());
@@ -64,7 +64,7 @@ impl<'b> ShutdownDeleteNodeParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Shutdown Delete Node API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3)\n\nRemoves a node from the shutdown list. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+#[doc = "Builder for the [Shutdown Delete Node API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7)\n\nRemoves a node from the shutdown list. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
 #[derive(Clone, Debug)]
 pub struct ShutdownDeleteNode<'a, 'b> {
     transport: &'a Transport,
@@ -162,7 +162,7 @@ impl<'a, 'b> ShutdownDeleteNode<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Shutdown Get Node API"]
 pub enum ShutdownGetNodeParts<'b> {
     #[doc = "No parts"]
@@ -175,7 +175,7 @@ impl<'b> ShutdownGetNodeParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             ShutdownGetNodeParts::None => "/_nodes/shutdown".into(),
-            ShutdownGetNodeParts::NodeId(ref node_id) => {
+            ShutdownGetNodeParts::NodeId(node_id) => {
                 let encoded_node_id: Cow<str> =
                     percent_encode(node_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(17usize + encoded_node_id.len());
@@ -187,7 +187,7 @@ impl<'b> ShutdownGetNodeParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Shutdown Get Node API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3)\n\nRetrieve status of a node or nodes that are currently marked as shutting down. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+#[doc = "Builder for the [Shutdown Get Node API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7)\n\nRetrieve status of a node or nodes that are currently marked as shutting down. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
 #[derive(Clone, Debug)]
 pub struct ShutdownGetNode<'a, 'b> {
     transport: &'a Transport,
@@ -285,7 +285,7 @@ impl<'a, 'b> ShutdownGetNode<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Shutdown Put Node API"]
 pub enum ShutdownPutNodeParts<'b> {
     #[doc = "NodeId"]
@@ -295,7 +295,7 @@ impl<'b> ShutdownPutNodeParts<'b> {
     #[doc = "Builds a relative URL path to the Shutdown Put Node API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ShutdownPutNodeParts::NodeId(ref node_id) => {
+            ShutdownPutNodeParts::NodeId(node_id) => {
                 let encoded_node_id: Cow<str> =
                     percent_encode(node_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(17usize + encoded_node_id.len());
@@ -307,7 +307,7 @@ impl<'b> ShutdownPutNodeParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Shutdown Put Node API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3)\n\nAdds a node to be shut down. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+#[doc = "Builder for the [Shutdown Put Node API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7)\n\nAdds a node to be shut down. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
 #[derive(Clone, Debug)]
 pub struct ShutdownPutNode<'a, 'b, B> {
     transport: &'a Transport,
@@ -440,18 +440,18 @@ impl<'a> Shutdown<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Shutdown Delete Node API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3)\n\nRemoves a node from the shutdown list. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+    #[doc = "[Shutdown Delete Node API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7)\n\nRemoves a node from the shutdown list. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
     pub fn delete_node<'b>(
         &'a self,
         parts: ShutdownDeleteNodeParts<'b>,
     ) -> ShutdownDeleteNode<'a, 'b> {
         ShutdownDeleteNode::new(self.transport(), parts)
     }
-    #[doc = "[Shutdown Get Node API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3)\n\nRetrieve status of a node or nodes that are currently marked as shutting down. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+    #[doc = "[Shutdown Get Node API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7)\n\nRetrieve status of a node or nodes that are currently marked as shutting down. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
     pub fn get_node<'b>(&'a self, parts: ShutdownGetNodeParts<'b>) -> ShutdownGetNode<'a, 'b> {
         ShutdownGetNode::new(self.transport(), parts)
     }
-    #[doc = "[Shutdown Put Node API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3)\n\nAdds a node to be shut down. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+    #[doc = "[Shutdown Put Node API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7)\n\nAdds a node to be shut down. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
     pub fn put_node<'b>(&'a self, parts: ShutdownPutNodeParts<'b>) -> ShutdownPutNode<'a, 'b, ()> {
         ShutdownPutNode::new(self.transport(), parts)
     }

@@ -49,7 +49,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the License Delete API"]
 pub enum LicenseDeleteParts {
     #[doc = "No parts"]
@@ -63,7 +63,7 @@ impl LicenseDeleteParts {
         }
     }
 }
-#[doc = "Builder for the [License Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/delete-license.html)\n\nDeletes licensing information for the cluster"]
+#[doc = "Builder for the [License Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-license.html)\n\nDeletes licensing information for the cluster"]
 #[derive(Clone, Debug)]
 pub struct LicenseDelete<'a, 'b> {
     transport: &'a Transport,
@@ -161,7 +161,7 @@ impl<'a, 'b> LicenseDelete<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the License Get API"]
 pub enum LicenseGetParts {
     #[doc = "No parts"]
@@ -175,7 +175,7 @@ impl LicenseGetParts {
         }
     }
 }
-#[doc = "Builder for the [License Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-license.html)\n\nRetrieves licensing information for the cluster"]
+#[doc = "Builder for the [License Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-license.html)\n\nRetrieves licensing information for the cluster"]
 #[derive(Clone, Debug)]
 pub struct LicenseGet<'a, 'b> {
     transport: &'a Transport,
@@ -291,7 +291,7 @@ impl<'a, 'b> LicenseGet<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the License Get Basic Status API"]
 pub enum LicenseGetBasicStatusParts {
     #[doc = "No parts"]
@@ -305,7 +305,7 @@ impl LicenseGetBasicStatusParts {
         }
     }
 }
-#[doc = "Builder for the [License Get Basic Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-basic-status.html)\n\nRetrieves information about the status of the basic license."]
+#[doc = "Builder for the [License Get Basic Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-basic-status.html)\n\nRetrieves information about the status of the basic license."]
 #[derive(Clone, Debug)]
 pub struct LicenseGetBasicStatus<'a, 'b> {
     transport: &'a Transport,
@@ -403,7 +403,7 @@ impl<'a, 'b> LicenseGetBasicStatus<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the License Get Trial Status API"]
 pub enum LicenseGetTrialStatusParts {
     #[doc = "No parts"]
@@ -417,7 +417,7 @@ impl LicenseGetTrialStatusParts {
         }
     }
 }
-#[doc = "Builder for the [License Get Trial Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-trial-status.html)\n\nRetrieves information about the status of the trial license."]
+#[doc = "Builder for the [License Get Trial Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-trial-status.html)\n\nRetrieves information about the status of the trial license."]
 #[derive(Clone, Debug)]
 pub struct LicenseGetTrialStatus<'a, 'b> {
     transport: &'a Transport,
@@ -515,7 +515,7 @@ impl<'a, 'b> LicenseGetTrialStatus<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the License Post API"]
 pub enum LicensePostParts {
     #[doc = "No parts"]
@@ -529,7 +529,7 @@ impl LicensePostParts {
         }
     }
 }
-#[doc = "Builder for the [License Post API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/update-license.html)\n\nUpdates the license for the cluster."]
+#[doc = "Builder for the [License Post API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-license.html)\n\nUpdates the license for the cluster."]
 #[derive(Clone, Debug)]
 pub struct LicensePost<'a, 'b, B> {
     transport: &'a Transport,
@@ -660,7 +660,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the License Post Start Basic API"]
 pub enum LicensePostStartBasicParts {
     #[doc = "No parts"]
@@ -674,7 +674,7 @@ impl LicensePostStartBasicParts {
         }
     }
 }
-#[doc = "Builder for the [License Post Start Basic API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/start-basic.html)\n\nStarts an indefinite basic license."]
+#[doc = "Builder for the [License Post Start Basic API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/start-basic.html)\n\nStarts an indefinite basic license."]
 #[derive(Clone, Debug)]
 pub struct LicensePostStartBasic<'a, 'b, B> {
     transport: &'a Transport,
@@ -805,7 +805,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the License Post Start Trial API"]
 pub enum LicensePostStartTrialParts {
     #[doc = "No parts"]
@@ -819,7 +819,7 @@ impl LicensePostStartTrialParts {
         }
     }
 }
-#[doc = "Builder for the [License Post Start Trial API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/start-trial.html)\n\nstarts a limited time trial license."]
+#[doc = "Builder for the [License Post Start Trial API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/start-trial.html)\n\nstarts a limited time trial license."]
 #[derive(Clone, Debug)]
 pub struct LicensePostStartTrial<'a, 'b, B> {
     transport: &'a Transport,
@@ -973,31 +973,31 @@ impl<'a> License<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[License Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/delete-license.html)\n\nDeletes licensing information for the cluster"]
+    #[doc = "[License Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-license.html)\n\nDeletes licensing information for the cluster"]
     pub fn delete<'b>(&'a self) -> LicenseDelete<'a, 'b> {
         LicenseDelete::new(self.transport())
     }
-    #[doc = "[License Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-license.html)\n\nRetrieves licensing information for the cluster"]
+    #[doc = "[License Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-license.html)\n\nRetrieves licensing information for the cluster"]
     pub fn get<'b>(&'a self) -> LicenseGet<'a, 'b> {
         LicenseGet::new(self.transport())
     }
-    #[doc = "[License Get Basic Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-basic-status.html)\n\nRetrieves information about the status of the basic license."]
+    #[doc = "[License Get Basic Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-basic-status.html)\n\nRetrieves information about the status of the basic license."]
     pub fn get_basic_status<'b>(&'a self) -> LicenseGetBasicStatus<'a, 'b> {
         LicenseGetBasicStatus::new(self.transport())
     }
-    #[doc = "[License Get Trial Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-trial-status.html)\n\nRetrieves information about the status of the trial license."]
+    #[doc = "[License Get Trial Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-trial-status.html)\n\nRetrieves information about the status of the trial license."]
     pub fn get_trial_status<'b>(&'a self) -> LicenseGetTrialStatus<'a, 'b> {
         LicenseGetTrialStatus::new(self.transport())
     }
-    #[doc = "[License Post API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/update-license.html)\n\nUpdates the license for the cluster."]
+    #[doc = "[License Post API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-license.html)\n\nUpdates the license for the cluster."]
     pub fn post<'b>(&'a self) -> LicensePost<'a, 'b, ()> {
         LicensePost::new(self.transport())
     }
-    #[doc = "[License Post Start Basic API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/start-basic.html)\n\nStarts an indefinite basic license."]
+    #[doc = "[License Post Start Basic API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/start-basic.html)\n\nStarts an indefinite basic license."]
     pub fn post_start_basic<'b>(&'a self) -> LicensePostStartBasic<'a, 'b, ()> {
         LicensePostStartBasic::new(self.transport())
     }
-    #[doc = "[License Post Start Trial API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/start-trial.html)\n\nstarts a limited time trial license."]
+    #[doc = "[License Post Start Trial API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/start-trial.html)\n\nstarts a limited time trial license."]
     pub fn post_start_trial<'b>(&'a self) -> LicensePostStartTrial<'a, 'b, ()> {
         LicensePostStartTrial::new(self.transport())
     }

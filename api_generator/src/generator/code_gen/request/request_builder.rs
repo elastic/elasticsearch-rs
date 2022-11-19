@@ -24,13 +24,13 @@ use crate::generator::{
 use inflector::Inflector;
 use quote::{ToTokens, Tokens};
 use reqwest::Url;
-use std::{collections::BTreeMap, fs, path::PathBuf, str};
+use std::{collections::BTreeMap, fs, path::Path, str};
 use syn::{Field, FieldValue, ImplItem, TraitBoundModifier, TyParamBound};
 
 /// Builder that generates the AST for a request builder struct
 pub struct RequestBuilder<'a> {
     /// Path to markdown docs that may be combined with generated docs
-    docs_dir: &'a PathBuf,
+    docs_dir: &'a Path,
     /// The namespace of the API
     namespace_name: &'a str,
     /// The name of the API to which the generated struct relates
@@ -51,7 +51,7 @@ pub struct RequestBuilder<'a> {
 
 impl<'a> RequestBuilder<'a> {
     pub fn new(
-        docs_dir: &'a PathBuf,
+        docs_dir: &'a Path,
         namespace_name: &'a str,
         name: &'a str,
         builder_name: &'a str,
@@ -244,8 +244,8 @@ impl<'a> RequestBuilder<'a> {
         builder_ident: &syn::Ident,
         default_fields: &[&syn::Ident],
         accepts_nd_body: bool,
-    ) -> syn::ImplItem {
-        let fields: Vec<FieldValue> = default_fields
+    ) -> ImplItem {
+        let fields = default_fields
             .iter()
             .filter(|&&part| part != &ident("body"))
             .map(|&part| syn::FieldValue {
@@ -257,8 +257,7 @@ impl<'a> RequestBuilder<'a> {
                 )
                 .into(),
                 is_shorthand: false,
-            })
-            .collect();
+            });
 
         let (fn_arg, field_arg, ret_ty) = if accepts_nd_body {
             (
@@ -278,7 +277,7 @@ impl<'a> RequestBuilder<'a> {
             )
         };
 
-        syn::ImplItem {
+        ImplItem {
             ident: ident("body<T>"),
             vis: syn::Visibility::Public,
             defaultness: syn::Defaultness::Final,
@@ -320,10 +319,10 @@ impl<'a> RequestBuilder<'a> {
     }
 
     /// Creates the AST for a builder fn to add a HTTP header
-    fn create_header_fn(field: &syn::Ident) -> syn::ImplItem {
+    fn create_header_fn(field: &syn::Ident) -> ImplItem {
         let doc_attr = doc("Adds a HTTP header");
 
-        syn::ImplItem {
+        ImplItem {
             ident: ident("header"),
             vis: syn::Visibility::Public,
             defaultness: syn::Defaultness::Final,
@@ -363,10 +362,10 @@ impl<'a> RequestBuilder<'a> {
     }
 
     /// Creates the AST for a builder fn to add a request timeout
-    fn create_request_timeout_fn(field: &syn::Ident) -> syn::ImplItem {
+    fn create_request_timeout_fn(field: &syn::Ident) -> ImplItem {
         let doc_attr = doc("Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished.");
 
-        syn::ImplItem {
+        ImplItem {
             ident: ident("request_timeout"),
             vis: syn::Visibility::Public,
             defaultness: syn::Defaultness::Final,
@@ -384,7 +383,7 @@ impl<'a> RequestBuilder<'a> {
                                 syn::parse_type("Duration").unwrap(),
                             ),
                         ],
-                        output: syn::FunctionRetTy::Ty(code_gen::ty("Self")),
+                        output: syn::FunctionRetTy::Ty(ty("Self")),
                         variadic: false,
                     },
                     generics: generics_none(),
@@ -400,15 +399,15 @@ impl<'a> RequestBuilder<'a> {
     }
 
     /// Creates the AST for a builder fn for a builder impl
-    fn create_impl_fn(f: (&String, &Type)) -> syn::ImplItem {
-        let name = valid_name(&f.0).to_lowercase();
+    fn create_impl_fn(f: (&String, &Type)) -> ImplItem {
+        let name = valid_name(f.0).to_lowercase();
         let (ty, value_ident, fn_generics) = {
-            let ty = typekind_to_ty(&f.0, &f.1.ty, true, true);
+            let ty = typekind_to_ty(f.0, &f.1.ty, true, true);
             match ty {
                 syn::Ty::Path(ref _q, ref p) => {
                     if p.get_ident().as_ref() == "Into" {
                         let ty = syn::parse_type("T").unwrap();
-                        let ident = code_gen::ident(format!("{}.into()", &name));
+                        let ident = ident(format!("{}.into()", &name));
                         let ty_param = syn::TyParam {
                             ident: code_gen::ident("T"),
                             default: None,
@@ -437,7 +436,7 @@ impl<'a> RequestBuilder<'a> {
             _ => vec![],
         };
 
-        syn::ImplItem {
+        ImplItem {
             ident: impl_ident,
             vis: syn::Visibility::Public,
             defaultness: syn::Defaultness::Final,
@@ -552,7 +551,7 @@ impl<'a> RequestBuilder<'a> {
         // add a body impl if supported
         if supports_body {
             let body_fn = Self::create_body_fn(
-                &builder_name,
+                builder_name,
                 &builder_ident,
                 &default_fields,
                 accepts_nd_body,
@@ -566,9 +565,9 @@ impl<'a> RequestBuilder<'a> {
         builder_fns.dedup_by(|a, b| a.ident.eq(&b.ident));
 
         let new_fn =
-            Self::create_new_fn(&builder_name, &builder_ident, enum_builder, &default_fields);
+            Self::create_new_fn(builder_name, &builder_ident, enum_builder, &default_fields);
 
-        let method_expr = Self::create_method_expression(&builder_name, &endpoint);
+        let method_expr = Self::create_method_expression(builder_name, endpoint);
 
         let query_string_params = {
             let mut p = endpoint.params.clone();
@@ -669,7 +668,7 @@ impl<'a> RequestBuilder<'a> {
     /// Creates the AST for a fn that returns a new instance of a builder struct
     /// from the root or namespace client
     fn create_builder_struct_ctor_fns(
-        docs_dir: &PathBuf,
+        docs_dir: &Path,
         namespace_name: &str,
         name: &str,
         builder_name: &str,
@@ -697,7 +696,7 @@ impl<'a> RequestBuilder<'a> {
         let api_name_for_docs = split_on_pascal_case(builder_name);
 
         let markdown_doc = {
-            let mut path = docs_dir.clone();
+            let mut path = docs_dir.to_path_buf();
             path.push("functions");
             path.push(format!("{}.{}.md", namespace_name, name));
             if path.exists() {
@@ -759,10 +758,10 @@ impl<'a> RequestBuilder<'a> {
     /// Creates the AST for a field for a struct
     fn create_struct_field(f: (&String, &Type)) -> syn::Field {
         syn::Field {
-            ident: Some(ident(valid_name(&f.0).to_lowercase())),
+            ident: Some(ident(valid_name(f.0).to_lowercase())),
             vis: syn::Visibility::Inherited,
             attrs: vec![],
-            ty: typekind_to_ty(&f.0, &f.1.ty, false, false),
+            ty: typekind_to_ty(f.0, &f.1.ty, false, false),
         }
     }
 

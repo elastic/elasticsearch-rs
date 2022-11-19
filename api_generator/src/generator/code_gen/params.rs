@@ -16,8 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-use crate::generator::code_gen::stability_doc;
-use crate::generator::*;
+use crate::generator::{code_gen::stability_doc, *};
 use inflector::Inflector;
 use quote::Tokens;
 use regex::Regex;
@@ -27,7 +26,7 @@ pub fn generate(api: &Api) -> anyhow::Result<String> {
         use serde::{Serialize, Deserialize};
     );
     for e in &api.enums {
-        generate_param(&mut tokens, &e);
+        generate_param(&mut tokens, e);
     }
 
     let generated = tokens.to_string();
@@ -60,11 +59,7 @@ fn generate_param(tokens: &mut Tokens, e: &ApiEnum) {
         })
         .unzip();
 
-    let doc = match &e.description {
-        Some(description) => Some(code_gen::doc(description)),
-        None => None,
-    };
-
+    let doc = e.description.as_ref().map(code_gen::doc);
     let cfg_attr = e.stability.outer_cfg_attr();
     let cfg_doc = stability_doc(e.stability);
 
@@ -72,7 +67,7 @@ fn generate_param(tokens: &mut Tokens, e: &ApiEnum) {
         #doc
         #cfg_doc
         #cfg_attr
-        #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
+        #[derive(Debug, Eq, PartialEq, Deserialize, Serialize, Clone, Copy)]
         pub enum #name {
             #(#[serde(rename = #renames)] #variants),*
         }

@@ -19,9 +19,7 @@
 
 use anyhow::bail;
 use once_cell::sync::Lazy;
-use std::env;
-use std::ops::Deref;
-use std::path;
+use std::{env, ops::Deref, path};
 use structopt::StructOpt;
 
 pub mod artifacts;

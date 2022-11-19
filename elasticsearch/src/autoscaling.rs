@@ -46,7 +46,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Autoscaling Delete Autoscaling Policy API"]
 pub enum AutoscalingDeleteAutoscalingPolicyParts<'b> {
     #[doc = "Name"]
@@ -56,7 +56,7 @@ impl<'b> AutoscalingDeleteAutoscalingPolicyParts<'b> {
     #[doc = "Builds a relative URL path to the Autoscaling Delete Autoscaling Policy API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            AutoscalingDeleteAutoscalingPolicyParts::Name(ref name) => {
+            AutoscalingDeleteAutoscalingPolicyParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(21usize + encoded_name.len());
                 p.push_str("/_autoscaling/policy/");
@@ -66,7 +66,7 @@ impl<'b> AutoscalingDeleteAutoscalingPolicyParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Autoscaling Delete Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/autoscaling-delete-autoscaling-policy.html)\n\nDeletes an autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+#[doc = "Builder for the [Autoscaling Delete Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/autoscaling-delete-autoscaling-policy.html)\n\nDeletes an autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
 #[derive(Clone, Debug)]
 pub struct AutoscalingDeleteAutoscalingPolicy<'a, 'b> {
     transport: &'a Transport,
@@ -167,7 +167,7 @@ impl<'a, 'b> AutoscalingDeleteAutoscalingPolicy<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Autoscaling Get Autoscaling Capacity API"]
 pub enum AutoscalingGetAutoscalingCapacityParts {
     #[doc = "No parts"]
@@ -181,7 +181,7 @@ impl AutoscalingGetAutoscalingCapacityParts {
         }
     }
 }
-#[doc = "Builder for the [Autoscaling Get Autoscaling Capacity API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/autoscaling-get-autoscaling-capacity.html)\n\nGets the current autoscaling capacity based on the configured autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+#[doc = "Builder for the [Autoscaling Get Autoscaling Capacity API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/autoscaling-get-autoscaling-capacity.html)\n\nGets the current autoscaling capacity based on the configured autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
 #[derive(Clone, Debug)]
 pub struct AutoscalingGetAutoscalingCapacity<'a, 'b> {
     transport: &'a Transport,
@@ -279,7 +279,7 @@ impl<'a, 'b> AutoscalingGetAutoscalingCapacity<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Autoscaling Get Autoscaling Policy API"]
 pub enum AutoscalingGetAutoscalingPolicyParts<'b> {
     #[doc = "Name"]
@@ -289,7 +289,7 @@ impl<'b> AutoscalingGetAutoscalingPolicyParts<'b> {
     #[doc = "Builds a relative URL path to the Autoscaling Get Autoscaling Policy API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            AutoscalingGetAutoscalingPolicyParts::Name(ref name) => {
+            AutoscalingGetAutoscalingPolicyParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(21usize + encoded_name.len());
                 p.push_str("/_autoscaling/policy/");
@@ -299,7 +299,7 @@ impl<'b> AutoscalingGetAutoscalingPolicyParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Autoscaling Get Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/autoscaling-get-autoscaling-policy.html)\n\nRetrieves an autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+#[doc = "Builder for the [Autoscaling Get Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/autoscaling-get-autoscaling-policy.html)\n\nRetrieves an autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
 #[derive(Clone, Debug)]
 pub struct AutoscalingGetAutoscalingPolicy<'a, 'b> {
     transport: &'a Transport,
@@ -397,7 +397,7 @@ impl<'a, 'b> AutoscalingGetAutoscalingPolicy<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Autoscaling Put Autoscaling Policy API"]
 pub enum AutoscalingPutAutoscalingPolicyParts<'b> {
     #[doc = "Name"]
@@ -407,7 +407,7 @@ impl<'b> AutoscalingPutAutoscalingPolicyParts<'b> {
     #[doc = "Builds a relative URL path to the Autoscaling Put Autoscaling Policy API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            AutoscalingPutAutoscalingPolicyParts::Name(ref name) => {
+            AutoscalingPutAutoscalingPolicyParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(21usize + encoded_name.len());
                 p.push_str("/_autoscaling/policy/");
@@ -417,7 +417,7 @@ impl<'b> AutoscalingPutAutoscalingPolicyParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Autoscaling Put Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/autoscaling-put-autoscaling-policy.html)\n\nCreates a new autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+#[doc = "Builder for the [Autoscaling Put Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/autoscaling-put-autoscaling-policy.html)\n\nCreates a new autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
 #[derive(Clone, Debug)]
 pub struct AutoscalingPutAutoscalingPolicy<'a, 'b, B> {
     transport: &'a Transport,
@@ -550,25 +550,25 @@ impl<'a> Autoscaling<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Autoscaling Delete Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/autoscaling-delete-autoscaling-policy.html)\n\nDeletes an autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+    #[doc = "[Autoscaling Delete Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/autoscaling-delete-autoscaling-policy.html)\n\nDeletes an autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
     pub fn delete_autoscaling_policy<'b>(
         &'a self,
         parts: AutoscalingDeleteAutoscalingPolicyParts<'b>,
     ) -> AutoscalingDeleteAutoscalingPolicy<'a, 'b> {
         AutoscalingDeleteAutoscalingPolicy::new(self.transport(), parts)
     }
-    #[doc = "[Autoscaling Get Autoscaling Capacity API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/autoscaling-get-autoscaling-capacity.html)\n\nGets the current autoscaling capacity based on the configured autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+    #[doc = "[Autoscaling Get Autoscaling Capacity API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/autoscaling-get-autoscaling-capacity.html)\n\nGets the current autoscaling capacity based on the configured autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
     pub fn get_autoscaling_capacity<'b>(&'a self) -> AutoscalingGetAutoscalingCapacity<'a, 'b> {
         AutoscalingGetAutoscalingCapacity::new(self.transport())
     }
-    #[doc = "[Autoscaling Get Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/autoscaling-get-autoscaling-policy.html)\n\nRetrieves an autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+    #[doc = "[Autoscaling Get Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/autoscaling-get-autoscaling-policy.html)\n\nRetrieves an autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
     pub fn get_autoscaling_policy<'b>(
         &'a self,
         parts: AutoscalingGetAutoscalingPolicyParts<'b>,
     ) -> AutoscalingGetAutoscalingPolicy<'a, 'b> {
         AutoscalingGetAutoscalingPolicy::new(self.transport(), parts)
     }
-    #[doc = "[Autoscaling Put Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/autoscaling-put-autoscaling-policy.html)\n\nCreates a new autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+    #[doc = "[Autoscaling Put Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/autoscaling-put-autoscaling-policy.html)\n\nCreates a new autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
     pub fn put_autoscaling_policy<'b>(
         &'a self,
         parts: AutoscalingPutAutoscalingPolicyParts<'b>,

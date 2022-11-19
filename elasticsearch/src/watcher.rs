@@ -45,7 +45,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Watcher Ack Watch API"]
 pub enum WatcherAckWatchParts<'b> {
     #[doc = "WatchId"]
@@ -57,7 +57,7 @@ impl<'b> WatcherAckWatchParts<'b> {
     #[doc = "Builds a relative URL path to the Watcher Ack Watch API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherAckWatchParts::WatchId(ref watch_id) => {
+            WatcherAckWatchParts::WatchId(watch_id) => {
                 let encoded_watch_id: Cow<str> =
                     percent_encode(watch_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(21usize + encoded_watch_id.len());
@@ -66,7 +66,7 @@ impl<'b> WatcherAckWatchParts<'b> {
                 p.push_str("/_ack");
                 p.into()
             }
-            WatcherAckWatchParts::WatchIdActionId(ref watch_id, ref action_id) => {
+            WatcherAckWatchParts::WatchIdActionId(watch_id, action_id) => {
                 let action_id_str = action_id.join(",");
                 let encoded_watch_id: Cow<str> =
                     percent_encode(watch_id.as_bytes(), PARTS_ENCODED).into();
@@ -84,7 +84,7 @@ impl<'b> WatcherAckWatchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Watcher Ack Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-ack-watch.html)\n\nAcknowledges a watch, manually throttling the execution of the watch's actions."]
+#[doc = "Builder for the [Watcher Ack Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-ack-watch.html)\n\nAcknowledges a watch, manually throttling the execution of the watch's actions."]
 #[derive(Clone, Debug)]
 pub struct WatcherAckWatch<'a, 'b, B> {
     transport: &'a Transport,
@@ -205,7 +205,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Watcher Activate Watch API"]
 pub enum WatcherActivateWatchParts<'b> {
     #[doc = "WatchId"]
@@ -215,7 +215,7 @@ impl<'b> WatcherActivateWatchParts<'b> {
     #[doc = "Builds a relative URL path to the Watcher Activate Watch API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherActivateWatchParts::WatchId(ref watch_id) => {
+            WatcherActivateWatchParts::WatchId(watch_id) => {
                 let encoded_watch_id: Cow<str> =
                     percent_encode(watch_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(26usize + encoded_watch_id.len());
@@ -227,7 +227,7 @@ impl<'b> WatcherActivateWatchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Watcher Activate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-activate-watch.html)\n\nActivates a currently inactive watch."]
+#[doc = "Builder for the [Watcher Activate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-activate-watch.html)\n\nActivates a currently inactive watch."]
 #[derive(Clone, Debug)]
 pub struct WatcherActivateWatch<'a, 'b, B> {
     transport: &'a Transport,
@@ -348,7 +348,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Watcher Deactivate Watch API"]
 pub enum WatcherDeactivateWatchParts<'b> {
     #[doc = "WatchId"]
@@ -358,7 +358,7 @@ impl<'b> WatcherDeactivateWatchParts<'b> {
     #[doc = "Builds a relative URL path to the Watcher Deactivate Watch API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherDeactivateWatchParts::WatchId(ref watch_id) => {
+            WatcherDeactivateWatchParts::WatchId(watch_id) => {
                 let encoded_watch_id: Cow<str> =
                     percent_encode(watch_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(28usize + encoded_watch_id.len());
@@ -370,7 +370,7 @@ impl<'b> WatcherDeactivateWatchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Watcher Deactivate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-deactivate-watch.html)\n\nDeactivates a currently active watch."]
+#[doc = "Builder for the [Watcher Deactivate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-deactivate-watch.html)\n\nDeactivates a currently active watch."]
 #[derive(Clone, Debug)]
 pub struct WatcherDeactivateWatch<'a, 'b, B> {
     transport: &'a Transport,
@@ -491,7 +491,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Watcher Delete Watch API"]
 pub enum WatcherDeleteWatchParts<'b> {
     #[doc = "Id"]
@@ -501,7 +501,7 @@ impl<'b> WatcherDeleteWatchParts<'b> {
     #[doc = "Builds a relative URL path to the Watcher Delete Watch API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherDeleteWatchParts::Id(ref id) => {
+            WatcherDeleteWatchParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_id.len());
                 p.push_str("/_watcher/watch/");
@@ -511,7 +511,7 @@ impl<'b> WatcherDeleteWatchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Watcher Delete Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-delete-watch.html)\n\nRemoves a watch from Watcher."]
+#[doc = "Builder for the [Watcher Delete Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-delete-watch.html)\n\nRemoves a watch from Watcher."]
 #[derive(Clone, Debug)]
 pub struct WatcherDeleteWatch<'a, 'b> {
     transport: &'a Transport,
@@ -609,7 +609,7 @@ impl<'a, 'b> WatcherDeleteWatch<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Watcher Execute Watch API"]
 pub enum WatcherExecuteWatchParts<'b> {
     #[doc = "Id"]
@@ -621,7 +621,7 @@ impl<'b> WatcherExecuteWatchParts<'b> {
     #[doc = "Builds a relative URL path to the Watcher Execute Watch API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherExecuteWatchParts::Id(ref id) => {
+            WatcherExecuteWatchParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(25usize + encoded_id.len());
                 p.push_str("/_watcher/watch/");
@@ -633,7 +633,7 @@ impl<'b> WatcherExecuteWatchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Watcher Execute Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-execute-watch.html)\n\nForces the execution of a stored watch."]
+#[doc = "Builder for the [Watcher Execute Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-execute-watch.html)\n\nForces the execution of a stored watch."]
 #[derive(Clone, Debug)]
 pub struct WatcherExecuteWatch<'a, 'b, B> {
     transport: &'a Transport,
@@ -764,7 +764,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Watcher Get Watch API"]
 pub enum WatcherGetWatchParts<'b> {
     #[doc = "Id"]
@@ -774,7 +774,7 @@ impl<'b> WatcherGetWatchParts<'b> {
     #[doc = "Builds a relative URL path to the Watcher Get Watch API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherGetWatchParts::Id(ref id) => {
+            WatcherGetWatchParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_id.len());
                 p.push_str("/_watcher/watch/");
@@ -784,7 +784,7 @@ impl<'b> WatcherGetWatchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Watcher Get Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-get-watch.html)\n\nRetrieves a watch by its ID."]
+#[doc = "Builder for the [Watcher Get Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-get-watch.html)\n\nRetrieves a watch by its ID."]
 #[derive(Clone, Debug)]
 pub struct WatcherGetWatch<'a, 'b> {
     transport: &'a Transport,
@@ -882,7 +882,7 @@ impl<'a, 'b> WatcherGetWatch<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Watcher Put Watch API"]
 pub enum WatcherPutWatchParts<'b> {
     #[doc = "Id"]
@@ -892,7 +892,7 @@ impl<'b> WatcherPutWatchParts<'b> {
     #[doc = "Builds a relative URL path to the Watcher Put Watch API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherPutWatchParts::Id(ref id) => {
+            WatcherPutWatchParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_id.len());
                 p.push_str("/_watcher/watch/");
@@ -902,7 +902,7 @@ impl<'b> WatcherPutWatchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Watcher Put Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-put-watch.html)\n\nCreates a new watch, or updates an existing one."]
+#[doc = "Builder for the [Watcher Put Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-put-watch.html)\n\nCreates a new watch, or updates an existing one."]
 #[derive(Clone, Debug)]
 pub struct WatcherPutWatch<'a, 'b, B> {
     transport: &'a Transport,
@@ -1063,7 +1063,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Watcher Query Watches API"]
 pub enum WatcherQueryWatchesParts {
     #[doc = "No parts"]
@@ -1077,7 +1077,7 @@ impl WatcherQueryWatchesParts {
         }
     }
 }
-#[doc = "Builder for the [Watcher Query Watches API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-query-watches.html)\n\nRetrieves stored watches."]
+#[doc = "Builder for the [Watcher Query Watches API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-query-watches.html)\n\nRetrieves stored watches."]
 #[derive(Clone, Debug)]
 pub struct WatcherQueryWatches<'a, 'b, B> {
     transport: &'a Transport,
@@ -1201,7 +1201,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Watcher Start API"]
 pub enum WatcherStartParts {
     #[doc = "No parts"]
@@ -1215,7 +1215,7 @@ impl WatcherStartParts {
         }
     }
 }
-#[doc = "Builder for the [Watcher Start API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-start.html)\n\nStarts Watcher if it is not already running."]
+#[doc = "Builder for the [Watcher Start API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-start.html)\n\nStarts Watcher if it is not already running."]
 #[derive(Clone, Debug)]
 pub struct WatcherStart<'a, 'b, B> {
     transport: &'a Transport,
@@ -1336,7 +1336,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Watcher Stats API"]
 pub enum WatcherStatsParts<'b> {
     #[doc = "No parts"]
@@ -1349,7 +1349,7 @@ impl<'b> WatcherStatsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             WatcherStatsParts::None => "/_watcher/stats".into(),
-            WatcherStatsParts::Metric(ref metric) => {
+            WatcherStatsParts::Metric(metric) => {
                 let metric_str = metric.join(",");
                 let encoded_metric: Cow<str> =
                     percent_encode(metric_str.as_bytes(), PARTS_ENCODED).into();
@@ -1361,7 +1361,7 @@ impl<'b> WatcherStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Watcher Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-stats.html)\n\nRetrieves the current Watcher metrics."]
+#[doc = "Builder for the [Watcher Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-stats.html)\n\nRetrieves the current Watcher metrics."]
 #[derive(Clone, Debug)]
 pub struct WatcherStats<'a, 'b> {
     transport: &'a Transport,
@@ -1478,7 +1478,7 @@ impl<'a, 'b> WatcherStats<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Watcher Stop API"]
 pub enum WatcherStopParts {
     #[doc = "No parts"]
@@ -1492,7 +1492,7 @@ impl WatcherStopParts {
         }
     }
 }
-#[doc = "Builder for the [Watcher Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-stop.html)\n\nStops Watcher if it is running."]
+#[doc = "Builder for the [Watcher Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-stop.html)\n\nStops Watcher if it is running."]
 #[derive(Clone, Debug)]
 pub struct WatcherStop<'a, 'b, B> {
     transport: &'a Transport,
@@ -1625,59 +1625,59 @@ impl<'a> Watcher<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Watcher Ack Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-ack-watch.html)\n\nAcknowledges a watch, manually throttling the execution of the watch's actions."]
+    #[doc = "[Watcher Ack Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-ack-watch.html)\n\nAcknowledges a watch, manually throttling the execution of the watch's actions."]
     pub fn ack_watch<'b>(&'a self, parts: WatcherAckWatchParts<'b>) -> WatcherAckWatch<'a, 'b, ()> {
         WatcherAckWatch::new(self.transport(), parts)
     }
-    #[doc = "[Watcher Activate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-activate-watch.html)\n\nActivates a currently inactive watch."]
+    #[doc = "[Watcher Activate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-activate-watch.html)\n\nActivates a currently inactive watch."]
     pub fn activate_watch<'b>(
         &'a self,
         parts: WatcherActivateWatchParts<'b>,
     ) -> WatcherActivateWatch<'a, 'b, ()> {
         WatcherActivateWatch::new(self.transport(), parts)
     }
-    #[doc = "[Watcher Deactivate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-deactivate-watch.html)\n\nDeactivates a currently active watch."]
+    #[doc = "[Watcher Deactivate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-deactivate-watch.html)\n\nDeactivates a currently active watch."]
     pub fn deactivate_watch<'b>(
         &'a self,
         parts: WatcherDeactivateWatchParts<'b>,
     ) -> WatcherDeactivateWatch<'a, 'b, ()> {
         WatcherDeactivateWatch::new(self.transport(), parts)
     }
-    #[doc = "[Watcher Delete Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-delete-watch.html)\n\nRemoves a watch from Watcher."]
+    #[doc = "[Watcher Delete Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-delete-watch.html)\n\nRemoves a watch from Watcher."]
     pub fn delete_watch<'b>(
         &'a self,
         parts: WatcherDeleteWatchParts<'b>,
     ) -> WatcherDeleteWatch<'a, 'b> {
         WatcherDeleteWatch::new(self.transport(), parts)
     }
-    #[doc = "[Watcher Execute Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-execute-watch.html)\n\nForces the execution of a stored watch."]
+    #[doc = "[Watcher Execute Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-execute-watch.html)\n\nForces the execution of a stored watch."]
     pub fn execute_watch<'b>(
         &'a self,
         parts: WatcherExecuteWatchParts<'b>,
     ) -> WatcherExecuteWatch<'a, 'b, ()> {
         WatcherExecuteWatch::new(self.transport(), parts)
     }
-    #[doc = "[Watcher Get Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-get-watch.html)\n\nRetrieves a watch by its ID."]
+    #[doc = "[Watcher Get Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-get-watch.html)\n\nRetrieves a watch by its ID."]
     pub fn get_watch<'b>(&'a self, parts: WatcherGetWatchParts<'b>) -> WatcherGetWatch<'a, 'b> {
         WatcherGetWatch::new(self.transport(), parts)
     }
-    #[doc = "[Watcher Put Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-put-watch.html)\n\nCreates a new watch, or updates an existing one."]
+    #[doc = "[Watcher Put Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-put-watch.html)\n\nCreates a new watch, or updates an existing one."]
     pub fn put_watch<'b>(&'a self, parts: WatcherPutWatchParts<'b>) -> WatcherPutWatch<'a, 'b, ()> {
         WatcherPutWatch::new(self.transport(), parts)
     }
-    #[doc = "[Watcher Query Watches API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-query-watches.html)\n\nRetrieves stored watches."]
+    #[doc = "[Watcher Query Watches API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-query-watches.html)\n\nRetrieves stored watches."]
     pub fn query_watches<'b>(&'a self) -> WatcherQueryWatches<'a, 'b, ()> {
         WatcherQueryWatches::new(self.transport())
     }
-    #[doc = "[Watcher Start API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-start.html)\n\nStarts Watcher if it is not already running."]
+    #[doc = "[Watcher Start API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-start.html)\n\nStarts Watcher if it is not already running."]
     pub fn start<'b>(&'a self) -> WatcherStart<'a, 'b, ()> {
         WatcherStart::new(self.transport())
     }
-    #[doc = "[Watcher Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-stats.html)\n\nRetrieves the current Watcher metrics."]
+    #[doc = "[Watcher Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-stats.html)\n\nRetrieves the current Watcher metrics."]
     pub fn stats<'b>(&'a self, parts: WatcherStatsParts<'b>) -> WatcherStats<'a, 'b> {
         WatcherStats::new(self.transport(), parts)
     }
-    #[doc = "[Watcher Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-stop.html)\n\nStops Watcher if it is running."]
+    #[doc = "[Watcher Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-stop.html)\n\nStops Watcher if it is running."]
     pub fn stop<'b>(&'a self) -> WatcherStop<'a, 'b, ()> {
         WatcherStop::new(self.transport())
     }

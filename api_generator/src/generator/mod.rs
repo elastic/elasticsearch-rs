@@ -29,7 +29,6 @@ use std::{
     hash::{Hash, Hasher},
     io::Read,
     marker::PhantomData,
-    path::PathBuf,
     str::FromStr,
 };
 
@@ -42,7 +41,6 @@ use void::Void;
 pub mod code_gen;
 pub mod output;
 
-use itertools::Itertools;
 use output::{merge_file, write_file};
 use std::cmp::Ordering;
 
@@ -125,7 +123,7 @@ impl quote::ToTokens for HttpMethod {
 }
 
 /// A type defined in the REST API spec
-#[derive(Debug, PartialEq, Deserialize, Clone)]
+#[derive(Debug, Eq, PartialEq, Deserialize, Clone)]
 pub struct Type {
     #[serde(rename = "type", default)]
     pub ty: TypeKind,
@@ -137,7 +135,7 @@ pub struct Type {
 }
 
 /// The type of the param or part
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, Eq, PartialEq, Clone)]
 pub enum TypeKind {
     Unknown(String),
     List,
@@ -200,7 +198,7 @@ impl Default for TypeKind {
 }
 
 /// Details about a deprecated API url path
-#[derive(Debug, PartialEq, Deserialize, Clone)]
+#[derive(Debug, Eq, PartialEq, Deserialize, Clone)]
 pub struct Deprecated {
     pub version: String,
     pub description: String,
@@ -238,7 +236,7 @@ impl Deprecated {
 }
 
 /// An API url path
-#[derive(Debug, PartialEq, Deserialize, Clone)]
+#[derive(Debug, Eq, PartialEq, Deserialize, Clone)]
 pub struct Path {
     pub path: PathString,
     pub methods: Vec<HttpMethod>,
@@ -248,13 +246,13 @@ pub struct Path {
 }
 
 /// The URL components of an API endpoint
-#[derive(Debug, PartialEq, Deserialize, Clone)]
+#[derive(Debug, Eq, PartialEq, Deserialize, Clone)]
 pub struct Url {
     pub paths: Vec<Path>,
 }
 
 /// Body of an API endpoint
-#[derive(Debug, PartialEq, Deserialize, Clone)]
+#[derive(Debug, Eq, PartialEq, Deserialize, Clone)]
 pub struct Body {
     pub description: Option<String>,
     pub required: Option<bool>,
@@ -272,7 +270,7 @@ where
 }
 
 /// A Documentation URL string
-#[derive(Debug, Deserialize, PartialEq, Clone)]
+#[derive(Debug, Deserialize, Eq, PartialEq, Clone)]
 pub struct DocumentationUrlString(
     #[serde(deserialize_with = "documentation_url_string")] pub String,
 );
@@ -316,7 +314,7 @@ impl DocumentationUrlString {
 impl core::ops::Deref for DocumentationUrlString {
     type Target = String;
 
-    fn deref(self: &'_ Self) -> &'_ Self::Target {
+    fn deref(&self) -> &Self::Target {
         &self.0
     }
 }
@@ -328,7 +326,7 @@ impl fmt::Display for DocumentationUrlString {
 }
 
 /// Documentation for an API endpoint
-#[derive(Debug, PartialEq, Deserialize, Clone)]
+#[derive(Debug, Eq, PartialEq, Deserialize, Clone)]
 pub struct Documentation {
     pub url: Option<DocumentationUrlString>,
     pub description: Option<String>,
@@ -417,7 +415,7 @@ impl Stability {
 }
 
 /// An API endpoint defined in the REST API specs
-#[derive(Debug, PartialEq, Deserialize, Clone)]
+#[derive(Debug, Eq, PartialEq, Deserialize, Clone)]
 pub struct ApiEndpoint {
     pub full_name: Option<String>,
     #[serde(deserialize_with = "string_or_struct")]
@@ -480,8 +478,14 @@ impl ApiNamespace {
     }
 }
 
+impl Default for ApiNamespace {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 /// Common parameters accepted by all API endpoints
-#[derive(Debug, PartialEq, Deserialize, Clone)]
+#[derive(Debug, Eq, PartialEq, Deserialize, Clone)]
 pub struct Common {
     description: Option<String>,
     #[serde(deserialize_with = "string_or_struct")]
@@ -512,11 +516,14 @@ impl PartialEq for ApiEnum {
 impl Eq for ApiEnum {}
 
 /// Generates all client source code from the REST API spec
-pub fn generate(download_dir: &PathBuf, generated_dir: &PathBuf) -> anyhow::Result<()> {
+pub fn generate(
+    download_dir: &std::path::Path,
+    generated_dir: &std::path::Path,
+) -> anyhow::Result<()> {
     // read the Api from file
     let api = read_api(download_dir)?;
 
-    let docs_dir = PathBuf::from("./api_generator/docs");
+    let docs_dir = std::path::Path::new("./api_generator/docs");
 
     // generated file tracking lists
     let mut tracker = GeneratedFiles::default();
@@ -532,10 +539,10 @@ pub fn generate(download_dir: &PathBuf, generated_dir: &PathBuf) -> anyhow::Resu
     )?;
 
     // generate namespace client modules
-    let namespace_clients = code_gen::namespace_clients::generate(&api, &docs_dir)?;
+    let namespace_clients = code_gen::namespace_clients::generate(&api, docs_dir)?;
 
     let namespace_docs_dir = {
-        let mut p = docs_dir.clone();
+        let mut p = docs_dir.to_path_buf();
         p.push("namespaces");
         p
     };
@@ -546,14 +553,14 @@ pub fn generate(download_dir: &PathBuf, generated_dir: &PathBuf) -> anyhow::Resu
         write_file(
             input,
             Some(&docs_file),
-            &generated_dir,
+            generated_dir,
             format!("{}.rs", name).as_str(),
             &mut tracker,
         )?;
     }
 
     // generate functions on root of client
-    let mut root = code_gen::root::generate(&api, &docs_dir)?;
+    let mut root = code_gen::root::generate(&api, docs_dir)?;
     root.push_str(
         r#"
 
@@ -580,7 +587,7 @@ pub use bulk::*;
         &mut tracker,
     )?;
 
-    let mut generated = generated_dir.clone();
+    let mut generated = generated_dir.to_path_buf();
     generated.push(GENERATED_TOML);
 
     fs::write(generated, toml::to_string_pretty(&tracker)?)?;
@@ -589,7 +596,7 @@ pub use bulk::*;
 }
 
 /// Reads Api from a directory of REST Api specs
-pub fn read_api(download_dir: &PathBuf) -> anyhow::Result<Api> {
+pub fn read_api(download_dir: &std::path::Path) -> anyhow::Result<Api> {
     let paths = fs::read_dir(download_dir)?;
     let mut namespaces = BTreeMap::<String, ApiNamespace>::new();
     let mut enums: HashSet<ApiEnum> = HashSet::new();
@@ -702,7 +709,7 @@ where
         .paths
         .iter()
         .map(|p| &p.deprecated)
-        .fold1(|d1, d2| Deprecated::combine(d1, d2))
+        .reduce(Deprecated::combine)
         .unwrap_or(&None);
 
     if let Some(deprecated) = deprecation {

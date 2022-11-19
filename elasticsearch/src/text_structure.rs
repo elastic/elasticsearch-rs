@@ -45,7 +45,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Text Structure Find Structure API"]
 pub enum TextStructureFindStructureParts {
     #[doc = "No parts"]
@@ -59,7 +59,7 @@ impl TextStructureFindStructureParts {
         }
     }
 }
-#[doc = "Builder for the [Text Structure Find Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/find-structure.html)\n\nFinds the structure of a text file. The text file must contain data that is suitable to be ingested into Elasticsearch."]
+#[doc = "Builder for the [Text Structure Find Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/find-structure.html)\n\nFinds the structure of a text file. The text file must contain data that is suitable to be ingested into Elasticsearch."]
 #[derive(Clone, Debug)]
 pub struct TextStructureFindStructure<'a, 'b, B> {
     transport: &'a Transport,
@@ -68,6 +68,7 @@ pub struct TextStructureFindStructure<'a, 'b, B> {
     charset: Option<&'b str>,
     column_names: Option<&'b [&'b str]>,
     delimiter: Option<&'b str>,
+    ecs_compatibility: Option<&'b str>,
     error_trace: Option<bool>,
     explain: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -102,6 +103,7 @@ where
             charset: None,
             column_names: None,
             delimiter: None,
+            ecs_compatibility: None,
             error_trace: None,
             explain: None,
             filter_path: None,
@@ -133,6 +135,7 @@ where
             charset: self.charset,
             column_names: self.column_names,
             delimiter: self.delimiter,
+            ecs_compatibility: self.ecs_compatibility,
             error_trace: self.error_trace,
             explain: self.explain,
             filter_path: self.filter_path,
@@ -166,6 +169,11 @@ where
     #[doc = "Optional parameter to specify the delimiter character for a delimited file - must be a single character"]
     pub fn delimiter(mut self, delimiter: &'b str) -> Self {
         self.delimiter = Some(delimiter);
+        self
+    }
+    #[doc = "Optional parameter to specify the compatibility mode with ECS Grok patterns - may be either 'v1' or 'disabled'"]
+    pub fn ecs_compatibility(mut self, ecs_compatibility: &'b str) -> Self {
+        self.ecs_compatibility = Some(ecs_compatibility);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -272,6 +280,7 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 column_names: Option<&'b [&'b str]>,
                 delimiter: Option<&'b str>,
+                ecs_compatibility: Option<&'b str>,
                 error_trace: Option<bool>,
                 explain: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
@@ -294,6 +303,7 @@ where
                 charset: self.charset,
                 column_names: self.column_names,
                 delimiter: self.delimiter,
+                ecs_compatibility: self.ecs_compatibility,
                 error_trace: self.error_trace,
                 explain: self.explain,
                 filter_path: self.filter_path,
@@ -333,7 +343,7 @@ impl<'a> TextStructure<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Text Structure Find Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/find-structure.html)\n\nFinds the structure of a text file. The text file must contain data that is suitable to be ingested into Elasticsearch."]
+    #[doc = "[Text Structure Find Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/find-structure.html)\n\nFinds the structure of a text file. The text file must contain data that is suitable to be ingested into Elasticsearch."]
     pub fn find_structure<'b>(&'a self) -> TextStructureFindStructure<'a, 'b, ()> {
         TextStructureFindStructure::new(self.transport())
     }

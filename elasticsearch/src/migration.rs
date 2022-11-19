@@ -44,7 +44,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Migration Deprecations API"]
 pub enum MigrationDeprecationsParts<'b> {
     #[doc = "No parts"]
@@ -57,11 +57,11 @@ impl<'b> MigrationDeprecationsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MigrationDeprecationsParts::None => "/_migration/deprecations".into(),
-            MigrationDeprecationsParts::Index(ref index) => {
+            MigrationDeprecationsParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(25usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_migration/deprecations");
                 p.into()
@@ -69,7 +69,7 @@ impl<'b> MigrationDeprecationsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Migration Deprecations API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/migration-api-deprecation.html)\n\nRetrieves information about different cluster, node, and index level settings that use deprecated features that will be removed or changed in the next major version."]
+#[doc = "Builder for the [Migration Deprecations API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/migration-api-deprecation.html)\n\nRetrieves information about different cluster, node, and index level settings that use deprecated features that will be removed or changed in the next major version."]
 #[derive(Clone, Debug)]
 pub struct MigrationDeprecations<'a, 'b> {
     transport: &'a Transport,
@@ -167,7 +167,7 @@ impl<'a, 'b> MigrationDeprecations<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Migration Get Feature Upgrade Status API"]
 pub enum MigrationGetFeatureUpgradeStatusParts {
     #[doc = "No parts"]
@@ -181,7 +181,7 @@ impl MigrationGetFeatureUpgradeStatusParts {
         }
     }
 }
-#[doc = "Builder for the [Migration Get Feature Upgrade Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/migration-api-feature-upgrade.html)\n\nFind out whether system features need to be upgraded or not"]
+#[doc = "Builder for the [Migration Get Feature Upgrade Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/migration-api-feature-upgrade.html)\n\nFind out whether system features need to be upgraded or not"]
 #[derive(Clone, Debug)]
 pub struct MigrationGetFeatureUpgradeStatus<'a, 'b> {
     transport: &'a Transport,
@@ -279,7 +279,7 @@ impl<'a, 'b> MigrationGetFeatureUpgradeStatus<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Migration Post Feature Upgrade API"]
 pub enum MigrationPostFeatureUpgradeParts {
     #[doc = "No parts"]
@@ -293,7 +293,7 @@ impl MigrationPostFeatureUpgradeParts {
         }
     }
 }
-#[doc = "Builder for the [Migration Post Feature Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/migration-api-feature-upgrade.html)\n\nBegin upgrades for system features"]
+#[doc = "Builder for the [Migration Post Feature Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/migration-api-feature-upgrade.html)\n\nBegin upgrades for system features"]
 #[derive(Clone, Debug)]
 pub struct MigrationPostFeatureUpgrade<'a, 'b, B> {
     transport: &'a Transport,
@@ -426,18 +426,18 @@ impl<'a> Migration<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Migration Deprecations API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/migration-api-deprecation.html)\n\nRetrieves information about different cluster, node, and index level settings that use deprecated features that will be removed or changed in the next major version."]
+    #[doc = "[Migration Deprecations API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/migration-api-deprecation.html)\n\nRetrieves information about different cluster, node, and index level settings that use deprecated features that will be removed or changed in the next major version."]
     pub fn deprecations<'b>(
         &'a self,
         parts: MigrationDeprecationsParts<'b>,
     ) -> MigrationDeprecations<'a, 'b> {
         MigrationDeprecations::new(self.transport(), parts)
     }
-    #[doc = "[Migration Get Feature Upgrade Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/migration-api-feature-upgrade.html)\n\nFind out whether system features need to be upgraded or not"]
+    #[doc = "[Migration Get Feature Upgrade Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/migration-api-feature-upgrade.html)\n\nFind out whether system features need to be upgraded or not"]
     pub fn get_feature_upgrade_status<'b>(&'a self) -> MigrationGetFeatureUpgradeStatus<'a, 'b> {
         MigrationGetFeatureUpgradeStatus::new(self.transport())
     }
-    #[doc = "[Migration Post Feature Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/migration-api-feature-upgrade.html)\n\nBegin upgrades for system features"]
+    #[doc = "[Migration Post Feature Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/migration-api-feature-upgrade.html)\n\nBegin upgrades for system features"]
     pub fn post_feature_upgrade<'b>(&'a self) -> MigrationPostFeatureUpgrade<'a, 'b, ()> {
         MigrationPostFeatureUpgrade::new(self.transport())
     }

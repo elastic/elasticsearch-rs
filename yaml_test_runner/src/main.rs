@@ -97,15 +97,13 @@ fn main() -> anyhow::Result<()> {
     // delete everything under the generated_dir except common dir
     if generated_dir.exists() {
         let entries = fs::read_dir(&generated_dir)?;
-        for entry in entries {
-            if let Ok(e) = entry {
-                if let Ok(f) = e.file_type() {
-                    if e.file_name() != "common" {
-                        if f.is_dir() {
-                            fs::remove_dir_all(e.path())?;
-                        } else if f.is_file() {
-                            fs::remove_file(e.path())?;
-                        }
+        for entry in entries.flatten() {
+            if let Ok(file_type) = entry.file_type() {
+                if entry.file_name() != "common" {
+                    if file_type.is_dir() {
+                        fs::remove_dir_all(entry.path())?;
+                    } else if file_type.is_file() {
+                        fs::remove_file(entry.path())?;
                     }
                 }
             }

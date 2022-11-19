@@ -36,9 +36,10 @@ use crate::generator::{code_gen::*, Path, Type, TypeKind};
 use quote::ToTokens;
 use serde::{Deserialize, Deserializer};
 use std::{collections::BTreeMap, fmt, iter::Iterator, str};
+use syn::{Lit, Stmt, StrStyle};
 
 /// A URL path
-#[derive(Debug, Deserialize, PartialEq, Clone)]
+#[derive(Debug, Deserialize, Eq, PartialEq, Clone)]
 pub struct PathString(#[serde(deserialize_with = "rooted_path_string")] pub String);
 
 /// Ensure all deserialized paths have a leading `/`
@@ -129,7 +130,7 @@ enum PathParseState {
 }
 
 /// A part of a Path
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Eq, PartialEq)]
 pub enum PathPart<'a> {
     Literal(&'a str),
     Param(&'a str),
@@ -170,9 +171,9 @@ impl<'a> UrlBuilder<'a> {
     /// Build the AST for an allocated url from the path literals and params.
     fn build_owned(self) -> syn::Block {
         // collection of let {name}_str = [self.]{name}.[join(",")|to_string()];
-        let let_params_exprs = Self::let_parameters_exprs(&self.path, &self.parts);
+        let let_params_exprs = Self::let_parameters_exprs(&self.path, self.parts);
 
-        let mut let_encoded_params_exprs = Self::let_encoded_exprs(&self.path, &self.parts);
+        let mut let_encoded_params_exprs = Self::let_encoded_exprs(&self.path, self.parts);
 
         let url_ident = ident("p");
         let len_expr = {
@@ -185,7 +186,7 @@ impl<'a> UrlBuilder<'a> {
         let let_stmt = Self::let_p_stmt(url_ident.clone(), len_expr);
 
         let mut push_stmts = Self::push_str_stmts(url_ident.clone(), &self.path);
-        let return_expr = syn::Stmt::Expr(Box::new(parse_expr(quote!(#url_ident.into()))));
+        let return_expr = Stmt::Expr(Box::new(parse_expr(quote!(#url_ident.into()))));
 
         let mut stmts = let_params_exprs;
         stmts.append(&mut let_encoded_params_exprs);
@@ -207,7 +208,7 @@ impl<'a> UrlBuilder<'a> {
             .collect();
 
         let path = path.join("");
-        let lit = syn::Lit::Str(path, syn::StrStyle::Cooked);
+        let lit = Lit::Str(path, StrStyle::Cooked);
         parse_expr(quote!(#lit.into()))
     }
 
@@ -221,11 +222,11 @@ impl<'a> UrlBuilder<'a> {
             })
             .fold(0, |acc, p| acc + p.len());
 
-        syn::ExprKind::Lit(syn::Lit::Int(len as u64, syn::IntTy::Usize)).into()
+        syn::ExprKind::Lit(Lit::Int(len as u64, syn::IntTy::Usize)).into()
     }
 
     /// Creates the AST for a let expression to percent encode path parts
-    fn let_encoded_exprs(url: &[PathPart<'a>], parts: &BTreeMap<String, Type>) -> Vec<syn::Stmt> {
+    fn let_encoded_exprs(url: &[PathPart<'a>], parts: &BTreeMap<String, Type>) -> Vec<Stmt> {
         url.iter()
             .filter_map(|p| match *p {
                 PathPart::Param(p) => {
@@ -250,7 +251,7 @@ impl<'a> UrlBuilder<'a> {
                         syn::ExprKind::MethodCall(ident("into"), vec![], vec![percent_encode_call])
                             .into();
 
-                    Some(syn::Stmt::Local(Box::new(syn::Local {
+                    Some(Stmt::Local(Box::new(syn::Local {
                         pat: Box::new(syn::Pat::Ident(
                             syn::BindingMode::ByValue(syn::Mutability::Immutable),
                             encoded_ident,
@@ -267,15 +268,12 @@ impl<'a> UrlBuilder<'a> {
     }
 
     /// Creates the AST for a let expression for path parts
-    fn let_parameters_exprs(
-        url: &[PathPart<'a>],
-        parts: &BTreeMap<String, Type>,
-    ) -> Vec<syn::Stmt> {
+    fn let_parameters_exprs(url: &[PathPart<'a>], parts: &BTreeMap<String, Type>) -> Vec<Stmt> {
         url.iter()
             .filter_map(|p| match *p {
                 PathPart::Param(p) => {
                     let name = valid_name(p);
-                    let name_ident = ident(&name);
+                    let name_ident = ident(name);
                     let ty = &parts[p].ty;
 
                     // don't generate an assignment expression for strings
@@ -295,11 +293,8 @@ impl<'a> UrlBuilder<'a> {
                                 vec![],
                                 vec![
                                     parse_expr(tokens),
-                                    syn::ExprKind::Lit(syn::Lit::Str(
-                                        ",".into(),
-                                        syn::StrStyle::Cooked,
-                                    ))
-                                    .into(),
+                                    syn::ExprKind::Lit(Lit::Str(",".into(), StrStyle::Cooked))
+                                        .into(),
                                 ],
                             )
                             .into();
@@ -319,7 +314,7 @@ impl<'a> UrlBuilder<'a> {
                         }
                     };
 
-                    Some(syn::Stmt::Local(Box::new(syn::Local {
+                    Some(Stmt::Local(Box::new(syn::Local {
                         pat: Box::new(syn::Pat::Ident(
                             syn::BindingMode::ByValue(syn::Mutability::Immutable),
                             ident,
@@ -372,7 +367,7 @@ impl<'a> UrlBuilder<'a> {
     }
 
     /// Get a statement to build a `String` with a capacity of the given expression.
-    fn let_p_stmt(url_ident: syn::Ident, len_expr: syn::Expr) -> syn::Stmt {
+    fn let_p_stmt(url_ident: syn::Ident, len_expr: syn::Expr) -> Stmt {
         let string_with_capacity = syn::ExprKind::Call(
             Box::new(
                 syn::ExprKind::Path(None, {
@@ -388,7 +383,7 @@ impl<'a> UrlBuilder<'a> {
         )
         .into();
 
-        syn::Stmt::Local(Box::new(syn::Local {
+        Stmt::Local(Box::new(syn::Local {
             pat: Box::new(syn::Pat::Ident(
                 syn::BindingMode::ByValue(syn::Mutability::Mutable),
                 url_ident,
@@ -401,17 +396,24 @@ impl<'a> UrlBuilder<'a> {
     }
 
     /// Get a list of statements that append each part to a `String` in order.
-    fn push_str_stmts(url_ident: syn::Ident, url: &[PathPart<'a>]) -> Vec<syn::Stmt> {
+    fn push_str_stmts(url_ident: syn::Ident, url: &[PathPart<'a>]) -> Vec<Stmt> {
         url.iter()
             .map(|p| match *p {
                 PathPart::Literal(p) => {
-                    let lit = syn::Lit::Str(p.to_string(), syn::StrStyle::Cooked);
-                    syn::Stmt::Semi(Box::new(parse_expr(quote!(#url_ident.push_str(#lit)))))
+                    let push = if p.len() == 1 {
+                        let lit = Lit::Char(p.chars().next().unwrap());
+                        quote!(#url_ident.push(#lit))
+                    } else {
+                        let lit = Lit::Str(p.to_string(), StrStyle::Cooked);
+                        quote!(#url_ident.push_str(#lit))
+                    };
+
+                    Stmt::Semi(Box::new(parse_expr(push)))
                 }
                 PathPart::Param(p) => {
                     let name = format!("encoded_{}", valid_name(p));
                     let ident = ident(name);
-                    syn::Stmt::Semi(Box::new(parse_expr(
+                    Stmt::Semi(Box::new(parse_expr(
                         quote!(#url_ident.push_str(#ident.as_ref())),
                     )))
                 }
@@ -420,11 +422,7 @@ impl<'a> UrlBuilder<'a> {
     }
 
     pub fn build(self) -> syn::Expr {
-        let has_params = self.path.iter().any(|p| match *p {
-            PathPart::Param(_) => true,
-            _ => false,
-        });
-
+        let has_params = self.path.iter().any(|p| matches!(p, PathPart::Param(_)));
         if has_params {
             self.build_owned().into_expr()
         } else {

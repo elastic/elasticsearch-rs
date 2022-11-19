@@ -42,7 +42,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Fleet Global Checkpoints API"]
 pub enum FleetGlobalCheckpointsParts<'b> {
     #[doc = "Index"]
@@ -52,11 +52,11 @@ impl<'b> FleetGlobalCheckpointsParts<'b> {
     #[doc = "Builds a relative URL path to the Fleet Global Checkpoints API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            FleetGlobalCheckpointsParts::Index(ref index) => {
+            FleetGlobalCheckpointsParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(27usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_fleet/global_checkpoints");
                 p.into()
@@ -64,7 +64,7 @@ impl<'b> FleetGlobalCheckpointsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Fleet Global Checkpoints API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-global-checkpoints.html)\n\nReturns the current global checkpoints for an index. This API is design for internal use by the fleet server project."]
+#[doc = "Builder for the [Fleet Global Checkpoints API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-global-checkpoints.html)\n\nReturns the current global checkpoints for an index. This API is design for internal use by the fleet server project."]
 #[derive(Clone, Debug)]
 pub struct FleetGlobalCheckpoints<'a, 'b> {
     transport: &'a Transport,
@@ -200,7 +200,7 @@ impl<'a, 'b> FleetGlobalCheckpoints<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Fleet Msearch API"]
 pub enum FleetMsearchParts<'b> {
     #[doc = "No parts"]
@@ -214,11 +214,11 @@ impl<'b> FleetMsearchParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             FleetMsearchParts::None => "/_fleet/_fleet_msearch".into(),
-            FleetMsearchParts::Index(ref index) => {
+            FleetMsearchParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(23usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_fleet/_fleet_msearch");
                 p.into()
@@ -354,7 +354,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Fleet Search API"]
 pub enum FleetSearchParts<'b> {
     #[doc = "Index"]
@@ -365,11 +365,11 @@ impl<'b> FleetSearchParts<'b> {
     #[doc = "Builds a relative URL path to the Fleet Search API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            FleetSearchParts::Index(ref index) => {
+            FleetSearchParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(22usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_fleet/_fleet_search");
                 p.into()
@@ -547,7 +547,7 @@ impl<'a> Fleet<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Fleet Global Checkpoints API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-global-checkpoints.html)\n\nReturns the current global checkpoints for an index. This API is design for internal use by the fleet server project."]
+    #[doc = "[Fleet Global Checkpoints API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-global-checkpoints.html)\n\nReturns the current global checkpoints for an index. This API is design for internal use by the fleet server project."]
     pub fn global_checkpoints<'b>(
         &'a self,
         parts: FleetGlobalCheckpointsParts<'b>,

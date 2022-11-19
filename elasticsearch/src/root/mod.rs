@@ -40,7 +40,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Bulk API"]
 pub enum BulkParts<'b> {
     #[doc = "No parts"]
@@ -53,11 +53,11 @@ impl<'b> BulkParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             BulkParts::None => "/_bulk".into(),
-            BulkParts::Index(ref index) => {
+            BulkParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(7usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_bulk");
                 p.into()
@@ -65,7 +65,7 @@ impl<'b> BulkParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-bulk.html)\n\nAllows to perform multiple index/update/delete operations in a single request."]
+#[doc = "Builder for the [Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-bulk.html)\n\nAllows to perform multiple index/update/delete operations in a single request."]
 #[derive(Clone, Debug)]
 pub struct Bulk<'a, 'b, B> {
     transport: &'a Transport,
@@ -290,7 +290,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Clear Scroll API"]
 pub enum ClearScrollParts<'b> {
     #[doc = "No parts"]
@@ -303,7 +303,7 @@ impl<'b> ClearScrollParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             ClearScrollParts::None => "/_search/scroll".into(),
-            ClearScrollParts::ScrollId(ref scroll_id) => {
+            ClearScrollParts::ScrollId(scroll_id) => {
                 let scroll_id_str = scroll_id.join(",");
                 let encoded_scroll_id: Cow<str> =
                     percent_encode(scroll_id_str.as_bytes(), PARTS_ENCODED).into();
@@ -315,7 +315,7 @@ impl<'b> ClearScrollParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Clear Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/clear-scroll-api.html)\n\nExplicitly clears the search context for a scroll."]
+#[doc = "Builder for the [Clear Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/clear-scroll-api.html)\n\nExplicitly clears the search context for a scroll."]
 #[derive(Clone, Debug)]
 pub struct ClearScroll<'a, 'b, B> {
     transport: &'a Transport,
@@ -436,7 +436,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Close Point In Time API"]
 pub enum ClosePointInTimeParts {
     #[doc = "No parts"]
@@ -450,7 +450,7 @@ impl ClosePointInTimeParts {
         }
     }
 }
-#[doc = "Builder for the [Close Point In Time API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/point-in-time-api.html)\n\nClose a point in time"]
+#[doc = "Builder for the [Close Point In Time API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/point-in-time-api.html)\n\nClose a point in time"]
 #[derive(Clone, Debug)]
 pub struct ClosePointInTime<'a, 'b, B> {
     transport: &'a Transport,
@@ -571,7 +571,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Count API"]
 pub enum CountParts<'b> {
     #[doc = "No parts"]
@@ -584,12 +584,12 @@ impl<'b> CountParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CountParts::None => "/_count".into(),
-            CountParts::Index(ref index) => {
+            CountParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(8usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_count");
                 p.into()
@@ -597,7 +597,7 @@ impl<'b> CountParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Count API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-count.html)\n\nReturns number of documents matching a query."]
+#[doc = "Builder for the [Count API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-count.html)\n\nReturns number of documents matching a query."]
 #[derive(Clone, Debug)]
 pub struct Count<'a, 'b, B> {
     transport: &'a Transport,
@@ -863,7 +863,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Create API"]
 pub enum CreateParts<'b> {
     #[doc = "Index and Id"]
@@ -873,12 +873,12 @@ impl<'b> CreateParts<'b> {
     #[doc = "Builds a relative URL path to the Create API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            CreateParts::IndexId(ref index, ref id) => {
+            CreateParts::IndexId(index, id) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(10usize + encoded_index.len() + encoded_id.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_create/");
                 p.push_str(encoded_id.as_ref());
@@ -887,7 +887,7 @@ impl<'b> CreateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Create API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-index_.html)\n\nCreates a new document in the index.\n\nReturns a 409 response when a document with a same ID already exists in the index."]
+#[doc = "Builder for the [Create API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-index_.html)\n\nCreates a new document in the index.\n\nReturns a 409 response when a document with a same ID already exists in the index."]
 #[derive(Clone, Debug)]
 pub struct Create<'a, 'b, B> {
     transport: &'a Transport,
@@ -1078,7 +1078,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Delete API"]
 pub enum DeleteParts<'b> {
     #[doc = "Index and Id"]
@@ -1088,12 +1088,12 @@ impl<'b> DeleteParts<'b> {
     #[doc = "Builds a relative URL path to the Delete API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            DeleteParts::IndexId(ref index, ref id) => {
+            DeleteParts::IndexId(index, id) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(7usize + encoded_index.len() + encoded_id.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_doc/");
                 p.push_str(encoded_id.as_ref());
@@ -1102,7 +1102,7 @@ impl<'b> DeleteParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-delete.html)\n\nRemoves a document from the index."]
+#[doc = "Builder for the [Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-delete.html)\n\nRemoves a document from the index."]
 #[derive(Clone, Debug)]
 pub struct Delete<'a, 'b> {
     transport: &'a Transport,
@@ -1272,7 +1272,7 @@ impl<'a, 'b> Delete<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Delete By Query API"]
 pub enum DeleteByQueryParts<'b> {
     #[doc = "Index"]
@@ -1282,12 +1282,12 @@ impl<'b> DeleteByQueryParts<'b> {
     #[doc = "Builds a relative URL path to the Delete By Query API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            DeleteByQueryParts::Index(ref index) => {
+            DeleteByQueryParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(18usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_delete_by_query");
                 p.into()
@@ -1295,7 +1295,7 @@ impl<'b> DeleteByQueryParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Delete By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-delete-by-query.html)\n\nDeletes documents matching the provided query."]
+#[doc = "Builder for the [Delete By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-delete-by-query.html)\n\nDeletes documents matching the provided query."]
 #[derive(Clone, Debug)]
 pub struct DeleteByQuery<'a, 'b, B> {
     transport: &'a Transport,
@@ -1710,7 +1710,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Delete By Query Rethrottle API"]
 pub enum DeleteByQueryRethrottleParts<'b> {
     #[doc = "TaskId"]
@@ -1720,7 +1720,7 @@ impl<'b> DeleteByQueryRethrottleParts<'b> {
     #[doc = "Builds a relative URL path to the Delete By Query Rethrottle API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            DeleteByQueryRethrottleParts::TaskId(ref task_id) => {
+            DeleteByQueryRethrottleParts::TaskId(task_id) => {
                 let encoded_task_id: Cow<str> =
                     percent_encode(task_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(30usize + encoded_task_id.len());
@@ -1732,7 +1732,7 @@ impl<'b> DeleteByQueryRethrottleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Delete By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-delete-by-query.html)\n\nChanges the number of requests per second for a particular Delete By Query operation."]
+#[doc = "Builder for the [Delete By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-delete-by-query.html)\n\nChanges the number of requests per second for a particular Delete By Query operation."]
 #[derive(Clone, Debug)]
 pub struct DeleteByQueryRethrottle<'a, 'b, B> {
     transport: &'a Transport,
@@ -1863,7 +1863,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Delete Script API"]
 pub enum DeleteScriptParts<'b> {
     #[doc = "Id"]
@@ -1873,7 +1873,7 @@ impl<'b> DeleteScriptParts<'b> {
     #[doc = "Builds a relative URL path to the Delete Script API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            DeleteScriptParts::Id(ref id) => {
+            DeleteScriptParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(10usize + encoded_id.len());
                 p.push_str("/_scripts/");
@@ -1883,7 +1883,7 @@ impl<'b> DeleteScriptParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Delete Script API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-scripting.html)\n\nDeletes a script."]
+#[doc = "Builder for the [Delete Script API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-scripting.html)\n\nDeletes a script."]
 #[derive(Clone, Debug)]
 pub struct DeleteScript<'a, 'b> {
     transport: &'a Transport,
@@ -1999,7 +1999,7 @@ impl<'a, 'b> DeleteScript<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Exists API"]
 pub enum ExistsParts<'b> {
     #[doc = "Index and Id"]
@@ -2009,12 +2009,12 @@ impl<'b> ExistsParts<'b> {
     #[doc = "Builds a relative URL path to the Exists API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ExistsParts::IndexId(ref index, ref id) => {
+            ExistsParts::IndexId(index, id) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(7usize + encoded_index.len() + encoded_id.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_doc/");
                 p.push_str(encoded_id.as_ref());
@@ -2023,7 +2023,7 @@ impl<'b> ExistsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-get.html)\n\nReturns information about whether a document exists in an index."]
+#[doc = "Builder for the [Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-get.html)\n\nReturns information about whether a document exists in an index."]
 #[derive(Clone, Debug)]
 pub struct Exists<'a, 'b> {
     transport: &'a Transport,
@@ -2215,7 +2215,7 @@ impl<'a, 'b> Exists<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Exists Source API"]
 pub enum ExistsSourceParts<'b> {
     #[doc = "Index and Id"]
@@ -2225,12 +2225,12 @@ impl<'b> ExistsSourceParts<'b> {
     #[doc = "Builds a relative URL path to the Exists Source API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ExistsSourceParts::IndexId(ref index, ref id) => {
+            ExistsSourceParts::IndexId(index, id) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(10usize + encoded_index.len() + encoded_id.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_source/");
                 p.push_str(encoded_id.as_ref());
@@ -2239,7 +2239,7 @@ impl<'b> ExistsSourceParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Exists Source API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-get.html)\n\nReturns information about whether a document source exists in an index."]
+#[doc = "Builder for the [Exists Source API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-get.html)\n\nReturns information about whether a document source exists in an index."]
 #[derive(Clone, Debug)]
 pub struct ExistsSource<'a, 'b> {
     transport: &'a Transport,
@@ -2421,7 +2421,7 @@ impl<'a, 'b> ExistsSource<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Explain API"]
 pub enum ExplainParts<'b> {
     #[doc = "Index and Id"]
@@ -2431,12 +2431,12 @@ impl<'b> ExplainParts<'b> {
     #[doc = "Builds a relative URL path to the Explain API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ExplainParts::IndexId(ref index, ref id) => {
+            ExplainParts::IndexId(index, id) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(11usize + encoded_index.len() + encoded_id.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_explain/");
                 p.push_str(encoded_id.as_ref());
@@ -2445,7 +2445,7 @@ impl<'b> ExplainParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-explain.html)\n\nReturns information about why a specific matches (or doesn't match) a query."]
+#[doc = "Builder for the [Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-explain.html)\n\nReturns information about why a specific matches (or doesn't match) a query."]
 #[derive(Clone, Debug)]
 pub struct Explain<'a, 'b, B> {
     transport: &'a Transport,
@@ -2693,7 +2693,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Field Caps API"]
 pub enum FieldCapsParts<'b> {
     #[doc = "No parts"]
@@ -2706,12 +2706,12 @@ impl<'b> FieldCapsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             FieldCapsParts::None => "/_field_caps".into(),
-            FieldCapsParts::Index(ref index) => {
+            FieldCapsParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_field_caps");
                 p.into()
@@ -2719,7 +2719,7 @@ impl<'b> FieldCapsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Field Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-field-caps.html)\n\nReturns the information about the capabilities of fields among multiple indices."]
+#[doc = "Builder for the [Field Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-field-caps.html)\n\nReturns the information about the capabilities of fields among multiple indices."]
 #[derive(Clone, Debug)]
 pub struct FieldCaps<'a, 'b, B> {
     transport: &'a Transport,
@@ -2917,7 +2917,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Get API"]
 pub enum GetParts<'b> {
     #[doc = "Index and Id"]
@@ -2927,12 +2927,12 @@ impl<'b> GetParts<'b> {
     #[doc = "Builds a relative URL path to the Get API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            GetParts::IndexId(ref index, ref id) => {
+            GetParts::IndexId(index, id) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(7usize + encoded_index.len() + encoded_id.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_doc/");
                 p.push_str(encoded_id.as_ref());
@@ -2941,7 +2941,7 @@ impl<'b> GetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-get.html)\n\nReturns a document."]
+#[doc = "Builder for the [Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-get.html)\n\nReturns a document."]
 #[derive(Clone, Debug)]
 pub struct Get<'a, 'b> {
     transport: &'a Transport,
@@ -3142,7 +3142,7 @@ impl<'a, 'b> Get<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Get Script API"]
 pub enum GetScriptParts<'b> {
     #[doc = "Id"]
@@ -3152,7 +3152,7 @@ impl<'b> GetScriptParts<'b> {
     #[doc = "Builds a relative URL path to the Get Script API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            GetScriptParts::Id(ref id) => {
+            GetScriptParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(10usize + encoded_id.len());
                 p.push_str("/_scripts/");
@@ -3162,7 +3162,7 @@ impl<'b> GetScriptParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Get Script API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-scripting.html)\n\nReturns a script."]
+#[doc = "Builder for the [Get Script API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-scripting.html)\n\nReturns a script."]
 #[derive(Clone, Debug)]
 pub struct GetScript<'a, 'b> {
     transport: &'a Transport,
@@ -3269,7 +3269,7 @@ impl<'a, 'b> GetScript<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Get Script Context API"]
 pub enum GetScriptContextParts {
     #[doc = "No parts"]
@@ -3283,7 +3283,7 @@ impl GetScriptContextParts {
         }
     }
 }
-#[doc = "Builder for the [Get Script Context API](https://www.elastic.co/guide/en/elasticsearch/painless/8.3/painless-contexts.html)\n\nReturns all script contexts."]
+#[doc = "Builder for the [Get Script Context API](https://www.elastic.co/guide/en/elasticsearch/painless/8.7/painless-contexts.html)\n\nReturns all script contexts."]
 #[derive(Clone, Debug)]
 pub struct GetScriptContext<'a, 'b> {
     transport: &'a Transport,
@@ -3381,7 +3381,7 @@ impl<'a, 'b> GetScriptContext<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Get Script Languages API"]
 pub enum GetScriptLanguagesParts {
     #[doc = "No parts"]
@@ -3395,7 +3395,7 @@ impl GetScriptLanguagesParts {
         }
     }
 }
-#[doc = "Builder for the [Get Script Languages API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-scripting.html)\n\nReturns available script types, languages and contexts"]
+#[doc = "Builder for the [Get Script Languages API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-scripting.html)\n\nReturns available script types, languages and contexts"]
 #[derive(Clone, Debug)]
 pub struct GetScriptLanguages<'a, 'b> {
     transport: &'a Transport,
@@ -3493,7 +3493,7 @@ impl<'a, 'b> GetScriptLanguages<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Get Source API"]
 pub enum GetSourceParts<'b> {
     #[doc = "Index and Id"]
@@ -3503,12 +3503,12 @@ impl<'b> GetSourceParts<'b> {
     #[doc = "Builds a relative URL path to the Get Source API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            GetSourceParts::IndexId(ref index, ref id) => {
+            GetSourceParts::IndexId(index, id) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(10usize + encoded_index.len() + encoded_id.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_source/");
                 p.push_str(encoded_id.as_ref());
@@ -3517,7 +3517,7 @@ impl<'b> GetSourceParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Get Source API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-get.html)\n\nReturns the source of a document."]
+#[doc = "Builder for the [Get Source API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-get.html)\n\nReturns the source of a document."]
 #[derive(Clone, Debug)]
 pub struct GetSource<'a, 'b> {
     transport: &'a Transport,
@@ -3699,7 +3699,7 @@ impl<'a, 'b> GetSource<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Index API"]
 pub enum IndexParts<'b> {
     #[doc = "Index and Id"]
@@ -3711,22 +3711,22 @@ impl<'b> IndexParts<'b> {
     #[doc = "Builds a relative URL path to the Index API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndexParts::IndexId(ref index, ref id) => {
+            IndexParts::IndexId(index, id) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(7usize + encoded_index.len() + encoded_id.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_doc/");
                 p.push_str(encoded_id.as_ref());
                 p.into()
             }
-            IndexParts::Index(ref index) => {
+            IndexParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(6usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_doc");
                 p.into()
@@ -3734,7 +3734,7 @@ impl<'b> IndexParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-index_.html)\n\nCreates or updates a document in an index."]
+#[doc = "Builder for the [Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-index_.html)\n\nCreates or updates a document in an index."]
 #[derive(Clone, Debug)]
 pub struct Index<'a, 'b, B> {
     transport: &'a Transport,
@@ -3965,7 +3965,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Info API"]
 pub enum InfoParts {
     #[doc = "No parts"]
@@ -3979,7 +3979,7 @@ impl InfoParts {
         }
     }
 }
-#[doc = "Builder for the [Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/index.html)\n\nReturns basic information about the cluster."]
+#[doc = "Builder for the [Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/index.html)\n\nReturns basic information about the cluster."]
 #[derive(Clone, Debug)]
 pub struct Info<'a, 'b> {
     transport: &'a Transport,
@@ -4078,7 +4078,7 @@ impl<'a, 'b> Info<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Knn Search API"]
 pub enum KnnSearchParts<'b> {
     #[doc = "Index"]
@@ -4089,12 +4089,12 @@ impl<'b> KnnSearchParts<'b> {
     #[doc = "Builds a relative URL path to the Knn Search API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            KnnSearchParts::Index(ref index) => {
+            KnnSearchParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_knn_search");
                 p.into()
@@ -4102,7 +4102,7 @@ impl<'b> KnnSearchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Knn Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-search.html)\n\nPerforms a kNN search."]
+#[doc = "Builder for the [Knn Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-search.html)\n\nPerforms a kNN search."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -4240,7 +4240,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Mget API"]
 pub enum MgetParts<'b> {
     #[doc = "No parts"]
@@ -4253,11 +4253,11 @@ impl<'b> MgetParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MgetParts::None => "/_mget".into(),
-            MgetParts::Index(ref index) => {
+            MgetParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(7usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_mget");
                 p.into()
@@ -4265,7 +4265,7 @@ impl<'b> MgetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Mget API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-multi-get.html)\n\nAllows to get multiple documents in one request."]
+#[doc = "Builder for the [Mget API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-multi-get.html)\n\nAllows to get multiple documents in one request."]
 #[derive(Clone, Debug)]
 pub struct Mget<'a, 'b, B> {
     transport: &'a Transport,
@@ -4483,7 +4483,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Msearch API"]
 pub enum MsearchParts<'b> {
     #[doc = "No parts"]
@@ -4496,12 +4496,12 @@ impl<'b> MsearchParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MsearchParts::None => "/_msearch".into(),
-            MsearchParts::Index(ref index) => {
+            MsearchParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(10usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_msearch");
                 p.into()
@@ -4509,7 +4509,7 @@ impl<'b> MsearchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Msearch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-multi-search.html)\n\nAllows to execute several search operations in one request."]
+#[doc = "Builder for the [Msearch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-multi-search.html)\n\nAllows to execute several search operations in one request."]
 #[derive(Clone, Debug)]
 pub struct Msearch<'a, 'b, B> {
     transport: &'a Transport,
@@ -4703,7 +4703,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Msearch Template API"]
 pub enum MsearchTemplateParts<'b> {
     #[doc = "No parts"]
@@ -4716,12 +4716,12 @@ impl<'b> MsearchTemplateParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MsearchTemplateParts::None => "/_msearch/template".into(),
-            MsearchTemplateParts::Index(ref index) => {
+            MsearchTemplateParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(19usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_msearch/template");
                 p.into()
@@ -4729,7 +4729,7 @@ impl<'b> MsearchTemplateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Msearch Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-multi-search.html)\n\nAllows to execute several search template operations in one request."]
+#[doc = "Builder for the [Msearch Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-multi-search.html)\n\nAllows to execute several search template operations in one request."]
 #[derive(Clone, Debug)]
 pub struct MsearchTemplate<'a, 'b, B> {
     transport: &'a Transport,
@@ -4903,7 +4903,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Mtermvectors API"]
 pub enum MtermvectorsParts<'b> {
     #[doc = "No parts"]
@@ -4916,11 +4916,11 @@ impl<'b> MtermvectorsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MtermvectorsParts::None => "/_mtermvectors".into(),
-            MtermvectorsParts::Index(ref index) => {
+            MtermvectorsParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(15usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_mtermvectors");
                 p.into()
@@ -4928,7 +4928,7 @@ impl<'b> MtermvectorsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Mtermvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-multi-termvectors.html)\n\nReturns multiple termvectors in one request."]
+#[doc = "Builder for the [Mtermvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-multi-termvectors.html)\n\nReturns multiple termvectors in one request."]
 #[derive(Clone, Debug)]
 pub struct Mtermvectors<'a, 'b, B> {
     transport: &'a Transport,
@@ -5174,7 +5174,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Open Point In Time API"]
 pub enum OpenPointInTimeParts<'b> {
     #[doc = "Index"]
@@ -5184,12 +5184,12 @@ impl<'b> OpenPointInTimeParts<'b> {
     #[doc = "Builds a relative URL path to the Open Point In Time API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            OpenPointInTimeParts::Index(ref index) => {
+            OpenPointInTimeParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(6usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_pit");
                 p.into()
@@ -5197,7 +5197,7 @@ impl<'b> OpenPointInTimeParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Open Point In Time API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/point-in-time-api.html)\n\nOpen a point in time that can be used in subsequent searches"]
+#[doc = "Builder for the [Open Point In Time API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/point-in-time-api.html)\n\nOpen a point in time that can be used in subsequent searches"]
 #[derive(Clone, Debug)]
 pub struct OpenPointInTime<'a, 'b, B> {
     transport: &'a Transport,
@@ -5369,7 +5369,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Ping API"]
 pub enum PingParts {
     #[doc = "No parts"]
@@ -5383,7 +5383,7 @@ impl PingParts {
         }
     }
 }
-#[doc = "Builder for the [Ping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/index.html)\n\nReturns whether the cluster is running."]
+#[doc = "Builder for the [Ping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/index.html)\n\nReturns whether the cluster is running."]
 #[derive(Clone, Debug)]
 pub struct Ping<'a, 'b> {
     transport: &'a Transport,
@@ -5481,7 +5481,7 @@ impl<'a, 'b> Ping<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Put Script API"]
 pub enum PutScriptParts<'b> {
     #[doc = "Id"]
@@ -5493,14 +5493,14 @@ impl<'b> PutScriptParts<'b> {
     #[doc = "Builds a relative URL path to the Put Script API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            PutScriptParts::Id(ref id) => {
+            PutScriptParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(10usize + encoded_id.len());
                 p.push_str("/_scripts/");
                 p.push_str(encoded_id.as_ref());
                 p.into()
             }
-            PutScriptParts::IdContext(ref id, ref context) => {
+            PutScriptParts::IdContext(id, context) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let encoded_context: Cow<str> =
                     percent_encode(context.as_bytes(), PARTS_ENCODED).into();
@@ -5508,14 +5508,14 @@ impl<'b> PutScriptParts<'b> {
                     String::with_capacity(11usize + encoded_id.len() + encoded_context.len());
                 p.push_str("/_scripts/");
                 p.push_str(encoded_id.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_context.as_ref());
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Put Script API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-scripting.html)\n\nCreates or updates a script."]
+#[doc = "Builder for the [Put Script API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-scripting.html)\n\nCreates or updates a script."]
 #[derive(Clone, Debug)]
 pub struct PutScript<'a, 'b, B> {
     transport: &'a Transport,
@@ -5666,7 +5666,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Rank Eval API"]
 pub enum RankEvalParts<'b> {
     #[doc = "No parts"]
@@ -5679,12 +5679,12 @@ impl<'b> RankEvalParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             RankEvalParts::None => "/_rank_eval".into(),
-            RankEvalParts::Index(ref index) => {
+            RankEvalParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(12usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_rank_eval");
                 p.into()
@@ -5692,7 +5692,7 @@ impl<'b> RankEvalParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Rank Eval API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-rank-eval.html)\n\nAllows to evaluate the quality of ranked search results over a set of typical search queries"]
+#[doc = "Builder for the [Rank Eval API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-rank-eval.html)\n\nAllows to evaluate the quality of ranked search results over a set of typical search queries"]
 #[derive(Clone, Debug)]
 pub struct RankEval<'a, 'b, B> {
     transport: &'a Transport,
@@ -5857,7 +5857,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Reindex API"]
 pub enum ReindexParts {
     #[doc = "No parts"]
@@ -5871,7 +5871,7 @@ impl ReindexParts {
         }
     }
 }
-#[doc = "Builder for the [Reindex API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-reindex.html)\n\nAllows to copy documents from one index to another, optionally filtering the source\ndocuments by a query, changing the destination index settings, or fetching the\ndocuments from a remote cluster."]
+#[doc = "Builder for the [Reindex API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-reindex.html)\n\nAllows to copy documents from one index to another, optionally filtering the source\ndocuments by a query, changing the destination index settings, or fetching the\ndocuments from a remote cluster."]
 #[derive(Clone, Debug)]
 pub struct Reindex<'a, 'b, B> {
     transport: &'a Transport,
@@ -6072,7 +6072,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Reindex Rethrottle API"]
 pub enum ReindexRethrottleParts<'b> {
     #[doc = "TaskId"]
@@ -6082,7 +6082,7 @@ impl<'b> ReindexRethrottleParts<'b> {
     #[doc = "Builds a relative URL path to the Reindex Rethrottle API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ReindexRethrottleParts::TaskId(ref task_id) => {
+            ReindexRethrottleParts::TaskId(task_id) => {
                 let encoded_task_id: Cow<str> =
                     percent_encode(task_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(22usize + encoded_task_id.len());
@@ -6094,7 +6094,7 @@ impl<'b> ReindexRethrottleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Reindex Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-reindex.html)\n\nChanges the number of requests per second for a particular Reindex operation."]
+#[doc = "Builder for the [Reindex Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-reindex.html)\n\nChanges the number of requests per second for a particular Reindex operation."]
 #[derive(Clone, Debug)]
 pub struct ReindexRethrottle<'a, 'b, B> {
     transport: &'a Transport,
@@ -6225,7 +6225,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Render Search Template API"]
 pub enum RenderSearchTemplateParts<'b> {
     #[doc = "No parts"]
@@ -6238,7 +6238,7 @@ impl<'b> RenderSearchTemplateParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             RenderSearchTemplateParts::None => "/_render/template".into(),
-            RenderSearchTemplateParts::Id(ref id) => {
+            RenderSearchTemplateParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(18usize + encoded_id.len());
                 p.push_str("/_render/template/");
@@ -6248,7 +6248,7 @@ impl<'b> RenderSearchTemplateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Render Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/render-search-template-api.html)\n\nAllows to use the Mustache language to pre-render a search definition."]
+#[doc = "Builder for the [Render Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/render-search-template-api.html)\n\nAllows to use the Mustache language to pre-render a search definition."]
 #[derive(Clone, Debug)]
 pub struct RenderSearchTemplate<'a, 'b, B> {
     transport: &'a Transport,
@@ -6373,7 +6373,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Scripts Painless Execute API"]
 pub enum ScriptsPainlessExecuteParts {
     #[doc = "No parts"]
@@ -6388,7 +6388,7 @@ impl ScriptsPainlessExecuteParts {
         }
     }
 }
-#[doc = "Builder for the [Scripts Painless Execute API](https://www.elastic.co/guide/en/elasticsearch/painless/8.3/painless-execute-api.html)\n\nAllows an arbitrary script to be executed and a result to be returned"]
+#[doc = "Builder for the [Scripts Painless Execute API](https://www.elastic.co/guide/en/elasticsearch/painless/8.7/painless-execute-api.html)\n\nAllows an arbitrary script to be executed and a result to be returned"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -6515,7 +6515,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Scroll API"]
 pub enum ScrollParts<'b> {
     #[doc = "No parts"]
@@ -6528,7 +6528,7 @@ impl<'b> ScrollParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             ScrollParts::None => "/_search/scroll".into(),
-            ScrollParts::ScrollId(ref scroll_id) => {
+            ScrollParts::ScrollId(scroll_id) => {
                 let encoded_scroll_id: Cow<str> =
                     percent_encode(scroll_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_scroll_id.len());
@@ -6539,7 +6539,7 @@ impl<'b> ScrollParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-request-body.html#request-body-search-scroll)\n\nAllows to retrieve a large numbers of results from a single search request."]
+#[doc = "Builder for the [Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-request-body.html#request-body-search-scroll)\n\nAllows to retrieve a large numbers of results from a single search request."]
 #[derive(Clone, Debug)]
 pub struct Scroll<'a, 'b, B> {
     transport: &'a Transport,
@@ -6693,7 +6693,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Search API"]
 pub enum SearchParts<'b> {
     #[doc = "No parts"]
@@ -6706,12 +6706,12 @@ impl<'b> SearchParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SearchParts::None => "/_search".into(),
-            SearchParts::Index(ref index) => {
+            SearchParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(9usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_search");
                 p.into()
@@ -6719,7 +6719,7 @@ impl<'b> SearchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-search.html)\n\nReturns results matching a query."]
+#[doc = "Builder for the [Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-search.html)\n\nReturns results matching a query."]
 #[derive(Clone, Debug)]
 pub struct Search<'a, 'b, B> {
     transport: &'a Transport,
@@ -7293,7 +7293,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Search Mvt API"]
 pub enum SearchMvtParts<'b> {
     #[doc = "Index, Field, Zoom, X and Y"]
@@ -7304,7 +7304,7 @@ impl<'b> SearchMvtParts<'b> {
     #[doc = "Builds a relative URL path to the Search Mvt API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SearchMvtParts::IndexFieldZoomXY(ref index, ref field, ref zoom, ref x, ref y) => {
+            SearchMvtParts::IndexFieldZoomXY(index, field, zoom, x, y) => {
                 let index_str = index.join(",");
                 let zoom_str = zoom.to_string();
                 let x_str = x.to_string();
@@ -7325,22 +7325,22 @@ impl<'b> SearchMvtParts<'b> {
                         + encoded_x.len()
                         + encoded_y.len(),
                 );
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_mvt/");
                 p.push_str(encoded_field.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_zoom.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_x.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_y.as_ref());
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Search Mvt API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-vector-tile-api.html)\n\nSearches a vector tile for geospatial values. Returns results as a binary Mapbox vector tile."]
+#[doc = "Builder for the [Search Mvt API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-vector-tile-api.html)\n\nSearches a vector tile for geospatial values. Returns results as a binary Mapbox vector tile."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -7537,7 +7537,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Search Shards API"]
 pub enum SearchShardsParts<'b> {
     #[doc = "No parts"]
@@ -7550,12 +7550,12 @@ impl<'b> SearchShardsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SearchShardsParts::None => "/_search_shards".into(),
-            SearchShardsParts::Index(ref index) => {
+            SearchShardsParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_search_shards");
                 p.into()
@@ -7563,7 +7563,7 @@ impl<'b> SearchShardsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Search Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-shards.html)\n\nReturns information about the indices and shards that a search request would be executed against."]
+#[doc = "Builder for the [Search Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-shards.html)\n\nReturns information about the indices and shards that a search request would be executed against."]
 #[derive(Clone, Debug)]
 pub struct SearchShards<'a, 'b, B> {
     transport: &'a Transport,
@@ -7748,7 +7748,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Search Template API"]
 pub enum SearchTemplateParts<'b> {
     #[doc = "No parts"]
@@ -7761,12 +7761,12 @@ impl<'b> SearchTemplateParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SearchTemplateParts::None => "/_search/template".into(),
-            SearchTemplateParts::Index(ref index) => {
+            SearchTemplateParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(18usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_search/template");
                 p.into()
@@ -7774,7 +7774,7 @@ impl<'b> SearchTemplateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-template.html)\n\nAllows to use the Mustache language to pre-render a search definition."]
+#[doc = "Builder for the [Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-template.html)\n\nAllows to use the Mustache language to pre-render a search definition."]
 #[derive(Clone, Debug)]
 pub struct SearchTemplate<'a, 'b, B> {
     transport: &'a Transport,
@@ -8030,7 +8030,170 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, Eq, PartialEq)]
+#[doc = "API parts for the Semantic Search API"]
+pub enum SemanticSearchParts<'b> {
+    #[doc = "Index"]
+    Index(&'b [&'b str]),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> SemanticSearchParts<'b> {
+    #[doc = "Builds a relative URL path to the Semantic Search API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SemanticSearchParts::Index(index) => {
+                let index_str = index.join(",");
+                let encoded_index: Cow<str> =
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(18usize + encoded_index.len());
+                p.push('/');
+                p.push_str(encoded_index.as_ref());
+                p.push_str("/_semantic_search");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Semantic Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/semantic-search.html)\n\nSemantic search API using dense vector similarity"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct SemanticSearch<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: SemanticSearchParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    routing: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> SemanticSearch<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [SemanticSearch] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: SemanticSearchParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        SemanticSearch {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            routing: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> SemanticSearch<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        SemanticSearch {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            routing: self.routing,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "A comma-separated list of specific routing values"]
+    pub fn routing(mut self, routing: &'b [&'b str]) -> Self {
+        self.routing = Some(routing);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Semantic Search API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = match self.body {
+            Some(_) => Method::Post,
+            None => Method::Get,
+        };
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                routing: Option<&'b [&'b str]>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                routing: self.routing,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Terms Enum API"]
 pub enum TermsEnumParts<'b> {
     #[doc = "Index"]
@@ -8040,12 +8203,12 @@ impl<'b> TermsEnumParts<'b> {
     #[doc = "Builds a relative URL path to the Terms Enum API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TermsEnumParts::Index(ref index) => {
+            TermsEnumParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_terms_enum");
                 p.into()
@@ -8053,7 +8216,7 @@ impl<'b> TermsEnumParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Terms Enum API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-terms-enum.html)\n\nThe terms enum API  can be used to discover terms in the index that begin with the provided string. It is designed for low-latency look-ups used in auto-complete scenarios."]
+#[doc = "Builder for the [Terms Enum API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-terms-enum.html)\n\nThe terms enum API  can be used to discover terms in the index that begin with the provided string. It is designed for low-latency look-ups used in auto-complete scenarios."]
 #[derive(Clone, Debug)]
 pub struct TermsEnum<'a, 'b, B> {
     transport: &'a Transport,
@@ -8177,7 +8340,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Termvectors API"]
 pub enum TermvectorsParts<'b> {
     #[doc = "Index and Id"]
@@ -8189,22 +8352,22 @@ impl<'b> TermvectorsParts<'b> {
     #[doc = "Builds a relative URL path to the Termvectors API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TermvectorsParts::IndexId(ref index, ref id) => {
+            TermvectorsParts::IndexId(index, id) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(15usize + encoded_index.len() + encoded_id.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_termvectors/");
                 p.push_str(encoded_id.as_ref());
                 p.into()
             }
-            TermvectorsParts::Index(ref index) => {
+            TermvectorsParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(14usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_termvectors");
                 p.into()
@@ -8212,7 +8375,7 @@ impl<'b> TermvectorsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Termvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-termvectors.html)\n\nReturns information and statistics about terms in the fields of a particular document."]
+#[doc = "Builder for the [Termvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-termvectors.html)\n\nReturns information and statistics about terms in the fields of a particular document."]
 #[derive(Clone, Debug)]
 pub struct Termvectors<'a, 'b, B> {
     transport: &'a Transport,
@@ -8447,7 +8610,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Update API"]
 pub enum UpdateParts<'b> {
     #[doc = "Index and Id"]
@@ -8457,12 +8620,12 @@ impl<'b> UpdateParts<'b> {
     #[doc = "Builds a relative URL path to the Update API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            UpdateParts::IndexId(ref index, ref id) => {
+            UpdateParts::IndexId(index, id) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(10usize + encoded_index.len() + encoded_id.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_update/");
                 p.push_str(encoded_id.as_ref());
@@ -8471,7 +8634,7 @@ impl<'b> UpdateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Update API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-update.html)\n\nUpdates a document with a script or partial document."]
+#[doc = "Builder for the [Update API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-update.html)\n\nUpdates a document with a script or partial document."]
 #[derive(Clone, Debug)]
 pub struct Update<'a, 'b, B> {
     transport: &'a Transport,
@@ -8715,7 +8878,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Update By Query API"]
 pub enum UpdateByQueryParts<'b> {
     #[doc = "Index"]
@@ -8725,12 +8888,12 @@ impl<'b> UpdateByQueryParts<'b> {
     #[doc = "Builds a relative URL path to the Update By Query API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            UpdateByQueryParts::Index(ref index) => {
+            UpdateByQueryParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(18usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_update_by_query");
                 p.into()
@@ -8738,7 +8901,7 @@ impl<'b> UpdateByQueryParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Update By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-update-by-query.html)\n\nPerforms an update on every document in the index without changing the source,\nfor example to pick up a mapping change."]
+#[doc = "Builder for the [Update By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-update-by-query.html)\n\nPerforms an update on every document in the index without changing the source,\nfor example to pick up a mapping change."]
 #[derive(Clone, Debug)]
 pub struct UpdateByQuery<'a, 'b, B> {
     transport: &'a Transport,
@@ -9173,7 +9336,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Update By Query Rethrottle API"]
 pub enum UpdateByQueryRethrottleParts<'b> {
     #[doc = "TaskId"]
@@ -9183,7 +9346,7 @@ impl<'b> UpdateByQueryRethrottleParts<'b> {
     #[doc = "Builds a relative URL path to the Update By Query Rethrottle API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            UpdateByQueryRethrottleParts::TaskId(ref task_id) => {
+            UpdateByQueryRethrottleParts::TaskId(task_id) => {
                 let encoded_task_id: Cow<str> =
                     percent_encode(task_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(30usize + encoded_task_id.len());
@@ -9195,7 +9358,7 @@ impl<'b> UpdateByQueryRethrottleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Update By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-update-by-query.html)\n\nChanges the number of requests per second for a particular Update By Query operation."]
+#[doc = "Builder for the [Update By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-update-by-query.html)\n\nChanges the number of requests per second for a particular Update By Query operation."]
 #[derive(Clone, Debug)]
 pub struct UpdateByQueryRethrottle<'a, 'b, B> {
     transport: &'a Transport,
@@ -9327,211 +9490,220 @@ where
     }
 }
 impl Elasticsearch {
-    #[doc = "[Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-bulk.html)\n\nAllows to perform multiple index/update/delete operations in a single request."]
+    #[doc = "[Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-bulk.html)\n\nAllows to perform multiple index/update/delete operations in a single request."]
     pub fn bulk<'a, 'b>(&'a self, parts: BulkParts<'b>) -> Bulk<'a, 'b, ()> {
         Bulk::new(self.transport(), parts)
     }
-    #[doc = "[Clear Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/clear-scroll-api.html)\n\nExplicitly clears the search context for a scroll."]
+    #[doc = "[Clear Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/clear-scroll-api.html)\n\nExplicitly clears the search context for a scroll."]
     pub fn clear_scroll<'a, 'b>(&'a self, parts: ClearScrollParts<'b>) -> ClearScroll<'a, 'b, ()> {
         ClearScroll::new(self.transport(), parts)
     }
-    #[doc = "[Close Point In Time API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/point-in-time-api.html)\n\nClose a point in time"]
+    #[doc = "[Close Point In Time API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/point-in-time-api.html)\n\nClose a point in time"]
     pub fn close_point_in_time<'a, 'b>(&'a self) -> ClosePointInTime<'a, 'b, ()> {
         ClosePointInTime::new(self.transport())
     }
-    #[doc = "[Count API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-count.html)\n\nReturns number of documents matching a query."]
+    #[doc = "[Count API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-count.html)\n\nReturns number of documents matching a query."]
     pub fn count<'a, 'b>(&'a self, parts: CountParts<'b>) -> Count<'a, 'b, ()> {
         Count::new(self.transport(), parts)
     }
-    #[doc = "[Create API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-index_.html)\n\nCreates a new document in the index.\n\nReturns a 409 response when a document with a same ID already exists in the index."]
+    #[doc = "[Create API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-index_.html)\n\nCreates a new document in the index.\n\nReturns a 409 response when a document with a same ID already exists in the index."]
     pub fn create<'a, 'b>(&'a self, parts: CreateParts<'b>) -> Create<'a, 'b, ()> {
         Create::new(self.transport(), parts)
     }
-    #[doc = "[Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-delete.html)\n\nRemoves a document from the index."]
+    #[doc = "[Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-delete.html)\n\nRemoves a document from the index."]
     pub fn delete<'a, 'b>(&'a self, parts: DeleteParts<'b>) -> Delete<'a, 'b> {
         Delete::new(self.transport(), parts)
     }
-    #[doc = "[Delete By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-delete-by-query.html)\n\nDeletes documents matching the provided query."]
+    #[doc = "[Delete By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-delete-by-query.html)\n\nDeletes documents matching the provided query."]
     pub fn delete_by_query<'a, 'b>(
         &'a self,
         parts: DeleteByQueryParts<'b>,
     ) -> DeleteByQuery<'a, 'b, ()> {
         DeleteByQuery::new(self.transport(), parts)
     }
-    #[doc = "[Delete By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-delete-by-query.html)\n\nChanges the number of requests per second for a particular Delete By Query operation."]
+    #[doc = "[Delete By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-delete-by-query.html)\n\nChanges the number of requests per second for a particular Delete By Query operation."]
     pub fn delete_by_query_rethrottle<'a, 'b>(
         &'a self,
         parts: DeleteByQueryRethrottleParts<'b>,
     ) -> DeleteByQueryRethrottle<'a, 'b, ()> {
         DeleteByQueryRethrottle::new(self.transport(), parts)
     }
-    #[doc = "[Delete Script API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-scripting.html)\n\nDeletes a script."]
+    #[doc = "[Delete Script API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-scripting.html)\n\nDeletes a script."]
     pub fn delete_script<'a, 'b>(&'a self, parts: DeleteScriptParts<'b>) -> DeleteScript<'a, 'b> {
         DeleteScript::new(self.transport(), parts)
     }
-    #[doc = "[Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-get.html)\n\nReturns information about whether a document exists in an index."]
+    #[doc = "[Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-get.html)\n\nReturns information about whether a document exists in an index."]
     pub fn exists<'a, 'b>(&'a self, parts: ExistsParts<'b>) -> Exists<'a, 'b> {
         Exists::new(self.transport(), parts)
     }
-    #[doc = "[Exists Source API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-get.html)\n\nReturns information about whether a document source exists in an index."]
+    #[doc = "[Exists Source API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-get.html)\n\nReturns information about whether a document source exists in an index."]
     pub fn exists_source<'a, 'b>(&'a self, parts: ExistsSourceParts<'b>) -> ExistsSource<'a, 'b> {
         ExistsSource::new(self.transport(), parts)
     }
-    #[doc = "[Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-explain.html)\n\nReturns information about why a specific matches (or doesn't match) a query."]
+    #[doc = "[Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-explain.html)\n\nReturns information about why a specific matches (or doesn't match) a query."]
     pub fn explain<'a, 'b>(&'a self, parts: ExplainParts<'b>) -> Explain<'a, 'b, ()> {
         Explain::new(self.transport(), parts)
     }
-    #[doc = "[Field Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-field-caps.html)\n\nReturns the information about the capabilities of fields among multiple indices."]
+    #[doc = "[Field Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-field-caps.html)\n\nReturns the information about the capabilities of fields among multiple indices."]
     pub fn field_caps<'a, 'b>(&'a self, parts: FieldCapsParts<'b>) -> FieldCaps<'a, 'b, ()> {
         FieldCaps::new(self.transport(), parts)
     }
-    #[doc = "[Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-get.html)\n\nReturns a document."]
+    #[doc = "[Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-get.html)\n\nReturns a document."]
     pub fn get<'a, 'b>(&'a self, parts: GetParts<'b>) -> Get<'a, 'b> {
         Get::new(self.transport(), parts)
     }
-    #[doc = "[Get Script API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-scripting.html)\n\nReturns a script."]
+    #[doc = "[Get Script API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-scripting.html)\n\nReturns a script."]
     pub fn get_script<'a, 'b>(&'a self, parts: GetScriptParts<'b>) -> GetScript<'a, 'b> {
         GetScript::new(self.transport(), parts)
     }
-    #[doc = "[Get Script Context API](https://www.elastic.co/guide/en/elasticsearch/painless/8.3/painless-contexts.html)\n\nReturns all script contexts."]
+    #[doc = "[Get Script Context API](https://www.elastic.co/guide/en/elasticsearch/painless/8.7/painless-contexts.html)\n\nReturns all script contexts."]
     pub fn get_script_context<'a, 'b>(&'a self) -> GetScriptContext<'a, 'b> {
         GetScriptContext::new(self.transport())
     }
-    #[doc = "[Get Script Languages API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-scripting.html)\n\nReturns available script types, languages and contexts"]
+    #[doc = "[Get Script Languages API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-scripting.html)\n\nReturns available script types, languages and contexts"]
     pub fn get_script_languages<'a, 'b>(&'a self) -> GetScriptLanguages<'a, 'b> {
         GetScriptLanguages::new(self.transport())
     }
-    #[doc = "[Get Source API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-get.html)\n\nReturns the source of a document."]
+    #[doc = "[Get Source API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-get.html)\n\nReturns the source of a document."]
     pub fn get_source<'a, 'b>(&'a self, parts: GetSourceParts<'b>) -> GetSource<'a, 'b> {
         GetSource::new(self.transport(), parts)
     }
-    #[doc = "[Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-index_.html)\n\nCreates or updates a document in an index."]
+    #[doc = "[Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-index_.html)\n\nCreates or updates a document in an index."]
     pub fn index<'a, 'b>(&'a self, parts: IndexParts<'b>) -> Index<'a, 'b, ()> {
         Index::new(self.transport(), parts)
     }
-    #[doc = "[Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/index.html)\n\nReturns basic information about the cluster."]
+    #[doc = "[Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/index.html)\n\nReturns basic information about the cluster."]
     pub fn info<'a, 'b>(&'a self) -> Info<'a, 'b> {
         Info::new(self.transport())
     }
-    #[doc = "[Knn Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-search.html)\n\nPerforms a kNN search."]
+    #[doc = "[Knn Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-search.html)\n\nPerforms a kNN search."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn knn_search<'a, 'b>(&'a self, parts: KnnSearchParts<'b>) -> KnnSearch<'a, 'b, ()> {
         KnnSearch::new(self.transport(), parts)
     }
-    #[doc = "[Mget API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-multi-get.html)\n\nAllows to get multiple documents in one request."]
+    #[doc = "[Mget API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-multi-get.html)\n\nAllows to get multiple documents in one request."]
     pub fn mget<'a, 'b>(&'a self, parts: MgetParts<'b>) -> Mget<'a, 'b, ()> {
         Mget::new(self.transport(), parts)
     }
-    #[doc = "[Msearch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-multi-search.html)\n\nAllows to execute several search operations in one request."]
+    #[doc = "[Msearch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-multi-search.html)\n\nAllows to execute several search operations in one request."]
     pub fn msearch<'a, 'b>(&'a self, parts: MsearchParts<'b>) -> Msearch<'a, 'b, ()> {
         Msearch::new(self.transport(), parts)
     }
-    #[doc = "[Msearch Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-multi-search.html)\n\nAllows to execute several search template operations in one request."]
+    #[doc = "[Msearch Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-multi-search.html)\n\nAllows to execute several search template operations in one request."]
     pub fn msearch_template<'a, 'b>(
         &'a self,
         parts: MsearchTemplateParts<'b>,
     ) -> MsearchTemplate<'a, 'b, ()> {
         MsearchTemplate::new(self.transport(), parts)
     }
-    #[doc = "[Mtermvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-multi-termvectors.html)\n\nReturns multiple termvectors in one request."]
+    #[doc = "[Mtermvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-multi-termvectors.html)\n\nReturns multiple termvectors in one request."]
     pub fn mtermvectors<'a, 'b>(
         &'a self,
         parts: MtermvectorsParts<'b>,
     ) -> Mtermvectors<'a, 'b, ()> {
         Mtermvectors::new(self.transport(), parts)
     }
-    #[doc = "[Open Point In Time API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/point-in-time-api.html)\n\nOpen a point in time that can be used in subsequent searches"]
+    #[doc = "[Open Point In Time API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/point-in-time-api.html)\n\nOpen a point in time that can be used in subsequent searches"]
     pub fn open_point_in_time<'a, 'b>(
         &'a self,
         parts: OpenPointInTimeParts<'b>,
     ) -> OpenPointInTime<'a, 'b, ()> {
         OpenPointInTime::new(self.transport(), parts)
     }
-    #[doc = "[Ping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/index.html)\n\nReturns whether the cluster is running."]
+    #[doc = "[Ping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/index.html)\n\nReturns whether the cluster is running."]
     pub fn ping<'a, 'b>(&'a self) -> Ping<'a, 'b> {
         Ping::new(self.transport())
     }
-    #[doc = "[Put Script API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-scripting.html)\n\nCreates or updates a script."]
+    #[doc = "[Put Script API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-scripting.html)\n\nCreates or updates a script."]
     pub fn put_script<'a, 'b>(&'a self, parts: PutScriptParts<'b>) -> PutScript<'a, 'b, ()> {
         PutScript::new(self.transport(), parts)
     }
-    #[doc = "[Rank Eval API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-rank-eval.html)\n\nAllows to evaluate the quality of ranked search results over a set of typical search queries"]
+    #[doc = "[Rank Eval API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-rank-eval.html)\n\nAllows to evaluate the quality of ranked search results over a set of typical search queries"]
     pub fn rank_eval<'a, 'b>(&'a self, parts: RankEvalParts<'b>) -> RankEval<'a, 'b, ()> {
         RankEval::new(self.transport(), parts)
     }
-    #[doc = "[Reindex API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-reindex.html)\n\nAllows to copy documents from one index to another, optionally filtering the source\ndocuments by a query, changing the destination index settings, or fetching the\ndocuments from a remote cluster."]
+    #[doc = "[Reindex API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-reindex.html)\n\nAllows to copy documents from one index to another, optionally filtering the source\ndocuments by a query, changing the destination index settings, or fetching the\ndocuments from a remote cluster."]
     pub fn reindex<'a, 'b>(&'a self) -> Reindex<'a, 'b, ()> {
         Reindex::new(self.transport())
     }
-    #[doc = "[Reindex Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-reindex.html)\n\nChanges the number of requests per second for a particular Reindex operation."]
+    #[doc = "[Reindex Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-reindex.html)\n\nChanges the number of requests per second for a particular Reindex operation."]
     pub fn reindex_rethrottle<'a, 'b>(
         &'a self,
         parts: ReindexRethrottleParts<'b>,
     ) -> ReindexRethrottle<'a, 'b, ()> {
         ReindexRethrottle::new(self.transport(), parts)
     }
-    #[doc = "[Render Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/render-search-template-api.html)\n\nAllows to use the Mustache language to pre-render a search definition."]
+    #[doc = "[Render Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/render-search-template-api.html)\n\nAllows to use the Mustache language to pre-render a search definition."]
     pub fn render_search_template<'a, 'b>(
         &'a self,
         parts: RenderSearchTemplateParts<'b>,
     ) -> RenderSearchTemplate<'a, 'b, ()> {
         RenderSearchTemplate::new(self.transport(), parts)
     }
-    #[doc = "[Scripts Painless Execute API](https://www.elastic.co/guide/en/elasticsearch/painless/8.3/painless-execute-api.html)\n\nAllows an arbitrary script to be executed and a result to be returned"]
+    #[doc = "[Scripts Painless Execute API](https://www.elastic.co/guide/en/elasticsearch/painless/8.7/painless-execute-api.html)\n\nAllows an arbitrary script to be executed and a result to be returned"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn scripts_painless_execute<'a, 'b>(&'a self) -> ScriptsPainlessExecute<'a, 'b, ()> {
         ScriptsPainlessExecute::new(self.transport())
     }
-    #[doc = "[Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-request-body.html#request-body-search-scroll)\n\nAllows to retrieve a large numbers of results from a single search request.\n\n# Examples\n\nTo initiate a scroll, make search API call with a specified `scroll` timeout,\nthen fetch the next set of hits using the `_scroll_id` returned in\nthe response. Once no more hits are returned, clear the scroll.\n\n```rust,no_run\n# use elasticsearch::{Elasticsearch, Error, SearchParts, ScrollParts, ClearScrollParts};\n# use serde_json::{json, Value};\n# async fn doc() -> Result<(), Box<dyn std::error::Error>> {\nlet client = Elasticsearch::default();\n\nfn print_hits(hits: &[Value]) {\n    for hit in hits {\n        println!(\n            \"id: '{}', source: '{}', score: '{}'\",\n            hit[\"_id\"].as_str().unwrap(),\n            hit[\"_source\"],\n            hit[\"_score\"].as_f64().unwrap()\n        );\n    }\n}\n\nlet scroll = \"1m\";\nlet mut response = client\n    .search(SearchParts::Index(&[\"tweets\"]))\n    .scroll(scroll)\n    .body(json!({\n        \"query\": {\n            \"match\": {\n                \"body\": {\n                    \"query\": \"Elasticsearch rust\",\n                    \"operator\": \"AND\"\n                }\n            }\n        }\n    }))\n    .send()\n    .await?;\n\nlet mut response_body = response.json::<Value>().await?;\nlet mut scroll_id = response_body[\"_scroll_id\"].as_str().unwrap();\nlet mut hits = response_body[\"hits\"][\"hits\"].as_array().unwrap();\n\nprint_hits(hits);\n\nwhile hits.len() > 0 {\n    response = client\n        .scroll(ScrollParts::None)\n        .body(json!({\n            \"scroll\": scroll,\n            \"scroll_id\": scroll_id\n        }))\n        .send()\n        .await?;\n\n    response_body = response.json::<Value>().await?;\n    scroll_id = response_body[\"_scroll_id\"].as_str().unwrap();\n    hits = response_body[\"hits\"][\"hits\"].as_array().unwrap();\n    print_hits(hits);\n}\n\nresponse = client\n    .clear_scroll(ClearScrollParts::None)\n    .body(json!({\n        \"scroll_id\": scroll_id\n    }))\n    .send()\n    .await?;\n    \n# Ok(())\n# }\n```"]
+    #[doc = "[Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-request-body.html#request-body-search-scroll)\n\nAllows to retrieve a large numbers of results from a single search request.\n\n# Examples\n\nTo initiate a scroll, make search API call with a specified `scroll` timeout,\nthen fetch the next set of hits using the `_scroll_id` returned in\nthe response. Once no more hits are returned, clear the scroll.\n\n```rust,no_run\n# use elasticsearch::{Elasticsearch, Error, SearchParts, ScrollParts, ClearScrollParts};\n# use serde_json::{json, Value};\n# async fn doc() -> Result<(), Box<dyn std::error::Error>> {\nlet client = Elasticsearch::default();\n\nfn print_hits(hits: &[Value]) {\n    for hit in hits {\n        println!(\n            \"id: '{}', source: '{}', score: '{}'\",\n            hit[\"_id\"].as_str().unwrap(),\n            hit[\"_source\"],\n            hit[\"_score\"].as_f64().unwrap()\n        );\n    }\n}\n\nlet scroll = \"1m\";\nlet mut response = client\n    .search(SearchParts::Index(&[\"tweets\"]))\n    .scroll(scroll)\n    .body(json!({\n        \"query\": {\n            \"match\": {\n                \"body\": {\n                    \"query\": \"Elasticsearch rust\",\n                    \"operator\": \"AND\"\n                }\n            }\n        }\n    }))\n    .send()\n    .await?;\n\nlet mut response_body = response.json::<Value>().await?;\nlet mut scroll_id = response_body[\"_scroll_id\"].as_str().unwrap();\nlet mut hits = response_body[\"hits\"][\"hits\"].as_array().unwrap();\n\nprint_hits(hits);\n\nwhile hits.len() > 0 {\n    response = client\n        .scroll(ScrollParts::None)\n        .body(json!({\n            \"scroll\": scroll,\n            \"scroll_id\": scroll_id\n        }))\n        .send()\n        .await?;\n\n    response_body = response.json::<Value>().await?;\n    scroll_id = response_body[\"_scroll_id\"].as_str().unwrap();\n    hits = response_body[\"hits\"][\"hits\"].as_array().unwrap();\n    print_hits(hits);\n}\n\nresponse = client\n    .clear_scroll(ClearScrollParts::None)\n    .body(json!({\n        \"scroll_id\": scroll_id\n    }))\n    .send()\n    .await?;\n    \n# Ok(())\n# }\n```"]
     pub fn scroll<'a, 'b>(&'a self, parts: ScrollParts<'b>) -> Scroll<'a, 'b, ()> {
         Scroll::new(self.transport(), parts)
     }
-    #[doc = "[Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-search.html)\n\nReturns results matching a query."]
+    #[doc = "[Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-search.html)\n\nReturns results matching a query."]
     pub fn search<'a, 'b>(&'a self, parts: SearchParts<'b>) -> Search<'a, 'b, ()> {
         Search::new(self.transport(), parts)
     }
-    #[doc = "[Search Mvt API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-vector-tile-api.html)\n\nSearches a vector tile for geospatial values. Returns results as a binary Mapbox vector tile."]
+    #[doc = "[Search Mvt API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-vector-tile-api.html)\n\nSearches a vector tile for geospatial values. Returns results as a binary Mapbox vector tile."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn search_mvt<'a, 'b>(&'a self, parts: SearchMvtParts<'b>) -> SearchMvt<'a, 'b, ()> {
         SearchMvt::new(self.transport(), parts)
     }
-    #[doc = "[Search Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-shards.html)\n\nReturns information about the indices and shards that a search request would be executed against."]
+    #[doc = "[Search Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-shards.html)\n\nReturns information about the indices and shards that a search request would be executed against."]
     pub fn search_shards<'a, 'b>(
         &'a self,
         parts: SearchShardsParts<'b>,
     ) -> SearchShards<'a, 'b, ()> {
         SearchShards::new(self.transport(), parts)
     }
-    #[doc = "[Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-template.html)\n\nAllows to use the Mustache language to pre-render a search definition."]
+    #[doc = "[Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-template.html)\n\nAllows to use the Mustache language to pre-render a search definition."]
     pub fn search_template<'a, 'b>(
         &'a self,
         parts: SearchTemplateParts<'b>,
     ) -> SearchTemplate<'a, 'b, ()> {
         SearchTemplate::new(self.transport(), parts)
     }
-    #[doc = "[Terms Enum API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-terms-enum.html)\n\nThe terms enum API  can be used to discover terms in the index that begin with the provided string. It is designed for low-latency look-ups used in auto-complete scenarios."]
+    #[doc = "[Semantic Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/semantic-search.html)\n\nSemantic search API using dense vector similarity"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn semantic_search<'a, 'b>(
+        &'a self,
+        parts: SemanticSearchParts<'b>,
+    ) -> SemanticSearch<'a, 'b, ()> {
+        SemanticSearch::new(self.transport(), parts)
+    }
+    #[doc = "[Terms Enum API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-terms-enum.html)\n\nThe terms enum API  can be used to discover terms in the index that begin with the provided string. It is designed for low-latency look-ups used in auto-complete scenarios."]
     pub fn terms_enum<'a, 'b>(&'a self, parts: TermsEnumParts<'b>) -> TermsEnum<'a, 'b, ()> {
         TermsEnum::new(self.transport(), parts)
     }
-    #[doc = "[Termvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-termvectors.html)\n\nReturns information and statistics about terms in the fields of a particular document."]
+    #[doc = "[Termvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-termvectors.html)\n\nReturns information and statistics about terms in the fields of a particular document."]
     pub fn termvectors<'a, 'b>(&'a self, parts: TermvectorsParts<'b>) -> Termvectors<'a, 'b, ()> {
         Termvectors::new(self.transport(), parts)
     }
-    #[doc = "[Update API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-update.html)\n\nUpdates a document with a script or partial document."]
+    #[doc = "[Update API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-update.html)\n\nUpdates a document with a script or partial document."]
     pub fn update<'a, 'b>(&'a self, parts: UpdateParts<'b>) -> Update<'a, 'b, ()> {
         Update::new(self.transport(), parts)
     }
-    #[doc = "[Update By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-update-by-query.html)\n\nPerforms an update on every document in the index without changing the source,\nfor example to pick up a mapping change."]
+    #[doc = "[Update By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-update-by-query.html)\n\nPerforms an update on every document in the index without changing the source,\nfor example to pick up a mapping change."]
     pub fn update_by_query<'a, 'b>(
         &'a self,
         parts: UpdateByQueryParts<'b>,
     ) -> UpdateByQuery<'a, 'b, ()> {
         UpdateByQuery::new(self.transport(), parts)
     }
-    #[doc = "[Update By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/docs-update-by-query.html)\n\nChanges the number of requests per second for a particular Update By Query operation."]
+    #[doc = "[Update By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/docs-update-by-query.html)\n\nChanges the number of requests per second for a particular Update By Query operation."]
     pub fn update_by_query_rethrottle<'a, 'b>(
         &'a self,
         parts: UpdateByQueryRethrottleParts<'b>,

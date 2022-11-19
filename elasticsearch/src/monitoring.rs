@@ -45,7 +45,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Monitoring Bulk API"]
 pub enum MonitoringBulkParts<'b> {
     #[doc = "No parts"]
@@ -58,7 +58,7 @@ impl<'b> MonitoringBulkParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MonitoringBulkParts::None => "/_monitoring/bulk".into(),
-            MonitoringBulkParts::Type(ref ty) => {
+            MonitoringBulkParts::Type(ty) => {
                 let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(18usize + encoded_ty.len());
                 p.push_str("/_monitoring/");
@@ -69,7 +69,7 @@ impl<'b> MonitoringBulkParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/monitor-elasticsearch-cluster.html)\n\nUsed by the monitoring features to send monitoring data."]
+#[doc = "Builder for the [Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/monitor-elasticsearch-cluster.html)\n\nUsed by the monitoring features to send monitoring data."]
 #[derive(Clone, Debug)]
 pub struct MonitoringBulk<'a, 'b, B> {
     transport: &'a Transport,
@@ -232,7 +232,7 @@ impl<'a> Monitoring<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/monitor-elasticsearch-cluster.html)\n\nUsed by the monitoring features to send monitoring data."]
+    #[doc = "[Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/monitor-elasticsearch-cluster.html)\n\nUsed by the monitoring features to send monitoring data."]
     pub fn bulk<'b>(&'a self, parts: MonitoringBulkParts<'b>) -> MonitoringBulk<'a, 'b, ()> {
         MonitoringBulk::new(self.transport(), parts)
     }

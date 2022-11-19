@@ -58,7 +58,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Ingest Delete Pipeline API"]
 pub enum IngestDeletePipelineParts<'b> {
     #[doc = "Id"]
@@ -68,7 +68,7 @@ impl<'b> IngestDeletePipelineParts<'b> {
     #[doc = "Builds a relative URL path to the Ingest Delete Pipeline API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IngestDeletePipelineParts::Id(ref id) => {
+            IngestDeletePipelineParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(18usize + encoded_id.len());
                 p.push_str("/_ingest/pipeline/");
@@ -78,7 +78,7 @@ impl<'b> IngestDeletePipelineParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/delete-pipeline-api.html)\n\nDeletes a pipeline."]
+#[doc = "Builder for the [Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-pipeline-api.html)\n\nDeletes a pipeline."]
 #[derive(Clone, Debug)]
 pub struct IngestDeletePipeline<'a, 'b> {
     transport: &'a Transport,
@@ -194,7 +194,7 @@ impl<'a, 'b> IngestDeletePipeline<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Ingest Geo Ip Stats API"]
 pub enum IngestGeoIpStatsParts {
     #[doc = "No parts"]
@@ -208,7 +208,7 @@ impl IngestGeoIpStatsParts {
         }
     }
 }
-#[doc = "Builder for the [Ingest Geo Ip Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/geoip-stats-api.html)\n\nReturns statistical information about geoip databases"]
+#[doc = "Builder for the [Ingest Geo Ip Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/geoip-stats-api.html)\n\nReturns statistical information about geoip databases"]
 #[derive(Clone, Debug)]
 pub struct IngestGeoIpStats<'a, 'b> {
     transport: &'a Transport,
@@ -306,7 +306,7 @@ impl<'a, 'b> IngestGeoIpStats<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Ingest Get Pipeline API"]
 pub enum IngestGetPipelineParts<'b> {
     #[doc = "No parts"]
@@ -319,7 +319,7 @@ impl<'b> IngestGetPipelineParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             IngestGetPipelineParts::None => "/_ingest/pipeline".into(),
-            IngestGetPipelineParts::Id(ref id) => {
+            IngestGetPipelineParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(18usize + encoded_id.len());
                 p.push_str("/_ingest/pipeline/");
@@ -329,7 +329,7 @@ impl<'b> IngestGetPipelineParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-pipeline-api.html)\n\nReturns a pipeline."]
+#[doc = "Builder for the [Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-pipeline-api.html)\n\nReturns a pipeline."]
 #[derive(Clone, Debug)]
 pub struct IngestGetPipeline<'a, 'b> {
     transport: &'a Transport,
@@ -445,7 +445,7 @@ impl<'a, 'b> IngestGetPipeline<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Ingest Processor Grok API"]
 pub enum IngestProcessorGrokParts {
     #[doc = "No parts"]
@@ -459,7 +459,7 @@ impl IngestProcessorGrokParts {
         }
     }
 }
-#[doc = "Builder for the [Ingest Processor Grok API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/grok-processor.html#grok-processor-rest-get)\n\nReturns a list of the built-in patterns."]
+#[doc = "Builder for the [Ingest Processor Grok API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/grok-processor.html#grok-processor-rest-get)\n\nReturns a list of the built-in patterns."]
 #[derive(Clone, Debug)]
 pub struct IngestProcessorGrok<'a, 'b> {
     transport: &'a Transport,
@@ -557,7 +557,7 @@ impl<'a, 'b> IngestProcessorGrok<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Ingest Put Pipeline API"]
 pub enum IngestPutPipelineParts<'b> {
     #[doc = "Id"]
@@ -567,7 +567,7 @@ impl<'b> IngestPutPipelineParts<'b> {
     #[doc = "Builds a relative URL path to the Ingest Put Pipeline API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IngestPutPipelineParts::Id(ref id) => {
+            IngestPutPipelineParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(18usize + encoded_id.len());
                 p.push_str("/_ingest/pipeline/");
@@ -577,7 +577,7 @@ impl<'b> IngestPutPipelineParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/put-pipeline-api.html)\n\nCreates or updates a pipeline."]
+#[doc = "Builder for the [Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-pipeline-api.html)\n\nCreates or updates a pipeline."]
 #[derive(Clone, Debug)]
 pub struct IngestPutPipeline<'a, 'b, B> {
     transport: &'a Transport,
@@ -728,7 +728,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Ingest Simulate API"]
 pub enum IngestSimulateParts<'b> {
     #[doc = "No parts"]
@@ -741,7 +741,7 @@ impl<'b> IngestSimulateParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             IngestSimulateParts::None => "/_ingest/pipeline/_simulate".into(),
-            IngestSimulateParts::Id(ref id) => {
+            IngestSimulateParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(28usize + encoded_id.len());
                 p.push_str("/_ingest/pipeline/");
@@ -752,7 +752,7 @@ impl<'b> IngestSimulateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/simulate-pipeline-api.html)\n\nAllows to simulate a pipeline with example documents."]
+#[doc = "Builder for the [Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/simulate-pipeline-api.html)\n\nAllows to simulate a pipeline with example documents."]
 #[derive(Clone, Debug)]
 pub struct IngestSimulate<'a, 'b, B> {
     transport: &'a Transport,
@@ -898,36 +898,36 @@ impl<'a> Ingest<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/delete-pipeline-api.html)\n\nDeletes a pipeline."]
+    #[doc = "[Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-pipeline-api.html)\n\nDeletes a pipeline."]
     pub fn delete_pipeline<'b>(
         &'a self,
         parts: IngestDeletePipelineParts<'b>,
     ) -> IngestDeletePipeline<'a, 'b> {
         IngestDeletePipeline::new(self.transport(), parts)
     }
-    #[doc = "[Ingest Geo Ip Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/geoip-stats-api.html)\n\nReturns statistical information about geoip databases"]
+    #[doc = "[Ingest Geo Ip Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/geoip-stats-api.html)\n\nReturns statistical information about geoip databases"]
     pub fn geo_ip_stats<'b>(&'a self) -> IngestGeoIpStats<'a, 'b> {
         IngestGeoIpStats::new(self.transport())
     }
-    #[doc = "[Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-pipeline-api.html)\n\nReturns a pipeline."]
+    #[doc = "[Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-pipeline-api.html)\n\nReturns a pipeline."]
     pub fn get_pipeline<'b>(
         &'a self,
         parts: IngestGetPipelineParts<'b>,
     ) -> IngestGetPipeline<'a, 'b> {
         IngestGetPipeline::new(self.transport(), parts)
     }
-    #[doc = "[Ingest Processor Grok API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/grok-processor.html#grok-processor-rest-get)\n\nReturns a list of the built-in patterns."]
+    #[doc = "[Ingest Processor Grok API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/grok-processor.html#grok-processor-rest-get)\n\nReturns a list of the built-in patterns."]
     pub fn processor_grok<'b>(&'a self) -> IngestProcessorGrok<'a, 'b> {
         IngestProcessorGrok::new(self.transport())
     }
-    #[doc = "[Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/put-pipeline-api.html)\n\nCreates or updates a pipeline."]
+    #[doc = "[Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-pipeline-api.html)\n\nCreates or updates a pipeline."]
     pub fn put_pipeline<'b>(
         &'a self,
         parts: IngestPutPipelineParts<'b>,
     ) -> IngestPutPipeline<'a, 'b, ()> {
         IngestPutPipeline::new(self.transport(), parts)
     }
-    #[doc = "[Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/simulate-pipeline-api.html)\n\nAllows to simulate a pipeline with example documents."]
+    #[doc = "[Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/simulate-pipeline-api.html)\n\nAllows to simulate a pipeline with example documents."]
     pub fn simulate<'b>(&'a self, parts: IngestSimulateParts<'b>) -> IngestSimulate<'a, 'b, ()> {
         IngestSimulate::new(self.transport(), parts)
     }

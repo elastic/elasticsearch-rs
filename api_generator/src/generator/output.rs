@@ -2,21 +2,21 @@ use super::GeneratedFiles;
 use anyhow::bail;
 use path_slash::*;
 use regex::Regex;
-use std::fs::File;
-use std::io::BufReader;
-use std::io::{BufRead, Write};
-use std::path::Path;
-use std::path::PathBuf;
+use std::{
+    fs::File,
+    io::{BufRead, BufReader, Write},
+    path::{Path, PathBuf},
+};
 
 /// Writes the input to the specified file, preceded by a header comment indicating generated code
 pub fn write_file(
     input: String,
-    docs: Option<&PathBuf>,
-    dir: &PathBuf,
+    docs: Option<&Path>,
+    dir: &Path,
     file_name: &str,
     tracker: &mut GeneratedFiles,
 ) -> anyhow::Result<()> {
-    let mut path = dir.clone();
+    let mut path = dir.to_path_buf();
     path.push(PathBuf::from_slash(file_name));
 
     let mut file = File::create(&path)?;
@@ -107,7 +107,7 @@ pub fn merge_file(
     file_name: &str,
     tracker: &mut GeneratedFiles,
 ) -> anyhow::Result<()> {
-    let mut path = dir.to_owned();
+    let mut path = dir.to_path_buf();
     path.push(PathBuf::from_slash(file_name));
 
     let mut in_generated_section = false;

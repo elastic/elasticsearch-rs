@@ -40,6 +40,11 @@ use crate::generator::{
     ApiEndpoint, Path,
 };
 use inflector::Inflector;
+use syn::{
+    Arm, AttrStyle, Attribute, Constness, Defaultness, Expr, ExprKind, FnArg, FnDecl,
+    FunctionRetTy, ImplItem, ImplItemKind, ImplPolarity, ItemKind, MetaItem, MethodSig,
+    NestedMetaItem, Pat, Unsafety, Visibility,
+};
 
 /// Builder for request url parts enum
 ///
@@ -91,7 +96,7 @@ impl<'a> EnumBuilder<'a> {
                 0 => Self::parts_none(),
                 _ => {
                     self.has_lifetime = true;
-                    Self::parts(&path)
+                    Self::parts(path)
                 }
             };
 
@@ -113,18 +118,18 @@ impl<'a> EnumBuilder<'a> {
             .join("");
 
         let doc = match params.len() {
-            1 => doc(params[0].replace("_", " ").to_pascal_case()),
+            1 => doc(params[0].replace('_', " ").to_pascal_case()),
             n => {
                 let mut d: String = params
                     .iter()
                     .enumerate()
                     .filter(|&(i, _)| i != n - 1)
-                    .map(|(_, e)| e.replace("_", " ").to_pascal_case())
+                    .map(|(_, e)| e.replace('_', " ").to_pascal_case())
                     .collect::<Vec<_>>()
                     .join(", ");
 
                 d.push_str(
-                    format!(" and {}", params[n - 1].replace("_", " ").to_pascal_case()).as_str(),
+                    format!(" and {}", params[n - 1].replace('_', " ").to_pascal_case()).as_str(),
                 );
                 doc(d)
             }
@@ -142,7 +147,7 @@ impl<'a> EnumBuilder<'a> {
                         let ty = &path.parts[p].ty;
                         syn::Field {
                             ident: None,
-                            vis: syn::Visibility::Inherited,
+                            vis: Visibility::Inherited,
                             attrs: vec![],
                             ty: typekind_to_ty(p, ty, true, false),
                         }
@@ -175,13 +180,13 @@ impl<'a> EnumBuilder<'a> {
     }
 
     /// Get the field names for the enum tuple variant to match.
-    fn match_fields(path: &Path) -> Vec<syn::Pat> {
+    fn match_fields(path: &Path) -> Vec<Pat> {
         path.path
             .params()
             .iter()
             .map(|&p| {
-                syn::Pat::Ident(
-                    syn::BindingMode::ByRef(syn::Mutability::Immutable),
+                Pat::Ident(
+                    syn::BindingMode::ByValue(syn::Mutability::Immutable),
                     ident(valid_name(p)),
                     None,
                 )
@@ -211,39 +216,39 @@ impl<'a> EnumBuilder<'a> {
                 let fields = Self::match_fields(path);
 
                 let arm = match fields.len() {
-                    0 => syn::Pat::Path(None, match_path),
-                    _ => syn::Pat::TupleStruct(match_path, fields, None),
+                    0 => Pat::Path(None, match_path),
+                    _ => Pat::TupleStruct(match_path, fields, None),
                 };
 
                 let body = UrlBuilder::new(path).build();
-                arms.push(syn::Arm {
+                arms.push(Arm {
                     attrs: vec![],
                     pats: vec![arm],
                     guard: None,
                     body: Box::new(body),
                 });
             }
-            let match_expr: syn::Expr =
-                syn::ExprKind::Match(Box::new(path_none("self").into_expr()), arms).into();
+            let match_expr: Expr =
+                ExprKind::Match(Box::new(path_none("self").into_expr()), arms).into();
 
-            let fn_decl = syn::FnDecl {
-                inputs: vec![syn::FnArg::SelfValue(syn::Mutability::Immutable)],
-                output: syn::FunctionRetTy::Ty(ty("Cow<'static, str>")),
+            let fn_decl = FnDecl {
+                inputs: vec![FnArg::SelfValue(syn::Mutability::Immutable)],
+                output: FunctionRetTy::Ty(ty("Cow<'static, str>")),
                 variadic: false,
             };
 
-            let item = syn::ImplItem {
+            let item = ImplItem {
                 ident: ident("url"),
-                vis: syn::Visibility::Public,
-                defaultness: syn::Defaultness::Final,
+                vis: Visibility::Public,
+                defaultness: Defaultness::Final,
                 attrs: vec![doc(format!(
                     "Builds a relative URL path to the {} API",
                     self.api_name
                 ))],
-                node: syn::ImplItemKind::Method(
-                    syn::MethodSig {
-                        unsafety: syn::Unsafety::Normal,
-                        constness: syn::Constness::NotConst,
+                node: ImplItemKind::Method(
+                    MethodSig {
+                        unsafety: Unsafety::Normal,
+                        constness: Constness::NotConst,
                         abi: None,
                         decl: fn_decl,
                         generics: generics_none(),
@@ -256,11 +261,11 @@ impl<'a> EnumBuilder<'a> {
 
             syn::Item {
                 ident: ident(""),
-                vis: syn::Visibility::Public,
+                vis: Visibility::Public,
                 attrs: vec![],
-                node: syn::ItemKind::Impl(
-                    syn::Unsafety::Normal,
-                    syn::ImplPolarity::Positive,
+                node: ItemKind::Impl(
+                    Unsafety::Normal,
+                    ImplPolarity::Positive,
                     generics.clone(),
                     None,
                     Box::new(enum_ty.clone()),
@@ -271,23 +276,24 @@ impl<'a> EnumBuilder<'a> {
 
         let enum_decl = syn::Item {
             ident: self.ident,
-            vis: syn::Visibility::Public,
+            vis: Visibility::Public,
             attrs: vec![
-                syn::Attribute {
+                Attribute {
                     is_sugared_doc: false,
-                    style: syn::AttrStyle::Outer,
-                    value: syn::MetaItem::List(
+                    style: AttrStyle::Outer,
+                    value: MetaItem::List(
                         ident("derive"),
                         vec![
-                            syn::NestedMetaItem::MetaItem(syn::MetaItem::Word(ident("Debug"))),
-                            syn::NestedMetaItem::MetaItem(syn::MetaItem::Word(ident("Clone"))),
-                            syn::NestedMetaItem::MetaItem(syn::MetaItem::Word(ident("PartialEq"))),
+                            NestedMetaItem::MetaItem(MetaItem::Word(ident("Debug"))),
+                            NestedMetaItem::MetaItem(MetaItem::Word(ident("Clone"))),
+                            NestedMetaItem::MetaItem(MetaItem::Word(ident("Eq"))),
+                            NestedMetaItem::MetaItem(MetaItem::Word(ident("PartialEq"))),
                         ],
                     ),
                 },
                 doc(format!("API parts for the {} API", self.api_name)),
             ],
-            node: syn::ItemKind::Enum(variants, generics),
+            node: ItemKind::Enum(variants, generics),
         };
 
         (enum_ty, enum_decl, enum_impl)
@@ -299,7 +305,7 @@ impl<'a> From<&'a (String, ApiEndpoint)> for EnumBuilder<'a> {
         let endpoint = &value.1;
         let mut builder = EnumBuilder::new(value.0.to_pascal_case().as_ref());
         for path in &endpoint.url.paths {
-            builder = builder.with_path(&path);
+            builder = builder.with_path(path);
         }
 
         builder
@@ -391,7 +397,7 @@ mod tests {
         assert_eq!(ty_b("SearchParts"), enum_ty);
 
         let expected_decl = quote!(
-            #[derive(Debug, Clone, PartialEq)]
+            #[derive(Debug, Clone, Eq, PartialEq)]
             #[doc = "API parts for the Search API"]
             pub enum SearchParts<'b> {
                 #[doc = "No parts"]
@@ -411,7 +417,7 @@ mod tests {
                 pub fn url(self) -> Cow<'static, str> {
                     match self {
                         SearchParts::None => "/_search".into(),
-                        SearchParts::Index(ref index) => {
+                        SearchParts::Index(index) => {
                             let index_str = index.join(",");
                             let encoded_index: Cow<str> = percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                             let mut p = String::with_capacity(9usize + encoded_index.len());
@@ -420,7 +426,7 @@ mod tests {
                             p.push_str("/_search");
                             p.into()
                         }
-                        SearchParts::IndexType(ref index, ref ty) => {
+                        SearchParts::IndexType(index, ty) => {
                             let index_str = index.join(",");
                             let ty_str = ty.join(",");
                             let encoded_index: Cow<str> = percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();

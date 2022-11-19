@@ -49,7 +49,7 @@ use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Rollup Delete Job API"]
 pub enum RollupDeleteJobParts<'b> {
     #[doc = "Id"]
@@ -60,7 +60,7 @@ impl<'b> RollupDeleteJobParts<'b> {
     #[doc = "Builds a relative URL path to the Rollup Delete Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            RollupDeleteJobParts::Id(ref id) => {
+            RollupDeleteJobParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_id.len());
                 p.push_str("/_rollup/job/");
@@ -70,7 +70,7 @@ impl<'b> RollupDeleteJobParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Rollup Delete Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/rollup-delete-job.html)\n\nDeletes an existing rollup job."]
+#[doc = "Builder for the [Rollup Delete Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/rollup-delete-job.html)\n\nDeletes an existing rollup job."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -172,7 +172,7 @@ impl<'a, 'b> RollupDeleteJob<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Rollup Get Jobs API"]
 pub enum RollupGetJobsParts<'b> {
     #[doc = "Id"]
@@ -185,7 +185,7 @@ impl<'b> RollupGetJobsParts<'b> {
     #[doc = "Builds a relative URL path to the Rollup Get Jobs API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            RollupGetJobsParts::Id(ref id) => {
+            RollupGetJobsParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_id.len());
                 p.push_str("/_rollup/job/");
@@ -196,7 +196,7 @@ impl<'b> RollupGetJobsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Rollup Get Jobs API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/rollup-get-job.html)\n\nRetrieves the configuration, stats, and status of rollup jobs."]
+#[doc = "Builder for the [Rollup Get Jobs API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/rollup-get-job.html)\n\nRetrieves the configuration, stats, and status of rollup jobs."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -298,7 +298,7 @@ impl<'a, 'b> RollupGetJobs<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Rollup Get Rollup Caps API"]
 pub enum RollupGetRollupCapsParts<'b> {
     #[doc = "Id"]
@@ -311,7 +311,7 @@ impl<'b> RollupGetRollupCapsParts<'b> {
     #[doc = "Builds a relative URL path to the Rollup Get Rollup Caps API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            RollupGetRollupCapsParts::Id(ref id) => {
+            RollupGetRollupCapsParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(14usize + encoded_id.len());
                 p.push_str("/_rollup/data/");
@@ -322,7 +322,7 @@ impl<'b> RollupGetRollupCapsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Rollup Get Rollup Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/rollup-get-rollup-caps.html)\n\nReturns the capabilities of any rollup jobs that have been configured for a specific index or index pattern."]
+#[doc = "Builder for the [Rollup Get Rollup Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/rollup-get-rollup-caps.html)\n\nReturns the capabilities of any rollup jobs that have been configured for a specific index or index pattern."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -424,7 +424,7 @@ impl<'a, 'b> RollupGetRollupCaps<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Rollup Get Rollup Index Caps API"]
 pub enum RollupGetRollupIndexCapsParts<'b> {
     #[doc = "Index"]
@@ -435,11 +435,11 @@ impl<'b> RollupGetRollupIndexCapsParts<'b> {
     #[doc = "Builds a relative URL path to the Rollup Get Rollup Index Caps API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            RollupGetRollupIndexCapsParts::Index(ref index) => {
+            RollupGetRollupIndexCapsParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(14usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_rollup/data");
                 p.into()
@@ -447,7 +447,7 @@ impl<'b> RollupGetRollupIndexCapsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Rollup Get Rollup Index Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/rollup-get-rollup-index-caps.html)\n\nReturns the rollup capabilities of all jobs inside of a rollup index (e.g. the index where rollup data is stored)."]
+#[doc = "Builder for the [Rollup Get Rollup Index Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/rollup-get-rollup-index-caps.html)\n\nReturns the rollup capabilities of all jobs inside of a rollup index (e.g. the index where rollup data is stored)."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -549,7 +549,7 @@ impl<'a, 'b> RollupGetRollupIndexCaps<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Rollup Put Job API"]
 pub enum RollupPutJobParts<'b> {
     #[doc = "Id"]
@@ -560,7 +560,7 @@ impl<'b> RollupPutJobParts<'b> {
     #[doc = "Builds a relative URL path to the Rollup Put Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            RollupPutJobParts::Id(ref id) => {
+            RollupPutJobParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_id.len());
                 p.push_str("/_rollup/job/");
@@ -570,7 +570,7 @@ impl<'b> RollupPutJobParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Rollup Put Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/rollup-put-job.html)\n\nCreates a rollup job."]
+#[doc = "Builder for the [Rollup Put Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/rollup-put-job.html)\n\nCreates a rollup job."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -695,160 +695,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Rollup Rollup API"]
-pub enum RollupRollupParts<'b> {
-    #[doc = "Index and RollupIndex"]
-    IndexRollupIndex(&'b str, &'b str),
-}
-#[cfg(feature = "experimental-apis")]
-impl<'b> RollupRollupParts<'b> {
-    #[doc = "Builds a relative URL path to the Rollup Rollup API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            RollupRollupParts::IndexRollupIndex(ref index, ref rollup_index) => {
-                let encoded_index: Cow<str> =
-                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
-                let encoded_rollup_index: Cow<str> =
-                    percent_encode(rollup_index.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(
-                    10usize + encoded_index.len() + encoded_rollup_index.len(),
-                );
-                p.push_str("/");
-                p.push_str(encoded_index.as_ref());
-                p.push_str("/_rollup/");
-                p.push_str(encoded_rollup_index.as_ref());
-                p.into()
-            }
-        }
-    }
-}
-#[doc = "Builder for the [Rollup Rollup API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/xpack-rollup.html)\n\nRollup an index"]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
-#[derive(Clone, Debug)]
-pub struct RollupRollup<'a, 'b, B> {
-    transport: &'a Transport,
-    parts: RollupRollupParts<'b>,
-    body: Option<B>,
-    error_trace: Option<bool>,
-    filter_path: Option<&'b [&'b str]>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    request_timeout: Option<Duration>,
-    source: Option<&'b str>,
-}
-#[cfg(feature = "experimental-apis")]
-impl<'a, 'b, B> RollupRollup<'a, 'b, B>
-where
-    B: Body,
-{
-    #[doc = "Creates a new instance of [RollupRollup] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: RollupRollupParts<'b>) -> Self {
-        let headers = HeaderMap::new();
-        RollupRollup {
-            transport,
-            parts,
-            headers,
-            body: None,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            pretty: None,
-            request_timeout: None,
-            source: None,
-        }
-    }
-    #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> RollupRollup<'a, 'b, JsonBody<T>>
-    where
-        T: Serialize,
-    {
-        RollupRollup {
-            transport: self.transport,
-            parts: self.parts,
-            body: Some(body.into()),
-            error_trace: self.error_trace,
-            filter_path: self.filter_path,
-            headers: self.headers,
-            human: self.human,
-            pretty: self.pretty,
-            request_timeout: self.request_timeout,
-            source: self.source,
-        }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
-    pub fn request_timeout(mut self, timeout: Duration) -> Self {
-        self.request_timeout = Some(timeout);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Rollup Rollup API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = Method::Post;
-        let headers = self.headers;
-        let timeout = self.request_timeout;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                error_trace: Option<bool>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                filter_path: Option<&'b [&'b str]>,
-                human: Option<bool>,
-                pretty: Option<bool>,
-                source: Option<&'b str>,
-            }
-            let query_params = QueryParams {
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                human: self.human,
-                pretty: self.pretty,
-                source: self.source,
-            };
-            Some(query_params)
-        };
-        let body = self.body;
-        let response = self
-            .transport
-            .send(method, &path, headers, query_string.as_ref(), body, timeout)
-            .await?;
-        Ok(response)
-    }
-}
-#[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Rollup Rollup Search API"]
 pub enum RollupRollupSearchParts<'b> {
     #[doc = "Index"]
@@ -859,12 +706,12 @@ impl<'b> RollupRollupSearchParts<'b> {
     #[doc = "Builds a relative URL path to the Rollup Rollup Search API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            RollupRollupSearchParts::Index(ref index) => {
+            RollupRollupSearchParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_rollup_search");
                 p.into()
@@ -872,7 +719,7 @@ impl<'b> RollupRollupSearchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Rollup Rollup Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/rollup-search.html)\n\nEnables searching rolled-up data using the standard query DSL."]
+#[doc = "Builder for the [Rollup Rollup Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/rollup-search.html)\n\nEnables searching rolled-up data using the standard query DSL."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -1020,7 +867,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Rollup Start Job API"]
 pub enum RollupStartJobParts<'b> {
     #[doc = "Id"]
@@ -1031,7 +878,7 @@ impl<'b> RollupStartJobParts<'b> {
     #[doc = "Builds a relative URL path to the Rollup Start Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            RollupStartJobParts::Id(ref id) => {
+            RollupStartJobParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(20usize + encoded_id.len());
                 p.push_str("/_rollup/job/");
@@ -1042,7 +889,7 @@ impl<'b> RollupStartJobParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Rollup Start Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/rollup-start-job.html)\n\nStarts an existing, stopped rollup job."]
+#[doc = "Builder for the [Rollup Start Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/rollup-start-job.html)\n\nStarts an existing, stopped rollup job."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -1167,7 +1014,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Rollup Stop Job API"]
 pub enum RollupStopJobParts<'b> {
     #[doc = "Id"]
@@ -1178,7 +1025,7 @@ impl<'b> RollupStopJobParts<'b> {
     #[doc = "Builds a relative URL path to the Rollup Stop Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            RollupStopJobParts::Id(ref id) => {
+            RollupStopJobParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(19usize + encoded_id.len());
                 p.push_str("/_rollup/job/");
@@ -1189,7 +1036,7 @@ impl<'b> RollupStopJobParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Rollup Stop Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/rollup-stop-job.html)\n\nStops an existing, started rollup job."]
+#[doc = "Builder for the [Rollup Stop Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/rollup-stop-job.html)\n\nStops an existing, started rollup job."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -1348,19 +1195,19 @@ impl<'a> Rollup<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Rollup Delete Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/rollup-delete-job.html)\n\nDeletes an existing rollup job."]
+    #[doc = "[Rollup Delete Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/rollup-delete-job.html)\n\nDeletes an existing rollup job."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn delete_job<'b>(&'a self, parts: RollupDeleteJobParts<'b>) -> RollupDeleteJob<'a, 'b> {
         RollupDeleteJob::new(self.transport(), parts)
     }
-    #[doc = "[Rollup Get Jobs API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/rollup-get-job.html)\n\nRetrieves the configuration, stats, and status of rollup jobs."]
+    #[doc = "[Rollup Get Jobs API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/rollup-get-job.html)\n\nRetrieves the configuration, stats, and status of rollup jobs."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn get_jobs<'b>(&'a self, parts: RollupGetJobsParts<'b>) -> RollupGetJobs<'a, 'b> {
         RollupGetJobs::new(self.transport(), parts)
     }
-    #[doc = "[Rollup Get Rollup Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/rollup-get-rollup-caps.html)\n\nReturns the capabilities of any rollup jobs that have been configured for a specific index or index pattern."]
+    #[doc = "[Rollup Get Rollup Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/rollup-get-rollup-caps.html)\n\nReturns the capabilities of any rollup jobs that have been configured for a specific index or index pattern."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn get_rollup_caps<'b>(
@@ -1369,7 +1216,7 @@ impl<'a> Rollup<'a> {
     ) -> RollupGetRollupCaps<'a, 'b> {
         RollupGetRollupCaps::new(self.transport(), parts)
     }
-    #[doc = "[Rollup Get Rollup Index Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/rollup-get-rollup-index-caps.html)\n\nReturns the rollup capabilities of all jobs inside of a rollup index (e.g. the index where rollup data is stored)."]
+    #[doc = "[Rollup Get Rollup Index Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/rollup-get-rollup-index-caps.html)\n\nReturns the rollup capabilities of all jobs inside of a rollup index (e.g. the index where rollup data is stored)."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn get_rollup_index_caps<'b>(
@@ -1378,19 +1225,13 @@ impl<'a> Rollup<'a> {
     ) -> RollupGetRollupIndexCaps<'a, 'b> {
         RollupGetRollupIndexCaps::new(self.transport(), parts)
     }
-    #[doc = "[Rollup Put Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/rollup-put-job.html)\n\nCreates a rollup job."]
+    #[doc = "[Rollup Put Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/rollup-put-job.html)\n\nCreates a rollup job."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn put_job<'b>(&'a self, parts: RollupPutJobParts<'b>) -> RollupPutJob<'a, 'b, ()> {
         RollupPutJob::new(self.transport(), parts)
     }
-    #[doc = "[Rollup Rollup API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/xpack-rollup.html)\n\nRollup an index"]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
-    pub fn rollup<'b>(&'a self, parts: RollupRollupParts<'b>) -> RollupRollup<'a, 'b, ()> {
-        RollupRollup::new(self.transport(), parts)
-    }
-    #[doc = "[Rollup Rollup Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/rollup-search.html)\n\nEnables searching rolled-up data using the standard query DSL."]
+    #[doc = "[Rollup Rollup Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/rollup-search.html)\n\nEnables searching rolled-up data using the standard query DSL."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn rollup_search<'b>(
@@ -1399,13 +1240,13 @@ impl<'a> Rollup<'a> {
     ) -> RollupRollupSearch<'a, 'b, ()> {
         RollupRollupSearch::new(self.transport(), parts)
     }
-    #[doc = "[Rollup Start Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/rollup-start-job.html)\n\nStarts an existing, stopped rollup job."]
+    #[doc = "[Rollup Start Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/rollup-start-job.html)\n\nStarts an existing, stopped rollup job."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn start_job<'b>(&'a self, parts: RollupStartJobParts<'b>) -> RollupStartJob<'a, 'b, ()> {
         RollupStartJob::new(self.transport(), parts)
     }
-    #[doc = "[Rollup Stop Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/rollup-stop-job.html)\n\nStops an existing, started rollup job."]
+    #[doc = "[Rollup Stop Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/rollup-stop-job.html)\n\nStops an existing, started rollup job."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn stop_job<'b>(&'a self, parts: RollupStopJobParts<'b>) -> RollupStopJob<'a, 'b, ()> {

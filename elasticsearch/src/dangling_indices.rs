@@ -49,7 +49,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Dangling Indices Delete Dangling Index API"]
 pub enum DanglingIndicesDeleteDanglingIndexParts<'b> {
     #[doc = "IndexUuid"]
@@ -59,7 +59,7 @@ impl<'b> DanglingIndicesDeleteDanglingIndexParts<'b> {
     #[doc = "Builds a relative URL path to the Dangling Indices Delete Dangling Index API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            DanglingIndicesDeleteDanglingIndexParts::IndexUuid(ref index_uuid) => {
+            DanglingIndicesDeleteDanglingIndexParts::IndexUuid(index_uuid) => {
                 let encoded_index_uuid: Cow<str> =
                     percent_encode(index_uuid.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(11usize + encoded_index_uuid.len());
@@ -70,7 +70,7 @@ impl<'b> DanglingIndicesDeleteDanglingIndexParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Dangling Indices Delete Dangling Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-gateway-dangling-indices.html)\n\nDeletes the specified dangling index"]
+#[doc = "Builder for the [Dangling Indices Delete Dangling Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-gateway-dangling-indices.html)\n\nDeletes the specified dangling index"]
 #[derive(Clone, Debug)]
 pub struct DanglingIndicesDeleteDanglingIndex<'a, 'b> {
     transport: &'a Transport,
@@ -198,7 +198,7 @@ impl<'a, 'b> DanglingIndicesDeleteDanglingIndex<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Dangling Indices Import Dangling Index API"]
 pub enum DanglingIndicesImportDanglingIndexParts<'b> {
     #[doc = "IndexUuid"]
@@ -208,7 +208,7 @@ impl<'b> DanglingIndicesImportDanglingIndexParts<'b> {
     #[doc = "Builds a relative URL path to the Dangling Indices Import Dangling Index API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            DanglingIndicesImportDanglingIndexParts::IndexUuid(ref index_uuid) => {
+            DanglingIndicesImportDanglingIndexParts::IndexUuid(index_uuid) => {
                 let encoded_index_uuid: Cow<str> =
                     percent_encode(index_uuid.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(11usize + encoded_index_uuid.len());
@@ -219,7 +219,7 @@ impl<'b> DanglingIndicesImportDanglingIndexParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Dangling Indices Import Dangling Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-gateway-dangling-indices.html)\n\nImports the specified dangling index"]
+#[doc = "Builder for the [Dangling Indices Import Dangling Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-gateway-dangling-indices.html)\n\nImports the specified dangling index"]
 #[derive(Clone, Debug)]
 pub struct DanglingIndicesImportDanglingIndex<'a, 'b, B> {
     transport: &'a Transport,
@@ -373,7 +373,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Dangling Indices List Dangling Indices API"]
 pub enum DanglingIndicesListDanglingIndicesParts {
     #[doc = "No parts"]
@@ -387,7 +387,7 @@ impl DanglingIndicesListDanglingIndicesParts {
         }
     }
 }
-#[doc = "Builder for the [Dangling Indices List Dangling Indices API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-gateway-dangling-indices.html)\n\nReturns all dangling indices."]
+#[doc = "Builder for the [Dangling Indices List Dangling Indices API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-gateway-dangling-indices.html)\n\nReturns all dangling indices."]
 #[derive(Clone, Debug)]
 pub struct DanglingIndicesListDanglingIndices<'a, 'b> {
     transport: &'a Transport,
@@ -497,21 +497,21 @@ impl<'a> DanglingIndices<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Dangling Indices Delete Dangling Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-gateway-dangling-indices.html)\n\nDeletes the specified dangling index"]
+    #[doc = "[Dangling Indices Delete Dangling Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-gateway-dangling-indices.html)\n\nDeletes the specified dangling index"]
     pub fn delete_dangling_index<'b>(
         &'a self,
         parts: DanglingIndicesDeleteDanglingIndexParts<'b>,
     ) -> DanglingIndicesDeleteDanglingIndex<'a, 'b> {
         DanglingIndicesDeleteDanglingIndex::new(self.transport(), parts)
     }
-    #[doc = "[Dangling Indices Import Dangling Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-gateway-dangling-indices.html)\n\nImports the specified dangling index"]
+    #[doc = "[Dangling Indices Import Dangling Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-gateway-dangling-indices.html)\n\nImports the specified dangling index"]
     pub fn import_dangling_index<'b>(
         &'a self,
         parts: DanglingIndicesImportDanglingIndexParts<'b>,
     ) -> DanglingIndicesImportDanglingIndex<'a, 'b, ()> {
         DanglingIndicesImportDanglingIndex::new(self.transport(), parts)
     }
-    #[doc = "[Dangling Indices List Dangling Indices API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-gateway-dangling-indices.html)\n\nReturns all dangling indices."]
+    #[doc = "[Dangling Indices List Dangling Indices API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-gateway-dangling-indices.html)\n\nReturns all dangling indices."]
     pub fn list_dangling_indices<'b>(&'a self) -> DanglingIndicesListDanglingIndices<'a, 'b> {
         DanglingIndicesListDanglingIndices::new(self.transport())
     }

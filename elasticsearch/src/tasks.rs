@@ -47,7 +47,7 @@ use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Tasks Cancel API"]
 pub enum TasksCancelParts<'b> {
     #[doc = "No parts"]
@@ -61,7 +61,7 @@ impl<'b> TasksCancelParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             TasksCancelParts::None => "/_tasks/_cancel".into(),
-            TasksCancelParts::TaskId(ref task_id) => {
+            TasksCancelParts::TaskId(task_id) => {
                 let encoded_task_id: Cow<str> =
                     percent_encode(task_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_task_id.len());
@@ -73,7 +73,7 @@ impl<'b> TasksCancelParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/tasks.html)\n\nCancels a task, if it can be cancelled through an API."]
+#[doc = "Builder for the [Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/tasks.html)\n\nCancels a task, if it can be cancelled through an API."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -240,7 +240,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Tasks Get API"]
 pub enum TasksGetParts<'b> {
     #[doc = "TaskId"]
@@ -251,7 +251,7 @@ impl<'b> TasksGetParts<'b> {
     #[doc = "Builds a relative URL path to the Tasks Get API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TasksGetParts::TaskId(ref task_id) => {
+            TasksGetParts::TaskId(task_id) => {
                 let encoded_task_id: Cow<str> =
                     percent_encode(task_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(8usize + encoded_task_id.len());
@@ -262,7 +262,7 @@ impl<'b> TasksGetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/tasks.html)\n\nReturns information about a task."]
+#[doc = "Builder for the [Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/tasks.html)\n\nReturns information about a task."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -382,7 +382,7 @@ impl<'a, 'b> TasksGet<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Tasks List API"]
 pub enum TasksListParts {
     #[doc = "No parts"]
@@ -397,7 +397,7 @@ impl TasksListParts {
         }
     }
 }
-#[doc = "Builder for the [Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/tasks.html)\n\nReturns a list of tasks."]
+#[doc = "Builder for the [Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/tasks.html)\n\nReturns a list of tasks."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -578,19 +578,19 @@ impl<'a> Tasks<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/tasks.html)\n\nCancels a task, if it can be cancelled through an API."]
+    #[doc = "[Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/tasks.html)\n\nCancels a task, if it can be cancelled through an API."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn cancel<'b>(&'a self, parts: TasksCancelParts<'b>) -> TasksCancel<'a, 'b, ()> {
         TasksCancel::new(self.transport(), parts)
     }
-    #[doc = "[Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/tasks.html)\n\nReturns information about a task."]
+    #[doc = "[Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/tasks.html)\n\nReturns information about a task."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn get<'b>(&'a self, parts: TasksGetParts<'b>) -> TasksGet<'a, 'b> {
         TasksGet::new(self.transport(), parts)
     }
-    #[doc = "[Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/tasks.html)\n\nReturns a list of tasks."]
+    #[doc = "[Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/tasks.html)\n\nReturns a list of tasks."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn list<'b>(&'a self) -> TasksList<'a, 'b> {

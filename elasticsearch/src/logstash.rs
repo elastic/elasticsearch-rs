@@ -45,7 +45,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Logstash Delete Pipeline API"]
 pub enum LogstashDeletePipelineParts<'b> {
     #[doc = "Id"]
@@ -55,7 +55,7 @@ impl<'b> LogstashDeletePipelineParts<'b> {
     #[doc = "Builds a relative URL path to the Logstash Delete Pipeline API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            LogstashDeletePipelineParts::Id(ref id) => {
+            LogstashDeletePipelineParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(20usize + encoded_id.len());
                 p.push_str("/_logstash/pipeline/");
@@ -65,7 +65,7 @@ impl<'b> LogstashDeletePipelineParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Logstash Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/logstash-api-delete-pipeline.html)\n\nDeletes Logstash Pipelines used by Central Management"]
+#[doc = "Builder for the [Logstash Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/logstash-api-delete-pipeline.html)\n\nDeletes Logstash Pipelines used by Central Management"]
 #[derive(Clone, Debug)]
 pub struct LogstashDeletePipeline<'a, 'b> {
     transport: &'a Transport,
@@ -163,7 +163,7 @@ impl<'a, 'b> LogstashDeletePipeline<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Logstash Get Pipeline API"]
 pub enum LogstashGetPipelineParts<'b> {
     #[doc = "Id"]
@@ -173,7 +173,7 @@ impl<'b> LogstashGetPipelineParts<'b> {
     #[doc = "Builds a relative URL path to the Logstash Get Pipeline API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            LogstashGetPipelineParts::Id(ref id) => {
+            LogstashGetPipelineParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(20usize + encoded_id.len());
                 p.push_str("/_logstash/pipeline/");
@@ -183,7 +183,7 @@ impl<'b> LogstashGetPipelineParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Logstash Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/logstash-api-get-pipeline.html)\n\nRetrieves Logstash Pipelines used by Central Management"]
+#[doc = "Builder for the [Logstash Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/logstash-api-get-pipeline.html)\n\nRetrieves Logstash Pipelines used by Central Management"]
 #[derive(Clone, Debug)]
 pub struct LogstashGetPipeline<'a, 'b> {
     transport: &'a Transport,
@@ -281,7 +281,7 @@ impl<'a, 'b> LogstashGetPipeline<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Logstash Put Pipeline API"]
 pub enum LogstashPutPipelineParts<'b> {
     #[doc = "Id"]
@@ -291,7 +291,7 @@ impl<'b> LogstashPutPipelineParts<'b> {
     #[doc = "Builds a relative URL path to the Logstash Put Pipeline API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            LogstashPutPipelineParts::Id(ref id) => {
+            LogstashPutPipelineParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(20usize + encoded_id.len());
                 p.push_str("/_logstash/pipeline/");
@@ -301,7 +301,7 @@ impl<'b> LogstashPutPipelineParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Logstash Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/logstash-api-put-pipeline.html)\n\nAdds and updates Logstash Pipelines used for Central Management"]
+#[doc = "Builder for the [Logstash Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/logstash-api-put-pipeline.html)\n\nAdds and updates Logstash Pipelines used for Central Management"]
 #[derive(Clone, Debug)]
 pub struct LogstashPutPipeline<'a, 'b, B> {
     transport: &'a Transport,
@@ -434,21 +434,21 @@ impl<'a> Logstash<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Logstash Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/logstash-api-delete-pipeline.html)\n\nDeletes Logstash Pipelines used by Central Management"]
+    #[doc = "[Logstash Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/logstash-api-delete-pipeline.html)\n\nDeletes Logstash Pipelines used by Central Management"]
     pub fn delete_pipeline<'b>(
         &'a self,
         parts: LogstashDeletePipelineParts<'b>,
     ) -> LogstashDeletePipeline<'a, 'b> {
         LogstashDeletePipeline::new(self.transport(), parts)
     }
-    #[doc = "[Logstash Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/logstash-api-get-pipeline.html)\n\nRetrieves Logstash Pipelines used by Central Management"]
+    #[doc = "[Logstash Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/logstash-api-get-pipeline.html)\n\nRetrieves Logstash Pipelines used by Central Management"]
     pub fn get_pipeline<'b>(
         &'a self,
         parts: LogstashGetPipelineParts<'b>,
     ) -> LogstashGetPipeline<'a, 'b> {
         LogstashGetPipeline::new(self.transport(), parts)
     }
-    #[doc = "[Logstash Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/logstash-api-put-pipeline.html)\n\nAdds and updates Logstash Pipelines used for Central Management"]
+    #[doc = "[Logstash Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/logstash-api-put-pipeline.html)\n\nAdds and updates Logstash Pipelines used for Central Management"]
     pub fn put_pipeline<'b>(
         &'a self,
         parts: LogstashPutPipelineParts<'b>,

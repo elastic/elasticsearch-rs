@@ -44,7 +44,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Sql Clear Cursor API"]
 pub enum SqlClearCursorParts {
     #[doc = "No parts"]
@@ -58,7 +58,7 @@ impl SqlClearCursorParts {
         }
     }
 }
-#[doc = "Builder for the [Sql Clear Cursor API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/clear-sql-cursor-api.html)\n\nClears the SQL cursor"]
+#[doc = "Builder for the [Sql Clear Cursor API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/clear-sql-cursor-api.html)\n\nClears the SQL cursor"]
 #[derive(Clone, Debug)]
 pub struct SqlClearCursor<'a, 'b, B> {
     transport: &'a Transport,
@@ -179,7 +179,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Sql Delete Async API"]
 pub enum SqlDeleteAsyncParts<'b> {
     #[doc = "Id"]
@@ -189,7 +189,7 @@ impl<'b> SqlDeleteAsyncParts<'b> {
     #[doc = "Builds a relative URL path to the Sql Delete Async API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SqlDeleteAsyncParts::Id(ref id) => {
+            SqlDeleteAsyncParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(19usize + encoded_id.len());
                 p.push_str("/_sql/async/delete/");
@@ -199,7 +199,7 @@ impl<'b> SqlDeleteAsyncParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Sql Delete Async API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/delete-async-sql-search-api.html)\n\nDeletes an async SQL search or a stored synchronous SQL search. If the search is still running, the API cancels it."]
+#[doc = "Builder for the [Sql Delete Async API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-async-sql-search-api.html)\n\nDeletes an async SQL search or a stored synchronous SQL search. If the search is still running, the API cancels it."]
 #[derive(Clone, Debug)]
 pub struct SqlDeleteAsync<'a, 'b> {
     transport: &'a Transport,
@@ -297,7 +297,7 @@ impl<'a, 'b> SqlDeleteAsync<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Sql Get Async API"]
 pub enum SqlGetAsyncParts<'b> {
     #[doc = "Id"]
@@ -307,7 +307,7 @@ impl<'b> SqlGetAsyncParts<'b> {
     #[doc = "Builds a relative URL path to the Sql Get Async API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SqlGetAsyncParts::Id(ref id) => {
+            SqlGetAsyncParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(12usize + encoded_id.len());
                 p.push_str("/_sql/async/");
@@ -317,7 +317,7 @@ impl<'b> SqlGetAsyncParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Sql Get Async API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-async-sql-search-api.html)\n\nReturns the current status and available results for an async SQL search or stored synchronous SQL search"]
+#[doc = "Builder for the [Sql Get Async API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-async-sql-search-api.html)\n\nReturns the current status and available results for an async SQL search or stored synchronous SQL search"]
 #[derive(Clone, Debug)]
 pub struct SqlGetAsync<'a, 'b> {
     transport: &'a Transport,
@@ -451,7 +451,7 @@ impl<'a, 'b> SqlGetAsync<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Sql Get Async Status API"]
 pub enum SqlGetAsyncStatusParts<'b> {
     #[doc = "Id"]
@@ -461,7 +461,7 @@ impl<'b> SqlGetAsyncStatusParts<'b> {
     #[doc = "Builds a relative URL path to the Sql Get Async Status API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SqlGetAsyncStatusParts::Id(ref id) => {
+            SqlGetAsyncStatusParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(19usize + encoded_id.len());
                 p.push_str("/_sql/async/status/");
@@ -471,7 +471,7 @@ impl<'b> SqlGetAsyncStatusParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Sql Get Async Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-async-sql-search-status-api.html)\n\nReturns the current status of an async SQL search or a stored synchronous SQL search"]
+#[doc = "Builder for the [Sql Get Async Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-async-sql-search-status-api.html)\n\nReturns the current status of an async SQL search or a stored synchronous SQL search"]
 #[derive(Clone, Debug)]
 pub struct SqlGetAsyncStatus<'a, 'b> {
     transport: &'a Transport,
@@ -569,7 +569,7 @@ impl<'a, 'b> SqlGetAsyncStatus<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Sql Query API"]
 pub enum SqlQueryParts {
     #[doc = "No parts"]
@@ -583,7 +583,7 @@ impl SqlQueryParts {
         }
     }
 }
-#[doc = "Builder for the [Sql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/sql-search-api.html)\n\nExecutes a SQL request"]
+#[doc = "Builder for the [Sql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/sql-search-api.html)\n\nExecutes a SQL request"]
 #[derive(Clone, Debug)]
 pub struct SqlQuery<'a, 'b, B> {
     transport: &'a Transport,
@@ -717,7 +717,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Sql Translate API"]
 pub enum SqlTranslateParts {
     #[doc = "No parts"]
@@ -731,7 +731,7 @@ impl SqlTranslateParts {
         }
     }
 }
-#[doc = "Builder for the [Sql Translate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/sql-translate-api.html)\n\nTranslates SQL into Elasticsearch queries"]
+#[doc = "Builder for the [Sql Translate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/sql-translate-api.html)\n\nTranslates SQL into Elasticsearch queries"]
 #[derive(Clone, Debug)]
 pub struct SqlTranslate<'a, 'b, B> {
     transport: &'a Transport,
@@ -867,30 +867,30 @@ impl<'a> Sql<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Sql Clear Cursor API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/clear-sql-cursor-api.html)\n\nClears the SQL cursor"]
+    #[doc = "[Sql Clear Cursor API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/clear-sql-cursor-api.html)\n\nClears the SQL cursor"]
     pub fn clear_cursor<'b>(&'a self) -> SqlClearCursor<'a, 'b, ()> {
         SqlClearCursor::new(self.transport())
     }
-    #[doc = "[Sql Delete Async API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/delete-async-sql-search-api.html)\n\nDeletes an async SQL search or a stored synchronous SQL search. If the search is still running, the API cancels it."]
+    #[doc = "[Sql Delete Async API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-async-sql-search-api.html)\n\nDeletes an async SQL search or a stored synchronous SQL search. If the search is still running, the API cancels it."]
     pub fn delete_async<'b>(&'a self, parts: SqlDeleteAsyncParts<'b>) -> SqlDeleteAsync<'a, 'b> {
         SqlDeleteAsync::new(self.transport(), parts)
     }
-    #[doc = "[Sql Get Async API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-async-sql-search-api.html)\n\nReturns the current status and available results for an async SQL search or stored synchronous SQL search"]
+    #[doc = "[Sql Get Async API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-async-sql-search-api.html)\n\nReturns the current status and available results for an async SQL search or stored synchronous SQL search"]
     pub fn get_async<'b>(&'a self, parts: SqlGetAsyncParts<'b>) -> SqlGetAsync<'a, 'b> {
         SqlGetAsync::new(self.transport(), parts)
     }
-    #[doc = "[Sql Get Async Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-async-sql-search-status-api.html)\n\nReturns the current status of an async SQL search or a stored synchronous SQL search"]
+    #[doc = "[Sql Get Async Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-async-sql-search-status-api.html)\n\nReturns the current status of an async SQL search or a stored synchronous SQL search"]
     pub fn get_async_status<'b>(
         &'a self,
         parts: SqlGetAsyncStatusParts<'b>,
     ) -> SqlGetAsyncStatus<'a, 'b> {
         SqlGetAsyncStatus::new(self.transport(), parts)
     }
-    #[doc = "[Sql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/sql-search-api.html)\n\nExecutes a SQL request"]
+    #[doc = "[Sql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/sql-search-api.html)\n\nExecutes a SQL request"]
     pub fn query<'b>(&'a self) -> SqlQuery<'a, 'b, ()> {
         SqlQuery::new(self.transport())
     }
-    #[doc = "[Sql Translate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/sql-translate-api.html)\n\nTranslates SQL into Elasticsearch queries"]
+    #[doc = "[Sql Translate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/sql-translate-api.html)\n\nTranslates SQL into Elasticsearch queries"]
     pub fn translate<'b>(&'a self) -> SqlTranslate<'a, 'b, ()> {
         SqlTranslate::new(self.transport())
     }
