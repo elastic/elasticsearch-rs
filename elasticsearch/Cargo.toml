@@ -39,7 +39,7 @@ serde_with = "2.2.0"
 void = "1.0.2"
 
 [dev-dependencies]
-chrono = { version = "^0.4", features = ["serde"] }
+chrono = { version = "0.4", features = ["serde"] }
 clap = "4.1.2"
 failure = "0.1.5"
 futures = "0.3.1"
