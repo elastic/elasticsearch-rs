@@ -23,9 +23,8 @@ use quote::Tokens;
 use regex::Regex;
 
 pub fn generate(api: &Api) -> anyhow::Result<String> {
-    let mut tokens = quote!(
-        use serde::{Serialize, Deserialize};
-    );
+    let mut tokens = Tokens::new();
+
     for e in &api.enums {
         generate_param(&mut tokens, &e);
     }

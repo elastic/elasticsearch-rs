@@ -16,100 +16,73 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+use std::collections::HashMap;
+use std::path::Path;
+use std::{fs, io};
 
-use super::*;
 use anyhow::Context;
 use chrono::{DateTime, FixedOffset};
 use reqwest::blocking as reqwest;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
-use std::fs;
-use std::io;
 
-pub fn download(commit_hash: Option<String>, url: Option<String>) -> anyhow::Result<()> {
-    // Get commit hash from ES if its URL has been provided
-    let commit_hash = if let Some(url) = url {
-        Some(super::get_es_commit_hash(url)?)
-    } else {
-        commit_hash
-    };
-
-    // Check if it's already there
-    if let Some(expected_hash) = &commit_hash {
-        if let Some(project) = read_local_project()? {
-            if &project.commit_hash == expected_hash {
-                println!("Specs were already downloaded.");
-                return Ok(());
-            }
-        }
-    }
-
-    let spec_dir = ROOT_DIR.join("checkout").join(STACK_VERSION.deref());
-
+pub fn download_artifacts(artifact_dir: &Path, stack_version: &str) -> anyhow::Result<()> {
+    let api_spec_dir = artifact_dir
+        .join(stack_version);
     let artifacts_url = format!(
         "https://artifacts-api.elastic.co/v1/versions/{}",
-        *STACK_VERSION
+        stack_version
     );
     println!("Downloading build info from {}", &artifacts_url);
 
     let artifacts = reqwest::get(&artifacts_url)?.json::<Artifacts>()?;
+    let project = artifacts
+        .version
+        .builds
+        .iter()
+        .max_by_key(|build| build.start_time)
+        .unwrap()
+        .projects
+        .get("elasticsearch")
+        .with_context(|| "Project 'elasticsearch' not found")?;
 
-    let project = match &commit_hash {
-        Some(hash) => artifacts
-            .version
-            .builds
-            .iter()
-            .find(|build| {
-                build
-                    .projects
-                    .get("elasticsearch")
-                    .filter(|es| &es.commit_hash == hash)
-                    .is_some()
-            })
-            .with_context(|| format!("Cannot find commit hash {}", hash))?
-            .projects
-            .get("elasticsearch")
-            .unwrap(), // ES is guaranteed to be there
-
-        None => artifacts
-            .version
-            .builds
-            .iter()
-            .max_by_key(|build| build.start_time)
-            .unwrap()
-            .projects
-            .get("elasticsearch")
-            .with_context(|| "Project 'elasticsearch' not found")?,
-    };
+    if let Some(local_project) = read_local_project(api_spec_dir.as_path())? {
+        if local_project.commit_hash == project.commit_hash {
+            println!("Specs already downloaded.");
+            return Ok(());
+        }
+    }
 
     let specs_url = project
         .packages
-        .get(&format!("rest-resources-zip-{}.zip", *STACK_VERSION))
-        .with_context(|| "Package 'rest-resources-zip' not found")?
+        .get(&format!("rest-resources-zip-{}.zip", stack_version))
+        .with_context(|| {
+            format!(
+                "Package `rest-resources-zip-{}.zip` not found",
+                stack_version
+            )
+        })?
         .url
         .clone();
 
     println!("Downloading specs and yaml tests from {}", &specs_url);
     let zip_resp = reqwest::get(&specs_url)?.bytes()?;
 
-    if spec_dir.exists() {
-        fs::remove_dir_all(&spec_dir).unwrap();
+    if api_spec_dir.exists() {
+        fs::remove_dir_all(&api_spec_dir).unwrap();
     }
-    fs::create_dir_all(&spec_dir).unwrap();
-    zip::ZipArchive::new(io::Cursor::new(zip_resp))?.extract(&spec_dir)?;
+    fs::create_dir_all(&api_spec_dir).unwrap();
+    zip::ZipArchive::new(io::Cursor::new(zip_resp))?.extract(&api_spec_dir)?;
 
-    // Also write project metadata for reference
-    let project_path = &spec_dir.join("elasticsearch.json");
+    // Write project metadata for reference
+    let project_path = &api_spec_dir.join("elasticsearch.json");
     let project_file = fs::File::create(&project_path)?;
     serde_json::to_writer_pretty(project_file, &project)?;
 
     Ok(())
 }
 
-pub fn read_local_project() -> anyhow::Result<Option<Project>> {
-    let spec_dir = ROOT_DIR.join("checkout").join(STACK_VERSION.deref());
-    let project_path = &spec_dir.join("elasticsearch.json");
-
+fn read_local_project(api_spec_dir: &Path) -> anyhow::Result<Option<Project>> {
+    let project_path = api_spec_dir.join("elasticsearch.json");
     if project_path.exists() {
         Ok(serde_json::from_reader(fs::File::open(project_path)?)?)
     } else {
@@ -180,17 +153,13 @@ mod rfc2822_format {
     use serde::{self, Deserialize, Deserializer, Serializer};
 
     pub fn serialize<S>(date: &DateTime<FixedOffset>, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: Serializer,
-    {
+    where S: Serializer {
         let s = date.to_rfc2822();
         serializer.serialize_str(&s)
     }
 
     pub fn deserialize<'de, D>(deserializer: D) -> Result<DateTime<FixedOffset>, D::Error>
-    where
-        D: Deserializer<'de>,
-    {
+    where D: Deserializer<'de> {
         let s = String::deserialize(deserializer)?;
         DateTime::parse_from_rfc2822(&s).map_err(serde::de::Error::custom)
     }

@@ -21,6 +21,7 @@ pub mod params;
 pub mod request;
 pub mod root;
 pub mod url;
+pub mod  warp;
 
 use crate::generator::{Stability, TypeKind};
 use inflector::Inflector;
