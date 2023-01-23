@@ -19,6 +19,5 @@
 
 mod artifacts;
 
-pub use artifacts::download_artifacts;
 pub use api_generator::generator::generate_api;
-
+pub use artifacts::download_artifacts;

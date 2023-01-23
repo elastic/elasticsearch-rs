@@ -26,8 +26,7 @@ use reqwest::blocking as reqwest;
 use serde::{Deserialize, Serialize};
 
 pub fn download_artifacts(artifact_download_dir: &Path, stack_version: &str) -> anyhow::Result<()> {
-    let api_spec_download_dir = artifact_download_dir
-        .join(stack_version);
+    let api_spec_download_dir = artifact_download_dir.join(stack_version);
     let artifacts_url = format!(
         "https://artifacts-api.elastic.co/v1/versions/{}",
         stack_version
@@ -153,13 +152,17 @@ mod rfc2822_format {
     use serde::{self, Deserialize, Deserializer, Serializer};
 
     pub fn serialize<S>(date: &DateTime<FixedOffset>, serializer: S) -> Result<S::Ok, S::Error>
-    where S: Serializer {
+    where
+        S: Serializer,
+    {
         let s = date.to_rfc2822();
         serializer.serialize_str(&s)
     }
 
     pub fn deserialize<'de, D>(deserializer: D) -> Result<DateTime<FixedOffset>, D::Error>
-    where D: Deserializer<'de> {
+    where
+        D: Deserializer<'de>,
+    {
         let s = String::deserialize(deserializer)?;
         DateTime::parse_from_rfc2822(&s).map_err(serde::de::Error::custom)
     }

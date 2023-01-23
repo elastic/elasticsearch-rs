@@ -27,7 +27,7 @@ use std::{
     fmt,
     fs::{self, File, OpenOptions},
     hash::{Hash, Hasher},
-    io::{Read, BufWriter, Write},
+    io::{BufWriter, Read, Write},
     marker::PhantomData,
     str::FromStr,
 };
@@ -41,7 +41,6 @@ use void::Void;
 pub mod code_gen;
 pub mod output;
 
-use itertools::Itertools;
 use std::cmp::Ordering;
 
 lazy_static! {
@@ -523,7 +522,12 @@ impl PartialEq for ApiEnum {
 impl Eq for ApiEnum {}
 
 /// Generates all client source code from the REST API spec
-pub fn generate_api(api_spec_dir: &std::path::Path, selected_spec_files: &[&str], target_file: &std::path::Path, file_header: &str) -> anyhow::Result<()> {
+pub fn generate_api(
+    api_spec_dir: &std::path::Path,
+    selected_spec_files: &[&str],
+    target_file: &std::path::Path,
+    file_header: &str,
+) -> anyhow::Result<()> {
     if target_file.exists() {
         let _ = fs::remove_file(&target_file).expect(&format!(
             "Error removing existing target file: {:?}.",
@@ -671,7 +675,7 @@ where
         .paths
         .iter()
         .map(|p| &p.deprecated)
-        .fold1(|d1, d2| Deprecated::combine(d1, d2))
+        .reduce(|d1, d2| Deprecated::combine(d1, d2))
         .unwrap_or(&None);
 
     if let Some(deprecated) = deprecation {
