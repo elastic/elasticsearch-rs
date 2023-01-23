@@ -7,6 +7,8 @@
 [Apache-2 licensed]: https://img.shields.io/crates/l/elasticsearch.svg
 [license]: ./LICENSE.txt
 
+**IMPORTANT NOTICE: This is as fork of the original [elasticsearch-rs repository](https://github.com/quickwit-oss/elasticsearch-rs). The api generation part has been modified for generating elastic compatible API endpoint and types within [Quickwit](https://github.com/orgs/quickwit-oss).** 
+
 Official Rust Client for [Elasticsearch](https://github.com/elastic/elasticsearch).
 
 Full documentation is available at https://docs.rs/elasticsearch
