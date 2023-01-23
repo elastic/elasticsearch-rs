@@ -23,13 +23,12 @@ use serde::{
 };
 use serde_json::Value;
 use std::{
-    collections::{BTreeMap, BTreeSet, HashMap, HashSet},
+    collections::{BTreeMap, BTreeSet, HashSet},
     fmt,
-    fs::{self, File},
+    fs::{self, File, OpenOptions},
     hash::{Hash, Hasher},
-    io::Read,
+    io::{Read, BufWriter, Write},
     marker::PhantomData,
-    path::PathBuf,
     str::FromStr,
 };
 
@@ -43,7 +42,6 @@ pub mod code_gen;
 pub mod output;
 
 use itertools::Itertools;
-use output::{merge_file, write_file};
 use std::cmp::Ordering;
 
 lazy_static! {
@@ -105,6 +103,19 @@ pub enum HttpMethod {
     Patch,
     #[serde(rename = "DELETE")]
     Delete,
+}
+
+impl HttpMethod {
+    fn to_str(&self) -> &str {
+        match *self {
+            HttpMethod::Head => "head",
+            HttpMethod::Get => "get",
+            HttpMethod::Post => "post",
+            HttpMethod::Put => "put",
+            HttpMethod::Patch => "patch",
+            HttpMethod::Delete => "delete",
+        }
+    }
 }
 
 /// Converts a `HttpMethod` in the REST spec, into the AST for
@@ -512,84 +523,42 @@ impl PartialEq for ApiEnum {
 impl Eq for ApiEnum {}
 
 /// Generates all client source code from the REST API spec
-pub fn generate(download_dir: &PathBuf, generated_dir: &PathBuf) -> anyhow::Result<()> {
-    // read the Api from file
-    let api = read_api(download_dir)?;
-
-    let docs_dir = PathBuf::from("./api_generator/docs");
-
-    // generated file tracking lists
-    let mut tracker = GeneratedFiles::default();
-
-    // generate param enums
-    let mut sections = HashMap::new();
-    sections.insert("spec-params", code_gen::params::generate(&api)?);
-    merge_file(
-        |section| sections.remove(section),
-        generated_dir,
-        "params.rs",
-        &mut tracker,
-    )?;
-
-    // generate namespace client modules
-    let namespace_clients = code_gen::namespace_clients::generate(&api, &docs_dir)?;
-
-    let namespace_docs_dir = {
-        let mut p = docs_dir.clone();
-        p.push("namespaces");
-        p
-    };
-
-    for (name, input) in namespace_clients {
-        let mut docs_file = namespace_docs_dir.clone();
-        docs_file.push(format!("{}.md", name));
-        write_file(
-            input,
-            Some(&docs_file),
-            &generated_dir,
-            format!("{}.rs", name).as_str(),
-            &mut tracker,
-        )?;
+pub fn generate_api(api_spec_dir: &std::path::Path, selected_spec_files: &[&str], target_file: &std::path::Path, file_header: &str) -> anyhow::Result<()> {
+    if target_file.exists() {
+        let _ = fs::remove_file(&target_file).expect(&format!(
+            "Error removing existing target file: {:?}.",
+            target_file
+        ));
     }
 
-    // generate functions on root of client
-    let mut root = code_gen::root::generate(&api, &docs_dir)?;
-    root.push_str(
-        r#"
+    // TODO: Think of versioning
 
-mod bulk;
-pub use bulk::*;
-    "#,
-    );
-    write_file(root, None, generated_dir, "root/mod.rs", &mut tracker)?;
+    // read the Api from files
+    let api = read_api(&api_spec_dir, selected_spec_files)?;
 
-    // declare namespace modules in the top-level lib.rs
-    let mods = api
-        .namespaces
-        .keys()
-        .map(|ns| format!("pub mod {};", ns))
-        .collect::<Vec<_>>()
-        .join("\n");
+    let file = OpenOptions::new()
+        .create(true)
+        .write(true)
+        .open(&target_file)?;
+    let mut writer = BufWriter::new(file);
 
-    let mut sections = HashMap::new();
-    sections.insert("namespace-modules", mods);
-    merge_file(
-        |section| sections.remove(section),
-        generated_dir,
-        "lib.rs",
-        &mut tracker,
-    )?;
+    // file header
+    writer.write(file_header.as_bytes())?;
 
-    let mut generated = generated_dir.clone();
-    generated.push(GENERATED_TOML);
+    // endpoints params types
+    writer.write(code_gen::root::generate(&api)?.as_bytes())?;
 
-    fs::write(generated, toml::to_string_pretty(&tracker)?)?;
+    // helper types
+    writer.write(code_gen::params::generate(&api)?.as_bytes())?;
+
+    // warp endpoint filters
+    writer.write(code_gen::warp::generate(&api)?.as_bytes())?;
 
     Ok(())
 }
 
 /// Reads Api from a directory of REST Api specs
-pub fn read_api(download_dir: &PathBuf) -> anyhow::Result<Api> {
+pub fn read_api(download_dir: &std::path::Path, files: &[&str]) -> anyhow::Result<Api> {
     let paths = fs::read_dir(download_dir)?;
     let mut namespaces = BTreeMap::<String, ApiNamespace>::new();
     let mut enums: HashSet<ApiEnum> = HashSet::new();
@@ -603,7 +572,7 @@ pub fn read_api(download_dir: &PathBuf) -> anyhow::Result<Api> {
 
         if name
             .unwrap()
-            .map(|name| name.ends_with(".json") && !name.starts_with('_'))
+            .map(|name| name.ends_with(".json") && !name.starts_with('_') && files.contains(&name))
             .unwrap_or(true)
         {
             let mut file = File::open(&path)?;

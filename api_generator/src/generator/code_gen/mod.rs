@@ -21,6 +21,7 @@ pub mod params;
 pub mod request;
 pub mod root;
 pub mod url;
+pub mod warp;
 
 use crate::generator::{Stability, TypeKind};
 use inflector::Inflector;
@@ -166,22 +167,22 @@ fn typekind_to_ty(name: &str, kind: &TypeKind, required: bool, fn_arg: bool) -> 
         v.push_str("Option<");
     }
 
-    let str_type = "&'b str";
+    let str_type = "String";
     match kind {
         TypeKind::Unknown(_) => v.push_str(str_type),
         TypeKind::List => {
-            v.push_str("&'b [");
+            v.push_str("Vec<");
             v.push_str(str_type);
-            v.push_str("]");
+            v.push_str(">");
         }
         TypeKind::Enum => match name {
             // opened https://github.com/elastic/elasticsearch/issues/53212
             // to discuss whether this really should be a collection
             "expand_wildcards" => {
                 // Expand wildcards should
-                v.push_str("&'b [");
+                v.push_str("Vec<");
                 v.push_str(name.to_pascal_case().as_str());
-                v.push_str("]");
+                v.push_str(">");
             }
             _ => v.push_str(name.to_pascal_case().as_str()),
         },

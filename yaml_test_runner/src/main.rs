@@ -92,7 +92,8 @@ fn main() -> anyhow::Result<()> {
     let download_dir = PathBuf::from(format!("./checkout/{}/rest-api-spec/test", stack_version));
     let generated_dir = PathBuf::from(format!("./{}/tests", env!("CARGO_PKG_NAME")));
 
-    let api = api_generator::generator::read_api(&rest_specs_dir)?;
+    //TODO: update for test
+    let api = api_generator::generator::read_api(&rest_specs_dir, &[])?;
 
     // delete everything under the generated_dir except common dir
     if generated_dir.exists() {
