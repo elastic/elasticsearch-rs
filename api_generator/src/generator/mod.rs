@@ -523,10 +523,7 @@ impl PartialEq for ApiEnum {
 impl Eq for ApiEnum {}
 
 /// Generates all client source code from the REST API spec
-pub fn generate_api(spec_dir: &std::path::Path, selected_spec_files: &[&str], target_file: &std::path::Path, file_header: &str) -> anyhow::Result<()> {
-    // let download_dir = spec_dir.join("rest-api-spec")
-    //     .join("api");
-
+pub fn generate_api(api_spec_dir: &std::path::Path, selected_spec_files: &[&str], target_file: &std::path::Path, file_header: &str) -> anyhow::Result<()> {
     if target_file.exists() {
         let _ = fs::remove_file(&target_file).expect(&format!(
             "Error removing existing target file: {:?}.",
@@ -537,7 +534,7 @@ pub fn generate_api(spec_dir: &std::path::Path, selected_spec_files: &[&str], ta
     // TODO: Think of versioning
 
     // read the Api from files
-    let api = read_api(&spec_dir, selected_spec_files)?;
+    let api = read_api(&api_spec_dir, selected_spec_files)?;
 
     let file = OpenOptions::new()
         .create(true)
