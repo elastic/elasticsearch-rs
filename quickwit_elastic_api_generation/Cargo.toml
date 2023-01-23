@@ -1,5 +1,5 @@
 [package]
-name = "quickwit_elastic_api"
+name = "quickwit_elastic_api_generation"
 version = "8.7.0-alpha.1"
 edition = "2018"
 publish = false
