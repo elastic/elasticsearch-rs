@@ -1,0 +1,3 @@
+steps:
+  - label: ":rust: Greetings"
+    command: "echo 'Hello, world!'"
