@@ -96,7 +96,7 @@ The workspace contains the following packages:
 
   The client package crate. The client exposes all Elasticsearch APIs as associated functions, either on
 the root client, `Elasticsearch`, or on one of the _namespaced clients_, such as `Cat`, `Indices`, etc. The _namespaced clients_
-are based on the grouping of APIs within the [Elasticsearch](https://github.com/elastic/elasticsearch/tree/master/rest-api-spec) and [X-Pack](https://github.com/elastic/elasticsearch/tree/master/x-pack/plugin/src/test/resources/rest-api-spec/api) REST API specs from which much of the client is generated.
+are based on the grouping of APIs within the [Elasticsearch](https://github.com/elastic/elasticsearch/tree/main/rest-api-spec) and [X-Pack](https://github.com/elastic/elasticsearch/tree/main/x-pack/plugin/src/test/resources/rest-api-spec/api) REST API specs from which much of the client is generated.
 All API functions are `async` only, and can be `await`ed.
 
 - #### `api_generator`
