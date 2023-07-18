@@ -108,7 +108,7 @@
 //!
 //! ## Create a client
 //!
-//! To create a client to make API calls to Elasticsearch running on `http://localhost:9200`
+//! To create a client to make API calls to Elasticsearch running on `https://localhost:9200`
 //!
 //! ```rust,no_run
 //! # use elasticsearch::Elasticsearch;
