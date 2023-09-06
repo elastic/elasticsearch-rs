@@ -1,5 +1,5 @@
 steps:
-  - label: ":rust: Elasticsearch Rust Client :elasticsearch:"
+  - label: ":rust: Elasticsearch Rust Client :elasticsearch: {{ matrix.test_suite }}"
     agents:
       provider: "gcp"
     env:
