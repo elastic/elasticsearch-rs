@@ -101,16 +101,16 @@ condition = { env_set = [ "STACK_VERSION", "TEST_SUITE" ], env_false = ["CARGO_M
 dependencies = ["set-free-env", "set-platinum-env"]
 
 [tasks.run-elasticsearch.linux]
-command = "./.ci/run-elasticsearch.sh"
+command = "./.buildkite/run-elasticsearch.sh"
 
 [tasks.run-elasticsearch.mac]
-command = "./.ci/run-elasticsearch.sh"
+command = "./.buildkite/run-elasticsearch.sh"
 
 [tasks.run-elasticsearch.windows]
 script_runner = "cmd"
 script = [
 '''
-bash -c "STACK_VERSION=%STACK_VERSION% TEST_SUITE=%TEST_SUITE% DETACH=%DETACH% CLEANUP=%CLEANUP% bash .ci/run-elasticsearch.sh"
+bash -c "STACK_VERSION=%STACK_VERSION% TEST_SUITE=%TEST_SUITE% DETACH=%DETACH% CLEANUP=%CLEANUP% bash .buildkite/run-elasticsearch.sh"
 '''
 ]
 
@@ -200,7 +200,7 @@ script = [
 """
 cd ./../clients-team/scripts/release-notes-generator
 docker build --file ./Dockerfile --tag clients-team/release_notes_generator .
-docker run -v "${CARGO_MAKE_WORKING_DIRECTORY}/.ci/release/config.yml:/usr/src/release_notes_generator/config.yml" --rm clients-team/release_notes_generator -o ${OLD_VERSION} -n ${NEW_VERSION}
+docker run -v "${CARGO_MAKE_WORKING_DIRECTORY}/.buildkite/release/config.yml:/usr/src/release_notes_generator/config.yml" --rm clients-team/release_notes_generator -o ${OLD_VERSION} -n ${NEW_VERSION}
 """
 ]
 
