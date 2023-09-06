@@ -18,7 +18,7 @@ RUN set -eux; \
 # create app directory
 WORKDIR /usr/src/elasticsearch-rs
 
-COPY .ci/certs ./.ci/certs
+COPY .buildkite/certs ./.buildkite/certs
 COPY Cargo.toml ./Cargo.toml
 COPY Makefile.toml ./Makefile.toml
 COPY README.md ./README.md
