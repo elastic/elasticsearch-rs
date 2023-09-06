@@ -1,3 +1,18 @@
 steps:
-  - label: ":rust: Greetings"
-    command: "echo 'Hello, world!'"
+  - label: ":rust: Elasticsearch Rust Client :elasticsearch:"
+    agents:
+      provider: "gcp"
+    env:
+      STACK_VERSION: "{{ matrix.stack_version }}"
+      TEST_SUITE: "{{ matrix.test_suite }}"
+      RUST_TOOLCHAIN: "{{ matrix.toolchain }}"
+    matrix:
+      setup:
+        stack_version:
+          - "8.0.0-SNAPSHOT"
+        test_suite:
+          - "free"
+          - "platinum"
+        toolchain:
+          - "latest"
+    command: ./.buildkite/run-tests
