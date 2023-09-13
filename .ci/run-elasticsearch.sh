@@ -78,12 +78,13 @@ fi
 
 # Pull the container, retry on failures up to 5 times with
 # short delays between each attempt. Fixes most transient network errors.
-docker_pull_attempts=0
-until [ "$docker_pull_attempts" -ge 5 ]
+DOCKER_PULL_ATTEMPTS=${DOCKER_PULL_ATTEMPTS-5}
+docker_pull_attempt=0
+until [ "$docker_pull_attempt" -ge "$DOCKER_PULL_ATTEMPTS" ]
 do
    docker pull docker.elastic.co/elasticsearch/"$elasticsearch_container" && break
-   docker_pull_attempts=$((docker_pull_attempts+1))
-   echo "Failed to pull image, retrying in 10 seconds (retry $docker_pull_attempts/5)..."
+   docker_pull_attempt=$((docker_pull_attempt+1))
+   echo "Failed to pull image, retrying in 10 seconds (retry $docker_pull_attempt/5)..."
    sleep 10
 done
 
@@ -107,6 +108,12 @@ END
   # make sure we detach for all but the last node if DETACH=false (default) so all nodes are started
   local_detach="true"
   if [[ "$i" == "$((NUMBER_OF_NODES-1))" ]]; then local_detach=$DETACH; fi
+  # make sure we delete any existing container from previous runs
+  if [[ -n "$(docker container ls -a -q -f name="^$node_name\$")" ]]; then
+    echo -e "\033[34;1mINFO:\033[0m Deleting previously existing node $node_name \033[0m"
+    (docker container rm --force --volumes "$node_name") || true
+  fi
+  # start the new container
   echo -e "\033[34;1mINFO:\033[0m Starting container $node_name \033[0m"
   set -x
   docker run \
@@ -123,7 +130,6 @@ END
     --health-interval=2s \
     --health-retries=20 \
     --health-timeout=2s \
-    --rm \
     docker.elastic.co/elasticsearch/"$elasticsearch_container";
 
   set +x
