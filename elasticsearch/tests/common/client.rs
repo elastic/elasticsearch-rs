@@ -53,16 +53,44 @@ pub fn create_default_builder() -> TransportBuilder {
 }
 
 pub fn create_builder(addr: &str) -> TransportBuilder {
-    let url = Url::parse(addr).unwrap();
+    let mut url = Url::parse(addr).unwrap();
+
+    // if the url is https and specifies a username and password, remove from the url and set credentials
+    let credentials = if url.scheme() == "https" {
+        let username = if !url.username().is_empty() {
+            let u = url.username().to_string();
+            url.set_username("").unwrap();
+            u
+        } else {
+            "elastic".into()
+        };
+
+        let password = match url.password() {
+            Some(p) => {
+                let pass = p.to_string();
+                url.set_password(None).unwrap();
+                pass
+            }
+            None => "changeme".into(),
+        };
+
+        Some(Credentials::Basic(username, password))
+    } else {
+        None
+    };
+
     let conn_pool = SingleNodeConnectionPool::new(url.clone());
     let mut builder = TransportBuilder::new(conn_pool);
-    // assume if we're running with HTTPS then authentication is also enabled and disable
-    // certificate validation - we'll change this for tests that need to.
-    if url.scheme() == "https" {
-        builder = builder.auth(Credentials::Basic("elastic".into(), "changeme".into()));
 
-        #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
-        {
+    if let Some(c) = credentials {
+        builder = builder.auth(c);
+    }
+
+    // assume if we're running with HTTPS then disable
+    // certificate validation - we'll change this for tests that need to.
+    #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+    {
+        if url.scheme() == "https" {
             builder = builder.cert_validation(CertificateValidation::None);
         }
     }
