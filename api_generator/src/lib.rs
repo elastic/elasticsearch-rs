@@ -12,4 +12,3 @@ extern crate quote;
 
 pub mod error;
 pub mod generator;
-pub mod rest_spec;
