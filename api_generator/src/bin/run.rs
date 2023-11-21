@@ -21,7 +21,7 @@ extern crate dialoguer;
 
 use anyhow::{bail, Context};
 use api_generator::generator;
-use std::{fs, path::PathBuf};
+use std::{fs, path::Path};
 
 fn main() -> anyhow::Result<()> {
     simple_logger::SimpleLogger::new()
@@ -32,14 +32,13 @@ fn main() -> anyhow::Result<()> {
     let stack_version = std::env::var("STACK_VERSION").context("Missing STACK_VERSION env var")?;
 
     // This must be run from the repo root directory, with cargo make generate-api
-    let download_dir = PathBuf::from(&format!("./checkout/{}/rest-api-spec/api", stack_version));
-
+    let path = format!("./checkout/{}/rest-api-spec/api", stack_version);
+    let download_dir = Path::new(&path);
     if !download_dir.is_dir() {
         bail!("No specs found at {:?}", download_dir);
     }
 
-    // let download_dir = fs::canonicalize(PathBuf::from("./api_generator/rest_specs"))?;
-    let generated_dir = fs::canonicalize(PathBuf::from("./elasticsearch/src"))?;
+    let generated_dir = fs::canonicalize(Path::new("./elasticsearch/src"))?;
 
     // Delete previously generated files
     let mut generated = generated_dir.clone();
@@ -55,7 +54,7 @@ fn main() -> anyhow::Result<()> {
     }
 
     // and generate!
-    generator::generate(&download_dir, &generated_dir)?;
+    generator::generate(download_dir, &generated_dir)?;
 
     Ok(())
 }

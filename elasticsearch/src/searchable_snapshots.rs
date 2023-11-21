@@ -48,7 +48,7 @@ use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Searchable Snapshots Cache Stats API"]
 pub enum SearchableSnapshotsCacheStatsParts<'b> {
     #[doc = "No parts"]
@@ -62,7 +62,7 @@ impl<'b> SearchableSnapshotsCacheStatsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SearchableSnapshotsCacheStatsParts::None => "/_searchable_snapshots/cache/stats".into(),
-            SearchableSnapshotsCacheStatsParts::NodeId(ref node_id) => {
+            SearchableSnapshotsCacheStatsParts::NodeId(node_id) => {
                 let node_id_str = node_id.join(",");
                 let encoded_node_id: Cow<str> =
                     percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
@@ -75,7 +75,7 @@ impl<'b> SearchableSnapshotsCacheStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Searchable Snapshots Cache Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/searchable-snapshots-apis.html)\n\nRetrieve node-level cache statistics about searchable snapshots."]
+#[doc = "Builder for the [Searchable Snapshots Cache Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/searchable-snapshots-apis.html)\n\nRetrieve node-level cache statistics about searchable snapshots."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -177,7 +177,7 @@ impl<'a, 'b> SearchableSnapshotsCacheStats<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Searchable Snapshots Clear Cache API"]
 pub enum SearchableSnapshotsClearCacheParts<'b> {
     #[doc = "No parts"]
@@ -191,12 +191,12 @@ impl<'b> SearchableSnapshotsClearCacheParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SearchableSnapshotsClearCacheParts::None => "/_searchable_snapshots/cache/clear".into(),
-            SearchableSnapshotsClearCacheParts::Index(ref index) => {
+            SearchableSnapshotsClearCacheParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(35usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_searchable_snapshots/cache/clear");
                 p.into()
@@ -204,7 +204,7 @@ impl<'b> SearchableSnapshotsClearCacheParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Searchable Snapshots Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/searchable-snapshots-apis.html)\n\nClear the cache of searchable snapshots."]
+#[doc = "Builder for the [Searchable Snapshots Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/searchable-snapshots-apis.html)\n\nClear the cache of searchable snapshots."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -370,7 +370,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Searchable Snapshots Mount API"]
 pub enum SearchableSnapshotsMountParts<'b> {
     #[doc = "Repository and Snapshot"]
@@ -380,7 +380,7 @@ impl<'b> SearchableSnapshotsMountParts<'b> {
     #[doc = "Builds a relative URL path to the Searchable Snapshots Mount API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SearchableSnapshotsMountParts::RepositorySnapshot(ref repository, ref snapshot) => {
+            SearchableSnapshotsMountParts::RepositorySnapshot(repository, snapshot) => {
                 let encoded_repository: Cow<str> =
                     percent_encode(repository.as_bytes(), PARTS_ENCODED).into();
                 let encoded_snapshot: Cow<str> =
@@ -390,7 +390,7 @@ impl<'b> SearchableSnapshotsMountParts<'b> {
                 );
                 p.push_str("/_snapshot/");
                 p.push_str(encoded_repository.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_snapshot.as_ref());
                 p.push_str("/_mount");
                 p.into()
@@ -398,7 +398,7 @@ impl<'b> SearchableSnapshotsMountParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Searchable Snapshots Mount API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/searchable-snapshots-api-mount-snapshot.html)\n\nMount a snapshot as a searchable index."]
+#[doc = "Builder for the [Searchable Snapshots Mount API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/searchable-snapshots-api-mount-snapshot.html)\n\nMount a snapshot as a searchable index."]
 #[derive(Clone, Debug)]
 pub struct SearchableSnapshotsMount<'a, 'b, B> {
     transport: &'a Transport,
@@ -549,7 +549,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Searchable Snapshots Stats API"]
 pub enum SearchableSnapshotsStatsParts<'b> {
     #[doc = "No parts"]
@@ -562,12 +562,12 @@ impl<'b> SearchableSnapshotsStatsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SearchableSnapshotsStatsParts::None => "/_searchable_snapshots/stats".into(),
-            SearchableSnapshotsStatsParts::Index(ref index) => {
+            SearchableSnapshotsStatsParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(29usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_searchable_snapshots/stats");
                 p.into()
@@ -575,7 +575,7 @@ impl<'b> SearchableSnapshotsStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Searchable Snapshots Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/searchable-snapshots-apis.html)\n\nRetrieve shard-level statistics about searchable snapshots."]
+#[doc = "Builder for the [Searchable Snapshots Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/searchable-snapshots-apis.html)\n\nRetrieve shard-level statistics about searchable snapshots."]
 #[derive(Clone, Debug)]
 pub struct SearchableSnapshotsStats<'a, 'b> {
     transport: &'a Transport,
@@ -694,7 +694,7 @@ impl<'a> SearchableSnapshots<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Searchable Snapshots Cache Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/searchable-snapshots-apis.html)\n\nRetrieve node-level cache statistics about searchable snapshots."]
+    #[doc = "[Searchable Snapshots Cache Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/searchable-snapshots-apis.html)\n\nRetrieve node-level cache statistics about searchable snapshots."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn cache_stats<'b>(
@@ -703,7 +703,7 @@ impl<'a> SearchableSnapshots<'a> {
     ) -> SearchableSnapshotsCacheStats<'a, 'b> {
         SearchableSnapshotsCacheStats::new(self.transport(), parts)
     }
-    #[doc = "[Searchable Snapshots Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/searchable-snapshots-apis.html)\n\nClear the cache of searchable snapshots."]
+    #[doc = "[Searchable Snapshots Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/searchable-snapshots-apis.html)\n\nClear the cache of searchable snapshots."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn clear_cache<'b>(
@@ -712,14 +712,14 @@ impl<'a> SearchableSnapshots<'a> {
     ) -> SearchableSnapshotsClearCache<'a, 'b, ()> {
         SearchableSnapshotsClearCache::new(self.transport(), parts)
     }
-    #[doc = "[Searchable Snapshots Mount API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/searchable-snapshots-api-mount-snapshot.html)\n\nMount a snapshot as a searchable index."]
+    #[doc = "[Searchable Snapshots Mount API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/searchable-snapshots-api-mount-snapshot.html)\n\nMount a snapshot as a searchable index."]
     pub fn mount<'b>(
         &'a self,
         parts: SearchableSnapshotsMountParts<'b>,
     ) -> SearchableSnapshotsMount<'a, 'b, ()> {
         SearchableSnapshotsMount::new(self.transport(), parts)
     }
-    #[doc = "[Searchable Snapshots Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/searchable-snapshots-apis.html)\n\nRetrieve shard-level statistics about searchable snapshots."]
+    #[doc = "[Searchable Snapshots Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/searchable-snapshots-apis.html)\n\nRetrieve shard-level statistics about searchable snapshots."]
     pub fn stats<'b>(
         &'a self,
         parts: SearchableSnapshotsStatsParts<'b>,

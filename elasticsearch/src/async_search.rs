@@ -46,7 +46,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Async Search Delete API"]
 pub enum AsyncSearchDeleteParts<'b> {
     #[doc = "Id"]
@@ -56,7 +56,7 @@ impl<'b> AsyncSearchDeleteParts<'b> {
     #[doc = "Builds a relative URL path to the Async Search Delete API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            AsyncSearchDeleteParts::Id(ref id) => {
+            AsyncSearchDeleteParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(15usize + encoded_id.len());
                 p.push_str("/_async_search/");
@@ -66,7 +66,7 @@ impl<'b> AsyncSearchDeleteParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Async Search Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/async-search.html)\n\nDeletes an async search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
+#[doc = "Builder for the [Async Search Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/async-search.html)\n\nDeletes an async search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
 #[derive(Clone, Debug)]
 pub struct AsyncSearchDelete<'a, 'b> {
     transport: &'a Transport,
@@ -164,7 +164,7 @@ impl<'a, 'b> AsyncSearchDelete<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Async Search Get API"]
 pub enum AsyncSearchGetParts<'b> {
     #[doc = "Id"]
@@ -174,7 +174,7 @@ impl<'b> AsyncSearchGetParts<'b> {
     #[doc = "Builds a relative URL path to the Async Search Get API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            AsyncSearchGetParts::Id(ref id) => {
+            AsyncSearchGetParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(15usize + encoded_id.len());
                 p.push_str("/_async_search/");
@@ -184,7 +184,7 @@ impl<'b> AsyncSearchGetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Async Search Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/async-search.html)\n\nRetrieves the results of a previously submitted async search request given its ID."]
+#[doc = "Builder for the [Async Search Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/async-search.html)\n\nRetrieves the results of a previously submitted async search request given its ID."]
 #[derive(Clone, Debug)]
 pub struct AsyncSearchGet<'a, 'b> {
     transport: &'a Transport,
@@ -309,7 +309,7 @@ impl<'a, 'b> AsyncSearchGet<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Async Search Status API"]
 pub enum AsyncSearchStatusParts<'b> {
     #[doc = "Id"]
@@ -319,7 +319,7 @@ impl<'b> AsyncSearchStatusParts<'b> {
     #[doc = "Builds a relative URL path to the Async Search Status API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            AsyncSearchStatusParts::Id(ref id) => {
+            AsyncSearchStatusParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(22usize + encoded_id.len());
                 p.push_str("/_async_search/status/");
@@ -329,7 +329,7 @@ impl<'b> AsyncSearchStatusParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Async Search Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/async-search.html)\n\nRetrieves the status of a previously submitted async search request given its ID."]
+#[doc = "Builder for the [Async Search Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/async-search.html)\n\nRetrieves the status of a previously submitted async search request given its ID."]
 #[derive(Clone, Debug)]
 pub struct AsyncSearchStatus<'a, 'b> {
     transport: &'a Transport,
@@ -427,7 +427,7 @@ impl<'a, 'b> AsyncSearchStatus<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Async Search Submit API"]
 pub enum AsyncSearchSubmitParts<'b> {
     #[doc = "No parts"]
@@ -440,12 +440,12 @@ impl<'b> AsyncSearchSubmitParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             AsyncSearchSubmitParts::None => "/_async_search".into(),
-            AsyncSearchSubmitParts::Index(ref index) => {
+            AsyncSearchSubmitParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(15usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_async_search");
                 p.into()
@@ -453,7 +453,7 @@ impl<'b> AsyncSearchSubmitParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Async Search Submit API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/async-search.html)\n\nExecutes a search request asynchronously."]
+#[doc = "Builder for the [Async Search Submit API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/async-search.html)\n\nExecutes a search request asynchronously."]
 #[derive(Clone, Debug)]
 pub struct AsyncSearchSubmit<'a, 'b, B> {
     transport: &'a Transport,
@@ -1005,19 +1005,19 @@ impl<'a> AsyncSearch<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Async Search Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/async-search.html)\n\nDeletes an async search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
+    #[doc = "[Async Search Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/async-search.html)\n\nDeletes an async search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
     pub fn delete<'b>(&'a self, parts: AsyncSearchDeleteParts<'b>) -> AsyncSearchDelete<'a, 'b> {
         AsyncSearchDelete::new(self.transport(), parts)
     }
-    #[doc = "[Async Search Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/async-search.html)\n\nRetrieves the results of a previously submitted async search request given its ID."]
+    #[doc = "[Async Search Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/async-search.html)\n\nRetrieves the results of a previously submitted async search request given its ID."]
     pub fn get<'b>(&'a self, parts: AsyncSearchGetParts<'b>) -> AsyncSearchGet<'a, 'b> {
         AsyncSearchGet::new(self.transport(), parts)
     }
-    #[doc = "[Async Search Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/async-search.html)\n\nRetrieves the status of a previously submitted async search request given its ID."]
+    #[doc = "[Async Search Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/async-search.html)\n\nRetrieves the status of a previously submitted async search request given its ID."]
     pub fn status<'b>(&'a self, parts: AsyncSearchStatusParts<'b>) -> AsyncSearchStatus<'a, 'b> {
         AsyncSearchStatus::new(self.transport(), parts)
     }
-    #[doc = "[Async Search Submit API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/async-search.html)\n\nExecutes a search request asynchronously."]
+    #[doc = "[Async Search Submit API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/async-search.html)\n\nExecutes a search request asynchronously."]
     pub fn submit<'b>(
         &'a self,
         parts: AsyncSearchSubmitParts<'b>,
