@@ -16,11 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-extern crate reqwest;
-use self::reqwest::header::{HeaderMap, HeaderValue, USER_AGENT};
+
+use bytes::Buf as _;
 use flate2::read::GzDecoder;
 use globset::Glob;
-use reqwest::Response;
+use reqwest::header::{HeaderMap, HeaderValue, USER_AGENT};
 use std::{fs::File, io, path::PathBuf};
 use tar::{Archive, Entry};
 
@@ -35,13 +35,15 @@ pub fn download_specs(branch: &str, download_dir: &PathBuf) -> anyhow::Result<()
         USER_AGENT,
         HeaderValue::from_str(&format!("elasticsearch-rs/{}", env!("CARGO_PKG_NAME")))?,
     );
-    let client = reqwest::ClientBuilder::new()
+    let client = reqwest::blocking::ClientBuilder::new()
         .default_headers(headers)
         .build()
         .unwrap();
 
     let response = client.get(&url).send()?;
-    let tar = GzDecoder::new(response);
+    let resp_bytes = response.bytes()?;
+    let resp_reader = resp_bytes.reader();
+    let tar = GzDecoder::new(resp_reader);
     let mut archive = Archive::new(tar);
 
     let oss_spec = Glob::new("**/rest-api-spec/src/main/resources/rest-api-spec/api/*.json")?
@@ -62,7 +64,7 @@ pub fn download_specs(branch: &str, download_dir: &PathBuf) -> anyhow::Result<()
 
 fn write_spec_file(
     download_dir: &PathBuf,
-    mut entry: Entry<GzDecoder<Response>>,
+    mut entry: Entry<impl std::io::Read>,
 ) -> anyhow::Result<()> {
     let path = entry.path()?;
     let mut dir = download_dir.clone();

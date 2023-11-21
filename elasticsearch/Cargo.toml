@@ -26,7 +26,7 @@ native-tls = ["reqwest/native-tls"]
 rustls-tls = ["reqwest/rustls-tls"]
 
 [dependencies]
-base64 = "^0.11"
+base64 = "0.13"
 bytes = "^1.0"
 dyn-clone = "~1"
 lazy_static = "1.4"
@@ -35,22 +35,22 @@ reqwest = { version = "~0.11", default-features = false, features = ["gzip", "js
 url = "^2.1"
 serde = { version = "~1", features = ["derive"] }
 serde_json = "~1"
-serde_with = "~1"
+serde_with = "2"
 void = "1.0.2"
 
 [dev-dependencies]
 chrono = { version = "^0.4", features = ["serde"] }
-clap = "~2"
+clap = "3"
 failure = "0.1.5"
 futures = "0.3.1"
 http = "0.2"
 hyper = { version = "0.14", default-features = false, features = ["tcp", "stream", "server"] }
 os_type = "2.2"
 regex="1.4"
-sysinfo = "0.12.0"
-textwrap = "^0.11"
+sysinfo = "0.26"
+textwrap = "0.15"
 tokio = { version = "1.0", default-features = false, features = ["macros", "net", "time", "rt-multi-thread"] }
 xml-rs = "^0.8"
 
 [build-dependencies]
-rustc_version = "0.2"
+rustc_version = "0.4"
