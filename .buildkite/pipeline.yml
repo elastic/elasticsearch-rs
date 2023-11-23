@@ -1,0 +1,18 @@
+steps:
+  - label: ":rust: Elasticsearch Rust Client :elasticsearch: {{ matrix.test_suite }}"
+    agents:
+      provider: "gcp"
+    env:
+      STACK_VERSION: "{{ matrix.stack_version }}"
+      TEST_SUITE: "{{ matrix.test_suite }}"
+      RUST_TOOLCHAIN: "{{ matrix.toolchain }}"
+    matrix:
+      setup:
+        stack_version:
+          - "8.11.0-SNAPSHOT"
+        test_suite:
+          - "free"
+          - "platinum"
+        toolchain:
+          - "latest"
+    command: ./.buildkite/run-tests

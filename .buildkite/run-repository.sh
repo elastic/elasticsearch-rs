@@ -14,19 +14,20 @@ RUST_TOOLCHAIN=${RUST_TOOLCHAIN-latest}
 ELASTICSEARCH_URL=${ELASTICSEARCH_URL-"$elasticsearch_url"}
 elasticsearch_container=${elasticsearch_container-}
 
+echo -e "--- Debug info"
 echo -e "\033[34;1mINFO:\033[0m VERSION ${STACK_VERSION}\033[0m"
 echo -e "\033[34;1mINFO:\033[0m TEST_SUITE ${TEST_SUITE}\033[0m"
 echo -e "\033[34;1mINFO:\033[0m URL ${ELASTICSEARCH_URL}\033[0m"
 echo -e "\033[34;1mINFO:\033[0m CONTAINER ${elasticsearch_container}\033[0m"
 echo -e "\033[34;1mINFO:\033[0m RUST_TOOLCHAIN ${RUST_TOOLCHAIN}\033[0m"
 
-echo -e "\033[1m>>>>> Build [elastic/elasticsearch-rs container] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m"
+echo -e "--- Build [:rust: elastic/elasticsearch-rs container]"
 
 docker pull rust:"${RUST_TOOLCHAIN}"
 
-docker build --build-arg RUST_TOOLCHAIN="${RUST_TOOLCHAIN}" --file .ci/DockerFile --tag elastic/elasticsearch-rs .
+docker build --build-arg RUST_TOOLCHAIN="${RUST_TOOLCHAIN}" --file .buildkite/DockerFile --tag elastic/elasticsearch-rs .
 
-echo -e "\033[1m>>>>> Run [elastic/elasticsearch-rs container] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m"
+echo -e "--- Run [:rust: elastic/elasticsearch-rs container]"
 
 repo=$(realpath $(dirname $(realpath -s $0))/../)
 
