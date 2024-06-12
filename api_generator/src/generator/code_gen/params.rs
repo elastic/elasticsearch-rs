@@ -60,11 +60,10 @@ fn generate_param(tokens: &mut Tokens, e: &ApiEnum) {
         })
         .unzip();
 
-    let doc = match &e.description {
-        Some(description) => Some(code_gen::doc(description)),
-        None => None,
-    };
-
+    let doc = e
+        .description
+        .as_ref()
+        .map(|description| code_gen::doc_escaped(description));
     let cfg_attr = e.stability.outer_cfg_attr();
     let cfg_doc = stability_doc(e.stability);
 
