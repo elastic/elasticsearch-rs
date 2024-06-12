@@ -46,7 +46,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Transform Delete Transform API"]
 pub enum TransformDeleteTransformParts<'b> {
     #[doc = "TransformId"]
@@ -56,7 +56,7 @@ impl<'b> TransformDeleteTransformParts<'b> {
     #[doc = "Builds a relative URL path to the Transform Delete Transform API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TransformDeleteTransformParts::TransformId(ref transform_id) => {
+            TransformDeleteTransformParts::TransformId(transform_id) => {
                 let encoded_transform_id: Cow<str> =
                     percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(12usize + encoded_transform_id.len());
@@ -67,7 +67,7 @@ impl<'b> TransformDeleteTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Delete Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/delete-transform.html)\n\nDeletes an existing transform."]
+#[doc = "Builder for the [Transform Delete Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-transform.html)\n\nDeletes an existing transform."]
 #[derive(Clone, Debug)]
 pub struct TransformDeleteTransform<'a, 'b> {
     transport: &'a Transport,
@@ -183,7 +183,7 @@ impl<'a, 'b> TransformDeleteTransform<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Transform Get Transform API"]
 pub enum TransformGetTransformParts<'b> {
     #[doc = "TransformId"]
@@ -195,7 +195,7 @@ impl<'b> TransformGetTransformParts<'b> {
     #[doc = "Builds a relative URL path to the Transform Get Transform API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TransformGetTransformParts::TransformId(ref transform_id) => {
+            TransformGetTransformParts::TransformId(transform_id) => {
                 let encoded_transform_id: Cow<str> =
                     percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(12usize + encoded_transform_id.len());
@@ -207,7 +207,7 @@ impl<'b> TransformGetTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Get Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-transform.html)\n\nRetrieves configuration information for transforms."]
+#[doc = "Builder for the [Transform Get Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-transform.html)\n\nRetrieves configuration information for transforms."]
 #[derive(Clone, Debug)]
 pub struct TransformGetTransform<'a, 'b> {
     transport: &'a Transport,
@@ -341,7 +341,7 @@ impl<'a, 'b> TransformGetTransform<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Transform Get Transform Stats API"]
 pub enum TransformGetTransformStatsParts<'b> {
     #[doc = "TransformId"]
@@ -351,7 +351,7 @@ impl<'b> TransformGetTransformStatsParts<'b> {
     #[doc = "Builds a relative URL path to the Transform Get Transform Stats API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TransformGetTransformStatsParts::TransformId(ref transform_id) => {
+            TransformGetTransformStatsParts::TransformId(transform_id) => {
                 let encoded_transform_id: Cow<str> =
                     percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(19usize + encoded_transform_id.len());
@@ -363,7 +363,7 @@ impl<'b> TransformGetTransformStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Get Transform Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-transform-stats.html)\n\nRetrieves usage information for transforms."]
+#[doc = "Builder for the [Transform Get Transform Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-transform-stats.html)\n\nRetrieves usage information for transforms."]
 #[derive(Clone, Debug)]
 pub struct TransformGetTransformStats<'a, 'b> {
     transport: &'a Transport,
@@ -488,7 +488,7 @@ impl<'a, 'b> TransformGetTransformStats<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Transform Preview Transform API"]
 pub enum TransformPreviewTransformParts<'b> {
     #[doc = "TransformId"]
@@ -500,7 +500,7 @@ impl<'b> TransformPreviewTransformParts<'b> {
     #[doc = "Builds a relative URL path to the Transform Preview Transform API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TransformPreviewTransformParts::TransformId(ref transform_id) => {
+            TransformPreviewTransformParts::TransformId(transform_id) => {
                 let encoded_transform_id: Cow<str> =
                     percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(21usize + encoded_transform_id.len());
@@ -513,7 +513,7 @@ impl<'b> TransformPreviewTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Preview Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/preview-transform.html)\n\nPreviews a transform."]
+#[doc = "Builder for the [Transform Preview Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/preview-transform.html)\n\nPreviews a transform."]
 #[derive(Clone, Debug)]
 pub struct TransformPreviewTransform<'a, 'b, B> {
     transport: &'a Transport,
@@ -647,7 +647,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Transform Put Transform API"]
 pub enum TransformPutTransformParts<'b> {
     #[doc = "TransformId"]
@@ -657,7 +657,7 @@ impl<'b> TransformPutTransformParts<'b> {
     #[doc = "Builds a relative URL path to the Transform Put Transform API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TransformPutTransformParts::TransformId(ref transform_id) => {
+            TransformPutTransformParts::TransformId(transform_id) => {
                 let encoded_transform_id: Cow<str> =
                     percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(12usize + encoded_transform_id.len());
@@ -668,7 +668,7 @@ impl<'b> TransformPutTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Put Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/put-transform.html)\n\nInstantiates a transform."]
+#[doc = "Builder for the [Transform Put Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-transform.html)\n\nInstantiates a transform."]
 #[derive(Clone, Debug)]
 pub struct TransformPutTransform<'a, 'b, B> {
     transport: &'a Transport,
@@ -809,7 +809,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Transform Reset Transform API"]
 pub enum TransformResetTransformParts<'b> {
     #[doc = "TransformId"]
@@ -819,7 +819,7 @@ impl<'b> TransformResetTransformParts<'b> {
     #[doc = "Builds a relative URL path to the Transform Reset Transform API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TransformResetTransformParts::TransformId(ref transform_id) => {
+            TransformResetTransformParts::TransformId(transform_id) => {
                 let encoded_transform_id: Cow<str> =
                     percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(19usize + encoded_transform_id.len());
@@ -831,7 +831,7 @@ impl<'b> TransformResetTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Reset Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/reset-transform.html)\n\nResets an existing transform."]
+#[doc = "Builder for the [Transform Reset Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/reset-transform.html)\n\nResets an existing transform."]
 #[derive(Clone, Debug)]
 pub struct TransformResetTransform<'a, 'b, B> {
     transport: &'a Transport,
@@ -972,7 +972,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Transform Start Transform API"]
 pub enum TransformStartTransformParts<'b> {
     #[doc = "TransformId"]
@@ -982,7 +982,7 @@ impl<'b> TransformStartTransformParts<'b> {
     #[doc = "Builds a relative URL path to the Transform Start Transform API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TransformStartTransformParts::TransformId(ref transform_id) => {
+            TransformStartTransformParts::TransformId(transform_id) => {
                 let encoded_transform_id: Cow<str> =
                     percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(19usize + encoded_transform_id.len());
@@ -994,7 +994,7 @@ impl<'b> TransformStartTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Start Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/start-transform.html)\n\nStarts one or more transforms."]
+#[doc = "Builder for the [Transform Start Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/start-transform.html)\n\nStarts one or more transforms."]
 #[derive(Clone, Debug)]
 pub struct TransformStartTransform<'a, 'b, B> {
     transport: &'a Transport,
@@ -1125,7 +1125,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Transform Stop Transform API"]
 pub enum TransformStopTransformParts<'b> {
     #[doc = "TransformId"]
@@ -1135,7 +1135,7 @@ impl<'b> TransformStopTransformParts<'b> {
     #[doc = "Builds a relative URL path to the Transform Stop Transform API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TransformStopTransformParts::TransformId(ref transform_id) => {
+            TransformStopTransformParts::TransformId(transform_id) => {
                 let encoded_transform_id: Cow<str> =
                     percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(18usize + encoded_transform_id.len());
@@ -1147,7 +1147,7 @@ impl<'b> TransformStopTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Stop Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/stop-transform.html)\n\nStops one or more transforms."]
+#[doc = "Builder for the [Transform Stop Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/stop-transform.html)\n\nStops one or more transforms."]
 #[derive(Clone, Debug)]
 pub struct TransformStopTransform<'a, 'b, B> {
     transport: &'a Transport,
@@ -1318,7 +1318,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Transform Update Transform API"]
 pub enum TransformUpdateTransformParts<'b> {
     #[doc = "TransformId"]
@@ -1328,7 +1328,7 @@ impl<'b> TransformUpdateTransformParts<'b> {
     #[doc = "Builds a relative URL path to the Transform Update Transform API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TransformUpdateTransformParts::TransformId(ref transform_id) => {
+            TransformUpdateTransformParts::TransformId(transform_id) => {
                 let encoded_transform_id: Cow<str> =
                     percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(20usize + encoded_transform_id.len());
@@ -1340,7 +1340,7 @@ impl<'b> TransformUpdateTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Update Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/update-transform.html)\n\nUpdates certain properties of a transform."]
+#[doc = "Builder for the [Transform Update Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-transform.html)\n\nUpdates certain properties of a transform."]
 #[derive(Clone, Debug)]
 pub struct TransformUpdateTransform<'a, 'b, B> {
     transport: &'a Transport,
@@ -1481,7 +1481,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Transform Upgrade Transforms API"]
 pub enum TransformUpgradeTransformsParts {
     #[doc = "No parts"]
@@ -1495,7 +1495,7 @@ impl TransformUpgradeTransformsParts {
         }
     }
 }
-#[doc = "Builder for the [Transform Upgrade Transforms API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/upgrade-transforms.html)\n\nUpgrades all transforms."]
+#[doc = "Builder for the [Transform Upgrade Transforms API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/upgrade-transforms.html)\n\nUpgrades all transforms."]
 #[derive(Clone, Debug)]
 pub struct TransformUpgradeTransforms<'a, 'b, B> {
     transport: &'a Transport,
@@ -1648,70 +1648,70 @@ impl<'a> Transform<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Transform Delete Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/delete-transform.html)\n\nDeletes an existing transform."]
+    #[doc = "[Transform Delete Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-transform.html)\n\nDeletes an existing transform."]
     pub fn delete_transform<'b>(
         &'a self,
         parts: TransformDeleteTransformParts<'b>,
     ) -> TransformDeleteTransform<'a, 'b> {
         TransformDeleteTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Get Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-transform.html)\n\nRetrieves configuration information for transforms."]
+    #[doc = "[Transform Get Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-transform.html)\n\nRetrieves configuration information for transforms."]
     pub fn get_transform<'b>(
         &'a self,
         parts: TransformGetTransformParts<'b>,
     ) -> TransformGetTransform<'a, 'b> {
         TransformGetTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Get Transform Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-transform-stats.html)\n\nRetrieves usage information for transforms."]
+    #[doc = "[Transform Get Transform Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-transform-stats.html)\n\nRetrieves usage information for transforms."]
     pub fn get_transform_stats<'b>(
         &'a self,
         parts: TransformGetTransformStatsParts<'b>,
     ) -> TransformGetTransformStats<'a, 'b> {
         TransformGetTransformStats::new(self.transport(), parts)
     }
-    #[doc = "[Transform Preview Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/preview-transform.html)\n\nPreviews a transform."]
+    #[doc = "[Transform Preview Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/preview-transform.html)\n\nPreviews a transform."]
     pub fn preview_transform<'b>(
         &'a self,
         parts: TransformPreviewTransformParts<'b>,
     ) -> TransformPreviewTransform<'a, 'b, ()> {
         TransformPreviewTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Put Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/put-transform.html)\n\nInstantiates a transform."]
+    #[doc = "[Transform Put Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-transform.html)\n\nInstantiates a transform."]
     pub fn put_transform<'b>(
         &'a self,
         parts: TransformPutTransformParts<'b>,
     ) -> TransformPutTransform<'a, 'b, ()> {
         TransformPutTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Reset Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/reset-transform.html)\n\nResets an existing transform."]
+    #[doc = "[Transform Reset Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/reset-transform.html)\n\nResets an existing transform."]
     pub fn reset_transform<'b>(
         &'a self,
         parts: TransformResetTransformParts<'b>,
     ) -> TransformResetTransform<'a, 'b, ()> {
         TransformResetTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Start Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/start-transform.html)\n\nStarts one or more transforms."]
+    #[doc = "[Transform Start Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/start-transform.html)\n\nStarts one or more transforms."]
     pub fn start_transform<'b>(
         &'a self,
         parts: TransformStartTransformParts<'b>,
     ) -> TransformStartTransform<'a, 'b, ()> {
         TransformStartTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Stop Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/stop-transform.html)\n\nStops one or more transforms."]
+    #[doc = "[Transform Stop Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/stop-transform.html)\n\nStops one or more transforms."]
     pub fn stop_transform<'b>(
         &'a self,
         parts: TransformStopTransformParts<'b>,
     ) -> TransformStopTransform<'a, 'b, ()> {
         TransformStopTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Update Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/update-transform.html)\n\nUpdates certain properties of a transform."]
+    #[doc = "[Transform Update Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-transform.html)\n\nUpdates certain properties of a transform."]
     pub fn update_transform<'b>(
         &'a self,
         parts: TransformUpdateTransformParts<'b>,
     ) -> TransformUpdateTransform<'a, 'b, ()> {
         TransformUpdateTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Upgrade Transforms API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/upgrade-transforms.html)\n\nUpgrades all transforms."]
+    #[doc = "[Transform Upgrade Transforms API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/upgrade-transforms.html)\n\nUpgrades all transforms."]
     pub fn upgrade_transforms<'b>(&'a self) -> TransformUpgradeTransforms<'a, 'b, ()> {
         TransformUpgradeTransforms::new(self.transport())
     }

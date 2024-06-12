@@ -47,7 +47,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Enrich Delete Policy API"]
 pub enum EnrichDeletePolicyParts<'b> {
     #[doc = "Name"]
@@ -57,7 +57,7 @@ impl<'b> EnrichDeletePolicyParts<'b> {
     #[doc = "Builds a relative URL path to the Enrich Delete Policy API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            EnrichDeletePolicyParts::Name(ref name) => {
+            EnrichDeletePolicyParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_name.len());
                 p.push_str("/_enrich/policy/");
@@ -67,7 +67,7 @@ impl<'b> EnrichDeletePolicyParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Enrich Delete Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/delete-enrich-policy-api.html)\n\nDeletes an existing enrich policy and its enrich index."]
+#[doc = "Builder for the [Enrich Delete Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-enrich-policy-api.html)\n\nDeletes an existing enrich policy and its enrich index."]
 #[derive(Clone, Debug)]
 pub struct EnrichDeletePolicy<'a, 'b> {
     transport: &'a Transport,
@@ -165,7 +165,7 @@ impl<'a, 'b> EnrichDeletePolicy<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Enrich Execute Policy API"]
 pub enum EnrichExecutePolicyParts<'b> {
     #[doc = "Name"]
@@ -175,7 +175,7 @@ impl<'b> EnrichExecutePolicyParts<'b> {
     #[doc = "Builds a relative URL path to the Enrich Execute Policy API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            EnrichExecutePolicyParts::Name(ref name) => {
+            EnrichExecutePolicyParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(25usize + encoded_name.len());
                 p.push_str("/_enrich/policy/");
@@ -186,7 +186,7 @@ impl<'b> EnrichExecutePolicyParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Enrich Execute Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/execute-enrich-policy-api.html)\n\nCreates the enrich index for an existing enrich policy."]
+#[doc = "Builder for the [Enrich Execute Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/execute-enrich-policy-api.html)\n\nCreates the enrich index for an existing enrich policy."]
 #[derive(Clone, Debug)]
 pub struct EnrichExecutePolicy<'a, 'b, B> {
     transport: &'a Transport,
@@ -317,7 +317,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Enrich Get Policy API"]
 pub enum EnrichGetPolicyParts<'b> {
     #[doc = "Name"]
@@ -329,7 +329,7 @@ impl<'b> EnrichGetPolicyParts<'b> {
     #[doc = "Builds a relative URL path to the Enrich Get Policy API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            EnrichGetPolicyParts::Name(ref name) => {
+            EnrichGetPolicyParts::Name(name) => {
                 let name_str = name.join(",");
                 let encoded_name: Cow<str> =
                     percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
@@ -342,7 +342,7 @@ impl<'b> EnrichGetPolicyParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Enrich Get Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-enrich-policy-api.html)\n\nGets information about an enrich policy."]
+#[doc = "Builder for the [Enrich Get Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-enrich-policy-api.html)\n\nGets information about an enrich policy."]
 #[derive(Clone, Debug)]
 pub struct EnrichGetPolicy<'a, 'b> {
     transport: &'a Transport,
@@ -440,7 +440,7 @@ impl<'a, 'b> EnrichGetPolicy<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Enrich Put Policy API"]
 pub enum EnrichPutPolicyParts<'b> {
     #[doc = "Name"]
@@ -450,7 +450,7 @@ impl<'b> EnrichPutPolicyParts<'b> {
     #[doc = "Builds a relative URL path to the Enrich Put Policy API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            EnrichPutPolicyParts::Name(ref name) => {
+            EnrichPutPolicyParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_name.len());
                 p.push_str("/_enrich/policy/");
@@ -460,7 +460,7 @@ impl<'b> EnrichPutPolicyParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Enrich Put Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/put-enrich-policy-api.html)\n\nCreates a new enrich policy."]
+#[doc = "Builder for the [Enrich Put Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-enrich-policy-api.html)\n\nCreates a new enrich policy."]
 #[derive(Clone, Debug)]
 pub struct EnrichPutPolicy<'a, 'b, B> {
     transport: &'a Transport,
@@ -581,7 +581,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Enrich Stats API"]
 pub enum EnrichStatsParts {
     #[doc = "No parts"]
@@ -595,7 +595,7 @@ impl EnrichStatsParts {
         }
     }
 }
-#[doc = "Builder for the [Enrich Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/enrich-stats-api.html)\n\nGets enrich coordinator statistics and information about enrich policies that are currently executing."]
+#[doc = "Builder for the [Enrich Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/enrich-stats-api.html)\n\nGets enrich coordinator statistics and information about enrich policies that are currently executing."]
 #[derive(Clone, Debug)]
 pub struct EnrichStats<'a, 'b> {
     transport: &'a Transport,
@@ -705,32 +705,32 @@ impl<'a> Enrich<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Enrich Delete Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/delete-enrich-policy-api.html)\n\nDeletes an existing enrich policy and its enrich index."]
+    #[doc = "[Enrich Delete Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-enrich-policy-api.html)\n\nDeletes an existing enrich policy and its enrich index."]
     pub fn delete_policy<'b>(
         &'a self,
         parts: EnrichDeletePolicyParts<'b>,
     ) -> EnrichDeletePolicy<'a, 'b> {
         EnrichDeletePolicy::new(self.transport(), parts)
     }
-    #[doc = "[Enrich Execute Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/execute-enrich-policy-api.html)\n\nCreates the enrich index for an existing enrich policy."]
+    #[doc = "[Enrich Execute Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/execute-enrich-policy-api.html)\n\nCreates the enrich index for an existing enrich policy."]
     pub fn execute_policy<'b>(
         &'a self,
         parts: EnrichExecutePolicyParts<'b>,
     ) -> EnrichExecutePolicy<'a, 'b, ()> {
         EnrichExecutePolicy::new(self.transport(), parts)
     }
-    #[doc = "[Enrich Get Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-enrich-policy-api.html)\n\nGets information about an enrich policy."]
+    #[doc = "[Enrich Get Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-enrich-policy-api.html)\n\nGets information about an enrich policy."]
     pub fn get_policy<'b>(&'a self, parts: EnrichGetPolicyParts<'b>) -> EnrichGetPolicy<'a, 'b> {
         EnrichGetPolicy::new(self.transport(), parts)
     }
-    #[doc = "[Enrich Put Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/put-enrich-policy-api.html)\n\nCreates a new enrich policy."]
+    #[doc = "[Enrich Put Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-enrich-policy-api.html)\n\nCreates a new enrich policy."]
     pub fn put_policy<'b>(
         &'a self,
         parts: EnrichPutPolicyParts<'b>,
     ) -> EnrichPutPolicy<'a, 'b, ()> {
         EnrichPutPolicy::new(self.transport(), parts)
     }
-    #[doc = "[Enrich Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/enrich-stats-api.html)\n\nGets enrich coordinator statistics and information about enrich policies that are currently executing."]
+    #[doc = "[Enrich Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/enrich-stats-api.html)\n\nGets enrich coordinator statistics and information about enrich policies that are currently executing."]
     pub fn stats<'b>(&'a self) -> EnrichStats<'a, 'b> {
         EnrichStats::new(self.transport())
     }

@@ -254,23 +254,21 @@ impl TransportBuilder {
 
         #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
         {
-            if let Some(creds) = &self.credentials {
-                if let Credentials::Certificate(cert) = creds {
-                    client_builder = match cert {
-                        #[cfg(feature = "native-tls")]
-                        ClientCertificate::Pkcs12(b, p) => {
-                            let password = match p {
-                                Some(pass) => pass.as_str(),
-                                None => "",
-                            };
-                            let pkcs12 = reqwest::Identity::from_pkcs12_der(b, password)?;
-                            client_builder.identity(pkcs12)
-                        }
-                        #[cfg(feature = "rustls-tls")]
-                        ClientCertificate::Pem(b) => {
-                            let pem = reqwest::Identity::from_pem(b)?;
-                            client_builder.identity(pem)
-                        }
+            if let Some(Credentials::Certificate(cert)) = &self.credentials {
+                client_builder = match cert {
+                    #[cfg(feature = "native-tls")]
+                    ClientCertificate::Pkcs12(b, p) => {
+                        let password = match p {
+                            Some(pass) => pass.as_str(),
+                            None => "",
+                        };
+                        let pkcs12 = reqwest::Identity::from_pkcs12_der(b, password)?;
+                        client_builder.identity(pkcs12)
+                    }
+                    #[cfg(feature = "rustls-tls")]
+                    ClientCertificate::Pem(b) => {
+                        let pem = reqwest::Identity::from_pem(b)?;
+                        client_builder.identity(pem)
                     }
                 }
             };
@@ -629,7 +627,6 @@ impl CloudId {
 /// on [Elasticsearch service in Elastic Cloud](https://www.elastic.co/cloud/).
 #[derive(Debug, Clone)]
 pub struct CloudConnectionPool {
-    cloud_id: CloudId,
     connection: Connection,
 }
 
@@ -637,11 +634,8 @@ impl CloudConnectionPool {
     /// Creates a new instance of [CloudConnectionPool].
     pub fn new(cloud_id: &str) -> Result<Self, Error> {
         let cloud = CloudId::parse(cloud_id)?;
-        let connection = Connection::new(cloud.url.clone());
-        Ok(Self {
-            cloud_id: cloud,
-            connection,
-        })
+        let connection = Connection::new(cloud.url);
+        Ok(Self { connection })
     }
 }
 

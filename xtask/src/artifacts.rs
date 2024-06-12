@@ -22,9 +22,7 @@ use anyhow::Context;
 use chrono::{DateTime, FixedOffset};
 use reqwest::blocking as reqwest;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
-use std::fs;
-use std::io;
+use std::{collections::HashMap, fs, io};
 
 pub fn download(commit_hash: Option<String>, url: Option<String>) -> anyhow::Result<()> {
     // Get commit hash from ES if its URL has been provided

@@ -165,10 +165,8 @@ impl Expr {
 
             // some APIs specify the response body as the first part of the path
             // which should be removed.
-            if Self::is_string_body(values[0].as_ref()) {
-                values.remove(0);
-            } else if values[0] == "" {
-                // some tests start the json path with a dot, leading to an empty first element
+            // some tests start the json path with a dot, leading to an empty first element
+            if Self::is_string_body(values[0].as_ref()) || values[0].is_empty() {
                 values.remove(0);
             }
 

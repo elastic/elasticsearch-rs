@@ -135,7 +135,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Aliases API"]
 pub enum CatAliasesParts<'b> {
     #[doc = "No parts"]
@@ -148,7 +148,7 @@ impl<'b> CatAliasesParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatAliasesParts::None => "/_cat/aliases".into(),
-            CatAliasesParts::Name(ref name) => {
+            CatAliasesParts::Name(name) => {
                 let name_str = name.join(",");
                 let encoded_name: Cow<str> =
                     percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
@@ -160,7 +160,7 @@ impl<'b> CatAliasesParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-alias.html)\n\nShows information about currently configured aliases to indices including filter and routing infos."]
+#[doc = "Builder for the [Cat Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-alias.html)\n\nShows information about currently configured aliases to indices including filter and routing infos."]
 #[derive(Clone, Debug)]
 pub struct CatAliases<'a, 'b> {
     transport: &'a Transport,
@@ -326,7 +326,7 @@ impl<'a, 'b> CatAliases<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Allocation API"]
 pub enum CatAllocationParts<'b> {
     #[doc = "No parts"]
@@ -339,7 +339,7 @@ impl<'b> CatAllocationParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatAllocationParts::None => "/_cat/allocation".into(),
-            CatAllocationParts::NodeId(ref node_id) => {
+            CatAllocationParts::NodeId(node_id) => {
                 let node_id_str = node_id.join(",");
                 let encoded_node_id: Cow<str> =
                     percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
@@ -351,7 +351,7 @@ impl<'b> CatAllocationParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Allocation API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-allocation.html)\n\nProvides a snapshot of how many shards are allocated to each data node and how much disk space they are using."]
+#[doc = "Builder for the [Cat Allocation API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-allocation.html)\n\nProvides a snapshot of how many shards are allocated to each data node and how much disk space they are using."]
 #[derive(Clone, Debug)]
 pub struct CatAllocation<'a, 'b> {
     transport: &'a Transport,
@@ -525,7 +525,7 @@ impl<'a, 'b> CatAllocation<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Component Templates API"]
 pub enum CatComponentTemplatesParts<'b> {
     #[doc = "No parts"]
@@ -538,7 +538,7 @@ impl<'b> CatComponentTemplatesParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatComponentTemplatesParts::None => "/_cat/component_templates".into(),
-            CatComponentTemplatesParts::Name(ref name) => {
+            CatComponentTemplatesParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(26usize + encoded_name.len());
                 p.push_str("/_cat/component_templates/");
@@ -548,7 +548,7 @@ impl<'b> CatComponentTemplatesParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Component Templates API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-compoentn-templates.html)\n\nReturns information about existing component_templates templates."]
+#[doc = "Builder for the [Cat Component Templates API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-compoentn-templates.html)\n\nReturns information about existing component_templates templates."]
 #[derive(Clone, Debug)]
 pub struct CatComponentTemplates<'a, 'b> {
     transport: &'a Transport,
@@ -713,7 +713,7 @@ impl<'a, 'b> CatComponentTemplates<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Count API"]
 pub enum CatCountParts<'b> {
     #[doc = "No parts"]
@@ -726,7 +726,7 @@ impl<'b> CatCountParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatCountParts::None => "/_cat/count".into(),
-            CatCountParts::Index(ref index) => {
+            CatCountParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
@@ -738,7 +738,7 @@ impl<'b> CatCountParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Count API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-count.html)\n\nProvides quick access to the document count of the entire cluster, or individual indices."]
+#[doc = "Builder for the [Cat Count API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-count.html)\n\nProvides quick access to the document count of the entire cluster, or individual indices."]
 #[derive(Clone, Debug)]
 pub struct CatCount<'a, 'b> {
     transport: &'a Transport,
@@ -885,7 +885,7 @@ impl<'a, 'b> CatCount<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Fielddata API"]
 pub enum CatFielddataParts<'b> {
     #[doc = "No parts"]
@@ -898,7 +898,7 @@ impl<'b> CatFielddataParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatFielddataParts::None => "/_cat/fielddata".into(),
-            CatFielddataParts::Fields(ref fields) => {
+            CatFielddataParts::Fields(fields) => {
                 let fields_str = fields.join(",");
                 let encoded_fields: Cow<str> =
                     percent_encode(fields_str.as_bytes(), PARTS_ENCODED).into();
@@ -910,7 +910,7 @@ impl<'b> CatFielddataParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Fielddata API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-fielddata.html)\n\nShows how much heap memory is currently being used by fielddata on every data node in the cluster."]
+#[doc = "Builder for the [Cat Fielddata API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-fielddata.html)\n\nShows how much heap memory is currently being used by fielddata on every data node in the cluster."]
 #[derive(Clone, Debug)]
 pub struct CatFielddata<'a, 'b> {
     transport: &'a Transport,
@@ -1076,7 +1076,7 @@ impl<'a, 'b> CatFielddata<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Health API"]
 pub enum CatHealthParts {
     #[doc = "No parts"]
@@ -1090,7 +1090,7 @@ impl CatHealthParts {
         }
     }
 }
-#[doc = "Builder for the [Cat Health API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-health.html)\n\nReturns a concise representation of the cluster health."]
+#[doc = "Builder for the [Cat Health API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-health.html)\n\nReturns a concise representation of the cluster health."]
 #[derive(Clone, Debug)]
 pub struct CatHealth<'a, 'b> {
     transport: &'a Transport,
@@ -1255,7 +1255,7 @@ impl<'a, 'b> CatHealth<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Help API"]
 pub enum CatHelpParts {
     #[doc = "No parts"]
@@ -1269,7 +1269,7 @@ impl CatHelpParts {
         }
     }
 }
-#[doc = "Builder for the [Cat Help API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat.html)\n\nReturns help for the Cat APIs."]
+#[doc = "Builder for the [Cat Help API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat.html)\n\nReturns help for the Cat APIs."]
 #[derive(Clone, Debug)]
 pub struct CatHelp<'a, 'b> {
     transport: &'a Transport,
@@ -1388,7 +1388,7 @@ impl<'a, 'b> CatHelp<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Indices API"]
 pub enum CatIndicesParts<'b> {
     #[doc = "No parts"]
@@ -1401,7 +1401,7 @@ impl<'b> CatIndicesParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatIndicesParts::None => "/_cat/indices".into(),
-            CatIndicesParts::Index(ref index) => {
+            CatIndicesParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
@@ -1413,7 +1413,7 @@ impl<'b> CatIndicesParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Indices API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-indices.html)\n\nReturns information about indices: number of primaries and replicas, document counts, disk size, ..."]
+#[doc = "Builder for the [Cat Indices API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-indices.html)\n\nReturns information about indices: number of primaries and replicas, document counts, disk size, ..."]
 #[derive(Clone, Debug)]
 pub struct CatIndices<'a, 'b> {
     transport: &'a Transport,
@@ -1624,7 +1624,7 @@ impl<'a, 'b> CatIndices<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Master API"]
 pub enum CatMasterParts {
     #[doc = "No parts"]
@@ -1638,7 +1638,7 @@ impl CatMasterParts {
         }
     }
 }
-#[doc = "Builder for the [Cat Master API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-master.html)\n\nReturns information about the master node."]
+#[doc = "Builder for the [Cat Master API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-master.html)\n\nReturns information about the master node."]
 #[derive(Clone, Debug)]
 pub struct CatMaster<'a, 'b> {
     transport: &'a Transport,
@@ -1803,7 +1803,7 @@ impl<'a, 'b> CatMaster<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Ml Data Frame Analytics API"]
 pub enum CatMlDataFrameAnalyticsParts<'b> {
     #[doc = "No parts"]
@@ -1816,7 +1816,7 @@ impl<'b> CatMlDataFrameAnalyticsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatMlDataFrameAnalyticsParts::None => "/_cat/ml/data_frame/analytics".into(),
-            CatMlDataFrameAnalyticsParts::Id(ref id) => {
+            CatMlDataFrameAnalyticsParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(30usize + encoded_id.len());
                 p.push_str("/_cat/ml/data_frame/analytics/");
@@ -1826,7 +1826,7 @@ impl<'b> CatMlDataFrameAnalyticsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Ml Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-dfanalytics.html)\n\nGets configuration and usage information about data frame analytics jobs."]
+#[doc = "Builder for the [Cat Ml Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-dfanalytics.html)\n\nGets configuration and usage information about data frame analytics jobs."]
 #[derive(Clone, Debug)]
 pub struct CatMlDataFrameAnalytics<'a, 'b> {
     transport: &'a Transport,
@@ -2000,7 +2000,7 @@ impl<'a, 'b> CatMlDataFrameAnalytics<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Ml Datafeeds API"]
 pub enum CatMlDatafeedsParts<'b> {
     #[doc = "No parts"]
@@ -2013,7 +2013,7 @@ impl<'b> CatMlDatafeedsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatMlDatafeedsParts::None => "/_cat/ml/datafeeds".into(),
-            CatMlDatafeedsParts::DatafeedId(ref datafeed_id) => {
+            CatMlDatafeedsParts::DatafeedId(datafeed_id) => {
                 let encoded_datafeed_id: Cow<str> =
                     percent_encode(datafeed_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(19usize + encoded_datafeed_id.len());
@@ -2024,7 +2024,7 @@ impl<'b> CatMlDatafeedsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Ml Datafeeds API](http://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-datafeeds.html)\n\nGets configuration and usage information about datafeeds."]
+#[doc = "Builder for the [Cat Ml Datafeeds API](http://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-datafeeds.html)\n\nGets configuration and usage information about datafeeds."]
 #[derive(Clone, Debug)]
 pub struct CatMlDatafeeds<'a, 'b> {
     transport: &'a Transport,
@@ -2189,7 +2189,7 @@ impl<'a, 'b> CatMlDatafeeds<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Ml Jobs API"]
 pub enum CatMlJobsParts<'b> {
     #[doc = "No parts"]
@@ -2202,7 +2202,7 @@ impl<'b> CatMlJobsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatMlJobsParts::None => "/_cat/ml/anomaly_detectors".into(),
-            CatMlJobsParts::JobId(ref job_id) => {
+            CatMlJobsParts::JobId(job_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(27usize + encoded_job_id.len());
@@ -2213,7 +2213,7 @@ impl<'b> CatMlJobsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Ml Jobs API](http://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-anomaly-detectors.html)\n\nGets configuration and usage information about anomaly detection jobs."]
+#[doc = "Builder for the [Cat Ml Jobs API](http://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-anomaly-detectors.html)\n\nGets configuration and usage information about anomaly detection jobs."]
 #[derive(Clone, Debug)]
 pub struct CatMlJobs<'a, 'b> {
     transport: &'a Transport,
@@ -2387,7 +2387,7 @@ impl<'a, 'b> CatMlJobs<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Ml Trained Models API"]
 pub enum CatMlTrainedModelsParts<'b> {
     #[doc = "No parts"]
@@ -2400,7 +2400,7 @@ impl<'b> CatMlTrainedModelsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatMlTrainedModelsParts::None => "/_cat/ml/trained_models".into(),
-            CatMlTrainedModelsParts::ModelId(ref model_id) => {
+            CatMlTrainedModelsParts::ModelId(model_id) => {
                 let encoded_model_id: Cow<str> =
                     percent_encode(model_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(24usize + encoded_model_id.len());
@@ -2411,7 +2411,7 @@ impl<'b> CatMlTrainedModelsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Ml Trained Models API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-trained-model.html)\n\nGets configuration and usage information about inference trained models."]
+#[doc = "Builder for the [Cat Ml Trained Models API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-trained-model.html)\n\nGets configuration and usage information about inference trained models."]
 #[derive(Clone, Debug)]
 pub struct CatMlTrainedModels<'a, 'b> {
     transport: &'a Transport,
@@ -2603,7 +2603,7 @@ impl<'a, 'b> CatMlTrainedModels<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Nodeattrs API"]
 pub enum CatNodeattrsParts {
     #[doc = "No parts"]
@@ -2617,7 +2617,7 @@ impl CatNodeattrsParts {
         }
     }
 }
-#[doc = "Builder for the [Cat Nodeattrs API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-nodeattrs.html)\n\nReturns information about custom node attributes."]
+#[doc = "Builder for the [Cat Nodeattrs API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-nodeattrs.html)\n\nReturns information about custom node attributes."]
 #[derive(Clone, Debug)]
 pub struct CatNodeattrs<'a, 'b> {
     transport: &'a Transport,
@@ -2782,7 +2782,7 @@ impl<'a, 'b> CatNodeattrs<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Nodes API"]
 pub enum CatNodesParts {
     #[doc = "No parts"]
@@ -2796,7 +2796,7 @@ impl CatNodesParts {
         }
     }
 }
-#[doc = "Builder for the [Cat Nodes API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-nodes.html)\n\nReturns basic statistics about performance of cluster nodes."]
+#[doc = "Builder for the [Cat Nodes API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-nodes.html)\n\nReturns basic statistics about performance of cluster nodes."]
 #[derive(Clone, Debug)]
 pub struct CatNodes<'a, 'b> {
     transport: &'a Transport,
@@ -2988,7 +2988,7 @@ impl<'a, 'b> CatNodes<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Pending Tasks API"]
 pub enum CatPendingTasksParts {
     #[doc = "No parts"]
@@ -3002,7 +3002,7 @@ impl CatPendingTasksParts {
         }
     }
 }
-#[doc = "Builder for the [Cat Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-pending-tasks.html)\n\nReturns a concise representation of the cluster pending tasks."]
+#[doc = "Builder for the [Cat Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-pending-tasks.html)\n\nReturns a concise representation of the cluster pending tasks."]
 #[derive(Clone, Debug)]
 pub struct CatPendingTasks<'a, 'b> {
     transport: &'a Transport,
@@ -3176,7 +3176,7 @@ impl<'a, 'b> CatPendingTasks<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Plugins API"]
 pub enum CatPluginsParts {
     #[doc = "No parts"]
@@ -3190,7 +3190,7 @@ impl CatPluginsParts {
         }
     }
 }
-#[doc = "Builder for the [Cat Plugins API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-plugins.html)\n\nReturns information about installed plugins across nodes node."]
+#[doc = "Builder for the [Cat Plugins API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-plugins.html)\n\nReturns information about installed plugins across nodes node."]
 #[derive(Clone, Debug)]
 pub struct CatPlugins<'a, 'b> {
     transport: &'a Transport,
@@ -3364,7 +3364,7 @@ impl<'a, 'b> CatPlugins<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Recovery API"]
 pub enum CatRecoveryParts<'b> {
     #[doc = "No parts"]
@@ -3377,7 +3377,7 @@ impl<'b> CatRecoveryParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatRecoveryParts::None => "/_cat/recovery".into(),
-            CatRecoveryParts::Index(ref index) => {
+            CatRecoveryParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
@@ -3389,7 +3389,7 @@ impl<'b> CatRecoveryParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-recovery.html)\n\nReturns information about index shard recoveries, both on-going completed."]
+#[doc = "Builder for the [Cat Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-recovery.html)\n\nReturns information about index shard recoveries, both on-going completed."]
 #[derive(Clone, Debug)]
 pub struct CatRecovery<'a, 'b> {
     transport: &'a Transport,
@@ -3582,7 +3582,7 @@ impl<'a, 'b> CatRecovery<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Repositories API"]
 pub enum CatRepositoriesParts {
     #[doc = "No parts"]
@@ -3596,7 +3596,7 @@ impl CatRepositoriesParts {
         }
     }
 }
-#[doc = "Builder for the [Cat Repositories API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-repositories.html)\n\nReturns information about snapshot repositories registered in the cluster."]
+#[doc = "Builder for the [Cat Repositories API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-repositories.html)\n\nReturns information about snapshot repositories registered in the cluster."]
 #[derive(Clone, Debug)]
 pub struct CatRepositories<'a, 'b> {
     transport: &'a Transport,
@@ -3761,7 +3761,7 @@ impl<'a, 'b> CatRepositories<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Segments API"]
 pub enum CatSegmentsParts<'b> {
     #[doc = "No parts"]
@@ -3774,7 +3774,7 @@ impl<'b> CatSegmentsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatSegmentsParts::None => "/_cat/segments".into(),
-            CatSegmentsParts::Index(ref index) => {
+            CatSegmentsParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
@@ -3786,7 +3786,7 @@ impl<'b> CatSegmentsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-segments.html)\n\nProvides low-level information about the segments in the shards of an index."]
+#[doc = "Builder for the [Cat Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-segments.html)\n\nProvides low-level information about the segments in the shards of an index."]
 #[derive(Clone, Debug)]
 pub struct CatSegments<'a, 'b> {
     transport: &'a Transport,
@@ -3942,7 +3942,7 @@ impl<'a, 'b> CatSegments<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Shards API"]
 pub enum CatShardsParts<'b> {
     #[doc = "No parts"]
@@ -3955,7 +3955,7 @@ impl<'b> CatShardsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatShardsParts::None => "/_cat/shards".into(),
-            CatShardsParts::Index(ref index) => {
+            CatShardsParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
@@ -3967,7 +3967,7 @@ impl<'b> CatShardsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-shards.html)\n\nProvides a detailed view of shard allocation on nodes."]
+#[doc = "Builder for the [Cat Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-shards.html)\n\nProvides a detailed view of shard allocation on nodes."]
 #[derive(Clone, Debug)]
 pub struct CatShards<'a, 'b> {
     transport: &'a Transport,
@@ -4141,7 +4141,7 @@ impl<'a, 'b> CatShards<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Snapshots API"]
 pub enum CatSnapshotsParts<'b> {
     #[doc = "No parts"]
@@ -4154,7 +4154,7 @@ impl<'b> CatSnapshotsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatSnapshotsParts::None => "/_cat/snapshots".into(),
-            CatSnapshotsParts::Repository(ref repository) => {
+            CatSnapshotsParts::Repository(repository) => {
                 let repository_str = repository.join(",");
                 let encoded_repository: Cow<str> =
                     percent_encode(repository_str.as_bytes(), PARTS_ENCODED).into();
@@ -4166,7 +4166,7 @@ impl<'b> CatSnapshotsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Snapshots API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-snapshots.html)\n\nReturns all snapshots in a specific repository."]
+#[doc = "Builder for the [Cat Snapshots API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-snapshots.html)\n\nReturns all snapshots in a specific repository."]
 #[derive(Clone, Debug)]
 pub struct CatSnapshots<'a, 'b> {
     transport: &'a Transport,
@@ -4341,7 +4341,7 @@ impl<'a, 'b> CatSnapshots<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Tasks API"]
 pub enum CatTasksParts {
     #[doc = "No parts"]
@@ -4356,7 +4356,7 @@ impl CatTasksParts {
         }
     }
 }
-#[doc = "Builder for the [Cat Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/tasks.html)\n\nReturns information about the tasks currently executing on one or more nodes in the cluster."]
+#[doc = "Builder for the [Cat Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/tasks.html)\n\nReturns information about the tasks currently executing on one or more nodes in the cluster."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -4553,7 +4553,7 @@ impl<'a, 'b> CatTasks<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Templates API"]
 pub enum CatTemplatesParts<'b> {
     #[doc = "No parts"]
@@ -4566,7 +4566,7 @@ impl<'b> CatTemplatesParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatTemplatesParts::None => "/_cat/templates".into(),
-            CatTemplatesParts::Name(ref name) => {
+            CatTemplatesParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_name.len());
                 p.push_str("/_cat/templates/");
@@ -4576,7 +4576,7 @@ impl<'b> CatTemplatesParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Templates API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-templates.html)\n\nReturns information about existing templates."]
+#[doc = "Builder for the [Cat Templates API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-templates.html)\n\nReturns information about existing templates."]
 #[derive(Clone, Debug)]
 pub struct CatTemplates<'a, 'b> {
     transport: &'a Transport,
@@ -4741,7 +4741,7 @@ impl<'a, 'b> CatTemplates<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Thread Pool API"]
 pub enum CatThreadPoolParts<'b> {
     #[doc = "No parts"]
@@ -4754,7 +4754,7 @@ impl<'b> CatThreadPoolParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatThreadPoolParts::None => "/_cat/thread_pool".into(),
-            CatThreadPoolParts::ThreadPoolPatterns(ref thread_pool_patterns) => {
+            CatThreadPoolParts::ThreadPoolPatterns(thread_pool_patterns) => {
                 let thread_pool_patterns_str = thread_pool_patterns.join(",");
                 let encoded_thread_pool_patterns: Cow<str> =
                     percent_encode(thread_pool_patterns_str.as_bytes(), PARTS_ENCODED).into();
@@ -4766,7 +4766,7 @@ impl<'b> CatThreadPoolParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Thread Pool API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-thread-pool.html)\n\nReturns cluster-wide thread pool statistics per node.\nBy default the active, queue and rejected statistics are returned for all thread pools."]
+#[doc = "Builder for the [Cat Thread Pool API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-thread-pool.html)\n\nReturns cluster-wide thread pool statistics per node.\nBy default the active, queue and rejected statistics are returned for all thread pools."]
 #[derive(Clone, Debug)]
 pub struct CatThreadPool<'a, 'b> {
     transport: &'a Transport,
@@ -4940,7 +4940,7 @@ impl<'a, 'b> CatThreadPool<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 #[doc = "API parts for the Cat Transforms API"]
 pub enum CatTransformsParts<'b> {
     #[doc = "No parts"]
@@ -4953,7 +4953,7 @@ impl<'b> CatTransformsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatTransformsParts::None => "/_cat/transforms".into(),
-            CatTransformsParts::TransformId(ref transform_id) => {
+            CatTransformsParts::TransformId(transform_id) => {
                 let encoded_transform_id: Cow<str> =
                     percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(17usize + encoded_transform_id.len());
@@ -4964,7 +4964,7 @@ impl<'b> CatTransformsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Transforms API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-transforms.html)\n\nGets configuration and usage information about transforms."]
+#[doc = "Builder for the [Cat Transforms API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-transforms.html)\n\nGets configuration and usage information about transforms."]
 #[derive(Clone, Debug)]
 pub struct CatTransforms<'a, 'b> {
     transport: &'a Transport,
@@ -5159,118 +5159,118 @@ impl<'a> Cat<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Cat Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-alias.html)\n\nShows information about currently configured aliases to indices including filter and routing infos."]
+    #[doc = "[Cat Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-alias.html)\n\nShows information about currently configured aliases to indices including filter and routing infos."]
     pub fn aliases<'b>(&'a self, parts: CatAliasesParts<'b>) -> CatAliases<'a, 'b> {
         CatAliases::new(self.transport(), parts)
     }
-    #[doc = "[Cat Allocation API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-allocation.html)\n\nProvides a snapshot of how many shards are allocated to each data node and how much disk space they are using."]
+    #[doc = "[Cat Allocation API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-allocation.html)\n\nProvides a snapshot of how many shards are allocated to each data node and how much disk space they are using."]
     pub fn allocation<'b>(&'a self, parts: CatAllocationParts<'b>) -> CatAllocation<'a, 'b> {
         CatAllocation::new(self.transport(), parts)
     }
-    #[doc = "[Cat Component Templates API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-compoentn-templates.html)\n\nReturns information about existing component_templates templates."]
+    #[doc = "[Cat Component Templates API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-compoentn-templates.html)\n\nReturns information about existing component_templates templates."]
     pub fn component_templates<'b>(
         &'a self,
         parts: CatComponentTemplatesParts<'b>,
     ) -> CatComponentTemplates<'a, 'b> {
         CatComponentTemplates::new(self.transport(), parts)
     }
-    #[doc = "[Cat Count API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-count.html)\n\nProvides quick access to the document count of the entire cluster, or individual indices."]
+    #[doc = "[Cat Count API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-count.html)\n\nProvides quick access to the document count of the entire cluster, or individual indices."]
     pub fn count<'b>(&'a self, parts: CatCountParts<'b>) -> CatCount<'a, 'b> {
         CatCount::new(self.transport(), parts)
     }
-    #[doc = "[Cat Fielddata API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-fielddata.html)\n\nShows how much heap memory is currently being used by fielddata on every data node in the cluster."]
+    #[doc = "[Cat Fielddata API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-fielddata.html)\n\nShows how much heap memory is currently being used by fielddata on every data node in the cluster."]
     pub fn fielddata<'b>(&'a self, parts: CatFielddataParts<'b>) -> CatFielddata<'a, 'b> {
         CatFielddata::new(self.transport(), parts)
     }
-    #[doc = "[Cat Health API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-health.html)\n\nReturns a concise representation of the cluster health."]
+    #[doc = "[Cat Health API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-health.html)\n\nReturns a concise representation of the cluster health."]
     pub fn health<'b>(&'a self) -> CatHealth<'a, 'b> {
         CatHealth::new(self.transport())
     }
-    #[doc = "[Cat Help API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat.html)\n\nReturns help for the Cat APIs."]
+    #[doc = "[Cat Help API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat.html)\n\nReturns help for the Cat APIs."]
     pub fn help<'b>(&'a self) -> CatHelp<'a, 'b> {
         CatHelp::new(self.transport())
     }
-    #[doc = "[Cat Indices API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-indices.html)\n\nReturns information about indices: number of primaries and replicas, document counts, disk size, ..."]
+    #[doc = "[Cat Indices API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-indices.html)\n\nReturns information about indices: number of primaries and replicas, document counts, disk size, ..."]
     pub fn indices<'b>(&'a self, parts: CatIndicesParts<'b>) -> CatIndices<'a, 'b> {
         CatIndices::new(self.transport(), parts)
     }
-    #[doc = "[Cat Master API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-master.html)\n\nReturns information about the master node."]
+    #[doc = "[Cat Master API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-master.html)\n\nReturns information about the master node."]
     pub fn master<'b>(&'a self) -> CatMaster<'a, 'b> {
         CatMaster::new(self.transport())
     }
-    #[doc = "[Cat Ml Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-dfanalytics.html)\n\nGets configuration and usage information about data frame analytics jobs."]
+    #[doc = "[Cat Ml Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-dfanalytics.html)\n\nGets configuration and usage information about data frame analytics jobs."]
     pub fn ml_data_frame_analytics<'b>(
         &'a self,
         parts: CatMlDataFrameAnalyticsParts<'b>,
     ) -> CatMlDataFrameAnalytics<'a, 'b> {
         CatMlDataFrameAnalytics::new(self.transport(), parts)
     }
-    #[doc = "[Cat Ml Datafeeds API](http://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-datafeeds.html)\n\nGets configuration and usage information about datafeeds."]
+    #[doc = "[Cat Ml Datafeeds API](http://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-datafeeds.html)\n\nGets configuration and usage information about datafeeds."]
     pub fn ml_datafeeds<'b>(&'a self, parts: CatMlDatafeedsParts<'b>) -> CatMlDatafeeds<'a, 'b> {
         CatMlDatafeeds::new(self.transport(), parts)
     }
-    #[doc = "[Cat Ml Jobs API](http://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-anomaly-detectors.html)\n\nGets configuration and usage information about anomaly detection jobs."]
+    #[doc = "[Cat Ml Jobs API](http://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-anomaly-detectors.html)\n\nGets configuration and usage information about anomaly detection jobs."]
     pub fn ml_jobs<'b>(&'a self, parts: CatMlJobsParts<'b>) -> CatMlJobs<'a, 'b> {
         CatMlJobs::new(self.transport(), parts)
     }
-    #[doc = "[Cat Ml Trained Models API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-trained-model.html)\n\nGets configuration and usage information about inference trained models."]
+    #[doc = "[Cat Ml Trained Models API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-trained-model.html)\n\nGets configuration and usage information about inference trained models."]
     pub fn ml_trained_models<'b>(
         &'a self,
         parts: CatMlTrainedModelsParts<'b>,
     ) -> CatMlTrainedModels<'a, 'b> {
         CatMlTrainedModels::new(self.transport(), parts)
     }
-    #[doc = "[Cat Nodeattrs API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-nodeattrs.html)\n\nReturns information about custom node attributes."]
+    #[doc = "[Cat Nodeattrs API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-nodeattrs.html)\n\nReturns information about custom node attributes."]
     pub fn nodeattrs<'b>(&'a self) -> CatNodeattrs<'a, 'b> {
         CatNodeattrs::new(self.transport())
     }
-    #[doc = "[Cat Nodes API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-nodes.html)\n\nReturns basic statistics about performance of cluster nodes."]
+    #[doc = "[Cat Nodes API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-nodes.html)\n\nReturns basic statistics about performance of cluster nodes."]
     pub fn nodes<'b>(&'a self) -> CatNodes<'a, 'b> {
         CatNodes::new(self.transport())
     }
-    #[doc = "[Cat Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-pending-tasks.html)\n\nReturns a concise representation of the cluster pending tasks."]
+    #[doc = "[Cat Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-pending-tasks.html)\n\nReturns a concise representation of the cluster pending tasks."]
     pub fn pending_tasks<'b>(&'a self) -> CatPendingTasks<'a, 'b> {
         CatPendingTasks::new(self.transport())
     }
-    #[doc = "[Cat Plugins API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-plugins.html)\n\nReturns information about installed plugins across nodes node."]
+    #[doc = "[Cat Plugins API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-plugins.html)\n\nReturns information about installed plugins across nodes node."]
     pub fn plugins<'b>(&'a self) -> CatPlugins<'a, 'b> {
         CatPlugins::new(self.transport())
     }
-    #[doc = "[Cat Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-recovery.html)\n\nReturns information about index shard recoveries, both on-going completed."]
+    #[doc = "[Cat Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-recovery.html)\n\nReturns information about index shard recoveries, both on-going completed."]
     pub fn recovery<'b>(&'a self, parts: CatRecoveryParts<'b>) -> CatRecovery<'a, 'b> {
         CatRecovery::new(self.transport(), parts)
     }
-    #[doc = "[Cat Repositories API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-repositories.html)\n\nReturns information about snapshot repositories registered in the cluster."]
+    #[doc = "[Cat Repositories API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-repositories.html)\n\nReturns information about snapshot repositories registered in the cluster."]
     pub fn repositories<'b>(&'a self) -> CatRepositories<'a, 'b> {
         CatRepositories::new(self.transport())
     }
-    #[doc = "[Cat Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-segments.html)\n\nProvides low-level information about the segments in the shards of an index."]
+    #[doc = "[Cat Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-segments.html)\n\nProvides low-level information about the segments in the shards of an index."]
     pub fn segments<'b>(&'a self, parts: CatSegmentsParts<'b>) -> CatSegments<'a, 'b> {
         CatSegments::new(self.transport(), parts)
     }
-    #[doc = "[Cat Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-shards.html)\n\nProvides a detailed view of shard allocation on nodes."]
+    #[doc = "[Cat Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-shards.html)\n\nProvides a detailed view of shard allocation on nodes."]
     pub fn shards<'b>(&'a self, parts: CatShardsParts<'b>) -> CatShards<'a, 'b> {
         CatShards::new(self.transport(), parts)
     }
-    #[doc = "[Cat Snapshots API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-snapshots.html)\n\nReturns all snapshots in a specific repository."]
+    #[doc = "[Cat Snapshots API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-snapshots.html)\n\nReturns all snapshots in a specific repository."]
     pub fn snapshots<'b>(&'a self, parts: CatSnapshotsParts<'b>) -> CatSnapshots<'a, 'b> {
         CatSnapshots::new(self.transport(), parts)
     }
-    #[doc = "[Cat Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/tasks.html)\n\nReturns information about the tasks currently executing on one or more nodes in the cluster."]
+    #[doc = "[Cat Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/tasks.html)\n\nReturns information about the tasks currently executing on one or more nodes in the cluster."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn tasks<'b>(&'a self) -> CatTasks<'a, 'b> {
         CatTasks::new(self.transport())
     }
-    #[doc = "[Cat Templates API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-templates.html)\n\nReturns information about existing templates."]
+    #[doc = "[Cat Templates API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-templates.html)\n\nReturns information about existing templates."]
     pub fn templates<'b>(&'a self, parts: CatTemplatesParts<'b>) -> CatTemplates<'a, 'b> {
         CatTemplates::new(self.transport(), parts)
     }
-    #[doc = "[Cat Thread Pool API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-thread-pool.html)\n\nReturns cluster-wide thread pool statistics per node.\nBy default the active, queue and rejected statistics are returned for all thread pools."]
+    #[doc = "[Cat Thread Pool API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-thread-pool.html)\n\nReturns cluster-wide thread pool statistics per node.\nBy default the active, queue and rejected statistics are returned for all thread pools."]
     pub fn thread_pool<'b>(&'a self, parts: CatThreadPoolParts<'b>) -> CatThreadPool<'a, 'b> {
         CatThreadPool::new(self.transport(), parts)
     }
-    #[doc = "[Cat Transforms API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/cat-transforms.html)\n\nGets configuration and usage information about transforms."]
+    #[doc = "[Cat Transforms API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cat-transforms.html)\n\nGets configuration and usage information about transforms."]
     pub fn transforms<'b>(&'a self, parts: CatTransformsParts<'b>) -> CatTransforms<'a, 'b> {
         CatTransforms::new(self.transport(), parts)
     }
