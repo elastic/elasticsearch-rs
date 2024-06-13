@@ -48,7 +48,7 @@ enum BulkAction {
 ///
 /// the specific bulk action metadata such as the id of the source document, index, etc.
 #[serde_with::skip_serializing_none]
-#[derive(Serialize, Default)]
+#[derive(Serialize, Default, Clone)]
 struct BulkMetadata {
     _index: Option<String>,
     // TODO: intentionally omit type for now, as it's going away.
@@ -68,6 +68,7 @@ struct BulkMetadata {
 ///
 /// The header contains the bulk action and the specific action metadata
 /// such as the id of the source document, index, etc.
+#[derive(Clone)]
 struct BulkHeader {
     action: BulkAction,
     metadata: BulkMetadata,
@@ -152,6 +153,7 @@ impl Serialize for BulkHeader {
 /// # Ok(())
 /// # }
 /// ```
+#[derive(Clone)]
 pub struct BulkOperation<B> {
     header: BulkHeader,
     source: Option<B>,
