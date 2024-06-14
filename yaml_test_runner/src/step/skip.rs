@@ -56,7 +56,7 @@ impl Skip {
     fn parse_version_requirements(version: &Option<String>) -> Option<semver::VersionReq> {
         if let Some(v) = version {
             if v.to_lowercase() == "all" {
-                Some(semver::VersionReq::any())
+                Some(semver::VersionReq::STAR)
             } else {
                 lazy_static! {
                     static ref VERSION_REGEX: Regex =
