@@ -18,9 +18,9 @@
  */
 //! HTTP transport and connection components
 
-#[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+#[cfg(all(any(feature = "native-tls", feature = "rustls-tls"), not(target_arch = "wasm32")))]
 use crate::auth::ClientCertificate;
-#[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+#[cfg(all(any(feature = "native-tls", feature = "rustls-tls"), not(target_arch = "wasm32")))]
 use crate::cert::CertificateValidation;
 use crate::{
     auth::Credentials,
@@ -134,10 +134,13 @@ pub struct TransportBuilder {
     client_builder: reqwest::ClientBuilder,
     conn_pool: Box<dyn ConnectionPool>,
     credentials: Option<Credentials>,
-    #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+    #[cfg(all(any(feature = "native-tls", feature = "rustls-tls"), not(target_arch = "wasm32")))]
     cert_validation: Option<CertificateValidation>,
+    #[cfg(not(target_arch = "wasm32"))]
     proxy: Option<Url>,
+    #[cfg(not(target_arch = "wasm32"))]
     proxy_credentials: Option<Credentials>,
+    #[cfg(not(target_arch = "wasm32"))]
     disable_proxy: bool,
     headers: HeaderMap,
     meta_header: bool,
@@ -155,10 +158,13 @@ impl TransportBuilder {
             client_builder: reqwest::ClientBuilder::new(),
             conn_pool: Box::new(conn_pool),
             credentials: None,
-            #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+            #[cfg(all(any(feature = "native-tls", feature = "rustls-tls"), not(target_arch = "wasm32")))]
             cert_validation: None,
+            #[cfg(not(target_arch = "wasm32"))]
             proxy: None,
+            #[cfg(not(target_arch = "wasm32"))]
             proxy_credentials: None,
+            #[cfg(not(target_arch = "wasm32"))]
             disable_proxy: false,
             headers: HeaderMap::new(),
             meta_header: true,
@@ -170,6 +176,7 @@ impl TransportBuilder {
     ///
     /// An optional username and password will be used to set the
     /// `Proxy-Authorization` header using Basic Authentication.
+    #[cfg(not(target_arch = "wasm32"))]
     pub fn proxy(mut self, url: Url, username: Option<&str>, password: Option<&str>) -> Self {
         self.proxy = Some(url);
         if let Some(u) = username {
@@ -183,6 +190,7 @@ impl TransportBuilder {
     /// Whether to disable proxies, including system proxies.
     ///
     /// NOTE: System proxies are enabled by default.
+    #[cfg(not(target_arch = "wasm32"))]
     pub fn disable_proxy(mut self) -> Self {
         self.disable_proxy = true;
         self
@@ -197,7 +205,7 @@ impl TransportBuilder {
     /// Validation applied to the certificate provided to establish a HTTPS connection.
     /// By default, full validation is applied. When using a self-signed certificate,
     /// different validation can be applied.
-    #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+    #[cfg(all(any(feature = "native-tls", feature = "rustls-tls"), not(target_arch = "wasm32")))]
     pub fn cert_validation(mut self, validation: CertificateValidation) -> Self {
         self.cert_validation = Some(validation);
         self
@@ -248,11 +256,12 @@ impl TransportBuilder {
             client_builder = client_builder.default_headers(self.headers);
         }
 
+        #[cfg(not(target_arch = "wasm32"))]
         if let Some(t) = self.timeout {
             client_builder = client_builder.timeout(t);
         }
 
-        #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+        #[cfg(all(any(feature = "native-tls", feature = "rustls-tls"), not(target_arch = "wasm32")))]
         {
             if let Some(creds) = &self.credentials {
                 if let Credentials::Certificate(cert) = creds {
@@ -276,7 +285,7 @@ impl TransportBuilder {
             };
         }
 
-        #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+        #[cfg(all(any(feature = "native-tls", feature = "rustls-tls"), not(target_arch = "wasm32")))]
         if let Some(v) = self.cert_validation {
             client_builder = match v {
                 CertificateValidation::Default => client_builder,
@@ -296,6 +305,7 @@ impl TransportBuilder {
             }
         }
 
+        #[cfg(not(target_arch = "wasm32"))]
         if self.disable_proxy {
             client_builder = client_builder.no_proxy();
         } else if let Some(url) = self.proxy {
@@ -402,6 +412,7 @@ impl Transport {
         headers: HeaderMap,
         query_string: Option<&Q>,
         body: Option<B>,
+        #[allow(unused_variables)]
         timeout: Option<Duration>,
     ) -> Result<Response, Error>
     where
@@ -413,6 +424,7 @@ impl Transport {
         let reqwest_method = self.method(method);
         let mut request_builder = self.client.request(reqwest_method, url);
 
+        #[cfg(not(target_arch = "wasm32"))]
         if let Some(t) = timeout {
             request_builder = request_builder.timeout(t);
         }
@@ -422,7 +434,23 @@ impl Transport {
         // on a specific request, we want it to overwrite.
         if let Some(c) = &self.credentials {
             request_builder = match c {
-                Credentials::Basic(u, p) => request_builder.basic_auth(u, Some(p)),
+                Credentials::Basic(u, p) => {
+                    #[cfg(not(target_arch = "wasm32"))]
+                    {
+                        request_builder.basic_auth(u, Some(p))
+                    }
+                    #[cfg(target_arch = "wasm32")]
+                    {
+                        // Missing basic_auth in the wasm32 target
+                        let mut header_value = b"Basic ".to_vec();
+                        {
+                            let mut encoder = Base64Encoder::new(&mut header_value, base64::STANDARD);
+                            // The unwraps here are fine because Vec::write* is infallible.
+                            write!(encoder, "{}:{}", u, p).unwrap();
+                        }
+                        request_builder.header(reqwest::header::AUTHORIZATION, header_value)
+                    }
+                },
                 Credentials::Bearer(t) => request_builder.bearer_auth(t),
                 #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
                 Credentials::Certificate(_) => request_builder,

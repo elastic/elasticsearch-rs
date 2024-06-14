@@ -1,0 +1,27 @@
+name = "cloudflare_worker"
+type = "javascript"
+workers_dev = true
+compatibility_date = "2022-04-06"
+
+[vars]
+WORKERS_RS_VERSION = "0.0.9"
+
+# Secrets:
+# ES_URL
+# ES_LOGIN
+# ES_PASSWORD
+
+[build]
+command = "cargo install -q worker-build && worker-build --release" # required
+
+[build.upload]
+dir = "build/worker"
+format = "modules"
+main = "./shim.mjs"
+
+[[build.upload.rules]]
+globs = ["**/*.wasm"]
+type = "CompiledWasm"
+
+# read more about configuring your Worker via wrangler.toml at:
+# https://developers.cloudflare.com/workers/cli-wrangler/configuration

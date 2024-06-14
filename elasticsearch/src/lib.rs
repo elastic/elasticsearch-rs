@@ -150,7 +150,7 @@
 //! # }
 //! ```
 //!
-//! More control over how a [Transport](http::transport::Transport) is built can be
+//! More control over how a [e](http::transport::Transport) is built can be
 //! achieved using [TransportBuilder](http::transport::TransportBuilder) to build a transport, and
 //! passing it to [Elasticsearch::new] create a new instance of [Elasticsearch]
 //!
@@ -370,9 +370,11 @@ mod readme {
 extern crate dyn_clone;
 
 pub mod auth;
-pub mod cert;
 pub mod http;
 pub mod params;
+
+#[cfg(not(target_arch = "wasm32"))]
+pub mod cert;
 
 // GENERATED-BEGIN:namespace-modules
 // Generated code - do not edit until the next GENERATED-END marker
