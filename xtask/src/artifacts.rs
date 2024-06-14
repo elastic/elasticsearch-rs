@@ -19,17 +19,24 @@
 
 use super::*;
 use anyhow::Context;
+use bytes::Bytes;
 use chrono::{DateTime, FixedOffset};
-use reqwest::blocking as reqwest;
+use flate2::read::GzDecoder;
+use globset::{Glob, GlobSetBuilder};
+use reqwest::blocking::Response;
+use reqwest::header::{HeaderMap, HeaderValue, USER_AGENT};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fs;
+use std::fs::File;
 use std::io;
+use std::path::{Path, PathBuf};
+use tar::{Archive, Entry};
 
 pub fn download(commit_hash: Option<String>, url: Option<String>) -> anyhow::Result<()> {
     // Get commit hash from ES if its URL has been provided
     let commit_hash = if let Some(url) = url {
-        Some(super::get_es_commit_hash(url)?)
+        Some(get_es_commit_hash(url)?)
     } else {
         commit_hash
     };
@@ -45,16 +52,148 @@ pub fn download(commit_hash: Option<String>, url: Option<String>) -> anyhow::Res
     }
 
     let spec_dir = ROOT_DIR.join("checkout").join(STACK_VERSION.deref());
+    if download_from_artifacts_api(&spec_dir, commit_hash.clone()).is_err() {
+        println!("No build info artifacts API");
+        download_from_github(&spec_dir, commit_hash)?;
+    }
 
+    Ok(())
+}
+
+fn download_from_github(spec_dir: &PathBuf, commit_hash: Option<String>) -> anyhow::Result<()> {
+    let branch_url = format!(
+        "https://api.github.com/repos/elastic/elasticsearch/tarball/{}",
+        commit_hash
+            .clone()
+            .unwrap_or(format!("v{}", *STACK_VERSION))
+    );
+    println!("Downloading tarball from {}", &branch_url);
+    let mut headers = HeaderMap::new();
+    headers.append(USER_AGENT, HeaderValue::from_str("elasticsearch-rs")?);
+    let client = reqwest::blocking::ClientBuilder::new()
+        .default_headers(headers)
+        .build()
+        .unwrap();
+
+    let response = client.get(&branch_url).send()?;
+    let tar = GzDecoder::new(response);
+    let mut archive = Archive::new(tar);
+
+    let oss_spec = Glob::new("**/rest-api-spec/src/main/resources/rest-api-spec/api/*.json")?
+        .compile_matcher();
+    let xpack_spec = Glob::new("**/x-pack/plugin/src/test/resources/rest-api-spec/api/*.json")?
+        .compile_matcher();
+
+    let oss_test = GlobSetBuilder::new()
+        .add(Glob::new(
+            "**/rest-api-spec/src/main/resources/rest-api-spec/test/**/*.yml",
+        )?)
+        .add(Glob::new(
+            "**/rest-api-spec/src/yamlRestTest/resources/rest-api-spec/test/**/*.yml",
+        )?)
+        .build()?;
+    let xpack_test = GlobSetBuilder::new()
+        .add(Glob::new(
+            "**/x-pack/plugin/src/test/resources/rest-api-spec/test/**/*.yml",
+        )?)
+        .add(Glob::new(
+            "**/x-pack/plugin/src/yamlRestTest/resources/rest-api-spec/test/**/*.yml",
+        )?)
+        .build()?;
+
+    if spec_dir.exists() {
+        fs::remove_dir_all(&spec_dir).unwrap();
+    }
+    let rest_dir = spec_dir.join("rest-api-spec");
+    let api_dir = rest_dir.join("api");
+    let test_dir = rest_dir.join("test");
+    fs::create_dir_all(&api_dir).unwrap();
+    for entry in archive.entries()? {
+        let file = entry?;
+        let path = file.path()?;
+        if oss_spec.is_match(&path) || xpack_spec.is_match(&path) {
+            write_spec_file(&api_dir, file)?;
+        } else if oss_test.is_match(&path) {
+            write_test_file(&test_dir, "free", file)?;
+        } else if xpack_test.is_match(&path) {
+            write_test_file(&test_dir, "platinum", file)?;
+        }
+    }
+
+    // Also write project metadata for reference
+    let project_path = &spec_dir.join("elasticsearch.json");
+    let project_file = fs::File::create(&project_path)?;
+    serde_json::to_writer_pretty(
+        project_file,
+        &Project {
+            branch: STACK_VERSION.deref().clone(),
+            commit_hash: commit_hash.unwrap_or_default(),
+            packages: HashMap::new(),
+        },
+    )?;
+    Ok(())
+}
+
+fn download_from_artifacts_api(
+    spec_dir: &PathBuf,
+    commit_hash: Option<String>,
+) -> anyhow::Result<()> {
     let artifacts_url = format!(
         "https://artifacts-api.elastic.co/v1/versions/{}",
         *STACK_VERSION
     );
     println!("Downloading build info from {}", &artifacts_url);
+    let artifacts = reqwest::blocking::get(&artifacts_url)?.json::<Artifacts>()?;
+    println!("Downloaded build info from {}", &artifacts_url);
+    let project = find_project(&commit_hash, artifacts)?;
+    let zip_resp = download_specs_zip(&project)?;
+    if spec_dir.exists() {
+        fs::remove_dir_all(&spec_dir).unwrap();
+    }
+    fs::create_dir_all(&spec_dir).unwrap();
+    zip::ZipArchive::new(io::Cursor::new(zip_resp))?.extract(&spec_dir)?;
 
-    let artifacts = reqwest::get(&artifacts_url)?.json::<Artifacts>()?;
+    // Also write project metadata for reference
+    let project_path = &spec_dir.join("elasticsearch.json");
+    let project_file = fs::File::create(&project_path)?;
+    serde_json::to_writer_pretty(project_file, &project)?;
+    Ok(())
+}
 
-    let project = match &commit_hash {
+fn write_test_file(
+    download_dir: &Path,
+    suite: &str,
+    mut entry: Entry<GzDecoder<Response>>,
+) -> anyhow::Result<()> {
+    let path = entry.path()?;
+    let mut dir = {
+        let mut dir = download_dir.to_path_buf();
+        dir.push(suite);
+        let parent = path.parent().unwrap().file_name().unwrap();
+        dir.push(parent);
+        dir
+    };
+    fs::create_dir_all(&dir)?;
+    dir.push(path.file_name().unwrap());
+    let mut file = File::create(&dir)?;
+    io::copy(&mut entry, &mut file)?;
+    Ok(())
+}
+
+fn write_spec_file(
+    download_dir: &Path,
+    mut entry: Entry<GzDecoder<Response>>,
+) -> anyhow::Result<()> {
+    let path = entry.path()?;
+    let mut dir = download_dir.to_path_buf();
+    dir.push(path.file_name().unwrap());
+    let mut file = File::create(&dir)?;
+    io::copy(&mut entry, &mut file)?;
+    Ok(())
+}
+
+fn find_project(commit_hash: &Option<String>, artifacts: Artifacts) -> anyhow::Result<Project> {
+    match &commit_hash {
         Some(hash) => artifacts
             .version
             .builds
@@ -69,7 +208,8 @@ pub fn download(commit_hash: Option<String>, url: Option<String>) -> anyhow::Res
             .with_context(|| format!("Cannot find commit hash {}", hash))?
             .projects
             .get("elasticsearch")
-            .unwrap(), // ES is guaranteed to be there
+            .cloned()
+            .with_context(|| "Project 'elasticsearch' not found"),
 
         None => artifacts
             .version
@@ -79,9 +219,12 @@ pub fn download(commit_hash: Option<String>, url: Option<String>) -> anyhow::Res
             .unwrap()
             .projects
             .get("elasticsearch")
-            .with_context(|| "Project 'elasticsearch' not found")?,
-    };
+            .cloned()
+            .with_context(|| "Project 'elasticsearch' not found"),
+    }
+}
 
+fn download_specs_zip(project: &Project) -> anyhow::Result<Bytes> {
     let specs_url = project
         .packages
         .get(&format!("rest-resources-zip-{}.zip", *STACK_VERSION))
@@ -90,20 +233,9 @@ pub fn download(commit_hash: Option<String>, url: Option<String>) -> anyhow::Res
         .clone();
 
     println!("Downloading specs and yaml tests from {}", &specs_url);
-    let zip_resp = reqwest::get(&specs_url)?.bytes()?;
-
-    if spec_dir.exists() {
-        fs::remove_dir_all(&spec_dir).unwrap();
-    }
-    fs::create_dir_all(&spec_dir).unwrap();
-    zip::ZipArchive::new(io::Cursor::new(zip_resp))?.extract(&spec_dir)?;
-
-    // Also write project metadata for reference
-    let project_path = &spec_dir.join("elasticsearch.json");
-    let project_file = fs::File::create(&project_path)?;
-    serde_json::to_writer_pretty(project_file, &project)?;
-
-    Ok(())
+    reqwest::blocking::get(&specs_url)?
+        .bytes()
+        .with_context(|| "could not get bytes")
 }
 
 pub fn read_local_project() -> anyhow::Result<Option<Project>> {
@@ -144,7 +276,7 @@ pub struct Build {
     // build_duration_seconds: u32
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Project {
     pub branch: String,
     pub commit_hash: String,
@@ -153,7 +285,7 @@ pub struct Project {
     // build_duration_seconds: u32
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Package {
     pub url: String,
     pub sha_url: String,
@@ -166,7 +298,7 @@ pub struct Package {
     pub attributes: Option<Attributes>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Attributes {
     pub internal: Option<String>,
     pub artifact_id: Option<String>,
