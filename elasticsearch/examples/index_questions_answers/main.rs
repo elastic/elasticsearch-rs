@@ -31,7 +31,7 @@ use elasticsearch::{
     BulkOperation, BulkParts, Elasticsearch, Error, DEFAULT_ADDRESS,
 };
 use serde_json::Value;
-use sysinfo::SystemExt;
+use sysinfo::{ProcessRefreshKind, RefreshKind, System, SystemExt};
 use url::Url;
 
 mod stack_overflow;
@@ -370,8 +370,11 @@ fn create_client() -> Result<Elasticsearch, Error> {
 
     /// Determines if Fiddler.exe proxy process is running
     fn running_proxy() -> bool {
-        let system = sysinfo::System::new();
-        !system.get_process_by_name("Fiddler").is_empty()
+        let system = System::new_with_specifics(
+            RefreshKind::new().with_processes(ProcessRefreshKind::new()),
+        );
+        let is_running = system.processes_by_name("Fiddler").next().is_some();
+        is_running
     }
 
     let mut url = Url::parse(cluster_addr().as_ref()).unwrap();
