@@ -24,24 +24,6 @@
 // cargo make generate-api
 // -----------------------------------------------
 
-//! Ingest APIs
-//!
-//! [Manage ingest pipelines](https://www.elastic.co/guide/en/elasticsearch/reference/master/ingest-apis.html).
-//! Ingest pipelines can be used on a node with the `ingest` role to
-//! pre-process documents before indexing, to apply transformations and enrich data. Transformations are performed
-//! by [processors](https://www.elastic.co/guide/en/elasticsearch/reference/master/ingest-processors.html)
-//! in the pipeline, and can include such operations as
-//!
-//! - add, remove and append fields within the document
-//! - point documents to the right time-based index based on a timestamp within the document
-//! - extract details from fields with known formats and add new fields with extracted data
-//!
-//! and many more.
-//!
-//! All nodes enable ingest by default, so any node can handle ingest tasks. Ingest pipelines can
-//! be conditionally executed, and failures within pipelines can be explicitly handled by defining
-//! processors to execute in the event of failure.
-
 #![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
@@ -59,31 +41,37 @@ use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Ingest Delete Geoip Database API"]
-pub enum IngestDeleteGeoipDatabaseParts<'b> {
-    #[doc = "Id"]
-    Id(&'b [&'b str]),
+#[doc = "API parts for the Query Rules Delete Rule API"]
+pub enum QueryRulesDeleteRuleParts<'b> {
+    #[doc = "RulesetId and RuleId"]
+    RulesetIdRuleId(&'b str, &'b str),
 }
-impl<'b> IngestDeleteGeoipDatabaseParts<'b> {
-    #[doc = "Builds a relative URL path to the Ingest Delete Geoip Database API"]
+impl<'b> QueryRulesDeleteRuleParts<'b> {
+    #[doc = "Builds a relative URL path to the Query Rules Delete Rule API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IngestDeleteGeoipDatabaseParts::Id(ref id) => {
-                let id_str = id.join(",");
-                let encoded_id: Cow<str> = percent_encode(id_str.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(24usize + encoded_id.len());
-                p.push_str("/_ingest/geoip/database/");
-                p.push_str(encoded_id.as_ref());
+            QueryRulesDeleteRuleParts::RulesetIdRuleId(ref ruleset_id, ref rule_id) => {
+                let encoded_ruleset_id: Cow<str> =
+                    percent_encode(ruleset_id.as_bytes(), PARTS_ENCODED).into();
+                let encoded_rule_id: Cow<str> =
+                    percent_encode(rule_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    21usize + encoded_ruleset_id.len() + encoded_rule_id.len(),
+                );
+                p.push_str("/_query_rules/");
+                p.push_str(encoded_ruleset_id.as_ref());
+                p.push_str("/_rule/");
+                p.push_str(encoded_rule_id.as_ref());
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Ingest Delete Geoip Database API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/TODO.html)\n\nDeletes a geoip database configuration"]
+#[doc = "Builder for the [Query Rules Delete Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-query-rule.html)\n\nDeletes an individual query rule within a ruleset."]
 #[derive(Clone, Debug)]
-pub struct IngestDeleteGeoipDatabase<'a, 'b> {
+pub struct QueryRulesDeleteRule<'a, 'b> {
     transport: &'a Transport,
-    parts: IngestDeleteGeoipDatabaseParts<'b>,
+    parts: QueryRulesDeleteRuleParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -92,11 +80,11 @@ pub struct IngestDeleteGeoipDatabase<'a, 'b> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-impl<'a, 'b> IngestDeleteGeoipDatabase<'a, 'b> {
-    #[doc = "Creates a new instance of [IngestDeleteGeoipDatabase] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IngestDeleteGeoipDatabaseParts<'b>) -> Self {
+impl<'a, 'b> QueryRulesDeleteRule<'a, 'b> {
+    #[doc = "Creates a new instance of [QueryRulesDeleteRule] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: QueryRulesDeleteRuleParts<'b>) -> Self {
         let headers = HeaderMap::new();
-        IngestDeleteGeoipDatabase {
+        QueryRulesDeleteRule {
             transport,
             parts,
             headers,
@@ -143,7 +131,7 @@ impl<'a, 'b> IngestDeleteGeoipDatabase<'a, 'b> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous call to the Ingest Delete Geoip Database API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Query Rules Delete Rule API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = http::Method::Delete;
@@ -178,56 +166,53 @@ impl<'a, 'b> IngestDeleteGeoipDatabase<'a, 'b> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Ingest Delete Pipeline API"]
-pub enum IngestDeletePipelineParts<'b> {
-    #[doc = "Id"]
-    Id(&'b str),
+#[doc = "API parts for the Query Rules Delete Ruleset API"]
+pub enum QueryRulesDeleteRulesetParts<'b> {
+    #[doc = "RulesetId"]
+    RulesetId(&'b str),
 }
-impl<'b> IngestDeletePipelineParts<'b> {
-    #[doc = "Builds a relative URL path to the Ingest Delete Pipeline API"]
+impl<'b> QueryRulesDeleteRulesetParts<'b> {
+    #[doc = "Builds a relative URL path to the Query Rules Delete Ruleset API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IngestDeletePipelineParts::Id(ref id) => {
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(18usize + encoded_id.len());
-                p.push_str("/_ingest/pipeline/");
-                p.push_str(encoded_id.as_ref());
+            QueryRulesDeleteRulesetParts::RulesetId(ref ruleset_id) => {
+                let encoded_ruleset_id: Cow<str> =
+                    percent_encode(ruleset_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(14usize + encoded_ruleset_id.len());
+                p.push_str("/_query_rules/");
+                p.push_str(encoded_ruleset_id.as_ref());
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-pipeline-api.html)\n\nDeletes a pipeline."]
+#[doc = "Builder for the [Query Rules Delete Ruleset API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-query-ruleset.html)\n\nDeletes a query ruleset."]
 #[derive(Clone, Debug)]
-pub struct IngestDeletePipeline<'a, 'b> {
+pub struct QueryRulesDeleteRuleset<'a, 'b> {
     transport: &'a Transport,
-    parts: IngestDeletePipelineParts<'b>,
+    parts: QueryRulesDeleteRulesetParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
-    timeout: Option<&'b str>,
 }
-impl<'a, 'b> IngestDeletePipeline<'a, 'b> {
-    #[doc = "Creates a new instance of [IngestDeletePipeline] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IngestDeletePipelineParts<'b>) -> Self {
+impl<'a, 'b> QueryRulesDeleteRuleset<'a, 'b> {
+    #[doc = "Creates a new instance of [QueryRulesDeleteRuleset] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: QueryRulesDeleteRulesetParts<'b>) -> Self {
         let headers = HeaderMap::new();
-        IngestDeletePipeline {
+        QueryRulesDeleteRuleset {
             transport,
             parts,
             headers,
             error_trace: None,
             filter_path: None,
             human: None,
-            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
-            timeout: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -250,11 +235,6 @@ impl<'a, 'b> IngestDeletePipeline<'a, 'b> {
         self.human = Some(human);
         self
     }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
-        self.master_timeout = Some(master_timeout);
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -270,12 +250,7 @@ impl<'a, 'b> IngestDeletePipeline<'a, 'b> {
         self.source = Some(source);
         self
     }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: &'b str) -> Self {
-        self.timeout = Some(timeout);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Ingest Delete Pipeline API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Query Rules Delete Ruleset API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = http::Method::Delete;
@@ -289,122 +264,6 @@ impl<'a, 'b> IngestDeletePipeline<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
-                master_timeout: Option<&'b str>,
-                pretty: Option<bool>,
-                source: Option<&'b str>,
-                timeout: Option<&'b str>,
-            }
-            let query_params = QueryParams {
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                human: self.human,
-                master_timeout: self.master_timeout,
-                pretty: self.pretty,
-                source: self.source,
-                timeout: self.timeout,
-            };
-            Some(query_params)
-        };
-        let body = Option::<()>::None;
-        let response = self
-            .transport
-            .send(method, &path, headers, query_string.as_ref(), body, timeout)
-            .await?;
-        Ok(response)
-    }
-}
-#[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Ingest Geo Ip Stats API"]
-pub enum IngestGeoIpStatsParts {
-    #[doc = "No parts"]
-    None,
-}
-impl IngestGeoIpStatsParts {
-    #[doc = "Builds a relative URL path to the Ingest Geo Ip Stats API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            IngestGeoIpStatsParts::None => "/_ingest/geoip/stats".into(),
-        }
-    }
-}
-#[doc = "Builder for the [Ingest Geo Ip Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/geoip-stats-api.html)\n\nReturns statistical information about geoip databases"]
-#[derive(Clone, Debug)]
-pub struct IngestGeoIpStats<'a, 'b> {
-    transport: &'a Transport,
-    parts: IngestGeoIpStatsParts,
-    error_trace: Option<bool>,
-    filter_path: Option<&'b [&'b str]>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    request_timeout: Option<Duration>,
-    source: Option<&'b str>,
-}
-impl<'a, 'b> IngestGeoIpStats<'a, 'b> {
-    #[doc = "Creates a new instance of [IngestGeoIpStats]"]
-    pub fn new(transport: &'a Transport) -> Self {
-        let headers = HeaderMap::new();
-        IngestGeoIpStats {
-            transport,
-            parts: IngestGeoIpStatsParts::None,
-            headers,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            pretty: None,
-            request_timeout: None,
-            source: None,
-        }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
-    pub fn request_timeout(mut self, timeout: Duration) -> Self {
-        self.request_timeout = Some(timeout);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Ingest Geo Ip Stats API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = http::Method::Get;
-        let headers = self.headers;
-        let timeout = self.request_timeout;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                error_trace: Option<bool>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                filter_path: Option<&'b [&'b str]>,
-                human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -426,34 +285,37 @@ impl<'a, 'b> IngestGeoIpStats<'a, 'b> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Ingest Get Geoip Database API"]
-pub enum IngestGetGeoipDatabaseParts<'b> {
-    #[doc = "No parts"]
-    None,
-    #[doc = "Id"]
-    Id(&'b [&'b str]),
+#[doc = "API parts for the Query Rules Get Rule API"]
+pub enum QueryRulesGetRuleParts<'b> {
+    #[doc = "RulesetId and RuleId"]
+    RulesetIdRuleId(&'b str, &'b str),
 }
-impl<'b> IngestGetGeoipDatabaseParts<'b> {
-    #[doc = "Builds a relative URL path to the Ingest Get Geoip Database API"]
+impl<'b> QueryRulesGetRuleParts<'b> {
+    #[doc = "Builds a relative URL path to the Query Rules Get Rule API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IngestGetGeoipDatabaseParts::None => "/_ingest/geoip/database".into(),
-            IngestGetGeoipDatabaseParts::Id(ref id) => {
-                let id_str = id.join(",");
-                let encoded_id: Cow<str> = percent_encode(id_str.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(24usize + encoded_id.len());
-                p.push_str("/_ingest/geoip/database/");
-                p.push_str(encoded_id.as_ref());
+            QueryRulesGetRuleParts::RulesetIdRuleId(ref ruleset_id, ref rule_id) => {
+                let encoded_ruleset_id: Cow<str> =
+                    percent_encode(ruleset_id.as_bytes(), PARTS_ENCODED).into();
+                let encoded_rule_id: Cow<str> =
+                    percent_encode(rule_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    21usize + encoded_ruleset_id.len() + encoded_rule_id.len(),
+                );
+                p.push_str("/_query_rules/");
+                p.push_str(encoded_ruleset_id.as_ref());
+                p.push_str("/_rule/");
+                p.push_str(encoded_rule_id.as_ref());
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Ingest Get Geoip Database API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/TODO.html)\n\nReturns geoip database configuration."]
+#[doc = "Builder for the [Query Rules Get Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-query-rule.html)\n\nReturns the details about an individual query rule within a ruleset."]
 #[derive(Clone, Debug)]
-pub struct IngestGetGeoipDatabase<'a, 'b> {
+pub struct QueryRulesGetRule<'a, 'b> {
     transport: &'a Transport,
-    parts: IngestGetGeoipDatabaseParts<'b>,
+    parts: QueryRulesGetRuleParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -462,11 +324,11 @@ pub struct IngestGetGeoipDatabase<'a, 'b> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-impl<'a, 'b> IngestGetGeoipDatabase<'a, 'b> {
-    #[doc = "Creates a new instance of [IngestGetGeoipDatabase] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IngestGetGeoipDatabaseParts<'b>) -> Self {
+impl<'a, 'b> QueryRulesGetRule<'a, 'b> {
+    #[doc = "Creates a new instance of [QueryRulesGetRule] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: QueryRulesGetRuleParts<'b>) -> Self {
         let headers = HeaderMap::new();
-        IngestGetGeoipDatabase {
+        QueryRulesGetRule {
             transport,
             parts,
             headers,
@@ -513,7 +375,7 @@ impl<'a, 'b> IngestGetGeoipDatabase<'a, 'b> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous call to the Ingest Get Geoip Database API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Query Rules Get Rule API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = http::Method::Get;
@@ -548,59 +410,53 @@ impl<'a, 'b> IngestGetGeoipDatabase<'a, 'b> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Ingest Get Pipeline API"]
-pub enum IngestGetPipelineParts<'b> {
-    #[doc = "No parts"]
-    None,
-    #[doc = "Id"]
-    Id(&'b str),
+#[doc = "API parts for the Query Rules Get Ruleset API"]
+pub enum QueryRulesGetRulesetParts<'b> {
+    #[doc = "RulesetId"]
+    RulesetId(&'b str),
 }
-impl<'b> IngestGetPipelineParts<'b> {
-    #[doc = "Builds a relative URL path to the Ingest Get Pipeline API"]
+impl<'b> QueryRulesGetRulesetParts<'b> {
+    #[doc = "Builds a relative URL path to the Query Rules Get Ruleset API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IngestGetPipelineParts::None => "/_ingest/pipeline".into(),
-            IngestGetPipelineParts::Id(ref id) => {
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(18usize + encoded_id.len());
-                p.push_str("/_ingest/pipeline/");
-                p.push_str(encoded_id.as_ref());
+            QueryRulesGetRulesetParts::RulesetId(ref ruleset_id) => {
+                let encoded_ruleset_id: Cow<str> =
+                    percent_encode(ruleset_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(14usize + encoded_ruleset_id.len());
+                p.push_str("/_query_rules/");
+                p.push_str(encoded_ruleset_id.as_ref());
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-pipeline-api.html)\n\nReturns a pipeline."]
+#[doc = "Builder for the [Query Rules Get Ruleset API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-query-ruleset.html)\n\nReturns the details about a query ruleset."]
 #[derive(Clone, Debug)]
-pub struct IngestGetPipeline<'a, 'b> {
+pub struct QueryRulesGetRuleset<'a, 'b> {
     transport: &'a Transport,
-    parts: IngestGetPipelineParts<'b>,
+    parts: QueryRulesGetRulesetParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
-    summary: Option<bool>,
 }
-impl<'a, 'b> IngestGetPipeline<'a, 'b> {
-    #[doc = "Creates a new instance of [IngestGetPipeline] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IngestGetPipelineParts<'b>) -> Self {
+impl<'a, 'b> QueryRulesGetRuleset<'a, 'b> {
+    #[doc = "Creates a new instance of [QueryRulesGetRuleset] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: QueryRulesGetRulesetParts<'b>) -> Self {
         let headers = HeaderMap::new();
-        IngestGetPipeline {
+        QueryRulesGetRuleset {
             transport,
             parts,
             headers,
             error_trace: None,
             filter_path: None,
             human: None,
-            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
-            summary: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -623,11 +479,6 @@ impl<'a, 'b> IngestGetPipeline<'a, 'b> {
         self.human = Some(human);
         self
     }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
-        self.master_timeout = Some(master_timeout);
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -643,12 +494,7 @@ impl<'a, 'b> IngestGetPipeline<'a, 'b> {
         self.source = Some(source);
         self
     }
-    #[doc = "Return pipelines without their definitions (default: false)"]
-    pub fn summary(mut self, summary: bool) -> Self {
-        self.summary = Some(summary);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Ingest Get Pipeline API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Query Rules Get Ruleset API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = http::Method::Get;
@@ -662,19 +508,15 @@ impl<'a, 'b> IngestGetPipeline<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
-                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
-                summary: Option<bool>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
-                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
-                summary: self.summary,
             };
             Some(query_params)
         };
@@ -687,45 +529,49 @@ impl<'a, 'b> IngestGetPipeline<'a, 'b> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Ingest Processor Grok API"]
-pub enum IngestProcessorGrokParts {
+#[doc = "API parts for the Query Rules List Rulesets API"]
+pub enum QueryRulesListRulesetsParts {
     #[doc = "No parts"]
     None,
 }
-impl IngestProcessorGrokParts {
-    #[doc = "Builds a relative URL path to the Ingest Processor Grok API"]
+impl QueryRulesListRulesetsParts {
+    #[doc = "Builds a relative URL path to the Query Rules List Rulesets API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IngestProcessorGrokParts::None => "/_ingest/processor/grok".into(),
+            QueryRulesListRulesetsParts::None => "/_query_rules".into(),
         }
     }
 }
-#[doc = "Builder for the [Ingest Processor Grok API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/grok-processor.html#grok-processor-rest-get)\n\nReturns a list of the built-in patterns."]
+#[doc = "Builder for the [Query Rules List Rulesets API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/list-query-rulesets.html)\n\nLists query rulesets."]
 #[derive(Clone, Debug)]
-pub struct IngestProcessorGrok<'a, 'b> {
+pub struct QueryRulesListRulesets<'a, 'b> {
     transport: &'a Transport,
-    parts: IngestProcessorGrokParts,
+    parts: QueryRulesListRulesetsParts,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
+    from: Option<i32>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
+    size: Option<i32>,
     source: Option<&'b str>,
 }
-impl<'a, 'b> IngestProcessorGrok<'a, 'b> {
-    #[doc = "Creates a new instance of [IngestProcessorGrok]"]
+impl<'a, 'b> QueryRulesListRulesets<'a, 'b> {
+    #[doc = "Creates a new instance of [QueryRulesListRulesets]"]
     pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
-        IngestProcessorGrok {
+        QueryRulesListRulesets {
             transport,
-            parts: IngestProcessorGrokParts::None,
+            parts: QueryRulesListRulesetsParts::None,
             headers,
             error_trace: None,
             filter_path: None,
+            from: None,
             human: None,
             pretty: None,
             request_timeout: None,
+            size: None,
             source: None,
         }
     }
@@ -737,6 +583,11 @@ impl<'a, 'b> IngestProcessorGrok<'a, 'b> {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Starting offset (default: 0)"]
+    pub fn from(mut self, from: i32) -> Self {
+        self.from = Some(from);
         self
     }
     #[doc = "Adds a HTTP header"]
@@ -759,12 +610,17 @@ impl<'a, 'b> IngestProcessorGrok<'a, 'b> {
         self.request_timeout = Some(timeout);
         self
     }
+    #[doc = "specifies a max number of results to get (default: 100)"]
+    pub fn size(mut self, size: i32) -> Self {
+        self.size = Some(size);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous call to the Ingest Processor Grok API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Query Rules List Rulesets API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = http::Method::Get;
@@ -777,15 +633,19 @@ impl<'a, 'b> IngestProcessorGrok<'a, 'b> {
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
+                from: Option<i32>,
                 human: Option<bool>,
                 pretty: Option<bool>,
+                size: Option<i32>,
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
+                from: self.from,
                 human: self.human,
                 pretty: self.pretty,
+                size: self.size,
                 source: self.source,
             };
             Some(query_params)
@@ -799,30 +659,37 @@ impl<'a, 'b> IngestProcessorGrok<'a, 'b> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Ingest Put Geoip Database API"]
-pub enum IngestPutGeoipDatabaseParts<'b> {
-    #[doc = "Id"]
-    Id(&'b str),
+#[doc = "API parts for the Query Rules Put Rule API"]
+pub enum QueryRulesPutRuleParts<'b> {
+    #[doc = "RulesetId and RuleId"]
+    RulesetIdRuleId(&'b str, &'b str),
 }
-impl<'b> IngestPutGeoipDatabaseParts<'b> {
-    #[doc = "Builds a relative URL path to the Ingest Put Geoip Database API"]
+impl<'b> QueryRulesPutRuleParts<'b> {
+    #[doc = "Builds a relative URL path to the Query Rules Put Rule API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IngestPutGeoipDatabaseParts::Id(ref id) => {
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(24usize + encoded_id.len());
-                p.push_str("/_ingest/geoip/database/");
-                p.push_str(encoded_id.as_ref());
+            QueryRulesPutRuleParts::RulesetIdRuleId(ref ruleset_id, ref rule_id) => {
+                let encoded_ruleset_id: Cow<str> =
+                    percent_encode(ruleset_id.as_bytes(), PARTS_ENCODED).into();
+                let encoded_rule_id: Cow<str> =
+                    percent_encode(rule_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    21usize + encoded_ruleset_id.len() + encoded_rule_id.len(),
+                );
+                p.push_str("/_query_rules/");
+                p.push_str(encoded_ruleset_id.as_ref());
+                p.push_str("/_rule/");
+                p.push_str(encoded_rule_id.as_ref());
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Ingest Put Geoip Database API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/TODO.html)\n\nPuts the configuration for a geoip database to be downloaded"]
+#[doc = "Builder for the [Query Rules Put Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-query-rule.html)\n\nCreates or updates a query rule within a ruleset."]
 #[derive(Clone, Debug)]
-pub struct IngestPutGeoipDatabase<'a, 'b, B> {
+pub struct QueryRulesPutRule<'a, 'b, B> {
     transport: &'a Transport,
-    parts: IngestPutGeoipDatabaseParts<'b>,
+    parts: QueryRulesPutRuleParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -832,14 +699,14 @@ pub struct IngestPutGeoipDatabase<'a, 'b, B> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-impl<'a, 'b, B> IngestPutGeoipDatabase<'a, 'b, B>
+impl<'a, 'b, B> QueryRulesPutRule<'a, 'b, B>
 where
     B: Body,
 {
-    #[doc = "Creates a new instance of [IngestPutGeoipDatabase] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IngestPutGeoipDatabaseParts<'b>) -> Self {
+    #[doc = "Creates a new instance of [QueryRulesPutRule] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: QueryRulesPutRuleParts<'b>) -> Self {
         let headers = HeaderMap::new();
-        IngestPutGeoipDatabase {
+        QueryRulesPutRule {
             transport,
             parts,
             headers,
@@ -853,11 +720,11 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IngestPutGeoipDatabase<'a, 'b, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> QueryRulesPutRule<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
-        IngestPutGeoipDatabase {
+        QueryRulesPutRule {
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
@@ -905,7 +772,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous call to the Ingest Put Geoip Database API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Query Rules Put Rule API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = http::Method::Put;
@@ -940,50 +807,48 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Ingest Put Pipeline API"]
-pub enum IngestPutPipelineParts<'b> {
-    #[doc = "Id"]
-    Id(&'b str),
+#[doc = "API parts for the Query Rules Put Ruleset API"]
+pub enum QueryRulesPutRulesetParts<'b> {
+    #[doc = "RulesetId"]
+    RulesetId(&'b str),
 }
-impl<'b> IngestPutPipelineParts<'b> {
-    #[doc = "Builds a relative URL path to the Ingest Put Pipeline API"]
+impl<'b> QueryRulesPutRulesetParts<'b> {
+    #[doc = "Builds a relative URL path to the Query Rules Put Ruleset API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IngestPutPipelineParts::Id(ref id) => {
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(18usize + encoded_id.len());
-                p.push_str("/_ingest/pipeline/");
-                p.push_str(encoded_id.as_ref());
+            QueryRulesPutRulesetParts::RulesetId(ref ruleset_id) => {
+                let encoded_ruleset_id: Cow<str> =
+                    percent_encode(ruleset_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(14usize + encoded_ruleset_id.len());
+                p.push_str("/_query_rules/");
+                p.push_str(encoded_ruleset_id.as_ref());
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-pipeline-api.html)\n\nCreates or updates a pipeline."]
+#[doc = "Builder for the [Query Rules Put Ruleset API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-query-ruleset.html)\n\nCreates or updates a query ruleset."]
 #[derive(Clone, Debug)]
-pub struct IngestPutPipeline<'a, 'b, B> {
+pub struct QueryRulesPutRuleset<'a, 'b, B> {
     transport: &'a Transport,
-    parts: IngestPutPipelineParts<'b>,
+    parts: QueryRulesPutRulesetParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    if_version: Option<i32>,
-    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
-    timeout: Option<&'b str>,
 }
-impl<'a, 'b, B> IngestPutPipeline<'a, 'b, B>
+impl<'a, 'b, B> QueryRulesPutRuleset<'a, 'b, B>
 where
     B: Body,
 {
-    #[doc = "Creates a new instance of [IngestPutPipeline] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IngestPutPipelineParts<'b>) -> Self {
+    #[doc = "Creates a new instance of [QueryRulesPutRuleset] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: QueryRulesPutRulesetParts<'b>) -> Self {
         let headers = HeaderMap::new();
-        IngestPutPipeline {
+        QueryRulesPutRuleset {
             transport,
             parts,
             headers,
@@ -991,20 +856,17 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
-            if_version: None,
-            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
-            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IngestPutPipeline<'a, 'b, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> QueryRulesPutRuleset<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
-        IngestPutPipeline {
+        QueryRulesPutRuleset {
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
@@ -1012,12 +874,9 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
-            if_version: self.if_version,
-            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
-            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1040,16 +899,6 @@ where
         self.human = Some(human);
         self
     }
-    #[doc = "Required version for optimistic concurrency control for pipeline updates"]
-    pub fn if_version(mut self, if_version: i32) -> Self {
-        self.if_version = Some(if_version);
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
-        self.master_timeout = Some(master_timeout);
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -1065,12 +914,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: &'b str) -> Self {
-        self.timeout = Some(timeout);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Ingest Put Pipeline API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Query Rules Put Ruleset API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = http::Method::Put;
@@ -1084,21 +928,15 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
-                if_version: Option<i32>,
-                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
-                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
-                if_version: self.if_version,
-                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
-                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -1110,234 +948,65 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Ingest Simulate API"]
-pub enum IngestSimulateParts<'b> {
-    #[doc = "No parts"]
-    None,
-    #[doc = "Id"]
-    Id(&'b str),
-}
-impl<'b> IngestSimulateParts<'b> {
-    #[doc = "Builds a relative URL path to the Ingest Simulate API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            IngestSimulateParts::None => "/_ingest/pipeline/_simulate".into(),
-            IngestSimulateParts::Id(ref id) => {
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(28usize + encoded_id.len());
-                p.push_str("/_ingest/pipeline/");
-                p.push_str(encoded_id.as_ref());
-                p.push_str("/_simulate");
-                p.into()
-            }
-        }
-    }
-}
-#[doc = "Builder for the [Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/simulate-pipeline-api.html)\n\nAllows to simulate a pipeline with example documents."]
-#[derive(Clone, Debug)]
-pub struct IngestSimulate<'a, 'b, B> {
-    transport: &'a Transport,
-    parts: IngestSimulateParts<'b>,
-    body: Option<B>,
-    error_trace: Option<bool>,
-    filter_path: Option<&'b [&'b str]>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    request_timeout: Option<Duration>,
-    source: Option<&'b str>,
-    verbose: Option<bool>,
-}
-impl<'a, 'b, B> IngestSimulate<'a, 'b, B>
-where
-    B: Body,
-{
-    #[doc = "Creates a new instance of [IngestSimulate] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IngestSimulateParts<'b>) -> Self {
-        let headers = HeaderMap::new();
-        IngestSimulate {
-            transport,
-            parts,
-            headers,
-            body: None,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            pretty: None,
-            request_timeout: None,
-            source: None,
-            verbose: None,
-        }
-    }
-    #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IngestSimulate<'a, 'b, JsonBody<T>>
-    where
-        T: Serialize,
-    {
-        IngestSimulate {
-            transport: self.transport,
-            parts: self.parts,
-            body: Some(body.into()),
-            error_trace: self.error_trace,
-            filter_path: self.filter_path,
-            headers: self.headers,
-            human: self.human,
-            pretty: self.pretty,
-            request_timeout: self.request_timeout,
-            source: self.source,
-            verbose: self.verbose,
-        }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
-    pub fn request_timeout(mut self, timeout: Duration) -> Self {
-        self.request_timeout = Some(timeout);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Verbose mode. Display data output for each processor in executed pipeline"]
-    pub fn verbose(mut self, verbose: bool) -> Self {
-        self.verbose = Some(verbose);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Ingest Simulate API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = match self.body {
-            Some(_) => http::Method::Post,
-            None => http::Method::Get,
-        };
-        let headers = self.headers;
-        let timeout = self.request_timeout;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                error_trace: Option<bool>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                filter_path: Option<&'b [&'b str]>,
-                human: Option<bool>,
-                pretty: Option<bool>,
-                source: Option<&'b str>,
-                verbose: Option<bool>,
-            }
-            let query_params = QueryParams {
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                human: self.human,
-                pretty: self.pretty,
-                source: self.source,
-                verbose: self.verbose,
-            };
-            Some(query_params)
-        };
-        let body = self.body;
-        let response = self
-            .transport
-            .send(method, &path, headers, query_string.as_ref(), body, timeout)
-            .await?;
-        Ok(response)
-    }
-}
-#[doc = "Namespace client for Ingest APIs"]
-pub struct Ingest<'a> {
+#[doc = "Namespace client for QueryRules APIs"]
+pub struct QueryRules<'a> {
     transport: &'a Transport,
 }
-impl<'a> Ingest<'a> {
-    #[doc = "Creates a new instance of [Ingest]"]
+impl<'a> QueryRules<'a> {
+    #[doc = "Creates a new instance of [QueryRules]"]
     pub fn new(transport: &'a Transport) -> Self {
         Self { transport }
     }
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Ingest Delete Geoip Database API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/TODO.html)\n\nDeletes a geoip database configuration"]
-    pub fn delete_geoip_database<'b>(
+    #[doc = "[Query Rules Delete Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-query-rule.html)\n\nDeletes an individual query rule within a ruleset."]
+    pub fn delete_rule<'b>(
         &'a self,
-        parts: IngestDeleteGeoipDatabaseParts<'b>,
-    ) -> IngestDeleteGeoipDatabase<'a, 'b> {
-        IngestDeleteGeoipDatabase::new(self.transport(), parts)
+        parts: QueryRulesDeleteRuleParts<'b>,
+    ) -> QueryRulesDeleteRule<'a, 'b> {
+        QueryRulesDeleteRule::new(self.transport(), parts)
     }
-    #[doc = "[Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-pipeline-api.html)\n\nDeletes a pipeline."]
-    pub fn delete_pipeline<'b>(
+    #[doc = "[Query Rules Delete Ruleset API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-query-ruleset.html)\n\nDeletes a query ruleset."]
+    pub fn delete_ruleset<'b>(
         &'a self,
-        parts: IngestDeletePipelineParts<'b>,
-    ) -> IngestDeletePipeline<'a, 'b> {
-        IngestDeletePipeline::new(self.transport(), parts)
+        parts: QueryRulesDeleteRulesetParts<'b>,
+    ) -> QueryRulesDeleteRuleset<'a, 'b> {
+        QueryRulesDeleteRuleset::new(self.transport(), parts)
     }
-    #[doc = "[Ingest Geo Ip Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/geoip-stats-api.html)\n\nReturns statistical information about geoip databases"]
-    pub fn geo_ip_stats<'b>(&'a self) -> IngestGeoIpStats<'a, 'b> {
-        IngestGeoIpStats::new(self.transport())
+    #[doc = "[Query Rules Get Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-query-rule.html)\n\nReturns the details about an individual query rule within a ruleset."]
+    pub fn get_rule<'b>(&'a self, parts: QueryRulesGetRuleParts<'b>) -> QueryRulesGetRule<'a, 'b> {
+        QueryRulesGetRule::new(self.transport(), parts)
     }
-    #[doc = "[Ingest Get Geoip Database API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/TODO.html)\n\nReturns geoip database configuration."]
-    pub fn get_geoip_database<'b>(
+    #[doc = "[Query Rules Get Ruleset API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-query-ruleset.html)\n\nReturns the details about a query ruleset."]
+    pub fn get_ruleset<'b>(
         &'a self,
-        parts: IngestGetGeoipDatabaseParts<'b>,
-    ) -> IngestGetGeoipDatabase<'a, 'b> {
-        IngestGetGeoipDatabase::new(self.transport(), parts)
+        parts: QueryRulesGetRulesetParts<'b>,
+    ) -> QueryRulesGetRuleset<'a, 'b> {
+        QueryRulesGetRuleset::new(self.transport(), parts)
     }
-    #[doc = "[Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-pipeline-api.html)\n\nReturns a pipeline."]
-    pub fn get_pipeline<'b>(
+    #[doc = "[Query Rules List Rulesets API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/list-query-rulesets.html)\n\nLists query rulesets."]
+    pub fn list_rulesets<'b>(&'a self) -> QueryRulesListRulesets<'a, 'b> {
+        QueryRulesListRulesets::new(self.transport())
+    }
+    #[doc = "[Query Rules Put Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-query-rule.html)\n\nCreates or updates a query rule within a ruleset."]
+    pub fn put_rule<'b>(
         &'a self,
-        parts: IngestGetPipelineParts<'b>,
-    ) -> IngestGetPipeline<'a, 'b> {
-        IngestGetPipeline::new(self.transport(), parts)
+        parts: QueryRulesPutRuleParts<'b>,
+    ) -> QueryRulesPutRule<'a, 'b, ()> {
+        QueryRulesPutRule::new(self.transport(), parts)
     }
-    #[doc = "[Ingest Processor Grok API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/grok-processor.html#grok-processor-rest-get)\n\nReturns a list of the built-in patterns."]
-    pub fn processor_grok<'b>(&'a self) -> IngestProcessorGrok<'a, 'b> {
-        IngestProcessorGrok::new(self.transport())
-    }
-    #[doc = "[Ingest Put Geoip Database API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/TODO.html)\n\nPuts the configuration for a geoip database to be downloaded"]
-    pub fn put_geoip_database<'b>(
+    #[doc = "[Query Rules Put Ruleset API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-query-ruleset.html)\n\nCreates or updates a query ruleset."]
+    pub fn put_ruleset<'b>(
         &'a self,
-        parts: IngestPutGeoipDatabaseParts<'b>,
-    ) -> IngestPutGeoipDatabase<'a, 'b, ()> {
-        IngestPutGeoipDatabase::new(self.transport(), parts)
-    }
-    #[doc = "[Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-pipeline-api.html)\n\nCreates or updates a pipeline."]
-    pub fn put_pipeline<'b>(
-        &'a self,
-        parts: IngestPutPipelineParts<'b>,
-    ) -> IngestPutPipeline<'a, 'b, ()> {
-        IngestPutPipeline::new(self.transport(), parts)
-    }
-    #[doc = "[Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/simulate-pipeline-api.html)\n\nAllows to simulate a pipeline with example documents."]
-    pub fn simulate<'b>(&'a self, parts: IngestSimulateParts<'b>) -> IngestSimulate<'a, 'b, ()> {
-        IngestSimulate::new(self.transport(), parts)
+        parts: QueryRulesPutRulesetParts<'b>,
+    ) -> QueryRulesPutRuleset<'a, 'b, ()> {
+        QueryRulesPutRuleset::new(self.transport(), parts)
     }
 }
 impl Elasticsearch {
-    #[doc = "Creates a namespace client for Ingest APIs"]
-    pub fn ingest(&self) -> Ingest {
-        Ingest::new(self.transport())
+    #[doc = "Creates a namespace client for QueryRules APIs"]
+    pub fn query_rules(&self) -> QueryRules {
+        QueryRules::new(self.transport())
     }
 }

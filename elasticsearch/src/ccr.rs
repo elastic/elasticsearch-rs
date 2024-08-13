@@ -37,11 +37,11 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        self,
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         transport::Transport,
-        Method,
     },
     params::*,
 };
@@ -68,7 +68,7 @@ impl<'b> CcrDeleteAutoFollowPatternParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ccr Delete Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-delete-auto-follow-pattern.html)\n\nDeletes auto-follow patterns."]
+#[doc = "Builder for the [Ccr Delete Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-delete-auto-follow-pattern.html)\n\nDeletes auto-follow patterns."]
 #[derive(Clone, Debug)]
 pub struct CcrDeleteAutoFollowPattern<'a, 'b> {
     transport: &'a Transport,
@@ -77,6 +77,7 @@ pub struct CcrDeleteAutoFollowPattern<'a, 'b> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -92,6 +93,7 @@ impl<'a, 'b> CcrDeleteAutoFollowPattern<'a, 'b> {
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -117,6 +119,11 @@ impl<'a, 'b> CcrDeleteAutoFollowPattern<'a, 'b> {
         self.human = Some(human);
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -135,7 +142,7 @@ impl<'a, 'b> CcrDeleteAutoFollowPattern<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ccr Delete Auto Follow Pattern API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -146,6 +153,7 @@ impl<'a, 'b> CcrDeleteAutoFollowPattern<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -153,6 +161,7 @@ impl<'a, 'b> CcrDeleteAutoFollowPattern<'a, 'b> {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -188,7 +197,7 @@ impl<'b> CcrFollowParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ccr Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-put-follow.html)\n\nCreates a new follower index configured to follow the referenced leader index."]
+#[doc = "Builder for the [Ccr Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-put-follow.html)\n\nCreates a new follower index configured to follow the referenced leader index."]
 #[derive(Clone, Debug)]
 pub struct CcrFollow<'a, 'b, B> {
     transport: &'a Transport,
@@ -198,6 +207,7 @@ pub struct CcrFollow<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -218,6 +228,7 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -237,6 +248,7 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
@@ -263,6 +275,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -286,7 +303,7 @@ where
     #[doc = "Creates an asynchronous call to the Ccr Follow API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -297,6 +314,7 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
                 wait_for_active_shards: Option<&'b str>,
@@ -305,6 +323,7 @@ where
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
                 wait_for_active_shards: self.wait_for_active_shards,
@@ -342,7 +361,7 @@ impl<'b> CcrFollowInfoParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ccr Follow Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-get-follow-info.html)\n\nRetrieves information about all follower indices, including parameters and status for each follower index"]
+#[doc = "Builder for the [Ccr Follow Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-get-follow-info.html)\n\nRetrieves information about all follower indices, including parameters and status for each follower index"]
 #[derive(Clone, Debug)]
 pub struct CcrFollowInfo<'a, 'b> {
     transport: &'a Transport,
@@ -351,6 +370,7 @@ pub struct CcrFollowInfo<'a, 'b> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -366,6 +386,7 @@ impl<'a, 'b> CcrFollowInfo<'a, 'b> {
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -391,6 +412,11 @@ impl<'a, 'b> CcrFollowInfo<'a, 'b> {
         self.human = Some(human);
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -409,7 +435,7 @@ impl<'a, 'b> CcrFollowInfo<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ccr Follow Info API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -420,6 +446,7 @@ impl<'a, 'b> CcrFollowInfo<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -427,6 +454,7 @@ impl<'a, 'b> CcrFollowInfo<'a, 'b> {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -463,7 +491,7 @@ impl<'b> CcrFollowStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ccr Follow Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-get-follow-stats.html)\n\nRetrieves follower stats. return shard-level stats about the following tasks associated with each shard for the specified indices."]
+#[doc = "Builder for the [Ccr Follow Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-get-follow-stats.html)\n\nRetrieves follower stats. return shard-level stats about the following tasks associated with each shard for the specified indices."]
 #[derive(Clone, Debug)]
 pub struct CcrFollowStats<'a, 'b> {
     transport: &'a Transport,
@@ -475,6 +503,7 @@ pub struct CcrFollowStats<'a, 'b> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b> CcrFollowStats<'a, 'b> {
     #[doc = "Creates a new instance of [CcrFollowStats] with the specified API parts"]
@@ -490,6 +519,7 @@ impl<'a, 'b> CcrFollowStats<'a, 'b> {
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -527,10 +557,15 @@ impl<'a, 'b> CcrFollowStats<'a, 'b> {
         self.source = Some(source);
         self
     }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Ccr Follow Stats API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -543,6 +578,7 @@ impl<'a, 'b> CcrFollowStats<'a, 'b> {
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -550,6 +586,7 @@ impl<'a, 'b> CcrFollowStats<'a, 'b> {
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -583,7 +620,7 @@ impl<'b> CcrForgetFollowerParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ccr Forget Follower API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-post-forget-follower.html)\n\nRemoves the follower retention leases from the leader."]
+#[doc = "Builder for the [Ccr Forget Follower API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-post-forget-follower.html)\n\nRemoves the follower retention leases from the leader."]
 #[derive(Clone, Debug)]
 pub struct CcrForgetFollower<'a, 'b, B> {
     transport: &'a Transport,
@@ -596,6 +633,7 @@ pub struct CcrForgetFollower<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> CcrForgetFollower<'a, 'b, B>
 where
@@ -615,6 +653,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -633,6 +672,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -670,10 +710,15 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Ccr Forget Follower API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -686,6 +731,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -693,6 +739,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -727,7 +774,7 @@ impl<'b> CcrGetAutoFollowPatternParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ccr Get Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-get-auto-follow-pattern.html)\n\nGets configured auto-follow patterns. Returns the specified auto-follow pattern collection."]
+#[doc = "Builder for the [Ccr Get Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-get-auto-follow-pattern.html)\n\nGets configured auto-follow patterns. Returns the specified auto-follow pattern collection."]
 #[derive(Clone, Debug)]
 pub struct CcrGetAutoFollowPattern<'a, 'b> {
     transport: &'a Transport,
@@ -736,6 +783,7 @@ pub struct CcrGetAutoFollowPattern<'a, 'b> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -751,6 +799,7 @@ impl<'a, 'b> CcrGetAutoFollowPattern<'a, 'b> {
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -776,6 +825,11 @@ impl<'a, 'b> CcrGetAutoFollowPattern<'a, 'b> {
         self.human = Some(human);
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -794,7 +848,7 @@ impl<'a, 'b> CcrGetAutoFollowPattern<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ccr Get Auto Follow Pattern API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -805,6 +859,7 @@ impl<'a, 'b> CcrGetAutoFollowPattern<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -812,6 +867,7 @@ impl<'a, 'b> CcrGetAutoFollowPattern<'a, 'b> {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -846,7 +902,7 @@ impl<'b> CcrPauseAutoFollowPatternParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ccr Pause Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-pause-auto-follow-pattern.html)\n\nPauses an auto-follow pattern"]
+#[doc = "Builder for the [Ccr Pause Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-pause-auto-follow-pattern.html)\n\nPauses an auto-follow pattern"]
 #[derive(Clone, Debug)]
 pub struct CcrPauseAutoFollowPattern<'a, 'b, B> {
     transport: &'a Transport,
@@ -856,6 +912,7 @@ pub struct CcrPauseAutoFollowPattern<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -875,6 +932,7 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -893,6 +951,7 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
@@ -918,6 +977,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -936,7 +1000,7 @@ where
     #[doc = "Creates an asynchronous call to the Ccr Pause Auto Follow Pattern API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -947,6 +1011,7 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -954,6 +1019,7 @@ where
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -989,7 +1055,7 @@ impl<'b> CcrPauseFollowParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ccr Pause Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-post-pause-follow.html)\n\nPauses a follower index. The follower index will not fetch any additional operations from the leader index."]
+#[doc = "Builder for the [Ccr Pause Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-post-pause-follow.html)\n\nPauses a follower index. The follower index will not fetch any additional operations from the leader index."]
 #[derive(Clone, Debug)]
 pub struct CcrPauseFollow<'a, 'b, B> {
     transport: &'a Transport,
@@ -999,6 +1065,7 @@ pub struct CcrPauseFollow<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -1018,6 +1085,7 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -1036,6 +1104,7 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
@@ -1061,6 +1130,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -1079,7 +1153,7 @@ where
     #[doc = "Creates an asynchronous call to the Ccr Pause Follow API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1090,6 +1164,7 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -1097,6 +1172,7 @@ where
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -1130,7 +1206,7 @@ impl<'b> CcrPutAutoFollowPatternParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ccr Put Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-put-auto-follow-pattern.html)\n\nCreates a new named collection of auto-follow patterns against a specified remote cluster. Newly created indices on the remote cluster matching any of the specified patterns will be automatically configured as follower indices."]
+#[doc = "Builder for the [Ccr Put Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-put-auto-follow-pattern.html)\n\nCreates a new named collection of auto-follow patterns against a specified remote cluster. Newly created indices on the remote cluster matching any of the specified patterns will be automatically configured as follower indices."]
 #[derive(Clone, Debug)]
 pub struct CcrPutAutoFollowPattern<'a, 'b, B> {
     transport: &'a Transport,
@@ -1140,6 +1216,7 @@ pub struct CcrPutAutoFollowPattern<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -1159,6 +1236,7 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -1177,6 +1255,7 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
@@ -1202,6 +1281,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -1220,7 +1304,7 @@ where
     #[doc = "Creates an asynchronous call to the Ccr Put Auto Follow Pattern API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1231,6 +1315,7 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -1238,6 +1323,7 @@ where
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -1272,7 +1358,7 @@ impl<'b> CcrResumeAutoFollowPatternParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ccr Resume Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-resume-auto-follow-pattern.html)\n\nResumes an auto-follow pattern that has been paused"]
+#[doc = "Builder for the [Ccr Resume Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-resume-auto-follow-pattern.html)\n\nResumes an auto-follow pattern that has been paused"]
 #[derive(Clone, Debug)]
 pub struct CcrResumeAutoFollowPattern<'a, 'b, B> {
     transport: &'a Transport,
@@ -1282,6 +1368,7 @@ pub struct CcrResumeAutoFollowPattern<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -1301,6 +1388,7 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -1319,6 +1407,7 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
@@ -1344,6 +1433,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -1362,7 +1456,7 @@ where
     #[doc = "Creates an asynchronous call to the Ccr Resume Auto Follow Pattern API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1373,6 +1467,7 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -1380,6 +1475,7 @@ where
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -1415,7 +1511,7 @@ impl<'b> CcrResumeFollowParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ccr Resume Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-post-resume-follow.html)\n\nResumes a follower index that has been paused"]
+#[doc = "Builder for the [Ccr Resume Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-post-resume-follow.html)\n\nResumes a follower index that has been paused"]
 #[derive(Clone, Debug)]
 pub struct CcrResumeFollow<'a, 'b, B> {
     transport: &'a Transport,
@@ -1425,6 +1521,7 @@ pub struct CcrResumeFollow<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -1444,6 +1541,7 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -1462,6 +1560,7 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
@@ -1487,6 +1586,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -1505,7 +1609,7 @@ where
     #[doc = "Creates an asynchronous call to the Ccr Resume Follow API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1516,6 +1620,7 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -1523,6 +1628,7 @@ where
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -1550,7 +1656,7 @@ impl CcrStatsParts {
         }
     }
 }
-#[doc = "Builder for the [Ccr Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-get-stats.html)\n\nGets all stats related to cross-cluster replication."]
+#[doc = "Builder for the [Ccr Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-get-stats.html)\n\nGets all stats related to cross-cluster replication."]
 #[derive(Clone, Debug)]
 pub struct CcrStats<'a, 'b> {
     transport: &'a Transport,
@@ -1559,9 +1665,11 @@ pub struct CcrStats<'a, 'b> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b> CcrStats<'a, 'b> {
     #[doc = "Creates a new instance of [CcrStats]"]
@@ -1574,9 +1682,11 @@ impl<'a, 'b> CcrStats<'a, 'b> {
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1599,6 +1709,11 @@ impl<'a, 'b> CcrStats<'a, 'b> {
         self.human = Some(human);
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -1614,10 +1729,15 @@ impl<'a, 'b> CcrStats<'a, 'b> {
         self.source = Some(source);
         self
     }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Ccr Stats API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1628,15 +1748,19 @@ impl<'a, 'b> CcrStats<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -1670,7 +1794,7 @@ impl<'b> CcrUnfollowParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ccr Unfollow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-post-unfollow.html)\n\nStops the following task associated with a follower index and removes index metadata and settings associated with cross-cluster replication."]
+#[doc = "Builder for the [Ccr Unfollow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-post-unfollow.html)\n\nStops the following task associated with a follower index and removes index metadata and settings associated with cross-cluster replication."]
 #[derive(Clone, Debug)]
 pub struct CcrUnfollow<'a, 'b, B> {
     transport: &'a Transport,
@@ -1680,6 +1804,7 @@ pub struct CcrUnfollow<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -1699,6 +1824,7 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -1717,6 +1843,7 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
@@ -1742,6 +1869,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -1760,7 +1892,7 @@ where
     #[doc = "Creates an asynchronous call to the Ccr Unfollow API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1771,6 +1903,7 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -1778,6 +1911,7 @@ where
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -1803,79 +1937,79 @@ impl<'a> Ccr<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Ccr Delete Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-delete-auto-follow-pattern.html)\n\nDeletes auto-follow patterns."]
+    #[doc = "[Ccr Delete Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-delete-auto-follow-pattern.html)\n\nDeletes auto-follow patterns."]
     pub fn delete_auto_follow_pattern<'b>(
         &'a self,
         parts: CcrDeleteAutoFollowPatternParts<'b>,
     ) -> CcrDeleteAutoFollowPattern<'a, 'b> {
         CcrDeleteAutoFollowPattern::new(self.transport(), parts)
     }
-    #[doc = "[Ccr Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-put-follow.html)\n\nCreates a new follower index configured to follow the referenced leader index."]
+    #[doc = "[Ccr Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-put-follow.html)\n\nCreates a new follower index configured to follow the referenced leader index."]
     pub fn follow<'b>(&'a self, parts: CcrFollowParts<'b>) -> CcrFollow<'a, 'b, ()> {
         CcrFollow::new(self.transport(), parts)
     }
-    #[doc = "[Ccr Follow Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-get-follow-info.html)\n\nRetrieves information about all follower indices, including parameters and status for each follower index"]
+    #[doc = "[Ccr Follow Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-get-follow-info.html)\n\nRetrieves information about all follower indices, including parameters and status for each follower index"]
     pub fn follow_info<'b>(&'a self, parts: CcrFollowInfoParts<'b>) -> CcrFollowInfo<'a, 'b> {
         CcrFollowInfo::new(self.transport(), parts)
     }
-    #[doc = "[Ccr Follow Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-get-follow-stats.html)\n\nRetrieves follower stats. return shard-level stats about the following tasks associated with each shard for the specified indices."]
+    #[doc = "[Ccr Follow Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-get-follow-stats.html)\n\nRetrieves follower stats. return shard-level stats about the following tasks associated with each shard for the specified indices."]
     pub fn follow_stats<'b>(&'a self, parts: CcrFollowStatsParts<'b>) -> CcrFollowStats<'a, 'b> {
         CcrFollowStats::new(self.transport(), parts)
     }
-    #[doc = "[Ccr Forget Follower API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-post-forget-follower.html)\n\nRemoves the follower retention leases from the leader."]
+    #[doc = "[Ccr Forget Follower API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-post-forget-follower.html)\n\nRemoves the follower retention leases from the leader."]
     pub fn forget_follower<'b>(
         &'a self,
         parts: CcrForgetFollowerParts<'b>,
     ) -> CcrForgetFollower<'a, 'b, ()> {
         CcrForgetFollower::new(self.transport(), parts)
     }
-    #[doc = "[Ccr Get Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-get-auto-follow-pattern.html)\n\nGets configured auto-follow patterns. Returns the specified auto-follow pattern collection."]
+    #[doc = "[Ccr Get Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-get-auto-follow-pattern.html)\n\nGets configured auto-follow patterns. Returns the specified auto-follow pattern collection."]
     pub fn get_auto_follow_pattern<'b>(
         &'a self,
         parts: CcrGetAutoFollowPatternParts<'b>,
     ) -> CcrGetAutoFollowPattern<'a, 'b> {
         CcrGetAutoFollowPattern::new(self.transport(), parts)
     }
-    #[doc = "[Ccr Pause Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-pause-auto-follow-pattern.html)\n\nPauses an auto-follow pattern"]
+    #[doc = "[Ccr Pause Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-pause-auto-follow-pattern.html)\n\nPauses an auto-follow pattern"]
     pub fn pause_auto_follow_pattern<'b>(
         &'a self,
         parts: CcrPauseAutoFollowPatternParts<'b>,
     ) -> CcrPauseAutoFollowPattern<'a, 'b, ()> {
         CcrPauseAutoFollowPattern::new(self.transport(), parts)
     }
-    #[doc = "[Ccr Pause Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-post-pause-follow.html)\n\nPauses a follower index. The follower index will not fetch any additional operations from the leader index."]
+    #[doc = "[Ccr Pause Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-post-pause-follow.html)\n\nPauses a follower index. The follower index will not fetch any additional operations from the leader index."]
     pub fn pause_follow<'b>(
         &'a self,
         parts: CcrPauseFollowParts<'b>,
     ) -> CcrPauseFollow<'a, 'b, ()> {
         CcrPauseFollow::new(self.transport(), parts)
     }
-    #[doc = "[Ccr Put Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-put-auto-follow-pattern.html)\n\nCreates a new named collection of auto-follow patterns against a specified remote cluster. Newly created indices on the remote cluster matching any of the specified patterns will be automatically configured as follower indices."]
+    #[doc = "[Ccr Put Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-put-auto-follow-pattern.html)\n\nCreates a new named collection of auto-follow patterns against a specified remote cluster. Newly created indices on the remote cluster matching any of the specified patterns will be automatically configured as follower indices."]
     pub fn put_auto_follow_pattern<'b>(
         &'a self,
         parts: CcrPutAutoFollowPatternParts<'b>,
     ) -> CcrPutAutoFollowPattern<'a, 'b, ()> {
         CcrPutAutoFollowPattern::new(self.transport(), parts)
     }
-    #[doc = "[Ccr Resume Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-resume-auto-follow-pattern.html)\n\nResumes an auto-follow pattern that has been paused"]
+    #[doc = "[Ccr Resume Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-resume-auto-follow-pattern.html)\n\nResumes an auto-follow pattern that has been paused"]
     pub fn resume_auto_follow_pattern<'b>(
         &'a self,
         parts: CcrResumeAutoFollowPatternParts<'b>,
     ) -> CcrResumeAutoFollowPattern<'a, 'b, ()> {
         CcrResumeAutoFollowPattern::new(self.transport(), parts)
     }
-    #[doc = "[Ccr Resume Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-post-resume-follow.html)\n\nResumes a follower index that has been paused"]
+    #[doc = "[Ccr Resume Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-post-resume-follow.html)\n\nResumes a follower index that has been paused"]
     pub fn resume_follow<'b>(
         &'a self,
         parts: CcrResumeFollowParts<'b>,
     ) -> CcrResumeFollow<'a, 'b, ()> {
         CcrResumeFollow::new(self.transport(), parts)
     }
-    #[doc = "[Ccr Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-get-stats.html)\n\nGets all stats related to cross-cluster replication."]
+    #[doc = "[Ccr Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-get-stats.html)\n\nGets all stats related to cross-cluster replication."]
     pub fn stats<'b>(&'a self) -> CcrStats<'a, 'b> {
         CcrStats::new(self.transport())
     }
-    #[doc = "[Ccr Unfollow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ccr-post-unfollow.html)\n\nStops the following task associated with a follower index and removes index metadata and settings associated with cross-cluster replication."]
+    #[doc = "[Ccr Unfollow API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ccr-post-unfollow.html)\n\nStops the following task associated with a follower index and removes index metadata and settings associated with cross-cluster replication."]
     pub fn unfollow<'b>(&'a self, parts: CcrUnfollowParts<'b>) -> CcrUnfollow<'a, 'b, ()> {
         CcrUnfollow::new(self.transport(), parts)
     }

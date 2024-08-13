@@ -35,11 +35,11 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        self,
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         transport::Transport,
-        Method,
     },
     params::*,
 };
@@ -66,7 +66,7 @@ impl<'b> AutoscalingDeleteAutoscalingPolicyParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Autoscaling Delete Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/autoscaling-delete-autoscaling-policy.html)\n\nDeletes an autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+#[doc = "Builder for the [Autoscaling Delete Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/autoscaling-delete-autoscaling-policy.html)\n\nDeletes an autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
 #[derive(Clone, Debug)]
 pub struct AutoscalingDeleteAutoscalingPolicy<'a, 'b> {
     transport: &'a Transport,
@@ -75,9 +75,11 @@ pub struct AutoscalingDeleteAutoscalingPolicy<'a, 'b> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b> AutoscalingDeleteAutoscalingPolicy<'a, 'b> {
     #[doc = "Creates a new instance of [AutoscalingDeleteAutoscalingPolicy] with the specified API parts"]
@@ -93,9 +95,11 @@ impl<'a, 'b> AutoscalingDeleteAutoscalingPolicy<'a, 'b> {
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -118,6 +122,11 @@ impl<'a, 'b> AutoscalingDeleteAutoscalingPolicy<'a, 'b> {
         self.human = Some(human);
         self
     }
+    #[doc = "Timeout for processing on master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -133,10 +142,15 @@ impl<'a, 'b> AutoscalingDeleteAutoscalingPolicy<'a, 'b> {
         self.source = Some(source);
         self
     }
+    #[doc = "Timeout for acknowledgement of update from all nodes in cluster"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Autoscaling Delete Autoscaling Policy API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -147,15 +161,19 @@ impl<'a, 'b> AutoscalingDeleteAutoscalingPolicy<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -181,7 +199,7 @@ impl AutoscalingGetAutoscalingCapacityParts {
         }
     }
 }
-#[doc = "Builder for the [Autoscaling Get Autoscaling Capacity API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/autoscaling-get-autoscaling-capacity.html)\n\nGets the current autoscaling capacity based on the configured autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+#[doc = "Builder for the [Autoscaling Get Autoscaling Capacity API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/autoscaling-get-autoscaling-capacity.html)\n\nGets the current autoscaling capacity based on the configured autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
 #[derive(Clone, Debug)]
 pub struct AutoscalingGetAutoscalingCapacity<'a, 'b> {
     transport: &'a Transport,
@@ -190,6 +208,7 @@ pub struct AutoscalingGetAutoscalingCapacity<'a, 'b> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -205,6 +224,7 @@ impl<'a, 'b> AutoscalingGetAutoscalingCapacity<'a, 'b> {
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -230,6 +250,11 @@ impl<'a, 'b> AutoscalingGetAutoscalingCapacity<'a, 'b> {
         self.human = Some(human);
         self
     }
+    #[doc = "Timeout for processing on master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -248,7 +273,7 @@ impl<'a, 'b> AutoscalingGetAutoscalingCapacity<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Autoscaling Get Autoscaling Capacity API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -259,6 +284,7 @@ impl<'a, 'b> AutoscalingGetAutoscalingCapacity<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -266,6 +292,7 @@ impl<'a, 'b> AutoscalingGetAutoscalingCapacity<'a, 'b> {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -299,7 +326,7 @@ impl<'b> AutoscalingGetAutoscalingPolicyParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Autoscaling Get Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/autoscaling-get-autoscaling-policy.html)\n\nRetrieves an autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+#[doc = "Builder for the [Autoscaling Get Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/autoscaling-get-autoscaling-policy.html)\n\nRetrieves an autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
 #[derive(Clone, Debug)]
 pub struct AutoscalingGetAutoscalingPolicy<'a, 'b> {
     transport: &'a Transport,
@@ -308,6 +335,7 @@ pub struct AutoscalingGetAutoscalingPolicy<'a, 'b> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -323,6 +351,7 @@ impl<'a, 'b> AutoscalingGetAutoscalingPolicy<'a, 'b> {
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -348,6 +377,11 @@ impl<'a, 'b> AutoscalingGetAutoscalingPolicy<'a, 'b> {
         self.human = Some(human);
         self
     }
+    #[doc = "Timeout for processing on master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -366,7 +400,7 @@ impl<'a, 'b> AutoscalingGetAutoscalingPolicy<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Autoscaling Get Autoscaling Policy API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -377,6 +411,7 @@ impl<'a, 'b> AutoscalingGetAutoscalingPolicy<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -384,6 +419,7 @@ impl<'a, 'b> AutoscalingGetAutoscalingPolicy<'a, 'b> {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -417,7 +453,7 @@ impl<'b> AutoscalingPutAutoscalingPolicyParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Autoscaling Put Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/autoscaling-put-autoscaling-policy.html)\n\nCreates a new autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+#[doc = "Builder for the [Autoscaling Put Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/autoscaling-put-autoscaling-policy.html)\n\nCreates a new autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
 #[derive(Clone, Debug)]
 pub struct AutoscalingPutAutoscalingPolicy<'a, 'b, B> {
     transport: &'a Transport,
@@ -427,9 +463,11 @@ pub struct AutoscalingPutAutoscalingPolicy<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> AutoscalingPutAutoscalingPolicy<'a, 'b, B>
 where
@@ -446,9 +484,11 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -464,9 +504,11 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -489,6 +531,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Timeout for processing on master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -504,10 +551,15 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Timeout for acknowledgement of update from all nodes in cluster"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Autoscaling Put Autoscaling Policy API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -518,15 +570,19 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -550,25 +606,25 @@ impl<'a> Autoscaling<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Autoscaling Delete Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/autoscaling-delete-autoscaling-policy.html)\n\nDeletes an autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+    #[doc = "[Autoscaling Delete Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/autoscaling-delete-autoscaling-policy.html)\n\nDeletes an autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
     pub fn delete_autoscaling_policy<'b>(
         &'a self,
         parts: AutoscalingDeleteAutoscalingPolicyParts<'b>,
     ) -> AutoscalingDeleteAutoscalingPolicy<'a, 'b> {
         AutoscalingDeleteAutoscalingPolicy::new(self.transport(), parts)
     }
-    #[doc = "[Autoscaling Get Autoscaling Capacity API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/autoscaling-get-autoscaling-capacity.html)\n\nGets the current autoscaling capacity based on the configured autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+    #[doc = "[Autoscaling Get Autoscaling Capacity API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/autoscaling-get-autoscaling-capacity.html)\n\nGets the current autoscaling capacity based on the configured autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
     pub fn get_autoscaling_capacity<'b>(&'a self) -> AutoscalingGetAutoscalingCapacity<'a, 'b> {
         AutoscalingGetAutoscalingCapacity::new(self.transport())
     }
-    #[doc = "[Autoscaling Get Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/autoscaling-get-autoscaling-policy.html)\n\nRetrieves an autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+    #[doc = "[Autoscaling Get Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/autoscaling-get-autoscaling-policy.html)\n\nRetrieves an autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
     pub fn get_autoscaling_policy<'b>(
         &'a self,
         parts: AutoscalingGetAutoscalingPolicyParts<'b>,
     ) -> AutoscalingGetAutoscalingPolicy<'a, 'b> {
         AutoscalingGetAutoscalingPolicy::new(self.transport(), parts)
     }
-    #[doc = "[Autoscaling Put Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/autoscaling-put-autoscaling-policy.html)\n\nCreates a new autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
+    #[doc = "[Autoscaling Put Autoscaling Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/autoscaling-put-autoscaling-policy.html)\n\nCreates a new autoscaling policy. Designed for indirect use by ECE/ESS and ECK. Direct use is not supported."]
     pub fn put_autoscaling_policy<'b>(
         &'a self,
         parts: AutoscalingPutAutoscalingPolicyParts<'b>,

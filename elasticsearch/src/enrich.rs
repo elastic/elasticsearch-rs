@@ -36,11 +36,11 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        self,
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         transport::Transport,
-        Method,
     },
     params::*,
 };
@@ -67,7 +67,7 @@ impl<'b> EnrichDeletePolicyParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Enrich Delete Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/delete-enrich-policy-api.html)\n\nDeletes an existing enrich policy and its enrich index."]
+#[doc = "Builder for the [Enrich Delete Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-enrich-policy-api.html)\n\nDeletes an existing enrich policy and its enrich index."]
 #[derive(Clone, Debug)]
 pub struct EnrichDeletePolicy<'a, 'b> {
     transport: &'a Transport,
@@ -76,6 +76,7 @@ pub struct EnrichDeletePolicy<'a, 'b> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -91,6 +92,7 @@ impl<'a, 'b> EnrichDeletePolicy<'a, 'b> {
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -116,6 +118,11 @@ impl<'a, 'b> EnrichDeletePolicy<'a, 'b> {
         self.human = Some(human);
         self
     }
+    #[doc = "Timeout for processing on master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -134,7 +141,7 @@ impl<'a, 'b> EnrichDeletePolicy<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Enrich Delete Policy API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -145,6 +152,7 @@ impl<'a, 'b> EnrichDeletePolicy<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -152,6 +160,7 @@ impl<'a, 'b> EnrichDeletePolicy<'a, 'b> {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -186,7 +195,7 @@ impl<'b> EnrichExecutePolicyParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Enrich Execute Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/execute-enrich-policy-api.html)\n\nCreates the enrich index for an existing enrich policy."]
+#[doc = "Builder for the [Enrich Execute Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/execute-enrich-policy-api.html)\n\nCreates the enrich index for an existing enrich policy."]
 #[derive(Clone, Debug)]
 pub struct EnrichExecutePolicy<'a, 'b, B> {
     transport: &'a Transport,
@@ -196,6 +205,7 @@ pub struct EnrichExecutePolicy<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -216,6 +226,7 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -235,6 +246,7 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
@@ -261,6 +273,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Timeout for processing on master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -284,7 +301,7 @@ where
     #[doc = "Creates an asynchronous call to the Enrich Execute Policy API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -295,6 +312,7 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
                 wait_for_completion: Option<bool>,
@@ -303,6 +321,7 @@ where
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
                 wait_for_completion: self.wait_for_completion,
@@ -342,7 +361,7 @@ impl<'b> EnrichGetPolicyParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Enrich Get Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-enrich-policy-api.html)\n\nGets information about an enrich policy."]
+#[doc = "Builder for the [Enrich Get Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-enrich-policy-api.html)\n\nGets information about an enrich policy."]
 #[derive(Clone, Debug)]
 pub struct EnrichGetPolicy<'a, 'b> {
     transport: &'a Transport,
@@ -351,6 +370,7 @@ pub struct EnrichGetPolicy<'a, 'b> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -366,6 +386,7 @@ impl<'a, 'b> EnrichGetPolicy<'a, 'b> {
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -391,6 +412,11 @@ impl<'a, 'b> EnrichGetPolicy<'a, 'b> {
         self.human = Some(human);
         self
     }
+    #[doc = "Timeout for processing on master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -409,7 +435,7 @@ impl<'a, 'b> EnrichGetPolicy<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Enrich Get Policy API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -420,6 +446,7 @@ impl<'a, 'b> EnrichGetPolicy<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -427,6 +454,7 @@ impl<'a, 'b> EnrichGetPolicy<'a, 'b> {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -460,7 +488,7 @@ impl<'b> EnrichPutPolicyParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Enrich Put Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/put-enrich-policy-api.html)\n\nCreates a new enrich policy."]
+#[doc = "Builder for the [Enrich Put Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-enrich-policy-api.html)\n\nCreates a new enrich policy."]
 #[derive(Clone, Debug)]
 pub struct EnrichPutPolicy<'a, 'b, B> {
     transport: &'a Transport,
@@ -470,6 +498,7 @@ pub struct EnrichPutPolicy<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -489,6 +518,7 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -507,6 +537,7 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
@@ -532,6 +563,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Timeout for processing on master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -550,7 +586,7 @@ where
     #[doc = "Creates an asynchronous call to the Enrich Put Policy API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -561,6 +597,7 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -568,6 +605,7 @@ where
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -595,7 +633,7 @@ impl EnrichStatsParts {
         }
     }
 }
-#[doc = "Builder for the [Enrich Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/enrich-stats-api.html)\n\nGets enrich coordinator statistics and information about enrich policies that are currently executing."]
+#[doc = "Builder for the [Enrich Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/enrich-stats-api.html)\n\nGets enrich coordinator statistics and information about enrich policies that are currently executing."]
 #[derive(Clone, Debug)]
 pub struct EnrichStats<'a, 'b> {
     transport: &'a Transport,
@@ -604,6 +642,7 @@ pub struct EnrichStats<'a, 'b> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -619,6 +658,7 @@ impl<'a, 'b> EnrichStats<'a, 'b> {
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -644,6 +684,11 @@ impl<'a, 'b> EnrichStats<'a, 'b> {
         self.human = Some(human);
         self
     }
+    #[doc = "Timeout for processing on master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -662,7 +707,7 @@ impl<'a, 'b> EnrichStats<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Enrich Stats API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -673,6 +718,7 @@ impl<'a, 'b> EnrichStats<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -680,6 +726,7 @@ impl<'a, 'b> EnrichStats<'a, 'b> {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -705,32 +752,32 @@ impl<'a> Enrich<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Enrich Delete Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/delete-enrich-policy-api.html)\n\nDeletes an existing enrich policy and its enrich index."]
+    #[doc = "[Enrich Delete Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-enrich-policy-api.html)\n\nDeletes an existing enrich policy and its enrich index."]
     pub fn delete_policy<'b>(
         &'a self,
         parts: EnrichDeletePolicyParts<'b>,
     ) -> EnrichDeletePolicy<'a, 'b> {
         EnrichDeletePolicy::new(self.transport(), parts)
     }
-    #[doc = "[Enrich Execute Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/execute-enrich-policy-api.html)\n\nCreates the enrich index for an existing enrich policy."]
+    #[doc = "[Enrich Execute Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/execute-enrich-policy-api.html)\n\nCreates the enrich index for an existing enrich policy."]
     pub fn execute_policy<'b>(
         &'a self,
         parts: EnrichExecutePolicyParts<'b>,
     ) -> EnrichExecutePolicy<'a, 'b, ()> {
         EnrichExecutePolicy::new(self.transport(), parts)
     }
-    #[doc = "[Enrich Get Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-enrich-policy-api.html)\n\nGets information about an enrich policy."]
+    #[doc = "[Enrich Get Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-enrich-policy-api.html)\n\nGets information about an enrich policy."]
     pub fn get_policy<'b>(&'a self, parts: EnrichGetPolicyParts<'b>) -> EnrichGetPolicy<'a, 'b> {
         EnrichGetPolicy::new(self.transport(), parts)
     }
-    #[doc = "[Enrich Put Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/put-enrich-policy-api.html)\n\nCreates a new enrich policy."]
+    #[doc = "[Enrich Put Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-enrich-policy-api.html)\n\nCreates a new enrich policy."]
     pub fn put_policy<'b>(
         &'a self,
         parts: EnrichPutPolicyParts<'b>,
     ) -> EnrichPutPolicy<'a, 'b, ()> {
         EnrichPutPolicy::new(self.transport(), parts)
     }
-    #[doc = "[Enrich Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/enrich-stats-api.html)\n\nGets enrich coordinator statistics and information about enrich policies that are currently executing."]
+    #[doc = "[Enrich Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/enrich-stats-api.html)\n\nGets enrich coordinator statistics and information about enrich policies that are currently executing."]
     pub fn stats<'b>(&'a self) -> EnrichStats<'a, 'b> {
         EnrichStats::new(self.transport())
     }

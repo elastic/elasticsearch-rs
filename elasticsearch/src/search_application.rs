@@ -24,24 +24,8 @@
 // cargo make generate-api
 // -----------------------------------------------
 
-//! Ingest APIs
-//!
-//! [Manage ingest pipelines](https://www.elastic.co/guide/en/elasticsearch/reference/master/ingest-apis.html).
-//! Ingest pipelines can be used on a node with the `ingest` role to
-//! pre-process documents before indexing, to apply transformations and enrich data. Transformations are performed
-//! by [processors](https://www.elastic.co/guide/en/elasticsearch/reference/master/ingest-processors.html)
-//! in the pipeline, and can include such operations as
-//!
-//! - add, remove and append fields within the document
-//! - point documents to the right time-based index based on a timestamp within the document
-//! - extract details from fields with known formats and add new fields with extracted data
-//!
-//! and many more.
-//!
-//! All nodes enable ingest by default, so any node can handle ingest tasks. Ingest pipelines can
-//! be conditionally executed, and failures within pipelines can be explicitly handled by defining
-//! processors to execute in the event of failure.
-
+#![cfg(feature = "experimental-apis")]
+#![doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
@@ -58,32 +42,35 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Ingest Delete Geoip Database API"]
-pub enum IngestDeleteGeoipDatabaseParts<'b> {
-    #[doc = "Id"]
-    Id(&'b [&'b str]),
+#[doc = "API parts for the Search Application Delete API"]
+pub enum SearchApplicationDeleteParts<'b> {
+    #[doc = "Name"]
+    Name(&'b str),
 }
-impl<'b> IngestDeleteGeoipDatabaseParts<'b> {
-    #[doc = "Builds a relative URL path to the Ingest Delete Geoip Database API"]
+#[cfg(feature = "experimental-apis")]
+impl<'b> SearchApplicationDeleteParts<'b> {
+    #[doc = "Builds a relative URL path to the Search Application Delete API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IngestDeleteGeoipDatabaseParts::Id(ref id) => {
-                let id_str = id.join(",");
-                let encoded_id: Cow<str> = percent_encode(id_str.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(24usize + encoded_id.len());
-                p.push_str("/_ingest/geoip/database/");
-                p.push_str(encoded_id.as_ref());
+            SearchApplicationDeleteParts::Name(ref name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(33usize + encoded_name.len());
+                p.push_str("/_application/search_application/");
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Ingest Delete Geoip Database API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/TODO.html)\n\nDeletes a geoip database configuration"]
+#[doc = "Builder for the [Search Application Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-search-application.html)\n\nDeletes a search application."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
-pub struct IngestDeleteGeoipDatabase<'a, 'b> {
+pub struct SearchApplicationDelete<'a, 'b> {
     transport: &'a Transport,
-    parts: IngestDeleteGeoipDatabaseParts<'b>,
+    parts: SearchApplicationDeleteParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -92,11 +79,12 @@ pub struct IngestDeleteGeoipDatabase<'a, 'b> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-impl<'a, 'b> IngestDeleteGeoipDatabase<'a, 'b> {
-    #[doc = "Creates a new instance of [IngestDeleteGeoipDatabase] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IngestDeleteGeoipDatabaseParts<'b>) -> Self {
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> SearchApplicationDelete<'a, 'b> {
+    #[doc = "Creates a new instance of [SearchApplicationDelete] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: SearchApplicationDeleteParts<'b>) -> Self {
         let headers = HeaderMap::new();
-        IngestDeleteGeoipDatabase {
+        SearchApplicationDelete {
             transport,
             parts,
             headers,
@@ -143,7 +131,7 @@ impl<'a, 'b> IngestDeleteGeoipDatabase<'a, 'b> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous call to the Ingest Delete Geoip Database API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Search Application Delete API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = http::Method::Delete;
@@ -177,57 +165,61 @@ impl<'a, 'b> IngestDeleteGeoipDatabase<'a, 'b> {
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Ingest Delete Pipeline API"]
-pub enum IngestDeletePipelineParts<'b> {
-    #[doc = "Id"]
-    Id(&'b str),
+#[doc = "API parts for the Search Application Delete Behavioral Analytics API"]
+pub enum SearchApplicationDeleteBehavioralAnalyticsParts<'b> {
+    #[doc = "Name"]
+    Name(&'b str),
 }
-impl<'b> IngestDeletePipelineParts<'b> {
-    #[doc = "Builds a relative URL path to the Ingest Delete Pipeline API"]
+#[cfg(feature = "experimental-apis")]
+impl<'b> SearchApplicationDeleteBehavioralAnalyticsParts<'b> {
+    #[doc = "Builds a relative URL path to the Search Application Delete Behavioral Analytics API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IngestDeletePipelineParts::Id(ref id) => {
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(18usize + encoded_id.len());
-                p.push_str("/_ingest/pipeline/");
-                p.push_str(encoded_id.as_ref());
+            SearchApplicationDeleteBehavioralAnalyticsParts::Name(ref name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(24usize + encoded_name.len());
+                p.push_str("/_application/analytics/");
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-pipeline-api.html)\n\nDeletes a pipeline."]
+#[doc = "Builder for the [Search Application Delete Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-analytics-collection.html)\n\nDelete a behavioral analytics collection."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
-pub struct IngestDeletePipeline<'a, 'b> {
+pub struct SearchApplicationDeleteBehavioralAnalytics<'a, 'b> {
     transport: &'a Transport,
-    parts: IngestDeletePipelineParts<'b>,
+    parts: SearchApplicationDeleteBehavioralAnalyticsParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
-    timeout: Option<&'b str>,
 }
-impl<'a, 'b> IngestDeletePipeline<'a, 'b> {
-    #[doc = "Creates a new instance of [IngestDeletePipeline] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IngestDeletePipelineParts<'b>) -> Self {
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> SearchApplicationDeleteBehavioralAnalytics<'a, 'b> {
+    #[doc = "Creates a new instance of [SearchApplicationDeleteBehavioralAnalytics] with the specified API parts"]
+    pub fn new(
+        transport: &'a Transport,
+        parts: SearchApplicationDeleteBehavioralAnalyticsParts<'b>,
+    ) -> Self {
         let headers = HeaderMap::new();
-        IngestDeletePipeline {
+        SearchApplicationDeleteBehavioralAnalytics {
             transport,
             parts,
             headers,
             error_trace: None,
             filter_path: None,
             human: None,
-            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
-            timeout: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -250,11 +242,6 @@ impl<'a, 'b> IngestDeletePipeline<'a, 'b> {
         self.human = Some(human);
         self
     }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
-        self.master_timeout = Some(master_timeout);
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -270,12 +257,7 @@ impl<'a, 'b> IngestDeletePipeline<'a, 'b> {
         self.source = Some(source);
         self
     }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: &'b str) -> Self {
-        self.timeout = Some(timeout);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Ingest Delete Pipeline API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Search Application Delete Behavioral Analytics API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = http::Method::Delete;
@@ -289,122 +271,6 @@ impl<'a, 'b> IngestDeletePipeline<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
-                master_timeout: Option<&'b str>,
-                pretty: Option<bool>,
-                source: Option<&'b str>,
-                timeout: Option<&'b str>,
-            }
-            let query_params = QueryParams {
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                human: self.human,
-                master_timeout: self.master_timeout,
-                pretty: self.pretty,
-                source: self.source,
-                timeout: self.timeout,
-            };
-            Some(query_params)
-        };
-        let body = Option::<()>::None;
-        let response = self
-            .transport
-            .send(method, &path, headers, query_string.as_ref(), body, timeout)
-            .await?;
-        Ok(response)
-    }
-}
-#[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Ingest Geo Ip Stats API"]
-pub enum IngestGeoIpStatsParts {
-    #[doc = "No parts"]
-    None,
-}
-impl IngestGeoIpStatsParts {
-    #[doc = "Builds a relative URL path to the Ingest Geo Ip Stats API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            IngestGeoIpStatsParts::None => "/_ingest/geoip/stats".into(),
-        }
-    }
-}
-#[doc = "Builder for the [Ingest Geo Ip Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/geoip-stats-api.html)\n\nReturns statistical information about geoip databases"]
-#[derive(Clone, Debug)]
-pub struct IngestGeoIpStats<'a, 'b> {
-    transport: &'a Transport,
-    parts: IngestGeoIpStatsParts,
-    error_trace: Option<bool>,
-    filter_path: Option<&'b [&'b str]>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    request_timeout: Option<Duration>,
-    source: Option<&'b str>,
-}
-impl<'a, 'b> IngestGeoIpStats<'a, 'b> {
-    #[doc = "Creates a new instance of [IngestGeoIpStats]"]
-    pub fn new(transport: &'a Transport) -> Self {
-        let headers = HeaderMap::new();
-        IngestGeoIpStats {
-            transport,
-            parts: IngestGeoIpStatsParts::None,
-            headers,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            pretty: None,
-            request_timeout: None,
-            source: None,
-        }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
-    pub fn request_timeout(mut self, timeout: Duration) -> Self {
-        self.request_timeout = Some(timeout);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Ingest Geo Ip Stats API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = http::Method::Get;
-        let headers = self.headers;
-        let timeout = self.request_timeout;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                error_trace: Option<bool>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                filter_path: Option<&'b [&'b str]>,
-                human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -425,35 +291,35 @@ impl<'a, 'b> IngestGeoIpStats<'a, 'b> {
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Ingest Get Geoip Database API"]
-pub enum IngestGetGeoipDatabaseParts<'b> {
-    #[doc = "No parts"]
-    None,
-    #[doc = "Id"]
-    Id(&'b [&'b str]),
+#[doc = "API parts for the Search Application Get API"]
+pub enum SearchApplicationGetParts<'b> {
+    #[doc = "Name"]
+    Name(&'b str),
 }
-impl<'b> IngestGetGeoipDatabaseParts<'b> {
-    #[doc = "Builds a relative URL path to the Ingest Get Geoip Database API"]
+#[cfg(feature = "experimental-apis")]
+impl<'b> SearchApplicationGetParts<'b> {
+    #[doc = "Builds a relative URL path to the Search Application Get API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IngestGetGeoipDatabaseParts::None => "/_ingest/geoip/database".into(),
-            IngestGetGeoipDatabaseParts::Id(ref id) => {
-                let id_str = id.join(",");
-                let encoded_id: Cow<str> = percent_encode(id_str.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(24usize + encoded_id.len());
-                p.push_str("/_ingest/geoip/database/");
-                p.push_str(encoded_id.as_ref());
+            SearchApplicationGetParts::Name(ref name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(33usize + encoded_name.len());
+                p.push_str("/_application/search_application/");
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Ingest Get Geoip Database API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/TODO.html)\n\nReturns geoip database configuration."]
+#[doc = "Builder for the [Search Application Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-search-application.html)\n\nReturns the details about a search application."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
-pub struct IngestGetGeoipDatabase<'a, 'b> {
+pub struct SearchApplicationGet<'a, 'b> {
     transport: &'a Transport,
-    parts: IngestGetGeoipDatabaseParts<'b>,
+    parts: SearchApplicationGetParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -462,11 +328,12 @@ pub struct IngestGetGeoipDatabase<'a, 'b> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-impl<'a, 'b> IngestGetGeoipDatabase<'a, 'b> {
-    #[doc = "Creates a new instance of [IngestGetGeoipDatabase] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IngestGetGeoipDatabaseParts<'b>) -> Self {
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> SearchApplicationGet<'a, 'b> {
+    #[doc = "Creates a new instance of [SearchApplicationGet] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: SearchApplicationGetParts<'b>) -> Self {
         let headers = HeaderMap::new();
-        IngestGetGeoipDatabase {
+        SearchApplicationGet {
             transport,
             parts,
             headers,
@@ -513,7 +380,7 @@ impl<'a, 'b> IngestGetGeoipDatabase<'a, 'b> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous call to the Ingest Get Geoip Database API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Search Application Get API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = http::Method::Get;
@@ -547,60 +414,66 @@ impl<'a, 'b> IngestGetGeoipDatabase<'a, 'b> {
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Ingest Get Pipeline API"]
-pub enum IngestGetPipelineParts<'b> {
+#[doc = "API parts for the Search Application Get Behavioral Analytics API"]
+pub enum SearchApplicationGetBehavioralAnalyticsParts<'b> {
     #[doc = "No parts"]
     None,
-    #[doc = "Id"]
-    Id(&'b str),
+    #[doc = "Name"]
+    Name(&'b [&'b str]),
 }
-impl<'b> IngestGetPipelineParts<'b> {
-    #[doc = "Builds a relative URL path to the Ingest Get Pipeline API"]
+#[cfg(feature = "experimental-apis")]
+impl<'b> SearchApplicationGetBehavioralAnalyticsParts<'b> {
+    #[doc = "Builds a relative URL path to the Search Application Get Behavioral Analytics API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IngestGetPipelineParts::None => "/_ingest/pipeline".into(),
-            IngestGetPipelineParts::Id(ref id) => {
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(18usize + encoded_id.len());
-                p.push_str("/_ingest/pipeline/");
-                p.push_str(encoded_id.as_ref());
+            SearchApplicationGetBehavioralAnalyticsParts::None => "/_application/analytics".into(),
+            SearchApplicationGetBehavioralAnalyticsParts::Name(ref name) => {
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(24usize + encoded_name.len());
+                p.push_str("/_application/analytics/");
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-pipeline-api.html)\n\nReturns a pipeline."]
+#[doc = "Builder for the [Search Application Get Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/list-analytics-collection.html)\n\nReturns the existing behavioral analytics collections."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
-pub struct IngestGetPipeline<'a, 'b> {
+pub struct SearchApplicationGetBehavioralAnalytics<'a, 'b> {
     transport: &'a Transport,
-    parts: IngestGetPipelineParts<'b>,
+    parts: SearchApplicationGetBehavioralAnalyticsParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
-    summary: Option<bool>,
 }
-impl<'a, 'b> IngestGetPipeline<'a, 'b> {
-    #[doc = "Creates a new instance of [IngestGetPipeline] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IngestGetPipelineParts<'b>) -> Self {
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> SearchApplicationGetBehavioralAnalytics<'a, 'b> {
+    #[doc = "Creates a new instance of [SearchApplicationGetBehavioralAnalytics] with the specified API parts"]
+    pub fn new(
+        transport: &'a Transport,
+        parts: SearchApplicationGetBehavioralAnalyticsParts<'b>,
+    ) -> Self {
         let headers = HeaderMap::new();
-        IngestGetPipeline {
+        SearchApplicationGetBehavioralAnalytics {
             transport,
             parts,
             headers,
             error_trace: None,
             filter_path: None,
             human: None,
-            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
-            summary: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -623,11 +496,6 @@ impl<'a, 'b> IngestGetPipeline<'a, 'b> {
         self.human = Some(human);
         self
     }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
-        self.master_timeout = Some(master_timeout);
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -643,12 +511,7 @@ impl<'a, 'b> IngestGetPipeline<'a, 'b> {
         self.source = Some(source);
         self
     }
-    #[doc = "Return pipelines without their definitions (default: false)"]
-    pub fn summary(mut self, summary: bool) -> Self {
-        self.summary = Some(summary);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Ingest Get Pipeline API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Search Application Get Behavioral Analytics API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = http::Method::Get;
@@ -662,19 +525,15 @@ impl<'a, 'b> IngestGetPipeline<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
-                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
-                summary: Option<bool>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
-                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
-                summary: self.summary,
             };
             Some(query_params)
         };
@@ -686,25 +545,191 @@ impl<'a, 'b> IngestGetPipeline<'a, 'b> {
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Ingest Processor Grok API"]
-pub enum IngestProcessorGrokParts {
+#[doc = "API parts for the Search Application List API"]
+pub enum SearchApplicationListParts {
     #[doc = "No parts"]
     None,
 }
-impl IngestProcessorGrokParts {
-    #[doc = "Builds a relative URL path to the Ingest Processor Grok API"]
+#[cfg(feature = "experimental-apis")]
+impl SearchApplicationListParts {
+    #[doc = "Builds a relative URL path to the Search Application List API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IngestProcessorGrokParts::None => "/_ingest/processor/grok".into(),
+            SearchApplicationListParts::None => "/_application/search_application".into(),
         }
     }
 }
-#[doc = "Builder for the [Ingest Processor Grok API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/grok-processor.html#grok-processor-rest-get)\n\nReturns a list of the built-in patterns."]
+#[doc = "Builder for the [Search Application List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/list-search-applications.html)\n\nReturns the existing search applications."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
-pub struct IngestProcessorGrok<'a, 'b> {
+pub struct SearchApplicationList<'a, 'b> {
     transport: &'a Transport,
-    parts: IngestProcessorGrokParts,
+    parts: SearchApplicationListParts,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    from: Option<i32>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    q: Option<&'b str>,
+    request_timeout: Option<Duration>,
+    size: Option<i32>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> SearchApplicationList<'a, 'b> {
+    #[doc = "Creates a new instance of [SearchApplicationList]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        SearchApplicationList {
+            transport,
+            parts: SearchApplicationListParts::None,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            from: None,
+            human: None,
+            pretty: None,
+            q: None,
+            request_timeout: None,
+            size: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Starting offset (default: 0)"]
+    pub fn from(mut self, from: i32) -> Self {
+        self.from = Some(from);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Query in the Lucene query string syntax"]
+    pub fn q(mut self, q: &'b str) -> Self {
+        self.q = Some(q);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "specifies a max number of results to get"]
+    pub fn size(mut self, size: i32) -> Self {
+        self.size = Some(size);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Search Application List API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                from: Option<i32>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                q: Option<&'b str>,
+                size: Option<i32>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                from: self.from,
+                human: self.human,
+                pretty: self.pretty,
+                q: self.q,
+                size: self.size,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Search Application Post Behavioral Analytics Event API"]
+pub enum SearchApplicationPostBehavioralAnalyticsEventParts<'b> {
+    #[doc = "CollectionName and EventType"]
+    CollectionNameEventType(&'b str, &'b str),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> SearchApplicationPostBehavioralAnalyticsEventParts<'b> {
+    #[doc = "Builds a relative URL path to the Search Application Post Behavioral Analytics Event API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SearchApplicationPostBehavioralAnalyticsEventParts::CollectionNameEventType(
+                ref collection_name,
+                ref event_type,
+            ) => {
+                let encoded_collection_name: Cow<str> =
+                    percent_encode(collection_name.as_bytes(), PARTS_ENCODED).into();
+                let encoded_event_type: Cow<str> =
+                    percent_encode(event_type.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    31usize + encoded_collection_name.len() + encoded_event_type.len(),
+                );
+                p.push_str("/_application/analytics/");
+                p.push_str(encoded_collection_name.as_ref());
+                p.push_str("/event/");
+                p.push_str(encoded_event_type.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Search Application Post Behavioral Analytics Event API](http://todo.com/tbd)\n\nCreates a behavioral analytics event for existing collection."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct SearchApplicationPostBehavioralAnalyticsEvent<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: SearchApplicationPostBehavioralAnalyticsEventParts<'b>,
+    body: Option<B>,
+    debug: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -713,14 +738,23 @@ pub struct IngestProcessorGrok<'a, 'b> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-impl<'a, 'b> IngestProcessorGrok<'a, 'b> {
-    #[doc = "Creates a new instance of [IngestProcessorGrok]"]
-    pub fn new(transport: &'a Transport) -> Self {
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> SearchApplicationPostBehavioralAnalyticsEvent<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [SearchApplicationPostBehavioralAnalyticsEvent] with the specified API parts"]
+    pub fn new(
+        transport: &'a Transport,
+        parts: SearchApplicationPostBehavioralAnalyticsEventParts<'b>,
+    ) -> Self {
         let headers = HeaderMap::new();
-        IngestProcessorGrok {
+        SearchApplicationPostBehavioralAnalyticsEvent {
             transport,
-            parts: IngestProcessorGrokParts::None,
+            parts,
             headers,
+            body: None,
+            debug: None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -728,6 +762,33 @@ impl<'a, 'b> IngestProcessorGrok<'a, 'b> {
             request_timeout: None,
             source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(
+        self,
+        body: T,
+    ) -> SearchApplicationPostBehavioralAnalyticsEvent<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        SearchApplicationPostBehavioralAnalyticsEvent {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            debug: self.debug,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "If true, returns event information that will be stored"]
+    pub fn debug(mut self, debug: bool) -> Self {
+        self.debug = Some(debug);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -764,16 +825,17 @@ impl<'a, 'b> IngestProcessorGrok<'a, 'b> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous call to the Ingest Processor Grok API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Search Application Post Behavioral Analytics Event API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = http::Method::Get;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                debug: Option<bool>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -782,6 +844,7 @@ impl<'a, 'b> IngestProcessorGrok<'a, 'b> {
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
+                debug: self.debug,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
@@ -790,7 +853,7 @@ impl<'a, 'b> IngestProcessorGrok<'a, 'b> {
             };
             Some(query_params)
         };
-        let body = Option::<()>::None;
+        let body = self.body;
         let response = self
             .transport
             .send(method, &path, headers, query_string.as_ref(), body, timeout)
@@ -798,31 +861,191 @@ impl<'a, 'b> IngestProcessorGrok<'a, 'b> {
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Ingest Put Geoip Database API"]
-pub enum IngestPutGeoipDatabaseParts<'b> {
-    #[doc = "Id"]
-    Id(&'b str),
+#[doc = "API parts for the Search Application Put API"]
+pub enum SearchApplicationPutParts<'b> {
+    #[doc = "Name"]
+    Name(&'b str),
 }
-impl<'b> IngestPutGeoipDatabaseParts<'b> {
-    #[doc = "Builds a relative URL path to the Ingest Put Geoip Database API"]
+#[cfg(feature = "experimental-apis")]
+impl<'b> SearchApplicationPutParts<'b> {
+    #[doc = "Builds a relative URL path to the Search Application Put API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IngestPutGeoipDatabaseParts::Id(ref id) => {
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(24usize + encoded_id.len());
-                p.push_str("/_ingest/geoip/database/");
-                p.push_str(encoded_id.as_ref());
+            SearchApplicationPutParts::Name(ref name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(33usize + encoded_name.len());
+                p.push_str("/_application/search_application/");
+                p.push_str(encoded_name.as_ref());
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Ingest Put Geoip Database API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/TODO.html)\n\nPuts the configuration for a geoip database to be downloaded"]
+#[doc = "Builder for the [Search Application Put API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-search-application.html)\n\nCreates or updates a search application."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
-pub struct IngestPutGeoipDatabase<'a, 'b, B> {
+pub struct SearchApplicationPut<'a, 'b, B> {
     transport: &'a Transport,
-    parts: IngestPutGeoipDatabaseParts<'b>,
+    parts: SearchApplicationPutParts<'b>,
+    body: Option<B>,
+    create: Option<bool>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> SearchApplicationPut<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [SearchApplicationPut] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: SearchApplicationPutParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        SearchApplicationPut {
+            transport,
+            parts,
+            headers,
+            body: None,
+            create: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> SearchApplicationPut<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        SearchApplicationPut {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            create: self.create,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "If true, requires that a search application with the specified resource_id does not already exist. (default: false)"]
+    pub fn create(mut self, create: bool) -> Self {
+        self.create = Some(create);
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Search Application Put API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Put;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                create: Option<bool>,
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                create: self.create,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Search Application Put Behavioral Analytics API"]
+pub enum SearchApplicationPutBehavioralAnalyticsParts<'b> {
+    #[doc = "Name"]
+    Name(&'b str),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> SearchApplicationPutBehavioralAnalyticsParts<'b> {
+    #[doc = "Builds a relative URL path to the Search Application Put Behavioral Analytics API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SearchApplicationPutBehavioralAnalyticsParts::Name(ref name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(24usize + encoded_name.len());
+                p.push_str("/_application/analytics/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Search Application Put Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-analytics-collection.html)\n\nCreates a behavioral analytics collection."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct SearchApplicationPutBehavioralAnalytics<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: SearchApplicationPutBehavioralAnalyticsParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -832,14 +1055,18 @@ pub struct IngestPutGeoipDatabase<'a, 'b, B> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-impl<'a, 'b, B> IngestPutGeoipDatabase<'a, 'b, B>
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> SearchApplicationPutBehavioralAnalytics<'a, 'b, B>
 where
     B: Body,
 {
-    #[doc = "Creates a new instance of [IngestPutGeoipDatabase] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IngestPutGeoipDatabaseParts<'b>) -> Self {
+    #[doc = "Creates a new instance of [SearchApplicationPutBehavioralAnalytics] with the specified API parts"]
+    pub fn new(
+        transport: &'a Transport,
+        parts: SearchApplicationPutBehavioralAnalyticsParts<'b>,
+    ) -> Self {
         let headers = HeaderMap::new();
-        IngestPutGeoipDatabase {
+        SearchApplicationPutBehavioralAnalytics {
             transport,
             parts,
             headers,
@@ -853,11 +1080,11 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IngestPutGeoipDatabase<'a, 'b, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SearchApplicationPutBehavioralAnalytics<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
-        IngestPutGeoipDatabase {
+        SearchApplicationPutBehavioralAnalytics {
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
@@ -905,7 +1132,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous call to the Ingest Put Geoip Database API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Search Application Put Behavioral Analytics API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = http::Method::Put;
@@ -939,51 +1166,54 @@ where
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Ingest Put Pipeline API"]
-pub enum IngestPutPipelineParts<'b> {
-    #[doc = "Id"]
-    Id(&'b str),
+#[doc = "API parts for the Search Application Render Query API"]
+pub enum SearchApplicationRenderQueryParts<'b> {
+    #[doc = "Name"]
+    Name(&'b str),
 }
-impl<'b> IngestPutPipelineParts<'b> {
-    #[doc = "Builds a relative URL path to the Ingest Put Pipeline API"]
+#[cfg(feature = "experimental-apis")]
+impl<'b> SearchApplicationRenderQueryParts<'b> {
+    #[doc = "Builds a relative URL path to the Search Application Render Query API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IngestPutPipelineParts::Id(ref id) => {
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(18usize + encoded_id.len());
-                p.push_str("/_ingest/pipeline/");
-                p.push_str(encoded_id.as_ref());
+            SearchApplicationRenderQueryParts::Name(ref name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(47usize + encoded_name.len());
+                p.push_str("/_application/search_application/");
+                p.push_str(encoded_name.as_ref());
+                p.push_str("/_render_query");
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-pipeline-api.html)\n\nCreates or updates a pipeline."]
+#[doc = "Builder for the [Search Application Render Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-application-render-query.html)\n\nRenders a query for given search application search parameters"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
-pub struct IngestPutPipeline<'a, 'b, B> {
+pub struct SearchApplicationRenderQuery<'a, 'b, B> {
     transport: &'a Transport,
-    parts: IngestPutPipelineParts<'b>,
+    parts: SearchApplicationRenderQueryParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    if_version: Option<i32>,
-    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
-    timeout: Option<&'b str>,
 }
-impl<'a, 'b, B> IngestPutPipeline<'a, 'b, B>
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> SearchApplicationRenderQuery<'a, 'b, B>
 where
     B: Body,
 {
-    #[doc = "Creates a new instance of [IngestPutPipeline] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IngestPutPipelineParts<'b>) -> Self {
+    #[doc = "Creates a new instance of [SearchApplicationRenderQuery] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: SearchApplicationRenderQueryParts<'b>) -> Self {
         let headers = HeaderMap::new();
-        IngestPutPipeline {
+        SearchApplicationRenderQuery {
             transport,
             parts,
             headers,
@@ -991,20 +1221,17 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
-            if_version: None,
-            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
-            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IngestPutPipeline<'a, 'b, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SearchApplicationRenderQuery<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
-        IngestPutPipeline {
+        SearchApplicationRenderQuery {
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
@@ -1012,12 +1239,9 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
-            if_version: self.if_version,
-            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
-            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1040,16 +1264,6 @@ where
         self.human = Some(human);
         self
     }
-    #[doc = "Required version for optimistic concurrency control for pipeline updates"]
-    pub fn if_version(mut self, if_version: i32) -> Self {
-        self.if_version = Some(if_version);
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
-        self.master_timeout = Some(master_timeout);
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -1065,15 +1279,10 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: &'b str) -> Self {
-        self.timeout = Some(timeout);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Ingest Put Pipeline API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Search Application Render Query API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = http::Method::Put;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1084,21 +1293,15 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
-                if_version: Option<i32>,
-                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
-                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
-                if_version: self.if_version,
-                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
-                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -1110,35 +1313,36 @@ where
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Ingest Simulate API"]
-pub enum IngestSimulateParts<'b> {
-    #[doc = "No parts"]
-    None,
-    #[doc = "Id"]
-    Id(&'b str),
+#[doc = "API parts for the Search Application Search API"]
+pub enum SearchApplicationSearchParts<'b> {
+    #[doc = "Name"]
+    Name(&'b str),
 }
-impl<'b> IngestSimulateParts<'b> {
-    #[doc = "Builds a relative URL path to the Ingest Simulate API"]
+#[cfg(feature = "experimental-apis")]
+impl<'b> SearchApplicationSearchParts<'b> {
+    #[doc = "Builds a relative URL path to the Search Application Search API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IngestSimulateParts::None => "/_ingest/pipeline/_simulate".into(),
-            IngestSimulateParts::Id(ref id) => {
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(28usize + encoded_id.len());
-                p.push_str("/_ingest/pipeline/");
-                p.push_str(encoded_id.as_ref());
-                p.push_str("/_simulate");
+            SearchApplicationSearchParts::Name(ref name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(41usize + encoded_name.len());
+                p.push_str("/_application/search_application/");
+                p.push_str(encoded_name.as_ref());
+                p.push_str("/_search");
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/simulate-pipeline-api.html)\n\nAllows to simulate a pipeline with example documents."]
+#[doc = "Builder for the [Search Application Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-application-search.html)\n\nPerform a search against a search application"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
-pub struct IngestSimulate<'a, 'b, B> {
+pub struct SearchApplicationSearch<'a, 'b, B> {
     transport: &'a Transport,
-    parts: IngestSimulateParts<'b>,
+    parts: SearchApplicationSearchParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -1147,16 +1351,17 @@ pub struct IngestSimulate<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
-    verbose: Option<bool>,
+    typed_keys: Option<bool>,
 }
-impl<'a, 'b, B> IngestSimulate<'a, 'b, B>
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> SearchApplicationSearch<'a, 'b, B>
 where
     B: Body,
 {
-    #[doc = "Creates a new instance of [IngestSimulate] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IngestSimulateParts<'b>) -> Self {
+    #[doc = "Creates a new instance of [SearchApplicationSearch] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: SearchApplicationSearchParts<'b>) -> Self {
         let headers = HeaderMap::new();
-        IngestSimulate {
+        SearchApplicationSearch {
             transport,
             parts,
             headers,
@@ -1167,15 +1372,15 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
-            verbose: None,
+            typed_keys: None,
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IngestSimulate<'a, 'b, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SearchApplicationSearch<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
-        IngestSimulate {
+        SearchApplicationSearch {
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
@@ -1186,7 +1391,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
-            verbose: self.verbose,
+            typed_keys: self.typed_keys,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1224,12 +1429,12 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Verbose mode. Display data output for each processor in executed pipeline"]
-    pub fn verbose(mut self, verbose: bool) -> Self {
-        self.verbose = Some(verbose);
+    #[doc = "Specify whether aggregation and suggester names should be prefixed by their respective types in the response"]
+    pub fn typed_keys(mut self, typed_keys: bool) -> Self {
+        self.typed_keys = Some(typed_keys);
         self
     }
-    #[doc = "Creates an asynchronous call to the Ingest Simulate API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Search Application Search API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = match self.body {
@@ -1248,7 +1453,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
-                verbose: Option<bool>,
+                typed_keys: Option<bool>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1256,7 +1461,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
-                verbose: self.verbose,
+                typed_keys: self.typed_keys,
             };
             Some(query_params)
         };
@@ -1268,76 +1473,110 @@ where
         Ok(response)
     }
 }
-#[doc = "Namespace client for Ingest APIs"]
-pub struct Ingest<'a> {
+#[doc = "Namespace client for SearchApplication APIs"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+pub struct SearchApplication<'a> {
     transport: &'a Transport,
 }
-impl<'a> Ingest<'a> {
-    #[doc = "Creates a new instance of [Ingest]"]
+#[cfg(feature = "experimental-apis")]
+impl<'a> SearchApplication<'a> {
+    #[doc = "Creates a new instance of [SearchApplication]"]
     pub fn new(transport: &'a Transport) -> Self {
         Self { transport }
     }
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Ingest Delete Geoip Database API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/TODO.html)\n\nDeletes a geoip database configuration"]
-    pub fn delete_geoip_database<'b>(
+    #[doc = "[Search Application Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-search-application.html)\n\nDeletes a search application."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn delete<'b>(
         &'a self,
-        parts: IngestDeleteGeoipDatabaseParts<'b>,
-    ) -> IngestDeleteGeoipDatabase<'a, 'b> {
-        IngestDeleteGeoipDatabase::new(self.transport(), parts)
+        parts: SearchApplicationDeleteParts<'b>,
+    ) -> SearchApplicationDelete<'a, 'b> {
+        SearchApplicationDelete::new(self.transport(), parts)
     }
-    #[doc = "[Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-pipeline-api.html)\n\nDeletes a pipeline."]
-    pub fn delete_pipeline<'b>(
+    #[doc = "[Search Application Delete Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-analytics-collection.html)\n\nDelete a behavioral analytics collection."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn delete_behavioral_analytics<'b>(
         &'a self,
-        parts: IngestDeletePipelineParts<'b>,
-    ) -> IngestDeletePipeline<'a, 'b> {
-        IngestDeletePipeline::new(self.transport(), parts)
+        parts: SearchApplicationDeleteBehavioralAnalyticsParts<'b>,
+    ) -> SearchApplicationDeleteBehavioralAnalytics<'a, 'b> {
+        SearchApplicationDeleteBehavioralAnalytics::new(self.transport(), parts)
     }
-    #[doc = "[Ingest Geo Ip Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/geoip-stats-api.html)\n\nReturns statistical information about geoip databases"]
-    pub fn geo_ip_stats<'b>(&'a self) -> IngestGeoIpStats<'a, 'b> {
-        IngestGeoIpStats::new(self.transport())
+    #[doc = "[Search Application Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-search-application.html)\n\nReturns the details about a search application."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn get<'b>(&'a self, parts: SearchApplicationGetParts<'b>) -> SearchApplicationGet<'a, 'b> {
+        SearchApplicationGet::new(self.transport(), parts)
     }
-    #[doc = "[Ingest Get Geoip Database API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/TODO.html)\n\nReturns geoip database configuration."]
-    pub fn get_geoip_database<'b>(
+    #[doc = "[Search Application Get Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/list-analytics-collection.html)\n\nReturns the existing behavioral analytics collections."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn get_behavioral_analytics<'b>(
         &'a self,
-        parts: IngestGetGeoipDatabaseParts<'b>,
-    ) -> IngestGetGeoipDatabase<'a, 'b> {
-        IngestGetGeoipDatabase::new(self.transport(), parts)
+        parts: SearchApplicationGetBehavioralAnalyticsParts<'b>,
+    ) -> SearchApplicationGetBehavioralAnalytics<'a, 'b> {
+        SearchApplicationGetBehavioralAnalytics::new(self.transport(), parts)
     }
-    #[doc = "[Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-pipeline-api.html)\n\nReturns a pipeline."]
-    pub fn get_pipeline<'b>(
+    #[doc = "[Search Application List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/list-search-applications.html)\n\nReturns the existing search applications."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn list<'b>(&'a self) -> SearchApplicationList<'a, 'b> {
+        SearchApplicationList::new(self.transport())
+    }
+    #[doc = "[Search Application Post Behavioral Analytics Event API](http://todo.com/tbd)\n\nCreates a behavioral analytics event for existing collection."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn post_behavioral_analytics_event<'b>(
         &'a self,
-        parts: IngestGetPipelineParts<'b>,
-    ) -> IngestGetPipeline<'a, 'b> {
-        IngestGetPipeline::new(self.transport(), parts)
+        parts: SearchApplicationPostBehavioralAnalyticsEventParts<'b>,
+    ) -> SearchApplicationPostBehavioralAnalyticsEvent<'a, 'b, ()> {
+        SearchApplicationPostBehavioralAnalyticsEvent::new(self.transport(), parts)
     }
-    #[doc = "[Ingest Processor Grok API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/grok-processor.html#grok-processor-rest-get)\n\nReturns a list of the built-in patterns."]
-    pub fn processor_grok<'b>(&'a self) -> IngestProcessorGrok<'a, 'b> {
-        IngestProcessorGrok::new(self.transport())
-    }
-    #[doc = "[Ingest Put Geoip Database API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/TODO.html)\n\nPuts the configuration for a geoip database to be downloaded"]
-    pub fn put_geoip_database<'b>(
+    #[doc = "[Search Application Put API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-search-application.html)\n\nCreates or updates a search application."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn put<'b>(
         &'a self,
-        parts: IngestPutGeoipDatabaseParts<'b>,
-    ) -> IngestPutGeoipDatabase<'a, 'b, ()> {
-        IngestPutGeoipDatabase::new(self.transport(), parts)
+        parts: SearchApplicationPutParts<'b>,
+    ) -> SearchApplicationPut<'a, 'b, ()> {
+        SearchApplicationPut::new(self.transport(), parts)
     }
-    #[doc = "[Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-pipeline-api.html)\n\nCreates or updates a pipeline."]
-    pub fn put_pipeline<'b>(
+    #[doc = "[Search Application Put Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-analytics-collection.html)\n\nCreates a behavioral analytics collection."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn put_behavioral_analytics<'b>(
         &'a self,
-        parts: IngestPutPipelineParts<'b>,
-    ) -> IngestPutPipeline<'a, 'b, ()> {
-        IngestPutPipeline::new(self.transport(), parts)
+        parts: SearchApplicationPutBehavioralAnalyticsParts<'b>,
+    ) -> SearchApplicationPutBehavioralAnalytics<'a, 'b, ()> {
+        SearchApplicationPutBehavioralAnalytics::new(self.transport(), parts)
     }
-    #[doc = "[Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/simulate-pipeline-api.html)\n\nAllows to simulate a pipeline with example documents."]
-    pub fn simulate<'b>(&'a self, parts: IngestSimulateParts<'b>) -> IngestSimulate<'a, 'b, ()> {
-        IngestSimulate::new(self.transport(), parts)
+    #[doc = "[Search Application Render Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-application-render-query.html)\n\nRenders a query for given search application search parameters"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn render_query<'b>(
+        &'a self,
+        parts: SearchApplicationRenderQueryParts<'b>,
+    ) -> SearchApplicationRenderQuery<'a, 'b, ()> {
+        SearchApplicationRenderQuery::new(self.transport(), parts)
+    }
+    #[doc = "[Search Application Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-application-search.html)\n\nPerform a search against a search application"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn search<'b>(
+        &'a self,
+        parts: SearchApplicationSearchParts<'b>,
+    ) -> SearchApplicationSearch<'a, 'b, ()> {
+        SearchApplicationSearch::new(self.transport(), parts)
     }
 }
+#[cfg(feature = "experimental-apis")]
 impl Elasticsearch {
-    #[doc = "Creates a namespace client for Ingest APIs"]
-    pub fn ingest(&self) -> Ingest {
-        Ingest::new(self.transport())
+    #[doc = "Creates a namespace client for SearchApplication APIs"]
+    pub fn search_application(&self) -> SearchApplication {
+        SearchApplication::new(self.transport())
     }
 }

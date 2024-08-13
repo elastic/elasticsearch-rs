@@ -33,11 +33,11 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        self,
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         transport::Transport,
-        Method,
     },
     params::*,
 };
@@ -69,7 +69,7 @@ impl<'b> MigrationDeprecationsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Migration Deprecations API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/migration-api-deprecation.html)\n\nRetrieves information about different cluster, node, and index level settings that use deprecated features that will be removed or changed in the next major version."]
+#[doc = "Builder for the [Migration Deprecations API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/migration-api-deprecation.html)\n\nRetrieves information about different cluster, node, and index level settings that use deprecated features that will be removed or changed in the next major version."]
 #[derive(Clone, Debug)]
 pub struct MigrationDeprecations<'a, 'b> {
     transport: &'a Transport,
@@ -136,7 +136,7 @@ impl<'a, 'b> MigrationDeprecations<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Migration Deprecations API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -181,7 +181,7 @@ impl MigrationGetFeatureUpgradeStatusParts {
         }
     }
 }
-#[doc = "Builder for the [Migration Get Feature Upgrade Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/migration-api-feature-upgrade.html)\n\nFind out whether system features need to be upgraded or not"]
+#[doc = "Builder for the [Migration Get Feature Upgrade Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/migration-api-feature-upgrade.html)\n\nFind out whether system features need to be upgraded or not"]
 #[derive(Clone, Debug)]
 pub struct MigrationGetFeatureUpgradeStatus<'a, 'b> {
     transport: &'a Transport,
@@ -248,7 +248,7 @@ impl<'a, 'b> MigrationGetFeatureUpgradeStatus<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Migration Get Feature Upgrade Status API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -293,7 +293,7 @@ impl MigrationPostFeatureUpgradeParts {
         }
     }
 }
-#[doc = "Builder for the [Migration Post Feature Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/migration-api-feature-upgrade.html)\n\nBegin upgrades for system features"]
+#[doc = "Builder for the [Migration Post Feature Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/migration-api-feature-upgrade.html)\n\nBegin upgrades for system features"]
 #[derive(Clone, Debug)]
 pub struct MigrationPostFeatureUpgrade<'a, 'b, B> {
     transport: &'a Transport,
@@ -383,7 +383,7 @@ where
     #[doc = "Creates an asynchronous call to the Migration Post Feature Upgrade API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -426,18 +426,18 @@ impl<'a> Migration<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Migration Deprecations API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/migration-api-deprecation.html)\n\nRetrieves information about different cluster, node, and index level settings that use deprecated features that will be removed or changed in the next major version."]
+    #[doc = "[Migration Deprecations API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/migration-api-deprecation.html)\n\nRetrieves information about different cluster, node, and index level settings that use deprecated features that will be removed or changed in the next major version."]
     pub fn deprecations<'b>(
         &'a self,
         parts: MigrationDeprecationsParts<'b>,
     ) -> MigrationDeprecations<'a, 'b> {
         MigrationDeprecations::new(self.transport(), parts)
     }
-    #[doc = "[Migration Get Feature Upgrade Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/migration-api-feature-upgrade.html)\n\nFind out whether system features need to be upgraded or not"]
+    #[doc = "[Migration Get Feature Upgrade Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/migration-api-feature-upgrade.html)\n\nFind out whether system features need to be upgraded or not"]
     pub fn get_feature_upgrade_status<'b>(&'a self) -> MigrationGetFeatureUpgradeStatus<'a, 'b> {
         MigrationGetFeatureUpgradeStatus::new(self.transport())
     }
-    #[doc = "[Migration Post Feature Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/migration-api-feature-upgrade.html)\n\nBegin upgrades for system features"]
+    #[doc = "[Migration Post Feature Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/migration-api-feature-upgrade.html)\n\nBegin upgrades for system features"]
     pub fn post_feature_upgrade<'b>(&'a self) -> MigrationPostFeatureUpgrade<'a, 'b, ()> {
         MigrationPostFeatureUpgrade::new(self.transport())
     }

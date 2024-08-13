@@ -34,11 +34,11 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        self,
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         transport::Transport,
-        Method,
     },
     params::*,
 };
@@ -72,7 +72,7 @@ impl<'b> IndicesAddBlockParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Add Block API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/index-modules-blocks.html)\n\nAdds a block to an index."]
+#[doc = "Builder for the [Indices Add Block API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/index-modules-blocks.html)\n\nAdds a block to an index."]
 #[derive(Clone, Debug)]
 pub struct IndicesAddBlock<'a, 'b, B> {
     transport: &'a Transport,
@@ -202,7 +202,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Add Block API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -269,7 +269,7 @@ impl<'b> IndicesAnalyzeParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-analyze.html)\n\nPerforms the analysis process on a text and return the tokens breakdown of the text."]
+#[doc = "Builder for the [Indices Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-analyze.html)\n\nPerforms the analysis process on a text and return the tokens breakdown of the text."]
 #[derive(Clone, Debug)]
 pub struct IndicesAnalyze<'a, 'b, B> {
     transport: &'a Transport,
@@ -368,8 +368,8 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = match self.body {
-            Some(_) => Method::Post,
-            None => Method::Get,
+            Some(_) => http::Method::Post,
+            None => http::Method::Get,
         };
         let headers = self.headers;
         let timeout = self.request_timeout;
@@ -429,7 +429,7 @@ impl<'b> IndicesClearCacheParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-clearcache.html)\n\nClears all or specific caches for one or more indices."]
+#[doc = "Builder for the [Indices Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-clearcache.html)\n\nClears all or specific caches for one or more indices."]
 #[derive(Clone, Debug)]
 pub struct IndicesClearCache<'a, 'b, B> {
     transport: &'a Transport,
@@ -583,7 +583,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Clear Cache API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -659,7 +659,7 @@ impl<'b> IndicesCloneParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-clone-index.html)\n\nClones an index"]
+#[doc = "Builder for the [Indices Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-clone-index.html)\n\nClones an index"]
 #[derive(Clone, Debug)]
 pub struct IndicesClone<'a, 'b, B> {
     transport: &'a Transport,
@@ -773,7 +773,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Clone API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -833,7 +833,7 @@ impl<'b> IndicesCloseParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Close API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-open-close.html)\n\nCloses an index."]
+#[doc = "Builder for the [Indices Close API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-open-close.html)\n\nCloses an index."]
 #[derive(Clone, Debug)]
 pub struct IndicesClose<'a, 'b, B> {
     transport: &'a Transport,
@@ -971,7 +971,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Close API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1036,7 +1036,7 @@ impl<'b> IndicesCreateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Create API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-create-index.html)\n\nCreates an index with optional settings and mappings."]
+#[doc = "Builder for the [Indices Create API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-create-index.html)\n\nCreates an index with optional settings and mappings."]
 #[derive(Clone, Debug)]
 pub struct IndicesCreate<'a, 'b, B> {
     transport: &'a Transport,
@@ -1150,7 +1150,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Create API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1207,7 +1207,7 @@ impl<'b> IndicesCreateDataStreamParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Create Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/data-streams.html)\n\nCreates a data stream"]
+#[doc = "Builder for the [Indices Create Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/data-streams.html)\n\nCreates a data stream"]
 #[derive(Clone, Debug)]
 pub struct IndicesCreateDataStream<'a, 'b, B> {
     transport: &'a Transport,
@@ -1297,7 +1297,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Create Data Stream API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1354,7 +1354,7 @@ impl<'b> IndicesDataStreamsStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Data Streams Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/data-streams.html)\n\nProvides statistics on operations happening in a data stream."]
+#[doc = "Builder for the [Indices Data Streams Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/data-streams.html)\n\nProvides statistics on operations happening in a data stream."]
 #[derive(Clone, Debug)]
 pub struct IndicesDataStreamsStats<'a, 'b> {
     transport: &'a Transport,
@@ -1421,7 +1421,7 @@ impl<'a, 'b> IndicesDataStreamsStats<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Data Streams Stats API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1474,7 +1474,7 @@ impl<'b> IndicesDeleteParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-delete-index.html)\n\nDeletes an index."]
+#[doc = "Builder for the [Indices Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-delete-index.html)\n\nDeletes an index."]
 #[derive(Clone, Debug)]
 pub struct IndicesDelete<'a, 'b> {
     transport: &'a Transport,
@@ -1576,7 +1576,7 @@ impl<'a, 'b> IndicesDelete<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Delete API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1646,7 +1646,7 @@ impl<'b> IndicesDeleteAliasParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Delete Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-aliases.html)\n\nDeletes an alias."]
+#[doc = "Builder for the [Indices Delete Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-aliases.html)\n\nDeletes an alias."]
 #[derive(Clone, Debug)]
 pub struct IndicesDeleteAlias<'a, 'b> {
     transport: &'a Transport,
@@ -1727,7 +1727,7 @@ impl<'a, 'b> IndicesDeleteAlias<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Delete Alias API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1745,6 +1745,160 @@ impl<'a, 'b> IndicesDeleteAlias<'a, 'b> {
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Indices Delete Data Lifecycle API"]
+pub enum IndicesDeleteDataLifecycleParts<'b> {
+    #[doc = "Name"]
+    Name(&'b [&'b str]),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> IndicesDeleteDataLifecycleParts<'b> {
+    #[doc = "Builds a relative URL path to the Indices Delete Data Lifecycle API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            IndicesDeleteDataLifecycleParts::Name(ref name) => {
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(25usize + encoded_name.len());
+                p.push_str("/_data_stream/");
+                p.push_str(encoded_name.as_ref());
+                p.push_str("/_lifecycle");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Indices Delete Data Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/data-streams-delete-lifecycle.html)\n\nDeletes the data stream lifecycle of the selected data streams."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct IndicesDeleteDataLifecycle<'a, 'b> {
+    transport: &'a Transport,
+    parts: IndicesDeleteDataLifecycleParts<'b>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<&'b [ExpandWildcards]>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    master_timeout: Option<&'b str>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> IndicesDeleteDataLifecycle<'a, 'b> {
+    #[doc = "Creates a new instance of [IndicesDeleteDataLifecycle] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: IndicesDeleteDataLifecycleParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        IndicesDeleteDataLifecycle {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+            timeout: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "Whether wildcard expressions should get expanded to open or closed indices (default: open)"]
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Explicit timestamp for the document"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Indices Delete Data Lifecycle API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Delete;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                expand_wildcards: Option<&'b [ExpandWildcards]>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                master_timeout: Option<&'b str>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+                timeout: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                expand_wildcards: self.expand_wildcards,
                 filter_path: self.filter_path,
                 human: self.human,
                 master_timeout: self.master_timeout,
@@ -1784,7 +1938,7 @@ impl<'b> IndicesDeleteDataStreamParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Delete Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/data-streams.html)\n\nDeletes a data stream."]
+#[doc = "Builder for the [Indices Delete Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/data-streams.html)\n\nDeletes a data stream."]
 #[derive(Clone, Debug)]
 pub struct IndicesDeleteDataStream<'a, 'b> {
     transport: &'a Transport,
@@ -1858,7 +2012,7 @@ impl<'a, 'b> IndicesDeleteDataStream<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Delete Data Stream API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1912,7 +2066,7 @@ impl<'b> IndicesDeleteIndexTemplateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Delete Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-templates.html)\n\nDeletes an index template."]
+#[doc = "Builder for the [Indices Delete Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-delete-template.html)\n\nDeletes an index template."]
 #[derive(Clone, Debug)]
 pub struct IndicesDeleteIndexTemplate<'a, 'b> {
     transport: &'a Transport,
@@ -1993,7 +2147,7 @@ impl<'a, 'b> IndicesDeleteIndexTemplate<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Delete Index Template API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -2048,7 +2202,7 @@ impl<'b> IndicesDeleteTemplateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Delete Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-templates.html)\n\nDeletes an index template."]
+#[doc = "Builder for the [Indices Delete Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-delete-template-v1.html)\n\nDeletes an index template."]
 #[derive(Clone, Debug)]
 pub struct IndicesDeleteTemplate<'a, 'b> {
     transport: &'a Transport,
@@ -2129,7 +2283,7 @@ impl<'a, 'b> IndicesDeleteTemplate<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Delete Template API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -2188,7 +2342,7 @@ impl<'b> IndicesDiskUsageParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Disk Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-disk-usage.html)\n\nAnalyzes the disk usage of each field of an index or data stream"]
+#[doc = "Builder for the [Indices Disk Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-disk-usage.html)\n\nAnalyzes the disk usage of each field of an index or data stream"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -2321,7 +2475,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Disk Usage API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -2363,6 +2517,159 @@ where
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Indices Downsample API"]
+pub enum IndicesDownsampleParts<'b> {
+    #[doc = "Index and TargetIndex"]
+    IndexTargetIndex(&'b str, &'b str),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> IndicesDownsampleParts<'b> {
+    #[doc = "Builds a relative URL path to the Indices Downsample API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            IndicesDownsampleParts::IndexTargetIndex(ref index, ref target_index) => {
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let encoded_target_index: Cow<str> =
+                    percent_encode(target_index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    14usize + encoded_index.len() + encoded_target_index.len(),
+                );
+                p.push_str("/");
+                p.push_str(encoded_index.as_ref());
+                p.push_str("/_downsample/");
+                p.push_str(encoded_target_index.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Indices Downsample API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/xpack-rollup.html)\n\nDownsample an index"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct IndicesDownsample<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: IndicesDownsampleParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> IndicesDownsample<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [IndicesDownsample] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: IndicesDownsampleParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        IndicesDownsample {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> IndicesDownsample<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        IndicesDownsample {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Indices Downsample API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Post;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Exists API"]
 pub enum IndicesExistsParts<'b> {
@@ -2385,7 +2692,7 @@ impl<'b> IndicesExistsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-exists.html)\n\nReturns information about whether a particular index exists."]
+#[doc = "Builder for the [Indices Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-exists.html)\n\nReturns information about whether a particular index exists."]
 #[derive(Clone, Debug)]
 pub struct IndicesExists<'a, 'b> {
     transport: &'a Transport,
@@ -2494,7 +2801,7 @@ impl<'a, 'b> IndicesExists<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Exists API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Head;
+        let method = http::Method::Head;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -2577,7 +2884,7 @@ impl<'b> IndicesExistsAliasParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Exists Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-aliases.html)\n\nReturns information about whether a particular alias exists."]
+#[doc = "Builder for the [Indices Exists Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-aliases.html)\n\nReturns information about whether a particular alias exists."]
 #[derive(Clone, Debug)]
 pub struct IndicesExistsAlias<'a, 'b> {
     transport: &'a Transport,
@@ -2672,7 +2979,7 @@ impl<'a, 'b> IndicesExistsAlias<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Exists Alias API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Head;
+        let method = http::Method::Head;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -2732,7 +3039,7 @@ impl<'b> IndicesExistsIndexTemplateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Exists Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-templates.html)\n\nReturns information about whether a particular index template exists."]
+#[doc = "Builder for the [Indices Exists Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/index-templates.html)\n\nReturns information about whether a particular index template exists."]
 #[derive(Clone, Debug)]
 pub struct IndicesExistsIndexTemplate<'a, 'b> {
     transport: &'a Transport,
@@ -2820,7 +3127,7 @@ impl<'a, 'b> IndicesExistsIndexTemplate<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Exists Index Template API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Head;
+        let method = http::Method::Head;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -2879,7 +3186,7 @@ impl<'b> IndicesExistsTemplateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Exists Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-templates.html)\n\nReturns information about whether a particular index template exists."]
+#[doc = "Builder for the [Indices Exists Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-template-exists-v1.html)\n\nReturns information about whether a particular index template exists."]
 #[derive(Clone, Debug)]
 pub struct IndicesExistsTemplate<'a, 'b> {
     transport: &'a Transport,
@@ -2967,7 +3274,7 @@ impl<'a, 'b> IndicesExistsTemplate<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Exists Template API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Head;
+        let method = http::Method::Head;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -3006,6 +3313,149 @@ impl<'a, 'b> IndicesExistsTemplate<'a, 'b> {
 }
 #[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Indices Explain Data Lifecycle API"]
+pub enum IndicesExplainDataLifecycleParts<'b> {
+    #[doc = "Index"]
+    Index(&'b str),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> IndicesExplainDataLifecycleParts<'b> {
+    #[doc = "Builds a relative URL path to the Indices Explain Data Lifecycle API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            IndicesExplainDataLifecycleParts::Index(ref index) => {
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(20usize + encoded_index.len());
+                p.push_str("/");
+                p.push_str(encoded_index.as_ref());
+                p.push_str("/_lifecycle/explain");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Indices Explain Data Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/data-streams-explain-lifecycle.html)\n\nRetrieves information about the index's current data stream lifecycle, such as any potential encountered error, time since creation etc."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct IndicesExplainDataLifecycle<'a, 'b> {
+    transport: &'a Transport,
+    parts: IndicesExplainDataLifecycleParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    include_defaults: Option<bool>,
+    master_timeout: Option<&'b str>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> IndicesExplainDataLifecycle<'a, 'b> {
+    #[doc = "Creates a new instance of [IndicesExplainDataLifecycle] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: IndicesExplainDataLifecycleParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        IndicesExplainDataLifecycle {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            include_defaults: None,
+            master_timeout: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "indicates if the API should return the default values the system uses for the index's lifecycle"]
+    pub fn include_defaults(mut self, include_defaults: bool) -> Self {
+        self.include_defaults = Some(include_defaults);
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Indices Explain Data Lifecycle API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                include_defaults: Option<bool>,
+                master_timeout: Option<&'b str>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                include_defaults: self.include_defaults,
+                master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Field Usage Stats API"]
 pub enum IndicesFieldUsageStatsParts<'b> {
     #[doc = "Index"]
@@ -3028,7 +3478,7 @@ impl<'b> IndicesFieldUsageStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Field Usage Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/field-usage-stats.html)\n\nReturns the field usage stats for each field of an index"]
+#[doc = "Builder for the [Indices Field Usage Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/field-usage-stats.html)\n\nReturns the field usage stats for each field of an index"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -3126,7 +3576,7 @@ impl<'a, 'b> IndicesFieldUsageStats<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Field Usage Stats API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -3193,7 +3643,7 @@ impl<'b> IndicesFlushParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Flush API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-flush.html)\n\nPerforms the flush operation on one or more indices."]
+#[doc = "Builder for the [Indices Flush API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-flush.html)\n\nPerforms the flush operation on one or more indices."]
 #[derive(Clone, Debug)]
 pub struct IndicesFlush<'a, 'b, B> {
     transport: &'a Transport,
@@ -3324,8 +3774,8 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = match self.body {
-            Some(_) => Method::Post,
-            None => Method::Get,
+            Some(_) => http::Method::Post,
+            None => http::Method::Get,
         };
         let headers = self.headers;
         let timeout = self.request_timeout;
@@ -3394,7 +3844,7 @@ impl<'b> IndicesForcemergeParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Forcemerge API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-forcemerge.html)\n\nPerforms the force merge operation on one or more indices."]
+#[doc = "Builder for the [Indices Forcemerge API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-forcemerge.html)\n\nPerforms the force merge operation on one or more indices."]
 #[derive(Clone, Debug)]
 pub struct IndicesForcemerge<'a, 'b, B> {
     transport: &'a Transport,
@@ -3540,7 +3990,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Forcemerge API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -3608,7 +4058,7 @@ impl<'b> IndicesGetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-get-index.html)\n\nReturns information about one or more indices."]
+#[doc = "Builder for the [Indices Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-get-index.html)\n\nReturns information about one or more indices."]
 #[derive(Clone, Debug)]
 pub struct IndicesGet<'a, 'b> {
     transport: &'a Transport,
@@ -3731,7 +4181,7 @@ impl<'a, 'b> IndicesGet<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Get API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -3833,7 +4283,7 @@ impl<'b> IndicesGetAliasParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Get Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-aliases.html)\n\nReturns an alias."]
+#[doc = "Builder for the [Indices Get Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-aliases.html)\n\nReturns an alias."]
 #[derive(Clone, Debug)]
 pub struct IndicesGetAlias<'a, 'b> {
     transport: &'a Transport,
@@ -3928,7 +4378,7 @@ impl<'a, 'b> IndicesGetAlias<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Get Alias API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -3968,50 +4418,54 @@ impl<'a, 'b> IndicesGetAlias<'a, 'b> {
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Indices Get Data Stream API"]
-pub enum IndicesGetDataStreamParts<'b> {
-    #[doc = "No parts"]
-    None,
+#[doc = "API parts for the Indices Get Data Lifecycle API"]
+pub enum IndicesGetDataLifecycleParts<'b> {
     #[doc = "Name"]
     Name(&'b [&'b str]),
 }
-impl<'b> IndicesGetDataStreamParts<'b> {
-    #[doc = "Builds a relative URL path to the Indices Get Data Stream API"]
+#[cfg(feature = "experimental-apis")]
+impl<'b> IndicesGetDataLifecycleParts<'b> {
+    #[doc = "Builds a relative URL path to the Indices Get Data Lifecycle API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesGetDataStreamParts::None => "/_data_stream".into(),
-            IndicesGetDataStreamParts::Name(ref name) => {
+            IndicesGetDataLifecycleParts::Name(ref name) => {
                 let name_str = name.join(",");
                 let encoded_name: Cow<str> =
                     percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(14usize + encoded_name.len());
+                let mut p = String::with_capacity(25usize + encoded_name.len());
                 p.push_str("/_data_stream/");
                 p.push_str(encoded_name.as_ref());
+                p.push_str("/_lifecycle");
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Indices Get Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/data-streams.html)\n\nReturns data streams."]
+#[doc = "Builder for the [Indices Get Data Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/data-streams-get-lifecycle.html)\n\nReturns the data stream lifecycle of the selected data streams."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
-pub struct IndicesGetDataStream<'a, 'b> {
+pub struct IndicesGetDataLifecycle<'a, 'b> {
     transport: &'a Transport,
-    parts: IndicesGetDataStreamParts<'b>,
+    parts: IndicesGetDataLifecycleParts<'b>,
     error_trace: Option<bool>,
     expand_wildcards: Option<&'b [ExpandWildcards]>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    include_defaults: Option<bool>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-impl<'a, 'b> IndicesGetDataStream<'a, 'b> {
-    #[doc = "Creates a new instance of [IndicesGetDataStream] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: IndicesGetDataStreamParts<'b>) -> Self {
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> IndicesGetDataLifecycle<'a, 'b> {
+    #[doc = "Creates a new instance of [IndicesGetDataLifecycle] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: IndicesGetDataLifecycleParts<'b>) -> Self {
         let headers = HeaderMap::new();
-        IndicesGetDataStream {
+        IndicesGetDataLifecycle {
             transport,
             parts,
             headers,
@@ -4019,6 +4473,7 @@ impl<'a, 'b> IndicesGetDataStream<'a, 'b> {
             expand_wildcards: None,
             filter_path: None,
             human: None,
+            include_defaults: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -4049,6 +4504,153 @@ impl<'a, 'b> IndicesGetDataStream<'a, 'b> {
         self.human = Some(human);
         self
     }
+    #[doc = "Return all relevant default configurations for the data stream (default: false)"]
+    pub fn include_defaults(mut self, include_defaults: bool) -> Self {
+        self.include_defaults = Some(include_defaults);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Indices Get Data Lifecycle API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                expand_wildcards: Option<&'b [ExpandWildcards]>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                include_defaults: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
+                include_defaults: self.include_defaults,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Indices Get Data Stream API"]
+pub enum IndicesGetDataStreamParts<'b> {
+    #[doc = "No parts"]
+    None,
+    #[doc = "Name"]
+    Name(&'b [&'b str]),
+}
+impl<'b> IndicesGetDataStreamParts<'b> {
+    #[doc = "Builds a relative URL path to the Indices Get Data Stream API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            IndicesGetDataStreamParts::None => "/_data_stream".into(),
+            IndicesGetDataStreamParts::Name(ref name) => {
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(14usize + encoded_name.len());
+                p.push_str("/_data_stream/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Indices Get Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/data-streams.html)\n\nReturns data streams."]
+#[derive(Clone, Debug)]
+pub struct IndicesGetDataStream<'a, 'b> {
+    transport: &'a Transport,
+    parts: IndicesGetDataStreamParts<'b>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<&'b [ExpandWildcards]>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    include_defaults: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b> IndicesGetDataStream<'a, 'b> {
+    #[doc = "Creates a new instance of [IndicesGetDataStream] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: IndicesGetDataStreamParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        IndicesGetDataStream {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            include_defaults: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "Whether wildcard expressions should get expanded to open or closed indices (default: open)"]
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Return all relevant default configurations for the data stream (default: false)"]
+    pub fn include_defaults(mut self, include_defaults: bool) -> Self {
+        self.include_defaults = Some(include_defaults);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -4067,7 +4669,7 @@ impl<'a, 'b> IndicesGetDataStream<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Get Data Stream API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -4080,6 +4682,7 @@ impl<'a, 'b> IndicesGetDataStream<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                include_defaults: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -4088,6 +4691,7 @@ impl<'a, 'b> IndicesGetDataStream<'a, 'b> {
                 expand_wildcards: self.expand_wildcards,
                 filter_path: self.filter_path,
                 human: self.human,
+                include_defaults: self.include_defaults,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -4140,7 +4744,7 @@ impl<'b> IndicesGetFieldMappingParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Get Field Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-get-field-mapping.html)\n\nReturns mapping for one or more fields."]
+#[doc = "Builder for the [Indices Get Field Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-get-field-mapping.html)\n\nReturns mapping for one or more fields."]
 #[derive(Clone, Debug)]
 pub struct IndicesGetFieldMapping<'a, 'b> {
     transport: &'a Transport,
@@ -4242,7 +4846,7 @@ impl<'a, 'b> IndicesGetFieldMapping<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Get Field Mapping API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -4307,7 +4911,7 @@ impl<'b> IndicesGetIndexTemplateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Get Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-templates.html)\n\nReturns an index template."]
+#[doc = "Builder for the [Indices Get Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-get-template.html)\n\nReturns an index template."]
 #[derive(Clone, Debug)]
 pub struct IndicesGetIndexTemplate<'a, 'b> {
     transport: &'a Transport,
@@ -4317,6 +4921,7 @@ pub struct IndicesGetIndexTemplate<'a, 'b> {
     flat_settings: Option<bool>,
     headers: HeaderMap,
     human: Option<bool>,
+    include_defaults: Option<bool>,
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
@@ -4335,6 +4940,7 @@ impl<'a, 'b> IndicesGetIndexTemplate<'a, 'b> {
             filter_path: None,
             flat_settings: None,
             human: None,
+            include_defaults: None,
             local: None,
             master_timeout: None,
             pretty: None,
@@ -4367,6 +4973,11 @@ impl<'a, 'b> IndicesGetIndexTemplate<'a, 'b> {
         self.human = Some(human);
         self
     }
+    #[doc = "Return all relevant default configurations for the index template (default: false)"]
+    pub fn include_defaults(mut self, include_defaults: bool) -> Self {
+        self.include_defaults = Some(include_defaults);
+        self
+    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: bool) -> Self {
         self.local = Some(local);
@@ -4395,7 +5006,7 @@ impl<'a, 'b> IndicesGetIndexTemplate<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Get Index Template API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -4407,6 +5018,7 @@ impl<'a, 'b> IndicesGetIndexTemplate<'a, 'b> {
                 filter_path: Option<&'b [&'b str]>,
                 flat_settings: Option<bool>,
                 human: Option<bool>,
+                include_defaults: Option<bool>,
                 local: Option<bool>,
                 master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
@@ -4417,6 +5029,7 @@ impl<'a, 'b> IndicesGetIndexTemplate<'a, 'b> {
                 filter_path: self.filter_path,
                 flat_settings: self.flat_settings,
                 human: self.human,
+                include_defaults: self.include_defaults,
                 local: self.local,
                 master_timeout: self.master_timeout,
                 pretty: self.pretty,
@@ -4458,7 +5071,7 @@ impl<'b> IndicesGetMappingParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Get Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-get-mapping.html)\n\nReturns mappings for one or more indices."]
+#[doc = "Builder for the [Indices Get Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-get-mapping.html)\n\nReturns mappings for one or more indices."]
 #[derive(Clone, Debug)]
 pub struct IndicesGetMapping<'a, 'b> {
     transport: &'a Transport,
@@ -4560,7 +5173,7 @@ impl<'a, 'b> IndicesGetMapping<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Get Mapping API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -4656,7 +5269,7 @@ impl<'b> IndicesGetSettingsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-get-settings.html)\n\nReturns settings for one or more indices."]
+#[doc = "Builder for the [Indices Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-get-settings.html)\n\nReturns settings for one or more indices."]
 #[derive(Clone, Debug)]
 pub struct IndicesGetSettings<'a, 'b> {
     transport: &'a Transport,
@@ -4772,7 +5385,7 @@ impl<'a, 'b> IndicesGetSettings<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Get Settings API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -4843,7 +5456,7 @@ impl<'b> IndicesGetTemplateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Get Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-templates.html)\n\nReturns an index template."]
+#[doc = "Builder for the [Indices Get Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-get-template-v1.html)\n\nReturns an index template."]
 #[derive(Clone, Debug)]
 pub struct IndicesGetTemplate<'a, 'b> {
     transport: &'a Transport,
@@ -4931,7 +5544,7 @@ impl<'a, 'b> IndicesGetTemplate<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Get Template API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -4988,7 +5601,7 @@ impl<'b> IndicesMigrateToDataStreamParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Migrate To Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/data-streams.html)\n\nMigrates an alias to a data stream"]
+#[doc = "Builder for the [Indices Migrate To Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/data-streams.html)\n\nMigrates an alias to a data stream"]
 #[derive(Clone, Debug)]
 pub struct IndicesMigrateToDataStream<'a, 'b, B> {
     transport: &'a Transport,
@@ -5078,7 +5691,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Migrate To Data Stream API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -5123,7 +5736,7 @@ impl IndicesModifyDataStreamParts {
         }
     }
 }
-#[doc = "Builder for the [Indices Modify Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/data-streams.html)\n\nModifies a data stream"]
+#[doc = "Builder for the [Indices Modify Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/data-streams.html)\n\nModifies a data stream"]
 #[derive(Clone, Debug)]
 pub struct IndicesModifyDataStream<'a, 'b, B> {
     transport: &'a Transport,
@@ -5213,7 +5826,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Modify Data Stream API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -5267,7 +5880,7 @@ impl<'b> IndicesOpenParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Open API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-open-close.html)\n\nOpens an index."]
+#[doc = "Builder for the [Indices Open API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-open-close.html)\n\nOpens an index."]
 #[derive(Clone, Debug)]
 pub struct IndicesOpen<'a, 'b, B> {
     transport: &'a Transport,
@@ -5405,7 +6018,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Open API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -5469,7 +6082,7 @@ impl<'b> IndicesPromoteDataStreamParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Promote Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/data-streams.html)\n\nPromotes a data stream from a replicated data stream managed by CCR to a regular data stream"]
+#[doc = "Builder for the [Indices Promote Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/data-streams.html)\n\nPromotes a data stream from a replicated data stream managed by CCR to a regular data stream"]
 #[derive(Clone, Debug)]
 pub struct IndicesPromoteDataStream<'a, 'b, B> {
     transport: &'a Transport,
@@ -5559,7 +6172,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Promote Data Stream API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -5616,7 +6229,7 @@ impl<'b> IndicesPutAliasParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Put Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-aliases.html)\n\nCreates or updates an alias."]
+#[doc = "Builder for the [Indices Put Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-aliases.html)\n\nCreates or updates an alias."]
 #[derive(Clone, Debug)]
 pub struct IndicesPutAlias<'a, 'b, B> {
     transport: &'a Transport,
@@ -5722,7 +6335,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Put Alias API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -5740,6 +6353,186 @@ where
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Indices Put Data Lifecycle API"]
+pub enum IndicesPutDataLifecycleParts<'b> {
+    #[doc = "Name"]
+    Name(&'b [&'b str]),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> IndicesPutDataLifecycleParts<'b> {
+    #[doc = "Builds a relative URL path to the Indices Put Data Lifecycle API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            IndicesPutDataLifecycleParts::Name(ref name) => {
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(25usize + encoded_name.len());
+                p.push_str("/_data_stream/");
+                p.push_str(encoded_name.as_ref());
+                p.push_str("/_lifecycle");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Indices Put Data Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/data-streams-put-lifecycle.html)\n\nUpdates the data stream lifecycle of the selected data streams."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct IndicesPutDataLifecycle<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: IndicesPutDataLifecycleParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<&'b [ExpandWildcards]>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    master_timeout: Option<&'b str>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> IndicesPutDataLifecycle<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [IndicesPutDataLifecycle] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: IndicesPutDataLifecycleParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        IndicesPutDataLifecycle {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+            timeout: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> IndicesPutDataLifecycle<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        IndicesPutDataLifecycle {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+            timeout: self.timeout,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "Whether wildcard expressions should get expanded to open or closed indices (default: open)"]
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Explicit timestamp for the document"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Indices Put Data Lifecycle API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Put;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                expand_wildcards: Option<&'b [ExpandWildcards]>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                master_timeout: Option<&'b str>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+                timeout: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                expand_wildcards: self.expand_wildcards,
                 filter_path: self.filter_path,
                 human: self.human,
                 master_timeout: self.master_timeout,
@@ -5777,7 +6570,7 @@ impl<'b> IndicesPutIndexTemplateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Put Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-templates.html)\n\nCreates or updates an index template."]
+#[doc = "Builder for the [Indices Put Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-put-template.html)\n\nCreates or updates an index template."]
 #[derive(Clone, Debug)]
 pub struct IndicesPutIndexTemplate<'a, 'b, B> {
     transport: &'a Transport,
@@ -5891,7 +6684,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Put Index Template API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -5951,7 +6744,7 @@ impl<'b> IndicesPutMappingParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Put Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-put-mapping.html)\n\nUpdates the index mappings."]
+#[doc = "Builder for the [Indices Put Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-put-mapping.html)\n\nUpdates the index mappings."]
 #[derive(Clone, Debug)]
 pub struct IndicesPutMapping<'a, 'b, B> {
     transport: &'a Transport,
@@ -6089,7 +6882,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Put Mapping API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -6159,7 +6952,7 @@ impl<'b> IndicesPutSettingsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-update-settings.html)\n\nUpdates the index settings."]
+#[doc = "Builder for the [Indices Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-update-settings.html)\n\nUpdates the index settings."]
 #[derive(Clone, Debug)]
 pub struct IndicesPutSettings<'a, 'b, B> {
     transport: &'a Transport,
@@ -6176,6 +6969,7 @@ pub struct IndicesPutSettings<'a, 'b, B> {
     master_timeout: Option<&'b str>,
     preserve_existing: Option<bool>,
     pretty: Option<bool>,
+    reopen: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
     timeout: Option<&'b str>,
@@ -6202,6 +6996,7 @@ where
             master_timeout: None,
             preserve_existing: None,
             pretty: None,
+            reopen: None,
             request_timeout: None,
             source: None,
             timeout: None,
@@ -6232,6 +7027,7 @@ where
             master_timeout: self.master_timeout,
             preserve_existing: self.preserve_existing,
             pretty: self.pretty,
+            reopen: self.reopen,
             request_timeout: self.request_timeout,
             source: self.source,
             timeout: self.timeout,
@@ -6287,6 +7083,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "Whether to close and reopen the index to apply non-dynamic settings. If set to `true` the indices to which the settings are being applied will be closed temporarily and then reopened in order to apply the changes. The default is `false`"]
+    pub fn reopen(mut self, reopen: bool) -> Self {
+        self.reopen = Some(reopen);
+        self
+    }
     #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
@@ -6305,7 +7106,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Put Settings API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -6324,6 +7125,7 @@ where
                 master_timeout: Option<&'b str>,
                 preserve_existing: Option<bool>,
                 pretty: Option<bool>,
+                reopen: Option<bool>,
                 source: Option<&'b str>,
                 timeout: Option<&'b str>,
             }
@@ -6338,6 +7140,7 @@ where
                 master_timeout: self.master_timeout,
                 preserve_existing: self.preserve_existing,
                 pretty: self.pretty,
+                reopen: self.reopen,
                 source: self.source,
                 timeout: self.timeout,
             };
@@ -6371,7 +7174,7 @@ impl<'b> IndicesPutTemplateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Put Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-templates.html)\n\nCreates or updates an index template."]
+#[doc = "Builder for the [Indices Put Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-templates-v1.html)\n\nCreates or updates an index template."]
 #[derive(Clone, Debug)]
 pub struct IndicesPutTemplate<'a, 'b, B> {
     transport: &'a Transport,
@@ -6485,7 +7288,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Put Template API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -6548,7 +7351,7 @@ impl<'b> IndicesRecoveryParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-recovery.html)\n\nReturns information about ongoing index shard recoveries."]
+#[doc = "Builder for the [Indices Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-recovery.html)\n\nReturns information about ongoing index shard recoveries."]
 #[derive(Clone, Debug)]
 pub struct IndicesRecovery<'a, 'b> {
     transport: &'a Transport,
@@ -6629,7 +7432,7 @@ impl<'a, 'b> IndicesRecovery<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Recovery API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -6690,7 +7493,7 @@ impl<'b> IndicesRefreshParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Refresh API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-refresh.html)\n\nPerforms the refresh operation in one or more indices."]
+#[doc = "Builder for the [Indices Refresh API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-refresh.html)\n\nPerforms the refresh operation in one or more indices."]
 #[derive(Clone, Debug)]
 pub struct IndicesRefresh<'a, 'b, B> {
     transport: &'a Transport,
@@ -6805,8 +7608,8 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = match self.body {
-            Some(_) => Method::Post,
-            None => Method::Get,
+            Some(_) => http::Method::Post,
+            None => http::Method::Get,
         };
         let headers = self.headers;
         let timeout = self.request_timeout;
@@ -6868,7 +7671,7 @@ impl<'b> IndicesReloadSearchAnalyzersParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Reload Search Analyzers API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-reload-analyzers.html)\n\nReloads an index's search analyzers and their resources."]
+#[doc = "Builder for the [Indices Reload Search Analyzers API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-reload-analyzers.html)\n\nReloads an index's search analyzers and their resources."]
 #[derive(Clone, Debug)]
 pub struct IndicesReloadSearchAnalyzers<'a, 'b, B> {
     transport: &'a Transport,
@@ -6883,6 +7686,7 @@ pub struct IndicesReloadSearchAnalyzers<'a, 'b, B> {
     ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
+    resource: Option<&'b str>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> IndicesReloadSearchAnalyzers<'a, 'b, B>
@@ -6905,6 +7709,7 @@ where
             ignore_unavailable: None,
             pretty: None,
             request_timeout: None,
+            resource: None,
             source: None,
         }
     }
@@ -6931,6 +7736,7 @@ where
             ignore_unavailable: self.ignore_unavailable,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
+            resource: self.resource,
             source: self.source,
         }
     }
@@ -6974,6 +7780,11 @@ where
         self.request_timeout = Some(timeout);
         self
     }
+    #[doc = "changed resource to reload analyzers from if applicable"]
+    pub fn resource(mut self, resource: &'b str) -> Self {
+        self.resource = Some(resource);
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
@@ -6983,8 +7794,8 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = match self.body {
-            Some(_) => Method::Post,
-            None => Method::Get,
+            Some(_) => http::Method::Post,
+            None => http::Method::Get,
         };
         let headers = self.headers;
         let timeout = self.request_timeout;
@@ -7001,6 +7812,7 @@ where
                 human: Option<bool>,
                 ignore_unavailable: Option<bool>,
                 pretty: Option<bool>,
+                resource: Option<&'b str>,
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -7011,11 +7823,169 @@ where
                 human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 pretty: self.pretty,
+                resource: self.resource,
                 source: self.source,
             };
             Some(query_params)
         };
         let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Indices Resolve Cluster API"]
+pub enum IndicesResolveClusterParts<'b> {
+    #[doc = "Name"]
+    Name(&'b [&'b str]),
+}
+impl<'b> IndicesResolveClusterParts<'b> {
+    #[doc = "Builds a relative URL path to the Indices Resolve Cluster API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            IndicesResolveClusterParts::Name(ref name) => {
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(18usize + encoded_name.len());
+                p.push_str("/_resolve/cluster/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Indices Resolve Cluster API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-resolve-cluster-api.html)\n\nResolves the specified index expressions to return information about each cluster, including the local cluster, if included."]
+#[derive(Clone, Debug)]
+pub struct IndicesResolveCluster<'a, 'b> {
+    transport: &'a Transport,
+    parts: IndicesResolveClusterParts<'b>,
+    allow_no_indices: Option<bool>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<&'b [ExpandWildcards]>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    ignore_throttled: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b> IndicesResolveCluster<'a, 'b> {
+    #[doc = "Creates a new instance of [IndicesResolveCluster] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: IndicesResolveClusterParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        IndicesResolveCluster {
+            transport,
+            parts,
+            headers,
+            allow_no_indices: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_throttled: None,
+            ignore_unavailable: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "Whether wildcard expressions should get expanded to open or closed indices (default: open)"]
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Whether specified concrete, expanded or aliased indices should be ignored when throttled"]
+    pub fn ignore_throttled(mut self, ignore_throttled: bool) -> Self {
+        self.ignore_throttled = Some(ignore_throttled);
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Indices Resolve Cluster API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                allow_no_indices: Option<bool>,
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                expand_wildcards: Option<&'b [ExpandWildcards]>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                ignore_throttled: Option<bool>,
+                ignore_unavailable: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
+                expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
+                ignore_throttled: self.ignore_throttled,
+                ignore_unavailable: self.ignore_unavailable,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
         let response = self
             .transport
             .send(method, &path, headers, query_string.as_ref(), body, timeout)
@@ -7045,7 +8015,7 @@ impl<'b> IndicesResolveIndexParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Resolve Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-resolve-index-api.html)\n\nReturns information about any matching indices, aliases, and data streams"]
+#[doc = "Builder for the [Indices Resolve Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-resolve-index-api.html)\n\nReturns information about any matching indices, aliases, and data streams"]
 #[derive(Clone, Debug)]
 pub struct IndicesResolveIndex<'a, 'b> {
     transport: &'a Transport,
@@ -7119,7 +8089,7 @@ impl<'a, 'b> IndicesResolveIndex<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Resolve Index API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -7190,7 +8160,7 @@ impl<'b> IndicesRolloverParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Rollover API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-rollover-index.html)\n\nUpdates an alias to point to a new index when the existing index\nis considered to be too large or too old."]
+#[doc = "Builder for the [Indices Rollover API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-rollover-index.html)\n\nUpdates an alias to point to a new index when the existing index\nis considered to be too large or too old."]
 #[derive(Clone, Debug)]
 pub struct IndicesRollover<'a, 'b, B> {
     transport: &'a Transport,
@@ -7201,10 +8171,12 @@ pub struct IndicesRollover<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    lazy: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    target_failure_store: Option<bool>,
     timeout: Option<&'b str>,
     wait_for_active_shards: Option<&'b str>,
 }
@@ -7224,10 +8196,12 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            lazy: None,
             master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
+            target_failure_store: None,
             timeout: None,
             wait_for_active_shards: None,
         }
@@ -7246,10 +8220,12 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            lazy: self.lazy,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            target_failure_store: self.target_failure_store,
             timeout: self.timeout,
             wait_for_active_shards: self.wait_for_active_shards,
         }
@@ -7279,6 +8255,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "If set to true, the rollover action will only mark a data stream to signal that it needs to be rolled over at the next write. Only allowed on data streams."]
+    pub fn lazy(mut self, lazy: bool) -> Self {
+        self.lazy = Some(lazy);
+        self
+    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
@@ -7299,6 +8280,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "If set to true, the rollover action will be applied on the failure store of the data stream."]
+    pub fn target_failure_store(mut self, target_failure_store: bool) -> Self {
+        self.target_failure_store = Some(target_failure_store);
+        self
+    }
     #[doc = "Explicit operation timeout"]
     pub fn timeout(mut self, timeout: &'b str) -> Self {
         self.timeout = Some(timeout);
@@ -7312,7 +8298,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Rollover API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -7324,9 +8310,11 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                lazy: Option<bool>,
                 master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                target_failure_store: Option<bool>,
                 timeout: Option<&'b str>,
                 wait_for_active_shards: Option<&'b str>,
             }
@@ -7335,9 +8323,11 @@ where
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                lazy: self.lazy,
                 master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
+                target_failure_store: self.target_failure_store,
                 timeout: self.timeout,
                 wait_for_active_shards: self.wait_for_active_shards,
             };
@@ -7377,7 +8367,7 @@ impl<'b> IndicesSegmentsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-segments.html)\n\nProvides low-level information about segments in a Lucene index."]
+#[doc = "Builder for the [Indices Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-segments.html)\n\nProvides low-level information about segments in a Lucene index."]
 #[derive(Clone, Debug)]
 pub struct IndicesSegments<'a, 'b> {
     transport: &'a Transport,
@@ -7472,7 +8462,7 @@ impl<'a, 'b> IndicesSegments<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Segments API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -7538,7 +8528,7 @@ impl<'b> IndicesShardStoresParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Shard Stores API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-shards-stores.html)\n\nProvides store information for shard copies of indices."]
+#[doc = "Builder for the [Indices Shard Stores API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-shards-stores.html)\n\nProvides store information for shard copies of indices."]
 #[derive(Clone, Debug)]
 pub struct IndicesShardStores<'a, 'b> {
     transport: &'a Transport,
@@ -7633,7 +8623,7 @@ impl<'a, 'b> IndicesShardStores<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Shard Stores API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -7700,7 +8690,7 @@ impl<'b> IndicesShrinkParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Shrink API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-shrink-index.html)\n\nAllow to shrink an existing index into a new index with fewer primary shards."]
+#[doc = "Builder for the [Indices Shrink API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-shrink-index.html)\n\nAllow to shrink an existing index into a new index with fewer primary shards."]
 #[derive(Clone, Debug)]
 pub struct IndicesShrink<'a, 'b, B> {
     transport: &'a Transport,
@@ -7814,7 +8804,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Shrink API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -7871,7 +8861,7 @@ impl<'b> IndicesSimulateIndexTemplateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Simulate Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-templates.html)\n\nSimulate matching the given index name against the index templates in the system"]
+#[doc = "Builder for the [Indices Simulate Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-simulate-index.html)\n\nSimulate matching the given index name against the index templates in the system"]
 #[derive(Clone, Debug)]
 pub struct IndicesSimulateIndexTemplate<'a, 'b, B> {
     transport: &'a Transport,
@@ -7883,6 +8873,7 @@ pub struct IndicesSimulateIndexTemplate<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    include_defaults: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
@@ -7905,6 +8896,7 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            include_defaults: None,
             master_timeout: None,
             pretty: None,
             request_timeout: None,
@@ -7926,6 +8918,7 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            include_defaults: self.include_defaults,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
@@ -7962,6 +8955,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Return all relevant default configurations for this index template simulation (default: false)"]
+    pub fn include_defaults(mut self, include_defaults: bool) -> Self {
+        self.include_defaults = Some(include_defaults);
+        self
+    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
@@ -7985,7 +8983,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Simulate Index Template API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -7998,6 +8996,7 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                include_defaults: Option<bool>,
                 master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
@@ -8008,6 +9007,7 @@ where
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                include_defaults: self.include_defaults,
                 master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
@@ -8045,7 +9045,7 @@ impl<'b> IndicesSimulateTemplateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Simulate Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-templates.html)\n\nSimulate resolving the given template name or body"]
+#[doc = "Builder for the [Indices Simulate Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-simulate-template.html)\n\nSimulate resolving the given template name or body"]
 #[derive(Clone, Debug)]
 pub struct IndicesSimulateTemplate<'a, 'b, B> {
     transport: &'a Transport,
@@ -8057,6 +9057,7 @@ pub struct IndicesSimulateTemplate<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    include_defaults: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
@@ -8079,6 +9080,7 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            include_defaults: None,
             master_timeout: None,
             pretty: None,
             request_timeout: None,
@@ -8100,6 +9102,7 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            include_defaults: self.include_defaults,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
@@ -8136,6 +9139,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Return all relevant default configurations for this template simulation (default: false)"]
+    pub fn include_defaults(mut self, include_defaults: bool) -> Self {
+        self.include_defaults = Some(include_defaults);
+        self
+    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
@@ -8159,7 +9167,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Simulate Template API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -8172,6 +9180,7 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                include_defaults: Option<bool>,
                 master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
@@ -8182,6 +9191,7 @@ where
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                include_defaults: self.include_defaults,
                 master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
@@ -8222,7 +9232,7 @@ impl<'b> IndicesSplitParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Split API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-split-index.html)\n\nAllows you to split an existing index into a new index with more primary shards."]
+#[doc = "Builder for the [Indices Split API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-split-index.html)\n\nAllows you to split an existing index into a new index with more primary shards."]
 #[derive(Clone, Debug)]
 pub struct IndicesSplit<'a, 'b, B> {
     transport: &'a Transport,
@@ -8336,7 +9346,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Split API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -8427,7 +9437,7 @@ impl<'b> IndicesStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-stats.html)\n\nProvides statistics on operations happening in an index."]
+#[doc = "Builder for the [Indices Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-stats.html)\n\nProvides statistics on operations happening in an index."]
 #[derive(Clone, Debug)]
 pub struct IndicesStats<'a, 'b> {
     transport: &'a Transport,
@@ -8557,7 +9567,7 @@ impl<'a, 'b> IndicesStats<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Indices Stats API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -8633,7 +9643,7 @@ impl<'b> IndicesUnfreezeParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Unfreeze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/unfreeze-index-api.html)\n\nUnfreezes an index. When a frozen index is unfrozen, the index goes through the normal recovery process and becomes writeable again."]
+#[doc = "Builder for the [Indices Unfreeze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/unfreeze-index-api.html)\n\nUnfreezes an index. When a frozen index is unfrozen, the index goes through the normal recovery process and becomes writeable again."]
 #[derive(Clone, Debug)]
 pub struct IndicesUnfreeze<'a, 'b, B> {
     transport: &'a Transport,
@@ -8771,7 +9781,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Unfreeze API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -8829,7 +9839,7 @@ impl IndicesUpdateAliasesParts {
         }
     }
 }
-#[doc = "Builder for the [Indices Update Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-aliases.html)\n\nUpdates index aliases."]
+#[doc = "Builder for the [Indices Update Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-aliases.html)\n\nUpdates index aliases."]
 #[derive(Clone, Debug)]
 pub struct IndicesUpdateAliases<'a, 'b, B> {
     transport: &'a Transport,
@@ -8935,7 +9945,7 @@ where
     #[doc = "Creates an asynchronous call to the Indices Update Aliases API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -8996,7 +10006,7 @@ impl<'b> IndicesValidateQueryParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Indices Validate Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-validate.html)\n\nAllows a user to validate a potentially expensive query without executing it."]
+#[doc = "Builder for the [Indices Validate Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-validate.html)\n\nAllows a user to validate a potentially expensive query without executing it."]
 #[derive(Clone, Debug)]
 pub struct IndicesValidateQuery<'a, 'b, B> {
     transport: &'a Transport,
@@ -9183,8 +10193,8 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = match self.body {
-            Some(_) => Method::Post,
-            None => Method::Get,
+            Some(_) => http::Method::Post,
+            None => http::Method::Get,
         };
         let headers = self.headers;
         let timeout = self.request_timeout;
@@ -9253,80 +10263,89 @@ impl<'a> Indices<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Indices Add Block API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/index-modules-blocks.html)\n\nAdds a block to an index."]
+    #[doc = "[Indices Add Block API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/index-modules-blocks.html)\n\nAdds a block to an index."]
     pub fn add_block<'b>(&'a self, parts: IndicesAddBlockParts<'b>) -> IndicesAddBlock<'a, 'b, ()> {
         IndicesAddBlock::new(self.transport(), parts)
     }
-    #[doc = "[Indices Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-analyze.html)\n\nPerforms the analysis process on a text and return the tokens breakdown of the text."]
+    #[doc = "[Indices Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-analyze.html)\n\nPerforms the analysis process on a text and return the tokens breakdown of the text."]
     pub fn analyze<'b>(&'a self, parts: IndicesAnalyzeParts<'b>) -> IndicesAnalyze<'a, 'b, ()> {
         IndicesAnalyze::new(self.transport(), parts)
     }
-    #[doc = "[Indices Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-clearcache.html)\n\nClears all or specific caches for one or more indices."]
+    #[doc = "[Indices Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-clearcache.html)\n\nClears all or specific caches for one or more indices."]
     pub fn clear_cache<'b>(
         &'a self,
         parts: IndicesClearCacheParts<'b>,
     ) -> IndicesClearCache<'a, 'b, ()> {
         IndicesClearCache::new(self.transport(), parts)
     }
-    #[doc = "[Indices Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-clone-index.html)\n\nClones an index"]
+    #[doc = "[Indices Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-clone-index.html)\n\nClones an index"]
     pub fn clone<'b>(&'a self, parts: IndicesCloneParts<'b>) -> IndicesClone<'a, 'b, ()> {
         IndicesClone::new(self.transport(), parts)
     }
-    #[doc = "[Indices Close API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-open-close.html)\n\nCloses an index."]
+    #[doc = "[Indices Close API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-open-close.html)\n\nCloses an index."]
     pub fn close<'b>(&'a self, parts: IndicesCloseParts<'b>) -> IndicesClose<'a, 'b, ()> {
         IndicesClose::new(self.transport(), parts)
     }
-    #[doc = "[Indices Create API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-create-index.html)\n\nCreates an index with optional settings and mappings.\n\n# Examples\n\nCreate an index with a mapping\n\n```rust,no_run\n# use elasticsearch::{Elasticsearch, Error, indices::IndicesCreateParts};\n# use serde_json::{json, Value};\n# async fn doc() -> Result<(), Box<dyn std::error::Error>> {\nlet client = Elasticsearch::default();\nlet response = client\n    .indices()\n    .create(IndicesCreateParts::Index(\"test_index\"))\n    .body(json!({\n        \"mappings\" : {\n            \"properties\" : {\n                \"field1\" : { \"type\" : \"text\" }\n            }\n        }\n    }))\n    .send()\n    .await?;\n    \n# Ok(())\n# }\n```"]
+    #[doc = "[Indices Create API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-create-index.html)\n\nCreates an index with optional settings and mappings.\n\n# Examples\n\nCreate an index with a mapping\n\n```rust,no_run\n# use elasticsearch::{Elasticsearch, Error, indices::IndicesCreateParts};\n# use serde_json::{json, Value};\n# async fn doc() -> Result<(), Box<dyn std::error::Error>> {\nlet client = Elasticsearch::default();\nlet response = client\n    .indices()\n    .create(IndicesCreateParts::Index(\"test_index\"))\n    .body(json!({\n        \"mappings\" : {\n            \"properties\" : {\n                \"field1\" : { \"type\" : \"text\" }\n            }\n        }\n    }))\n    .send()\n    .await?;\n    \n# Ok(())\n# }\n```"]
     pub fn create<'b>(&'a self, parts: IndicesCreateParts<'b>) -> IndicesCreate<'a, 'b, ()> {
         IndicesCreate::new(self.transport(), parts)
     }
-    #[doc = "[Indices Create Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/data-streams.html)\n\nCreates a data stream"]
+    #[doc = "[Indices Create Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/data-streams.html)\n\nCreates a data stream"]
     pub fn create_data_stream<'b>(
         &'a self,
         parts: IndicesCreateDataStreamParts<'b>,
     ) -> IndicesCreateDataStream<'a, 'b, ()> {
         IndicesCreateDataStream::new(self.transport(), parts)
     }
-    #[doc = "[Indices Data Streams Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/data-streams.html)\n\nProvides statistics on operations happening in a data stream."]
+    #[doc = "[Indices Data Streams Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/data-streams.html)\n\nProvides statistics on operations happening in a data stream."]
     pub fn data_streams_stats<'b>(
         &'a self,
         parts: IndicesDataStreamsStatsParts<'b>,
     ) -> IndicesDataStreamsStats<'a, 'b> {
         IndicesDataStreamsStats::new(self.transport(), parts)
     }
-    #[doc = "[Indices Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-delete-index.html)\n\nDeletes an index."]
+    #[doc = "[Indices Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-delete-index.html)\n\nDeletes an index."]
     pub fn delete<'b>(&'a self, parts: IndicesDeleteParts<'b>) -> IndicesDelete<'a, 'b> {
         IndicesDelete::new(self.transport(), parts)
     }
-    #[doc = "[Indices Delete Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-aliases.html)\n\nDeletes an alias."]
+    #[doc = "[Indices Delete Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-aliases.html)\n\nDeletes an alias."]
     pub fn delete_alias<'b>(
         &'a self,
         parts: IndicesDeleteAliasParts<'b>,
     ) -> IndicesDeleteAlias<'a, 'b> {
         IndicesDeleteAlias::new(self.transport(), parts)
     }
-    #[doc = "[Indices Delete Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/data-streams.html)\n\nDeletes a data stream."]
+    #[doc = "[Indices Delete Data Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/data-streams-delete-lifecycle.html)\n\nDeletes the data stream lifecycle of the selected data streams."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn delete_data_lifecycle<'b>(
+        &'a self,
+        parts: IndicesDeleteDataLifecycleParts<'b>,
+    ) -> IndicesDeleteDataLifecycle<'a, 'b> {
+        IndicesDeleteDataLifecycle::new(self.transport(), parts)
+    }
+    #[doc = "[Indices Delete Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/data-streams.html)\n\nDeletes a data stream."]
     pub fn delete_data_stream<'b>(
         &'a self,
         parts: IndicesDeleteDataStreamParts<'b>,
     ) -> IndicesDeleteDataStream<'a, 'b> {
         IndicesDeleteDataStream::new(self.transport(), parts)
     }
-    #[doc = "[Indices Delete Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-templates.html)\n\nDeletes an index template."]
+    #[doc = "[Indices Delete Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-delete-template.html)\n\nDeletes an index template."]
     pub fn delete_index_template<'b>(
         &'a self,
         parts: IndicesDeleteIndexTemplateParts<'b>,
     ) -> IndicesDeleteIndexTemplate<'a, 'b> {
         IndicesDeleteIndexTemplate::new(self.transport(), parts)
     }
-    #[doc = "[Indices Delete Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-templates.html)\n\nDeletes an index template."]
+    #[doc = "[Indices Delete Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-delete-template-v1.html)\n\nDeletes an index template."]
     pub fn delete_template<'b>(
         &'a self,
         parts: IndicesDeleteTemplateParts<'b>,
     ) -> IndicesDeleteTemplate<'a, 'b> {
         IndicesDeleteTemplate::new(self.transport(), parts)
     }
-    #[doc = "[Indices Disk Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-disk-usage.html)\n\nAnalyzes the disk usage of each field of an index or data stream"]
+    #[doc = "[Indices Disk Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-disk-usage.html)\n\nAnalyzes the disk usage of each field of an index or data stream"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn disk_usage<'b>(
@@ -9335,32 +10354,50 @@ impl<'a> Indices<'a> {
     ) -> IndicesDiskUsage<'a, 'b, ()> {
         IndicesDiskUsage::new(self.transport(), parts)
     }
-    #[doc = "[Indices Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-exists.html)\n\nReturns information about whether a particular index exists."]
+    #[doc = "[Indices Downsample API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/xpack-rollup.html)\n\nDownsample an index"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn downsample<'b>(
+        &'a self,
+        parts: IndicesDownsampleParts<'b>,
+    ) -> IndicesDownsample<'a, 'b, ()> {
+        IndicesDownsample::new(self.transport(), parts)
+    }
+    #[doc = "[Indices Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-exists.html)\n\nReturns information about whether a particular index exists."]
     pub fn exists<'b>(&'a self, parts: IndicesExistsParts<'b>) -> IndicesExists<'a, 'b> {
         IndicesExists::new(self.transport(), parts)
     }
-    #[doc = "[Indices Exists Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-aliases.html)\n\nReturns information about whether a particular alias exists."]
+    #[doc = "[Indices Exists Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-aliases.html)\n\nReturns information about whether a particular alias exists."]
     pub fn exists_alias<'b>(
         &'a self,
         parts: IndicesExistsAliasParts<'b>,
     ) -> IndicesExistsAlias<'a, 'b> {
         IndicesExistsAlias::new(self.transport(), parts)
     }
-    #[doc = "[Indices Exists Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-templates.html)\n\nReturns information about whether a particular index template exists."]
+    #[doc = "[Indices Exists Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/index-templates.html)\n\nReturns information about whether a particular index template exists."]
     pub fn exists_index_template<'b>(
         &'a self,
         parts: IndicesExistsIndexTemplateParts<'b>,
     ) -> IndicesExistsIndexTemplate<'a, 'b> {
         IndicesExistsIndexTemplate::new(self.transport(), parts)
     }
-    #[doc = "[Indices Exists Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-templates.html)\n\nReturns information about whether a particular index template exists."]
+    #[doc = "[Indices Exists Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-template-exists-v1.html)\n\nReturns information about whether a particular index template exists."]
     pub fn exists_template<'b>(
         &'a self,
         parts: IndicesExistsTemplateParts<'b>,
     ) -> IndicesExistsTemplate<'a, 'b> {
         IndicesExistsTemplate::new(self.transport(), parts)
     }
-    #[doc = "[Indices Field Usage Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/field-usage-stats.html)\n\nReturns the field usage stats for each field of an index"]
+    #[doc = "[Indices Explain Data Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/data-streams-explain-lifecycle.html)\n\nRetrieves information about the index's current data stream lifecycle, such as any potential encountered error, time since creation etc."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn explain_data_lifecycle<'b>(
+        &'a self,
+        parts: IndicesExplainDataLifecycleParts<'b>,
+    ) -> IndicesExplainDataLifecycle<'a, 'b> {
+        IndicesExplainDataLifecycle::new(self.transport(), parts)
+    }
+    #[doc = "[Indices Field Usage Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/field-usage-stats.html)\n\nReturns the field usage stats for each field of an index"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn field_usage_stats<'b>(
@@ -9369,193 +10406,218 @@ impl<'a> Indices<'a> {
     ) -> IndicesFieldUsageStats<'a, 'b> {
         IndicesFieldUsageStats::new(self.transport(), parts)
     }
-    #[doc = "[Indices Flush API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-flush.html)\n\nPerforms the flush operation on one or more indices."]
+    #[doc = "[Indices Flush API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-flush.html)\n\nPerforms the flush operation on one or more indices."]
     pub fn flush<'b>(&'a self, parts: IndicesFlushParts<'b>) -> IndicesFlush<'a, 'b, ()> {
         IndicesFlush::new(self.transport(), parts)
     }
-    #[doc = "[Indices Forcemerge API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-forcemerge.html)\n\nPerforms the force merge operation on one or more indices."]
+    #[doc = "[Indices Forcemerge API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-forcemerge.html)\n\nPerforms the force merge operation on one or more indices."]
     pub fn forcemerge<'b>(
         &'a self,
         parts: IndicesForcemergeParts<'b>,
     ) -> IndicesForcemerge<'a, 'b, ()> {
         IndicesForcemerge::new(self.transport(), parts)
     }
-    #[doc = "[Indices Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-get-index.html)\n\nReturns information about one or more indices."]
+    #[doc = "[Indices Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-get-index.html)\n\nReturns information about one or more indices."]
     pub fn get<'b>(&'a self, parts: IndicesGetParts<'b>) -> IndicesGet<'a, 'b> {
         IndicesGet::new(self.transport(), parts)
     }
-    #[doc = "[Indices Get Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-aliases.html)\n\nReturns an alias."]
+    #[doc = "[Indices Get Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-aliases.html)\n\nReturns an alias."]
     pub fn get_alias<'b>(&'a self, parts: IndicesGetAliasParts<'b>) -> IndicesGetAlias<'a, 'b> {
         IndicesGetAlias::new(self.transport(), parts)
     }
-    #[doc = "[Indices Get Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/data-streams.html)\n\nReturns data streams."]
+    #[doc = "[Indices Get Data Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/data-streams-get-lifecycle.html)\n\nReturns the data stream lifecycle of the selected data streams."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn get_data_lifecycle<'b>(
+        &'a self,
+        parts: IndicesGetDataLifecycleParts<'b>,
+    ) -> IndicesGetDataLifecycle<'a, 'b> {
+        IndicesGetDataLifecycle::new(self.transport(), parts)
+    }
+    #[doc = "[Indices Get Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/data-streams.html)\n\nReturns data streams."]
     pub fn get_data_stream<'b>(
         &'a self,
         parts: IndicesGetDataStreamParts<'b>,
     ) -> IndicesGetDataStream<'a, 'b> {
         IndicesGetDataStream::new(self.transport(), parts)
     }
-    #[doc = "[Indices Get Field Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-get-field-mapping.html)\n\nReturns mapping for one or more fields."]
+    #[doc = "[Indices Get Field Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-get-field-mapping.html)\n\nReturns mapping for one or more fields."]
     pub fn get_field_mapping<'b>(
         &'a self,
         parts: IndicesGetFieldMappingParts<'b>,
     ) -> IndicesGetFieldMapping<'a, 'b> {
         IndicesGetFieldMapping::new(self.transport(), parts)
     }
-    #[doc = "[Indices Get Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-templates.html)\n\nReturns an index template."]
+    #[doc = "[Indices Get Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-get-template.html)\n\nReturns an index template."]
     pub fn get_index_template<'b>(
         &'a self,
         parts: IndicesGetIndexTemplateParts<'b>,
     ) -> IndicesGetIndexTemplate<'a, 'b> {
         IndicesGetIndexTemplate::new(self.transport(), parts)
     }
-    #[doc = "[Indices Get Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-get-mapping.html)\n\nReturns mappings for one or more indices."]
+    #[doc = "[Indices Get Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-get-mapping.html)\n\nReturns mappings for one or more indices."]
     pub fn get_mapping<'b>(
         &'a self,
         parts: IndicesGetMappingParts<'b>,
     ) -> IndicesGetMapping<'a, 'b> {
         IndicesGetMapping::new(self.transport(), parts)
     }
-    #[doc = "[Indices Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-get-settings.html)\n\nReturns settings for one or more indices."]
+    #[doc = "[Indices Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-get-settings.html)\n\nReturns settings for one or more indices."]
     pub fn get_settings<'b>(
         &'a self,
         parts: IndicesGetSettingsParts<'b>,
     ) -> IndicesGetSettings<'a, 'b> {
         IndicesGetSettings::new(self.transport(), parts)
     }
-    #[doc = "[Indices Get Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-templates.html)\n\nReturns an index template."]
+    #[doc = "[Indices Get Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-get-template-v1.html)\n\nReturns an index template."]
     pub fn get_template<'b>(
         &'a self,
         parts: IndicesGetTemplateParts<'b>,
     ) -> IndicesGetTemplate<'a, 'b> {
         IndicesGetTemplate::new(self.transport(), parts)
     }
-    #[doc = "[Indices Migrate To Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/data-streams.html)\n\nMigrates an alias to a data stream"]
+    #[doc = "[Indices Migrate To Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/data-streams.html)\n\nMigrates an alias to a data stream"]
     pub fn migrate_to_data_stream<'b>(
         &'a self,
         parts: IndicesMigrateToDataStreamParts<'b>,
     ) -> IndicesMigrateToDataStream<'a, 'b, ()> {
         IndicesMigrateToDataStream::new(self.transport(), parts)
     }
-    #[doc = "[Indices Modify Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/data-streams.html)\n\nModifies a data stream"]
+    #[doc = "[Indices Modify Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/data-streams.html)\n\nModifies a data stream"]
     pub fn modify_data_stream<'b>(&'a self) -> IndicesModifyDataStream<'a, 'b, ()> {
         IndicesModifyDataStream::new(self.transport())
     }
-    #[doc = "[Indices Open API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-open-close.html)\n\nOpens an index."]
+    #[doc = "[Indices Open API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-open-close.html)\n\nOpens an index."]
     pub fn open<'b>(&'a self, parts: IndicesOpenParts<'b>) -> IndicesOpen<'a, 'b, ()> {
         IndicesOpen::new(self.transport(), parts)
     }
-    #[doc = "[Indices Promote Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/data-streams.html)\n\nPromotes a data stream from a replicated data stream managed by CCR to a regular data stream"]
+    #[doc = "[Indices Promote Data Stream API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/data-streams.html)\n\nPromotes a data stream from a replicated data stream managed by CCR to a regular data stream"]
     pub fn promote_data_stream<'b>(
         &'a self,
         parts: IndicesPromoteDataStreamParts<'b>,
     ) -> IndicesPromoteDataStream<'a, 'b, ()> {
         IndicesPromoteDataStream::new(self.transport(), parts)
     }
-    #[doc = "[Indices Put Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-aliases.html)\n\nCreates or updates an alias."]
+    #[doc = "[Indices Put Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-aliases.html)\n\nCreates or updates an alias."]
     pub fn put_alias<'b>(&'a self, parts: IndicesPutAliasParts<'b>) -> IndicesPutAlias<'a, 'b, ()> {
         IndicesPutAlias::new(self.transport(), parts)
     }
-    #[doc = "[Indices Put Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-templates.html)\n\nCreates or updates an index template."]
+    #[doc = "[Indices Put Data Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/data-streams-put-lifecycle.html)\n\nUpdates the data stream lifecycle of the selected data streams."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn put_data_lifecycle<'b>(
+        &'a self,
+        parts: IndicesPutDataLifecycleParts<'b>,
+    ) -> IndicesPutDataLifecycle<'a, 'b, ()> {
+        IndicesPutDataLifecycle::new(self.transport(), parts)
+    }
+    #[doc = "[Indices Put Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-put-template.html)\n\nCreates or updates an index template."]
     pub fn put_index_template<'b>(
         &'a self,
         parts: IndicesPutIndexTemplateParts<'b>,
     ) -> IndicesPutIndexTemplate<'a, 'b, ()> {
         IndicesPutIndexTemplate::new(self.transport(), parts)
     }
-    #[doc = "[Indices Put Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-put-mapping.html)\n\nUpdates the index mappings.\n\n# Examples\n\nPut a mapping into an existing index, assuming the index does not have a mapping, \nor that any properties specified do not conflict with existing properties\n\n```rust,no_run\n# use elasticsearch::{Elasticsearch, Error, indices::IndicesPutMappingParts};\n# use serde_json::{json, Value};\n# async fn doc() -> Result<(), Box<dyn std::error::Error>> {\nlet client = Elasticsearch::default();\nlet response = client\n    .indices()\n    .put_mapping(IndicesPutMappingParts::Index(&[\"test_index\"]))\n    .body(json!({\n        \"properties\" : {\n            \"field1\" : { \"type\" : \"text\" }\n        }\n    }))\n    .send()\n    .await?;\n    \n# Ok(())\n# }\n```"]
+    #[doc = "[Indices Put Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-put-mapping.html)\n\nUpdates the index mappings.\n\n# Examples\n\nPut a mapping into an existing index, assuming the index does not have a mapping, \nor that any properties specified do not conflict with existing properties\n\n```rust,no_run\n# use elasticsearch::{Elasticsearch, Error, indices::IndicesPutMappingParts};\n# use serde_json::{json, Value};\n# async fn doc() -> Result<(), Box<dyn std::error::Error>> {\nlet client = Elasticsearch::default();\nlet response = client\n    .indices()\n    .put_mapping(IndicesPutMappingParts::Index(&[\"test_index\"]))\n    .body(json!({\n        \"properties\" : {\n            \"field1\" : { \"type\" : \"text\" }\n        }\n    }))\n    .send()\n    .await?;\n    \n# Ok(())\n# }\n```"]
     pub fn put_mapping<'b>(
         &'a self,
         parts: IndicesPutMappingParts<'b>,
     ) -> IndicesPutMapping<'a, 'b, ()> {
         IndicesPutMapping::new(self.transport(), parts)
     }
-    #[doc = "[Indices Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-update-settings.html)\n\nUpdates the index settings."]
+    #[doc = "[Indices Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-update-settings.html)\n\nUpdates the index settings."]
     pub fn put_settings<'b>(
         &'a self,
         parts: IndicesPutSettingsParts<'b>,
     ) -> IndicesPutSettings<'a, 'b, ()> {
         IndicesPutSettings::new(self.transport(), parts)
     }
-    #[doc = "[Indices Put Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-templates.html)\n\nCreates or updates an index template."]
+    #[doc = "[Indices Put Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-templates-v1.html)\n\nCreates or updates an index template."]
     pub fn put_template<'b>(
         &'a self,
         parts: IndicesPutTemplateParts<'b>,
     ) -> IndicesPutTemplate<'a, 'b, ()> {
         IndicesPutTemplate::new(self.transport(), parts)
     }
-    #[doc = "[Indices Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-recovery.html)\n\nReturns information about ongoing index shard recoveries."]
+    #[doc = "[Indices Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-recovery.html)\n\nReturns information about ongoing index shard recoveries."]
     pub fn recovery<'b>(&'a self, parts: IndicesRecoveryParts<'b>) -> IndicesRecovery<'a, 'b> {
         IndicesRecovery::new(self.transport(), parts)
     }
-    #[doc = "[Indices Refresh API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-refresh.html)\n\nPerforms the refresh operation in one or more indices."]
+    #[doc = "[Indices Refresh API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-refresh.html)\n\nPerforms the refresh operation in one or more indices."]
     pub fn refresh<'b>(&'a self, parts: IndicesRefreshParts<'b>) -> IndicesRefresh<'a, 'b, ()> {
         IndicesRefresh::new(self.transport(), parts)
     }
-    #[doc = "[Indices Reload Search Analyzers API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-reload-analyzers.html)\n\nReloads an index's search analyzers and their resources."]
+    #[doc = "[Indices Reload Search Analyzers API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-reload-analyzers.html)\n\nReloads an index's search analyzers and their resources."]
     pub fn reload_search_analyzers<'b>(
         &'a self,
         parts: IndicesReloadSearchAnalyzersParts<'b>,
     ) -> IndicesReloadSearchAnalyzers<'a, 'b, ()> {
         IndicesReloadSearchAnalyzers::new(self.transport(), parts)
     }
-    #[doc = "[Indices Resolve Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-resolve-index-api.html)\n\nReturns information about any matching indices, aliases, and data streams"]
+    #[doc = "[Indices Resolve Cluster API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-resolve-cluster-api.html)\n\nResolves the specified index expressions to return information about each cluster, including the local cluster, if included."]
+    pub fn resolve_cluster<'b>(
+        &'a self,
+        parts: IndicesResolveClusterParts<'b>,
+    ) -> IndicesResolveCluster<'a, 'b> {
+        IndicesResolveCluster::new(self.transport(), parts)
+    }
+    #[doc = "[Indices Resolve Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-resolve-index-api.html)\n\nReturns information about any matching indices, aliases, and data streams"]
     pub fn resolve_index<'b>(
         &'a self,
         parts: IndicesResolveIndexParts<'b>,
     ) -> IndicesResolveIndex<'a, 'b> {
         IndicesResolveIndex::new(self.transport(), parts)
     }
-    #[doc = "[Indices Rollover API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-rollover-index.html)\n\nUpdates an alias to point to a new index when the existing index\nis considered to be too large or too old."]
+    #[doc = "[Indices Rollover API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-rollover-index.html)\n\nUpdates an alias to point to a new index when the existing index\nis considered to be too large or too old."]
     pub fn rollover<'b>(&'a self, parts: IndicesRolloverParts<'b>) -> IndicesRollover<'a, 'b, ()> {
         IndicesRollover::new(self.transport(), parts)
     }
-    #[doc = "[Indices Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-segments.html)\n\nProvides low-level information about segments in a Lucene index."]
+    #[doc = "[Indices Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-segments.html)\n\nProvides low-level information about segments in a Lucene index."]
     pub fn segments<'b>(&'a self, parts: IndicesSegmentsParts<'b>) -> IndicesSegments<'a, 'b> {
         IndicesSegments::new(self.transport(), parts)
     }
-    #[doc = "[Indices Shard Stores API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-shards-stores.html)\n\nProvides store information for shard copies of indices."]
+    #[doc = "[Indices Shard Stores API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-shards-stores.html)\n\nProvides store information for shard copies of indices."]
     pub fn shard_stores<'b>(
         &'a self,
         parts: IndicesShardStoresParts<'b>,
     ) -> IndicesShardStores<'a, 'b> {
         IndicesShardStores::new(self.transport(), parts)
     }
-    #[doc = "[Indices Shrink API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-shrink-index.html)\n\nAllow to shrink an existing index into a new index with fewer primary shards."]
+    #[doc = "[Indices Shrink API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-shrink-index.html)\n\nAllow to shrink an existing index into a new index with fewer primary shards."]
     pub fn shrink<'b>(&'a self, parts: IndicesShrinkParts<'b>) -> IndicesShrink<'a, 'b, ()> {
         IndicesShrink::new(self.transport(), parts)
     }
-    #[doc = "[Indices Simulate Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-templates.html)\n\nSimulate matching the given index name against the index templates in the system"]
+    #[doc = "[Indices Simulate Index Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-simulate-index.html)\n\nSimulate matching the given index name against the index templates in the system"]
     pub fn simulate_index_template<'b>(
         &'a self,
         parts: IndicesSimulateIndexTemplateParts<'b>,
     ) -> IndicesSimulateIndexTemplate<'a, 'b, ()> {
         IndicesSimulateIndexTemplate::new(self.transport(), parts)
     }
-    #[doc = "[Indices Simulate Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-templates.html)\n\nSimulate resolving the given template name or body"]
+    #[doc = "[Indices Simulate Template API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-simulate-template.html)\n\nSimulate resolving the given template name or body"]
     pub fn simulate_template<'b>(
         &'a self,
         parts: IndicesSimulateTemplateParts<'b>,
     ) -> IndicesSimulateTemplate<'a, 'b, ()> {
         IndicesSimulateTemplate::new(self.transport(), parts)
     }
-    #[doc = "[Indices Split API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-split-index.html)\n\nAllows you to split an existing index into a new index with more primary shards."]
+    #[doc = "[Indices Split API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-split-index.html)\n\nAllows you to split an existing index into a new index with more primary shards."]
     pub fn split<'b>(&'a self, parts: IndicesSplitParts<'b>) -> IndicesSplit<'a, 'b, ()> {
         IndicesSplit::new(self.transport(), parts)
     }
-    #[doc = "[Indices Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-stats.html)\n\nProvides statistics on operations happening in an index."]
+    #[doc = "[Indices Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-stats.html)\n\nProvides statistics on operations happening in an index."]
     pub fn stats<'b>(&'a self, parts: IndicesStatsParts<'b>) -> IndicesStats<'a, 'b> {
         IndicesStats::new(self.transport(), parts)
     }
-    #[doc = "[Indices Unfreeze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/unfreeze-index-api.html)\n\nUnfreezes an index. When a frozen index is unfrozen, the index goes through the normal recovery process and becomes writeable again."]
+    #[doc = "[Indices Unfreeze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/unfreeze-index-api.html)\n\nUnfreezes an index. When a frozen index is unfrozen, the index goes through the normal recovery process and becomes writeable again."]
     pub fn unfreeze<'b>(&'a self, parts: IndicesUnfreezeParts<'b>) -> IndicesUnfreeze<'a, 'b, ()> {
         IndicesUnfreeze::new(self.transport(), parts)
     }
-    #[doc = "[Indices Update Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/indices-aliases.html)\n\nUpdates index aliases."]
+    #[doc = "[Indices Update Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/indices-aliases.html)\n\nUpdates index aliases."]
     pub fn update_aliases<'b>(&'a self) -> IndicesUpdateAliases<'a, 'b, ()> {
         IndicesUpdateAliases::new(self.transport())
     }
-    #[doc = "[Indices Validate Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/search-validate.html)\n\nAllows a user to validate a potentially expensive query without executing it."]
+    #[doc = "[Indices Validate Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/search-validate.html)\n\nAllows a user to validate a potentially expensive query without executing it."]
     pub fn validate_query<'b>(
         &'a self,
         parts: IndicesValidateQueryParts<'b>,

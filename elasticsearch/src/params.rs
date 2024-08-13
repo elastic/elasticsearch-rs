@@ -147,6 +147,22 @@ pub enum Level {
     #[serde(rename = "shards")]
     Shards,
 }
+#[doc = "REST method to check"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
+pub enum Method {
+    #[serde(rename = "GET")]
+    Get,
+    #[serde(rename = "HEAD")]
+    Head,
+    #[serde(rename = "POST")]
+    Post,
+    #[serde(rename = "PUT")]
+    Put,
+    #[serde(rename = "DELETE")]
+    Delete,
+}
 #[doc = "Explicit operation type. Defaults to `index` for requests with an explicit document ID, and to `create`for requests without an explicit document ID"]
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum OpType {

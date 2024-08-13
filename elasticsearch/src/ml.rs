@@ -33,17 +33,163 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        self,
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         transport::Transport,
-        Method,
     },
     params::*,
 };
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Ml Clear Trained Model Deployment Cache API"]
+pub enum MlClearTrainedModelDeploymentCacheParts<'b> {
+    #[doc = "ModelId"]
+    ModelId(&'b str),
+}
+impl<'b> MlClearTrainedModelDeploymentCacheParts<'b> {
+    #[doc = "Builds a relative URL path to the Ml Clear Trained Model Deployment Cache API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            MlClearTrainedModelDeploymentCacheParts::ModelId(ref model_id) => {
+                let encoded_model_id: Cow<str> =
+                    percent_encode(model_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(44usize + encoded_model_id.len());
+                p.push_str("/_ml/trained_models/");
+                p.push_str(encoded_model_id.as_ref());
+                p.push_str("/deployment/cache/_clear");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Ml Clear Trained Model Deployment Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/clear-trained-model-deployment-cache.html)\n\nClear the cached results from a trained model deployment"]
+#[derive(Clone, Debug)]
+pub struct MlClearTrainedModelDeploymentCache<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: MlClearTrainedModelDeploymentCacheParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b, B> MlClearTrainedModelDeploymentCache<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [MlClearTrainedModelDeploymentCache] with the specified API parts"]
+    pub fn new(
+        transport: &'a Transport,
+        parts: MlClearTrainedModelDeploymentCacheParts<'b>,
+    ) -> Self {
+        let headers = HeaderMap::new();
+        MlClearTrainedModelDeploymentCache {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> MlClearTrainedModelDeploymentCache<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        MlClearTrainedModelDeploymentCache {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Ml Clear Trained Model Deployment Cache API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Post;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Close Job API"]
 pub enum MlCloseJobParts<'b> {
@@ -66,7 +212,7 @@ impl<'b> MlCloseJobParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Close Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-close-job.html)\n\nCloses one or more anomaly detection jobs. A job can be opened and closed multiple times throughout its lifecycle."]
+#[doc = "Builder for the [Ml Close Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-close-job.html)\n\nCloses one or more anomaly detection jobs. A job can be opened and closed multiple times throughout its lifecycle."]
 #[derive(Clone, Debug)]
 pub struct MlCloseJob<'a, 'b, B> {
     transport: &'a Transport,
@@ -180,7 +326,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Close Job API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -238,7 +384,7 @@ impl<'b> MlDeleteCalendarParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Delete Calendar API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-delete-calendar.html)\n\nDeletes a calendar."]
+#[doc = "Builder for the [Ml Delete Calendar API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-delete-calendar.html)\n\nDeletes a calendar."]
 #[derive(Clone, Debug)]
 pub struct MlDeleteCalendar<'a, 'b> {
     transport: &'a Transport,
@@ -305,7 +451,7 @@ impl<'a, 'b> MlDeleteCalendar<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Delete Calendar API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -363,7 +509,7 @@ impl<'b> MlDeleteCalendarEventParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Delete Calendar Event API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-delete-calendar-event.html)\n\nDeletes scheduled events from a calendar."]
+#[doc = "Builder for the [Ml Delete Calendar Event API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-delete-calendar-event.html)\n\nDeletes scheduled events from a calendar."]
 #[derive(Clone, Debug)]
 pub struct MlDeleteCalendarEvent<'a, 'b> {
     transport: &'a Transport,
@@ -430,7 +576,7 @@ impl<'a, 'b> MlDeleteCalendarEvent<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Delete Calendar Event API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -488,7 +634,7 @@ impl<'b> MlDeleteCalendarJobParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Delete Calendar Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-delete-calendar-job.html)\n\nDeletes anomaly detection jobs from a calendar."]
+#[doc = "Builder for the [Ml Delete Calendar Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-delete-calendar-job.html)\n\nDeletes anomaly detection jobs from a calendar."]
 #[derive(Clone, Debug)]
 pub struct MlDeleteCalendarJob<'a, 'b> {
     transport: &'a Transport,
@@ -555,7 +701,7 @@ impl<'a, 'b> MlDeleteCalendarJob<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Delete Calendar Job API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -606,7 +752,7 @@ impl<'b> MlDeleteDataFrameAnalyticsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Delete Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/delete-dfanalytics.html)\n\nDeletes an existing data frame analytics job."]
+#[doc = "Builder for the [Ml Delete Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-dfanalytics.html)\n\nDeletes an existing data frame analytics job."]
 #[derive(Clone, Debug)]
 pub struct MlDeleteDataFrameAnalytics<'a, 'b> {
     transport: &'a Transport,
@@ -687,7 +833,7 @@ impl<'a, 'b> MlDeleteDataFrameAnalytics<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Delete Data Frame Analytics API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -743,7 +889,7 @@ impl<'b> MlDeleteDatafeedParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Delete Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-delete-datafeed.html)\n\nDeletes an existing datafeed."]
+#[doc = "Builder for the [Ml Delete Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-delete-datafeed.html)\n\nDeletes an existing datafeed."]
 #[derive(Clone, Debug)]
 pub struct MlDeleteDatafeed<'a, 'b> {
     transport: &'a Transport,
@@ -817,7 +963,7 @@ impl<'a, 'b> MlDeleteDatafeed<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Delete Datafeed API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -874,7 +1020,7 @@ impl<'b> MlDeleteExpiredDataParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Delete Expired Data API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-delete-expired-data.html)\n\nDeletes expired and unused machine learning data."]
+#[doc = "Builder for the [Ml Delete Expired Data API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-delete-expired-data.html)\n\nDeletes expired and unused machine learning data."]
 #[derive(Clone, Debug)]
 pub struct MlDeleteExpiredData<'a, 'b, B> {
     transport: &'a Transport,
@@ -980,7 +1126,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Delete Expired Data API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1036,7 +1182,7 @@ impl<'b> MlDeleteFilterParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Delete Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-delete-filter.html)\n\nDeletes a filter."]
+#[doc = "Builder for the [Ml Delete Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-delete-filter.html)\n\nDeletes a filter."]
 #[derive(Clone, Debug)]
 pub struct MlDeleteFilter<'a, 'b> {
     transport: &'a Transport,
@@ -1103,7 +1249,7 @@ impl<'a, 'b> MlDeleteFilter<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Delete Filter API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1172,7 +1318,7 @@ impl<'b> MlDeleteForecastParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Delete Forecast API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-delete-forecast.html)\n\nDeletes forecasts from a machine learning job."]
+#[doc = "Builder for the [Ml Delete Forecast API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-delete-forecast.html)\n\nDeletes forecasts from a machine learning job."]
 #[derive(Clone, Debug)]
 pub struct MlDeleteForecast<'a, 'b> {
     transport: &'a Transport,
@@ -1253,7 +1399,7 @@ impl<'a, 'b> MlDeleteForecast<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Delete Forecast API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1309,11 +1455,12 @@ impl<'b> MlDeleteJobParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Delete Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-delete-job.html)\n\nDeletes an existing anomaly detection job."]
+#[doc = "Builder for the [Ml Delete Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-delete-job.html)\n\nDeletes an existing anomaly detection job."]
 #[derive(Clone, Debug)]
 pub struct MlDeleteJob<'a, 'b> {
     transport: &'a Transport,
     parts: MlDeleteJobParts<'b>,
+    delete_user_annotations: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     force: Option<bool>,
@@ -1332,6 +1479,7 @@ impl<'a, 'b> MlDeleteJob<'a, 'b> {
             transport,
             parts,
             headers,
+            delete_user_annotations: None,
             error_trace: None,
             filter_path: None,
             force: None,
@@ -1341,6 +1489,11 @@ impl<'a, 'b> MlDeleteJob<'a, 'b> {
             source: None,
             wait_for_completion: None,
         }
+    }
+    #[doc = "Should annotations added by the user be deleted"]
+    pub fn delete_user_annotations(mut self, delete_user_annotations: bool) -> Self {
+        self.delete_user_annotations = Some(delete_user_annotations);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -1390,13 +1543,14 @@ impl<'a, 'b> MlDeleteJob<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Delete Job API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                delete_user_annotations: Option<bool>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -1407,6 +1561,7 @@ impl<'a, 'b> MlDeleteJob<'a, 'b> {
                 wait_for_completion: Option<bool>,
             }
             let query_params = QueryParams {
+                delete_user_annotations: self.delete_user_annotations,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 force: self.force,
@@ -1452,7 +1607,7 @@ impl<'b> MlDeleteModelSnapshotParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Delete Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-delete-snapshot.html)\n\nDeletes an existing model snapshot."]
+#[doc = "Builder for the [Ml Delete Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-delete-snapshot.html)\n\nDeletes an existing model snapshot."]
 #[derive(Clone, Debug)]
 pub struct MlDeleteModelSnapshot<'a, 'b> {
     transport: &'a Transport,
@@ -1519,7 +1674,7 @@ impl<'a, 'b> MlDeleteModelSnapshot<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Delete Model Snapshot API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1571,7 +1726,7 @@ impl<'b> MlDeleteTrainedModelParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Delete Trained Model API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/delete-trained-models.html)\n\nDeletes an existing trained inference model that is currently not referenced by an ingest pipeline."]
+#[doc = "Builder for the [Ml Delete Trained Model API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-trained-models.html)\n\nDeletes an existing trained inference model that is currently not referenced by an ingest pipeline."]
 #[derive(Clone, Debug)]
 pub struct MlDeleteTrainedModel<'a, 'b> {
     transport: &'a Transport,
@@ -1652,7 +1807,7 @@ impl<'a, 'b> MlDeleteTrainedModel<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Delete Trained Model API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1714,7 +1869,7 @@ impl<'b> MlDeleteTrainedModelAliasParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Delete Trained Model Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/delete-trained-models-aliases.html)\n\nDeletes a model alias that refers to the trained model"]
+#[doc = "Builder for the [Ml Delete Trained Model Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-trained-models-aliases.html)\n\nDeletes a model alias that refers to the trained model"]
 #[derive(Clone, Debug)]
 pub struct MlDeleteTrainedModelAlias<'a, 'b> {
     transport: &'a Transport,
@@ -1781,7 +1936,7 @@ impl<'a, 'b> MlDeleteTrainedModelAlias<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Delete Trained Model Alias API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1828,7 +1983,7 @@ impl MlEstimateModelMemoryParts {
         }
     }
 }
-#[doc = "Builder for the [Ml Estimate Model Memory API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-apis.html)\n\nEstimates the model memory"]
+#[doc = "Builder for the [Ml Estimate Model Memory API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-apis.html)\n\nEstimates the model memory"]
 #[derive(Clone, Debug)]
 pub struct MlEstimateModelMemory<'a, 'b, B> {
     transport: &'a Transport,
@@ -1918,7 +2073,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Estimate Model Memory API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1963,7 +2118,7 @@ impl MlEvaluateDataFrameParts {
         }
     }
 }
-#[doc = "Builder for the [Ml Evaluate Data Frame API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/evaluate-dfanalytics.html)\n\nEvaluates the data frame analytics for an annotated index."]
+#[doc = "Builder for the [Ml Evaluate Data Frame API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/evaluate-dfanalytics.html)\n\nEvaluates the data frame analytics for an annotated index."]
 #[derive(Clone, Debug)]
 pub struct MlEvaluateDataFrame<'a, 'b, B> {
     transport: &'a Transport,
@@ -2053,7 +2208,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Evaluate Data Frame API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -2108,7 +2263,7 @@ impl<'b> MlExplainDataFrameAnalyticsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Explain Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/8.3/explain-dfanalytics.html)\n\nExplains a data frame analytics config."]
+#[doc = "Builder for the [Ml Explain Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/8.7/explain-dfanalytics.html)\n\nExplains a data frame analytics config."]
 #[derive(Clone, Debug)]
 pub struct MlExplainDataFrameAnalytics<'a, 'b, B> {
     transport: &'a Transport,
@@ -2199,8 +2354,8 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = match self.body {
-            Some(_) => Method::Post,
-            None => Method::Get,
+            Some(_) => http::Method::Post,
+            None => http::Method::Get,
         };
         let headers = self.headers;
         let timeout = self.request_timeout;
@@ -2254,7 +2409,7 @@ impl<'b> MlFlushJobParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Flush Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-flush-job.html)\n\nForces any buffered data to be processed by the job."]
+#[doc = "Builder for the [Ml Flush Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-flush-job.html)\n\nForces any buffered data to be processed by the job."]
 #[derive(Clone, Debug)]
 pub struct MlFlushJob<'a, 'b, B> {
     transport: &'a Transport,
@@ -2384,7 +2539,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Flush Job API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -2447,7 +2602,7 @@ impl<'b> MlForecastParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Forecast API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-forecast.html)\n\nPredicts the future behavior of a time series by using its historical behavior."]
+#[doc = "Builder for the [Ml Forecast API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-forecast.html)\n\nPredicts the future behavior of a time series by using its historical behavior."]
 #[derive(Clone, Debug)]
 pub struct MlForecast<'a, 'b, B> {
     transport: &'a Transport,
@@ -2561,7 +2716,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Forecast API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -2635,7 +2790,7 @@ impl<'b> MlGetBucketsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Get Buckets API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-bucket.html)\n\nRetrieves anomaly detection job results for one or more buckets."]
+#[doc = "Builder for the [Ml Get Buckets API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-bucket.html)\n\nRetrieves anomaly detection job results for one or more buckets."]
 #[derive(Clone, Debug)]
 pub struct MlGetBuckets<'a, 'b, B> {
     transport: &'a Transport,
@@ -2798,8 +2953,8 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = match self.body {
-            Some(_) => Method::Post,
-            None => Method::Get,
+            Some(_) => http::Method::Post,
+            None => http::Method::Get,
         };
         let headers = self.headers;
         let timeout = self.request_timeout;
@@ -2871,7 +3026,7 @@ impl<'b> MlGetCalendarEventsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Get Calendar Events API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-calendar-event.html)\n\nRetrieves information about the scheduled events in calendars."]
+#[doc = "Builder for the [Ml Get Calendar Events API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-calendar-event.html)\n\nRetrieves information about the scheduled events in calendars."]
 #[derive(Clone, Debug)]
 pub struct MlGetCalendarEvents<'a, 'b> {
     transport: &'a Transport,
@@ -2973,7 +3128,7 @@ impl<'a, 'b> MlGetCalendarEvents<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Get Calendar Events API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -3038,7 +3193,7 @@ impl<'b> MlGetCalendarsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Get Calendars API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-calendar.html)\n\nRetrieves configuration information for calendars."]
+#[doc = "Builder for the [Ml Get Calendars API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-calendar.html)\n\nRetrieves configuration information for calendars."]
 #[derive(Clone, Debug)]
 pub struct MlGetCalendars<'a, 'b, B> {
     transport: &'a Transport,
@@ -3145,8 +3300,8 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = match self.body {
-            Some(_) => Method::Post,
-            None => Method::Get,
+            Some(_) => http::Method::Post,
+            None => http::Method::Get,
         };
         let headers = self.headers;
         let timeout = self.request_timeout;
@@ -3212,16 +3367,16 @@ impl<'b> MlGetCategoriesParts<'b> {
             MlGetCategoriesParts::JobId(ref job_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(43usize + encoded_job_id.len());
+                let mut p = String::with_capacity(42usize + encoded_job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(encoded_job_id.as_ref());
-                p.push_str("/results/categories/");
+                p.push_str("/results/categories");
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Ml Get Categories API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-category.html)\n\nRetrieves anomaly detection job results for one or more categories."]
+#[doc = "Builder for the [Ml Get Categories API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-category.html)\n\nRetrieves anomaly detection job results for one or more categories."]
 #[derive(Clone, Debug)]
 pub struct MlGetCategories<'a, 'b, B> {
     transport: &'a Transport,
@@ -3336,8 +3491,8 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = match self.body {
-            Some(_) => Method::Post,
-            None => Method::Get,
+            Some(_) => http::Method::Post,
+            None => http::Method::Get,
         };
         let headers = self.headers;
         let timeout = self.request_timeout;
@@ -3398,7 +3553,7 @@ impl<'b> MlGetDataFrameAnalyticsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Get Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-dfanalytics.html)\n\nRetrieves configuration information for data frame analytics jobs."]
+#[doc = "Builder for the [Ml Get Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-dfanalytics.html)\n\nRetrieves configuration information for data frame analytics jobs."]
 #[derive(Clone, Debug)]
 pub struct MlGetDataFrameAnalytics<'a, 'b> {
     transport: &'a Transport,
@@ -3493,7 +3648,7 @@ impl<'a, 'b> MlGetDataFrameAnalytics<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Get Data Frame Analytics API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -3556,7 +3711,7 @@ impl<'b> MlGetDataFrameAnalyticsStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Get Data Frame Analytics Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-dfanalytics-stats.html)\n\nRetrieves usage information for data frame analytics jobs."]
+#[doc = "Builder for the [Ml Get Data Frame Analytics Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-dfanalytics-stats.html)\n\nRetrieves usage information for data frame analytics jobs."]
 #[derive(Clone, Debug)]
 pub struct MlGetDataFrameAnalyticsStats<'a, 'b> {
     transport: &'a Transport,
@@ -3651,7 +3806,7 @@ impl<'a, 'b> MlGetDataFrameAnalyticsStats<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Get Data Frame Analytics Stats API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -3715,7 +3870,7 @@ impl<'b> MlGetDatafeedStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Get Datafeed Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-datafeed-stats.html)\n\nRetrieves usage information for datafeeds."]
+#[doc = "Builder for the [Ml Get Datafeed Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-datafeed-stats.html)\n\nRetrieves usage information for datafeeds."]
 #[derive(Clone, Debug)]
 pub struct MlGetDatafeedStats<'a, 'b> {
     transport: &'a Transport,
@@ -3789,7 +3944,7 @@ impl<'a, 'b> MlGetDatafeedStats<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Get Datafeed Stats API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -3846,7 +4001,7 @@ impl<'b> MlGetDatafeedsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Get Datafeeds API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-datafeed.html)\n\nRetrieves configuration information for datafeeds."]
+#[doc = "Builder for the [Ml Get Datafeeds API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-datafeed.html)\n\nRetrieves configuration information for datafeeds."]
 #[derive(Clone, Debug)]
 pub struct MlGetDatafeeds<'a, 'b> {
     transport: &'a Transport,
@@ -3927,7 +4082,7 @@ impl<'a, 'b> MlGetDatafeeds<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Get Datafeeds API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -3986,7 +4141,7 @@ impl<'b> MlGetFiltersParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Get Filters API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-filter.html)\n\nRetrieves filters."]
+#[doc = "Builder for the [Ml Get Filters API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-filter.html)\n\nRetrieves filters."]
 #[derive(Clone, Debug)]
 pub struct MlGetFilters<'a, 'b> {
     transport: &'a Transport,
@@ -4067,7 +4222,7 @@ impl<'a, 'b> MlGetFilters<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Get Filters API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -4124,7 +4279,7 @@ impl<'b> MlGetInfluencersParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Get Influencers API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-influencer.html)\n\nRetrieves anomaly detection job results for one or more influencers."]
+#[doc = "Builder for the [Ml Get Influencers API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-influencer.html)\n\nRetrieves anomaly detection job results for one or more influencers."]
 #[derive(Clone, Debug)]
 pub struct MlGetInfluencers<'a, 'b, B> {
     transport: &'a Transport,
@@ -4279,8 +4434,8 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = match self.body {
-            Some(_) => Method::Post,
-            None => Method::Get,
+            Some(_) => http::Method::Post,
+            None => http::Method::Get,
         };
         let headers = self.headers;
         let timeout = self.request_timeout;
@@ -4353,7 +4508,7 @@ impl<'b> MlGetJobStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Get Job Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-job-stats.html)\n\nRetrieves usage information for anomaly detection jobs."]
+#[doc = "Builder for the [Ml Get Job Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-job-stats.html)\n\nRetrieves usage information for anomaly detection jobs."]
 #[derive(Clone, Debug)]
 pub struct MlGetJobStats<'a, 'b> {
     transport: &'a Transport,
@@ -4427,7 +4582,7 @@ impl<'a, 'b> MlGetJobStats<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Get Job Stats API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -4484,7 +4639,7 @@ impl<'b> MlGetJobsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Get Jobs API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-job.html)\n\nRetrieves configuration information for anomaly detection jobs."]
+#[doc = "Builder for the [Ml Get Jobs API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-job.html)\n\nRetrieves configuration information for anomaly detection jobs."]
 #[derive(Clone, Debug)]
 pub struct MlGetJobs<'a, 'b> {
     transport: &'a Transport,
@@ -4565,7 +4720,7 @@ impl<'a, 'b> MlGetJobs<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Get Jobs API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -4625,7 +4780,7 @@ impl<'b> MlGetMemoryStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Get Memory Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-ml-memory.html)\n\nReturns information on how ML is using memory."]
+#[doc = "Builder for the [Ml Get Memory Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-ml-memory.html)\n\nReturns information on how ML is using memory."]
 #[derive(Clone, Debug)]
 pub struct MlGetMemoryStats<'a, 'b> {
     transport: &'a Transport,
@@ -4706,7 +4861,7 @@ impl<'a, 'b> MlGetMemoryStats<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Get Memory Stats API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -4769,7 +4924,7 @@ impl<'b> MlGetModelSnapshotUpgradeStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Get Model Snapshot Upgrade Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-job-model-snapshot-upgrade-stats.html)\n\nGets stats for anomaly detection job model snapshot upgrades that are in progress."]
+#[doc = "Builder for the [Ml Get Model Snapshot Upgrade Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-job-model-snapshot-upgrade-stats.html)\n\nGets stats for anomaly detection job model snapshot upgrades that are in progress."]
 #[derive(Clone, Debug)]
 pub struct MlGetModelSnapshotUpgradeStats<'a, 'b> {
     transport: &'a Transport,
@@ -4843,7 +4998,7 @@ impl<'a, 'b> MlGetModelSnapshotUpgradeStats<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Get Model Snapshot Upgrade Stats API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -4914,7 +5069,7 @@ impl<'b> MlGetModelSnapshotsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Get Model Snapshots API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-snapshot.html)\n\nRetrieves information about model snapshots."]
+#[doc = "Builder for the [Ml Get Model Snapshots API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-snapshot.html)\n\nRetrieves information about model snapshots."]
 #[derive(Clone, Debug)]
 pub struct MlGetModelSnapshots<'a, 'b, B> {
     transport: &'a Transport,
@@ -5053,8 +5208,8 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = match self.body {
-            Some(_) => Method::Post,
-            None => Method::Get,
+            Some(_) => http::Method::Post,
+            None => http::Method::Get,
         };
         let headers = self.headers;
         let timeout = self.request_timeout;
@@ -5120,7 +5275,7 @@ impl<'b> MlGetOverallBucketsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Get Overall Buckets API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-overall-buckets.html)\n\nRetrieves overall bucket results that summarize the bucket results of multiple anomaly detection jobs."]
+#[doc = "Builder for the [Ml Get Overall Buckets API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-overall-buckets.html)\n\nRetrieves overall bucket results that summarize the bucket results of multiple anomaly detection jobs."]
 #[derive(Clone, Debug)]
 pub struct MlGetOverallBuckets<'a, 'b, B> {
     transport: &'a Transport,
@@ -5267,8 +5422,8 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = match self.body {
-            Some(_) => Method::Post,
-            None => Method::Get,
+            Some(_) => http::Method::Post,
+            None => http::Method::Get,
         };
         let headers = self.headers;
         let timeout = self.request_timeout;
@@ -5336,7 +5491,7 @@ impl<'b> MlGetRecordsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Get Records API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-record.html)\n\nRetrieves anomaly records for an anomaly detection job."]
+#[doc = "Builder for the [Ml Get Records API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-record.html)\n\nRetrieves anomaly records for an anomaly detection job."]
 #[derive(Clone, Debug)]
 pub struct MlGetRecords<'a, 'b, B> {
     transport: &'a Transport,
@@ -5491,8 +5646,8 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = match self.body {
-            Some(_) => Method::Post,
-            None => Method::Get,
+            Some(_) => http::Method::Post,
+            None => http::Method::Get,
         };
         let headers = self.headers;
         let timeout = self.request_timeout;
@@ -5564,7 +5719,7 @@ impl<'b> MlGetTrainedModelsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Get Trained Models API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-trained-models.html)\n\nRetrieves configuration information for a trained inference model."]
+#[doc = "Builder for the [Ml Get Trained Models API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-trained-models.html)\n\nRetrieves configuration information for a trained inference model."]
 #[derive(Clone, Debug)]
 pub struct MlGetTrainedModels<'a, 'b> {
     transport: &'a Transport,
@@ -5687,7 +5842,7 @@ impl<'a, 'b> MlGetTrainedModels<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Get Trained Models API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -5760,7 +5915,7 @@ impl<'b> MlGetTrainedModelsStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Get Trained Models Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-trained-models-stats.html)\n\nRetrieves usage information for trained inference models."]
+#[doc = "Builder for the [Ml Get Trained Models Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-trained-models-stats.html)\n\nRetrieves usage information for trained inference models."]
 #[derive(Clone, Debug)]
 pub struct MlGetTrainedModelsStats<'a, 'b> {
     transport: &'a Transport,
@@ -5848,7 +6003,7 @@ impl<'a, 'b> MlGetTrainedModelsStats<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Get Trained Models Stats API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -5885,14 +6040,12 @@ impl<'a, 'b> MlGetTrainedModelsStats<'a, 'b> {
         Ok(response)
     }
 }
-#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Infer Trained Model API"]
 pub enum MlInferTrainedModelParts<'b> {
     #[doc = "ModelId"]
     ModelId(&'b str),
 }
-#[cfg(feature = "experimental-apis")]
 impl<'b> MlInferTrainedModelParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Infer Trained Model API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -5909,9 +6062,7 @@ impl<'b> MlInferTrainedModelParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Infer Trained Model API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/infer-trained-model.html)\n\nEvaluate a trained model."]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
+#[doc = "Builder for the [Ml Infer Trained Model API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/infer-trained-model.html)\n\nEvaluate a trained model."]
 #[derive(Clone, Debug)]
 pub struct MlInferTrainedModel<'a, 'b, B> {
     transport: &'a Transport,
@@ -5926,7 +6077,6 @@ pub struct MlInferTrainedModel<'a, 'b, B> {
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
-#[cfg(feature = "experimental-apis")]
 impl<'a, 'b, B> MlInferTrainedModel<'a, 'b, B>
 where
     B: Body,
@@ -6010,7 +6160,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Infer Trained Model API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -6057,7 +6207,7 @@ impl MlInfoParts {
         }
     }
 }
-#[doc = "Builder for the [Ml Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-ml-info.html)\n\nReturns defaults and limits used by machine learning."]
+#[doc = "Builder for the [Ml Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-ml-info.html)\n\nReturns defaults and limits used by machine learning."]
 #[derive(Clone, Debug)]
 pub struct MlInfo<'a, 'b> {
     transport: &'a Transport,
@@ -6124,7 +6274,7 @@ impl<'a, 'b> MlInfo<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ml Info API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -6177,7 +6327,7 @@ impl<'b> MlOpenJobParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Open Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-open-job.html)\n\nOpens one or more anomaly detection jobs."]
+#[doc = "Builder for the [Ml Open Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-open-job.html)\n\nOpens one or more anomaly detection jobs."]
 #[derive(Clone, Debug)]
 pub struct MlOpenJob<'a, 'b, B> {
     transport: &'a Transport,
@@ -6267,7 +6417,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Open Job API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -6320,7 +6470,7 @@ impl<'b> MlPostCalendarEventsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Post Calendar Events API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-post-calendar-event.html)\n\nPosts scheduled events in a calendar."]
+#[doc = "Builder for the [Ml Post Calendar Events API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-post-calendar-event.html)\n\nPosts scheduled events in a calendar."]
 #[derive(Clone, Debug)]
 pub struct MlPostCalendarEvents<'a, 'b, B> {
     transport: &'a Transport,
@@ -6410,7 +6560,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Post Calendar Events API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -6463,7 +6613,7 @@ impl<'b> MlPostDataParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Post Data API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-post-data.html)\n\nSends data to an anomaly detection job for analysis."]
+#[doc = "Builder for the [Ml Post Data API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-post-data.html)\n\nSends data to an anomaly detection job for analysis."]
 #[derive(Clone, Debug)]
 pub struct MlPostData<'a, 'b, B> {
     transport: &'a Transport,
@@ -6569,7 +6719,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Post Data API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -6628,7 +6778,7 @@ impl<'b> MlPreviewDataFrameAnalyticsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Preview Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/8.3/preview-dfanalytics.html)\n\nPreviews that will be analyzed given a data frame analytics config."]
+#[doc = "Builder for the [Ml Preview Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/8.7/preview-dfanalytics.html)\n\nPreviews that will be analyzed given a data frame analytics config."]
 #[derive(Clone, Debug)]
 pub struct MlPreviewDataFrameAnalytics<'a, 'b, B> {
     transport: &'a Transport,
@@ -6719,8 +6869,8 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = match self.body {
-            Some(_) => Method::Post,
-            None => Method::Get,
+            Some(_) => http::Method::Post,
+            None => http::Method::Get,
         };
         let headers = self.headers;
         let timeout = self.request_timeout;
@@ -6777,7 +6927,7 @@ impl<'b> MlPreviewDatafeedParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Preview Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-preview-datafeed.html)\n\nPreviews a datafeed."]
+#[doc = "Builder for the [Ml Preview Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-preview-datafeed.html)\n\nPreviews a datafeed."]
 #[derive(Clone, Debug)]
 pub struct MlPreviewDatafeed<'a, 'b, B> {
     transport: &'a Transport,
@@ -6884,8 +7034,8 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = match self.body {
-            Some(_) => Method::Post,
-            None => Method::Get,
+            Some(_) => http::Method::Post,
+            None => http::Method::Get,
         };
         let headers = self.headers;
         let timeout = self.request_timeout;
@@ -6942,7 +7092,7 @@ impl<'b> MlPutCalendarParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Put Calendar API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-put-calendar.html)\n\nInstantiates a calendar."]
+#[doc = "Builder for the [Ml Put Calendar API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-put-calendar.html)\n\nInstantiates a calendar."]
 #[derive(Clone, Debug)]
 pub struct MlPutCalendar<'a, 'b, B> {
     transport: &'a Transport,
@@ -7032,7 +7182,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Put Calendar API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -7090,7 +7240,7 @@ impl<'b> MlPutCalendarJobParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Put Calendar Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-put-calendar-job.html)\n\nAdds an anomaly detection job to a calendar."]
+#[doc = "Builder for the [Ml Put Calendar Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-put-calendar-job.html)\n\nAdds an anomaly detection job to a calendar."]
 #[derive(Clone, Debug)]
 pub struct MlPutCalendarJob<'a, 'b, B> {
     transport: &'a Transport,
@@ -7180,7 +7330,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Put Calendar Job API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -7231,7 +7381,7 @@ impl<'b> MlPutDataFrameAnalyticsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Put Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/put-dfanalytics.html)\n\nInstantiates a data frame analytics job."]
+#[doc = "Builder for the [Ml Put Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-dfanalytics.html)\n\nInstantiates a data frame analytics job."]
 #[derive(Clone, Debug)]
 pub struct MlPutDataFrameAnalytics<'a, 'b, B> {
     transport: &'a Transport,
@@ -7321,7 +7471,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Put Data Frame Analytics API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -7373,7 +7523,7 @@ impl<'b> MlPutDatafeedParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Put Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-put-datafeed.html)\n\nInstantiates a datafeed."]
+#[doc = "Builder for the [Ml Put Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-put-datafeed.html)\n\nInstantiates a datafeed."]
 #[derive(Clone, Debug)]
 pub struct MlPutDatafeed<'a, 'b, B> {
     transport: &'a Transport,
@@ -7495,7 +7645,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Put Datafeed API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -7556,7 +7706,7 @@ impl<'b> MlPutFilterParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Put Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-put-filter.html)\n\nInstantiates a filter."]
+#[doc = "Builder for the [Ml Put Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-put-filter.html)\n\nInstantiates a filter."]
 #[derive(Clone, Debug)]
 pub struct MlPutFilter<'a, 'b, B> {
     transport: &'a Transport,
@@ -7646,7 +7796,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Put Filter API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -7698,7 +7848,7 @@ impl<'b> MlPutJobParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Put Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-put-job.html)\n\nInstantiates an anomaly detection job."]
+#[doc = "Builder for the [Ml Put Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-put-job.html)\n\nInstantiates an anomaly detection job."]
 #[derive(Clone, Debug)]
 pub struct MlPutJob<'a, 'b, B> {
     transport: &'a Transport,
@@ -7820,7 +7970,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Put Job API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -7881,7 +8031,7 @@ impl<'b> MlPutTrainedModelParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Put Trained Model API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/put-trained-models.html)\n\nCreates an inference trained model."]
+#[doc = "Builder for the [Ml Put Trained Model API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-trained-models.html)\n\nCreates an inference trained model."]
 #[derive(Clone, Debug)]
 pub struct MlPutTrainedModel<'a, 'b, B> {
     transport: &'a Transport,
@@ -7895,6 +8045,7 @@ pub struct MlPutTrainedModel<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    wait_for_completion: Option<bool>,
 }
 impl<'a, 'b, B> MlPutTrainedModel<'a, 'b, B>
 where
@@ -7915,6 +8066,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            wait_for_completion: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -7934,6 +8086,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            wait_for_completion: self.wait_for_completion,
         }
     }
     #[doc = "If set to `true` and a `compressed_definition` is provided, the request defers definition decompression and skips relevant validations."]
@@ -7976,10 +8129,15 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Whether to wait for all child operations(e.g. model download) to complete, before returning or not. Default to false"]
+    pub fn wait_for_completion(mut self, wait_for_completion: bool) -> Self {
+        self.wait_for_completion = Some(wait_for_completion);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Ml Put Trained Model API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -7993,6 +8151,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                wait_for_completion: Option<bool>,
             }
             let query_params = QueryParams {
                 defer_definition_decompression: self.defer_definition_decompression,
@@ -8001,6 +8160,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                wait_for_completion: self.wait_for_completion,
             };
             Some(query_params)
         };
@@ -8039,7 +8199,7 @@ impl<'b> MlPutTrainedModelAliasParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Put Trained Model Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/put-trained-models-aliases.html)\n\nCreates a new model alias (or reassigns an existing one) to refer to the trained model"]
+#[doc = "Builder for the [Ml Put Trained Model Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-trained-models-aliases.html)\n\nCreates a new model alias (or reassigns an existing one) to refer to the trained model"]
 #[derive(Clone, Debug)]
 pub struct MlPutTrainedModelAlias<'a, 'b, B> {
     transport: &'a Transport,
@@ -8137,7 +8297,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Put Trained Model Alias API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -8170,14 +8330,12 @@ where
         Ok(response)
     }
 }
-#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Put Trained Model Definition Part API"]
 pub enum MlPutTrainedModelDefinitionPartParts<'b> {
     #[doc = "ModelId and Part"]
     ModelIdPart(&'b str, i32),
 }
-#[cfg(feature = "experimental-apis")]
 impl<'b> MlPutTrainedModelDefinitionPartParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Put Trained Model Definition Part API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -8199,9 +8357,7 @@ impl<'b> MlPutTrainedModelDefinitionPartParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Put Trained Model Definition Part API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/put-trained-model-definition-part.html)\n\nCreates part of a trained model definition"]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
+#[doc = "Builder for the [Ml Put Trained Model Definition Part API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-trained-model-definition-part.html)\n\nCreates part of a trained model definition"]
 #[derive(Clone, Debug)]
 pub struct MlPutTrainedModelDefinitionPart<'a, 'b, B> {
     transport: &'a Transport,
@@ -8215,7 +8371,6 @@ pub struct MlPutTrainedModelDefinitionPart<'a, 'b, B> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "experimental-apis")]
 impl<'a, 'b, B> MlPutTrainedModelDefinitionPart<'a, 'b, B>
 where
     B: Body,
@@ -8292,7 +8447,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Put Trained Model Definition Part API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -8323,14 +8478,12 @@ where
         Ok(response)
     }
 }
-#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Put Trained Model Vocabulary API"]
 pub enum MlPutTrainedModelVocabularyParts<'b> {
     #[doc = "ModelId"]
     ModelId(&'b str),
 }
-#[cfg(feature = "experimental-apis")]
 impl<'b> MlPutTrainedModelVocabularyParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Put Trained Model Vocabulary API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -8347,9 +8500,7 @@ impl<'b> MlPutTrainedModelVocabularyParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Put Trained Model Vocabulary API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/put-trained-model-vocabulary.html)\n\nCreates a trained model vocabulary"]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
+#[doc = "Builder for the [Ml Put Trained Model Vocabulary API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-trained-model-vocabulary.html)\n\nCreates a trained model vocabulary"]
 #[derive(Clone, Debug)]
 pub struct MlPutTrainedModelVocabulary<'a, 'b, B> {
     transport: &'a Transport,
@@ -8363,7 +8514,6 @@ pub struct MlPutTrainedModelVocabulary<'a, 'b, B> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "experimental-apis")]
 impl<'a, 'b, B> MlPutTrainedModelVocabulary<'a, 'b, B>
 where
     B: Body,
@@ -8440,7 +8590,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Put Trained Model Vocabulary API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -8493,12 +8643,13 @@ impl<'b> MlResetJobParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Reset Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-reset-job.html)\n\nResets an existing anomaly detection job."]
+#[doc = "Builder for the [Ml Reset Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-reset-job.html)\n\nResets an existing anomaly detection job."]
 #[derive(Clone, Debug)]
 pub struct MlResetJob<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlResetJobParts<'b>,
     body: Option<B>,
+    delete_user_annotations: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -8520,6 +8671,7 @@ where
             parts,
             headers,
             body: None,
+            delete_user_annotations: None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -8538,6 +8690,7 @@ where
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
+            delete_user_annotations: self.delete_user_annotations,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             headers: self.headers,
@@ -8547,6 +8700,11 @@ where
             source: self.source,
             wait_for_completion: self.wait_for_completion,
         }
+    }
+    #[doc = "Should annotations added by the user be deleted"]
+    pub fn delete_user_annotations(mut self, delete_user_annotations: bool) -> Self {
+        self.delete_user_annotations = Some(delete_user_annotations);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -8591,13 +8749,14 @@ where
     #[doc = "Creates an asynchronous call to the Ml Reset Job API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                delete_user_annotations: Option<bool>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -8607,6 +8766,7 @@ where
                 wait_for_completion: Option<bool>,
             }
             let query_params = QueryParams {
+                delete_user_annotations: self.delete_user_annotations,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
@@ -8652,7 +8812,7 @@ impl<'b> MlRevertModelSnapshotParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Revert Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-revert-snapshot.html)\n\nReverts to a specific snapshot."]
+#[doc = "Builder for the [Ml Revert Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-revert-snapshot.html)\n\nReverts to a specific snapshot."]
 #[derive(Clone, Debug)]
 pub struct MlRevertModelSnapshot<'a, 'b, B> {
     transport: &'a Transport,
@@ -8750,7 +8910,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Revert Model Snapshot API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -8797,7 +8957,7 @@ impl MlSetUpgradeModeParts {
         }
     }
 }
-#[doc = "Builder for the [Ml Set Upgrade Mode API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-set-upgrade-mode.html)\n\nSets a cluster wide upgrade_mode setting that prepares machine learning indices for an upgrade."]
+#[doc = "Builder for the [Ml Set Upgrade Mode API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-set-upgrade-mode.html)\n\nSets a cluster wide upgrade_mode setting that prepares machine learning indices for an upgrade."]
 #[derive(Clone, Debug)]
 pub struct MlSetUpgradeMode<'a, 'b, B> {
     transport: &'a Transport,
@@ -8903,7 +9063,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Set Upgrade Mode API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -8959,7 +9119,7 @@ impl<'b> MlStartDataFrameAnalyticsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Start Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/start-dfanalytics.html)\n\nStarts a data frame analytics job."]
+#[doc = "Builder for the [Ml Start Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/start-dfanalytics.html)\n\nStarts a data frame analytics job."]
 #[derive(Clone, Debug)]
 pub struct MlStartDataFrameAnalytics<'a, 'b, B> {
     transport: &'a Transport,
@@ -9057,7 +9217,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Start Data Frame Analytics API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -9112,7 +9272,7 @@ impl<'b> MlStartDatafeedParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Start Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-start-datafeed.html)\n\nStarts one or more datafeeds."]
+#[doc = "Builder for the [Ml Start Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-start-datafeed.html)\n\nStarts one or more datafeeds."]
 #[derive(Clone, Debug)]
 pub struct MlStartDatafeed<'a, 'b, B> {
     transport: &'a Transport,
@@ -9226,7 +9386,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Start Datafeed API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -9263,14 +9423,12 @@ where
         Ok(response)
     }
 }
-#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Start Trained Model Deployment API"]
 pub enum MlStartTrainedModelDeploymentParts<'b> {
     #[doc = "ModelId"]
     ModelId(&'b str),
 }
-#[cfg(feature = "experimental-apis")]
 impl<'b> MlStartTrainedModelDeploymentParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Start Trained Model Deployment API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -9287,21 +9445,21 @@ impl<'b> MlStartTrainedModelDeploymentParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Start Trained Model Deployment API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/start-trained-model-deployment.html)\n\nStart a trained model deployment."]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
+#[doc = "Builder for the [Ml Start Trained Model Deployment API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/start-trained-model-deployment.html)\n\nStart a trained model deployment."]
 #[derive(Clone, Debug)]
 pub struct MlStartTrainedModelDeployment<'a, 'b, B> {
     transport: &'a Transport,
     parts: MlStartTrainedModelDeploymentParts<'b>,
     body: Option<B>,
     cache_size: Option<&'b str>,
+    deployment_id: Option<&'b str>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     number_of_allocations: Option<i32>,
     pretty: Option<bool>,
+    priority: Option<&'b str>,
     queue_capacity: Option<i32>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -9309,7 +9467,6 @@ pub struct MlStartTrainedModelDeployment<'a, 'b, B> {
     timeout: Option<&'b str>,
     wait_for: Option<&'b str>,
 }
-#[cfg(feature = "experimental-apis")]
 impl<'a, 'b, B> MlStartTrainedModelDeployment<'a, 'b, B>
 where
     B: Body,
@@ -9323,11 +9480,13 @@ where
             headers,
             body: None,
             cache_size: None,
+            deployment_id: None,
             error_trace: None,
             filter_path: None,
             human: None,
             number_of_allocations: None,
             pretty: None,
+            priority: None,
             queue_capacity: None,
             request_timeout: None,
             source: None,
@@ -9346,12 +9505,14 @@ where
             parts: self.parts,
             body: Some(body.into()),
             cache_size: self.cache_size,
+            deployment_id: self.deployment_id,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
             number_of_allocations: self.number_of_allocations,
             pretty: self.pretty,
+            priority: self.priority,
             queue_capacity: self.queue_capacity,
             request_timeout: self.request_timeout,
             source: self.source,
@@ -9363,6 +9524,11 @@ where
     #[doc = "A byte-size value for configuring the inference cache size. For example, 20mb."]
     pub fn cache_size(mut self, cache_size: &'b str) -> Self {
         self.cache_size = Some(cache_size);
+        self
+    }
+    #[doc = "The Id of the new deployment. Defaults to the model_id if not set."]
+    pub fn deployment_id(mut self, deployment_id: &'b str) -> Self {
+        self.deployment_id = Some(deployment_id);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -9385,7 +9551,7 @@ where
         self.human = Some(human);
         self
     }
-    #[doc = "The number of model allocations on each node where the model is deployed."]
+    #[doc = "The total number of allocations this model is assigned across machine learning nodes."]
     pub fn number_of_allocations(mut self, number_of_allocations: i32) -> Self {
         self.number_of_allocations = Some(number_of_allocations);
         self
@@ -9393,6 +9559,11 @@ where
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "The deployment priority."]
+    pub fn priority(mut self, priority: &'b str) -> Self {
+        self.priority = Some(priority);
         self
     }
     #[doc = "Controls how many inference requests are allowed in the queue at a time."]
@@ -9428,7 +9599,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Start Trained Model Deployment API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -9436,12 +9607,14 @@ where
             #[derive(Serialize)]
             struct QueryParams<'b> {
                 cache_size: Option<&'b str>,
+                deployment_id: Option<&'b str>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
                 number_of_allocations: Option<i32>,
                 pretty: Option<bool>,
+                priority: Option<&'b str>,
                 queue_capacity: Option<i32>,
                 source: Option<&'b str>,
                 threads_per_allocation: Option<i32>,
@@ -9450,11 +9623,13 @@ where
             }
             let query_params = QueryParams {
                 cache_size: self.cache_size,
+                deployment_id: self.deployment_id,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
                 number_of_allocations: self.number_of_allocations,
                 pretty: self.pretty,
+                priority: self.priority,
                 queue_capacity: self.queue_capacity,
                 source: self.source,
                 threads_per_allocation: self.threads_per_allocation,
@@ -9492,7 +9667,7 @@ impl<'b> MlStopDataFrameAnalyticsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Stop Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/stop-dfanalytics.html)\n\nStops one or more data frame analytics jobs."]
+#[doc = "Builder for the [Ml Stop Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/stop-dfanalytics.html)\n\nStops one or more data frame analytics jobs."]
 #[derive(Clone, Debug)]
 pub struct MlStopDataFrameAnalytics<'a, 'b, B> {
     transport: &'a Transport,
@@ -9606,7 +9781,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Stop Data Frame Analytics API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -9665,7 +9840,7 @@ impl<'b> MlStopDatafeedParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Stop Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-stop-datafeed.html)\n\nStops one or more datafeeds."]
+#[doc = "Builder for the [Ml Stop Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-stop-datafeed.html)\n\nStops one or more datafeeds."]
 #[derive(Clone, Debug)]
 pub struct MlStopDatafeed<'a, 'b, B> {
     transport: &'a Transport,
@@ -9787,7 +9962,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Stop Datafeed API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -9826,14 +10001,12 @@ where
         Ok(response)
     }
 }
-#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Stop Trained Model Deployment API"]
 pub enum MlStopTrainedModelDeploymentParts<'b> {
     #[doc = "ModelId"]
     ModelId(&'b str),
 }
-#[cfg(feature = "experimental-apis")]
 impl<'b> MlStopTrainedModelDeploymentParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Stop Trained Model Deployment API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -9850,9 +10023,7 @@ impl<'b> MlStopTrainedModelDeploymentParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Stop Trained Model Deployment API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/stop-trained-model-deployment.html)\n\nStop a trained model deployment."]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
+#[doc = "Builder for the [Ml Stop Trained Model Deployment API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/stop-trained-model-deployment.html)\n\nStop a trained model deployment."]
 #[derive(Clone, Debug)]
 pub struct MlStopTrainedModelDeployment<'a, 'b, B> {
     transport: &'a Transport,
@@ -9868,7 +10039,6 @@ pub struct MlStopTrainedModelDeployment<'a, 'b, B> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "experimental-apis")]
 impl<'a, 'b, B> MlStopTrainedModelDeployment<'a, 'b, B>
 where
     B: Body,
@@ -9959,7 +10129,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Stop Trained Model Deployment API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -10015,7 +10185,7 @@ impl<'b> MlUpdateDataFrameAnalyticsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Update Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/update-dfanalytics.html)\n\nUpdates certain properties of a data frame analytics job."]
+#[doc = "Builder for the [Ml Update Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-dfanalytics.html)\n\nUpdates certain properties of a data frame analytics job."]
 #[derive(Clone, Debug)]
 pub struct MlUpdateDataFrameAnalytics<'a, 'b, B> {
     transport: &'a Transport,
@@ -10105,7 +10275,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Update Data Frame Analytics API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -10158,7 +10328,7 @@ impl<'b> MlUpdateDatafeedParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Update Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-update-datafeed.html)\n\nUpdates certain properties of a datafeed."]
+#[doc = "Builder for the [Ml Update Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-update-datafeed.html)\n\nUpdates certain properties of a datafeed."]
 #[derive(Clone, Debug)]
 pub struct MlUpdateDatafeed<'a, 'b, B> {
     transport: &'a Transport,
@@ -10280,7 +10450,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Update Datafeed API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -10342,7 +10512,7 @@ impl<'b> MlUpdateFilterParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Update Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-update-filter.html)\n\nUpdates the description of a filter, adds items, or removes items."]
+#[doc = "Builder for the [Ml Update Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-update-filter.html)\n\nUpdates the description of a filter, adds items, or removes items."]
 #[derive(Clone, Debug)]
 pub struct MlUpdateFilter<'a, 'b, B> {
     transport: &'a Transport,
@@ -10432,7 +10602,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Update Filter API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -10485,7 +10655,7 @@ impl<'b> MlUpdateJobParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Update Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-update-job.html)\n\nUpdates certain properties of an anomaly detection job."]
+#[doc = "Builder for the [Ml Update Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-update-job.html)\n\nUpdates certain properties of an anomaly detection job."]
 #[derive(Clone, Debug)]
 pub struct MlUpdateJob<'a, 'b, B> {
     transport: &'a Transport,
@@ -10575,7 +10745,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Update Job API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -10634,7 +10804,7 @@ impl<'b> MlUpdateModelSnapshotParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Update Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-update-snapshot.html)\n\nUpdates certain properties of a snapshot."]
+#[doc = "Builder for the [Ml Update Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-update-snapshot.html)\n\nUpdates certain properties of a snapshot."]
 #[derive(Clone, Debug)]
 pub struct MlUpdateModelSnapshot<'a, 'b, B> {
     transport: &'a Transport,
@@ -10724,7 +10894,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Update Model Snapshot API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -10742,6 +10912,159 @@ where
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Ml Update Trained Model Deployment API"]
+pub enum MlUpdateTrainedModelDeploymentParts<'b> {
+    #[doc = "ModelId"]
+    ModelId(&'b str),
+}
+impl<'b> MlUpdateTrainedModelDeploymentParts<'b> {
+    #[doc = "Builds a relative URL path to the Ml Update Trained Model Deployment API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            MlUpdateTrainedModelDeploymentParts::ModelId(ref model_id) => {
+                let encoded_model_id: Cow<str> =
+                    percent_encode(model_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(39usize + encoded_model_id.len());
+                p.push_str("/_ml/trained_models/");
+                p.push_str(encoded_model_id.as_ref());
+                p.push_str("/deployment/_update");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Ml Update Trained Model Deployment API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-trained-model-deployment.html)\n\nUpdates certain properties of trained model deployment."]
+#[derive(Clone, Debug)]
+pub struct MlUpdateTrainedModelDeployment<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: MlUpdateTrainedModelDeploymentParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    number_of_allocations: Option<i32>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b, B> MlUpdateTrainedModelDeployment<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [MlUpdateTrainedModelDeployment] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: MlUpdateTrainedModelDeploymentParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        MlUpdateTrainedModelDeployment {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            number_of_allocations: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> MlUpdateTrainedModelDeployment<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        MlUpdateTrainedModelDeployment {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            number_of_allocations: self.number_of_allocations,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Update the model deployment to this number of allocations."]
+    pub fn number_of_allocations(mut self, number_of_allocations: i32) -> Self {
+        self.number_of_allocations = Some(number_of_allocations);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Ml Update Trained Model Deployment API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Post;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                number_of_allocations: Option<i32>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                number_of_allocations: self.number_of_allocations,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -10783,7 +11106,7 @@ impl<'b> MlUpgradeJobSnapshotParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ml Upgrade Job Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-upgrade-job-model-snapshot.html)\n\nUpgrades a given job snapshot to the current major version."]
+#[doc = "Builder for the [Ml Upgrade Job Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-upgrade-job-model-snapshot.html)\n\nUpgrades a given job snapshot to the current major version."]
 #[derive(Clone, Debug)]
 pub struct MlUpgradeJobSnapshot<'a, 'b, B> {
     transport: &'a Transport,
@@ -10889,7 +11212,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Upgrade Job Snapshot API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -10938,7 +11261,7 @@ impl MlValidateParts {
         }
     }
 }
-#[doc = "Builder for the [Ml Validate API](https://www.elastic.co/guide/en/machine-learning/8.3/ml-jobs.html)\n\nValidates an anomaly detection job."]
+#[doc = "Builder for the [Ml Validate API](https://www.elastic.co/guide/en/machine-learning/8.7/ml-jobs.html)\n\nValidates an anomaly detection job."]
 #[derive(Clone, Debug)]
 pub struct MlValidate<'a, 'b, B> {
     transport: &'a Transport,
@@ -11028,7 +11351,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Validate API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -11073,7 +11396,7 @@ impl MlValidateDetectorParts {
         }
     }
 }
-#[doc = "Builder for the [Ml Validate Detector API](https://www.elastic.co/guide/en/machine-learning/8.3/ml-jobs.html)\n\nValidates an anomaly detection detector."]
+#[doc = "Builder for the [Ml Validate Detector API](https://www.elastic.co/guide/en/machine-learning/8.7/ml-jobs.html)\n\nValidates an anomaly detection detector."]
 #[derive(Clone, Debug)]
 pub struct MlValidateDetector<'a, 'b, B> {
     transport: &'a Transport,
@@ -11163,7 +11486,7 @@ where
     #[doc = "Creates an asynchronous call to the Ml Validate Detector API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -11206,435 +11529,439 @@ impl<'a> Ml<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Ml Close Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-close-job.html)\n\nCloses one or more anomaly detection jobs. A job can be opened and closed multiple times throughout its lifecycle."]
+    #[doc = "[Ml Clear Trained Model Deployment Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/clear-trained-model-deployment-cache.html)\n\nClear the cached results from a trained model deployment"]
+    pub fn clear_trained_model_deployment_cache<'b>(
+        &'a self,
+        parts: MlClearTrainedModelDeploymentCacheParts<'b>,
+    ) -> MlClearTrainedModelDeploymentCache<'a, 'b, ()> {
+        MlClearTrainedModelDeploymentCache::new(self.transport(), parts)
+    }
+    #[doc = "[Ml Close Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-close-job.html)\n\nCloses one or more anomaly detection jobs. A job can be opened and closed multiple times throughout its lifecycle."]
     pub fn close_job<'b>(&'a self, parts: MlCloseJobParts<'b>) -> MlCloseJob<'a, 'b, ()> {
         MlCloseJob::new(self.transport(), parts)
     }
-    #[doc = "[Ml Delete Calendar API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-delete-calendar.html)\n\nDeletes a calendar."]
+    #[doc = "[Ml Delete Calendar API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-delete-calendar.html)\n\nDeletes a calendar."]
     pub fn delete_calendar<'b>(
         &'a self,
         parts: MlDeleteCalendarParts<'b>,
     ) -> MlDeleteCalendar<'a, 'b> {
         MlDeleteCalendar::new(self.transport(), parts)
     }
-    #[doc = "[Ml Delete Calendar Event API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-delete-calendar-event.html)\n\nDeletes scheduled events from a calendar."]
+    #[doc = "[Ml Delete Calendar Event API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-delete-calendar-event.html)\n\nDeletes scheduled events from a calendar."]
     pub fn delete_calendar_event<'b>(
         &'a self,
         parts: MlDeleteCalendarEventParts<'b>,
     ) -> MlDeleteCalendarEvent<'a, 'b> {
         MlDeleteCalendarEvent::new(self.transport(), parts)
     }
-    #[doc = "[Ml Delete Calendar Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-delete-calendar-job.html)\n\nDeletes anomaly detection jobs from a calendar."]
+    #[doc = "[Ml Delete Calendar Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-delete-calendar-job.html)\n\nDeletes anomaly detection jobs from a calendar."]
     pub fn delete_calendar_job<'b>(
         &'a self,
         parts: MlDeleteCalendarJobParts<'b>,
     ) -> MlDeleteCalendarJob<'a, 'b> {
         MlDeleteCalendarJob::new(self.transport(), parts)
     }
-    #[doc = "[Ml Delete Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/delete-dfanalytics.html)\n\nDeletes an existing data frame analytics job."]
+    #[doc = "[Ml Delete Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-dfanalytics.html)\n\nDeletes an existing data frame analytics job."]
     pub fn delete_data_frame_analytics<'b>(
         &'a self,
         parts: MlDeleteDataFrameAnalyticsParts<'b>,
     ) -> MlDeleteDataFrameAnalytics<'a, 'b> {
         MlDeleteDataFrameAnalytics::new(self.transport(), parts)
     }
-    #[doc = "[Ml Delete Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-delete-datafeed.html)\n\nDeletes an existing datafeed."]
+    #[doc = "[Ml Delete Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-delete-datafeed.html)\n\nDeletes an existing datafeed."]
     pub fn delete_datafeed<'b>(
         &'a self,
         parts: MlDeleteDatafeedParts<'b>,
     ) -> MlDeleteDatafeed<'a, 'b> {
         MlDeleteDatafeed::new(self.transport(), parts)
     }
-    #[doc = "[Ml Delete Expired Data API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-delete-expired-data.html)\n\nDeletes expired and unused machine learning data."]
+    #[doc = "[Ml Delete Expired Data API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-delete-expired-data.html)\n\nDeletes expired and unused machine learning data."]
     pub fn delete_expired_data<'b>(
         &'a self,
         parts: MlDeleteExpiredDataParts<'b>,
     ) -> MlDeleteExpiredData<'a, 'b, ()> {
         MlDeleteExpiredData::new(self.transport(), parts)
     }
-    #[doc = "[Ml Delete Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-delete-filter.html)\n\nDeletes a filter."]
+    #[doc = "[Ml Delete Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-delete-filter.html)\n\nDeletes a filter."]
     pub fn delete_filter<'b>(&'a self, parts: MlDeleteFilterParts<'b>) -> MlDeleteFilter<'a, 'b> {
         MlDeleteFilter::new(self.transport(), parts)
     }
-    #[doc = "[Ml Delete Forecast API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-delete-forecast.html)\n\nDeletes forecasts from a machine learning job."]
+    #[doc = "[Ml Delete Forecast API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-delete-forecast.html)\n\nDeletes forecasts from a machine learning job."]
     pub fn delete_forecast<'b>(
         &'a self,
         parts: MlDeleteForecastParts<'b>,
     ) -> MlDeleteForecast<'a, 'b> {
         MlDeleteForecast::new(self.transport(), parts)
     }
-    #[doc = "[Ml Delete Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-delete-job.html)\n\nDeletes an existing anomaly detection job."]
+    #[doc = "[Ml Delete Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-delete-job.html)\n\nDeletes an existing anomaly detection job."]
     pub fn delete_job<'b>(&'a self, parts: MlDeleteJobParts<'b>) -> MlDeleteJob<'a, 'b> {
         MlDeleteJob::new(self.transport(), parts)
     }
-    #[doc = "[Ml Delete Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-delete-snapshot.html)\n\nDeletes an existing model snapshot."]
+    #[doc = "[Ml Delete Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-delete-snapshot.html)\n\nDeletes an existing model snapshot."]
     pub fn delete_model_snapshot<'b>(
         &'a self,
         parts: MlDeleteModelSnapshotParts<'b>,
     ) -> MlDeleteModelSnapshot<'a, 'b> {
         MlDeleteModelSnapshot::new(self.transport(), parts)
     }
-    #[doc = "[Ml Delete Trained Model API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/delete-trained-models.html)\n\nDeletes an existing trained inference model that is currently not referenced by an ingest pipeline."]
+    #[doc = "[Ml Delete Trained Model API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-trained-models.html)\n\nDeletes an existing trained inference model that is currently not referenced by an ingest pipeline."]
     pub fn delete_trained_model<'b>(
         &'a self,
         parts: MlDeleteTrainedModelParts<'b>,
     ) -> MlDeleteTrainedModel<'a, 'b> {
         MlDeleteTrainedModel::new(self.transport(), parts)
     }
-    #[doc = "[Ml Delete Trained Model Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/delete-trained-models-aliases.html)\n\nDeletes a model alias that refers to the trained model"]
+    #[doc = "[Ml Delete Trained Model Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-trained-models-aliases.html)\n\nDeletes a model alias that refers to the trained model"]
     pub fn delete_trained_model_alias<'b>(
         &'a self,
         parts: MlDeleteTrainedModelAliasParts<'b>,
     ) -> MlDeleteTrainedModelAlias<'a, 'b> {
         MlDeleteTrainedModelAlias::new(self.transport(), parts)
     }
-    #[doc = "[Ml Estimate Model Memory API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-apis.html)\n\nEstimates the model memory"]
+    #[doc = "[Ml Estimate Model Memory API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-apis.html)\n\nEstimates the model memory"]
     pub fn estimate_model_memory<'b>(&'a self) -> MlEstimateModelMemory<'a, 'b, ()> {
         MlEstimateModelMemory::new(self.transport())
     }
-    #[doc = "[Ml Evaluate Data Frame API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/evaluate-dfanalytics.html)\n\nEvaluates the data frame analytics for an annotated index."]
+    #[doc = "[Ml Evaluate Data Frame API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/evaluate-dfanalytics.html)\n\nEvaluates the data frame analytics for an annotated index."]
     pub fn evaluate_data_frame<'b>(&'a self) -> MlEvaluateDataFrame<'a, 'b, ()> {
         MlEvaluateDataFrame::new(self.transport())
     }
-    #[doc = "[Ml Explain Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/8.3/explain-dfanalytics.html)\n\nExplains a data frame analytics config."]
+    #[doc = "[Ml Explain Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/8.7/explain-dfanalytics.html)\n\nExplains a data frame analytics config."]
     pub fn explain_data_frame_analytics<'b>(
         &'a self,
         parts: MlExplainDataFrameAnalyticsParts<'b>,
     ) -> MlExplainDataFrameAnalytics<'a, 'b, ()> {
         MlExplainDataFrameAnalytics::new(self.transport(), parts)
     }
-    #[doc = "[Ml Flush Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-flush-job.html)\n\nForces any buffered data to be processed by the job."]
+    #[doc = "[Ml Flush Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-flush-job.html)\n\nForces any buffered data to be processed by the job."]
     pub fn flush_job<'b>(&'a self, parts: MlFlushJobParts<'b>) -> MlFlushJob<'a, 'b, ()> {
         MlFlushJob::new(self.transport(), parts)
     }
-    #[doc = "[Ml Forecast API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-forecast.html)\n\nPredicts the future behavior of a time series by using its historical behavior."]
+    #[doc = "[Ml Forecast API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-forecast.html)\n\nPredicts the future behavior of a time series by using its historical behavior."]
     pub fn forecast<'b>(&'a self, parts: MlForecastParts<'b>) -> MlForecast<'a, 'b, ()> {
         MlForecast::new(self.transport(), parts)
     }
-    #[doc = "[Ml Get Buckets API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-bucket.html)\n\nRetrieves anomaly detection job results for one or more buckets."]
+    #[doc = "[Ml Get Buckets API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-bucket.html)\n\nRetrieves anomaly detection job results for one or more buckets."]
     pub fn get_buckets<'b>(&'a self, parts: MlGetBucketsParts<'b>) -> MlGetBuckets<'a, 'b, ()> {
         MlGetBuckets::new(self.transport(), parts)
     }
-    #[doc = "[Ml Get Calendar Events API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-calendar-event.html)\n\nRetrieves information about the scheduled events in calendars."]
+    #[doc = "[Ml Get Calendar Events API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-calendar-event.html)\n\nRetrieves information about the scheduled events in calendars."]
     pub fn get_calendar_events<'b>(
         &'a self,
         parts: MlGetCalendarEventsParts<'b>,
     ) -> MlGetCalendarEvents<'a, 'b> {
         MlGetCalendarEvents::new(self.transport(), parts)
     }
-    #[doc = "[Ml Get Calendars API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-calendar.html)\n\nRetrieves configuration information for calendars."]
+    #[doc = "[Ml Get Calendars API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-calendar.html)\n\nRetrieves configuration information for calendars."]
     pub fn get_calendars<'b>(
         &'a self,
         parts: MlGetCalendarsParts<'b>,
     ) -> MlGetCalendars<'a, 'b, ()> {
         MlGetCalendars::new(self.transport(), parts)
     }
-    #[doc = "[Ml Get Categories API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-category.html)\n\nRetrieves anomaly detection job results for one or more categories."]
+    #[doc = "[Ml Get Categories API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-category.html)\n\nRetrieves anomaly detection job results for one or more categories."]
     pub fn get_categories<'b>(
         &'a self,
         parts: MlGetCategoriesParts<'b>,
     ) -> MlGetCategories<'a, 'b, ()> {
         MlGetCategories::new(self.transport(), parts)
     }
-    #[doc = "[Ml Get Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-dfanalytics.html)\n\nRetrieves configuration information for data frame analytics jobs."]
+    #[doc = "[Ml Get Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-dfanalytics.html)\n\nRetrieves configuration information for data frame analytics jobs."]
     pub fn get_data_frame_analytics<'b>(
         &'a self,
         parts: MlGetDataFrameAnalyticsParts<'b>,
     ) -> MlGetDataFrameAnalytics<'a, 'b> {
         MlGetDataFrameAnalytics::new(self.transport(), parts)
     }
-    #[doc = "[Ml Get Data Frame Analytics Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-dfanalytics-stats.html)\n\nRetrieves usage information for data frame analytics jobs."]
+    #[doc = "[Ml Get Data Frame Analytics Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-dfanalytics-stats.html)\n\nRetrieves usage information for data frame analytics jobs."]
     pub fn get_data_frame_analytics_stats<'b>(
         &'a self,
         parts: MlGetDataFrameAnalyticsStatsParts<'b>,
     ) -> MlGetDataFrameAnalyticsStats<'a, 'b> {
         MlGetDataFrameAnalyticsStats::new(self.transport(), parts)
     }
-    #[doc = "[Ml Get Datafeed Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-datafeed-stats.html)\n\nRetrieves usage information for datafeeds."]
+    #[doc = "[Ml Get Datafeed Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-datafeed-stats.html)\n\nRetrieves usage information for datafeeds."]
     pub fn get_datafeed_stats<'b>(
         &'a self,
         parts: MlGetDatafeedStatsParts<'b>,
     ) -> MlGetDatafeedStats<'a, 'b> {
         MlGetDatafeedStats::new(self.transport(), parts)
     }
-    #[doc = "[Ml Get Datafeeds API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-datafeed.html)\n\nRetrieves configuration information for datafeeds."]
+    #[doc = "[Ml Get Datafeeds API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-datafeed.html)\n\nRetrieves configuration information for datafeeds."]
     pub fn get_datafeeds<'b>(&'a self, parts: MlGetDatafeedsParts<'b>) -> MlGetDatafeeds<'a, 'b> {
         MlGetDatafeeds::new(self.transport(), parts)
     }
-    #[doc = "[Ml Get Filters API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-filter.html)\n\nRetrieves filters."]
+    #[doc = "[Ml Get Filters API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-filter.html)\n\nRetrieves filters."]
     pub fn get_filters<'b>(&'a self, parts: MlGetFiltersParts<'b>) -> MlGetFilters<'a, 'b> {
         MlGetFilters::new(self.transport(), parts)
     }
-    #[doc = "[Ml Get Influencers API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-influencer.html)\n\nRetrieves anomaly detection job results for one or more influencers."]
+    #[doc = "[Ml Get Influencers API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-influencer.html)\n\nRetrieves anomaly detection job results for one or more influencers."]
     pub fn get_influencers<'b>(
         &'a self,
         parts: MlGetInfluencersParts<'b>,
     ) -> MlGetInfluencers<'a, 'b, ()> {
         MlGetInfluencers::new(self.transport(), parts)
     }
-    #[doc = "[Ml Get Job Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-job-stats.html)\n\nRetrieves usage information for anomaly detection jobs."]
+    #[doc = "[Ml Get Job Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-job-stats.html)\n\nRetrieves usage information for anomaly detection jobs."]
     pub fn get_job_stats<'b>(&'a self, parts: MlGetJobStatsParts<'b>) -> MlGetJobStats<'a, 'b> {
         MlGetJobStats::new(self.transport(), parts)
     }
-    #[doc = "[Ml Get Jobs API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-job.html)\n\nRetrieves configuration information for anomaly detection jobs."]
+    #[doc = "[Ml Get Jobs API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-job.html)\n\nRetrieves configuration information for anomaly detection jobs."]
     pub fn get_jobs<'b>(&'a self, parts: MlGetJobsParts<'b>) -> MlGetJobs<'a, 'b> {
         MlGetJobs::new(self.transport(), parts)
     }
-    #[doc = "[Ml Get Memory Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-ml-memory.html)\n\nReturns information on how ML is using memory."]
+    #[doc = "[Ml Get Memory Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-ml-memory.html)\n\nReturns information on how ML is using memory."]
     pub fn get_memory_stats<'b>(
         &'a self,
         parts: MlGetMemoryStatsParts<'b>,
     ) -> MlGetMemoryStats<'a, 'b> {
         MlGetMemoryStats::new(self.transport(), parts)
     }
-    #[doc = "[Ml Get Model Snapshot Upgrade Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-job-model-snapshot-upgrade-stats.html)\n\nGets stats for anomaly detection job model snapshot upgrades that are in progress."]
+    #[doc = "[Ml Get Model Snapshot Upgrade Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-job-model-snapshot-upgrade-stats.html)\n\nGets stats for anomaly detection job model snapshot upgrades that are in progress."]
     pub fn get_model_snapshot_upgrade_stats<'b>(
         &'a self,
         parts: MlGetModelSnapshotUpgradeStatsParts<'b>,
     ) -> MlGetModelSnapshotUpgradeStats<'a, 'b> {
         MlGetModelSnapshotUpgradeStats::new(self.transport(), parts)
     }
-    #[doc = "[Ml Get Model Snapshots API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-snapshot.html)\n\nRetrieves information about model snapshots."]
+    #[doc = "[Ml Get Model Snapshots API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-snapshot.html)\n\nRetrieves information about model snapshots."]
     pub fn get_model_snapshots<'b>(
         &'a self,
         parts: MlGetModelSnapshotsParts<'b>,
     ) -> MlGetModelSnapshots<'a, 'b, ()> {
         MlGetModelSnapshots::new(self.transport(), parts)
     }
-    #[doc = "[Ml Get Overall Buckets API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-overall-buckets.html)\n\nRetrieves overall bucket results that summarize the bucket results of multiple anomaly detection jobs."]
+    #[doc = "[Ml Get Overall Buckets API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-overall-buckets.html)\n\nRetrieves overall bucket results that summarize the bucket results of multiple anomaly detection jobs."]
     pub fn get_overall_buckets<'b>(
         &'a self,
         parts: MlGetOverallBucketsParts<'b>,
     ) -> MlGetOverallBuckets<'a, 'b, ()> {
         MlGetOverallBuckets::new(self.transport(), parts)
     }
-    #[doc = "[Ml Get Records API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-get-record.html)\n\nRetrieves anomaly records for an anomaly detection job."]
+    #[doc = "[Ml Get Records API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-get-record.html)\n\nRetrieves anomaly records for an anomaly detection job."]
     pub fn get_records<'b>(&'a self, parts: MlGetRecordsParts<'b>) -> MlGetRecords<'a, 'b, ()> {
         MlGetRecords::new(self.transport(), parts)
     }
-    #[doc = "[Ml Get Trained Models API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-trained-models.html)\n\nRetrieves configuration information for a trained inference model."]
+    #[doc = "[Ml Get Trained Models API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-trained-models.html)\n\nRetrieves configuration information for a trained inference model."]
     pub fn get_trained_models<'b>(
         &'a self,
         parts: MlGetTrainedModelsParts<'b>,
     ) -> MlGetTrainedModels<'a, 'b> {
         MlGetTrainedModels::new(self.transport(), parts)
     }
-    #[doc = "[Ml Get Trained Models Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-trained-models-stats.html)\n\nRetrieves usage information for trained inference models."]
+    #[doc = "[Ml Get Trained Models Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-trained-models-stats.html)\n\nRetrieves usage information for trained inference models."]
     pub fn get_trained_models_stats<'b>(
         &'a self,
         parts: MlGetTrainedModelsStatsParts<'b>,
     ) -> MlGetTrainedModelsStats<'a, 'b> {
         MlGetTrainedModelsStats::new(self.transport(), parts)
     }
-    #[doc = "[Ml Infer Trained Model API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/infer-trained-model.html)\n\nEvaluate a trained model."]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
+    #[doc = "[Ml Infer Trained Model API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/infer-trained-model.html)\n\nEvaluate a trained model."]
     pub fn infer_trained_model<'b>(
         &'a self,
         parts: MlInferTrainedModelParts<'b>,
     ) -> MlInferTrainedModel<'a, 'b, ()> {
         MlInferTrainedModel::new(self.transport(), parts)
     }
-    #[doc = "[Ml Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-ml-info.html)\n\nReturns defaults and limits used by machine learning."]
+    #[doc = "[Ml Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-ml-info.html)\n\nReturns defaults and limits used by machine learning."]
     pub fn info<'b>(&'a self) -> MlInfo<'a, 'b> {
         MlInfo::new(self.transport())
     }
-    #[doc = "[Ml Open Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-open-job.html)\n\nOpens one or more anomaly detection jobs."]
+    #[doc = "[Ml Open Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-open-job.html)\n\nOpens one or more anomaly detection jobs."]
     pub fn open_job<'b>(&'a self, parts: MlOpenJobParts<'b>) -> MlOpenJob<'a, 'b, ()> {
         MlOpenJob::new(self.transport(), parts)
     }
-    #[doc = "[Ml Post Calendar Events API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-post-calendar-event.html)\n\nPosts scheduled events in a calendar."]
+    #[doc = "[Ml Post Calendar Events API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-post-calendar-event.html)\n\nPosts scheduled events in a calendar."]
     pub fn post_calendar_events<'b>(
         &'a self,
         parts: MlPostCalendarEventsParts<'b>,
     ) -> MlPostCalendarEvents<'a, 'b, ()> {
         MlPostCalendarEvents::new(self.transport(), parts)
     }
-    #[doc = "[Ml Post Data API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-post-data.html)\n\nSends data to an anomaly detection job for analysis."]
+    #[doc = "[Ml Post Data API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-post-data.html)\n\nSends data to an anomaly detection job for analysis."]
     pub fn post_data<'b>(&'a self, parts: MlPostDataParts<'b>) -> MlPostData<'a, 'b, ()> {
         MlPostData::new(self.transport(), parts)
     }
-    #[doc = "[Ml Preview Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/8.3/preview-dfanalytics.html)\n\nPreviews that will be analyzed given a data frame analytics config."]
+    #[doc = "[Ml Preview Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/8.7/preview-dfanalytics.html)\n\nPreviews that will be analyzed given a data frame analytics config."]
     pub fn preview_data_frame_analytics<'b>(
         &'a self,
         parts: MlPreviewDataFrameAnalyticsParts<'b>,
     ) -> MlPreviewDataFrameAnalytics<'a, 'b, ()> {
         MlPreviewDataFrameAnalytics::new(self.transport(), parts)
     }
-    #[doc = "[Ml Preview Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-preview-datafeed.html)\n\nPreviews a datafeed."]
+    #[doc = "[Ml Preview Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-preview-datafeed.html)\n\nPreviews a datafeed."]
     pub fn preview_datafeed<'b>(
         &'a self,
         parts: MlPreviewDatafeedParts<'b>,
     ) -> MlPreviewDatafeed<'a, 'b, ()> {
         MlPreviewDatafeed::new(self.transport(), parts)
     }
-    #[doc = "[Ml Put Calendar API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-put-calendar.html)\n\nInstantiates a calendar."]
+    #[doc = "[Ml Put Calendar API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-put-calendar.html)\n\nInstantiates a calendar."]
     pub fn put_calendar<'b>(&'a self, parts: MlPutCalendarParts<'b>) -> MlPutCalendar<'a, 'b, ()> {
         MlPutCalendar::new(self.transport(), parts)
     }
-    #[doc = "[Ml Put Calendar Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-put-calendar-job.html)\n\nAdds an anomaly detection job to a calendar."]
+    #[doc = "[Ml Put Calendar Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-put-calendar-job.html)\n\nAdds an anomaly detection job to a calendar."]
     pub fn put_calendar_job<'b>(
         &'a self,
         parts: MlPutCalendarJobParts<'b>,
     ) -> MlPutCalendarJob<'a, 'b, ()> {
         MlPutCalendarJob::new(self.transport(), parts)
     }
-    #[doc = "[Ml Put Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/put-dfanalytics.html)\n\nInstantiates a data frame analytics job."]
+    #[doc = "[Ml Put Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-dfanalytics.html)\n\nInstantiates a data frame analytics job."]
     pub fn put_data_frame_analytics<'b>(
         &'a self,
         parts: MlPutDataFrameAnalyticsParts<'b>,
     ) -> MlPutDataFrameAnalytics<'a, 'b, ()> {
         MlPutDataFrameAnalytics::new(self.transport(), parts)
     }
-    #[doc = "[Ml Put Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-put-datafeed.html)\n\nInstantiates a datafeed."]
+    #[doc = "[Ml Put Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-put-datafeed.html)\n\nInstantiates a datafeed."]
     pub fn put_datafeed<'b>(&'a self, parts: MlPutDatafeedParts<'b>) -> MlPutDatafeed<'a, 'b, ()> {
         MlPutDatafeed::new(self.transport(), parts)
     }
-    #[doc = "[Ml Put Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-put-filter.html)\n\nInstantiates a filter."]
+    #[doc = "[Ml Put Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-put-filter.html)\n\nInstantiates a filter."]
     pub fn put_filter<'b>(&'a self, parts: MlPutFilterParts<'b>) -> MlPutFilter<'a, 'b, ()> {
         MlPutFilter::new(self.transport(), parts)
     }
-    #[doc = "[Ml Put Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-put-job.html)\n\nInstantiates an anomaly detection job."]
+    #[doc = "[Ml Put Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-put-job.html)\n\nInstantiates an anomaly detection job."]
     pub fn put_job<'b>(&'a self, parts: MlPutJobParts<'b>) -> MlPutJob<'a, 'b, ()> {
         MlPutJob::new(self.transport(), parts)
     }
-    #[doc = "[Ml Put Trained Model API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/put-trained-models.html)\n\nCreates an inference trained model."]
+    #[doc = "[Ml Put Trained Model API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-trained-models.html)\n\nCreates an inference trained model."]
     pub fn put_trained_model<'b>(
         &'a self,
         parts: MlPutTrainedModelParts<'b>,
     ) -> MlPutTrainedModel<'a, 'b, ()> {
         MlPutTrainedModel::new(self.transport(), parts)
     }
-    #[doc = "[Ml Put Trained Model Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/put-trained-models-aliases.html)\n\nCreates a new model alias (or reassigns an existing one) to refer to the trained model"]
+    #[doc = "[Ml Put Trained Model Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-trained-models-aliases.html)\n\nCreates a new model alias (or reassigns an existing one) to refer to the trained model"]
     pub fn put_trained_model_alias<'b>(
         &'a self,
         parts: MlPutTrainedModelAliasParts<'b>,
     ) -> MlPutTrainedModelAlias<'a, 'b, ()> {
         MlPutTrainedModelAlias::new(self.transport(), parts)
     }
-    #[doc = "[Ml Put Trained Model Definition Part API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/put-trained-model-definition-part.html)\n\nCreates part of a trained model definition"]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
+    #[doc = "[Ml Put Trained Model Definition Part API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-trained-model-definition-part.html)\n\nCreates part of a trained model definition"]
     pub fn put_trained_model_definition_part<'b>(
         &'a self,
         parts: MlPutTrainedModelDefinitionPartParts<'b>,
     ) -> MlPutTrainedModelDefinitionPart<'a, 'b, ()> {
         MlPutTrainedModelDefinitionPart::new(self.transport(), parts)
     }
-    #[doc = "[Ml Put Trained Model Vocabulary API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/put-trained-model-vocabulary.html)\n\nCreates a trained model vocabulary"]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
+    #[doc = "[Ml Put Trained Model Vocabulary API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-trained-model-vocabulary.html)\n\nCreates a trained model vocabulary"]
     pub fn put_trained_model_vocabulary<'b>(
         &'a self,
         parts: MlPutTrainedModelVocabularyParts<'b>,
     ) -> MlPutTrainedModelVocabulary<'a, 'b, ()> {
         MlPutTrainedModelVocabulary::new(self.transport(), parts)
     }
-    #[doc = "[Ml Reset Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-reset-job.html)\n\nResets an existing anomaly detection job."]
+    #[doc = "[Ml Reset Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-reset-job.html)\n\nResets an existing anomaly detection job."]
     pub fn reset_job<'b>(&'a self, parts: MlResetJobParts<'b>) -> MlResetJob<'a, 'b, ()> {
         MlResetJob::new(self.transport(), parts)
     }
-    #[doc = "[Ml Revert Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-revert-snapshot.html)\n\nReverts to a specific snapshot."]
+    #[doc = "[Ml Revert Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-revert-snapshot.html)\n\nReverts to a specific snapshot."]
     pub fn revert_model_snapshot<'b>(
         &'a self,
         parts: MlRevertModelSnapshotParts<'b>,
     ) -> MlRevertModelSnapshot<'a, 'b, ()> {
         MlRevertModelSnapshot::new(self.transport(), parts)
     }
-    #[doc = "[Ml Set Upgrade Mode API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-set-upgrade-mode.html)\n\nSets a cluster wide upgrade_mode setting that prepares machine learning indices for an upgrade."]
+    #[doc = "[Ml Set Upgrade Mode API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-set-upgrade-mode.html)\n\nSets a cluster wide upgrade_mode setting that prepares machine learning indices for an upgrade."]
     pub fn set_upgrade_mode<'b>(&'a self) -> MlSetUpgradeMode<'a, 'b, ()> {
         MlSetUpgradeMode::new(self.transport())
     }
-    #[doc = "[Ml Start Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/start-dfanalytics.html)\n\nStarts a data frame analytics job."]
+    #[doc = "[Ml Start Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/start-dfanalytics.html)\n\nStarts a data frame analytics job."]
     pub fn start_data_frame_analytics<'b>(
         &'a self,
         parts: MlStartDataFrameAnalyticsParts<'b>,
     ) -> MlStartDataFrameAnalytics<'a, 'b, ()> {
         MlStartDataFrameAnalytics::new(self.transport(), parts)
     }
-    #[doc = "[Ml Start Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-start-datafeed.html)\n\nStarts one or more datafeeds."]
+    #[doc = "[Ml Start Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-start-datafeed.html)\n\nStarts one or more datafeeds."]
     pub fn start_datafeed<'b>(
         &'a self,
         parts: MlStartDatafeedParts<'b>,
     ) -> MlStartDatafeed<'a, 'b, ()> {
         MlStartDatafeed::new(self.transport(), parts)
     }
-    #[doc = "[Ml Start Trained Model Deployment API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/start-trained-model-deployment.html)\n\nStart a trained model deployment."]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
+    #[doc = "[Ml Start Trained Model Deployment API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/start-trained-model-deployment.html)\n\nStart a trained model deployment."]
     pub fn start_trained_model_deployment<'b>(
         &'a self,
         parts: MlStartTrainedModelDeploymentParts<'b>,
     ) -> MlStartTrainedModelDeployment<'a, 'b, ()> {
         MlStartTrainedModelDeployment::new(self.transport(), parts)
     }
-    #[doc = "[Ml Stop Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/stop-dfanalytics.html)\n\nStops one or more data frame analytics jobs."]
+    #[doc = "[Ml Stop Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/stop-dfanalytics.html)\n\nStops one or more data frame analytics jobs."]
     pub fn stop_data_frame_analytics<'b>(
         &'a self,
         parts: MlStopDataFrameAnalyticsParts<'b>,
     ) -> MlStopDataFrameAnalytics<'a, 'b, ()> {
         MlStopDataFrameAnalytics::new(self.transport(), parts)
     }
-    #[doc = "[Ml Stop Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-stop-datafeed.html)\n\nStops one or more datafeeds."]
+    #[doc = "[Ml Stop Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-stop-datafeed.html)\n\nStops one or more datafeeds."]
     pub fn stop_datafeed<'b>(
         &'a self,
         parts: MlStopDatafeedParts<'b>,
     ) -> MlStopDatafeed<'a, 'b, ()> {
         MlStopDatafeed::new(self.transport(), parts)
     }
-    #[doc = "[Ml Stop Trained Model Deployment API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/stop-trained-model-deployment.html)\n\nStop a trained model deployment."]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
+    #[doc = "[Ml Stop Trained Model Deployment API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/stop-trained-model-deployment.html)\n\nStop a trained model deployment."]
     pub fn stop_trained_model_deployment<'b>(
         &'a self,
         parts: MlStopTrainedModelDeploymentParts<'b>,
     ) -> MlStopTrainedModelDeployment<'a, 'b, ()> {
         MlStopTrainedModelDeployment::new(self.transport(), parts)
     }
-    #[doc = "[Ml Update Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/update-dfanalytics.html)\n\nUpdates certain properties of a data frame analytics job."]
+    #[doc = "[Ml Update Data Frame Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-dfanalytics.html)\n\nUpdates certain properties of a data frame analytics job."]
     pub fn update_data_frame_analytics<'b>(
         &'a self,
         parts: MlUpdateDataFrameAnalyticsParts<'b>,
     ) -> MlUpdateDataFrameAnalytics<'a, 'b, ()> {
         MlUpdateDataFrameAnalytics::new(self.transport(), parts)
     }
-    #[doc = "[Ml Update Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-update-datafeed.html)\n\nUpdates certain properties of a datafeed."]
+    #[doc = "[Ml Update Datafeed API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-update-datafeed.html)\n\nUpdates certain properties of a datafeed."]
     pub fn update_datafeed<'b>(
         &'a self,
         parts: MlUpdateDatafeedParts<'b>,
     ) -> MlUpdateDatafeed<'a, 'b, ()> {
         MlUpdateDatafeed::new(self.transport(), parts)
     }
-    #[doc = "[Ml Update Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-update-filter.html)\n\nUpdates the description of a filter, adds items, or removes items."]
+    #[doc = "[Ml Update Filter API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-update-filter.html)\n\nUpdates the description of a filter, adds items, or removes items."]
     pub fn update_filter<'b>(
         &'a self,
         parts: MlUpdateFilterParts<'b>,
     ) -> MlUpdateFilter<'a, 'b, ()> {
         MlUpdateFilter::new(self.transport(), parts)
     }
-    #[doc = "[Ml Update Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-update-job.html)\n\nUpdates certain properties of an anomaly detection job."]
+    #[doc = "[Ml Update Job API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-update-job.html)\n\nUpdates certain properties of an anomaly detection job."]
     pub fn update_job<'b>(&'a self, parts: MlUpdateJobParts<'b>) -> MlUpdateJob<'a, 'b, ()> {
         MlUpdateJob::new(self.transport(), parts)
     }
-    #[doc = "[Ml Update Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-update-snapshot.html)\n\nUpdates certain properties of a snapshot."]
+    #[doc = "[Ml Update Model Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-update-snapshot.html)\n\nUpdates certain properties of a snapshot."]
     pub fn update_model_snapshot<'b>(
         &'a self,
         parts: MlUpdateModelSnapshotParts<'b>,
     ) -> MlUpdateModelSnapshot<'a, 'b, ()> {
         MlUpdateModelSnapshot::new(self.transport(), parts)
     }
-    #[doc = "[Ml Upgrade Job Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/ml-upgrade-job-model-snapshot.html)\n\nUpgrades a given job snapshot to the current major version."]
+    #[doc = "[Ml Update Trained Model Deployment API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-trained-model-deployment.html)\n\nUpdates certain properties of trained model deployment."]
+    pub fn update_trained_model_deployment<'b>(
+        &'a self,
+        parts: MlUpdateTrainedModelDeploymentParts<'b>,
+    ) -> MlUpdateTrainedModelDeployment<'a, 'b, ()> {
+        MlUpdateTrainedModelDeployment::new(self.transport(), parts)
+    }
+    #[doc = "[Ml Upgrade Job Snapshot API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/ml-upgrade-job-model-snapshot.html)\n\nUpgrades a given job snapshot to the current major version."]
     pub fn upgrade_job_snapshot<'b>(
         &'a self,
         parts: MlUpgradeJobSnapshotParts<'b>,
     ) -> MlUpgradeJobSnapshot<'a, 'b, ()> {
         MlUpgradeJobSnapshot::new(self.transport(), parts)
     }
-    #[doc = "[Ml Validate API](https://www.elastic.co/guide/en/machine-learning/8.3/ml-jobs.html)\n\nValidates an anomaly detection job."]
+    #[doc = "[Ml Validate API](https://www.elastic.co/guide/en/machine-learning/8.7/ml-jobs.html)\n\nValidates an anomaly detection job."]
     pub fn validate<'b>(&'a self) -> MlValidate<'a, 'b, ()> {
         MlValidate::new(self.transport())
     }
-    #[doc = "[Ml Validate Detector API](https://www.elastic.co/guide/en/machine-learning/8.3/ml-jobs.html)\n\nValidates an anomaly detection detector."]
+    #[doc = "[Ml Validate Detector API](https://www.elastic.co/guide/en/machine-learning/8.7/ml-jobs.html)\n\nValidates an anomaly detection detector."]
     pub fn validate_detector<'b>(&'a self) -> MlValidateDetector<'a, 'b, ()> {
         MlValidateDetector::new(self.transport())
     }

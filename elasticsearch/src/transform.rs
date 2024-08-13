@@ -35,11 +35,11 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        self,
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         transport::Transport,
-        Method,
     },
     params::*,
 };
@@ -67,11 +67,12 @@ impl<'b> TransformDeleteTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Delete Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/delete-transform.html)\n\nDeletes an existing transform."]
+#[doc = "Builder for the [Transform Delete Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-transform.html)\n\nDeletes an existing transform."]
 #[derive(Clone, Debug)]
 pub struct TransformDeleteTransform<'a, 'b> {
     transport: &'a Transport,
     parts: TransformDeleteTransformParts<'b>,
+    delete_dest_index: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     force: Option<bool>,
@@ -90,6 +91,7 @@ impl<'a, 'b> TransformDeleteTransform<'a, 'b> {
             transport,
             parts,
             headers,
+            delete_dest_index: None,
             error_trace: None,
             filter_path: None,
             force: None,
@@ -99,6 +101,11 @@ impl<'a, 'b> TransformDeleteTransform<'a, 'b> {
             source: None,
             timeout: None,
         }
+    }
+    #[doc = "When `true`, the destination index is deleted together with the transform. The default value is `false`, meaning that the destination index will not be deleted."]
+    pub fn delete_dest_index(mut self, delete_dest_index: bool) -> Self {
+        self.delete_dest_index = Some(delete_dest_index);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -148,13 +155,14 @@ impl<'a, 'b> TransformDeleteTransform<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Transform Delete Transform API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                delete_dest_index: Option<bool>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -165,6 +173,7 @@ impl<'a, 'b> TransformDeleteTransform<'a, 'b> {
                 timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
+                delete_dest_index: self.delete_dest_index,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 force: self.force,
@@ -172,6 +181,118 @@ impl<'a, 'b> TransformDeleteTransform<'a, 'b> {
                 pretty: self.pretty,
                 source: self.source,
                 timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Transform Get Node Stats API"]
+pub enum TransformGetNodeStatsParts {
+    #[doc = "No parts"]
+    None,
+}
+impl TransformGetNodeStatsParts {
+    #[doc = "Builds a relative URL path to the Transform Get Node Stats API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            TransformGetNodeStatsParts::None => "/_transform/_node_stats".into(),
+        }
+    }
+}
+#[doc = "Builder for the [Transform Get Node Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-transform-node-stats.html)\n\nRetrieves transform usage information for transform nodes."]
+#[derive(Clone, Debug)]
+pub struct TransformGetNodeStats<'a, 'b> {
+    transport: &'a Transport,
+    parts: TransformGetNodeStatsParts,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b> TransformGetNodeStats<'a, 'b> {
+    #[doc = "Creates a new instance of [TransformGetNodeStats]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        TransformGetNodeStats {
+            transport,
+            parts: TransformGetNodeStatsParts::None,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Transform Get Node Stats API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -207,7 +328,7 @@ impl<'b> TransformGetTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Get Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-transform.html)\n\nRetrieves configuration information for transforms."]
+#[doc = "Builder for the [Transform Get Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-transform.html)\n\nRetrieves configuration information for transforms."]
 #[derive(Clone, Debug)]
 pub struct TransformGetTransform<'a, 'b> {
     transport: &'a Transport,
@@ -302,7 +423,7 @@ impl<'a, 'b> TransformGetTransform<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Transform Get Transform API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -363,7 +484,7 @@ impl<'b> TransformGetTransformStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Get Transform Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-transform-stats.html)\n\nRetrieves usage information for transforms."]
+#[doc = "Builder for the [Transform Get Transform Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-transform-stats.html)\n\nRetrieves usage information for transforms."]
 #[derive(Clone, Debug)]
 pub struct TransformGetTransformStats<'a, 'b> {
     transport: &'a Transport,
@@ -378,6 +499,7 @@ pub struct TransformGetTransformStats<'a, 'b> {
     request_timeout: Option<Duration>,
     size: Option<i64>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b> TransformGetTransformStats<'a, 'b> {
     #[doc = "Creates a new instance of [TransformGetTransformStats] with the specified API parts"]
@@ -396,6 +518,7 @@ impl<'a, 'b> TransformGetTransformStats<'a, 'b> {
             request_timeout: None,
             size: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no transforms. (This includes `_all` string or when no transforms have been specified)"]
@@ -448,10 +571,15 @@ impl<'a, 'b> TransformGetTransformStats<'a, 'b> {
         self.source = Some(source);
         self
     }
+    #[doc = "Controls the time to wait for the stats"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Transform Get Transform Stats API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -467,6 +595,7 @@ impl<'a, 'b> TransformGetTransformStats<'a, 'b> {
                 pretty: Option<bool>,
                 size: Option<i64>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 allow_no_match: self.allow_no_match,
@@ -477,6 +606,7 @@ impl<'a, 'b> TransformGetTransformStats<'a, 'b> {
                 pretty: self.pretty,
                 size: self.size,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -513,7 +643,7 @@ impl<'b> TransformPreviewTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Preview Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/preview-transform.html)\n\nPreviews a transform."]
+#[doc = "Builder for the [Transform Preview Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/preview-transform.html)\n\nPreviews a transform."]
 #[derive(Clone, Debug)]
 pub struct TransformPreviewTransform<'a, 'b, B> {
     transport: &'a Transport,
@@ -612,8 +742,8 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = match self.body {
-            Some(_) => Method::Post,
-            None => Method::Get,
+            Some(_) => http::Method::Post,
+            None => http::Method::Get,
         };
         let headers = self.headers;
         let timeout = self.request_timeout;
@@ -668,7 +798,7 @@ impl<'b> TransformPutTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Put Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/put-transform.html)\n\nInstantiates a transform."]
+#[doc = "Builder for the [Transform Put Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-transform.html)\n\nInstantiates a transform."]
 #[derive(Clone, Debug)]
 pub struct TransformPutTransform<'a, 'b, B> {
     transport: &'a Transport,
@@ -774,7 +904,7 @@ where
     #[doc = "Creates an asynchronous call to the Transform Put Transform API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -831,7 +961,7 @@ impl<'b> TransformResetTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Reset Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/reset-transform.html)\n\nResets an existing transform."]
+#[doc = "Builder for the [Transform Reset Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/reset-transform.html)\n\nResets an existing transform."]
 #[derive(Clone, Debug)]
 pub struct TransformResetTransform<'a, 'b, B> {
     transport: &'a Transport,
@@ -937,7 +1067,7 @@ where
     #[doc = "Creates an asynchronous call to the Transform Reset Transform API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -973,32 +1103,32 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Transform Start Transform API"]
-pub enum TransformStartTransformParts<'b> {
+#[doc = "API parts for the Transform Schedule Now Transform API"]
+pub enum TransformScheduleNowTransformParts<'b> {
     #[doc = "TransformId"]
     TransformId(&'b str),
 }
-impl<'b> TransformStartTransformParts<'b> {
-    #[doc = "Builds a relative URL path to the Transform Start Transform API"]
+impl<'b> TransformScheduleNowTransformParts<'b> {
+    #[doc = "Builds a relative URL path to the Transform Schedule Now Transform API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TransformStartTransformParts::TransformId(ref transform_id) => {
+            TransformScheduleNowTransformParts::TransformId(ref transform_id) => {
                 let encoded_transform_id: Cow<str> =
                     percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(19usize + encoded_transform_id.len());
+                let mut p = String::with_capacity(26usize + encoded_transform_id.len());
                 p.push_str("/_transform/");
                 p.push_str(encoded_transform_id.as_ref());
-                p.push_str("/_start");
+                p.push_str("/_schedule_now");
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Transform Start Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/start-transform.html)\n\nStarts one or more transforms."]
+#[doc = "Builder for the [Transform Schedule Now Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/schedule-now-transform.html)\n\nSchedules now a transform."]
 #[derive(Clone, Debug)]
-pub struct TransformStartTransform<'a, 'b, B> {
+pub struct TransformScheduleNowTransform<'a, 'b, B> {
     transport: &'a Transport,
-    parts: TransformStartTransformParts<'b>,
+    parts: TransformScheduleNowTransformParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -1009,14 +1139,14 @@ pub struct TransformStartTransform<'a, 'b, B> {
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
-impl<'a, 'b, B> TransformStartTransform<'a, 'b, B>
+impl<'a, 'b, B> TransformScheduleNowTransform<'a, 'b, B>
 where
     B: Body,
 {
-    #[doc = "Creates a new instance of [TransformStartTransform] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: TransformStartTransformParts<'b>) -> Self {
+    #[doc = "Creates a new instance of [TransformScheduleNowTransform] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: TransformScheduleNowTransformParts<'b>) -> Self {
         let headers = HeaderMap::new();
-        TransformStartTransform {
+        TransformScheduleNowTransform {
             transport,
             parts,
             headers,
@@ -1031,11 +1161,11 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> TransformStartTransform<'a, 'b, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> TransformScheduleNowTransform<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
-        TransformStartTransform {
+        TransformScheduleNowTransform {
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
@@ -1084,15 +1214,15 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Controls the time to wait for the transform to start"]
+    #[doc = "Controls the time to wait for the scheduling to take place"]
     pub fn timeout(mut self, timeout: &'b str) -> Self {
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous call to the Transform Start Transform API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Transform Schedule Now Transform API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1110,6 +1240,169 @@ where
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Transform Start Transform API"]
+pub enum TransformStartTransformParts<'b> {
+    #[doc = "TransformId"]
+    TransformId(&'b str),
+}
+impl<'b> TransformStartTransformParts<'b> {
+    #[doc = "Builds a relative URL path to the Transform Start Transform API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            TransformStartTransformParts::TransformId(ref transform_id) => {
+                let encoded_transform_id: Cow<str> =
+                    percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(19usize + encoded_transform_id.len());
+                p.push_str("/_transform/");
+                p.push_str(encoded_transform_id.as_ref());
+                p.push_str("/_start");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Transform Start Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/start-transform.html)\n\nStarts one or more transforms."]
+#[derive(Clone, Debug)]
+pub struct TransformStartTransform<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: TransformStartTransformParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    from: Option<&'b str>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
+}
+impl<'a, 'b, B> TransformStartTransform<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [TransformStartTransform] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: TransformStartTransformParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        TransformStartTransform {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            from: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+            timeout: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> TransformStartTransform<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        TransformStartTransform {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            from: self.from,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+            timeout: self.timeout,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Restricts the set of transformed entities to those changed after this time"]
+    pub fn from(mut self, from: &'b str) -> Self {
+        self.from = Some(from);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Controls the time to wait for the transform to start"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Transform Start Transform API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Post;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                from: Option<&'b str>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+                timeout: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                from: self.from,
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
@@ -1147,7 +1440,7 @@ impl<'b> TransformStopTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Stop Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/stop-transform.html)\n\nStops one or more transforms."]
+#[doc = "Builder for the [Transform Stop Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/stop-transform.html)\n\nStops one or more transforms."]
 #[derive(Clone, Debug)]
 pub struct TransformStopTransform<'a, 'b, B> {
     transport: &'a Transport,
@@ -1277,7 +1570,7 @@ where
     #[doc = "Creates an asynchronous call to the Transform Stop Transform API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1340,7 +1633,7 @@ impl<'b> TransformUpdateTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Update Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/update-transform.html)\n\nUpdates certain properties of a transform."]
+#[doc = "Builder for the [Transform Update Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-transform.html)\n\nUpdates certain properties of a transform."]
 #[derive(Clone, Debug)]
 pub struct TransformUpdateTransform<'a, 'b, B> {
     transport: &'a Transport,
@@ -1446,7 +1739,7 @@ where
     #[doc = "Creates an asynchronous call to the Transform Update Transform API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1495,7 +1788,7 @@ impl TransformUpgradeTransformsParts {
         }
     }
 }
-#[doc = "Builder for the [Transform Upgrade Transforms API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/upgrade-transforms.html)\n\nUpgrades all transforms."]
+#[doc = "Builder for the [Transform Upgrade Transforms API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/upgrade-transforms.html)\n\nUpgrades all transforms."]
 #[derive(Clone, Debug)]
 pub struct TransformUpgradeTransforms<'a, 'b, B> {
     transport: &'a Transport,
@@ -1601,7 +1894,7 @@ where
     #[doc = "Creates an asynchronous call to the Transform Upgrade Transforms API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1648,70 +1941,81 @@ impl<'a> Transform<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Transform Delete Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/delete-transform.html)\n\nDeletes an existing transform."]
+    #[doc = "[Transform Delete Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-transform.html)\n\nDeletes an existing transform."]
     pub fn delete_transform<'b>(
         &'a self,
         parts: TransformDeleteTransformParts<'b>,
     ) -> TransformDeleteTransform<'a, 'b> {
         TransformDeleteTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Get Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-transform.html)\n\nRetrieves configuration information for transforms."]
+    #[doc = "[Transform Get Node Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-transform-node-stats.html)\n\nRetrieves transform usage information for transform nodes."]
+    pub fn get_node_stats<'b>(&'a self) -> TransformGetNodeStats<'a, 'b> {
+        TransformGetNodeStats::new(self.transport())
+    }
+    #[doc = "[Transform Get Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-transform.html)\n\nRetrieves configuration information for transforms."]
     pub fn get_transform<'b>(
         &'a self,
         parts: TransformGetTransformParts<'b>,
     ) -> TransformGetTransform<'a, 'b> {
         TransformGetTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Get Transform Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-transform-stats.html)\n\nRetrieves usage information for transforms."]
+    #[doc = "[Transform Get Transform Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-transform-stats.html)\n\nRetrieves usage information for transforms."]
     pub fn get_transform_stats<'b>(
         &'a self,
         parts: TransformGetTransformStatsParts<'b>,
     ) -> TransformGetTransformStats<'a, 'b> {
         TransformGetTransformStats::new(self.transport(), parts)
     }
-    #[doc = "[Transform Preview Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/preview-transform.html)\n\nPreviews a transform."]
+    #[doc = "[Transform Preview Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/preview-transform.html)\n\nPreviews a transform."]
     pub fn preview_transform<'b>(
         &'a self,
         parts: TransformPreviewTransformParts<'b>,
     ) -> TransformPreviewTransform<'a, 'b, ()> {
         TransformPreviewTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Put Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/put-transform.html)\n\nInstantiates a transform."]
+    #[doc = "[Transform Put Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-transform.html)\n\nInstantiates a transform."]
     pub fn put_transform<'b>(
         &'a self,
         parts: TransformPutTransformParts<'b>,
     ) -> TransformPutTransform<'a, 'b, ()> {
         TransformPutTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Reset Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/reset-transform.html)\n\nResets an existing transform."]
+    #[doc = "[Transform Reset Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/reset-transform.html)\n\nResets an existing transform."]
     pub fn reset_transform<'b>(
         &'a self,
         parts: TransformResetTransformParts<'b>,
     ) -> TransformResetTransform<'a, 'b, ()> {
         TransformResetTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Start Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/start-transform.html)\n\nStarts one or more transforms."]
+    #[doc = "[Transform Schedule Now Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/schedule-now-transform.html)\n\nSchedules now a transform."]
+    pub fn schedule_now_transform<'b>(
+        &'a self,
+        parts: TransformScheduleNowTransformParts<'b>,
+    ) -> TransformScheduleNowTransform<'a, 'b, ()> {
+        TransformScheduleNowTransform::new(self.transport(), parts)
+    }
+    #[doc = "[Transform Start Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/start-transform.html)\n\nStarts one or more transforms."]
     pub fn start_transform<'b>(
         &'a self,
         parts: TransformStartTransformParts<'b>,
     ) -> TransformStartTransform<'a, 'b, ()> {
         TransformStartTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Stop Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/stop-transform.html)\n\nStops one or more transforms."]
+    #[doc = "[Transform Stop Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/stop-transform.html)\n\nStops one or more transforms."]
     pub fn stop_transform<'b>(
         &'a self,
         parts: TransformStopTransformParts<'b>,
     ) -> TransformStopTransform<'a, 'b, ()> {
         TransformStopTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Update Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/update-transform.html)\n\nUpdates certain properties of a transform."]
+    #[doc = "[Transform Update Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-transform.html)\n\nUpdates certain properties of a transform."]
     pub fn update_transform<'b>(
         &'a self,
         parts: TransformUpdateTransformParts<'b>,
     ) -> TransformUpdateTransform<'a, 'b, ()> {
         TransformUpdateTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Upgrade Transforms API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/upgrade-transforms.html)\n\nUpgrades all transforms."]
+    #[doc = "[Transform Upgrade Transforms API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/upgrade-transforms.html)\n\nUpgrades all transforms."]
     pub fn upgrade_transforms<'b>(&'a self) -> TransformUpgradeTransforms<'a, 'b, ()> {
         TransformUpgradeTransforms::new(self.transport())
     }

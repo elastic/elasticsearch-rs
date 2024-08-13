@@ -35,11 +35,11 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        self,
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         transport::Transport,
-        Method,
     },
     params::*,
 };
@@ -69,7 +69,7 @@ impl<'b> GraphExploreParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
+#[doc = "Builder for the [Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
 #[derive(Clone, Debug)]
 pub struct GraphExplore<'a, 'b, B> {
     transport: &'a Transport,
@@ -176,8 +176,8 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = match self.body {
-            Some(_) => Method::Post,
-            None => Method::Get,
+            Some(_) => http::Method::Post,
+            None => http::Method::Get,
         };
         let headers = self.headers;
         let timeout = self.request_timeout;
@@ -225,7 +225,7 @@ impl<'a> Graph<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
+    #[doc = "[Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
     pub fn explore<'b>(&'a self, parts: GraphExploreParts<'b>) -> GraphExplore<'a, 'b, ()> {
         GraphExplore::new(self.transport(), parts)
     }

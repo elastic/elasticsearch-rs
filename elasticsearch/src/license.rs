@@ -38,11 +38,11 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        self,
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         transport::Transport,
-        Method,
     },
     params::*,
 };
@@ -63,7 +63,7 @@ impl LicenseDeleteParts {
         }
     }
 }
-#[doc = "Builder for the [License Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/delete-license.html)\n\nDeletes licensing information for the cluster"]
+#[doc = "Builder for the [License Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-license.html)\n\nDeletes licensing information for the cluster"]
 #[derive(Clone, Debug)]
 pub struct LicenseDelete<'a, 'b> {
     transport: &'a Transport,
@@ -72,9 +72,11 @@ pub struct LicenseDelete<'a, 'b> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b> LicenseDelete<'a, 'b> {
     #[doc = "Creates a new instance of [LicenseDelete]"]
@@ -87,9 +89,11 @@ impl<'a, 'b> LicenseDelete<'a, 'b> {
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -112,6 +116,11 @@ impl<'a, 'b> LicenseDelete<'a, 'b> {
         self.human = Some(human);
         self
     }
+    #[doc = "Timeout for processing on master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -127,10 +136,15 @@ impl<'a, 'b> LicenseDelete<'a, 'b> {
         self.source = Some(source);
         self
     }
+    #[doc = "Timeout for acknowledgement of update from all nodes in cluster"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the License Delete API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -141,15 +155,19 @@ impl<'a, 'b> LicenseDelete<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -175,7 +193,7 @@ impl LicenseGetParts {
         }
     }
 }
-#[doc = "Builder for the [License Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-license.html)\n\nRetrieves licensing information for the cluster"]
+#[doc = "Builder for the [License Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-license.html)\n\nRetrieves licensing information for the cluster"]
 #[derive(Clone, Debug)]
 pub struct LicenseGet<'a, 'b> {
     transport: &'a Transport,
@@ -256,7 +274,7 @@ impl<'a, 'b> LicenseGet<'a, 'b> {
     #[doc = "Creates an asynchronous call to the License Get API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -305,7 +323,7 @@ impl LicenseGetBasicStatusParts {
         }
     }
 }
-#[doc = "Builder for the [License Get Basic Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-basic-status.html)\n\nRetrieves information about the status of the basic license."]
+#[doc = "Builder for the [License Get Basic Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-basic-status.html)\n\nRetrieves information about the status of the basic license."]
 #[derive(Clone, Debug)]
 pub struct LicenseGetBasicStatus<'a, 'b> {
     transport: &'a Transport,
@@ -372,7 +390,7 @@ impl<'a, 'b> LicenseGetBasicStatus<'a, 'b> {
     #[doc = "Creates an asynchronous call to the License Get Basic Status API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -417,7 +435,7 @@ impl LicenseGetTrialStatusParts {
         }
     }
 }
-#[doc = "Builder for the [License Get Trial Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-trial-status.html)\n\nRetrieves information about the status of the trial license."]
+#[doc = "Builder for the [License Get Trial Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-trial-status.html)\n\nRetrieves information about the status of the trial license."]
 #[derive(Clone, Debug)]
 pub struct LicenseGetTrialStatus<'a, 'b> {
     transport: &'a Transport,
@@ -484,7 +502,7 @@ impl<'a, 'b> LicenseGetTrialStatus<'a, 'b> {
     #[doc = "Creates an asynchronous call to the License Get Trial Status API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -529,7 +547,7 @@ impl LicensePostParts {
         }
     }
 }
-#[doc = "Builder for the [License Post API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/update-license.html)\n\nUpdates the license for the cluster."]
+#[doc = "Builder for the [License Post API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-license.html)\n\nUpdates the license for the cluster."]
 #[derive(Clone, Debug)]
 pub struct LicensePost<'a, 'b, B> {
     transport: &'a Transport,
@@ -540,9 +558,11 @@ pub struct LicensePost<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> LicensePost<'a, 'b, B>
 where
@@ -560,9 +580,11 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "whether the user has acknowledged acknowledge messages (default: false)"]
@@ -584,9 +606,11 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -609,6 +633,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Timeout for processing on master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -624,10 +653,15 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Timeout for acknowledgement of update from all nodes in cluster"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the License Post API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -639,16 +673,20 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 acknowledge: self.acknowledge,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -674,7 +712,7 @@ impl LicensePostStartBasicParts {
         }
     }
 }
-#[doc = "Builder for the [License Post Start Basic API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/start-basic.html)\n\nStarts an indefinite basic license."]
+#[doc = "Builder for the [License Post Start Basic API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/start-basic.html)\n\nStarts an indefinite basic license."]
 #[derive(Clone, Debug)]
 pub struct LicensePostStartBasic<'a, 'b, B> {
     transport: &'a Transport,
@@ -685,9 +723,11 @@ pub struct LicensePostStartBasic<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> LicensePostStartBasic<'a, 'b, B>
 where
@@ -705,9 +745,11 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "whether the user has acknowledged acknowledge messages (default: false)"]
@@ -729,9 +771,11 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -754,6 +798,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Timeout for processing on master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -769,10 +818,15 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Timeout for acknowledgement of update from all nodes in cluster"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the License Post Start Basic API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -784,16 +838,20 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 acknowledge: self.acknowledge,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -819,7 +877,7 @@ impl LicensePostStartTrialParts {
         }
     }
 }
-#[doc = "Builder for the [License Post Start Trial API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/start-trial.html)\n\nstarts a limited time trial license."]
+#[doc = "Builder for the [License Post Start Trial API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/start-trial.html)\n\nstarts a limited time trial license."]
 #[derive(Clone, Debug)]
 pub struct LicensePostStartTrial<'a, 'b, B> {
     transport: &'a Transport,
@@ -830,9 +888,11 @@ pub struct LicensePostStartTrial<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
     ty: Option<&'b str>,
 }
 impl<'a, 'b, B> LicensePostStartTrial<'a, 'b, B>
@@ -851,9 +911,11 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
             ty: None,
         }
     }
@@ -876,9 +938,11 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
             ty: self.ty,
         }
     }
@@ -902,6 +966,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Timeout for processing on master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -917,6 +986,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Timeout for acknowledgement of update from all nodes in cluster"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "The type of trial license to generate (default: \"trial\")"]
     pub fn ty(mut self, ty: &'b str) -> Self {
         self.ty = Some(ty);
@@ -925,7 +999,7 @@ where
     #[doc = "Creates an asynchronous call to the License Post Start Trial API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -937,8 +1011,10 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
                 #[serde(rename = "type")]
                 ty: Option<&'b str>,
             }
@@ -947,8 +1023,10 @@ where
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
                 ty: self.ty,
             };
             Some(query_params)
@@ -973,31 +1051,31 @@ impl<'a> License<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[License Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/delete-license.html)\n\nDeletes licensing information for the cluster"]
+    #[doc = "[License Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-license.html)\n\nDeletes licensing information for the cluster"]
     pub fn delete<'b>(&'a self) -> LicenseDelete<'a, 'b> {
         LicenseDelete::new(self.transport())
     }
-    #[doc = "[License Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-license.html)\n\nRetrieves licensing information for the cluster"]
+    #[doc = "[License Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-license.html)\n\nRetrieves licensing information for the cluster"]
     pub fn get<'b>(&'a self) -> LicenseGet<'a, 'b> {
         LicenseGet::new(self.transport())
     }
-    #[doc = "[License Get Basic Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-basic-status.html)\n\nRetrieves information about the status of the basic license."]
+    #[doc = "[License Get Basic Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-basic-status.html)\n\nRetrieves information about the status of the basic license."]
     pub fn get_basic_status<'b>(&'a self) -> LicenseGetBasicStatus<'a, 'b> {
         LicenseGetBasicStatus::new(self.transport())
     }
-    #[doc = "[License Get Trial Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-trial-status.html)\n\nRetrieves information about the status of the trial license."]
+    #[doc = "[License Get Trial Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-trial-status.html)\n\nRetrieves information about the status of the trial license."]
     pub fn get_trial_status<'b>(&'a self) -> LicenseGetTrialStatus<'a, 'b> {
         LicenseGetTrialStatus::new(self.transport())
     }
-    #[doc = "[License Post API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/update-license.html)\n\nUpdates the license for the cluster."]
+    #[doc = "[License Post API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-license.html)\n\nUpdates the license for the cluster."]
     pub fn post<'b>(&'a self) -> LicensePost<'a, 'b, ()> {
         LicensePost::new(self.transport())
     }
-    #[doc = "[License Post Start Basic API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/start-basic.html)\n\nStarts an indefinite basic license."]
+    #[doc = "[License Post Start Basic API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/start-basic.html)\n\nStarts an indefinite basic license."]
     pub fn post_start_basic<'b>(&'a self) -> LicensePostStartBasic<'a, 'b, ()> {
         LicensePostStartBasic::new(self.transport())
     }
-    #[doc = "[License Post Start Trial API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/start-trial.html)\n\nstarts a limited time trial license."]
+    #[doc = "[License Post Start Trial API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/start-trial.html)\n\nstarts a limited time trial license."]
     pub fn post_start_trial<'b>(&'a self) -> LicensePostStartTrial<'a, 'b, ()> {
         LicensePostStartTrial::new(self.transport())
     }

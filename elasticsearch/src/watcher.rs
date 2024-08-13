@@ -34,11 +34,11 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        self,
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         transport::Transport,
-        Method,
     },
     params::*,
 };
@@ -84,7 +84,7 @@ impl<'b> WatcherAckWatchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Watcher Ack Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-ack-watch.html)\n\nAcknowledges a watch, manually throttling the execution of the watch's actions."]
+#[doc = "Builder for the [Watcher Ack Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-ack-watch.html)\n\nAcknowledges a watch, manually throttling the execution of the watch's actions."]
 #[derive(Clone, Debug)]
 pub struct WatcherAckWatch<'a, 'b, B> {
     transport: &'a Transport,
@@ -174,7 +174,7 @@ where
     #[doc = "Creates an asynchronous call to the Watcher Ack Watch API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -227,7 +227,7 @@ impl<'b> WatcherActivateWatchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Watcher Activate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-activate-watch.html)\n\nActivates a currently inactive watch."]
+#[doc = "Builder for the [Watcher Activate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-activate-watch.html)\n\nActivates a currently inactive watch."]
 #[derive(Clone, Debug)]
 pub struct WatcherActivateWatch<'a, 'b, B> {
     transport: &'a Transport,
@@ -317,7 +317,7 @@ where
     #[doc = "Creates an asynchronous call to the Watcher Activate Watch API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -370,7 +370,7 @@ impl<'b> WatcherDeactivateWatchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Watcher Deactivate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-deactivate-watch.html)\n\nDeactivates a currently active watch."]
+#[doc = "Builder for the [Watcher Deactivate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-deactivate-watch.html)\n\nDeactivates a currently active watch."]
 #[derive(Clone, Debug)]
 pub struct WatcherDeactivateWatch<'a, 'b, B> {
     transport: &'a Transport,
@@ -460,7 +460,7 @@ where
     #[doc = "Creates an asynchronous call to the Watcher Deactivate Watch API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -511,7 +511,7 @@ impl<'b> WatcherDeleteWatchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Watcher Delete Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-delete-watch.html)\n\nRemoves a watch from Watcher."]
+#[doc = "Builder for the [Watcher Delete Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-delete-watch.html)\n\nRemoves a watch from Watcher."]
 #[derive(Clone, Debug)]
 pub struct WatcherDeleteWatch<'a, 'b> {
     transport: &'a Transport,
@@ -578,7 +578,7 @@ impl<'a, 'b> WatcherDeleteWatch<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Watcher Delete Watch API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -633,7 +633,7 @@ impl<'b> WatcherExecuteWatchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Watcher Execute Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-execute-watch.html)\n\nForces the execution of a stored watch."]
+#[doc = "Builder for the [Watcher Execute Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-execute-watch.html)\n\nForces the execution of a stored watch."]
 #[derive(Clone, Debug)]
 pub struct WatcherExecuteWatch<'a, 'b, B> {
     transport: &'a Transport,
@@ -731,7 +731,7 @@ where
     #[doc = "Creates an asynchronous call to the Watcher Execute Watch API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -765,6 +765,127 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Watcher Get Settings API"]
+pub enum WatcherGetSettingsParts {
+    #[doc = "No parts"]
+    None,
+}
+impl WatcherGetSettingsParts {
+    #[doc = "Builds a relative URL path to the Watcher Get Settings API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            WatcherGetSettingsParts::None => "/_watcher/settings".into(),
+        }
+    }
+}
+#[doc = "Builder for the [Watcher Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-get-settings.html)\n\nRetrieve settings for the watcher system index"]
+#[derive(Clone, Debug)]
+pub struct WatcherGetSettings<'a, 'b> {
+    transport: &'a Transport,
+    parts: WatcherGetSettingsParts,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    master_timeout: Option<&'b str>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b> WatcherGetSettings<'a, 'b> {
+    #[doc = "Creates a new instance of [WatcherGetSettings]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        WatcherGetSettings {
+            transport,
+            parts: WatcherGetSettingsParts::None,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Watcher Get Settings API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                master_timeout: Option<&'b str>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Watcher Get Watch API"]
 pub enum WatcherGetWatchParts<'b> {
     #[doc = "Id"]
@@ -784,7 +905,7 @@ impl<'b> WatcherGetWatchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Watcher Get Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-get-watch.html)\n\nRetrieves a watch by its ID."]
+#[doc = "Builder for the [Watcher Get Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-get-watch.html)\n\nRetrieves a watch by its ID."]
 #[derive(Clone, Debug)]
 pub struct WatcherGetWatch<'a, 'b> {
     transport: &'a Transport,
@@ -851,7 +972,7 @@ impl<'a, 'b> WatcherGetWatch<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Watcher Get Watch API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -902,7 +1023,7 @@ impl<'b> WatcherPutWatchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Watcher Put Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-put-watch.html)\n\nCreates a new watch, or updates an existing one."]
+#[doc = "Builder for the [Watcher Put Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-put-watch.html)\n\nCreates a new watch, or updates an existing one."]
 #[derive(Clone, Debug)]
 pub struct WatcherPutWatch<'a, 'b, B> {
     transport: &'a Transport,
@@ -1024,7 +1145,7 @@ where
     #[doc = "Creates an asynchronous call to the Watcher Put Watch API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1077,7 +1198,7 @@ impl WatcherQueryWatchesParts {
         }
     }
 }
-#[doc = "Builder for the [Watcher Query Watches API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-query-watches.html)\n\nRetrieves stored watches."]
+#[doc = "Builder for the [Watcher Query Watches API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-query-watches.html)\n\nRetrieves stored watches."]
 #[derive(Clone, Debug)]
 pub struct WatcherQueryWatches<'a, 'b, B> {
     transport: &'a Transport,
@@ -1168,8 +1289,8 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = match self.body {
-            Some(_) => Method::Post,
-            None => Method::Get,
+            Some(_) => http::Method::Post,
+            None => http::Method::Get,
         };
         let headers = self.headers;
         let timeout = self.request_timeout;
@@ -1215,7 +1336,7 @@ impl WatcherStartParts {
         }
     }
 }
-#[doc = "Builder for the [Watcher Start API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-start.html)\n\nStarts Watcher if it is not already running."]
+#[doc = "Builder for the [Watcher Start API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-start.html)\n\nStarts Watcher if it is not already running."]
 #[derive(Clone, Debug)]
 pub struct WatcherStart<'a, 'b, B> {
     transport: &'a Transport,
@@ -1225,6 +1346,7 @@ pub struct WatcherStart<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -1244,6 +1366,7 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -1262,6 +1385,7 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
@@ -1287,6 +1411,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -1305,7 +1434,7 @@ where
     #[doc = "Creates an asynchronous call to the Watcher Start API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1316,6 +1445,7 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -1323,6 +1453,7 @@ where
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -1361,7 +1492,7 @@ impl<'b> WatcherStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Watcher Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-stats.html)\n\nRetrieves the current Watcher metrics."]
+#[doc = "Builder for the [Watcher Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-stats.html)\n\nRetrieves the current Watcher metrics."]
 #[derive(Clone, Debug)]
 pub struct WatcherStats<'a, 'b> {
     transport: &'a Transport,
@@ -1442,7 +1573,7 @@ impl<'a, 'b> WatcherStats<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Watcher Stats API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1492,7 +1623,7 @@ impl WatcherStopParts {
         }
     }
 }
-#[doc = "Builder for the [Watcher Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-stop.html)\n\nStops Watcher if it is running."]
+#[doc = "Builder for the [Watcher Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-stop.html)\n\nStops Watcher if it is running."]
 #[derive(Clone, Debug)]
 pub struct WatcherStop<'a, 'b, B> {
     transport: &'a Transport,
@@ -1502,6 +1633,7 @@ pub struct WatcherStop<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -1521,6 +1653,7 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -1539,6 +1672,7 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
@@ -1564,6 +1698,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -1582,7 +1721,7 @@ where
     #[doc = "Creates an asynchronous call to the Watcher Stop API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1593,6 +1732,7 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -1600,8 +1740,164 @@ where
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Watcher Update Settings API"]
+pub enum WatcherUpdateSettingsParts {
+    #[doc = "No parts"]
+    None,
+}
+impl WatcherUpdateSettingsParts {
+    #[doc = "Builds a relative URL path to the Watcher Update Settings API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            WatcherUpdateSettingsParts::None => "/_watcher/settings".into(),
+        }
+    }
+}
+#[doc = "Builder for the [Watcher Update Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-update-settings.html)\n\nUpdate settings for the watcher system index"]
+#[derive(Clone, Debug)]
+pub struct WatcherUpdateSettings<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: WatcherUpdateSettingsParts,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    master_timeout: Option<&'b str>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
+}
+impl<'a, 'b, B> WatcherUpdateSettings<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [WatcherUpdateSettings]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        WatcherUpdateSettings {
+            transport,
+            parts: WatcherUpdateSettingsParts::None,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+            timeout: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> WatcherUpdateSettings<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        WatcherUpdateSettings {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+            timeout: self.timeout,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Specify timeout for waiting for acknowledgement from all nodes"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Watcher Update Settings API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Put;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                master_timeout: Option<&'b str>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+                timeout: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -1625,61 +1921,69 @@ impl<'a> Watcher<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Watcher Ack Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-ack-watch.html)\n\nAcknowledges a watch, manually throttling the execution of the watch's actions."]
+    #[doc = "[Watcher Ack Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-ack-watch.html)\n\nAcknowledges a watch, manually throttling the execution of the watch's actions."]
     pub fn ack_watch<'b>(&'a self, parts: WatcherAckWatchParts<'b>) -> WatcherAckWatch<'a, 'b, ()> {
         WatcherAckWatch::new(self.transport(), parts)
     }
-    #[doc = "[Watcher Activate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-activate-watch.html)\n\nActivates a currently inactive watch."]
+    #[doc = "[Watcher Activate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-activate-watch.html)\n\nActivates a currently inactive watch."]
     pub fn activate_watch<'b>(
         &'a self,
         parts: WatcherActivateWatchParts<'b>,
     ) -> WatcherActivateWatch<'a, 'b, ()> {
         WatcherActivateWatch::new(self.transport(), parts)
     }
-    #[doc = "[Watcher Deactivate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-deactivate-watch.html)\n\nDeactivates a currently active watch."]
+    #[doc = "[Watcher Deactivate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-deactivate-watch.html)\n\nDeactivates a currently active watch."]
     pub fn deactivate_watch<'b>(
         &'a self,
         parts: WatcherDeactivateWatchParts<'b>,
     ) -> WatcherDeactivateWatch<'a, 'b, ()> {
         WatcherDeactivateWatch::new(self.transport(), parts)
     }
-    #[doc = "[Watcher Delete Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-delete-watch.html)\n\nRemoves a watch from Watcher."]
+    #[doc = "[Watcher Delete Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-delete-watch.html)\n\nRemoves a watch from Watcher."]
     pub fn delete_watch<'b>(
         &'a self,
         parts: WatcherDeleteWatchParts<'b>,
     ) -> WatcherDeleteWatch<'a, 'b> {
         WatcherDeleteWatch::new(self.transport(), parts)
     }
-    #[doc = "[Watcher Execute Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-execute-watch.html)\n\nForces the execution of a stored watch."]
+    #[doc = "[Watcher Execute Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-execute-watch.html)\n\nForces the execution of a stored watch."]
     pub fn execute_watch<'b>(
         &'a self,
         parts: WatcherExecuteWatchParts<'b>,
     ) -> WatcherExecuteWatch<'a, 'b, ()> {
         WatcherExecuteWatch::new(self.transport(), parts)
     }
-    #[doc = "[Watcher Get Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-get-watch.html)\n\nRetrieves a watch by its ID."]
+    #[doc = "[Watcher Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-get-settings.html)\n\nRetrieve settings for the watcher system index"]
+    pub fn get_settings<'b>(&'a self) -> WatcherGetSettings<'a, 'b> {
+        WatcherGetSettings::new(self.transport())
+    }
+    #[doc = "[Watcher Get Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-get-watch.html)\n\nRetrieves a watch by its ID."]
     pub fn get_watch<'b>(&'a self, parts: WatcherGetWatchParts<'b>) -> WatcherGetWatch<'a, 'b> {
         WatcherGetWatch::new(self.transport(), parts)
     }
-    #[doc = "[Watcher Put Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-put-watch.html)\n\nCreates a new watch, or updates an existing one."]
+    #[doc = "[Watcher Put Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-put-watch.html)\n\nCreates a new watch, or updates an existing one."]
     pub fn put_watch<'b>(&'a self, parts: WatcherPutWatchParts<'b>) -> WatcherPutWatch<'a, 'b, ()> {
         WatcherPutWatch::new(self.transport(), parts)
     }
-    #[doc = "[Watcher Query Watches API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-query-watches.html)\n\nRetrieves stored watches."]
+    #[doc = "[Watcher Query Watches API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-query-watches.html)\n\nRetrieves stored watches."]
     pub fn query_watches<'b>(&'a self) -> WatcherQueryWatches<'a, 'b, ()> {
         WatcherQueryWatches::new(self.transport())
     }
-    #[doc = "[Watcher Start API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-start.html)\n\nStarts Watcher if it is not already running."]
+    #[doc = "[Watcher Start API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-start.html)\n\nStarts Watcher if it is not already running."]
     pub fn start<'b>(&'a self) -> WatcherStart<'a, 'b, ()> {
         WatcherStart::new(self.transport())
     }
-    #[doc = "[Watcher Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-stats.html)\n\nRetrieves the current Watcher metrics."]
+    #[doc = "[Watcher Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-stats.html)\n\nRetrieves the current Watcher metrics."]
     pub fn stats<'b>(&'a self, parts: WatcherStatsParts<'b>) -> WatcherStats<'a, 'b> {
         WatcherStats::new(self.transport(), parts)
     }
-    #[doc = "[Watcher Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/watcher-api-stop.html)\n\nStops Watcher if it is running."]
+    #[doc = "[Watcher Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-stop.html)\n\nStops Watcher if it is running."]
     pub fn stop<'b>(&'a self) -> WatcherStop<'a, 'b, ()> {
         WatcherStop::new(self.transport())
+    }
+    #[doc = "[Watcher Update Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/watcher-api-update-settings.html)\n\nUpdate settings for the watcher system index"]
+    pub fn update_settings<'b>(&'a self) -> WatcherUpdateSettings<'a, 'b, ()> {
+        WatcherUpdateSettings::new(self.transport())
     }
 }
 impl Elasticsearch {
