@@ -33,11 +33,11 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        self,
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         transport::Transport,
-        Method,
     },
     params::*,
 };
@@ -58,7 +58,7 @@ impl SslCertificatesParts {
         }
     }
 }
-#[doc = "Builder for the [Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-ssl.html)\n\nRetrieves information about the X.509 certificates used to encrypt communications in the cluster."]
+#[doc = "Builder for the [Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/security-api-ssl.html)\n\nRetrieves information about the X.509 certificates used to encrypt communications in the cluster."]
 #[derive(Clone, Debug)]
 pub struct SslCertificates<'a, 'b> {
     transport: &'a Transport,
@@ -125,7 +125,7 @@ impl<'a, 'b> SslCertificates<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Ssl Certificates API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -168,7 +168,7 @@ impl<'a> Ssl<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/security-api-ssl.html)\n\nRetrieves information about the X.509 certificates used to encrypt communications in the cluster."]
+    #[doc = "[Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/security-api-ssl.html)\n\nRetrieves information about the X.509 certificates used to encrypt communications in the cluster."]
     pub fn certificates<'b>(&'a self) -> SslCertificates<'a, 'b> {
         SslCertificates::new(self.transport())
     }

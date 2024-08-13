@@ -37,11 +37,11 @@ pub fn use_declarations() -> Tokens {
             params::*,
             error::Error,
             http::{
+                self,
                 headers::{HeaderName, HeaderMap, HeaderValue, CONTENT_TYPE, ACCEPT},
-                Method,
                 request::{Body, NdBody, JsonBody, PARTS_ENCODED},
                 response::Response,
-                transport::Transport,
+                transport::Transport
             },
         };
         use std::{

@@ -33,11 +33,11 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        self,
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         transport::Transport,
-        Method,
     },
     params::*,
 };
@@ -58,7 +58,7 @@ impl FeaturesGetFeaturesParts {
         }
     }
 }
-#[doc = "Builder for the [Features Get Features API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-features-api.html)\n\nGets a list of features which can be included in snapshots using the feature_states field when creating a snapshot"]
+#[doc = "Builder for the [Features Get Features API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-features-api.html)\n\nGets a list of features which can be included in snapshots using the feature_states field when creating a snapshot"]
 #[derive(Clone, Debug)]
 pub struct FeaturesGetFeatures<'a, 'b> {
     transport: &'a Transport,
@@ -132,7 +132,7 @@ impl<'a, 'b> FeaturesGetFeatures<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Features Get Features API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -181,7 +181,7 @@ impl FeaturesResetFeaturesParts {
         }
     }
 }
-#[doc = "Builder for the [Features Reset Features API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nResets the internal state of features, usually by deleting system indices"]
+#[doc = "Builder for the [Features Reset Features API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nResets the internal state of features, usually by deleting system indices"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -193,6 +193,7 @@ pub struct FeaturesResetFeatures<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -213,6 +214,7 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -231,6 +233,7 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
@@ -256,6 +259,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -274,7 +282,7 @@ where
     #[doc = "Creates an asynchronous call to the Features Reset Features API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -285,6 +293,7 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -292,6 +301,7 @@ where
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -317,11 +327,11 @@ impl<'a> Features<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Features Get Features API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/get-features-api.html)\n\nGets a list of features which can be included in snapshots using the feature_states field when creating a snapshot"]
+    #[doc = "[Features Get Features API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-features-api.html)\n\nGets a list of features which can be included in snapshots using the feature_states field when creating a snapshot"]
     pub fn get_features<'b>(&'a self) -> FeaturesGetFeatures<'a, 'b> {
         FeaturesGetFeatures::new(self.transport())
     }
-    #[doc = "[Features Reset Features API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nResets the internal state of features, usually by deleting system indices"]
+    #[doc = "[Features Reset Features API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nResets the internal state of features, usually by deleting system indices"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn reset_features<'b>(&'a self) -> FeaturesResetFeatures<'a, 'b, ()> {

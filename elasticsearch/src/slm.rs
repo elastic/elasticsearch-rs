@@ -38,11 +38,11 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        self,
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         transport::Transport,
-        Method,
     },
     params::*,
 };
@@ -70,7 +70,7 @@ impl<'b> SlmDeleteLifecycleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Slm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/slm-api-delete-policy.html)\n\nDeletes an existing snapshot lifecycle policy."]
+#[doc = "Builder for the [Slm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/slm-api-delete-policy.html)\n\nDeletes an existing snapshot lifecycle policy."]
 #[derive(Clone, Debug)]
 pub struct SlmDeleteLifecycle<'a, 'b> {
     transport: &'a Transport,
@@ -137,7 +137,7 @@ impl<'a, 'b> SlmDeleteLifecycle<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Slm Delete Lifecycle API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -190,7 +190,7 @@ impl<'b> SlmExecuteLifecycleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Slm Execute Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/slm-api-execute-lifecycle.html)\n\nImmediately creates a snapshot according to the lifecycle policy, without waiting for the scheduled time."]
+#[doc = "Builder for the [Slm Execute Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/slm-api-execute-lifecycle.html)\n\nImmediately creates a snapshot according to the lifecycle policy, without waiting for the scheduled time."]
 #[derive(Clone, Debug)]
 pub struct SlmExecuteLifecycle<'a, 'b, B> {
     transport: &'a Transport,
@@ -280,7 +280,7 @@ where
     #[doc = "Creates an asynchronous call to the Slm Execute Lifecycle API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -325,7 +325,7 @@ impl SlmExecuteRetentionParts {
         }
     }
 }
-#[doc = "Builder for the [Slm Execute Retention API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/slm-api-execute-retention.html)\n\nDeletes any snapshots that are expired according to the policy's retention rules."]
+#[doc = "Builder for the [Slm Execute Retention API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/slm-api-execute-retention.html)\n\nDeletes any snapshots that are expired according to the policy's retention rules."]
 #[derive(Clone, Debug)]
 pub struct SlmExecuteRetention<'a, 'b, B> {
     transport: &'a Transport,
@@ -415,7 +415,7 @@ where
     #[doc = "Creates an asynchronous call to the Slm Execute Retention API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -471,7 +471,7 @@ impl<'b> SlmGetLifecycleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Slm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/slm-api-get-policy.html)\n\nRetrieves one or more snapshot lifecycle policy definitions and information about the latest snapshot attempts."]
+#[doc = "Builder for the [Slm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/slm-api-get-policy.html)\n\nRetrieves one or more snapshot lifecycle policy definitions and information about the latest snapshot attempts."]
 #[derive(Clone, Debug)]
 pub struct SlmGetLifecycle<'a, 'b> {
     transport: &'a Transport,
@@ -538,7 +538,7 @@ impl<'a, 'b> SlmGetLifecycle<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Slm Get Lifecycle API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -583,7 +583,7 @@ impl SlmGetStatsParts {
         }
     }
 }
-#[doc = "Builder for the [Slm Get Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/slm-api-get-stats.html)\n\nReturns global and policy-level statistics about actions taken by snapshot lifecycle management."]
+#[doc = "Builder for the [Slm Get Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/slm-api-get-stats.html)\n\nReturns global and policy-level statistics about actions taken by snapshot lifecycle management."]
 #[derive(Clone, Debug)]
 pub struct SlmGetStats<'a, 'b> {
     transport: &'a Transport,
@@ -650,7 +650,7 @@ impl<'a, 'b> SlmGetStats<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Slm Get Stats API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -695,7 +695,7 @@ impl SlmGetStatusParts {
         }
     }
 }
-#[doc = "Builder for the [Slm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/slm-api-get-status.html)\n\nRetrieves the status of snapshot lifecycle management (SLM)."]
+#[doc = "Builder for the [Slm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/slm-api-get-status.html)\n\nRetrieves the status of snapshot lifecycle management (SLM)."]
 #[derive(Clone, Debug)]
 pub struct SlmGetStatus<'a, 'b> {
     transport: &'a Transport,
@@ -762,7 +762,7 @@ impl<'a, 'b> SlmGetStatus<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Slm Get Status API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -814,7 +814,7 @@ impl<'b> SlmPutLifecycleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Slm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/slm-api-put-policy.html)\n\nCreates or updates a snapshot lifecycle policy."]
+#[doc = "Builder for the [Slm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/slm-api-put-policy.html)\n\nCreates or updates a snapshot lifecycle policy."]
 #[derive(Clone, Debug)]
 pub struct SlmPutLifecycle<'a, 'b, B> {
     transport: &'a Transport,
@@ -904,7 +904,7 @@ where
     #[doc = "Creates an asynchronous call to the Slm Put Lifecycle API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -949,7 +949,7 @@ impl SlmStartParts {
         }
     }
 }
-#[doc = "Builder for the [Slm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/slm-api-start.html)\n\nTurns on snapshot lifecycle management (SLM)."]
+#[doc = "Builder for the [Slm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/slm-api-start.html)\n\nTurns on snapshot lifecycle management (SLM)."]
 #[derive(Clone, Debug)]
 pub struct SlmStart<'a, 'b, B> {
     transport: &'a Transport,
@@ -959,9 +959,11 @@ pub struct SlmStart<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> SlmStart<'a, 'b, B>
 where
@@ -978,9 +980,11 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -996,9 +1000,11 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1021,6 +1027,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Timeout for processing on master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -1036,10 +1047,15 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Timeout for acknowledgement of update from all nodes in cluster"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Slm Start API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1050,15 +1066,19 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -1084,7 +1104,7 @@ impl SlmStopParts {
         }
     }
 }
-#[doc = "Builder for the [Slm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/slm-api-stop.html)\n\nTurns off snapshot lifecycle management (SLM)."]
+#[doc = "Builder for the [Slm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/slm-api-stop.html)\n\nTurns off snapshot lifecycle management (SLM)."]
 #[derive(Clone, Debug)]
 pub struct SlmStop<'a, 'b, B> {
     transport: &'a Transport,
@@ -1094,9 +1114,11 @@ pub struct SlmStop<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> SlmStop<'a, 'b, B>
 where
@@ -1113,9 +1135,11 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -1131,9 +1155,11 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1156,6 +1182,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Timeout for processing on master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -1171,10 +1202,15 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Timeout for acknowledgement of update from all nodes in cluster"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Slm Stop API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1185,15 +1221,19 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -1217,48 +1257,48 @@ impl<'a> Slm<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Slm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/slm-api-delete-policy.html)\n\nDeletes an existing snapshot lifecycle policy."]
+    #[doc = "[Slm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/slm-api-delete-policy.html)\n\nDeletes an existing snapshot lifecycle policy."]
     pub fn delete_lifecycle<'b>(
         &'a self,
         parts: SlmDeleteLifecycleParts<'b>,
     ) -> SlmDeleteLifecycle<'a, 'b> {
         SlmDeleteLifecycle::new(self.transport(), parts)
     }
-    #[doc = "[Slm Execute Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/slm-api-execute-lifecycle.html)\n\nImmediately creates a snapshot according to the lifecycle policy, without waiting for the scheduled time."]
+    #[doc = "[Slm Execute Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/slm-api-execute-lifecycle.html)\n\nImmediately creates a snapshot according to the lifecycle policy, without waiting for the scheduled time."]
     pub fn execute_lifecycle<'b>(
         &'a self,
         parts: SlmExecuteLifecycleParts<'b>,
     ) -> SlmExecuteLifecycle<'a, 'b, ()> {
         SlmExecuteLifecycle::new(self.transport(), parts)
     }
-    #[doc = "[Slm Execute Retention API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/slm-api-execute-retention.html)\n\nDeletes any snapshots that are expired according to the policy's retention rules."]
+    #[doc = "[Slm Execute Retention API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/slm-api-execute-retention.html)\n\nDeletes any snapshots that are expired according to the policy's retention rules."]
     pub fn execute_retention<'b>(&'a self) -> SlmExecuteRetention<'a, 'b, ()> {
         SlmExecuteRetention::new(self.transport())
     }
-    #[doc = "[Slm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/slm-api-get-policy.html)\n\nRetrieves one or more snapshot lifecycle policy definitions and information about the latest snapshot attempts."]
+    #[doc = "[Slm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/slm-api-get-policy.html)\n\nRetrieves one or more snapshot lifecycle policy definitions and information about the latest snapshot attempts."]
     pub fn get_lifecycle<'b>(&'a self, parts: SlmGetLifecycleParts<'b>) -> SlmGetLifecycle<'a, 'b> {
         SlmGetLifecycle::new(self.transport(), parts)
     }
-    #[doc = "[Slm Get Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/slm-api-get-stats.html)\n\nReturns global and policy-level statistics about actions taken by snapshot lifecycle management."]
+    #[doc = "[Slm Get Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/slm-api-get-stats.html)\n\nReturns global and policy-level statistics about actions taken by snapshot lifecycle management."]
     pub fn get_stats<'b>(&'a self) -> SlmGetStats<'a, 'b> {
         SlmGetStats::new(self.transport())
     }
-    #[doc = "[Slm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/slm-api-get-status.html)\n\nRetrieves the status of snapshot lifecycle management (SLM)."]
+    #[doc = "[Slm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/slm-api-get-status.html)\n\nRetrieves the status of snapshot lifecycle management (SLM)."]
     pub fn get_status<'b>(&'a self) -> SlmGetStatus<'a, 'b> {
         SlmGetStatus::new(self.transport())
     }
-    #[doc = "[Slm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/slm-api-put-policy.html)\n\nCreates or updates a snapshot lifecycle policy."]
+    #[doc = "[Slm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/slm-api-put-policy.html)\n\nCreates or updates a snapshot lifecycle policy."]
     pub fn put_lifecycle<'b>(
         &'a self,
         parts: SlmPutLifecycleParts<'b>,
     ) -> SlmPutLifecycle<'a, 'b, ()> {
         SlmPutLifecycle::new(self.transport(), parts)
     }
-    #[doc = "[Slm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/slm-api-start.html)\n\nTurns on snapshot lifecycle management (SLM)."]
+    #[doc = "[Slm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/slm-api-start.html)\n\nTurns on snapshot lifecycle management (SLM)."]
     pub fn start<'b>(&'a self) -> SlmStart<'a, 'b, ()> {
         SlmStart::new(self.transport())
     }
-    #[doc = "[Slm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/slm-api-stop.html)\n\nTurns off snapshot lifecycle management (SLM)."]
+    #[doc = "[Slm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/slm-api-stop.html)\n\nTurns off snapshot lifecycle management (SLM)."]
     pub fn stop<'b>(&'a self) -> SlmStop<'a, 'b, ()> {
         SlmStop::new(self.transport())
     }

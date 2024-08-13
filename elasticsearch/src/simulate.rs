@@ -24,11 +24,8 @@
 // cargo make generate-api
 // -----------------------------------------------
 
-//! Monitoring APIs
-//!
-//! The Elastic Stack [monitoring features](https://www.elastic.co/guide/en/elasticsearch/reference/master/monitor-elasticsearch-cluster.html)
-//! provide a way to keep a pulse on thehealth and performance of your Elasticsearch cluster.
-
+#![cfg(feature = "experimental-apis")]
+#![doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
@@ -45,55 +42,59 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Monitoring Bulk API"]
-pub enum MonitoringBulkParts<'b> {
+#[doc = "API parts for the Simulate Ingest API"]
+pub enum SimulateIngestParts<'b> {
     #[doc = "No parts"]
     None,
-    #[doc = "Type"]
-    Type(&'b str),
+    #[doc = "Index"]
+    Index(&'b str),
 }
-impl<'b> MonitoringBulkParts<'b> {
-    #[doc = "Builds a relative URL path to the Monitoring Bulk API"]
+#[cfg(feature = "experimental-apis")]
+impl<'b> SimulateIngestParts<'b> {
+    #[doc = "Builds a relative URL path to the Simulate Ingest API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MonitoringBulkParts::None => "/_monitoring/bulk".into(),
-            MonitoringBulkParts::Type(ref ty) => {
-                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(18usize + encoded_ty.len());
-                p.push_str("/_monitoring/");
-                p.push_str(encoded_ty.as_ref());
-                p.push_str("/bulk");
+            SimulateIngestParts::None => "/_ingest/_simulate".into(),
+            SimulateIngestParts::Index(ref index) => {
+                let encoded_index: Cow<str> =
+                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(19usize + encoded_index.len());
+                p.push_str("/_ingest/");
+                p.push_str(encoded_index.as_ref());
+                p.push_str("/_simulate");
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/monitor-elasticsearch-cluster.html)\n\nUsed by the monitoring features to send monitoring data."]
+#[doc = "Builder for the [Simulate Ingest API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/simulate-ingest-api.html)\n\nSimulates running ingest with example documents."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
-pub struct MonitoringBulk<'a, 'b, B> {
+pub struct SimulateIngest<'a, 'b, B> {
     transport: &'a Transport,
-    parts: MonitoringBulkParts<'b>,
+    parts: SimulateIngestParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    interval: Option<&'b str>,
+    pipeline: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
-    system_api_version: Option<&'b str>,
-    system_id: Option<&'b str>,
 }
-impl<'a, 'b, B> MonitoringBulk<'a, 'b, B>
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> SimulateIngest<'a, 'b, B>
 where
     B: Body,
 {
-    #[doc = "Creates a new instance of [MonitoringBulk] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: MonitoringBulkParts<'b>) -> Self {
+    #[doc = "Creates a new instance of [SimulateIngest] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: SimulateIngestParts<'b>) -> Self {
         let headers = HeaderMap::new();
-        MonitoringBulk {
+        SimulateIngest {
             transport,
             parts,
             headers,
@@ -101,33 +102,29 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
-            interval: None,
+            pipeline: None,
             pretty: None,
             request_timeout: None,
             source: None,
-            system_api_version: None,
-            system_id: None,
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Vec<T>) -> MonitoringBulk<'a, 'b, NdBody<T>>
+    pub fn body<T>(self, body: T) -> SimulateIngest<'a, 'b, JsonBody<T>>
     where
-        T: Body,
+        T: Serialize,
     {
-        MonitoringBulk {
+        SimulateIngest {
             transport: self.transport,
             parts: self.parts,
-            body: Some(NdBody::new(body)),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
-            interval: self.interval,
+            pipeline: self.pipeline,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
-            system_api_version: self.system_api_version,
-            system_id: self.system_id,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -150,9 +147,9 @@ where
         self.human = Some(human);
         self
     }
-    #[doc = "Collection interval (e.g., '10s' or '10000ms') of the payload"]
-    pub fn interval(mut self, interval: &'b str) -> Self {
-        self.interval = Some(interval);
+    #[doc = "The pipeline id to preprocess incoming documents with if no pipeline is given for a particular document"]
+    pub fn pipeline(mut self, pipeline: &'b str) -> Self {
+        self.pipeline = Some(pipeline);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -170,20 +167,13 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "API Version of the monitored system"]
-    pub fn system_api_version(mut self, system_api_version: &'b str) -> Self {
-        self.system_api_version = Some(system_api_version);
-        self
-    }
-    #[doc = "Identifier of the monitored system"]
-    pub fn system_id(mut self, system_id: &'b str) -> Self {
-        self.system_id = Some(system_id);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Monitoring Bulk API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Simulate Ingest API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = http::Method::Post;
+        let method = match self.body {
+            Some(_) => http::Method::Post,
+            None => http::Method::Get,
+        };
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -194,21 +184,17 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
-                interval: Option<&'b str>,
+                pipeline: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
-                system_api_version: Option<&'b str>,
-                system_id: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
-                interval: self.interval,
+                pipeline: self.pipeline,
                 pretty: self.pretty,
                 source: self.source,
-                system_api_version: self.system_api_version,
-                system_id: self.system_id,
             };
             Some(query_params)
         };
@@ -220,26 +206,32 @@ where
         Ok(response)
     }
 }
-#[doc = "Namespace client for Monitoring APIs"]
-pub struct Monitoring<'a> {
+#[doc = "Namespace client for Simulate APIs"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+pub struct Simulate<'a> {
     transport: &'a Transport,
 }
-impl<'a> Monitoring<'a> {
-    #[doc = "Creates a new instance of [Monitoring]"]
+#[cfg(feature = "experimental-apis")]
+impl<'a> Simulate<'a> {
+    #[doc = "Creates a new instance of [Simulate]"]
     pub fn new(transport: &'a Transport) -> Self {
         Self { transport }
     }
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/monitor-elasticsearch-cluster.html)\n\nUsed by the monitoring features to send monitoring data."]
-    pub fn bulk<'b>(&'a self, parts: MonitoringBulkParts<'b>) -> MonitoringBulk<'a, 'b, ()> {
-        MonitoringBulk::new(self.transport(), parts)
+    #[doc = "[Simulate Ingest API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/simulate-ingest-api.html)\n\nSimulates running ingest with example documents."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn ingest<'b>(&'a self, parts: SimulateIngestParts<'b>) -> SimulateIngest<'a, 'b, ()> {
+        SimulateIngest::new(self.transport(), parts)
     }
 }
+#[cfg(feature = "experimental-apis")]
 impl Elasticsearch {
-    #[doc = "Creates a namespace client for Monitoring APIs"]
-    pub fn monitoring(&self) -> Monitoring {
-        Monitoring::new(self.transport())
+    #[doc = "Creates a namespace client for Simulate APIs"]
+    pub fn simulate(&self) -> Simulate {
+        Simulate::new(self.transport())
     }
 }

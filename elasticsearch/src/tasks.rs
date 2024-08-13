@@ -35,11 +35,11 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        self,
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         transport::Transport,
-        Method,
     },
     params::*,
 };
@@ -73,7 +73,7 @@ impl<'b> TasksCancelParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/tasks.html)\n\nCancels a task, if it can be cancelled through an API."]
+#[doc = "Builder for the [Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/tasks.html)\n\nCancels a task, if it can be cancelled through an API."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -198,7 +198,7 @@ where
     #[doc = "Creates an asynchronous call to the Tasks Cancel API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -262,7 +262,7 @@ impl<'b> TasksGetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/tasks.html)\n\nReturns information about a task."]
+#[doc = "Builder for the [Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/tasks.html)\n\nReturns information about a task."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -346,7 +346,7 @@ impl<'a, 'b> TasksGet<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Tasks Get API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -397,7 +397,7 @@ impl TasksListParts {
         }
     }
 }
-#[doc = "Builder for the [Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/tasks.html)\n\nReturns a list of tasks."]
+#[doc = "Builder for the [Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/tasks.html)\n\nReturns a list of tasks."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -516,7 +516,7 @@ impl<'a, 'b> TasksList<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Tasks List API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -578,19 +578,19 @@ impl<'a> Tasks<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/tasks.html)\n\nCancels a task, if it can be cancelled through an API."]
+    #[doc = "[Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/tasks.html)\n\nCancels a task, if it can be cancelled through an API."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn cancel<'b>(&'a self, parts: TasksCancelParts<'b>) -> TasksCancel<'a, 'b, ()> {
         TasksCancel::new(self.transport(), parts)
     }
-    #[doc = "[Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/tasks.html)\n\nReturns information about a task."]
+    #[doc = "[Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/tasks.html)\n\nReturns information about a task."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn get<'b>(&'a self, parts: TasksGetParts<'b>) -> TasksGet<'a, 'b> {
         TasksGet::new(self.transport(), parts)
     }
-    #[doc = "[Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/tasks.html)\n\nReturns a list of tasks."]
+    #[doc = "[Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/tasks.html)\n\nReturns a list of tasks."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn list<'b>(&'a self) -> TasksList<'a, 'b> {

@@ -33,11 +33,11 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        self,
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         transport::Transport,
-        Method,
     },
     params::*,
 };
@@ -58,7 +58,7 @@ impl XpackInfoParts {
         }
     }
 }
-#[doc = "Builder for the [Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
+#[doc = "Builder for the [Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
 #[derive(Clone, Debug)]
 pub struct XpackInfo<'a, 'b> {
     transport: &'a Transport,
@@ -139,7 +139,7 @@ impl<'a, 'b> XpackInfo<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Xpack Info API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -189,7 +189,7 @@ impl XpackUsageParts {
         }
     }
 }
-#[doc = "Builder for the [Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
+#[doc = "Builder for the [Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
 #[derive(Clone, Debug)]
 pub struct XpackUsage<'a, 'b> {
     transport: &'a Transport,
@@ -263,7 +263,7 @@ impl<'a, 'b> XpackUsage<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Xpack Usage API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -308,11 +308,11 @@ impl<'a> Xpack<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
+    #[doc = "[Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
     pub fn info<'b>(&'a self) -> XpackInfo<'a, 'b> {
         XpackInfo::new(self.transport())
     }
-    #[doc = "[Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
+    #[doc = "[Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
     pub fn usage<'b>(&'a self) -> XpackUsage<'a, 'b> {
         XpackUsage::new(self.transport())
     }

@@ -34,11 +34,11 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        self,
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         transport::Transport,
-        Method,
     },
     params::*,
 };
@@ -65,7 +65,7 @@ impl<'b> LogstashDeletePipelineParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Logstash Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/logstash-api-delete-pipeline.html)\n\nDeletes Logstash Pipelines used by Central Management"]
+#[doc = "Builder for the [Logstash Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/logstash-api-delete-pipeline.html)\n\nDeletes Logstash Pipelines used by Central Management"]
 #[derive(Clone, Debug)]
 pub struct LogstashDeletePipeline<'a, 'b> {
     transport: &'a Transport,
@@ -132,7 +132,7 @@ impl<'a, 'b> LogstashDeletePipeline<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Logstash Delete Pipeline API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -166,6 +166,8 @@ impl<'a, 'b> LogstashDeletePipeline<'a, 'b> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Logstash Get Pipeline API"]
 pub enum LogstashGetPipelineParts<'b> {
+    #[doc = "No parts"]
+    None,
     #[doc = "Id"]
     Id(&'b str),
 }
@@ -173,6 +175,7 @@ impl<'b> LogstashGetPipelineParts<'b> {
     #[doc = "Builds a relative URL path to the Logstash Get Pipeline API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
+            LogstashGetPipelineParts::None => "/_logstash/pipeline".into(),
             LogstashGetPipelineParts::Id(ref id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(20usize + encoded_id.len());
@@ -183,7 +186,7 @@ impl<'b> LogstashGetPipelineParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Logstash Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/logstash-api-get-pipeline.html)\n\nRetrieves Logstash Pipelines used by Central Management"]
+#[doc = "Builder for the [Logstash Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/logstash-api-get-pipeline.html)\n\nRetrieves Logstash Pipelines used by Central Management"]
 #[derive(Clone, Debug)]
 pub struct LogstashGetPipeline<'a, 'b> {
     transport: &'a Transport,
@@ -250,7 +253,7 @@ impl<'a, 'b> LogstashGetPipeline<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Logstash Get Pipeline API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -301,7 +304,7 @@ impl<'b> LogstashPutPipelineParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Logstash Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/logstash-api-put-pipeline.html)\n\nAdds and updates Logstash Pipelines used for Central Management"]
+#[doc = "Builder for the [Logstash Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/logstash-api-put-pipeline.html)\n\nAdds and updates Logstash Pipelines used for Central Management"]
 #[derive(Clone, Debug)]
 pub struct LogstashPutPipeline<'a, 'b, B> {
     transport: &'a Transport,
@@ -391,7 +394,7 @@ where
     #[doc = "Creates an asynchronous call to the Logstash Put Pipeline API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -434,21 +437,21 @@ impl<'a> Logstash<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Logstash Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/logstash-api-delete-pipeline.html)\n\nDeletes Logstash Pipelines used by Central Management"]
+    #[doc = "[Logstash Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/logstash-api-delete-pipeline.html)\n\nDeletes Logstash Pipelines used by Central Management"]
     pub fn delete_pipeline<'b>(
         &'a self,
         parts: LogstashDeletePipelineParts<'b>,
     ) -> LogstashDeletePipeline<'a, 'b> {
         LogstashDeletePipeline::new(self.transport(), parts)
     }
-    #[doc = "[Logstash Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/logstash-api-get-pipeline.html)\n\nRetrieves Logstash Pipelines used by Central Management"]
+    #[doc = "[Logstash Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/logstash-api-get-pipeline.html)\n\nRetrieves Logstash Pipelines used by Central Management"]
     pub fn get_pipeline<'b>(
         &'a self,
         parts: LogstashGetPipelineParts<'b>,
     ) -> LogstashGetPipeline<'a, 'b> {
         LogstashGetPipeline::new(self.transport(), parts)
     }
-    #[doc = "[Logstash Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/logstash-api-put-pipeline.html)\n\nAdds and updates Logstash Pipelines used for Central Management"]
+    #[doc = "[Logstash Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/logstash-api-put-pipeline.html)\n\nAdds and updates Logstash Pipelines used for Central Management"]
     pub fn put_pipeline<'b>(
         &'a self,
         parts: LogstashPutPipelineParts<'b>,

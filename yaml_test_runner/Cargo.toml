@@ -1,6 +1,6 @@
 [package]
 name = "yaml_test_runner"
-version = "8.7.0-alpha.1"
+version = "8.15.0-alpha.1"
 publish = false
 edition = "2018"
 authors = ["Elastic and Contributors"]
@@ -31,7 +31,6 @@ serde_yaml = "0.8.11"
 serde_json = { version = "~1", features = ["arbitrary_precision"] }
 simple_logger = "1.9.0"
 syn = { version = "~0.11", features = ["full"] }
-sysinfo = "0.9.6"
 url = "2.1.1"
 yaml-rust = "0.4.3"
 tar = "~0.4"

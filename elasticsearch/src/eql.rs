@@ -36,11 +36,11 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        self,
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         transport::Transport,
-        Method,
     },
     params::*,
 };
@@ -67,7 +67,7 @@ impl<'b> EqlDeleteParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Eql Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/eql-search-api.html)\n\nDeletes an async EQL search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
+#[doc = "Builder for the [Eql Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/eql-search-api.html)\n\nDeletes an async EQL search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
 #[derive(Clone, Debug)]
 pub struct EqlDelete<'a, 'b> {
     transport: &'a Transport,
@@ -134,7 +134,7 @@ impl<'a, 'b> EqlDelete<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Eql Delete API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -185,7 +185,7 @@ impl<'b> EqlGetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Eql Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/eql-search-api.html)\n\nReturns async results from previously executed Event Query Language (EQL) search"]
+#[doc = "Builder for the [Eql Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/eql-search-api.html)\n\nReturns async results from previously executed Event Query Language (EQL) search"]
 #[derive(Clone, Debug)]
 pub struct EqlGet<'a, 'b> {
     transport: &'a Transport,
@@ -266,7 +266,7 @@ impl<'a, 'b> EqlGet<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Eql Get API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -321,7 +321,7 @@ impl<'b> EqlGetStatusParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Eql Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/eql-search-api.html)\n\nReturns the status of a previously submitted async or stored Event Query Language (EQL) search"]
+#[doc = "Builder for the [Eql Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/eql-search-api.html)\n\nReturns the status of a previously submitted async or stored Event Query Language (EQL) search"]
 #[derive(Clone, Debug)]
 pub struct EqlGetStatus<'a, 'b> {
     transport: &'a Transport,
@@ -388,7 +388,7 @@ impl<'a, 'b> EqlGetStatus<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Eql Get Status API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -441,7 +441,7 @@ impl<'b> EqlSearchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Eql Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/eql-search-api.html)\n\nReturns results matching a query expressed in Event Query Language (EQL)"]
+#[doc = "Builder for the [Eql Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/eql-search-api.html)\n\nReturns results matching a query expressed in Event Query Language (EQL)"]
 #[derive(Clone, Debug)]
 pub struct EqlSearch<'a, 'b, B> {
     transport: &'a Transport,
@@ -556,8 +556,8 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = match self.body {
-            Some(_) => Method::Post,
-            None => Method::Get,
+            Some(_) => http::Method::Post,
+            None => http::Method::Get,
         };
         let headers = self.headers;
         let timeout = self.request_timeout;
@@ -607,19 +607,19 @@ impl<'a> Eql<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Eql Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/eql-search-api.html)\n\nDeletes an async EQL search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
+    #[doc = "[Eql Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/eql-search-api.html)\n\nDeletes an async EQL search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
     pub fn delete<'b>(&'a self, parts: EqlDeleteParts<'b>) -> EqlDelete<'a, 'b> {
         EqlDelete::new(self.transport(), parts)
     }
-    #[doc = "[Eql Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/eql-search-api.html)\n\nReturns async results from previously executed Event Query Language (EQL) search"]
+    #[doc = "[Eql Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/eql-search-api.html)\n\nReturns async results from previously executed Event Query Language (EQL) search"]
     pub fn get<'b>(&'a self, parts: EqlGetParts<'b>) -> EqlGet<'a, 'b> {
         EqlGet::new(self.transport(), parts)
     }
-    #[doc = "[Eql Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/eql-search-api.html)\n\nReturns the status of a previously submitted async or stored Event Query Language (EQL) search"]
+    #[doc = "[Eql Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/eql-search-api.html)\n\nReturns the status of a previously submitted async or stored Event Query Language (EQL) search"]
     pub fn get_status<'b>(&'a self, parts: EqlGetStatusParts<'b>) -> EqlGetStatus<'a, 'b> {
         EqlGetStatus::new(self.transport(), parts)
     }
-    #[doc = "[Eql Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/eql-search-api.html)\n\nReturns results matching a query expressed in Event Query Language (EQL)"]
+    #[doc = "[Eql Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/eql-search-api.html)\n\nReturns results matching a query expressed in Event Query Language (EQL)"]
     pub fn search<'b>(&'a self, parts: EqlSearchParts<'b>) -> EqlSearch<'a, 'b, ()> {
         EqlSearch::new(self.transport(), parts)
     }

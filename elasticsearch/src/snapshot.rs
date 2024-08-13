@@ -36,11 +36,11 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        self,
         headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody, PARTS_ENCODED},
         response::Response,
         transport::Transport,
-        Method,
     },
     params::*,
 };
@@ -69,7 +69,7 @@ impl<'b> SnapshotCleanupRepositoryParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Cleanup Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/clean-up-snapshot-repo-api.html)\n\nRemoves stale data from repository."]
+#[doc = "Builder for the [Snapshot Cleanup Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/clean-up-snapshot-repo-api.html)\n\nRemoves stale data from repository."]
 #[derive(Clone, Debug)]
 pub struct SnapshotCleanupRepository<'a, 'b, B> {
     transport: &'a Transport,
@@ -175,7 +175,7 @@ where
     #[doc = "Creates an asynchronous call to the Snapshot Cleanup Repository API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -248,7 +248,7 @@ impl<'b> SnapshotCloneParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nClones indices from one snapshot into another snapshot in the same repository."]
+#[doc = "Builder for the [Snapshot Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nClones indices from one snapshot into another snapshot in the same repository."]
 #[derive(Clone, Debug)]
 pub struct SnapshotClone<'a, 'b, B> {
     transport: &'a Transport,
@@ -346,7 +346,7 @@ where
     #[doc = "Creates an asynchronous call to the Snapshot Clone API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Put;
+        let method = http::Method::Put;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -406,7 +406,7 @@ impl<'b> SnapshotCreateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Create API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nCreates a snapshot in a repository."]
+#[doc = "Builder for the [Snapshot Create API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nCreates a snapshot in a repository."]
 #[derive(Clone, Debug)]
 pub struct SnapshotCreate<'a, 'b, B> {
     transport: &'a Transport,
@@ -512,7 +512,7 @@ where
     #[doc = "Creates an asynchronous call to the Snapshot Create API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -568,7 +568,7 @@ impl<'b> SnapshotCreateRepositoryParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Create Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nCreates a repository."]
+#[doc = "Builder for the [Snapshot Create Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nCreates a repository."]
 #[derive(Clone, Debug)]
 pub struct SnapshotCreateRepository<'a, 'b, B> {
     transport: &'a Transport,
@@ -682,7 +682,7 @@ where
     #[doc = "Creates an asynchronous call to the Snapshot Create Repository API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -747,7 +747,7 @@ impl<'b> SnapshotDeleteParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nDeletes one or more snapshots."]
+#[doc = "Builder for the [Snapshot Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nDeletes one or more snapshots."]
 #[derive(Clone, Debug)]
 pub struct SnapshotDelete<'a, 'b> {
     transport: &'a Transport,
@@ -760,6 +760,7 @@ pub struct SnapshotDelete<'a, 'b> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    wait_for_completion: Option<bool>,
 }
 impl<'a, 'b> SnapshotDelete<'a, 'b> {
     #[doc = "Creates a new instance of [SnapshotDelete] with the specified API parts"]
@@ -776,6 +777,7 @@ impl<'a, 'b> SnapshotDelete<'a, 'b> {
             pretty: None,
             request_timeout: None,
             source: None,
+            wait_for_completion: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -818,10 +820,15 @@ impl<'a, 'b> SnapshotDelete<'a, 'b> {
         self.source = Some(source);
         self
     }
+    #[doc = "Should this request wait until the operation has completed before returning"]
+    pub fn wait_for_completion(mut self, wait_for_completion: bool) -> Self {
+        self.wait_for_completion = Some(wait_for_completion);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Snapshot Delete API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -835,6 +842,7 @@ impl<'a, 'b> SnapshotDelete<'a, 'b> {
                 master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                wait_for_completion: Option<bool>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -843,6 +851,7 @@ impl<'a, 'b> SnapshotDelete<'a, 'b> {
                 master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
+                wait_for_completion: self.wait_for_completion,
             };
             Some(query_params)
         };
@@ -876,7 +885,7 @@ impl<'b> SnapshotDeleteRepositoryParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Delete Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nDeletes a repository."]
+#[doc = "Builder for the [Snapshot Delete Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nDeletes a repository."]
 #[derive(Clone, Debug)]
 pub struct SnapshotDeleteRepository<'a, 'b> {
     transport: &'a Transport,
@@ -957,7 +966,7 @@ impl<'a, 'b> SnapshotDeleteRepository<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Snapshot Delete Repository API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Delete;
+        let method = http::Method::Delete;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1020,7 +1029,7 @@ impl<'b> SnapshotGetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nReturns information about a snapshot."]
+#[doc = "Builder for the [Snapshot Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nReturns information about a snapshot."]
 #[derive(Clone, Debug)]
 pub struct SnapshotGet<'a, 'b> {
     transport: &'a Transport,
@@ -1178,7 +1187,7 @@ impl<'a, 'b> SnapshotGet<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Snapshot Get API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1260,7 +1269,7 @@ impl<'b> SnapshotGetRepositoryParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Get Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nReturns information about a repository."]
+#[doc = "Builder for the [Snapshot Get Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nReturns information about a repository."]
 #[derive(Clone, Debug)]
 pub struct SnapshotGetRepository<'a, 'b> {
     transport: &'a Transport,
@@ -1341,7 +1350,7 @@ impl<'a, 'b> SnapshotGetRepository<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Snapshot Get Repository API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1398,7 +1407,7 @@ impl<'b> SnapshotRepositoryAnalyzeParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Repository Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nAnalyzes a repository for correctness and performance"]
+#[doc = "Builder for the [Snapshot Repository Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nAnalyzes a repository for correctness and performance"]
 #[derive(Clone, Debug)]
 pub struct SnapshotRepositoryAnalyze<'a, 'b, B> {
     transport: &'a Transport,
@@ -1576,7 +1585,7 @@ where
     #[doc = "Creates an asynchronous call to the Snapshot Repository Analyze API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1657,7 +1666,7 @@ impl<'b> SnapshotRestoreParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Restore API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nRestores a snapshot."]
+#[doc = "Builder for the [Snapshot Restore API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nRestores a snapshot."]
 #[derive(Clone, Debug)]
 pub struct SnapshotRestore<'a, 'b, B> {
     transport: &'a Transport,
@@ -1763,7 +1772,7 @@ where
     #[doc = "Creates an asynchronous call to the Snapshot Restore API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1841,7 +1850,7 @@ impl<'b> SnapshotStatusParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nReturns information about the status of a snapshot."]
+#[doc = "Builder for the [Snapshot Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nReturns information about the status of a snapshot."]
 #[derive(Clone, Debug)]
 pub struct SnapshotStatus<'a, 'b> {
     transport: &'a Transport,
@@ -1922,7 +1931,7 @@ impl<'a, 'b> SnapshotStatus<'a, 'b> {
     #[doc = "Creates an asynchronous call to the Snapshot Status API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Get;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -1979,7 +1988,7 @@ impl<'b> SnapshotVerifyRepositoryParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Snapshot Verify Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nVerifies a repository."]
+#[doc = "Builder for the [Snapshot Verify Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nVerifies a repository."]
 #[derive(Clone, Debug)]
 pub struct SnapshotVerifyRepository<'a, 'b, B> {
     transport: &'a Transport,
@@ -2085,7 +2094,7 @@ where
     #[doc = "Creates an asynchronous call to the Snapshot Verify Repository API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = Method::Post;
+        let method = http::Method::Post;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -2132,66 +2141,66 @@ impl<'a> Snapshot<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Snapshot Cleanup Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/clean-up-snapshot-repo-api.html)\n\nRemoves stale data from repository."]
+    #[doc = "[Snapshot Cleanup Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/clean-up-snapshot-repo-api.html)\n\nRemoves stale data from repository."]
     pub fn cleanup_repository<'b>(
         &'a self,
         parts: SnapshotCleanupRepositoryParts<'b>,
     ) -> SnapshotCleanupRepository<'a, 'b, ()> {
         SnapshotCleanupRepository::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nClones indices from one snapshot into another snapshot in the same repository."]
+    #[doc = "[Snapshot Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nClones indices from one snapshot into another snapshot in the same repository."]
     pub fn clone<'b>(&'a self, parts: SnapshotCloneParts<'b>) -> SnapshotClone<'a, 'b, ()> {
         SnapshotClone::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Create API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nCreates a snapshot in a repository."]
+    #[doc = "[Snapshot Create API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nCreates a snapshot in a repository."]
     pub fn create<'b>(&'a self, parts: SnapshotCreateParts<'b>) -> SnapshotCreate<'a, 'b, ()> {
         SnapshotCreate::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Create Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nCreates a repository."]
+    #[doc = "[Snapshot Create Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nCreates a repository."]
     pub fn create_repository<'b>(
         &'a self,
         parts: SnapshotCreateRepositoryParts<'b>,
     ) -> SnapshotCreateRepository<'a, 'b, ()> {
         SnapshotCreateRepository::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nDeletes one or more snapshots."]
+    #[doc = "[Snapshot Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nDeletes one or more snapshots."]
     pub fn delete<'b>(&'a self, parts: SnapshotDeleteParts<'b>) -> SnapshotDelete<'a, 'b> {
         SnapshotDelete::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Delete Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nDeletes a repository."]
+    #[doc = "[Snapshot Delete Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nDeletes a repository."]
     pub fn delete_repository<'b>(
         &'a self,
         parts: SnapshotDeleteRepositoryParts<'b>,
     ) -> SnapshotDeleteRepository<'a, 'b> {
         SnapshotDeleteRepository::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nReturns information about a snapshot."]
+    #[doc = "[Snapshot Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nReturns information about a snapshot."]
     pub fn get<'b>(&'a self, parts: SnapshotGetParts<'b>) -> SnapshotGet<'a, 'b> {
         SnapshotGet::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Get Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nReturns information about a repository."]
+    #[doc = "[Snapshot Get Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nReturns information about a repository."]
     pub fn get_repository<'b>(
         &'a self,
         parts: SnapshotGetRepositoryParts<'b>,
     ) -> SnapshotGetRepository<'a, 'b> {
         SnapshotGetRepository::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Repository Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nAnalyzes a repository for correctness and performance"]
+    #[doc = "[Snapshot Repository Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nAnalyzes a repository for correctness and performance"]
     pub fn repository_analyze<'b>(
         &'a self,
         parts: SnapshotRepositoryAnalyzeParts<'b>,
     ) -> SnapshotRepositoryAnalyze<'a, 'b, ()> {
         SnapshotRepositoryAnalyze::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Restore API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nRestores a snapshot."]
+    #[doc = "[Snapshot Restore API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nRestores a snapshot."]
     pub fn restore<'b>(&'a self, parts: SnapshotRestoreParts<'b>) -> SnapshotRestore<'a, 'b, ()> {
         SnapshotRestore::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nReturns information about the status of a snapshot."]
+    #[doc = "[Snapshot Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nReturns information about the status of a snapshot."]
     pub fn status<'b>(&'a self, parts: SnapshotStatusParts<'b>) -> SnapshotStatus<'a, 'b> {
         SnapshotStatus::new(self.transport(), parts)
     }
-    #[doc = "[Snapshot Verify Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/modules-snapshots.html)\n\nVerifies a repository."]
+    #[doc = "[Snapshot Verify Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/modules-snapshots.html)\n\nVerifies a repository."]
     pub fn verify_repository<'b>(
         &'a self,
         parts: SnapshotVerifyRepositoryParts<'b>,
