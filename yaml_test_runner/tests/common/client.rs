@@ -52,7 +52,6 @@ use elasticsearch::{
 use once_cell::sync::Lazy;
 use serde_json::{json, Value};
 use std::ops::Deref;
-use sysinfo::SystemExt;
 use url::Url;
 
 fn cluster_addr() -> String {
@@ -60,12 +59,6 @@ fn cluster_addr() -> String {
         Ok(server) => server,
         Err(_) => DEFAULT_ADDRESS.into(),
     }
-}
-
-/// Determines if Fiddler.exe proxy process is running
-fn running_proxy() -> bool {
-    let system = sysinfo::System::new();
-    !system.get_process_by_name("Fiddler").is_empty()
 }
 
 static GLOBAL_CLIENT: Lazy<Elasticsearch> = Lazy::new(|| {
@@ -102,11 +95,6 @@ static GLOBAL_CLIENT: Lazy<Elasticsearch> = Lazy::new(|| {
         Some(c) => builder.auth(c).cert_validation(CertificateValidation::None),
         None => builder,
     };
-
-    if running_proxy() {
-        let proxy_url = Url::parse("http://localhost:8888").unwrap();
-        builder = builder.proxy(proxy_url, None, None);
-    }
 
     let transport = builder.build().unwrap();
     Elasticsearch::new(transport)
