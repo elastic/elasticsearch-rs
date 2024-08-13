@@ -103,14 +103,14 @@ impl<'a> RequestBuilder<'a> {
             _ => match methods.as_slice() {
                 [HttpMethod::Post, HttpMethod::Put] => {
                     if builder_name.contains("Put") {
-                        parse_expr(quote!(Method::Put))
+                        parse_expr(quote!(http::Method::Put))
                     } else {
-                        parse_expr(quote!(Method::Post))
+                        parse_expr(quote!(http::Method::Post))
                     }
                 }
                 [HttpMethod::Get, HttpMethod::Post] => parse_expr(quote!(match self.body {
-                    Some(_) => Method::Post,
-                    None => Method::Get,
+                    Some(_) => http::Method::Post,
+                    None => http::Method::Get,
                 })),
                 _ => panic!("Combination of methods unexpected"),
             },
