@@ -20,7 +20,7 @@
 # - Added ingest.geoip.downloader.enabled=false as it causes false positives in testing
 # - Moved ELASTIC_PASSWORD to the base arguments for "Security On by default"
 
-script_path=$(dirname $(realpath -s $0))
+script_path=$(dirname $(realpath $0))
 source $script_path/functions/imports.sh
 set -euo pipefail
 

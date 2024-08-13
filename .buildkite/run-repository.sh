@@ -29,7 +29,7 @@ docker build --build-arg RUST_TOOLCHAIN="${RUST_TOOLCHAIN}" --file .buildkite/Do
 
 echo -e "--- Run [:rust: elastic/elasticsearch-rs container]"
 
-repo=$(realpath $(dirname $(realpath -s $0))/../)
+repo=$(realpath $(dirname $(realpath $0))/../)
 
 docker run \
   --network=${network_name} \
