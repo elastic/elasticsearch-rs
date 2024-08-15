@@ -123,11 +123,11 @@ impl Serialize for BulkHeader {
 ///     .pipeline("process_tweet")
 ///     .into()
 /// );
-/// ops.push(BulkOperation::create("2", json!({
+/// ops.push(BulkOperation::create(json!({
 ///         "user": "forloop",
 ///         "post_date": "2020-01-08T00:00:00Z",
 ///         "message": "Indexing with the rust client, yeah!"
-///     }))
+///     })).id("2")
 ///     .pipeline("process_tweet")
 ///     .into()
 /// );
@@ -605,7 +605,7 @@ impl<B> From<BulkUpdateOperation<B>> for BulkOperation<B> {
 ///     .index("index_doc")
 ///     .routing("routing")
 /// )?;
-/// ops.push(BulkOperation::create("2", CreateDoc { bar: "create" }))?;
+/// ops.push(BulkOperation::create(CreateDoc { bar: "create" }).id("2"))?;
 /// ops.push(BulkOperation::update("3", UpdateDoc { baz: "update" }))?;
 /// ops.push(BulkOperation::<()>::delete("4"))?;
 ///
