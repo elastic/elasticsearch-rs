@@ -9,7 +9,7 @@ steps:
     matrix:
       setup:
         stack_version:
-          - "8.11.0-SNAPSHOT"
+          - "8.15.0"
         test_suite:
           - "free"
           - "platinum"

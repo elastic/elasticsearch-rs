@@ -12,8 +12,7 @@ RUN set -eux; \
         libssl-dev \
         pkg-config \
         ; \
-    cargo install --force cargo-make; \
-    cargo install cargo2junit;
+    cargo install --force cargo-make;
 
 # create app directory
 WORKDIR /usr/src/elasticsearch-rs

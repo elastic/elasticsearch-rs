@@ -6,7 +6,7 @@
 # TEST_SUITE -- which test suite to run: free or platinum
 # ELASTICSEARCH_URL -- The url at which elasticsearch is reachable, a default is composed based on STACK_VERSION and TEST_SUITE
 # RUST_TOOLCHAIN -- Rust toolchain version to compile and run tests
-script_path=$(dirname $(realpath -s $0))
+script_path=$(dirname $(realpath $0))
 source $script_path/functions/imports.sh
 set -euo pipefail
 
@@ -41,4 +41,4 @@ docker run \
   --volume ${repo}/test_results:/usr/src/elasticsearch-rs/test_results \
   --rm \
   elastic/elasticsearch-rs \
-  /bin/bash -c "cargo make test-yaml"
+  /bin/bash -c "cargo make test"

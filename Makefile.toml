@@ -58,7 +58,7 @@ dependencies = ["generate-yaml-tests"]
 category = "Elasticsearch"
 private = true
 condition = { env_set = [ "ELASTICSEARCH_URL" ], env_true = ["CARGO_MAKE_CI"] }
-script = ["cargo test -p yaml_test_runner -- --test-threads 1 -Z unstable-options --format json | tee test_results/results.json"]
+script = ["cargo test -p yaml_test_runner -- --test-threads 1 | tee test_results/results.txt"]
 dependencies = ["generate-yaml-tests"]
 
 [tasks.test-elasticsearch]
@@ -82,17 +82,17 @@ private = true
 condition = { env_true = [ "CARGO_MAKE_CI" ] }
 script = ["[ -d test_results ] || mkdir -p test_results"]
 
-[tasks.install-cargo2junit]
-category = "Elasticsearch"
-private = true
-script = ["cargo install cargo2junit"]
-
-[tasks.convert-test-results-junit]
-category = "Elasticsearch"
-private = true
-condition = { env_true = [ "CARGO_MAKE_CI" ] }
-script = ["cat test_results/results.json | cargo2junit > test_results/cargo-junit.xml"]
-dependencies = ["install-cargo2junit"]
+#[tasks.install-cargo2junit]
+#category = "Elasticsearch"
+#private = true
+#script = ["cargo install cargo2junit"]
+#
+#[tasks.convert-test-results-junit]
+#category = "Elasticsearch"
+#private = true
+#condition = { env_true = [ "CARGO_MAKE_CI" ] }
+#script = ["cat test_results/results.json | cargo2junit > test_results/cargo-junit.xml"]
+#dependencies = ["install-cargo2junit"]
 
 [tasks.run-elasticsearch]
 category = "Elasticsearch"
@@ -151,7 +151,7 @@ env = { "CLEANUP" = true, "DETACH" = false }
 category = "Elasticsearch"
 description = "Generates and runs yaml_test_runner package platinum/free tests against a given Elasticsearch version"
 condition = { env_set = [ "STACK_VERSION", "TEST_SUITE" ] }
-dependencies = ["generate-yaml-tests", "create-test-results-dir", "test-yaml-test-runner", "test-yaml-test-runner-ci", "convert-test-results-junit"]
+dependencies = ["generate-yaml-tests", "create-test-results-dir", "test-yaml-test-runner", "test-yaml-test-runner-ci"]
 run_task = "stop-elasticsearch"
 
 [tasks.test-generator]
