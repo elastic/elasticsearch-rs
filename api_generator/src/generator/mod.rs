@@ -72,6 +72,95 @@ pub struct Api {
 }
 
 impl Api {
+    /// Reads Api from a directory of REST Api specs
+    pub fn read_from_dir(download_dir: &PathBuf) -> anyhow::Result<Api> {
+        let paths = fs::read_dir(download_dir)?;
+        let mut namespaces = BTreeMap::<String, ApiNamespace>::new();
+        let mut enums: HashSet<ApiEnum> = HashSet::new();
+        let mut common_params = BTreeMap::new();
+        let root_key = "root";
+
+        for path in paths {
+            let path = path?.path();
+            let name = path.file_name().map(|path| path.to_str());
+            let display = path.to_string_lossy().into_owned();
+
+            if name
+                .unwrap()
+                .map(|name| name.ends_with(".json") && !name.starts_with('_'))
+                .unwrap_or(true)
+            {
+                let mut file = File::open(&path)?;
+                let (name, api_endpoint) = endpoint_from_file(display, &mut file)?;
+
+                if api_endpoint.stability != Stability::Stable && api_endpoint.deprecated.is_some() {
+                    // Do not generate deprecated unstable endpoints
+                    continue;
+                }
+
+                let name_parts: Vec<&str> = name.splitn(2, '.').collect();
+                let (namespace, method_name) = match name_parts.len() {
+                    len if len > 1 => (name_parts[0].to_string(), name_parts[1].to_string()),
+                    _ => (root_key.to_string(), name),
+                };
+
+                // collect unique enum values
+                for param in api_endpoint
+                    .params
+                    .iter()
+                    .filter(|p| p.1.ty == TypeKind::Enum)
+                {
+                    let options: Vec<String> = param
+                        .1
+                        .options
+                        .iter()
+                        .map(|v| v.as_str().unwrap().to_string())
+                        .collect();
+
+                    enums.insert(ApiEnum {
+                        name: param.0.to_string(),
+                        description: param.1.description.clone(),
+                        values: options,
+                        stability: api_endpoint.stability,
+                    });
+                }
+
+                // collect api endpoints into namespaces
+                if !namespaces.contains_key(&namespace) {
+                    let mut api_namespace = ApiNamespace::new();
+                    api_namespace.add(method_name, api_endpoint);
+                    namespaces.insert(namespace.to_string(), api_namespace);
+                } else {
+                    namespaces
+                        .get_mut(&namespace)
+                        .unwrap()
+                        .add(method_name, api_endpoint);
+                }
+            } else if name
+                .map(|name| name == Some("_common.json"))
+                .unwrap_or(true)
+            {
+                let mut file = File::open(&path)?;
+                let common = common_params_from_file(display, &mut file)?;
+                common_params = common.params;
+            }
+        }
+
+        // extract the root methods
+        let root = namespaces.remove(root_key).unwrap();
+
+        let mut sorted_enums = enums.into_iter().collect::<Vec<_>>();
+        sorted_enums.sort_by(|a, b| a.name.cmp(&b.name));
+
+        Ok(Api {
+            common_params,
+            root,
+            namespaces,
+            enums: sorted_enums,
+        })
+    }
+
+
     /// Find the right ApiEndpoint from the REST API specs for the API call
     /// defined in the YAML test.
     ///
@@ -515,8 +604,7 @@ impl Eq for ApiEnum {}
 /// Generates all client source code from the REST API spec
 pub fn generate(download_dir: &PathBuf, generated_dir: &PathBuf) -> anyhow::Result<()> {
     // read the Api from file
-    let api = read_api(download_dir)?;
-
+    let api = Api::read_from_dir(download_dir)?;
     let docs_dir = PathBuf::from("./api_generator/docs");
 
     // generated file tracking lists
@@ -587,94 +675,6 @@ pub use bulk::*;
     fs::write(generated, toml::to_string_pretty(&tracker)?)?;
 
     Ok(())
-}
-
-/// Reads Api from a directory of REST Api specs
-pub fn read_api(download_dir: &PathBuf) -> anyhow::Result<Api> {
-    let paths = fs::read_dir(download_dir)?;
-    let mut namespaces = BTreeMap::<String, ApiNamespace>::new();
-    let mut enums: HashSet<ApiEnum> = HashSet::new();
-    let mut common_params = BTreeMap::new();
-    let root_key = "root";
-
-    for path in paths {
-        let path = path?.path();
-        let name = path.file_name().map(|path| path.to_str());
-        let display = path.to_string_lossy().into_owned();
-
-        if name
-            .unwrap()
-            .map(|name| name.ends_with(".json") && !name.starts_with('_'))
-            .unwrap_or(true)
-        {
-            let mut file = File::open(&path)?;
-            let (name, api_endpoint) = endpoint_from_file(display, &mut file)?;
-
-            if api_endpoint.stability != Stability::Stable && api_endpoint.deprecated.is_some() {
-                // Do not generate deprecated unstable endpoints
-                continue;
-            }
-
-            let name_parts: Vec<&str> = name.splitn(2, '.').collect();
-            let (namespace, method_name) = match name_parts.len() {
-                len if len > 1 => (name_parts[0].to_string(), name_parts[1].to_string()),
-                _ => (root_key.to_string(), name),
-            };
-
-            // collect unique enum values
-            for param in api_endpoint
-                .params
-                .iter()
-                .filter(|p| p.1.ty == TypeKind::Enum)
-            {
-                let options: Vec<String> = param
-                    .1
-                    .options
-                    .iter()
-                    .map(|v| v.as_str().unwrap().to_string())
-                    .collect();
-
-                enums.insert(ApiEnum {
-                    name: param.0.to_string(),
-                    description: param.1.description.clone(),
-                    values: options,
-                    stability: api_endpoint.stability,
-                });
-            }
-
-            // collect api endpoints into namespaces
-            if !namespaces.contains_key(&namespace) {
-                let mut api_namespace = ApiNamespace::new();
-                api_namespace.add(method_name, api_endpoint);
-                namespaces.insert(namespace.to_string(), api_namespace);
-            } else {
-                namespaces
-                    .get_mut(&namespace)
-                    .unwrap()
-                    .add(method_name, api_endpoint);
-            }
-        } else if name
-            .map(|name| name == Some("_common.json"))
-            .unwrap_or(true)
-        {
-            let mut file = File::open(&path)?;
-            let common = common_params_from_file(display, &mut file)?;
-            common_params = common.params;
-        }
-    }
-
-    // extract the root methods
-    let root = namespaces.remove(root_key).unwrap();
-
-    let mut sorted_enums = enums.into_iter().collect::<Vec<_>>();
-    sorted_enums.sort_by(|a, b| a.name.cmp(&b.name));
-
-    Ok(Api {
-        common_params,
-        root,
-        namespaces,
-        enums: sorted_enums,
-    })
 }
 
 /// deserializes an ApiEndpoint from a file

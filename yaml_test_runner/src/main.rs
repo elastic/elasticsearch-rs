@@ -29,6 +29,7 @@ extern crate quote;
 extern crate simple_logger;
 
 use anyhow::bail;
+use api_generator::generator::Api;
 use clap::{App, Arg};
 use log::LevelFilter;
 use serde_json::Value;
@@ -92,7 +93,7 @@ fn main() -> anyhow::Result<()> {
     let download_dir = PathBuf::from(format!("./checkout/{}/rest-api-spec/test", stack_version));
     let generated_dir = PathBuf::from(format!("./{}/tests", env!("CARGO_PKG_NAME")));
 
-    let api = api_generator::generator::read_api(&rest_specs_dir)?;
+    let api = Api::read_from_dir(&rest_specs_dir)?;
 
     // delete everything under the generated_dir except common dir
     if generated_dir.exists() {
