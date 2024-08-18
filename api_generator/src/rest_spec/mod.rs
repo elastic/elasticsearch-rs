@@ -20,7 +20,7 @@ extern crate reqwest;
 use self::reqwest::header::{HeaderMap, HeaderValue, USER_AGENT};
 use flate2::read::GzDecoder;
 use globset::Glob;
-use reqwest::Response;
+use reqwest::blocking::Response;
 use std::{fs::File, io, path::PathBuf};
 use tar::{Archive, Entry};
 
@@ -35,7 +35,7 @@ pub fn download_specs(branch: &str, download_dir: &PathBuf) -> anyhow::Result<()
         USER_AGENT,
         HeaderValue::from_str(&format!("elasticsearch-rs/{}", env!("CARGO_PKG_NAME")))?,
     );
-    let client = reqwest::ClientBuilder::new()
+    let client = reqwest::blocking::ClientBuilder::new()
         .default_headers(headers)
         .build()
         .unwrap();
