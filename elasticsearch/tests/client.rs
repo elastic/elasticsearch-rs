@@ -34,7 +34,7 @@ use elasticsearch::{
 
 use crate::common::client::index_documents;
 use bytes::Bytes;
-use hyper::Method;
+use http::Method;
 use serde_json::{json, Value};
 use std::time::Duration;
 
@@ -153,7 +153,7 @@ async fn uses_call_request_timeout() {
         .await;
 
     match response {
-        Ok(_) => assert!(false, "Expected timeout error, but response received"),
+        Ok(r) => assert!(false, "Expected timeout error, but response received: {:?}", r),
         Err(e) => assert!(e.is_timeout(), "Expected timeout error, but was {:?}", e),
     }
 }

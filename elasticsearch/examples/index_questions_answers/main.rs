@@ -19,7 +19,7 @@
 #[macro_use]
 extern crate serde_json;
 
-use clap::{App, Arg};
+use clap::{Arg, Command};
 #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
 use elasticsearch::cert::CertificateValidation;
 use elasticsearch::{
@@ -31,7 +31,6 @@ use elasticsearch::{
     BulkOperation, BulkParts, Elasticsearch, Error, DEFAULT_ADDRESS,
 };
 use serde_json::Value;
-use sysinfo::SystemExt;
 use url::Url;
 
 mod stack_overflow;
@@ -49,58 +48,50 @@ static POSTS_INDEX: &'static str = "posts";
 // TODO: Concurrent bulk requests
 #[tokio::main]
 pub async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let matches = App::new("index_questions_answers")
+    let matches = Command::new("index_questions_answers")
         .about(
             "indexes Stack Overflow questions and answers into Elasticsearch with the Rust client",
         )
         .arg(
-            Arg::with_name("path")
-                .short("p")
+            Arg::new("path")
+                .short('p')
                 .long("path")
                 .value_name("PATH")
                 .help("The path to the Posts.xml file containing questions and answers. Can be obtained from https://archive.org/download/stackexchange/stackoverflow.com-Posts.7z (large file)")
                 .required(true)
-                .takes_value(true),
         )
         .arg(
-            Arg::with_name("limit")
-                .short("l")
+            Arg::new("limit")
+                .short('l')
                 .long("limit")
                 .value_name("LIMIT")
                 .help("The number of questions and answers from Posts.xml to index")
                 .required(false)
-                .takes_value(true),
         )
         .arg(
-            Arg::with_name("size")
-                .short("s")
+            Arg::new("size")
+                .short('s')
                 .long("size")
                 .value_name("SIZE")
                 .help("The number of documents in each bulk request")
                 .required(false)
-                .takes_value(true),
         )
         .arg(
-            Arg::with_name("delete")
-                .short("d")
+            Arg::new("delete")
+                .short('d')
                 .long("delete")
                 .help("Whether to delete the index before indexing")
                 .required(false)
-                .takes_value(false),
         )
         .get_matches();
 
-    let path = matches.value_of("path").expect("missing 'path' argument");
-    let limit = match matches.value_of("limit") {
-        Some(l) => Some(l.parse::<usize>()?),
-        _ => None,
-    };
-    let size = match matches.value_of("size") {
-        Some(l) => l.parse::<usize>()?,
-        _ => 1000,
-    };
+    let path = matches
+        .get_one::<String>("path")
+        .expect("missing 'path' argument");
+    let limit = matches.get_one::<usize>("limit").copied();
+    let size = matches.get_one::<usize>("size").copied().unwrap_or(1000);
 
-    let delete = matches.is_present("delete");
+    let delete = matches.contains_id("delete");
     let client = create_client()?;
 
     create_index_if_not_exists(&client, delete).await?;
@@ -368,12 +359,6 @@ fn create_client() -> Result<Elasticsearch, Error> {
         }
     }
 
-    /// Determines if Fiddler.exe proxy process is running
-    fn running_proxy() -> bool {
-        let system = sysinfo::System::new();
-        !system.get_process_by_name("Fiddler").is_empty()
-    }
-
     let mut url = Url::parse(cluster_addr().as_ref()).unwrap();
 
     // if the url is https and specifies a username and password, remove from the url and set credentials
@@ -416,11 +401,6 @@ fn create_client() -> Result<Elasticsearch, Error> {
         }
         None => builder,
     };
-
-    if running_proxy() {
-        let proxy_url = Url::parse("http://localhost:8888").unwrap();
-        builder = builder.proxy(proxy_url, None, None);
-    }
 
     let transport = builder.build()?;
     Ok(Elasticsearch::new(transport))

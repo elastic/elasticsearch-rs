@@ -21,22 +21,22 @@
 // https://github.com/seanmonstar/reqwest/blob/master/LICENSE-APACHE
 
 use std::{
-    convert::Infallible, future::Future, net, sync::mpsc as std_mpsc, thread, time::Duration,
+    future::Future, sync::mpsc as std_mpsc, thread, time::Duration,
 };
-
+use std::future::IntoFuture;
+use std::net::SocketAddr;
 use tokio::sync::oneshot;
 
-pub use http::Response;
 use tokio::runtime;
 
 pub struct Server {
-    addr: net::SocketAddr,
+    addr: SocketAddr,
     panic_rx: std_mpsc::Receiver<()>,
     shutdown_tx: Option<oneshot::Sender<()>>,
 }
 
 impl Server {
-    pub fn addr(&self) -> net::SocketAddr {
+    pub fn addr(&self) -> SocketAddr {
         self.addr
     }
 }
@@ -57,33 +57,30 @@ impl Drop for Server {
 
 pub fn http<F, Fut>(func: F) -> Server
 where
-    F: Fn(http::Request<hyper::Body>) -> Fut + Clone + Send + 'static,
-    Fut: Future<Output = http::Response<hyper::Body>> + Send + 'static,
+    F: Fn(axum::extract::Request) -> Fut + Clone + Send + 'static,
+    Fut: Future<Output = axum::response::Response> + Send + 'static,
 {
+    let (shutdown_tx, shutdown_rx) = oneshot::channel();
     //Spawn new runtime in thread to prevent reactor execution context conflict
     thread::spawn(move || {
         let rt = runtime::Builder::new_current_thread()
             .enable_all()
             .build()
-            .expect("new rt");
-        let srv = rt.block_on(async move {
-            hyper::Server::bind(&([127, 0, 0, 1], 0).into()).serve(hyper::service::make_service_fn(
-                move |_| {
-                    let func = func.clone();
-                    async move {
-                        Ok::<_, Infallible>(hyper::service::service_fn(move |req| {
-                            let fut = func(req);
-                            async move { Ok::<_, Infallible>(fut.await) }
-                        }))
-                    }
-                },
-            ))
-        });
+            .unwrap();
 
-        let addr = srv.local_addr();
-        let (shutdown_tx, shutdown_rx) = oneshot::channel();
-        let srv = srv.with_graceful_shutdown(async move {
-            let _ = shutdown_rx.await;
+        let (srv, addr) = rt.block_on(async {
+            let bind_addr: SocketAddr = ([127, 0, 0, 1], 0).into();
+            let listener = tokio::net::TcpListener::bind(bind_addr).await.unwrap();
+            let local_addr = listener.local_addr().unwrap();
+            let app = axum::Router::new()
+                .fallback(func); // handle everything
+
+            let server = axum::serve(listener, app)
+                .with_graceful_shutdown(async {
+                    let _ = shutdown_rx.await;
+                });
+
+            (server.into_future(), local_addr)
         });
 
         let (panic_tx, panic_rx) = std_mpsc::channel();

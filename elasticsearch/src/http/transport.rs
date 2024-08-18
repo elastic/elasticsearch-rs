@@ -35,7 +35,7 @@ use crate::{
         Method,
     },
 };
-use base64::write::EncoderWriter as Base64Encoder;
+use base64::{engine::general_purpose::STANDARD as BASE64_STANDARD, write::EncoderWriter, Engine};
 use bytes::BytesMut;
 use lazy_static::lazy_static;
 use serde::Serialize;
@@ -429,7 +429,7 @@ impl Transport {
                 Credentials::ApiKey(i, k) => {
                     let mut header_value = b"ApiKey ".to_vec();
                     {
-                        let mut encoder = Base64Encoder::new(&mut header_value, base64::STANDARD);
+                        let mut encoder = EncoderWriter::new(&mut header_value, &BASE64_STANDARD);
                         write!(encoder, "{}:", i).unwrap();
                         write!(encoder, "{}", k).unwrap();
                     }
@@ -561,7 +561,7 @@ impl CloudId {
         }
 
         let data = parts[1];
-        let decoded_result = base64::decode(data);
+        let decoded_result = BASE64_STANDARD.decode(data);
         if decoded_result.is_err() {
             return Err(crate::error::lib(format!(
                 "cannot base 64 decode '{}'",
@@ -685,7 +685,7 @@ pub mod tests {
 
     #[test]
     fn can_parse_cloud_id_with_kibana_uuid() {
-        let base64 = base64::encode("cloud-endpoint.example$3dadf823f05388497ea684236d918a1a$3f26e1609cf54a0f80137a80de560da4");
+        let base64 = BASE64_STANDARD.encode("cloud-endpoint.example$3dadf823f05388497ea684236d918a1a$3f26e1609cf54a0f80137a80de560da4");
         let cloud_id = format!("my_cluster:{}", base64);
         let result = CloudId::parse(&cloud_id);
         assert!(result.is_ok());
@@ -699,7 +699,7 @@ pub mod tests {
 
     #[test]
     fn can_parse_cloud_id_without_kibana_uuid() {
-        let base64 = base64::encode("cloud-endpoint.example$3dadf823f05388497ea684236d918a1a$");
+        let base64 = BASE64_STANDARD.encode("cloud-endpoint.example$3dadf823f05388497ea684236d918a1a$");
         let cloud_id = format!("my_cluster:{}", base64);
         let result = CloudId::parse(&cloud_id);
         assert!(result.is_ok());
@@ -713,7 +713,7 @@ pub mod tests {
 
     #[test]
     fn can_parse_cloud_id_with_different_port() {
-        let base64 = base64::encode("cloud-endpoint.example:4463$3dadf823f05388497ea684236d918a1a$3f26e1609cf54a0f80137a80de560da4");
+        let base64 = BASE64_STANDARD.encode("cloud-endpoint.example:4463$3dadf823f05388497ea684236d918a1a$3f26e1609cf54a0f80137a80de560da4");
         let cloud_id = format!("my_cluster:{}", base64);
         let result = CloudId::parse(&cloud_id);
         assert!(result.is_ok());
@@ -728,7 +728,7 @@ pub mod tests {
 
     #[test]
     fn cloud_id_must_contain_colon() {
-        let base64 = base64::encode("cloud-endpoint.example$3dadf823f05388497ea684236d918a1a$3f26e1609cf54a0f80137a80de560da4");
+        let base64 = BASE64_STANDARD.encode("cloud-endpoint.example$3dadf823f05388497ea684236d918a1a$3f26e1609cf54a0f80137a80de560da4");
         let cloud_id = format!("my_cluster{}", base64);
         let cloud = CloudId::parse(&cloud_id);
         assert!(cloud.is_err());
@@ -743,7 +743,7 @@ pub mod tests {
 
     #[test]
     fn cloud_id_first_part_cannot_be_empty() {
-        let base64 = base64::encode("cloud-endpoint.example$3dadf823f05388497ea684236d918a1a$3f26e1609cf54a0f80137a80de560da4");
+        let base64 = BASE64_STANDARD.encode("cloud-endpoint.example$3dadf823f05388497ea684236d918a1a$3f26e1609cf54a0f80137a80de560da4");
         let cloud_id = format!(":{}", base64);
         let cloud = CloudId::parse(&cloud_id);
         assert!(cloud.is_err());
@@ -758,7 +758,7 @@ pub mod tests {
 
     #[test]
     fn cloud_id_second_part_must_have_at_least_two_parts() {
-        let base64 = base64::encode("cloud-endpoint.example");
+        let base64 = BASE64_STANDARD.encode("cloud-endpoint.example");
         let cloud_id = format!("my_cluster:{}", base64);
         let result = CloudId::parse(&cloud_id);
         assert!(result.is_err());

@@ -30,7 +30,6 @@ use elasticsearch::{
 };
 use reqwest::StatusCode;
 use serde_json::json;
-use sysinfo::{RefreshKind, System, SystemExt};
 use url::Url;
 
 /// Gets the address to the Elasticsearch instance from environment variables
@@ -40,12 +39,6 @@ pub fn cluster_addr() -> String {
         Ok(server) => server,
         Err(_) => DEFAULT_ADDRESS.into(),
     }
-}
-
-/// Checks if Fiddler proxy process is running
-fn running_proxy() -> bool {
-    let system = System::new_with_specifics(RefreshKind::new().with_processes());
-    !system.get_process_by_name("Fiddler").is_empty()
 }
 
 pub fn create_default_builder() -> TransportBuilder {
@@ -79,12 +72,7 @@ pub fn create_for_url(url: &str) -> Elasticsearch {
     create(builder)
 }
 
-pub fn create(mut builder: TransportBuilder) -> Elasticsearch {
-    if running_proxy() {
-        let proxy_url = Url::parse("http://localhost:8888").unwrap();
-        builder = builder.proxy(proxy_url, None, None);
-    }
-
+pub fn create(builder: TransportBuilder) -> Elasticsearch {
     let transport = builder.build().unwrap();
     Elasticsearch::new(transport)
 }

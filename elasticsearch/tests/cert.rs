@@ -65,7 +65,7 @@ async fn default_certificate_validation() -> Result<(), failure::Error> {
         ))),
         Err(e) => {
             let expected = expected_error_message();
-            let actual = e.to_string();
+            let actual = format!("{:?}", e);
             assert!(
                 actual.contains(&expected),
                 "Expected error message to contain '{}' but was '{}'",
@@ -285,7 +285,7 @@ async fn fail_certificate_certificate_validation() -> Result<(), failure::Error>
         ))),
         Err(e) => {
             let expected = expected_error_message();
-            let actual = e.to_string();
+            let actual = format!("{:?}", e);
             assert!(
                 actual.contains(&expected),
                 "Expected error message to contain '{}' but was '{}'",

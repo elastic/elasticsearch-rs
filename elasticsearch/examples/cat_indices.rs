@@ -24,7 +24,6 @@ use elasticsearch::{
     http::transport::{SingleNodeConnectionPool, TransportBuilder},
     Elasticsearch, Error, DEFAULT_ADDRESS,
 };
-use sysinfo::SystemExt;
 use url::Url;
 
 #[tokio::main]
@@ -49,12 +48,6 @@ fn create_client() -> Result<Elasticsearch, Error> {
             Ok(server) => server,
             Err(_) => DEFAULT_ADDRESS.into(),
         }
-    }
-
-    /// Determines if Fiddler.exe proxy process is running
-    fn running_proxy() -> bool {
-        let system = sysinfo::System::new();
-        !system.get_process_by_name("Fiddler").is_empty()
     }
 
     let mut url = Url::parse(cluster_addr().as_ref()).unwrap();
@@ -99,11 +92,6 @@ fn create_client() -> Result<Elasticsearch, Error> {
         }
         None => builder,
     };
-
-    if running_proxy() {
-        let proxy_url = Url::parse("http://localhost:8888").unwrap();
-        builder = builder.proxy(proxy_url, None, None);
-    }
 
     let transport = builder.build()?;
     Ok(Elasticsearch::new(transport))

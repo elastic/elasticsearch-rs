@@ -28,7 +28,6 @@ use elasticsearch::{
 };
 use serde_json::Value;
 use std::env;
-use sysinfo::SystemExt;
 use url::Url;
 mod stack_overflow;
 use stack_overflow::*;
@@ -105,12 +104,6 @@ fn create_client() -> Result<Elasticsearch, Error> {
         }
     }
 
-    /// Determines if Fiddler.exe proxy process is running
-    fn running_proxy() -> bool {
-        let system = sysinfo::System::new();
-        !system.get_process_by_name("Fiddler").is_empty()
-    }
-
     let mut url = Url::parse(cluster_addr().as_ref()).unwrap();
 
     // if the url is https and specifies a username and password, remove from the url and set credentials
@@ -153,11 +146,6 @@ fn create_client() -> Result<Elasticsearch, Error> {
         }
         None => builder,
     };
-
-    if running_proxy() {
-        let proxy_url = Url::parse("http://localhost:8888").unwrap();
-        builder = builder.proxy(proxy_url, None, None);
-    }
 
     let transport = builder.build()?;
     Ok(Elasticsearch::new(transport))
