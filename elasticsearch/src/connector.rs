@@ -24,6 +24,17 @@
 // cargo make generate-api
 // -----------------------------------------------
 
+//! Connector APIs
+//!
+//! The connector and sync jobs APIs provide a convenient way to create and manage [Elastic connectors](https://www.elastic.co/guide/en/enterprise-search/master/connectors.html) and sync jobs in an internal index. To get started with Connector APIs, check out the tutorial.
+//!
+//! Connectors are Elasticsearch integrations that bring content from third-party data sources, which can be deployed on Elastic Cloud or hosted on your own infrastructure:
+//!
+//! * Native connectors are a managed service on Elastic Cloud
+//! * Connector clients are self-managed on your infrastructure
+//!
+//! This API provides an alternative to relying solely on Kibana UI for connector and sync job management. The API comes with a set of validations and assertions to ensure that the state representation in the internal index remains valid.
+
 #![cfg(feature = "experimental-apis")]
 #![doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #![allow(unused_imports)]
@@ -66,7 +77,7 @@ impl<'b> ConnectorCheckInParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Check In API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/check-in-connector-api.html)\n\nUpdates the last_seen timestamp in the connector document."]
+#[doc = "Builder for the [Connector Check In API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/check-in-connector-api.html)\n\nUpdates the last_seen timestamp in the connector document."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -213,7 +224,7 @@ impl<'b> ConnectorDeleteParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-connector-api.html)\n\nDeletes a connector."]
+#[doc = "Builder for the [Connector Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/delete-connector-api.html)\n\nDeletes a connector."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -346,7 +357,7 @@ impl<'b> ConnectorGetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-connector-api.html)\n\nReturns the details about a connector."]
+#[doc = "Builder for the [Connector Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/get-connector-api.html)\n\nReturns the details about a connector."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -471,7 +482,7 @@ impl<'b> ConnectorLastSyncParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Last Sync API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-last-sync-api.html)\n\nUpdates the stats of last sync in the connector document."]
+#[doc = "Builder for the [Connector Last Sync API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-last-sync-api.html)\n\nUpdates the stats of last sync in the connector document."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -611,7 +622,7 @@ impl ConnectorListParts {
         }
     }
 }
-#[doc = "Builder for the [Connector List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/list-connector-api.html)\n\nLists all connectors."]
+#[doc = "Builder for the [Connector List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/list-connector-api.html)\n\nLists all connectors."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -785,7 +796,7 @@ impl ConnectorPostParts {
         }
     }
 }
-#[doc = "Builder for the [Connector Post API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/create-connector-api.html)\n\nCreates a connector."]
+#[doc = "Builder for the [Connector Post API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/create-connector-api.html)\n\nCreates a connector."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -935,7 +946,7 @@ impl<'b> ConnectorPutParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Put API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/create-connector-api.html)\n\nCreates or updates a connector."]
+#[doc = "Builder for the [Connector Put API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/create-connector-api.html)\n\nCreates or updates a connector."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -1615,7 +1626,7 @@ impl<'b> ConnectorSyncJobCancelParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Sync Job Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cancel-connector-sync-job-api.html)\n\nCancels a connector sync job."]
+#[doc = "Builder for the [Connector Sync Job Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/cancel-connector-sync-job-api.html)\n\nCancels a connector sync job."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -1763,7 +1774,7 @@ impl<'b> ConnectorSyncJobCheckInParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Sync Job Check In API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/check-in-connector-sync-job-api.html)\n\nChecks in a connector sync job (refreshes 'last_seen')."]
+#[doc = "Builder for the [Connector Sync Job Check In API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/check-in-connector-sync-job-api.html)\n\nChecks in a connector sync job (refreshes 'last_seen')."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -1911,7 +1922,7 @@ impl<'b> ConnectorSyncJobClaimParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Sync Job Claim API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/claim-connector-sync-job-api.html)\n\nClaims a connector sync job."]
+#[doc = "Builder for the [Connector Sync Job Claim API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/claim-connector-sync-job-api.html)\n\nClaims a connector sync job."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -2058,7 +2069,7 @@ impl<'b> ConnectorSyncJobDeleteParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Sync Job Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-connector-sync-job-api.html)\n\nDeletes a connector sync job."]
+#[doc = "Builder for the [Connector Sync Job Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/delete-connector-sync-job-api.html)\n\nDeletes a connector sync job."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -2183,7 +2194,7 @@ impl<'b> ConnectorSyncJobErrorParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Sync Job Error API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/set-connector-sync-job-error-api.html)\n\nSets an error for a connector sync job."]
+#[doc = "Builder for the [Connector Sync Job Error API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/set-connector-sync-job-error-api.html)\n\nSets an error for a connector sync job."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -2330,7 +2341,7 @@ impl<'b> ConnectorSyncJobGetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Sync Job Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-connector-sync-job-api.html)\n\nReturns the details about a connector sync job."]
+#[doc = "Builder for the [Connector Sync Job Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/get-connector-sync-job-api.html)\n\nReturns the details about a connector sync job."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -2447,7 +2458,7 @@ impl ConnectorSyncJobListParts {
         }
     }
 }
-#[doc = "Builder for the [Connector Sync Job List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/list-connector-sync-jobs-api.html)\n\nLists all connector sync jobs."]
+#[doc = "Builder for the [Connector Sync Job List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/list-connector-sync-jobs-api.html)\n\nLists all connector sync jobs."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -2610,7 +2621,7 @@ impl ConnectorSyncJobPostParts {
         }
     }
 }
-#[doc = "Builder for the [Connector Sync Job Post API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/create-connector-sync-job-api.html)\n\nCreates a connector sync job."]
+#[doc = "Builder for the [Connector Sync Job Post API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/create-connector-sync-job-api.html)\n\nCreates a connector sync job."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -2758,7 +2769,7 @@ impl<'b> ConnectorSyncJobUpdateStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Sync Job Update Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/set-connector-sync-job-stats-api.html)\n\nUpdates the stats fields in the connector sync job document."]
+#[doc = "Builder for the [Connector Sync Job Update Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/set-connector-sync-job-stats-api.html)\n\nUpdates the stats fields in the connector sync job document."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -2906,7 +2917,7 @@ impl<'b> ConnectorUpdateActiveFilteringParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Update Active Filtering API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-filtering-api.html)\n\nActivates the draft filtering rules if they are in a validated state."]
+#[doc = "Builder for the [Connector Update Active Filtering API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-filtering-api.html)\n\nActivates the draft filtering rules if they are in a validated state."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -3054,7 +3065,7 @@ impl<'b> ConnectorUpdateApiKeyIdParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Update Api Key Id API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-api-key-id-api.html)\n\nUpdates the API key id and/or API key secret id fields in the connector document."]
+#[doc = "Builder for the [Connector Update Api Key Id API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-api-key-id-api.html)\n\nUpdates the API key id and/or API key secret id fields in the connector document."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -3202,7 +3213,7 @@ impl<'b> ConnectorUpdateConfigurationParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Update Configuration API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-configuration-api.html)\n\nUpdates the connector configuration."]
+#[doc = "Builder for the [Connector Update Configuration API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-configuration-api.html)\n\nUpdates the connector configuration."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -3350,7 +3361,7 @@ impl<'b> ConnectorUpdateErrorParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Update Error API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-error-api.html)\n\nUpdates the error field in the connector document."]
+#[doc = "Builder for the [Connector Update Error API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-error-api.html)\n\nUpdates the error field in the connector document."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -3498,7 +3509,7 @@ impl<'b> ConnectorUpdateFeaturesParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Update Features API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-features-api.html)\n\nUpdates the connector features in the connector document."]
+#[doc = "Builder for the [Connector Update Features API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-features-api.html)\n\nUpdates the connector features in the connector document."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -3646,7 +3657,7 @@ impl<'b> ConnectorUpdateFilteringParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Update Filtering API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-filtering-api.html)\n\nUpdates the filtering field in the connector document."]
+#[doc = "Builder for the [Connector Update Filtering API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-filtering-api.html)\n\nUpdates the filtering field in the connector document."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -3794,7 +3805,7 @@ impl<'b> ConnectorUpdateFilteringValidationParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Update Filtering Validation API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-filtering-api.html)\n\nUpdates the validation info of the draft filtering rules."]
+#[doc = "Builder for the [Connector Update Filtering Validation API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-filtering-api.html)\n\nUpdates the validation info of the draft filtering rules."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -3945,7 +3956,7 @@ impl<'b> ConnectorUpdateIndexNameParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Update Index Name API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-index-name-api.html)\n\nUpdates the index name of the connector."]
+#[doc = "Builder for the [Connector Update Index Name API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-index-name-api.html)\n\nUpdates the index name of the connector."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -4093,7 +4104,7 @@ impl<'b> ConnectorUpdateNameParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Update Name API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-name-description-api.html)\n\nUpdates the name and/or description fields in the connector document."]
+#[doc = "Builder for the [Connector Update Name API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-name-description-api.html)\n\nUpdates the name and/or description fields in the connector document."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -4241,7 +4252,7 @@ impl<'b> ConnectorUpdateNativeParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Update Native API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/connector-apis.html)\n\nUpdates the is_native flag of the connector."]
+#[doc = "Builder for the [Connector Update Native API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/connector-apis.html)\n\nUpdates the is_native flag of the connector."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -4389,7 +4400,7 @@ impl<'b> ConnectorUpdatePipelineParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Update Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-pipeline-api.html)\n\nUpdates the pipeline field in the connector document."]
+#[doc = "Builder for the [Connector Update Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-pipeline-api.html)\n\nUpdates the pipeline field in the connector document."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -4537,7 +4548,7 @@ impl<'b> ConnectorUpdateSchedulingParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Update Scheduling API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-scheduling-api.html)\n\nUpdates the scheduling field in the connector document."]
+#[doc = "Builder for the [Connector Update Scheduling API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-scheduling-api.html)\n\nUpdates the scheduling field in the connector document."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -4685,7 +4696,7 @@ impl<'b> ConnectorUpdateServiceTypeParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Update Service Type API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-service-type-api.html)\n\nUpdates the service type of the connector."]
+#[doc = "Builder for the [Connector Update Service Type API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-service-type-api.html)\n\nUpdates the service type of the connector."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -4833,7 +4844,7 @@ impl<'b> ConnectorUpdateStatusParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Connector Update Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-status-api.html)\n\nUpdates the status of the connector."]
+#[doc = "Builder for the [Connector Update Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-status-api.html)\n\nUpdates the status of the connector."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -4972,7 +4983,7 @@ impl<'a> Connector<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Connector Check In API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/check-in-connector-api.html)\n\nUpdates the last_seen timestamp in the connector document."]
+    #[doc = "[Connector Check In API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/check-in-connector-api.html)\n\nUpdates the last_seen timestamp in the connector document."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn check_in<'b>(
@@ -4981,19 +4992,19 @@ impl<'a> Connector<'a> {
     ) -> ConnectorCheckIn<'a, 'b, ()> {
         ConnectorCheckIn::new(self.transport(), parts)
     }
-    #[doc = "[Connector Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-connector-api.html)\n\nDeletes a connector."]
+    #[doc = "[Connector Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/delete-connector-api.html)\n\nDeletes a connector."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn delete<'b>(&'a self, parts: ConnectorDeleteParts<'b>) -> ConnectorDelete<'a, 'b> {
         ConnectorDelete::new(self.transport(), parts)
     }
-    #[doc = "[Connector Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-connector-api.html)\n\nReturns the details about a connector."]
+    #[doc = "[Connector Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/get-connector-api.html)\n\nReturns the details about a connector."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn get<'b>(&'a self, parts: ConnectorGetParts<'b>) -> ConnectorGet<'a, 'b> {
         ConnectorGet::new(self.transport(), parts)
     }
-    #[doc = "[Connector Last Sync API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-last-sync-api.html)\n\nUpdates the stats of last sync in the connector document."]
+    #[doc = "[Connector Last Sync API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-last-sync-api.html)\n\nUpdates the stats of last sync in the connector document."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn last_sync<'b>(
@@ -5002,19 +5013,19 @@ impl<'a> Connector<'a> {
     ) -> ConnectorLastSync<'a, 'b, ()> {
         ConnectorLastSync::new(self.transport(), parts)
     }
-    #[doc = "[Connector List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/list-connector-api.html)\n\nLists all connectors."]
+    #[doc = "[Connector List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/list-connector-api.html)\n\nLists all connectors."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn list<'b>(&'a self) -> ConnectorList<'a, 'b> {
         ConnectorList::new(self.transport())
     }
-    #[doc = "[Connector Post API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/create-connector-api.html)\n\nCreates a connector."]
+    #[doc = "[Connector Post API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/create-connector-api.html)\n\nCreates a connector."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn post<'b>(&'a self) -> ConnectorPost<'a, 'b, ()> {
         ConnectorPost::new(self.transport())
     }
-    #[doc = "[Connector Put API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/create-connector-api.html)\n\nCreates or updates a connector."]
+    #[doc = "[Connector Put API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/create-connector-api.html)\n\nCreates or updates a connector."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn put<'b>(&'a self, parts: ConnectorPutParts<'b>) -> ConnectorPut<'a, 'b, ()> {
@@ -5053,7 +5064,7 @@ impl<'a> Connector<'a> {
     ) -> ConnectorSecretPut<'a, 'b, ()> {
         ConnectorSecretPut::new(self.transport(), parts)
     }
-    #[doc = "[Connector Sync Job Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/cancel-connector-sync-job-api.html)\n\nCancels a connector sync job."]
+    #[doc = "[Connector Sync Job Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/cancel-connector-sync-job-api.html)\n\nCancels a connector sync job."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn sync_job_cancel<'b>(
@@ -5062,7 +5073,7 @@ impl<'a> Connector<'a> {
     ) -> ConnectorSyncJobCancel<'a, 'b, ()> {
         ConnectorSyncJobCancel::new(self.transport(), parts)
     }
-    #[doc = "[Connector Sync Job Check In API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/check-in-connector-sync-job-api.html)\n\nChecks in a connector sync job (refreshes 'last_seen')."]
+    #[doc = "[Connector Sync Job Check In API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/check-in-connector-sync-job-api.html)\n\nChecks in a connector sync job (refreshes 'last_seen')."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn sync_job_check_in<'b>(
@@ -5071,7 +5082,7 @@ impl<'a> Connector<'a> {
     ) -> ConnectorSyncJobCheckIn<'a, 'b, ()> {
         ConnectorSyncJobCheckIn::new(self.transport(), parts)
     }
-    #[doc = "[Connector Sync Job Claim API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/claim-connector-sync-job-api.html)\n\nClaims a connector sync job."]
+    #[doc = "[Connector Sync Job Claim API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/claim-connector-sync-job-api.html)\n\nClaims a connector sync job."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn sync_job_claim<'b>(
@@ -5080,7 +5091,7 @@ impl<'a> Connector<'a> {
     ) -> ConnectorSyncJobClaim<'a, 'b, ()> {
         ConnectorSyncJobClaim::new(self.transport(), parts)
     }
-    #[doc = "[Connector Sync Job Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-connector-sync-job-api.html)\n\nDeletes a connector sync job."]
+    #[doc = "[Connector Sync Job Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/delete-connector-sync-job-api.html)\n\nDeletes a connector sync job."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn sync_job_delete<'b>(
@@ -5089,7 +5100,7 @@ impl<'a> Connector<'a> {
     ) -> ConnectorSyncJobDelete<'a, 'b> {
         ConnectorSyncJobDelete::new(self.transport(), parts)
     }
-    #[doc = "[Connector Sync Job Error API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/set-connector-sync-job-error-api.html)\n\nSets an error for a connector sync job."]
+    #[doc = "[Connector Sync Job Error API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/set-connector-sync-job-error-api.html)\n\nSets an error for a connector sync job."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn sync_job_error<'b>(
@@ -5098,7 +5109,7 @@ impl<'a> Connector<'a> {
     ) -> ConnectorSyncJobError<'a, 'b, ()> {
         ConnectorSyncJobError::new(self.transport(), parts)
     }
-    #[doc = "[Connector Sync Job Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-connector-sync-job-api.html)\n\nReturns the details about a connector sync job."]
+    #[doc = "[Connector Sync Job Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/get-connector-sync-job-api.html)\n\nReturns the details about a connector sync job."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn sync_job_get<'b>(
@@ -5107,19 +5118,19 @@ impl<'a> Connector<'a> {
     ) -> ConnectorSyncJobGet<'a, 'b> {
         ConnectorSyncJobGet::new(self.transport(), parts)
     }
-    #[doc = "[Connector Sync Job List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/list-connector-sync-jobs-api.html)\n\nLists all connector sync jobs."]
+    #[doc = "[Connector Sync Job List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/list-connector-sync-jobs-api.html)\n\nLists all connector sync jobs."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn sync_job_list<'b>(&'a self) -> ConnectorSyncJobList<'a, 'b> {
         ConnectorSyncJobList::new(self.transport())
     }
-    #[doc = "[Connector Sync Job Post API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/create-connector-sync-job-api.html)\n\nCreates a connector sync job."]
+    #[doc = "[Connector Sync Job Post API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/create-connector-sync-job-api.html)\n\nCreates a connector sync job."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn sync_job_post<'b>(&'a self) -> ConnectorSyncJobPost<'a, 'b, ()> {
         ConnectorSyncJobPost::new(self.transport())
     }
-    #[doc = "[Connector Sync Job Update Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/set-connector-sync-job-stats-api.html)\n\nUpdates the stats fields in the connector sync job document."]
+    #[doc = "[Connector Sync Job Update Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/set-connector-sync-job-stats-api.html)\n\nUpdates the stats fields in the connector sync job document."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn sync_job_update_stats<'b>(
@@ -5128,7 +5139,7 @@ impl<'a> Connector<'a> {
     ) -> ConnectorSyncJobUpdateStats<'a, 'b, ()> {
         ConnectorSyncJobUpdateStats::new(self.transport(), parts)
     }
-    #[doc = "[Connector Update Active Filtering API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-filtering-api.html)\n\nActivates the draft filtering rules if they are in a validated state."]
+    #[doc = "[Connector Update Active Filtering API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-filtering-api.html)\n\nActivates the draft filtering rules if they are in a validated state."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn update_active_filtering<'b>(
@@ -5137,7 +5148,7 @@ impl<'a> Connector<'a> {
     ) -> ConnectorUpdateActiveFiltering<'a, 'b, ()> {
         ConnectorUpdateActiveFiltering::new(self.transport(), parts)
     }
-    #[doc = "[Connector Update Api Key Id API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-api-key-id-api.html)\n\nUpdates the API key id and/or API key secret id fields in the connector document."]
+    #[doc = "[Connector Update Api Key Id API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-api-key-id-api.html)\n\nUpdates the API key id and/or API key secret id fields in the connector document."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn update_api_key_id<'b>(
@@ -5146,7 +5157,7 @@ impl<'a> Connector<'a> {
     ) -> ConnectorUpdateApiKeyId<'a, 'b, ()> {
         ConnectorUpdateApiKeyId::new(self.transport(), parts)
     }
-    #[doc = "[Connector Update Configuration API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-configuration-api.html)\n\nUpdates the connector configuration."]
+    #[doc = "[Connector Update Configuration API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-configuration-api.html)\n\nUpdates the connector configuration."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn update_configuration<'b>(
@@ -5155,7 +5166,7 @@ impl<'a> Connector<'a> {
     ) -> ConnectorUpdateConfiguration<'a, 'b, ()> {
         ConnectorUpdateConfiguration::new(self.transport(), parts)
     }
-    #[doc = "[Connector Update Error API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-error-api.html)\n\nUpdates the error field in the connector document."]
+    #[doc = "[Connector Update Error API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-error-api.html)\n\nUpdates the error field in the connector document."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn update_error<'b>(
@@ -5164,7 +5175,7 @@ impl<'a> Connector<'a> {
     ) -> ConnectorUpdateError<'a, 'b, ()> {
         ConnectorUpdateError::new(self.transport(), parts)
     }
-    #[doc = "[Connector Update Features API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-features-api.html)\n\nUpdates the connector features in the connector document."]
+    #[doc = "[Connector Update Features API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-features-api.html)\n\nUpdates the connector features in the connector document."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn update_features<'b>(
@@ -5173,7 +5184,7 @@ impl<'a> Connector<'a> {
     ) -> ConnectorUpdateFeatures<'a, 'b, ()> {
         ConnectorUpdateFeatures::new(self.transport(), parts)
     }
-    #[doc = "[Connector Update Filtering API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-filtering-api.html)\n\nUpdates the filtering field in the connector document."]
+    #[doc = "[Connector Update Filtering API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-filtering-api.html)\n\nUpdates the filtering field in the connector document."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn update_filtering<'b>(
@@ -5182,7 +5193,7 @@ impl<'a> Connector<'a> {
     ) -> ConnectorUpdateFiltering<'a, 'b, ()> {
         ConnectorUpdateFiltering::new(self.transport(), parts)
     }
-    #[doc = "[Connector Update Filtering Validation API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-filtering-api.html)\n\nUpdates the validation info of the draft filtering rules."]
+    #[doc = "[Connector Update Filtering Validation API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-filtering-api.html)\n\nUpdates the validation info of the draft filtering rules."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn update_filtering_validation<'b>(
@@ -5191,7 +5202,7 @@ impl<'a> Connector<'a> {
     ) -> ConnectorUpdateFilteringValidation<'a, 'b, ()> {
         ConnectorUpdateFilteringValidation::new(self.transport(), parts)
     }
-    #[doc = "[Connector Update Index Name API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-index-name-api.html)\n\nUpdates the index name of the connector."]
+    #[doc = "[Connector Update Index Name API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-index-name-api.html)\n\nUpdates the index name of the connector."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn update_index_name<'b>(
@@ -5200,7 +5211,7 @@ impl<'a> Connector<'a> {
     ) -> ConnectorUpdateIndexName<'a, 'b, ()> {
         ConnectorUpdateIndexName::new(self.transport(), parts)
     }
-    #[doc = "[Connector Update Name API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-name-description-api.html)\n\nUpdates the name and/or description fields in the connector document."]
+    #[doc = "[Connector Update Name API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-name-description-api.html)\n\nUpdates the name and/or description fields in the connector document."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn update_name<'b>(
@@ -5209,7 +5220,7 @@ impl<'a> Connector<'a> {
     ) -> ConnectorUpdateName<'a, 'b, ()> {
         ConnectorUpdateName::new(self.transport(), parts)
     }
-    #[doc = "[Connector Update Native API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/connector-apis.html)\n\nUpdates the is_native flag of the connector."]
+    #[doc = "[Connector Update Native API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/connector-apis.html)\n\nUpdates the is_native flag of the connector."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn update_native<'b>(
@@ -5218,7 +5229,7 @@ impl<'a> Connector<'a> {
     ) -> ConnectorUpdateNative<'a, 'b, ()> {
         ConnectorUpdateNative::new(self.transport(), parts)
     }
-    #[doc = "[Connector Update Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-pipeline-api.html)\n\nUpdates the pipeline field in the connector document."]
+    #[doc = "[Connector Update Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-pipeline-api.html)\n\nUpdates the pipeline field in the connector document."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn update_pipeline<'b>(
@@ -5227,7 +5238,7 @@ impl<'a> Connector<'a> {
     ) -> ConnectorUpdatePipeline<'a, 'b, ()> {
         ConnectorUpdatePipeline::new(self.transport(), parts)
     }
-    #[doc = "[Connector Update Scheduling API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-scheduling-api.html)\n\nUpdates the scheduling field in the connector document."]
+    #[doc = "[Connector Update Scheduling API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-scheduling-api.html)\n\nUpdates the scheduling field in the connector document."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn update_scheduling<'b>(
@@ -5236,7 +5247,7 @@ impl<'a> Connector<'a> {
     ) -> ConnectorUpdateScheduling<'a, 'b, ()> {
         ConnectorUpdateScheduling::new(self.transport(), parts)
     }
-    #[doc = "[Connector Update Service Type API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-service-type-api.html)\n\nUpdates the service type of the connector."]
+    #[doc = "[Connector Update Service Type API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-service-type-api.html)\n\nUpdates the service type of the connector."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn update_service_type<'b>(
@@ -5245,7 +5256,7 @@ impl<'a> Connector<'a> {
     ) -> ConnectorUpdateServiceType<'a, 'b, ()> {
         ConnectorUpdateServiceType::new(self.transport(), parts)
     }
-    #[doc = "[Connector Update Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/update-connector-status-api.html)\n\nUpdates the status of the connector."]
+    #[doc = "[Connector Update Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/update-connector-status-api.html)\n\nUpdates the status of the connector."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn update_status<'b>(

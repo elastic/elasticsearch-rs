@@ -24,6 +24,12 @@
 // cargo make generate-api
 // -----------------------------------------------
 
+//! Query rules APIs
+//!
+//! Query rules allow you to configure per-query rules that are applied at query time to queries that match the specific rule. Query rules are organized into rulesets, collections of query rules that are matched against incoming queries. Query rules are applied using the rule query.
+//!
+//! If a query matches one or more rules in the ruleset, the query is re-written to apply the rules before searching. This allows pinning documents for only queries that match a specific term.
+
 #![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
@@ -67,7 +73,7 @@ impl<'b> QueryRulesDeleteRuleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Query Rules Delete Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-query-rule.html)\n\nDeletes an individual query rule within a ruleset."]
+#[doc = "Builder for the [Query Rules Delete Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/delete-query-rule.html)\n\nDeletes an individual query rule within a ruleset."]
 #[derive(Clone, Debug)]
 pub struct QueryRulesDeleteRule<'a, 'b> {
     transport: &'a Transport,
@@ -186,7 +192,7 @@ impl<'b> QueryRulesDeleteRulesetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Query Rules Delete Ruleset API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-query-ruleset.html)\n\nDeletes a query ruleset."]
+#[doc = "Builder for the [Query Rules Delete Ruleset API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/delete-query-ruleset.html)\n\nDeletes a query ruleset."]
 #[derive(Clone, Debug)]
 pub struct QueryRulesDeleteRuleset<'a, 'b> {
     transport: &'a Transport,
@@ -311,7 +317,7 @@ impl<'b> QueryRulesGetRuleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Query Rules Get Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-query-rule.html)\n\nReturns the details about an individual query rule within a ruleset."]
+#[doc = "Builder for the [Query Rules Get Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/get-query-rule.html)\n\nReturns the details about an individual query rule within a ruleset."]
 #[derive(Clone, Debug)]
 pub struct QueryRulesGetRule<'a, 'b> {
     transport: &'a Transport,
@@ -430,7 +436,7 @@ impl<'b> QueryRulesGetRulesetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Query Rules Get Ruleset API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-query-ruleset.html)\n\nReturns the details about a query ruleset."]
+#[doc = "Builder for the [Query Rules Get Ruleset API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/get-query-ruleset.html)\n\nReturns the details about a query ruleset."]
 #[derive(Clone, Debug)]
 pub struct QueryRulesGetRuleset<'a, 'b> {
     transport: &'a Transport,
@@ -542,7 +548,7 @@ impl QueryRulesListRulesetsParts {
         }
     }
 }
-#[doc = "Builder for the [Query Rules List Rulesets API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/list-query-rulesets.html)\n\nLists query rulesets."]
+#[doc = "Builder for the [Query Rules List Rulesets API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/list-query-rulesets.html)\n\nLists query rulesets."]
 #[derive(Clone, Debug)]
 pub struct QueryRulesListRulesets<'a, 'b> {
     transport: &'a Transport,
@@ -685,7 +691,7 @@ impl<'b> QueryRulesPutRuleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Query Rules Put Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-query-rule.html)\n\nCreates or updates a query rule within a ruleset."]
+#[doc = "Builder for the [Query Rules Put Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/put-query-rule.html)\n\nCreates or updates a query rule within a ruleset."]
 #[derive(Clone, Debug)]
 pub struct QueryRulesPutRule<'a, 'b, B> {
     transport: &'a Transport,
@@ -827,7 +833,7 @@ impl<'b> QueryRulesPutRulesetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Query Rules Put Ruleset API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-query-ruleset.html)\n\nCreates or updates a query ruleset."]
+#[doc = "Builder for the [Query Rules Put Ruleset API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/put-query-ruleset.html)\n\nCreates or updates a query ruleset."]
 #[derive(Clone, Debug)]
 pub struct QueryRulesPutRuleset<'a, 'b, B> {
     transport: &'a Transport,
@@ -960,43 +966,43 @@ impl<'a> QueryRules<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Query Rules Delete Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-query-rule.html)\n\nDeletes an individual query rule within a ruleset."]
+    #[doc = "[Query Rules Delete Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/delete-query-rule.html)\n\nDeletes an individual query rule within a ruleset."]
     pub fn delete_rule<'b>(
         &'a self,
         parts: QueryRulesDeleteRuleParts<'b>,
     ) -> QueryRulesDeleteRule<'a, 'b> {
         QueryRulesDeleteRule::new(self.transport(), parts)
     }
-    #[doc = "[Query Rules Delete Ruleset API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-query-ruleset.html)\n\nDeletes a query ruleset."]
+    #[doc = "[Query Rules Delete Ruleset API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/delete-query-ruleset.html)\n\nDeletes a query ruleset."]
     pub fn delete_ruleset<'b>(
         &'a self,
         parts: QueryRulesDeleteRulesetParts<'b>,
     ) -> QueryRulesDeleteRuleset<'a, 'b> {
         QueryRulesDeleteRuleset::new(self.transport(), parts)
     }
-    #[doc = "[Query Rules Get Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-query-rule.html)\n\nReturns the details about an individual query rule within a ruleset."]
+    #[doc = "[Query Rules Get Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/get-query-rule.html)\n\nReturns the details about an individual query rule within a ruleset."]
     pub fn get_rule<'b>(&'a self, parts: QueryRulesGetRuleParts<'b>) -> QueryRulesGetRule<'a, 'b> {
         QueryRulesGetRule::new(self.transport(), parts)
     }
-    #[doc = "[Query Rules Get Ruleset API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-query-ruleset.html)\n\nReturns the details about a query ruleset."]
+    #[doc = "[Query Rules Get Ruleset API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/get-query-ruleset.html)\n\nReturns the details about a query ruleset."]
     pub fn get_ruleset<'b>(
         &'a self,
         parts: QueryRulesGetRulesetParts<'b>,
     ) -> QueryRulesGetRuleset<'a, 'b> {
         QueryRulesGetRuleset::new(self.transport(), parts)
     }
-    #[doc = "[Query Rules List Rulesets API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/list-query-rulesets.html)\n\nLists query rulesets."]
+    #[doc = "[Query Rules List Rulesets API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/list-query-rulesets.html)\n\nLists query rulesets."]
     pub fn list_rulesets<'b>(&'a self) -> QueryRulesListRulesets<'a, 'b> {
         QueryRulesListRulesets::new(self.transport())
     }
-    #[doc = "[Query Rules Put Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-query-rule.html)\n\nCreates or updates a query rule within a ruleset."]
+    #[doc = "[Query Rules Put Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/put-query-rule.html)\n\nCreates or updates a query rule within a ruleset."]
     pub fn put_rule<'b>(
         &'a self,
         parts: QueryRulesPutRuleParts<'b>,
     ) -> QueryRulesPutRule<'a, 'b, ()> {
         QueryRulesPutRule::new(self.transport(), parts)
     }
-    #[doc = "[Query Rules Put Ruleset API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-query-ruleset.html)\n\nCreates or updates a query ruleset."]
+    #[doc = "[Query Rules Put Ruleset API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/put-query-ruleset.html)\n\nCreates or updates a query ruleset."]
     pub fn put_ruleset<'b>(
         &'a self,
         parts: QueryRulesPutRulesetParts<'b>,

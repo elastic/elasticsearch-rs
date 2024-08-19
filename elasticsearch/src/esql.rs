@@ -24,6 +24,10 @@
 // cargo make generate-api
 // -----------------------------------------------
 
+//! ES|QL APIs
+//!
+//! The Elasticsearch Query Language (ES|QL) provides a powerful way to filter, transform, and analyze data stored in Elasticsearch, and in the future in other runtimes. For an overview of ES|QL and related tutorials, see [ES|QL](https://www.elastic.co/guide/en/elasticsearch/reference/current/esql.html).
+
 #![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
@@ -54,7 +58,7 @@ impl EsqlAsyncQueryParts {
         }
     }
 }
-#[doc = "Builder for the [Esql Async Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/esql-async-query-api.html)\n\nExecutes an ESQL request asynchronously"]
+#[doc = "Builder for the [Esql Async Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/esql-async-query-api.html)\n\nExecutes an ESQL request asynchronously"]
 #[derive(Clone, Debug)]
 pub struct EsqlAsyncQuery<'a, 'b, B> {
     transport: &'a Transport,
@@ -225,7 +229,7 @@ impl<'b> EsqlAsyncQueryGetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Esql Async Query Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/esql-async-query-get-api.html)\n\nRetrieves the results of a previously submitted async query request given its ID."]
+#[doc = "Builder for the [Esql Async Query Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/esql-async-query-get-api.html)\n\nRetrieves the results of a previously submitted async query request given its ID."]
 #[derive(Clone, Debug)]
 pub struct EsqlAsyncQueryGet<'a, 'b> {
     transport: &'a Transport,
@@ -364,7 +368,7 @@ impl EsqlQueryParts {
         }
     }
 }
-#[doc = "Builder for the [Esql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/esql-query-api.html)\n\nExecutes an ESQL request"]
+#[doc = "Builder for the [Esql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/esql-query-api.html)\n\nExecutes an ESQL request"]
 #[derive(Clone, Debug)]
 pub struct EsqlQuery<'a, 'b, B> {
     transport: &'a Transport,
@@ -527,18 +531,18 @@ impl<'a> Esql<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Esql Async Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/esql-async-query-api.html)\n\nExecutes an ESQL request asynchronously"]
+    #[doc = "[Esql Async Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/esql-async-query-api.html)\n\nExecutes an ESQL request asynchronously"]
     pub fn async_query<'b>(&'a self) -> EsqlAsyncQuery<'a, 'b, ()> {
         EsqlAsyncQuery::new(self.transport())
     }
-    #[doc = "[Esql Async Query Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/esql-async-query-get-api.html)\n\nRetrieves the results of a previously submitted async query request given its ID."]
+    #[doc = "[Esql Async Query Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/esql-async-query-get-api.html)\n\nRetrieves the results of a previously submitted async query request given its ID."]
     pub fn async_query_get<'b>(
         &'a self,
         parts: EsqlAsyncQueryGetParts<'b>,
     ) -> EsqlAsyncQueryGet<'a, 'b> {
         EsqlAsyncQueryGet::new(self.transport(), parts)
     }
-    #[doc = "[Esql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/esql-query-api.html)\n\nExecutes an ESQL request"]
+    #[doc = "[Esql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/esql-query-api.html)\n\nExecutes an ESQL request"]
     pub fn query<'b>(&'a self) -> EsqlQuery<'a, 'b, ()> {
         EsqlQuery::new(self.transport())
     }

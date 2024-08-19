@@ -24,6 +24,10 @@
 // cargo make generate-api
 // -----------------------------------------------
 
+//! Inference APIs
+//!
+//! The inference APIs enable you to create inference endpoints and use machine learning models of different providers - such as Amazon Bedrock, Anthropic, Azure AI Studio, Cohere, Google AI, Mistral, OpenAI, or HuggingFace - as a service.
+
 #![cfg(feature = "experimental-apis")]
 #![doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #![allow(unused_imports)]
@@ -81,7 +85,7 @@ impl<'b> InferenceDeleteParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-inference-api.html)\n\nDelete an inference endpoint"]
+#[doc = "Builder for the [Inference Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/delete-inference-api.html)\n\nDelete an inference endpoint"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -242,7 +246,7 @@ impl<'b> InferenceGetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-inference-api.html)\n\nGet an inference endpoint"]
+#[doc = "Builder for the [Inference Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/get-inference-api.html)\n\nGet an inference endpoint"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -382,7 +386,7 @@ impl<'b> InferenceInferenceParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Inference API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/post-inference-api.html)\n\nPerform inference"]
+#[doc = "Builder for the [Inference Inference API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/post-inference-api.html)\n\nPerform inference"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -545,7 +549,7 @@ impl<'b> InferencePutParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-inference-api.html)\n\nConfigure an inference endpoint for use in the Inference API"]
+#[doc = "Builder for the [Inference Put API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/put-inference-api.html)\n\nConfigure an inference endpoint for use in the Inference API"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -684,19 +688,19 @@ impl<'a> Inference<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Inference Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/delete-inference-api.html)\n\nDelete an inference endpoint"]
+    #[doc = "[Inference Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/delete-inference-api.html)\n\nDelete an inference endpoint"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn delete<'b>(&'a self, parts: InferenceDeleteParts<'b>) -> InferenceDelete<'a, 'b> {
         InferenceDelete::new(self.transport(), parts)
     }
-    #[doc = "[Inference Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/get-inference-api.html)\n\nGet an inference endpoint"]
+    #[doc = "[Inference Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/get-inference-api.html)\n\nGet an inference endpoint"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn get<'b>(&'a self, parts: InferenceGetParts<'b>) -> InferenceGet<'a, 'b> {
         InferenceGet::new(self.transport(), parts)
     }
-    #[doc = "[Inference Inference API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/post-inference-api.html)\n\nPerform inference"]
+    #[doc = "[Inference Inference API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/post-inference-api.html)\n\nPerform inference"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn inference<'b>(
@@ -705,7 +709,7 @@ impl<'a> Inference<'a> {
     ) -> InferenceInference<'a, 'b, ()> {
         InferenceInference::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/put-inference-api.html)\n\nConfigure an inference endpoint for use in the Inference API"]
+    #[doc = "[Inference Put API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/put-inference-api.html)\n\nConfigure an inference endpoint for use in the Inference API"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn put<'b>(&'a self, parts: InferencePutParts<'b>) -> InferencePut<'a, 'b, ()> {

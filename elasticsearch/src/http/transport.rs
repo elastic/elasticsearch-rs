@@ -699,7 +699,8 @@ pub mod tests {
 
     #[test]
     fn can_parse_cloud_id_without_kibana_uuid() {
-        let base64 = BASE64_STANDARD.encode("cloud-endpoint.example$3dadf823f05388497ea684236d918a1a$");
+        let base64 =
+            BASE64_STANDARD.encode("cloud-endpoint.example$3dadf823f05388497ea684236d918a1a$");
         let cloud_id = format!("my_cluster:{}", base64);
         let result = CloudId::parse(&cloud_id);
         assert!(result.is_ok());

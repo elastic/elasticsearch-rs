@@ -21,7 +21,7 @@ use common::*;
 
 use elasticsearch::auth::Credentials;
 
-use base64::{write::EncoderWriter, engine::general_purpose::STANDARD as BASE64_STANDARD};
+use base64::{engine::general_purpose::STANDARD as BASE64_STANDARD, write::EncoderWriter};
 use std::io::Write;
 
 #[tokio::test]

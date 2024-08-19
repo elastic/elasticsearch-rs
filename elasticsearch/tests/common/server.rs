@@ -20,11 +20,9 @@
 // Licensed under Apache License, Version 2.0
 // https://github.com/seanmonstar/reqwest/blob/master/LICENSE-APACHE
 
-use std::{
-    future::Future, sync::mpsc as std_mpsc, thread, time::Duration,
-};
 use std::future::IntoFuture;
 use std::net::SocketAddr;
+use std::{future::Future, sync::mpsc as std_mpsc, thread, time::Duration};
 use tokio::sync::oneshot;
 
 use tokio::runtime;
@@ -72,13 +70,11 @@ where
             let bind_addr: SocketAddr = ([127, 0, 0, 1], 0).into();
             let listener = tokio::net::TcpListener::bind(bind_addr).await.unwrap();
             let local_addr = listener.local_addr().unwrap();
-            let app = axum::Router::new()
-                .fallback(func); // handle everything
+            let app = axum::Router::new().fallback(func); // handle everything
 
-            let server = axum::serve(listener, app)
-                .with_graceful_shutdown(async {
-                    let _ = shutdown_rx.await;
-                });
+            let server = axum::serve(listener, app).with_graceful_shutdown(async {
+                let _ = shutdown_rx.await;
+            });
 
             (server.into_future(), local_addr)
         });

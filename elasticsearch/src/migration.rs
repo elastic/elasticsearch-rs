@@ -69,7 +69,7 @@ impl<'b> MigrationDeprecationsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Migration Deprecations API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/migration-api-deprecation.html)\n\nRetrieves information about different cluster, node, and index level settings that use deprecated features that will be removed or changed in the next major version."]
+#[doc = "Builder for the [Migration Deprecations API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/migration-api-deprecation.html)\n\nRetrieves information about different cluster, node, and index level settings that use deprecated features that will be removed or changed in the next major version."]
 #[derive(Clone, Debug)]
 pub struct MigrationDeprecations<'a, 'b> {
     transport: &'a Transport,
@@ -181,7 +181,7 @@ impl MigrationGetFeatureUpgradeStatusParts {
         }
     }
 }
-#[doc = "Builder for the [Migration Get Feature Upgrade Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/migration-api-feature-upgrade.html)\n\nFind out whether system features need to be upgraded or not"]
+#[doc = "Builder for the [Migration Get Feature Upgrade Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/migration-api-feature-upgrade.html)\n\nFind out whether system features need to be upgraded or not"]
 #[derive(Clone, Debug)]
 pub struct MigrationGetFeatureUpgradeStatus<'a, 'b> {
     transport: &'a Transport,
@@ -293,7 +293,7 @@ impl MigrationPostFeatureUpgradeParts {
         }
     }
 }
-#[doc = "Builder for the [Migration Post Feature Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/migration-api-feature-upgrade.html)\n\nBegin upgrades for system features"]
+#[doc = "Builder for the [Migration Post Feature Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/migration-api-feature-upgrade.html)\n\nBegin upgrades for system features"]
 #[derive(Clone, Debug)]
 pub struct MigrationPostFeatureUpgrade<'a, 'b, B> {
     transport: &'a Transport,
@@ -426,18 +426,18 @@ impl<'a> Migration<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Migration Deprecations API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/migration-api-deprecation.html)\n\nRetrieves information about different cluster, node, and index level settings that use deprecated features that will be removed or changed in the next major version."]
+    #[doc = "[Migration Deprecations API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/migration-api-deprecation.html)\n\nRetrieves information about different cluster, node, and index level settings that use deprecated features that will be removed or changed in the next major version."]
     pub fn deprecations<'b>(
         &'a self,
         parts: MigrationDeprecationsParts<'b>,
     ) -> MigrationDeprecations<'a, 'b> {
         MigrationDeprecations::new(self.transport(), parts)
     }
-    #[doc = "[Migration Get Feature Upgrade Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/migration-api-feature-upgrade.html)\n\nFind out whether system features need to be upgraded or not"]
+    #[doc = "[Migration Get Feature Upgrade Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/migration-api-feature-upgrade.html)\n\nFind out whether system features need to be upgraded or not"]
     pub fn get_feature_upgrade_status<'b>(&'a self) -> MigrationGetFeatureUpgradeStatus<'a, 'b> {
         MigrationGetFeatureUpgradeStatus::new(self.transport())
     }
-    #[doc = "[Migration Post Feature Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/migration-api-feature-upgrade.html)\n\nBegin upgrades for system features"]
+    #[doc = "[Migration Post Feature Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/migration-api-feature-upgrade.html)\n\nBegin upgrades for system features"]
     pub fn post_feature_upgrade<'b>(&'a self) -> MigrationPostFeatureUpgrade<'a, 'b, ()> {
         MigrationPostFeatureUpgrade::new(self.transport())
     }

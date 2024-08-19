@@ -61,7 +61,7 @@ impl TextStructureFindFieldStructureParts {
         }
     }
 }
-#[doc = "Builder for the [Text Structure Find Field Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/find-field-structure.html)\n\nFinds the structure of a text field in an index."]
+#[doc = "Builder for the [Text Structure Find Field Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/find-field-structure.html)\n\nFinds the structure of a text field in an index."]
 #[derive(Clone, Debug)]
 pub struct TextStructureFindFieldStructure<'a, 'b> {
     transport: &'a Transport,
@@ -302,7 +302,7 @@ impl TextStructureFindMessageStructureParts {
         }
     }
 }
-#[doc = "Builder for the [Text Structure Find Message Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/find-message-structure.html)\n\nFinds the structure of a list of messages. The messages must contain data that is suitable to be ingested into Elasticsearch."]
+#[doc = "Builder for the [Text Structure Find Message Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/find-message-structure.html)\n\nFinds the structure of a list of messages. The messages must contain data that is suitable to be ingested into Elasticsearch."]
 #[derive(Clone, Debug)]
 pub struct TextStructureFindMessageStructure<'a, 'b, B> {
     transport: &'a Transport,
@@ -551,7 +551,7 @@ impl TextStructureFindStructureParts {
         }
     }
 }
-#[doc = "Builder for the [Text Structure Find Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/find-structure.html)\n\nFinds the structure of a text file. The text file must contain data that is suitable to be ingested into Elasticsearch."]
+#[doc = "Builder for the [Text Structure Find Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/find-structure.html)\n\nFinds the structure of a text file. The text file must contain data that is suitable to be ingested into Elasticsearch."]
 #[derive(Clone, Debug)]
 pub struct TextStructureFindStructure<'a, 'b, B> {
     transport: &'a Transport,
@@ -837,7 +837,7 @@ impl TextStructureTestGrokPatternParts {
         }
     }
 }
-#[doc = "Builder for the [Text Structure Test Grok Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/test-grok-pattern.html)\n\nTests a Grok pattern on some text."]
+#[doc = "Builder for the [Text Structure Test Grok Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/test-grok-pattern.html)\n\nTests a Grok pattern on some text."]
 #[derive(Clone, Debug)]
 pub struct TextStructureTestGrokPattern<'a, 'b, B> {
     transport: &'a Transport,
@@ -983,19 +983,19 @@ impl<'a> TextStructure<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Text Structure Find Field Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/find-field-structure.html)\n\nFinds the structure of a text field in an index."]
+    #[doc = "[Text Structure Find Field Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/find-field-structure.html)\n\nFinds the structure of a text field in an index."]
     pub fn find_field_structure<'b>(&'a self) -> TextStructureFindFieldStructure<'a, 'b> {
         TextStructureFindFieldStructure::new(self.transport())
     }
-    #[doc = "[Text Structure Find Message Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/find-message-structure.html)\n\nFinds the structure of a list of messages. The messages must contain data that is suitable to be ingested into Elasticsearch."]
+    #[doc = "[Text Structure Find Message Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/find-message-structure.html)\n\nFinds the structure of a list of messages. The messages must contain data that is suitable to be ingested into Elasticsearch."]
     pub fn find_message_structure<'b>(&'a self) -> TextStructureFindMessageStructure<'a, 'b, ()> {
         TextStructureFindMessageStructure::new(self.transport())
     }
-    #[doc = "[Text Structure Find Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/find-structure.html)\n\nFinds the structure of a text file. The text file must contain data that is suitable to be ingested into Elasticsearch."]
+    #[doc = "[Text Structure Find Structure API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/find-structure.html)\n\nFinds the structure of a text file. The text file must contain data that is suitable to be ingested into Elasticsearch."]
     pub fn find_structure<'b>(&'a self) -> TextStructureFindStructure<'a, 'b, ()> {
         TextStructureFindStructure::new(self.transport())
     }
-    #[doc = "[Text Structure Test Grok Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.7/test-grok-pattern.html)\n\nTests a Grok pattern on some text."]
+    #[doc = "[Text Structure Test Grok Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/test-grok-pattern.html)\n\nTests a Grok pattern on some text."]
     pub fn test_grok_pattern<'b>(&'a self) -> TextStructureTestGrokPattern<'a, 'b, ()> {
         TextStructureTestGrokPattern::new(self.transport())
     }

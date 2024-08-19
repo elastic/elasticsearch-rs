@@ -153,7 +153,11 @@ async fn uses_call_request_timeout() {
         .await;
 
     match response {
-        Ok(r) => assert!(false, "Expected timeout error, but response received: {:?}", r),
+        Ok(r) => assert!(
+            false,
+            "Expected timeout error, but response received: {:?}",
+            r
+        ),
         Err(e) => assert!(e.is_timeout(), "Expected timeout error, but was {:?}", e),
     }
 }
