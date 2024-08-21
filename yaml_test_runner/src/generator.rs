@@ -62,7 +62,7 @@ impl<'a> YamlTests<'a> {
     ) -> Self {
         let path = path.to_slash_lossy();
         Self {
-            path,
+            path: path.to_string(),
             version,
             skip,
             suite,

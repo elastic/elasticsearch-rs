@@ -29,7 +29,7 @@ extern crate quote;
 extern crate simple_logger;
 
 use anyhow::bail;
-use clap::{App, Arg};
+use clap::{Arg, Command};
 use log::LevelFilter;
 use serde_json::Value;
 use std::{fs, path::PathBuf, process::exit};
@@ -46,18 +46,19 @@ fn main() -> anyhow::Result<()> {
         .init()
         .unwrap();
 
-    let matches = App::new(env!("CARGO_PKG_NAME"))
+    let matches = Command::new(env!("CARGO_PKG_NAME"))
         .about(env!("CARGO_PKG_DESCRIPTION"))
-        .arg(Arg::with_name("url")
-            .short("u")
+        .arg(Arg::new("url")
+            .short('u')
             .long("url")
             .value_name("ELASTICSEARCH_URL")
             .help("The url of a running Elasticsearch cluster. Used to determine the version, test suite and branch to use to compile tests")
-            .required(true)
-            .takes_value(true))
+            .required(true))
         .get_matches();
 
-    let url = matches.value_of("url").expect("missing 'url' argument");
+    let url = matches
+        .get_one::<String>("url")
+        .expect("missing 'url' argument");
     let (branch, suite, version, sem_version) =
         match branch_suite_and_version_from_elasticsearch(url) {
             Ok(v) => v,
@@ -125,7 +126,7 @@ fn main() -> anyhow::Result<()> {
 fn branch_suite_and_version_from_elasticsearch(
     url: &str,
 ) -> Result<(String, TestSuite, String, semver::Version), failure::Error> {
-    let client = reqwest::ClientBuilder::new()
+    let client = reqwest::blocking::ClientBuilder::new()
         .danger_accept_invalid_certs(true)
         .build()?;
 
@@ -134,7 +135,7 @@ fn branch_suite_and_version_from_elasticsearch(
         Ok(ref s) if s == "free" => TestSuite::Free,
         _ => TestSuite::XPack,
     };
-    let mut response = client.get(url).send()?;
+    let response = client.get(url).send()?;
     let json: Value = response.json()?;
     let branch = json["version"]["build_hash"].as_str().unwrap().to_string();
 

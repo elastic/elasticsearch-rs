@@ -22,7 +22,8 @@ use std::io::Write;
 pub fn base_64_encode_credentials(user: &str, password: &str) -> String {
     let mut value = Vec::new();
     {
-        let mut encoder = Base64Encoder::new(&mut value, base64::STANDARD);
+        let mut encoder =
+            Base64Encoder::new(&mut value, &base64::engine::general_purpose::STANDARD);
         write!(encoder, "{}:", user).unwrap();
         write!(encoder, "{}", password).unwrap();
     };
