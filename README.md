@@ -94,7 +94,7 @@ Build a transport to make API requests to Elasticsearch using the `TransportBuil
 which allows setting of proxies, authentication schemes, certificate validation, and
 other transport related settings.
 
-To create a client to make API calls to Elasticsearch running on `http://localhost:9200`
+To create a client to make API calls to Elasticsearch running on `https://localhost:9200`
 
 ```rust,no_run
 use elasticsearch::Elasticsearch;
