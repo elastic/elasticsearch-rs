@@ -188,6 +188,7 @@
 //! let response = client
 //!     .cat()
 //!     .indices(CatIndicesParts::Index(&["*"]))
+//!     .format("json")
 //!     .send()
 //!     .await?;
 //!
