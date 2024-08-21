@@ -357,7 +357,7 @@ mod tests {
                             methods: vec![HttpMethod::Get, HttpMethod::Post],
                             parts: {
                                 let mut map = BTreeMap::new();
-                                map.insert("index".to_string(), Type {
+                                map.insert("index".to_string(), Type {i
                                     ty: TypeKind::List,
                                     description: Some("A comma-separated list of index names to search".to_string()),
                                     options: vec![],

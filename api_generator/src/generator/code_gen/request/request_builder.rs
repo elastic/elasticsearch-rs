@@ -433,7 +433,7 @@ impl<'a> RequestBuilder<'a> {
         let impl_ident = ident(&name);
         let field_ident = ident(&name);
         let doc_attr = match &f.1.description {
-            Some(docs) => vec![doc(docs)],
+            Some(docs) => vec![doc_escaped(docs)],
             _ => vec![],
         };
 

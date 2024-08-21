@@ -1747,7 +1747,7 @@ where
         self.slices = Some(slices);
         self
     }
-    #[doc = "A comma-separated list of <field>:<direction> pairs"]
+    #[doc = "A comma-separated list of &lt;field&gt;:&lt;direction&gt; pairs"]
     pub fn sort(mut self, sort: &'b [&'b str]) -> Self {
         self.sort = Some(sort);
         self
@@ -7275,7 +7275,7 @@ where
         self.size = Some(size);
         self
     }
-    #[doc = "A comma-separated list of <field>:<direction> pairs"]
+    #[doc = "A comma-separated list of &lt;field&gt;:&lt;direction&gt; pairs"]
     pub fn sort(mut self, sort: &'b [&'b str]) -> Self {
         self.sort = Some(sort);
         self
@@ -9217,7 +9217,7 @@ where
         self.slices = Some(slices);
         self
     }
-    #[doc = "A comma-separated list of <field>:<direction> pairs"]
+    #[doc = "A comma-separated list of &lt;field&gt;:&lt;direction&gt; pairs"]
     pub fn sort(mut self, sort: &'b [&'b str]) -> Self {
         self.sort = Some(sort);
         self
