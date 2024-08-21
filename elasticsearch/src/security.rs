@@ -34,8 +34,7 @@
 //! - Manage role mappings
 //! - Manage API keys
 //! - Manage Bearer tokens
-//! - Authenticate users against an OpenID Connect or SAML authentication realm when using a
-//! custom web application other than Kibana
+//! - Authenticate users against an OpenID Connect or SAML authentication realm when using a custom web application other than Kibana
 
 #![allow(unused_imports)]
 use crate::{
@@ -53,7 +52,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Activate User Profile API"]
 pub enum SecurityActivateUserProfileParts {
     #[doc = "No parts"]
@@ -188,7 +187,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Authenticate API"]
 pub enum SecurityAuthenticateParts {
     #[doc = "No parts"]
@@ -300,7 +299,7 @@ impl<'a, 'b> SecurityAuthenticate<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Bulk Delete Role API"]
 pub enum SecurityBulkDeleteRoleParts {
     #[doc = "No parts"]
@@ -445,7 +444,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Bulk Put Role API"]
 pub enum SecurityBulkPutRoleParts {
     #[doc = "No parts"]
@@ -590,7 +589,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Bulk Update Api Keys API"]
 pub enum SecurityBulkUpdateApiKeysParts {
     #[doc = "No parts"]
@@ -725,7 +724,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Change Password API"]
 pub enum SecurityChangePasswordParts<'b> {
     #[doc = "Username"]
@@ -737,7 +736,7 @@ impl<'b> SecurityChangePasswordParts<'b> {
     #[doc = "Builds a relative URL path to the Security Change Password API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityChangePasswordParts::Username(ref username) => {
+            SecurityChangePasswordParts::Username(username) => {
                 let encoded_username: Cow<str> =
                     percent_encode(username.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(26usize + encoded_username.len());
@@ -881,7 +880,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Clear Api Key Cache API"]
 pub enum SecurityClearApiKeyCacheParts<'b> {
     #[doc = "Ids"]
@@ -891,7 +890,7 @@ impl<'b> SecurityClearApiKeyCacheParts<'b> {
     #[doc = "Builds a relative URL path to the Security Clear Api Key Cache API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityClearApiKeyCacheParts::Ids(ref ids) => {
+            SecurityClearApiKeyCacheParts::Ids(ids) => {
                 let ids_str = ids.join(",");
                 let encoded_ids: Cow<str> =
                     percent_encode(ids_str.as_bytes(), PARTS_ENCODED).into();
@@ -1025,7 +1024,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Clear Cached Privileges API"]
 pub enum SecurityClearCachedPrivilegesParts<'b> {
     #[doc = "Application"]
@@ -1035,7 +1034,7 @@ impl<'b> SecurityClearCachedPrivilegesParts<'b> {
     #[doc = "Builds a relative URL path to the Security Clear Cached Privileges API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityClearCachedPrivilegesParts::Application(ref application) => {
+            SecurityClearCachedPrivilegesParts::Application(application) => {
                 let application_str = application.join(",");
                 let encoded_application: Cow<str> =
                     percent_encode(application_str.as_bytes(), PARTS_ENCODED).into();
@@ -1169,7 +1168,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Clear Cached Realms API"]
 pub enum SecurityClearCachedRealmsParts<'b> {
     #[doc = "Realms"]
@@ -1179,7 +1178,7 @@ impl<'b> SecurityClearCachedRealmsParts<'b> {
     #[doc = "Builds a relative URL path to the Security Clear Cached Realms API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityClearCachedRealmsParts::Realms(ref realms) => {
+            SecurityClearCachedRealmsParts::Realms(realms) => {
                 let realms_str = realms.join(",");
                 let encoded_realms: Cow<str> =
                     percent_encode(realms_str.as_bytes(), PARTS_ENCODED).into();
@@ -1324,7 +1323,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Clear Cached Roles API"]
 pub enum SecurityClearCachedRolesParts<'b> {
     #[doc = "Name"]
@@ -1334,7 +1333,7 @@ impl<'b> SecurityClearCachedRolesParts<'b> {
     #[doc = "Builds a relative URL path to the Security Clear Cached Roles API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityClearCachedRolesParts::Name(ref name) => {
+            SecurityClearCachedRolesParts::Name(name) => {
                 let name_str = name.join(",");
                 let encoded_name: Cow<str> =
                     percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
@@ -1468,7 +1467,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Clear Cached Service Tokens API"]
 pub enum SecurityClearCachedServiceTokensParts<'b> {
     #[doc = "Namespace, Service and Name"]
@@ -1479,9 +1478,9 @@ impl<'b> SecurityClearCachedServiceTokensParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SecurityClearCachedServiceTokensParts::NamespaceServiceName(
-                ref namespace,
-                ref service,
-                ref name,
+                namespace,
+                service,
+                name,
             ) => {
                 let name_str = name.join(",");
                 let encoded_namespace: Cow<str> =
@@ -1495,7 +1494,7 @@ impl<'b> SecurityClearCachedServiceTokensParts<'b> {
                 );
                 p.push_str("/_security/service/");
                 p.push_str(encoded_namespace.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_service.as_ref());
                 p.push_str("/credential/token/");
                 p.push_str(encoded_name.as_ref());
@@ -1626,7 +1625,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Create Api Key API"]
 pub enum SecurityCreateApiKeyParts {
     #[doc = "No parts"]
@@ -1772,7 +1771,7 @@ where
     }
 }
 #[cfg(feature = "beta-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Create Cross Cluster Api Key API"]
 pub enum SecurityCreateCrossClusterApiKeyParts {
     #[doc = "No parts"]
@@ -1913,7 +1912,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Create Service Token API"]
 pub enum SecurityCreateServiceTokenParts<'b> {
     #[doc = "Namespace, Service and Name"]
@@ -1925,11 +1924,7 @@ impl<'b> SecurityCreateServiceTokenParts<'b> {
     #[doc = "Builds a relative URL path to the Security Create Service Token API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityCreateServiceTokenParts::NamespaceServiceName(
-                ref namespace,
-                ref service,
-                ref name,
-            ) => {
+            SecurityCreateServiceTokenParts::NamespaceServiceName(namespace, service, name) => {
                 let encoded_namespace: Cow<str> =
                     percent_encode(namespace.as_bytes(), PARTS_ENCODED).into();
                 let encoded_service: Cow<str> =
@@ -1940,13 +1935,13 @@ impl<'b> SecurityCreateServiceTokenParts<'b> {
                 );
                 p.push_str("/_security/service/");
                 p.push_str(encoded_namespace.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_service.as_ref());
                 p.push_str("/credential/token/");
                 p.push_str(encoded_name.as_ref());
                 p.into()
             }
-            SecurityCreateServiceTokenParts::NamespaceService(ref namespace, ref service) => {
+            SecurityCreateServiceTokenParts::NamespaceService(namespace, service) => {
                 let encoded_namespace: Cow<str> =
                     percent_encode(namespace.as_bytes(), PARTS_ENCODED).into();
                 let encoded_service: Cow<str> =
@@ -1956,7 +1951,7 @@ impl<'b> SecurityCreateServiceTokenParts<'b> {
                 );
                 p.push_str("/_security/service/");
                 p.push_str(encoded_namespace.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_service.as_ref());
                 p.push_str("/credential/token");
                 p.into()
@@ -2095,7 +2090,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Delete Privileges API"]
 pub enum SecurityDeletePrivilegesParts<'b> {
     #[doc = "Application and Name"]
@@ -2105,7 +2100,7 @@ impl<'b> SecurityDeletePrivilegesParts<'b> {
     #[doc = "Builds a relative URL path to the Security Delete Privileges API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityDeletePrivilegesParts::ApplicationName(ref application, ref name) => {
+            SecurityDeletePrivilegesParts::ApplicationName(application, name) => {
                 let encoded_application: Cow<str> =
                     percent_encode(application.as_bytes(), PARTS_ENCODED).into();
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
@@ -2113,7 +2108,7 @@ impl<'b> SecurityDeletePrivilegesParts<'b> {
                     String::with_capacity(22usize + encoded_application.len() + encoded_name.len());
                 p.push_str("/_security/privilege/");
                 p.push_str(encoded_application.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_name.as_ref());
                 p.into()
             }
@@ -2227,7 +2222,7 @@ impl<'a, 'b> SecurityDeletePrivileges<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Delete Role API"]
 pub enum SecurityDeleteRoleParts<'b> {
     #[doc = "Name"]
@@ -2237,7 +2232,7 @@ impl<'b> SecurityDeleteRoleParts<'b> {
     #[doc = "Builds a relative URL path to the Security Delete Role API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityDeleteRoleParts::Name(ref name) => {
+            SecurityDeleteRoleParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_name.len());
                 p.push_str("/_security/role/");
@@ -2354,7 +2349,7 @@ impl<'a, 'b> SecurityDeleteRole<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Delete Role Mapping API"]
 pub enum SecurityDeleteRoleMappingParts<'b> {
     #[doc = "Name"]
@@ -2364,7 +2359,7 @@ impl<'b> SecurityDeleteRoleMappingParts<'b> {
     #[doc = "Builds a relative URL path to the Security Delete Role Mapping API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityDeleteRoleMappingParts::Name(ref name) => {
+            SecurityDeleteRoleMappingParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(24usize + encoded_name.len());
                 p.push_str("/_security/role_mapping/");
@@ -2481,7 +2476,7 @@ impl<'a, 'b> SecurityDeleteRoleMapping<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Delete Service Token API"]
 pub enum SecurityDeleteServiceTokenParts<'b> {
     #[doc = "Namespace, Service and Name"]
@@ -2491,11 +2486,7 @@ impl<'b> SecurityDeleteServiceTokenParts<'b> {
     #[doc = "Builds a relative URL path to the Security Delete Service Token API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityDeleteServiceTokenParts::NamespaceServiceName(
-                ref namespace,
-                ref service,
-                ref name,
-            ) => {
+            SecurityDeleteServiceTokenParts::NamespaceServiceName(namespace, service, name) => {
                 let encoded_namespace: Cow<str> =
                     percent_encode(namespace.as_bytes(), PARTS_ENCODED).into();
                 let encoded_service: Cow<str> =
@@ -2506,7 +2497,7 @@ impl<'b> SecurityDeleteServiceTokenParts<'b> {
                 );
                 p.push_str("/_security/service/");
                 p.push_str(encoded_namespace.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_service.as_ref());
                 p.push_str("/credential/token/");
                 p.push_str(encoded_name.as_ref());
@@ -2622,7 +2613,7 @@ impl<'a, 'b> SecurityDeleteServiceToken<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Delete User API"]
 pub enum SecurityDeleteUserParts<'b> {
     #[doc = "Username"]
@@ -2632,7 +2623,7 @@ impl<'b> SecurityDeleteUserParts<'b> {
     #[doc = "Builds a relative URL path to the Security Delete User API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityDeleteUserParts::Username(ref username) => {
+            SecurityDeleteUserParts::Username(username) => {
                 let encoded_username: Cow<str> =
                     percent_encode(username.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_username.len());
@@ -2750,7 +2741,7 @@ impl<'a, 'b> SecurityDeleteUser<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Disable User API"]
 pub enum SecurityDisableUserParts<'b> {
     #[doc = "Username"]
@@ -2760,7 +2751,7 @@ impl<'b> SecurityDisableUserParts<'b> {
     #[doc = "Builds a relative URL path to the Security Disable User API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityDisableUserParts::Username(ref username) => {
+            SecurityDisableUserParts::Username(username) => {
                 let encoded_username: Cow<str> =
                     percent_encode(username.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(25usize + encoded_username.len());
@@ -2903,7 +2894,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Disable User Profile API"]
 pub enum SecurityDisableUserProfileParts<'b> {
     #[doc = "Uid"]
@@ -2913,7 +2904,7 @@ impl<'b> SecurityDisableUserProfileParts<'b> {
     #[doc = "Builds a relative URL path to the Security Disable User Profile API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityDisableUserProfileParts::Uid(ref uid) => {
+            SecurityDisableUserProfileParts::Uid(uid) => {
                 let encoded_uid: Cow<str> = percent_encode(uid.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(28usize + encoded_uid.len());
                 p.push_str("/_security/profile/");
@@ -3055,7 +3046,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Enable User API"]
 pub enum SecurityEnableUserParts<'b> {
     #[doc = "Username"]
@@ -3065,7 +3056,7 @@ impl<'b> SecurityEnableUserParts<'b> {
     #[doc = "Builds a relative URL path to the Security Enable User API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityEnableUserParts::Username(ref username) => {
+            SecurityEnableUserParts::Username(username) => {
                 let encoded_username: Cow<str> =
                     percent_encode(username.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(24usize + encoded_username.len());
@@ -3208,7 +3199,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Enable User Profile API"]
 pub enum SecurityEnableUserProfileParts<'b> {
     #[doc = "Uid"]
@@ -3218,7 +3209,7 @@ impl<'b> SecurityEnableUserProfileParts<'b> {
     #[doc = "Builds a relative URL path to the Security Enable User Profile API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityEnableUserProfileParts::Uid(ref uid) => {
+            SecurityEnableUserProfileParts::Uid(uid) => {
                 let encoded_uid: Cow<str> = percent_encode(uid.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(27usize + encoded_uid.len());
                 p.push_str("/_security/profile/");
@@ -3360,7 +3351,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Enroll Kibana API"]
 pub enum SecurityEnrollKibanaParts {
     #[doc = "No parts"]
@@ -3472,7 +3463,7 @@ impl<'a, 'b> SecurityEnrollKibana<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Enroll Node API"]
 pub enum SecurityEnrollNodeParts {
     #[doc = "No parts"]
@@ -3584,7 +3575,7 @@ impl<'a, 'b> SecurityEnrollNode<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Get Api Key API"]
 pub enum SecurityGetApiKeyParts {
     #[doc = "No parts"]
@@ -3768,7 +3759,7 @@ impl<'a, 'b> SecurityGetApiKey<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Get Builtin Privileges API"]
 pub enum SecurityGetBuiltinPrivilegesParts {
     #[doc = "No parts"]
@@ -3880,7 +3871,7 @@ impl<'a, 'b> SecurityGetBuiltinPrivileges<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Get Privileges API"]
 pub enum SecurityGetPrivilegesParts<'b> {
     #[doc = "No parts"]
@@ -3895,7 +3886,7 @@ impl<'b> SecurityGetPrivilegesParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SecurityGetPrivilegesParts::None => "/_security/privilege".into(),
-            SecurityGetPrivilegesParts::Application(ref application) => {
+            SecurityGetPrivilegesParts::Application(application) => {
                 let encoded_application: Cow<str> =
                     percent_encode(application.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(21usize + encoded_application.len());
@@ -3903,7 +3894,7 @@ impl<'b> SecurityGetPrivilegesParts<'b> {
                 p.push_str(encoded_application.as_ref());
                 p.into()
             }
-            SecurityGetPrivilegesParts::ApplicationName(ref application, ref name) => {
+            SecurityGetPrivilegesParts::ApplicationName(application, name) => {
                 let encoded_application: Cow<str> =
                     percent_encode(application.as_bytes(), PARTS_ENCODED).into();
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
@@ -3911,7 +3902,7 @@ impl<'b> SecurityGetPrivilegesParts<'b> {
                     String::with_capacity(22usize + encoded_application.len() + encoded_name.len());
                 p.push_str("/_security/privilege/");
                 p.push_str(encoded_application.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_name.as_ref());
                 p.into()
             }
@@ -4016,7 +4007,7 @@ impl<'a, 'b> SecurityGetPrivileges<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Get Role API"]
 pub enum SecurityGetRoleParts<'b> {
     #[doc = "Name"]
@@ -4028,7 +4019,7 @@ impl<'b> SecurityGetRoleParts<'b> {
     #[doc = "Builds a relative URL path to the Security Get Role API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityGetRoleParts::Name(ref name) => {
+            SecurityGetRoleParts::Name(name) => {
                 let name_str = name.join(",");
                 let encoded_name: Cow<str> =
                     percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
@@ -4139,7 +4130,7 @@ impl<'a, 'b> SecurityGetRole<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Get Role Mapping API"]
 pub enum SecurityGetRoleMappingParts<'b> {
     #[doc = "Name"]
@@ -4151,7 +4142,7 @@ impl<'b> SecurityGetRoleMappingParts<'b> {
     #[doc = "Builds a relative URL path to the Security Get Role Mapping API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityGetRoleMappingParts::Name(ref name) => {
+            SecurityGetRoleMappingParts::Name(name) => {
                 let name_str = name.join(",");
                 let encoded_name: Cow<str> =
                     percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
@@ -4262,7 +4253,7 @@ impl<'a, 'b> SecurityGetRoleMapping<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Get Service Accounts API"]
 pub enum SecurityGetServiceAccountsParts<'b> {
     #[doc = "Namespace and Service"]
@@ -4276,7 +4267,7 @@ impl<'b> SecurityGetServiceAccountsParts<'b> {
     #[doc = "Builds a relative URL path to the Security Get Service Accounts API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityGetServiceAccountsParts::NamespaceService(ref namespace, ref service) => {
+            SecurityGetServiceAccountsParts::NamespaceService(namespace, service) => {
                 let encoded_namespace: Cow<str> =
                     percent_encode(namespace.as_bytes(), PARTS_ENCODED).into();
                 let encoded_service: Cow<str> =
@@ -4286,11 +4277,11 @@ impl<'b> SecurityGetServiceAccountsParts<'b> {
                 );
                 p.push_str("/_security/service/");
                 p.push_str(encoded_namespace.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_service.as_ref());
                 p.into()
             }
-            SecurityGetServiceAccountsParts::Namespace(ref namespace) => {
+            SecurityGetServiceAccountsParts::Namespace(namespace) => {
                 let encoded_namespace: Cow<str> =
                     percent_encode(namespace.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(19usize + encoded_namespace.len());
@@ -4400,7 +4391,7 @@ impl<'a, 'b> SecurityGetServiceAccounts<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Get Service Credentials API"]
 pub enum SecurityGetServiceCredentialsParts<'b> {
     #[doc = "Namespace and Service"]
@@ -4410,7 +4401,7 @@ impl<'b> SecurityGetServiceCredentialsParts<'b> {
     #[doc = "Builds a relative URL path to the Security Get Service Credentials API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityGetServiceCredentialsParts::NamespaceService(ref namespace, ref service) => {
+            SecurityGetServiceCredentialsParts::NamespaceService(namespace, service) => {
                 let encoded_namespace: Cow<str> =
                     percent_encode(namespace.as_bytes(), PARTS_ENCODED).into();
                 let encoded_service: Cow<str> =
@@ -4420,7 +4411,7 @@ impl<'b> SecurityGetServiceCredentialsParts<'b> {
                 );
                 p.push_str("/_security/service/");
                 p.push_str(encoded_namespace.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_service.as_ref());
                 p.push_str("/credential");
                 p.into()
@@ -4526,7 +4517,7 @@ impl<'a, 'b> SecurityGetServiceCredentials<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Get Settings API"]
 pub enum SecurityGetSettingsParts {
     #[doc = "No parts"]
@@ -4647,7 +4638,7 @@ impl<'a, 'b> SecurityGetSettings<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Get Token API"]
 pub enum SecurityGetTokenParts {
     #[doc = "No parts"]
@@ -4782,7 +4773,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Get User API"]
 pub enum SecurityGetUserParts<'b> {
     #[doc = "Username"]
@@ -4794,7 +4785,7 @@ impl<'b> SecurityGetUserParts<'b> {
     #[doc = "Builds a relative URL path to the Security Get User API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityGetUserParts::Username(ref username) => {
+            SecurityGetUserParts::Username(username) => {
                 let username_str = username.join(",");
                 let encoded_username: Cow<str> =
                     percent_encode(username_str.as_bytes(), PARTS_ENCODED).into();
@@ -4914,7 +4905,7 @@ impl<'a, 'b> SecurityGetUser<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Get User Privileges API"]
 pub enum SecurityGetUserPrivilegesParts {
     #[doc = "No parts"]
@@ -5026,7 +5017,7 @@ impl<'a, 'b> SecurityGetUserPrivileges<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Get User Profile API"]
 pub enum SecurityGetUserProfileParts<'b> {
     #[doc = "Uid"]
@@ -5036,7 +5027,7 @@ impl<'b> SecurityGetUserProfileParts<'b> {
     #[doc = "Builds a relative URL path to the Security Get User Profile API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityGetUserProfileParts::Uid(ref uid) => {
+            SecurityGetUserProfileParts::Uid(uid) => {
                 let uid_str = uid.join(",");
                 let encoded_uid: Cow<str> =
                     percent_encode(uid_str.as_bytes(), PARTS_ENCODED).into();
@@ -5156,7 +5147,7 @@ impl<'a, 'b> SecurityGetUserProfile<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Grant Api Key API"]
 pub enum SecurityGrantApiKeyParts {
     #[doc = "No parts"]
@@ -5301,7 +5292,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Has Privileges API"]
 pub enum SecurityHasPrivilegesParts<'b> {
     #[doc = "No parts"]
@@ -5314,7 +5305,7 @@ impl<'b> SecurityHasPrivilegesParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SecurityHasPrivilegesParts::None => "/_security/user/_has_privileges".into(),
-            SecurityHasPrivilegesParts::User(ref user) => {
+            SecurityHasPrivilegesParts::User(user) => {
                 let encoded_user: Cow<str> = percent_encode(user.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(32usize + encoded_user.len());
                 p.push_str("/_security/user/");
@@ -5449,7 +5440,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Has Privileges User Profile API"]
 pub enum SecurityHasPrivilegesUserProfileParts {
     #[doc = "No parts"]
@@ -5589,7 +5580,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Invalidate Api Key API"]
 pub enum SecurityInvalidateApiKeyParts {
     #[doc = "No parts"]
@@ -5724,7 +5715,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Invalidate Token API"]
 pub enum SecurityInvalidateTokenParts {
     #[doc = "No parts"]
@@ -5859,7 +5850,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Oidc Authenticate API"]
 pub enum SecurityOidcAuthenticateParts {
     #[doc = "No parts"]
@@ -5994,7 +5985,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Oidc Logout API"]
 pub enum SecurityOidcLogoutParts {
     #[doc = "No parts"]
@@ -6129,7 +6120,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Oidc Prepare Authentication API"]
 pub enum SecurityOidcPrepareAuthenticationParts {
     #[doc = "No parts"]
@@ -6264,7 +6255,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Put Privileges API"]
 pub enum SecurityPutPrivilegesParts {
     #[doc = "No parts"]
@@ -6409,7 +6400,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Put Role API"]
 pub enum SecurityPutRoleParts<'b> {
     #[doc = "Name"]
@@ -6419,7 +6410,7 @@ impl<'b> SecurityPutRoleParts<'b> {
     #[doc = "Builds a relative URL path to the Security Put Role API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityPutRoleParts::Name(ref name) => {
+            SecurityPutRoleParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_name.len());
                 p.push_str("/_security/role/");
@@ -6560,7 +6551,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Put Role Mapping API"]
 pub enum SecurityPutRoleMappingParts<'b> {
     #[doc = "Name"]
@@ -6570,7 +6561,7 @@ impl<'b> SecurityPutRoleMappingParts<'b> {
     #[doc = "Builds a relative URL path to the Security Put Role Mapping API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityPutRoleMappingParts::Name(ref name) => {
+            SecurityPutRoleMappingParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(24usize + encoded_name.len());
                 p.push_str("/_security/role_mapping/");
@@ -6711,7 +6702,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Put User API"]
 pub enum SecurityPutUserParts<'b> {
     #[doc = "Username"]
@@ -6721,7 +6712,7 @@ impl<'b> SecurityPutUserParts<'b> {
     #[doc = "Builds a relative URL path to the Security Put User API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityPutUserParts::Username(ref username) => {
+            SecurityPutUserParts::Username(username) => {
                 let encoded_username: Cow<str> =
                     percent_encode(username.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_username.len());
@@ -6863,7 +6854,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Query Api Keys API"]
 pub enum SecurityQueryApiKeysParts {
     #[doc = "No parts"]
@@ -7031,7 +7022,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Query Role API"]
 pub enum SecurityQueryRoleParts {
     #[doc = "No parts"]
@@ -7169,7 +7160,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Query User API"]
 pub enum SecurityQueryUserParts {
     #[doc = "No parts"]
@@ -7317,7 +7308,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Saml Authenticate API"]
 pub enum SecuritySamlAuthenticateParts {
     #[doc = "No parts"]
@@ -7452,7 +7443,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Saml Complete Logout API"]
 pub enum SecuritySamlCompleteLogoutParts {
     #[doc = "No parts"]
@@ -7587,7 +7578,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Saml Invalidate API"]
 pub enum SecuritySamlInvalidateParts {
     #[doc = "No parts"]
@@ -7722,7 +7713,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Saml Logout API"]
 pub enum SecuritySamlLogoutParts {
     #[doc = "No parts"]
@@ -7857,7 +7848,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Saml Prepare Authentication API"]
 pub enum SecuritySamlPrepareAuthenticationParts {
     #[doc = "No parts"]
@@ -7992,7 +7983,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Saml Service Provider Metadata API"]
 pub enum SecuritySamlServiceProviderMetadataParts<'b> {
     #[doc = "RealmName"]
@@ -8002,7 +7993,7 @@ impl<'b> SecuritySamlServiceProviderMetadataParts<'b> {
     #[doc = "Builds a relative URL path to the Security Saml Service Provider Metadata API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecuritySamlServiceProviderMetadataParts::RealmName(ref realm_name) => {
+            SecuritySamlServiceProviderMetadataParts::RealmName(realm_name) => {
                 let encoded_realm_name: Cow<str> =
                     percent_encode(realm_name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(25usize + encoded_realm_name.len());
@@ -8114,7 +8105,7 @@ impl<'a, 'b> SecuritySamlServiceProviderMetadata<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Suggest User Profiles API"]
 pub enum SecuritySuggestUserProfilesParts {
     #[doc = "No parts"]
@@ -8263,7 +8254,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Update Api Key API"]
 pub enum SecurityUpdateApiKeyParts<'b> {
     #[doc = "Id"]
@@ -8273,7 +8264,7 @@ impl<'b> SecurityUpdateApiKeyParts<'b> {
     #[doc = "Builds a relative URL path to the Security Update Api Key API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityUpdateApiKeyParts::Id(ref id) => {
+            SecurityUpdateApiKeyParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(19usize + encoded_id.len());
                 p.push_str("/_security/api_key/");
@@ -8405,7 +8396,7 @@ where
     }
 }
 #[cfg(feature = "beta-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Update Cross Cluster Api Key API"]
 pub enum SecurityUpdateCrossClusterApiKeyParts<'b> {
     #[doc = "Id"]
@@ -8416,7 +8407,7 @@ impl<'b> SecurityUpdateCrossClusterApiKeyParts<'b> {
     #[doc = "Builds a relative URL path to the Security Update Cross Cluster Api Key API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityUpdateCrossClusterApiKeyParts::Id(ref id) => {
+            SecurityUpdateCrossClusterApiKeyParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(33usize + encoded_id.len());
                 p.push_str("/_security/cross_cluster/api_key/");
@@ -8550,7 +8541,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Update Settings API"]
 pub enum SecurityUpdateSettingsParts {
     #[doc = "No parts"]
@@ -8705,7 +8696,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Update User Profile Data API"]
 pub enum SecurityUpdateUserProfileDataParts<'b> {
     #[doc = "Uid"]
@@ -8715,7 +8706,7 @@ impl<'b> SecurityUpdateUserProfileDataParts<'b> {
     #[doc = "Builds a relative URL path to the Security Update User Profile Data API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityUpdateUserProfileDataParts::Uid(ref uid) => {
+            SecurityUpdateUserProfileDataParts::Uid(uid) => {
                 let encoded_uid: Cow<str> = percent_encode(uid.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(25usize + encoded_uid.len());
                 p.push_str("/_security/profile/");

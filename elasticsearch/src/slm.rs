@@ -49,7 +49,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Slm Delete Lifecycle API"]
 pub enum SlmDeleteLifecycleParts<'b> {
     #[doc = "PolicyId"]
@@ -59,7 +59,7 @@ impl<'b> SlmDeleteLifecycleParts<'b> {
     #[doc = "Builds a relative URL path to the Slm Delete Lifecycle API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SlmDeleteLifecycleParts::PolicyId(ref policy_id) => {
+            SlmDeleteLifecycleParts::PolicyId(policy_id) => {
                 let encoded_policy_id: Cow<str> =
                     percent_encode(policy_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_policy_id.len());
@@ -168,7 +168,7 @@ impl<'a, 'b> SlmDeleteLifecycle<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Slm Execute Lifecycle API"]
 pub enum SlmExecuteLifecycleParts<'b> {
     #[doc = "PolicyId"]
@@ -178,7 +178,7 @@ impl<'b> SlmExecuteLifecycleParts<'b> {
     #[doc = "Builds a relative URL path to the Slm Execute Lifecycle API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SlmExecuteLifecycleParts::PolicyId(ref policy_id) => {
+            SlmExecuteLifecycleParts::PolicyId(policy_id) => {
                 let encoded_policy_id: Cow<str> =
                     percent_encode(policy_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(22usize + encoded_policy_id.len());
@@ -311,7 +311,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Slm Execute Retention API"]
 pub enum SlmExecuteRetentionParts {
     #[doc = "No parts"]
@@ -446,7 +446,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Slm Get Lifecycle API"]
 pub enum SlmGetLifecycleParts<'b> {
     #[doc = "PolicyId"]
@@ -458,7 +458,7 @@ impl<'b> SlmGetLifecycleParts<'b> {
     #[doc = "Builds a relative URL path to the Slm Get Lifecycle API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SlmGetLifecycleParts::PolicyId(ref policy_id) => {
+            SlmGetLifecycleParts::PolicyId(policy_id) => {
                 let policy_id_str = policy_id.join(",");
                 let encoded_policy_id: Cow<str> =
                     percent_encode(policy_id_str.as_bytes(), PARTS_ENCODED).into();
@@ -569,7 +569,7 @@ impl<'a, 'b> SlmGetLifecycle<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Slm Get Stats API"]
 pub enum SlmGetStatsParts {
     #[doc = "No parts"]
@@ -681,7 +681,7 @@ impl<'a, 'b> SlmGetStats<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Slm Get Status API"]
 pub enum SlmGetStatusParts {
     #[doc = "No parts"]
@@ -793,7 +793,7 @@ impl<'a, 'b> SlmGetStatus<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Slm Put Lifecycle API"]
 pub enum SlmPutLifecycleParts<'b> {
     #[doc = "PolicyId"]
@@ -803,7 +803,7 @@ impl<'b> SlmPutLifecycleParts<'b> {
     #[doc = "Builds a relative URL path to the Slm Put Lifecycle API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SlmPutLifecycleParts::PolicyId(ref policy_id) => {
+            SlmPutLifecycleParts::PolicyId(policy_id) => {
                 let encoded_policy_id: Cow<str> =
                     percent_encode(policy_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_policy_id.len());
@@ -935,7 +935,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Slm Start API"]
 pub enum SlmStartParts {
     #[doc = "No parts"]
@@ -1090,7 +1090,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Slm Stop API"]
 pub enum SlmStopParts {
     #[doc = "No parts"]

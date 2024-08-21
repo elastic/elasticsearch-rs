@@ -27,7 +27,7 @@ pub fn generate(api: &Api) -> anyhow::Result<String> {
         use serde::{Serialize, Deserialize};
     );
     for e in &api.enums {
-        generate_param(&mut tokens, &e);
+        generate_param(&mut tokens, e);
     }
 
     let generated = tokens.to_string();
@@ -60,10 +60,7 @@ fn generate_param(tokens: &mut Tokens, e: &ApiEnum) {
         })
         .unzip();
 
-    let doc = match &e.description {
-        Some(description) => Some(code_gen::doc(description)),
-        None => None,
-    };
+    let doc = e.description.as_ref().map(code_gen::doc);
 
     let cfg_attr = e.stability.outer_cfg_attr();
     let cfg_doc = stability_doc(e.stability);

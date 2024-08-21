@@ -48,7 +48,7 @@ use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Searchable Snapshots Cache Stats API"]
 pub enum SearchableSnapshotsCacheStatsParts<'b> {
     #[doc = "No parts"]
@@ -62,7 +62,7 @@ impl<'b> SearchableSnapshotsCacheStatsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SearchableSnapshotsCacheStatsParts::None => "/_searchable_snapshots/cache/stats".into(),
-            SearchableSnapshotsCacheStatsParts::NodeId(ref node_id) => {
+            SearchableSnapshotsCacheStatsParts::NodeId(node_id) => {
                 let node_id_str = node_id.join(",");
                 let encoded_node_id: Cow<str> =
                     percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
@@ -177,7 +177,7 @@ impl<'a, 'b> SearchableSnapshotsCacheStats<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Searchable Snapshots Clear Cache API"]
 pub enum SearchableSnapshotsClearCacheParts<'b> {
     #[doc = "No parts"]
@@ -191,12 +191,12 @@ impl<'b> SearchableSnapshotsClearCacheParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SearchableSnapshotsClearCacheParts::None => "/_searchable_snapshots/cache/clear".into(),
-            SearchableSnapshotsClearCacheParts::Index(ref index) => {
+            SearchableSnapshotsClearCacheParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(35usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_searchable_snapshots/cache/clear");
                 p.into()
@@ -370,7 +370,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Searchable Snapshots Mount API"]
 pub enum SearchableSnapshotsMountParts<'b> {
     #[doc = "Repository and Snapshot"]
@@ -380,7 +380,7 @@ impl<'b> SearchableSnapshotsMountParts<'b> {
     #[doc = "Builds a relative URL path to the Searchable Snapshots Mount API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SearchableSnapshotsMountParts::RepositorySnapshot(ref repository, ref snapshot) => {
+            SearchableSnapshotsMountParts::RepositorySnapshot(repository, snapshot) => {
                 let encoded_repository: Cow<str> =
                     percent_encode(repository.as_bytes(), PARTS_ENCODED).into();
                 let encoded_snapshot: Cow<str> =
@@ -390,7 +390,7 @@ impl<'b> SearchableSnapshotsMountParts<'b> {
                 );
                 p.push_str("/_snapshot/");
                 p.push_str(encoded_repository.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_snapshot.as_ref());
                 p.push_str("/_mount");
                 p.into()
@@ -549,7 +549,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Searchable Snapshots Stats API"]
 pub enum SearchableSnapshotsStatsParts<'b> {
     #[doc = "No parts"]
@@ -562,12 +562,12 @@ impl<'b> SearchableSnapshotsStatsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SearchableSnapshotsStatsParts::None => "/_searchable_snapshots/stats".into(),
-            SearchableSnapshotsStatsParts::Index(ref index) => {
+            SearchableSnapshotsStatsParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(29usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_searchable_snapshots/stats");
                 p.into()

@@ -45,7 +45,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Logstash Delete Pipeline API"]
 pub enum LogstashDeletePipelineParts<'b> {
     #[doc = "Id"]
@@ -55,7 +55,7 @@ impl<'b> LogstashDeletePipelineParts<'b> {
     #[doc = "Builds a relative URL path to the Logstash Delete Pipeline API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            LogstashDeletePipelineParts::Id(ref id) => {
+            LogstashDeletePipelineParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(20usize + encoded_id.len());
                 p.push_str("/_logstash/pipeline/");
@@ -163,7 +163,7 @@ impl<'a, 'b> LogstashDeletePipeline<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Logstash Get Pipeline API"]
 pub enum LogstashGetPipelineParts<'b> {
     #[doc = "No parts"]
@@ -176,7 +176,7 @@ impl<'b> LogstashGetPipelineParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             LogstashGetPipelineParts::None => "/_logstash/pipeline".into(),
-            LogstashGetPipelineParts::Id(ref id) => {
+            LogstashGetPipelineParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(20usize + encoded_id.len());
                 p.push_str("/_logstash/pipeline/");
@@ -284,7 +284,7 @@ impl<'a, 'b> LogstashGetPipeline<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Logstash Put Pipeline API"]
 pub enum LogstashPutPipelineParts<'b> {
     #[doc = "Id"]
@@ -294,7 +294,7 @@ impl<'b> LogstashPutPipelineParts<'b> {
     #[doc = "Builds a relative URL path to the Logstash Put Pipeline API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            LogstashPutPipelineParts::Id(ref id) => {
+            LogstashPutPipelineParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(20usize + encoded_id.len());
                 p.push_str("/_logstash/pipeline/");

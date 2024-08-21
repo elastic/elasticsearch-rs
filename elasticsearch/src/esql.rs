@@ -44,7 +44,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Esql Async Query API"]
 pub enum EsqlAsyncQueryParts {
     #[doc = "No parts"]
@@ -209,7 +209,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Esql Async Query Get API"]
 pub enum EsqlAsyncQueryGetParts<'b> {
     #[doc = "Id"]
@@ -219,7 +219,7 @@ impl<'b> EsqlAsyncQueryGetParts<'b> {
     #[doc = "Builds a relative URL path to the Esql Async Query Get API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            EsqlAsyncQueryGetParts::Id(ref id) => {
+            EsqlAsyncQueryGetParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(14usize + encoded_id.len());
                 p.push_str("/_query/async/");
@@ -354,7 +354,7 @@ impl<'a, 'b> EsqlAsyncQueryGet<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Esql Query API"]
 pub enum EsqlQueryParts {
     #[doc = "No parts"]

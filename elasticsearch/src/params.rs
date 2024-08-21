@@ -445,7 +445,7 @@ impl<'de> Deserialize<'de> for Slices {
             where
                 E: de::Error,
             {
-                if value <= i32::max_value() as i64 {
+                if value <= i32::MAX as i64 {
                     Ok(Slices::Count(value as i32))
                 } else {
                     Err(E::custom(format!("i32 out of range: {}", value)))
@@ -456,7 +456,7 @@ impl<'de> Deserialize<'de> for Slices {
             where
                 E: de::Error,
             {
-                if value <= i32::max_value() as u64 {
+                if value <= i32::MAX as u64 {
                     Ok(Slices::Count(value as i32))
                 } else {
                     Err(E::custom(format!("i32 out of range: {}", value)))

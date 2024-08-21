@@ -254,23 +254,21 @@ impl TransportBuilder {
 
         #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
         {
-            if let Some(creds) = &self.credentials {
-                if let Credentials::Certificate(cert) = creds {
-                    client_builder = match cert {
-                        #[cfg(feature = "native-tls")]
-                        ClientCertificate::Pkcs12(b, p) => {
-                            let password = match p {
-                                Some(pass) => pass.as_str(),
-                                None => "",
-                            };
-                            let pkcs12 = reqwest::Identity::from_pkcs12_der(b, password)?;
-                            client_builder.identity(pkcs12)
-                        }
-                        #[cfg(feature = "rustls-tls")]
-                        ClientCertificate::Pem(b) => {
-                            let pem = reqwest::Identity::from_pem(b)?;
-                            client_builder.identity(pem)
-                        }
+            if let Some(Credentials::Certificate(cert)) = &self.credentials {
+                client_builder = match cert {
+                    #[cfg(feature = "native-tls")]
+                    ClientCertificate::Pkcs12(b, p) => {
+                        let password = match p {
+                            Some(pass) => pass.as_str(),
+                            None => "",
+                        };
+                        let pkcs12 = reqwest::Identity::from_pkcs12_der(b, password)?;
+                        client_builder.identity(pkcs12)
+                    }
+                    #[cfg(feature = "rustls-tls")]
+                    ClientCertificate::Pem(b) => {
+                        let pem = reqwest::Identity::from_pem(b)?;
+                        client_builder.identity(pem)
                     }
                 }
             };
@@ -753,7 +751,7 @@ pub mod tests {
     #[test]
     fn cloud_id_second_part_cannot_be_empty() {
         let cloud_id = "cluster_name:";
-        let cloud = CloudId::parse(&cloud_id);
+        let cloud = CloudId::parse(cloud_id);
         assert!(cloud.is_err());
     }
 

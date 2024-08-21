@@ -170,9 +170,9 @@ impl<'a> UrlBuilder<'a> {
     /// Build the AST for an allocated url from the path literals and params.
     fn build_owned(self) -> syn::Block {
         // collection of let {name}_str = [self.]{name}.[join(",")|to_string()];
-        let let_params_exprs = Self::let_parameters_exprs(&self.path, &self.parts);
+        let let_params_exprs = Self::let_parameters_exprs(&self.path, self.parts);
 
-        let mut let_encoded_params_exprs = Self::let_encoded_exprs(&self.path, &self.parts);
+        let mut let_encoded_params_exprs = Self::let_encoded_exprs(&self.path, self.parts);
 
         let url_ident = ident("p");
         let len_expr = {
@@ -275,7 +275,7 @@ impl<'a> UrlBuilder<'a> {
             .filter_map(|p| match *p {
                 PathPart::Param(p) => {
                     let name = valid_name(p);
-                    let name_ident = ident(&name);
+                    let name_ident = ident(name);
                     let ty = &parts[p].ty;
 
                     // don't generate an assignment expression for strings
@@ -405,8 +405,15 @@ impl<'a> UrlBuilder<'a> {
         url.iter()
             .map(|p| match *p {
                 PathPart::Literal(p) => {
-                    let lit = syn::Lit::Str(p.to_string(), syn::StrStyle::Cooked);
-                    syn::Stmt::Semi(Box::new(parse_expr(quote!(#url_ident.push_str(#lit)))))
+                    let push = if p.len() == 1 {
+                        let lit = syn::Lit::Char(p.chars().next().unwrap());
+                        quote!(#url_ident.push(#lit))
+                    } else {
+                        let lit = syn::Lit::Str(p.to_string(), syn::StrStyle::Cooked);
+                        quote!(#url_ident.push_str(#lit))
+                    };
+
+                    syn::Stmt::Semi(Box::new(parse_expr(push)))
                 }
                 PathPart::Param(p) => {
                     let name = format!("encoded_{}", valid_name(p));
@@ -420,10 +427,7 @@ impl<'a> UrlBuilder<'a> {
     }
 
     pub fn build(self) -> syn::Expr {
-        let has_params = self.path.iter().any(|p| match *p {
-            PathPart::Param(_) => true,
-            _ => false,
-        });
+        let has_params = self.path.iter().any(|p| matches!(*p, PathPart::Param(_)));
 
         if has_params {
             self.build_owned().into_expr()

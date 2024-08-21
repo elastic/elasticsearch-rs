@@ -49,7 +49,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Dangling Indices Delete Dangling Index API"]
 pub enum DanglingIndicesDeleteDanglingIndexParts<'b> {
     #[doc = "IndexUuid"]
@@ -59,7 +59,7 @@ impl<'b> DanglingIndicesDeleteDanglingIndexParts<'b> {
     #[doc = "Builds a relative URL path to the Dangling Indices Delete Dangling Index API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            DanglingIndicesDeleteDanglingIndexParts::IndexUuid(ref index_uuid) => {
+            DanglingIndicesDeleteDanglingIndexParts::IndexUuid(index_uuid) => {
                 let encoded_index_uuid: Cow<str> =
                     percent_encode(index_uuid.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(11usize + encoded_index_uuid.len());
@@ -198,7 +198,7 @@ impl<'a, 'b> DanglingIndicesDeleteDanglingIndex<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Dangling Indices Import Dangling Index API"]
 pub enum DanglingIndicesImportDanglingIndexParts<'b> {
     #[doc = "IndexUuid"]
@@ -208,7 +208,7 @@ impl<'b> DanglingIndicesImportDanglingIndexParts<'b> {
     #[doc = "Builds a relative URL path to the Dangling Indices Import Dangling Index API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            DanglingIndicesImportDanglingIndexParts::IndexUuid(ref index_uuid) => {
+            DanglingIndicesImportDanglingIndexParts::IndexUuid(index_uuid) => {
                 let encoded_index_uuid: Cow<str> =
                     percent_encode(index_uuid.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(11usize + encoded_index_uuid.len());
@@ -373,7 +373,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Dangling Indices List Dangling Indices API"]
 pub enum DanglingIndicesListDanglingIndicesParts {
     #[doc = "No parts"]

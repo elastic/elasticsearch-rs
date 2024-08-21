@@ -33,7 +33,7 @@ mod stack_overflow;
 use stack_overflow::*;
 use textwrap::fill;
 
-static POSTS_INDEX: &'static str = "posts";
+static POSTS_INDEX: &str = "posts";
 
 #[tokio::main]
 pub async fn main() -> Result<(), Box<dyn std::error::Error>> {

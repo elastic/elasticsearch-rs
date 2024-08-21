@@ -12,11 +12,11 @@ use std::path::PathBuf;
 pub fn write_file(
     input: String,
     docs: Option<&PathBuf>,
-    dir: &PathBuf,
+    dir: &Path,
     file_name: &str,
     tracker: &mut GeneratedFiles,
 ) -> anyhow::Result<()> {
-    let mut path = dir.clone();
+    let mut path = dir.to_owned();
     path.push(PathBuf::from_slash(file_name));
 
     let mut file = File::create(&path)?;

@@ -54,7 +54,7 @@ use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Check In API"]
 pub enum ConnectorCheckInParts<'b> {
     #[doc = "ConnectorId"]
@@ -65,7 +65,7 @@ impl<'b> ConnectorCheckInParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Check In API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorCheckInParts::ConnectorId(ref connector_id) => {
+            ConnectorCheckInParts::ConnectorId(connector_id) => {
                 let encoded_connector_id: Cow<str> =
                     percent_encode(connector_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(22usize + encoded_connector_id.len());
@@ -202,7 +202,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Delete API"]
 pub enum ConnectorDeleteParts<'b> {
     #[doc = "ConnectorId"]
@@ -213,7 +213,7 @@ impl<'b> ConnectorDeleteParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Delete API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorDeleteParts::ConnectorId(ref connector_id) => {
+            ConnectorDeleteParts::ConnectorId(connector_id) => {
                 let encoded_connector_id: Cow<str> =
                     percent_encode(connector_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(12usize + encoded_connector_id.len());
@@ -335,7 +335,7 @@ impl<'a, 'b> ConnectorDelete<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Get API"]
 pub enum ConnectorGetParts<'b> {
     #[doc = "ConnectorId"]
@@ -346,7 +346,7 @@ impl<'b> ConnectorGetParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Get API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorGetParts::ConnectorId(ref connector_id) => {
+            ConnectorGetParts::ConnectorId(connector_id) => {
                 let encoded_connector_id: Cow<str> =
                     percent_encode(connector_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(12usize + encoded_connector_id.len());
@@ -459,7 +459,7 @@ impl<'a, 'b> ConnectorGet<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Last Sync API"]
 pub enum ConnectorLastSyncParts<'b> {
     #[doc = "ConnectorId"]
@@ -470,7 +470,7 @@ impl<'b> ConnectorLastSyncParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Last Sync API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorLastSyncParts::ConnectorId(ref connector_id) => {
+            ConnectorLastSyncParts::ConnectorId(connector_id) => {
                 let encoded_connector_id: Cow<str> =
                     percent_encode(connector_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(23usize + encoded_connector_id.len());
@@ -607,7 +607,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector List API"]
 pub enum ConnectorListParts {
     #[doc = "No parts"]
@@ -781,7 +781,7 @@ impl<'a, 'b> ConnectorList<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Post API"]
 pub enum ConnectorPostParts {
     #[doc = "No parts"]
@@ -921,7 +921,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Put API"]
 pub enum ConnectorPutParts<'b> {
     #[doc = "ConnectorId"]
@@ -934,7 +934,7 @@ impl<'b> ConnectorPutParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Put API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorPutParts::ConnectorId(ref connector_id) => {
+            ConnectorPutParts::ConnectorId(connector_id) => {
                 let encoded_connector_id: Cow<str> =
                     percent_encode(connector_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(12usize + encoded_connector_id.len());
@@ -1071,7 +1071,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Secret Delete API"]
 pub enum ConnectorSecretDeleteParts<'b> {
     #[doc = "Id"]
@@ -1082,7 +1082,7 @@ impl<'b> ConnectorSecretDeleteParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Secret Delete API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorSecretDeleteParts::Id(ref id) => {
+            ConnectorSecretDeleteParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(20usize + encoded_id.len());
                 p.push_str("/_connector/_secret/");
@@ -1194,7 +1194,7 @@ impl<'a, 'b> ConnectorSecretDelete<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Secret Get API"]
 pub enum ConnectorSecretGetParts<'b> {
     #[doc = "Id"]
@@ -1205,7 +1205,7 @@ impl<'b> ConnectorSecretGetParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Secret Get API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorSecretGetParts::Id(ref id) => {
+            ConnectorSecretGetParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(20usize + encoded_id.len());
                 p.push_str("/_connector/_secret/");
@@ -1317,7 +1317,7 @@ impl<'a, 'b> ConnectorSecretGet<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Secret Post API"]
 pub enum ConnectorSecretPostParts {
     #[doc = "No parts"]
@@ -1457,7 +1457,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Secret Put API"]
 pub enum ConnectorSecretPutParts<'b> {
     #[doc = "Id"]
@@ -1468,7 +1468,7 @@ impl<'b> ConnectorSecretPutParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Secret Put API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorSecretPutParts::Id(ref id) => {
+            ConnectorSecretPutParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(20usize + encoded_id.len());
                 p.push_str("/_connector/_secret/");
@@ -1603,7 +1603,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Sync Job Cancel API"]
 pub enum ConnectorSyncJobCancelParts<'b> {
     #[doc = "ConnectorSyncJobId"]
@@ -1614,7 +1614,7 @@ impl<'b> ConnectorSyncJobCancelParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Sync Job Cancel API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorSyncJobCancelParts::ConnectorSyncJobId(ref connector_sync_job_id) => {
+            ConnectorSyncJobCancelParts::ConnectorSyncJobId(connector_sync_job_id) => {
                 let encoded_connector_sync_job_id: Cow<str> =
                     percent_encode(connector_sync_job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(30usize + encoded_connector_sync_job_id.len());
@@ -1751,7 +1751,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Sync Job Check In API"]
 pub enum ConnectorSyncJobCheckInParts<'b> {
     #[doc = "ConnectorSyncJobId"]
@@ -1762,7 +1762,7 @@ impl<'b> ConnectorSyncJobCheckInParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Sync Job Check In API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorSyncJobCheckInParts::ConnectorSyncJobId(ref connector_sync_job_id) => {
+            ConnectorSyncJobCheckInParts::ConnectorSyncJobId(connector_sync_job_id) => {
                 let encoded_connector_sync_job_id: Cow<str> =
                     percent_encode(connector_sync_job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(32usize + encoded_connector_sync_job_id.len());
@@ -1899,7 +1899,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Sync Job Claim API"]
 pub enum ConnectorSyncJobClaimParts<'b> {
     #[doc = "ConnectorSyncJobId"]
@@ -1910,7 +1910,7 @@ impl<'b> ConnectorSyncJobClaimParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Sync Job Claim API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorSyncJobClaimParts::ConnectorSyncJobId(ref connector_sync_job_id) => {
+            ConnectorSyncJobClaimParts::ConnectorSyncJobId(connector_sync_job_id) => {
                 let encoded_connector_sync_job_id: Cow<str> =
                     percent_encode(connector_sync_job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(29usize + encoded_connector_sync_job_id.len());
@@ -2047,7 +2047,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Sync Job Delete API"]
 pub enum ConnectorSyncJobDeleteParts<'b> {
     #[doc = "ConnectorSyncJobId"]
@@ -2058,7 +2058,7 @@ impl<'b> ConnectorSyncJobDeleteParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Sync Job Delete API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorSyncJobDeleteParts::ConnectorSyncJobId(ref connector_sync_job_id) => {
+            ConnectorSyncJobDeleteParts::ConnectorSyncJobId(connector_sync_job_id) => {
                 let encoded_connector_sync_job_id: Cow<str> =
                     percent_encode(connector_sync_job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(22usize + encoded_connector_sync_job_id.len());
@@ -2171,7 +2171,7 @@ impl<'a, 'b> ConnectorSyncJobDelete<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Sync Job Error API"]
 pub enum ConnectorSyncJobErrorParts<'b> {
     #[doc = "ConnectorSyncJobId"]
@@ -2182,7 +2182,7 @@ impl<'b> ConnectorSyncJobErrorParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Sync Job Error API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorSyncJobErrorParts::ConnectorSyncJobId(ref connector_sync_job_id) => {
+            ConnectorSyncJobErrorParts::ConnectorSyncJobId(connector_sync_job_id) => {
                 let encoded_connector_sync_job_id: Cow<str> =
                     percent_encode(connector_sync_job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(29usize + encoded_connector_sync_job_id.len());
@@ -2319,7 +2319,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Sync Job Get API"]
 pub enum ConnectorSyncJobGetParts<'b> {
     #[doc = "ConnectorSyncJobId"]
@@ -2330,7 +2330,7 @@ impl<'b> ConnectorSyncJobGetParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Sync Job Get API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorSyncJobGetParts::ConnectorSyncJobId(ref connector_sync_job_id) => {
+            ConnectorSyncJobGetParts::ConnectorSyncJobId(connector_sync_job_id) => {
                 let encoded_connector_sync_job_id: Cow<str> =
                     percent_encode(connector_sync_job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(22usize + encoded_connector_sync_job_id.len());
@@ -2443,7 +2443,7 @@ impl<'a, 'b> ConnectorSyncJobGet<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Sync Job List API"]
 pub enum ConnectorSyncJobListParts {
     #[doc = "No parts"]
@@ -2606,7 +2606,7 @@ impl<'a, 'b> ConnectorSyncJobList<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Sync Job Post API"]
 pub enum ConnectorSyncJobPostParts {
     #[doc = "No parts"]
@@ -2746,7 +2746,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Sync Job Update Stats API"]
 pub enum ConnectorSyncJobUpdateStatsParts<'b> {
     #[doc = "ConnectorSyncJobId"]
@@ -2757,7 +2757,7 @@ impl<'b> ConnectorSyncJobUpdateStatsParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Sync Job Update Stats API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorSyncJobUpdateStatsParts::ConnectorSyncJobId(ref connector_sync_job_id) => {
+            ConnectorSyncJobUpdateStatsParts::ConnectorSyncJobId(connector_sync_job_id) => {
                 let encoded_connector_sync_job_id: Cow<str> =
                     percent_encode(connector_sync_job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(29usize + encoded_connector_sync_job_id.len());
@@ -2894,7 +2894,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Update Active Filtering API"]
 pub enum ConnectorUpdateActiveFilteringParts<'b> {
     #[doc = "ConnectorId"]
@@ -2905,7 +2905,7 @@ impl<'b> ConnectorUpdateActiveFilteringParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Update Active Filtering API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorUpdateActiveFilteringParts::ConnectorId(ref connector_id) => {
+            ConnectorUpdateActiveFilteringParts::ConnectorId(connector_id) => {
                 let encoded_connector_id: Cow<str> =
                     percent_encode(connector_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(33usize + encoded_connector_id.len());
@@ -3042,7 +3042,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Update Api Key Id API"]
 pub enum ConnectorUpdateApiKeyIdParts<'b> {
     #[doc = "ConnectorId"]
@@ -3053,7 +3053,7 @@ impl<'b> ConnectorUpdateApiKeyIdParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Update Api Key Id API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorUpdateApiKeyIdParts::ConnectorId(ref connector_id) => {
+            ConnectorUpdateApiKeyIdParts::ConnectorId(connector_id) => {
                 let encoded_connector_id: Cow<str> =
                     percent_encode(connector_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(24usize + encoded_connector_id.len());
@@ -3190,7 +3190,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Update Configuration API"]
 pub enum ConnectorUpdateConfigurationParts<'b> {
     #[doc = "ConnectorId"]
@@ -3201,7 +3201,7 @@ impl<'b> ConnectorUpdateConfigurationParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Update Configuration API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorUpdateConfigurationParts::ConnectorId(ref connector_id) => {
+            ConnectorUpdateConfigurationParts::ConnectorId(connector_id) => {
                 let encoded_connector_id: Cow<str> =
                     percent_encode(connector_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(27usize + encoded_connector_id.len());
@@ -3338,7 +3338,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Update Error API"]
 pub enum ConnectorUpdateErrorParts<'b> {
     #[doc = "ConnectorId"]
@@ -3349,7 +3349,7 @@ impl<'b> ConnectorUpdateErrorParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Update Error API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorUpdateErrorParts::ConnectorId(ref connector_id) => {
+            ConnectorUpdateErrorParts::ConnectorId(connector_id) => {
                 let encoded_connector_id: Cow<str> =
                     percent_encode(connector_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(19usize + encoded_connector_id.len());
@@ -3486,7 +3486,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Update Features API"]
 pub enum ConnectorUpdateFeaturesParts<'b> {
     #[doc = "ConnectorId"]
@@ -3497,7 +3497,7 @@ impl<'b> ConnectorUpdateFeaturesParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Update Features API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorUpdateFeaturesParts::ConnectorId(ref connector_id) => {
+            ConnectorUpdateFeaturesParts::ConnectorId(connector_id) => {
                 let encoded_connector_id: Cow<str> =
                     percent_encode(connector_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(22usize + encoded_connector_id.len());
@@ -3634,7 +3634,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Update Filtering API"]
 pub enum ConnectorUpdateFilteringParts<'b> {
     #[doc = "ConnectorId"]
@@ -3645,7 +3645,7 @@ impl<'b> ConnectorUpdateFilteringParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Update Filtering API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorUpdateFilteringParts::ConnectorId(ref connector_id) => {
+            ConnectorUpdateFilteringParts::ConnectorId(connector_id) => {
                 let encoded_connector_id: Cow<str> =
                     percent_encode(connector_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(23usize + encoded_connector_id.len());
@@ -3782,7 +3782,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Update Filtering Validation API"]
 pub enum ConnectorUpdateFilteringValidationParts<'b> {
     #[doc = "ConnectorId"]
@@ -3793,7 +3793,7 @@ impl<'b> ConnectorUpdateFilteringValidationParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Update Filtering Validation API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorUpdateFilteringValidationParts::ConnectorId(ref connector_id) => {
+            ConnectorUpdateFilteringValidationParts::ConnectorId(connector_id) => {
                 let encoded_connector_id: Cow<str> =
                     percent_encode(connector_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(35usize + encoded_connector_id.len());
@@ -3933,7 +3933,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Update Index Name API"]
 pub enum ConnectorUpdateIndexNameParts<'b> {
     #[doc = "ConnectorId"]
@@ -3944,7 +3944,7 @@ impl<'b> ConnectorUpdateIndexNameParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Update Index Name API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorUpdateIndexNameParts::ConnectorId(ref connector_id) => {
+            ConnectorUpdateIndexNameParts::ConnectorId(connector_id) => {
                 let encoded_connector_id: Cow<str> =
                     percent_encode(connector_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(24usize + encoded_connector_id.len());
@@ -4081,7 +4081,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Update Name API"]
 pub enum ConnectorUpdateNameParts<'b> {
     #[doc = "ConnectorId"]
@@ -4092,7 +4092,7 @@ impl<'b> ConnectorUpdateNameParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Update Name API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorUpdateNameParts::ConnectorId(ref connector_id) => {
+            ConnectorUpdateNameParts::ConnectorId(connector_id) => {
                 let encoded_connector_id: Cow<str> =
                     percent_encode(connector_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(18usize + encoded_connector_id.len());
@@ -4229,7 +4229,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Update Native API"]
 pub enum ConnectorUpdateNativeParts<'b> {
     #[doc = "ConnectorId"]
@@ -4240,7 +4240,7 @@ impl<'b> ConnectorUpdateNativeParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Update Native API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorUpdateNativeParts::ConnectorId(ref connector_id) => {
+            ConnectorUpdateNativeParts::ConnectorId(connector_id) => {
                 let encoded_connector_id: Cow<str> =
                     percent_encode(connector_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(20usize + encoded_connector_id.len());
@@ -4377,7 +4377,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Update Pipeline API"]
 pub enum ConnectorUpdatePipelineParts<'b> {
     #[doc = "ConnectorId"]
@@ -4388,7 +4388,7 @@ impl<'b> ConnectorUpdatePipelineParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Update Pipeline API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorUpdatePipelineParts::ConnectorId(ref connector_id) => {
+            ConnectorUpdatePipelineParts::ConnectorId(connector_id) => {
                 let encoded_connector_id: Cow<str> =
                     percent_encode(connector_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(22usize + encoded_connector_id.len());
@@ -4525,7 +4525,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Update Scheduling API"]
 pub enum ConnectorUpdateSchedulingParts<'b> {
     #[doc = "ConnectorId"]
@@ -4536,7 +4536,7 @@ impl<'b> ConnectorUpdateSchedulingParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Update Scheduling API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorUpdateSchedulingParts::ConnectorId(ref connector_id) => {
+            ConnectorUpdateSchedulingParts::ConnectorId(connector_id) => {
                 let encoded_connector_id: Cow<str> =
                     percent_encode(connector_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(24usize + encoded_connector_id.len());
@@ -4673,7 +4673,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Update Service Type API"]
 pub enum ConnectorUpdateServiceTypeParts<'b> {
     #[doc = "ConnectorId"]
@@ -4684,7 +4684,7 @@ impl<'b> ConnectorUpdateServiceTypeParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Update Service Type API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorUpdateServiceTypeParts::ConnectorId(ref connector_id) => {
+            ConnectorUpdateServiceTypeParts::ConnectorId(connector_id) => {
                 let encoded_connector_id: Cow<str> =
                     percent_encode(connector_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(26usize + encoded_connector_id.len());
@@ -4821,7 +4821,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Connector Update Status API"]
 pub enum ConnectorUpdateStatusParts<'b> {
     #[doc = "ConnectorId"]
@@ -4832,7 +4832,7 @@ impl<'b> ConnectorUpdateStatusParts<'b> {
     #[doc = "Builds a relative URL path to the Connector Update Status API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ConnectorUpdateStatusParts::ConnectorId(ref connector_id) => {
+            ConnectorUpdateStatusParts::ConnectorId(connector_id) => {
                 let encoded_connector_id: Cow<str> =
                     percent_encode(connector_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(20usize + encoded_connector_id.len());

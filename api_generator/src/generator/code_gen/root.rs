@@ -52,6 +52,7 @@ pub fn generate(api: &Api, docs_dir: &PathBuf) -> anyhow::Result<String> {
     tokens.append(quote!(
         #(#builders)*
 
+        #[allow(clippy::needless_lifetimes)]
         impl Elasticsearch {
             #(#methods)*
         }

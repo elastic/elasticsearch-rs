@@ -41,7 +41,7 @@ pub fn generate(api: &Api, docs_dir: &PathBuf) -> anyhow::Result<Vec<(String, St
         tokens.append(use_declarations());
 
         let namespace_pascal_case = namespace_name.to_pascal_case();
-        let namespace_replaced_pascal_case = namespace_name.replace("_", " ").to_pascal_case();
+        let namespace_replaced_pascal_case = namespace_name.replace('_', " ").to_pascal_case();
         let namespace_client_name = ident(&namespace_pascal_case);
         let name_for_docs = match namespace_replaced_pascal_case.as_ref() {
             "Ccr" => "Cross Cluster Replication",
@@ -61,7 +61,7 @@ pub fn generate(api: &Api, docs_dir: &PathBuf) -> anyhow::Result<Vec<(String, St
             "Creates a new instance of [{}]",
             &namespace_pascal_case
         ));
-        let namespace_name = ident(namespace_name.to_string());
+        let namespace_name = ident(namespace_name);
 
         let (builders, methods): (Vec<Tokens>, Vec<Tokens>) = namespace
             .endpoints()
@@ -74,7 +74,7 @@ pub fn generate(api: &Api, docs_dir: &PathBuf) -> anyhow::Result<Vec<(String, St
                     name,
                     &builder_name,
                     &api.common_params,
-                    &endpoint,
+                    endpoint,
                     false,
                 )
                 .build()

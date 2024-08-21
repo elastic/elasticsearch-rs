@@ -21,10 +21,11 @@ use self::reqwest::header::{HeaderMap, HeaderValue, USER_AGENT};
 use flate2::read::GzDecoder;
 use globset::Glob;
 use reqwest::blocking::Response;
-use std::{fs::File, io, path::PathBuf};
+use std::path::Path;
+use std::{fs::File, io};
 use tar::{Archive, Entry};
 
-pub fn download_specs(branch: &str, download_dir: &PathBuf) -> anyhow::Result<()> {
+pub fn download_specs(branch: &str, download_dir: &Path) -> anyhow::Result<()> {
     let url = format!(
         "https://api.github.com/repos/elastic/elasticsearch/tarball/{}",
         branch
@@ -61,11 +62,11 @@ pub fn download_specs(branch: &str, download_dir: &PathBuf) -> anyhow::Result<()
 }
 
 fn write_spec_file(
-    download_dir: &PathBuf,
+    download_dir: &Path,
     mut entry: Entry<GzDecoder<Response>>,
 ) -> anyhow::Result<()> {
     let path = entry.path()?;
-    let mut dir = download_dir.clone();
+    let mut dir = download_dir.to_owned();
     dir.push(path.file_name().unwrap());
     let mut file = File::create(&dir)?;
     io::copy(&mut entry, &mut file)?;

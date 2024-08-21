@@ -46,7 +46,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Autoscaling Delete Autoscaling Policy API"]
 pub enum AutoscalingDeleteAutoscalingPolicyParts<'b> {
     #[doc = "Name"]
@@ -56,7 +56,7 @@ impl<'b> AutoscalingDeleteAutoscalingPolicyParts<'b> {
     #[doc = "Builds a relative URL path to the Autoscaling Delete Autoscaling Policy API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            AutoscalingDeleteAutoscalingPolicyParts::Name(ref name) => {
+            AutoscalingDeleteAutoscalingPolicyParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(21usize + encoded_name.len());
                 p.push_str("/_autoscaling/policy/");
@@ -185,7 +185,7 @@ impl<'a, 'b> AutoscalingDeleteAutoscalingPolicy<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Autoscaling Get Autoscaling Capacity API"]
 pub enum AutoscalingGetAutoscalingCapacityParts {
     #[doc = "No parts"]
@@ -306,7 +306,7 @@ impl<'a, 'b> AutoscalingGetAutoscalingCapacity<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Autoscaling Get Autoscaling Policy API"]
 pub enum AutoscalingGetAutoscalingPolicyParts<'b> {
     #[doc = "Name"]
@@ -316,7 +316,7 @@ impl<'b> AutoscalingGetAutoscalingPolicyParts<'b> {
     #[doc = "Builds a relative URL path to the Autoscaling Get Autoscaling Policy API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            AutoscalingGetAutoscalingPolicyParts::Name(ref name) => {
+            AutoscalingGetAutoscalingPolicyParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(21usize + encoded_name.len());
                 p.push_str("/_autoscaling/policy/");
@@ -433,7 +433,7 @@ impl<'a, 'b> AutoscalingGetAutoscalingPolicy<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Autoscaling Put Autoscaling Policy API"]
 pub enum AutoscalingPutAutoscalingPolicyParts<'b> {
     #[doc = "Name"]
@@ -443,7 +443,7 @@ impl<'b> AutoscalingPutAutoscalingPolicyParts<'b> {
     #[doc = "Builds a relative URL path to the Autoscaling Put Autoscaling Policy API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            AutoscalingPutAutoscalingPolicyParts::Name(ref name) => {
+            AutoscalingPutAutoscalingPolicyParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(21usize + encoded_name.len());
                 p.push_str("/_autoscaling/policy/");

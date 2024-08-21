@@ -127,10 +127,7 @@ impl Error {
 
     /// Returns true if the error is related to serialization or deserialization
     pub fn is_json(&self) -> bool {
-        match &self.kind {
-            Kind::Json(_) => true,
-            _ => false,
-        }
+        matches!(&self.kind, Kind::Json(_))
     }
 }
 

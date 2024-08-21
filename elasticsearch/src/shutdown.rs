@@ -42,7 +42,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Shutdown Delete Node API"]
 pub enum ShutdownDeleteNodeParts<'b> {
     #[doc = "NodeId"]
@@ -52,7 +52,7 @@ impl<'b> ShutdownDeleteNodeParts<'b> {
     #[doc = "Builds a relative URL path to the Shutdown Delete Node API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ShutdownDeleteNodeParts::NodeId(ref node_id) => {
+            ShutdownDeleteNodeParts::NodeId(node_id) => {
                 let encoded_node_id: Cow<str> =
                     percent_encode(node_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(17usize + encoded_node_id.len());
@@ -162,7 +162,7 @@ impl<'a, 'b> ShutdownDeleteNode<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Shutdown Get Node API"]
 pub enum ShutdownGetNodeParts<'b> {
     #[doc = "No parts"]
@@ -175,7 +175,7 @@ impl<'b> ShutdownGetNodeParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             ShutdownGetNodeParts::None => "/_nodes/shutdown".into(),
-            ShutdownGetNodeParts::NodeId(ref node_id) => {
+            ShutdownGetNodeParts::NodeId(node_id) => {
                 let encoded_node_id: Cow<str> =
                     percent_encode(node_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(17usize + encoded_node_id.len());
@@ -294,7 +294,7 @@ impl<'a, 'b> ShutdownGetNode<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Shutdown Put Node API"]
 pub enum ShutdownPutNodeParts<'b> {
     #[doc = "NodeId"]
@@ -304,7 +304,7 @@ impl<'b> ShutdownPutNodeParts<'b> {
     #[doc = "Builds a relative URL path to the Shutdown Put Node API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ShutdownPutNodeParts::NodeId(ref node_id) => {
+            ShutdownPutNodeParts::NodeId(node_id) => {
                 let encoded_node_id: Cow<str> =
                     percent_encode(node_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(17usize + encoded_node_id.len());

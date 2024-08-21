@@ -45,7 +45,7 @@ use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Simulate Ingest API"]
 pub enum SimulateIngestParts<'b> {
     #[doc = "No parts"]
@@ -59,7 +59,7 @@ impl<'b> SimulateIngestParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SimulateIngestParts::None => "/_ingest/_simulate".into(),
-            SimulateIngestParts::Index(ref index) => {
+            SimulateIngestParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(19usize + encoded_index.len());

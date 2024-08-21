@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-use chrono::{prelude::*, DateTime, Utc};
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::{collections::BTreeMap, fs::File, io::Read};
@@ -124,8 +124,9 @@ impl Iterator for PostsIter {
         }
 
         fn parse_datetime_utc<S: AsRef<str>>(s: S) -> DateTime<Utc> {
-            Utc.datetime_from_str(s.as_ref(), "%Y-%m-%dT%H:%M:%S.%f")
+            chrono::DateTime::parse_from_str(s.as_ref(), "%Y-%m-%dT%H:%M:%S.%f")
                 .unwrap()
+                .to_utc()
         }
 
         let post = match self.reader.next() {
@@ -151,7 +152,7 @@ impl Iterator for PostsIter {
                             None
                         };
 
-                        let owner_display_name = a.get("OwnerDisplayName").map(|s| s.clone());
+                        let owner_display_name = a.get("OwnerDisplayName").cloned();
                         let last_editor_user_id = if a.contains_key("LastEditorUserId") {
                             a["LastEditorUserId"].parse::<i32>().ok()
                         } else {
@@ -201,14 +202,12 @@ impl Iterator for PostsIter {
                                             .map(|s| s.to_string())
                                             .collect()
                                     })
-                                    .unwrap_or_else(|| vec![]),
+                                    .unwrap_or_else(Vec::new),
                                 title,
                                 title_suggest: Some(title_suggest),
                                 accepted_answer_id: None,
                                 view_count: a["ViewCount"].parse::<i32>().unwrap(),
-                                last_editor_display_name: a
-                                    .get("LastEditorDisplayName")
-                                    .map(|s| s.clone()),
+                                last_editor_display_name: a.get("LastEditorDisplayName").cloned(),
                                 answer_count: a["AnswerCount"].parse::<i32>().unwrap(),
                                 favorite_count: a
                                     .get("FavoriteCount")
@@ -216,7 +215,7 @@ impl Iterator for PostsIter {
                                     .unwrap_or_else(|| 0),
                                 community_owned_date: a
                                     .get("CommunityOwnedDate")
-                                    .map(|s| parse_datetime_utc(s)),
+                                    .map(parse_datetime_utc),
                             }
                             .into()
                         } else {

@@ -130,7 +130,7 @@ async fn uses_global_request_timeout() {
     let response = client.ping().send().await;
 
     match response {
-        Ok(_) => assert!(false, "Expected timeout error, but response received"),
+        Ok(_) => panic!("Expected timeout error, but response received"),
         Err(e) => assert!(e.is_timeout(), "Expected timeout error, but was {:?}", e),
     }
 }
@@ -153,11 +153,7 @@ async fn uses_call_request_timeout() {
         .await;
 
     match response {
-        Ok(r) => assert!(
-            false,
-            "Expected timeout error, but response received: {:?}",
-            r
-        ),
+        Ok(r) => panic!("Expected timeout error, but response received: {:?}", r),
         Err(e) => assert!(e.is_timeout(), "Expected timeout error, but was {:?}", e),
     }
 }
@@ -210,7 +206,7 @@ async fn deprecation_warning_headers() -> Result<(), failure::Error> {
 
     assert_eq!(response.status_code(), StatusCode::OK);
     let warnings = response.warning_headers().collect::<Vec<&str>>();
-    assert!(warnings.len() > 0);
+    assert!(!warnings.is_empty());
     assert!(
         warnings.iter().any(|&w| w.contains("unsupported")),
         "warnings= {:?}",
@@ -277,10 +273,9 @@ async fn search_with_body() -> Result<(), failure::Error> {
         url.join("_search?allow_no_indices=true")?
     };
 
-    match response.content_length() {
-        Some(c) => assert!(c > 0),
-        None => (),
-    };
+    if let Some(c) = response.content_length() {
+        assert!(c > 0);
+    }
 
     assert_eq!(response.url(), &expected_url);
     assert_eq!(response.status_code(), StatusCode::OK);

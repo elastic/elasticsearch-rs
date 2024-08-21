@@ -317,7 +317,7 @@ impl DocumentationUrlString {
 impl core::ops::Deref for DocumentationUrlString {
     type Target = String;
 
-    fn deref(self: &'_ Self) -> &'_ Self::Target {
+    fn deref(&self) -> &Self::Target {
         &self.0
     }
 }
@@ -458,14 +458,16 @@ pub struct ApiNamespace {
     endpoints: BTreeMap<String, ApiEndpoint>,
 }
 
-impl ApiNamespace {
-    pub fn new() -> Self {
+impl Default for ApiNamespace {
+    fn default() -> Self {
         ApiNamespace {
             stability: Stability::Experimental, // will grow in stability as we add endpoints
             endpoints: BTreeMap::new(),
         }
     }
+}
 
+impl ApiNamespace {
     pub fn add(&mut self, name: String, endpoint: ApiEndpoint) {
         // Stability of a namespace is that of the most stable of its endpoints
         self.stability = Stability::max(self.stability, endpoint.stability);
@@ -513,7 +515,7 @@ impl PartialEq for ApiEnum {
 impl Eq for ApiEnum {}
 
 /// Generates all client source code from the REST API spec
-pub fn generate(download_dir: &PathBuf, generated_dir: &PathBuf) -> anyhow::Result<()> {
+pub fn generate(download_dir: &PathBuf, generated_dir: &std::path::Path) -> anyhow::Result<()> {
     // read the Api from file
     let api = read_api(download_dir)?;
 
@@ -547,7 +549,7 @@ pub fn generate(download_dir: &PathBuf, generated_dir: &PathBuf) -> anyhow::Resu
         write_file(
             input,
             Some(&docs_file),
-            &generated_dir,
+            generated_dir,
             format!("{}.rs", name).as_str(),
             &mut tracker,
         )?;
@@ -581,7 +583,7 @@ pub use bulk::*;
         &mut tracker,
     )?;
 
-    let mut generated = generated_dir.clone();
+    let mut generated = generated_dir.to_owned();
     generated.push(GENERATED_TOML);
 
     fs::write(generated, toml::to_string_pretty(&tracker)?)?;
@@ -644,7 +646,7 @@ pub fn read_api(download_dir: &PathBuf) -> anyhow::Result<Api> {
 
             // collect api endpoints into namespaces
             if !namespaces.contains_key(&namespace) {
-                let mut api_namespace = ApiNamespace::new();
+                let mut api_namespace = ApiNamespace::default();
                 api_namespace.add(method_name, api_endpoint);
                 namespaces.insert(namespace.to_string(), api_namespace);
             } else {

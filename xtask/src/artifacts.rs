@@ -100,7 +100,7 @@ pub fn download(commit_hash: Option<String>, url: Option<String>) -> anyhow::Res
 
     // Also write project metadata for reference
     let project_path = &spec_dir.join("elasticsearch.json");
-    let project_file = fs::File::create(&project_path)?;
+    let project_file = fs::File::create(project_path)?;
     serde_json::to_writer_pretty(project_file, &project)?;
 
     Ok(())

@@ -47,7 +47,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Enrich Delete Policy API"]
 pub enum EnrichDeletePolicyParts<'b> {
     #[doc = "Name"]
@@ -57,7 +57,7 @@ impl<'b> EnrichDeletePolicyParts<'b> {
     #[doc = "Builds a relative URL path to the Enrich Delete Policy API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            EnrichDeletePolicyParts::Name(ref name) => {
+            EnrichDeletePolicyParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_name.len());
                 p.push_str("/_enrich/policy/");
@@ -174,7 +174,7 @@ impl<'a, 'b> EnrichDeletePolicy<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Enrich Execute Policy API"]
 pub enum EnrichExecutePolicyParts<'b> {
     #[doc = "Name"]
@@ -184,7 +184,7 @@ impl<'b> EnrichExecutePolicyParts<'b> {
     #[doc = "Builds a relative URL path to the Enrich Execute Policy API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            EnrichExecutePolicyParts::Name(ref name) => {
+            EnrichExecutePolicyParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(25usize + encoded_name.len());
                 p.push_str("/_enrich/policy/");
@@ -336,7 +336,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Enrich Get Policy API"]
 pub enum EnrichGetPolicyParts<'b> {
     #[doc = "Name"]
@@ -348,7 +348,7 @@ impl<'b> EnrichGetPolicyParts<'b> {
     #[doc = "Builds a relative URL path to the Enrich Get Policy API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            EnrichGetPolicyParts::Name(ref name) => {
+            EnrichGetPolicyParts::Name(name) => {
                 let name_str = name.join(",");
                 let encoded_name: Cow<str> =
                     percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
@@ -468,7 +468,7 @@ impl<'a, 'b> EnrichGetPolicy<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Enrich Put Policy API"]
 pub enum EnrichPutPolicyParts<'b> {
     #[doc = "Name"]
@@ -478,7 +478,7 @@ impl<'b> EnrichPutPolicyParts<'b> {
     #[doc = "Builds a relative URL path to the Enrich Put Policy API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            EnrichPutPolicyParts::Name(ref name) => {
+            EnrichPutPolicyParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_name.len());
                 p.push_str("/_enrich/policy/");
@@ -619,7 +619,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Enrich Stats API"]
 pub enum EnrichStatsParts {
     #[doc = "No parts"]

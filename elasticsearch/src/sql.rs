@@ -44,7 +44,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Sql Clear Cursor API"]
 pub enum SqlClearCursorParts {
     #[doc = "No parts"]
@@ -179,7 +179,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Sql Delete Async API"]
 pub enum SqlDeleteAsyncParts<'b> {
     #[doc = "Id"]
@@ -189,7 +189,7 @@ impl<'b> SqlDeleteAsyncParts<'b> {
     #[doc = "Builds a relative URL path to the Sql Delete Async API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SqlDeleteAsyncParts::Id(ref id) => {
+            SqlDeleteAsyncParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(19usize + encoded_id.len());
                 p.push_str("/_sql/async/delete/");
@@ -297,7 +297,7 @@ impl<'a, 'b> SqlDeleteAsync<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Sql Get Async API"]
 pub enum SqlGetAsyncParts<'b> {
     #[doc = "Id"]
@@ -307,7 +307,7 @@ impl<'b> SqlGetAsyncParts<'b> {
     #[doc = "Builds a relative URL path to the Sql Get Async API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SqlGetAsyncParts::Id(ref id) => {
+            SqlGetAsyncParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(12usize + encoded_id.len());
                 p.push_str("/_sql/async/");
@@ -451,7 +451,7 @@ impl<'a, 'b> SqlGetAsync<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Sql Get Async Status API"]
 pub enum SqlGetAsyncStatusParts<'b> {
     #[doc = "Id"]
@@ -461,7 +461,7 @@ impl<'b> SqlGetAsyncStatusParts<'b> {
     #[doc = "Builds a relative URL path to the Sql Get Async Status API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SqlGetAsyncStatusParts::Id(ref id) => {
+            SqlGetAsyncStatusParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(19usize + encoded_id.len());
                 p.push_str("/_sql/async/status/");
@@ -569,7 +569,7 @@ impl<'a, 'b> SqlGetAsyncStatus<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Sql Query API"]
 pub enum SqlQueryParts {
     #[doc = "No parts"]
@@ -717,7 +717,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Sql Translate API"]
 pub enum SqlTranslateParts {
     #[doc = "No parts"]

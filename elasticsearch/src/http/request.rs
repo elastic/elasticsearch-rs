@@ -161,7 +161,7 @@ impl Body for Vec<u8> {
 impl<'a> Body for &'a [u8] {
     fn write(&self, bytes: &mut BytesMut) -> Result<(), Error> {
         bytes.reserve(self.len());
-        bytes.put_slice(*self);
+        bytes.put_slice(self);
         Ok(())
     }
 }
@@ -203,7 +203,7 @@ mod tests {
     fn serialize_into_jsonbody_writes_to_bytes() -> Result<(), failure::Error> {
         let mut bytes = BytesMut::new();
         let body: JsonBody<_> = json!({"foo":"bar","baz":1}).into();
-        let _ = body.write(&mut bytes)?;
+        body.write(&mut bytes)?;
         // NOTE: serde_json writes properties lexicographically
         assert_eq!(b"{\"baz\":1,\"foo\":\"bar\"}", &bytes[..]);
 
@@ -218,7 +218,7 @@ mod tests {
         bodies.push(json!({"item":2}).into());
 
         let body = NdBody(bodies);
-        let _ = body.write(&mut bytes)?;
+        body.write(&mut bytes)?;
         assert_eq!(b"{\"item\":1}\n{\"item\":2}\n", &bytes[..]);
 
         Ok(())
@@ -232,7 +232,7 @@ mod tests {
         bodies.push(Box::new(String::from("{\"item\":2}")));
 
         let body = NdBody(bodies);
-        let _ = body.write(&mut bytes)?;
+        body.write(&mut bytes)?;
         assert_eq!(b"{\"item\":1}\n{\"item\":2}\n", &bytes[..]);
 
         Ok(())
@@ -242,7 +242,7 @@ mod tests {
     fn bytes_body_writes_to_bytes_mut() -> Result<(), failure::Error> {
         let mut bytes_mut = BytesMut::with_capacity(21);
         let bytes = bytes::Bytes::from(&b"{\"foo\":\"bar\",\"baz\":1}"[..]);
-        let _ = bytes.write(&mut bytes_mut)?;
+        bytes.write(&mut bytes_mut)?;
         assert_eq!(&bytes[..], &bytes_mut[..]);
 
         Ok(())
@@ -254,7 +254,7 @@ mod tests {
         let buf = bytes::Bytes::from(&b"{\"foo\":\"bar\",\"baz\":1}"[..]);
 
         let bytes = buf.bytes().expect("bytes always returns Some");
-        let _ = buf.write(&mut bytes_mut)?;
+        buf.write(&mut bytes_mut)?;
         assert_eq!(&buf[..], &bytes_mut[..]);
         assert_eq!(&bytes[..], &bytes_mut[..]);
 
@@ -265,7 +265,7 @@ mod tests {
     fn vec_body_writes_to_bytes_mut() -> Result<(), failure::Error> {
         let mut bytes_mut = BytesMut::with_capacity(21);
         let bytes = b"{\"foo\":\"bar\",\"baz\":1}".to_vec();
-        let _ = bytes.write(&mut bytes_mut)?;
+        bytes.write(&mut bytes_mut)?;
         assert_eq!(&bytes[..], &bytes_mut[..]);
 
         Ok(())
@@ -275,8 +275,8 @@ mod tests {
     fn bytes_slice_body_writes_to_bytes_mut() -> Result<(), failure::Error> {
         let mut bytes_mut = BytesMut::with_capacity(21);
         let bytes: &'static [u8] = b"{\"foo\":\"bar\",\"baz\":1}";
-        let _ = bytes.write(&mut bytes_mut)?;
-        assert_eq!(&bytes[..], &bytes_mut[..]);
+        bytes.write(&mut bytes_mut)?;
+        assert_eq!(bytes, bytes_mut);
 
         Ok(())
     }
@@ -285,7 +285,7 @@ mod tests {
     fn string_body_writes_to_bytes_mut() -> Result<(), failure::Error> {
         let mut bytes_mut = BytesMut::with_capacity(21);
         let s = String::from("{\"foo\":\"bar\",\"baz\":1}");
-        let _ = s.write(&mut bytes_mut)?;
+        s.write(&mut bytes_mut)?;
         assert_eq!(s.as_bytes(), &bytes_mut[..]);
 
         Ok(())
@@ -295,7 +295,7 @@ mod tests {
     fn string_slice_body_writes_to_bytes_mut() -> Result<(), failure::Error> {
         let mut bytes_mut = BytesMut::with_capacity(21);
         let s: &'static str = "{\"foo\":\"bar\",\"baz\":1}";
-        let _ = s.write(&mut bytes_mut)?;
+        s.write(&mut bytes_mut)?;
         assert_eq!(s.as_bytes(), &bytes_mut[..]);
 
         Ok(())

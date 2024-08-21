@@ -52,7 +52,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Synonyms Delete Synonym API"]
 pub enum SynonymsDeleteSynonymParts<'b> {
     #[doc = "Id"]
@@ -62,7 +62,7 @@ impl<'b> SynonymsDeleteSynonymParts<'b> {
     #[doc = "Builds a relative URL path to the Synonyms Delete Synonym API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SynonymsDeleteSynonymParts::Id(ref id) => {
+            SynonymsDeleteSynonymParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(11usize + encoded_id.len());
                 p.push_str("/_synonyms/");
@@ -170,7 +170,7 @@ impl<'a, 'b> SynonymsDeleteSynonym<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Synonyms Delete Synonym Rule API"]
 pub enum SynonymsDeleteSynonymRuleParts<'b> {
     #[doc = "SetId and RuleId"]
@@ -180,7 +180,7 @@ impl<'b> SynonymsDeleteSynonymRuleParts<'b> {
     #[doc = "Builds a relative URL path to the Synonyms Delete Synonym Rule API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SynonymsDeleteSynonymRuleParts::SetIdRuleId(ref set_id, ref rule_id) => {
+            SynonymsDeleteSynonymRuleParts::SetIdRuleId(set_id, rule_id) => {
                 let encoded_set_id: Cow<str> =
                     percent_encode(set_id.as_bytes(), PARTS_ENCODED).into();
                 let encoded_rule_id: Cow<str> =
@@ -189,7 +189,7 @@ impl<'b> SynonymsDeleteSynonymRuleParts<'b> {
                     String::with_capacity(12usize + encoded_set_id.len() + encoded_rule_id.len());
                 p.push_str("/_synonyms/");
                 p.push_str(encoded_set_id.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_rule_id.as_ref());
                 p.into()
             }
@@ -294,7 +294,7 @@ impl<'a, 'b> SynonymsDeleteSynonymRule<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Synonyms Get Synonym API"]
 pub enum SynonymsGetSynonymParts<'b> {
     #[doc = "Id"]
@@ -304,7 +304,7 @@ impl<'b> SynonymsGetSynonymParts<'b> {
     #[doc = "Builds a relative URL path to the Synonyms Get Synonym API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SynonymsGetSynonymParts::Id(ref id) => {
+            SynonymsGetSynonymParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(11usize + encoded_id.len());
                 p.push_str("/_synonyms/");
@@ -430,7 +430,7 @@ impl<'a, 'b> SynonymsGetSynonym<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Synonyms Get Synonym Rule API"]
 pub enum SynonymsGetSynonymRuleParts<'b> {
     #[doc = "SetId and RuleId"]
@@ -440,7 +440,7 @@ impl<'b> SynonymsGetSynonymRuleParts<'b> {
     #[doc = "Builds a relative URL path to the Synonyms Get Synonym Rule API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SynonymsGetSynonymRuleParts::SetIdRuleId(ref set_id, ref rule_id) => {
+            SynonymsGetSynonymRuleParts::SetIdRuleId(set_id, rule_id) => {
                 let encoded_set_id: Cow<str> =
                     percent_encode(set_id.as_bytes(), PARTS_ENCODED).into();
                 let encoded_rule_id: Cow<str> =
@@ -449,7 +449,7 @@ impl<'b> SynonymsGetSynonymRuleParts<'b> {
                     String::with_capacity(12usize + encoded_set_id.len() + encoded_rule_id.len());
                 p.push_str("/_synonyms/");
                 p.push_str(encoded_set_id.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_rule_id.as_ref());
                 p.into()
             }
@@ -554,7 +554,7 @@ impl<'a, 'b> SynonymsGetSynonymRule<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Synonyms Get Synonyms Sets API"]
 pub enum SynonymsGetSynonymsSetsParts {
     #[doc = "No parts"]
@@ -684,7 +684,7 @@ impl<'a, 'b> SynonymsGetSynonymsSets<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Synonyms Put Synonym API"]
 pub enum SynonymsPutSynonymParts<'b> {
     #[doc = "Id"]
@@ -694,7 +694,7 @@ impl<'b> SynonymsPutSynonymParts<'b> {
     #[doc = "Builds a relative URL path to the Synonyms Put Synonym API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SynonymsPutSynonymParts::Id(ref id) => {
+            SynonymsPutSynonymParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(11usize + encoded_id.len());
                 p.push_str("/_synonyms/");
@@ -825,7 +825,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Synonyms Put Synonym Rule API"]
 pub enum SynonymsPutSynonymRuleParts<'b> {
     #[doc = "SetId and RuleId"]
@@ -835,7 +835,7 @@ impl<'b> SynonymsPutSynonymRuleParts<'b> {
     #[doc = "Builds a relative URL path to the Synonyms Put Synonym Rule API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SynonymsPutSynonymRuleParts::SetIdRuleId(ref set_id, ref rule_id) => {
+            SynonymsPutSynonymRuleParts::SetIdRuleId(set_id, rule_id) => {
                 let encoded_set_id: Cow<str> =
                     percent_encode(set_id.as_bytes(), PARTS_ENCODED).into();
                 let encoded_rule_id: Cow<str> =
@@ -844,7 +844,7 @@ impl<'b> SynonymsPutSynonymRuleParts<'b> {
                     String::with_capacity(12usize + encoded_set_id.len() + encoded_rule_id.len());
                 p.push_str("/_synonyms/");
                 p.push_str(encoded_set_id.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_rule_id.as_ref());
                 p.into()
             }

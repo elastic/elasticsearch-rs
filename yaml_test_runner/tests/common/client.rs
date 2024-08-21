@@ -148,7 +148,7 @@ pub async fn delete_snapshots(client: &Elasticsearch) -> Result<(), Error> {
         .text()
         .await?;
 
-    if cat_repo_response.len() > 0 {
+    if !cat_repo_response.is_empty() {
         let repositories: Vec<&str> = cat_repo_response.split_terminator('\n').collect();
 
         // Delete snapshots in each repository
@@ -379,7 +379,7 @@ async fn delete_templates(client: &Elasticsearch) -> Result<(), Error> {
 
         let mut delete_template_response = client
             .indices()
-            .delete_index_template(IndicesDeleteIndexTemplateParts::Name(&template))
+            .delete_index_template(IndicesDeleteIndexTemplateParts::Name(template))
             .send()
             .await?;
 
@@ -387,7 +387,7 @@ async fn delete_templates(client: &Elasticsearch) -> Result<(), Error> {
             // Certainly an old-style template
             delete_template_response = client
                 .indices()
-                .delete_template(IndicesDeleteTemplateParts::Name(&template))
+                .delete_template(IndicesDeleteTemplateParts::Name(template))
                 .send()
                 .await?;
         }

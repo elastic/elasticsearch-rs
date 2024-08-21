@@ -45,7 +45,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Text Structure Find Field Structure API"]
 pub enum TextStructureFindFieldStructureParts {
     #[doc = "No parts"]
@@ -286,7 +286,7 @@ impl<'a, 'b> TextStructureFindFieldStructure<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Text Structure Find Message Structure API"]
 pub enum TextStructureFindMessageStructureParts {
     #[doc = "No parts"]
@@ -537,7 +537,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Text Structure Find Structure API"]
 pub enum TextStructureFindStructureParts {
     #[doc = "No parts"]
@@ -823,7 +823,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Text Structure Test Grok Pattern API"]
 pub enum TextStructureTestGrokPatternParts {
     #[doc = "No parts"]

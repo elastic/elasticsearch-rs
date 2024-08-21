@@ -38,7 +38,7 @@ use http::StatusCode;
 use stack_overflow::*;
 use std::time::Instant;
 
-static POSTS_INDEX: &'static str = "posts";
+static POSTS_INDEX: &str = "posts";
 
 /// Reads questions and answers from the Stack Overflow Data Dump XML file and indexes
 /// them into Elasticsearch using the bulk API. An index with explicit mapping is created
@@ -97,12 +97,12 @@ pub async fn main() -> Result<(), Box<dyn std::error::Error>> {
     create_index_if_not_exists(&client, delete).await?;
     set_refresh_interval(&client, json!("-1")).await?;
 
-    let mut posts_iter = PostsIter::new(path);
+    let posts_iter = PostsIter::new(path);
     let mut total = 0;
     let mut posts = Vec::with_capacity(size);
     let now = Instant::now();
 
-    while let Some(post) = posts_iter.next() {
+    for post in posts_iter {
         total += 1;
         posts.push(post);
         if total % size == 0 {

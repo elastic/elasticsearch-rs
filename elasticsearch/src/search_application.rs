@@ -47,7 +47,7 @@ use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Search Application Delete API"]
 pub enum SearchApplicationDeleteParts<'b> {
     #[doc = "Name"]
@@ -58,7 +58,7 @@ impl<'b> SearchApplicationDeleteParts<'b> {
     #[doc = "Builds a relative URL path to the Search Application Delete API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SearchApplicationDeleteParts::Name(ref name) => {
+            SearchApplicationDeleteParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(33usize + encoded_name.len());
                 p.push_str("/_application/search_application/");
@@ -170,7 +170,7 @@ impl<'a, 'b> SearchApplicationDelete<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Search Application Delete Behavioral Analytics API"]
 pub enum SearchApplicationDeleteBehavioralAnalyticsParts<'b> {
     #[doc = "Name"]
@@ -181,7 +181,7 @@ impl<'b> SearchApplicationDeleteBehavioralAnalyticsParts<'b> {
     #[doc = "Builds a relative URL path to the Search Application Delete Behavioral Analytics API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SearchApplicationDeleteBehavioralAnalyticsParts::Name(ref name) => {
+            SearchApplicationDeleteBehavioralAnalyticsParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(24usize + encoded_name.len());
                 p.push_str("/_application/analytics/");
@@ -296,7 +296,7 @@ impl<'a, 'b> SearchApplicationDeleteBehavioralAnalytics<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Search Application Get API"]
 pub enum SearchApplicationGetParts<'b> {
     #[doc = "Name"]
@@ -307,7 +307,7 @@ impl<'b> SearchApplicationGetParts<'b> {
     #[doc = "Builds a relative URL path to the Search Application Get API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SearchApplicationGetParts::Name(ref name) => {
+            SearchApplicationGetParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(33usize + encoded_name.len());
                 p.push_str("/_application/search_application/");
@@ -419,7 +419,7 @@ impl<'a, 'b> SearchApplicationGet<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Search Application Get Behavioral Analytics API"]
 pub enum SearchApplicationGetBehavioralAnalyticsParts<'b> {
     #[doc = "No parts"]
@@ -433,7 +433,7 @@ impl<'b> SearchApplicationGetBehavioralAnalyticsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SearchApplicationGetBehavioralAnalyticsParts::None => "/_application/analytics".into(),
-            SearchApplicationGetBehavioralAnalyticsParts::Name(ref name) => {
+            SearchApplicationGetBehavioralAnalyticsParts::Name(name) => {
                 let name_str = name.join(",");
                 let encoded_name: Cow<str> =
                     percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
@@ -550,7 +550,7 @@ impl<'a, 'b> SearchApplicationGetBehavioralAnalytics<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Search Application List API"]
 pub enum SearchApplicationListParts {
     #[doc = "No parts"]
@@ -694,7 +694,7 @@ impl<'a, 'b> SearchApplicationList<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Search Application Post Behavioral Analytics Event API"]
 pub enum SearchApplicationPostBehavioralAnalyticsEventParts<'b> {
     #[doc = "CollectionName and EventType"]
@@ -706,8 +706,8 @@ impl<'b> SearchApplicationPostBehavioralAnalyticsEventParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             SearchApplicationPostBehavioralAnalyticsEventParts::CollectionNameEventType(
-                ref collection_name,
-                ref event_type,
+                collection_name,
+                event_type,
             ) => {
                 let encoded_collection_name: Cow<str> =
                     percent_encode(collection_name.as_bytes(), PARTS_ENCODED).into();
@@ -866,7 +866,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Search Application Put API"]
 pub enum SearchApplicationPutParts<'b> {
     #[doc = "Name"]
@@ -877,7 +877,7 @@ impl<'b> SearchApplicationPutParts<'b> {
     #[doc = "Builds a relative URL path to the Search Application Put API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SearchApplicationPutParts::Name(ref name) => {
+            SearchApplicationPutParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(33usize + encoded_name.len());
                 p.push_str("/_application/search_application/");
@@ -1022,7 +1022,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Search Application Put Behavioral Analytics API"]
 pub enum SearchApplicationPutBehavioralAnalyticsParts<'b> {
     #[doc = "Name"]
@@ -1033,7 +1033,7 @@ impl<'b> SearchApplicationPutBehavioralAnalyticsParts<'b> {
     #[doc = "Builds a relative URL path to the Search Application Put Behavioral Analytics API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SearchApplicationPutBehavioralAnalyticsParts::Name(ref name) => {
+            SearchApplicationPutBehavioralAnalyticsParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(24usize + encoded_name.len());
                 p.push_str("/_application/analytics/");
@@ -1171,7 +1171,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Search Application Render Query API"]
 pub enum SearchApplicationRenderQueryParts<'b> {
     #[doc = "Name"]
@@ -1182,7 +1182,7 @@ impl<'b> SearchApplicationRenderQueryParts<'b> {
     #[doc = "Builds a relative URL path to the Search Application Render Query API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SearchApplicationRenderQueryParts::Name(ref name) => {
+            SearchApplicationRenderQueryParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(47usize + encoded_name.len());
                 p.push_str("/_application/search_application/");
@@ -1318,7 +1318,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Search Application Search API"]
 pub enum SearchApplicationSearchParts<'b> {
     #[doc = "Name"]
@@ -1329,7 +1329,7 @@ impl<'b> SearchApplicationSearchParts<'b> {
     #[doc = "Builds a relative URL path to the Search Application Search API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            SearchApplicationSearchParts::Name(ref name) => {
+            SearchApplicationSearchParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(41usize + encoded_name.len());
                 p.push_str("/_application/search_application/");

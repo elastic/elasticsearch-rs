@@ -46,7 +46,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Graph Explore API"]
 pub enum GraphExploreParts<'b> {
     #[doc = "Index"]
@@ -56,12 +56,12 @@ impl<'b> GraphExploreParts<'b> {
     #[doc = "Builds a relative URL path to the Graph Explore API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            GraphExploreParts::Index(ref index) => {
+            GraphExploreParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_graph/explore");
                 p.into()

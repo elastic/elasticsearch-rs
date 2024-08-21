@@ -49,7 +49,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the License Delete API"]
 pub enum LicenseDeleteParts {
     #[doc = "No parts"]
@@ -179,7 +179,7 @@ impl<'a, 'b> LicenseDelete<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the License Get API"]
 pub enum LicenseGetParts {
     #[doc = "No parts"]
@@ -309,7 +309,7 @@ impl<'a, 'b> LicenseGet<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the License Get Basic Status API"]
 pub enum LicenseGetBasicStatusParts {
     #[doc = "No parts"]
@@ -421,7 +421,7 @@ impl<'a, 'b> LicenseGetBasicStatus<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the License Get Trial Status API"]
 pub enum LicenseGetTrialStatusParts {
     #[doc = "No parts"]
@@ -533,7 +533,7 @@ impl<'a, 'b> LicenseGetTrialStatus<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the License Post API"]
 pub enum LicensePostParts {
     #[doc = "No parts"]
@@ -698,7 +698,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the License Post Start Basic API"]
 pub enum LicensePostStartBasicParts {
     #[doc = "No parts"]
@@ -863,7 +863,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the License Post Start Trial API"]
 pub enum LicensePostStartTrialParts {
     #[doc = "No parts"]

@@ -44,7 +44,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Xpack Info API"]
 pub enum XpackInfoParts {
     #[doc = "No parts"]
@@ -175,7 +175,7 @@ impl<'a, 'b> XpackInfo<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Xpack Usage API"]
 pub enum XpackUsageParts {
     #[doc = "No parts"]

@@ -45,7 +45,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Watcher Ack Watch API"]
 pub enum WatcherAckWatchParts<'b> {
     #[doc = "WatchId"]
@@ -57,7 +57,7 @@ impl<'b> WatcherAckWatchParts<'b> {
     #[doc = "Builds a relative URL path to the Watcher Ack Watch API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherAckWatchParts::WatchId(ref watch_id) => {
+            WatcherAckWatchParts::WatchId(watch_id) => {
                 let encoded_watch_id: Cow<str> =
                     percent_encode(watch_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(21usize + encoded_watch_id.len());
@@ -66,7 +66,7 @@ impl<'b> WatcherAckWatchParts<'b> {
                 p.push_str("/_ack");
                 p.into()
             }
-            WatcherAckWatchParts::WatchIdActionId(ref watch_id, ref action_id) => {
+            WatcherAckWatchParts::WatchIdActionId(watch_id, action_id) => {
                 let action_id_str = action_id.join(",");
                 let encoded_watch_id: Cow<str> =
                     percent_encode(watch_id.as_bytes(), PARTS_ENCODED).into();
@@ -205,7 +205,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Watcher Activate Watch API"]
 pub enum WatcherActivateWatchParts<'b> {
     #[doc = "WatchId"]
@@ -215,7 +215,7 @@ impl<'b> WatcherActivateWatchParts<'b> {
     #[doc = "Builds a relative URL path to the Watcher Activate Watch API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherActivateWatchParts::WatchId(ref watch_id) => {
+            WatcherActivateWatchParts::WatchId(watch_id) => {
                 let encoded_watch_id: Cow<str> =
                     percent_encode(watch_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(26usize + encoded_watch_id.len());
@@ -348,7 +348,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Watcher Deactivate Watch API"]
 pub enum WatcherDeactivateWatchParts<'b> {
     #[doc = "WatchId"]
@@ -358,7 +358,7 @@ impl<'b> WatcherDeactivateWatchParts<'b> {
     #[doc = "Builds a relative URL path to the Watcher Deactivate Watch API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherDeactivateWatchParts::WatchId(ref watch_id) => {
+            WatcherDeactivateWatchParts::WatchId(watch_id) => {
                 let encoded_watch_id: Cow<str> =
                     percent_encode(watch_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(28usize + encoded_watch_id.len());
@@ -491,7 +491,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Watcher Delete Watch API"]
 pub enum WatcherDeleteWatchParts<'b> {
     #[doc = "Id"]
@@ -501,7 +501,7 @@ impl<'b> WatcherDeleteWatchParts<'b> {
     #[doc = "Builds a relative URL path to the Watcher Delete Watch API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherDeleteWatchParts::Id(ref id) => {
+            WatcherDeleteWatchParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_id.len());
                 p.push_str("/_watcher/watch/");
@@ -609,7 +609,7 @@ impl<'a, 'b> WatcherDeleteWatch<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Watcher Execute Watch API"]
 pub enum WatcherExecuteWatchParts<'b> {
     #[doc = "Id"]
@@ -621,7 +621,7 @@ impl<'b> WatcherExecuteWatchParts<'b> {
     #[doc = "Builds a relative URL path to the Watcher Execute Watch API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherExecuteWatchParts::Id(ref id) => {
+            WatcherExecuteWatchParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(25usize + encoded_id.len());
                 p.push_str("/_watcher/watch/");
@@ -764,7 +764,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Watcher Get Settings API"]
 pub enum WatcherGetSettingsParts {
     #[doc = "No parts"]
@@ -885,7 +885,7 @@ impl<'a, 'b> WatcherGetSettings<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Watcher Get Watch API"]
 pub enum WatcherGetWatchParts<'b> {
     #[doc = "Id"]
@@ -895,7 +895,7 @@ impl<'b> WatcherGetWatchParts<'b> {
     #[doc = "Builds a relative URL path to the Watcher Get Watch API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherGetWatchParts::Id(ref id) => {
+            WatcherGetWatchParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_id.len());
                 p.push_str("/_watcher/watch/");
@@ -1003,7 +1003,7 @@ impl<'a, 'b> WatcherGetWatch<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Watcher Put Watch API"]
 pub enum WatcherPutWatchParts<'b> {
     #[doc = "Id"]
@@ -1013,7 +1013,7 @@ impl<'b> WatcherPutWatchParts<'b> {
     #[doc = "Builds a relative URL path to the Watcher Put Watch API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherPutWatchParts::Id(ref id) => {
+            WatcherPutWatchParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_id.len());
                 p.push_str("/_watcher/watch/");
@@ -1184,7 +1184,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Watcher Query Watches API"]
 pub enum WatcherQueryWatchesParts {
     #[doc = "No parts"]
@@ -1322,7 +1322,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Watcher Start API"]
 pub enum WatcherStartParts {
     #[doc = "No parts"]
@@ -1467,7 +1467,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Watcher Stats API"]
 pub enum WatcherStatsParts<'b> {
     #[doc = "No parts"]
@@ -1480,7 +1480,7 @@ impl<'b> WatcherStatsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             WatcherStatsParts::None => "/_watcher/stats".into(),
-            WatcherStatsParts::Metric(ref metric) => {
+            WatcherStatsParts::Metric(metric) => {
                 let metric_str = metric.join(",");
                 let encoded_metric: Cow<str> =
                     percent_encode(metric_str.as_bytes(), PARTS_ENCODED).into();
@@ -1609,7 +1609,7 @@ impl<'a, 'b> WatcherStats<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Watcher Stop API"]
 pub enum WatcherStopParts {
     #[doc = "No parts"]
@@ -1754,7 +1754,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Watcher Update Settings API"]
 pub enum WatcherUpdateSettingsParts {
     #[doc = "No parts"]

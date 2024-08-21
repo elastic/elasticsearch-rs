@@ -50,7 +50,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ilm Delete Lifecycle API"]
 pub enum IlmDeleteLifecycleParts<'b> {
     #[doc = "Policy"]
@@ -60,7 +60,7 @@ impl<'b> IlmDeleteLifecycleParts<'b> {
     #[doc = "Builds a relative URL path to the Ilm Delete Lifecycle API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IlmDeleteLifecycleParts::Policy(ref policy) => {
+            IlmDeleteLifecycleParts::Policy(policy) => {
                 let encoded_policy: Cow<str> =
                     percent_encode(policy.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_policy.len());
@@ -169,7 +169,7 @@ impl<'a, 'b> IlmDeleteLifecycle<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ilm Explain Lifecycle API"]
 pub enum IlmExplainLifecycleParts<'b> {
     #[doc = "Index"]
@@ -179,11 +179,11 @@ impl<'b> IlmExplainLifecycleParts<'b> {
     #[doc = "Builds a relative URL path to the Ilm Explain Lifecycle API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IlmExplainLifecycleParts::Index(ref index) => {
+            IlmExplainLifecycleParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(14usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_ilm/explain");
                 p.into()
@@ -307,7 +307,7 @@ impl<'a, 'b> IlmExplainLifecycle<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ilm Get Lifecycle API"]
 pub enum IlmGetLifecycleParts<'b> {
     #[doc = "Policy"]
@@ -319,7 +319,7 @@ impl<'b> IlmGetLifecycleParts<'b> {
     #[doc = "Builds a relative URL path to the Ilm Get Lifecycle API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IlmGetLifecycleParts::Policy(ref policy) => {
+            IlmGetLifecycleParts::Policy(policy) => {
                 let encoded_policy: Cow<str> =
                     percent_encode(policy.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_policy.len());
@@ -429,7 +429,7 @@ impl<'a, 'b> IlmGetLifecycle<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ilm Get Status API"]
 pub enum IlmGetStatusParts {
     #[doc = "No parts"]
@@ -541,7 +541,7 @@ impl<'a, 'b> IlmGetStatus<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ilm Migrate To Data Tiers API"]
 pub enum IlmMigrateToDataTiersParts {
     #[doc = "No parts"]
@@ -686,7 +686,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ilm Move To Step API"]
 pub enum IlmMoveToStepParts<'b> {
     #[doc = "Index"]
@@ -696,7 +696,7 @@ impl<'b> IlmMoveToStepParts<'b> {
     #[doc = "Builds a relative URL path to the Ilm Move To Step API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IlmMoveToStepParts::Index(ref index) => {
+            IlmMoveToStepParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(11usize + encoded_index.len());
@@ -828,7 +828,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ilm Put Lifecycle API"]
 pub enum IlmPutLifecycleParts<'b> {
     #[doc = "Policy"]
@@ -838,7 +838,7 @@ impl<'b> IlmPutLifecycleParts<'b> {
     #[doc = "Builds a relative URL path to the Ilm Put Lifecycle API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IlmPutLifecycleParts::Policy(ref policy) => {
+            IlmPutLifecycleParts::Policy(policy) => {
                 let encoded_policy: Cow<str> =
                     percent_encode(policy.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_policy.len());
@@ -970,7 +970,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ilm Remove Policy API"]
 pub enum IlmRemovePolicyParts<'b> {
     #[doc = "Index"]
@@ -980,11 +980,11 @@ impl<'b> IlmRemovePolicyParts<'b> {
     #[doc = "Builds a relative URL path to the Ilm Remove Policy API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IlmRemovePolicyParts::Index(ref index) => {
+            IlmRemovePolicyParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_ilm/remove");
                 p.into()
@@ -1113,7 +1113,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ilm Retry API"]
 pub enum IlmRetryParts<'b> {
     #[doc = "Index"]
@@ -1123,11 +1123,11 @@ impl<'b> IlmRetryParts<'b> {
     #[doc = "Builds a relative URL path to the Ilm Retry API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            IlmRetryParts::Index(ref index) => {
+            IlmRetryParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(12usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_ilm/retry");
                 p.into()
@@ -1256,7 +1256,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ilm Start API"]
 pub enum IlmStartParts {
     #[doc = "No parts"]
@@ -1391,7 +1391,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ilm Stop API"]
 pub enum IlmStopParts {
     #[doc = "No parts"]

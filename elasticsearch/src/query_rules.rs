@@ -46,7 +46,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Query Rules Delete Rule API"]
 pub enum QueryRulesDeleteRuleParts<'b> {
     #[doc = "RulesetId and RuleId"]
@@ -56,7 +56,7 @@ impl<'b> QueryRulesDeleteRuleParts<'b> {
     #[doc = "Builds a relative URL path to the Query Rules Delete Rule API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            QueryRulesDeleteRuleParts::RulesetIdRuleId(ref ruleset_id, ref rule_id) => {
+            QueryRulesDeleteRuleParts::RulesetIdRuleId(ruleset_id, rule_id) => {
                 let encoded_ruleset_id: Cow<str> =
                     percent_encode(ruleset_id.as_bytes(), PARTS_ENCODED).into();
                 let encoded_rule_id: Cow<str> =
@@ -171,7 +171,7 @@ impl<'a, 'b> QueryRulesDeleteRule<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Query Rules Delete Ruleset API"]
 pub enum QueryRulesDeleteRulesetParts<'b> {
     #[doc = "RulesetId"]
@@ -181,7 +181,7 @@ impl<'b> QueryRulesDeleteRulesetParts<'b> {
     #[doc = "Builds a relative URL path to the Query Rules Delete Ruleset API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            QueryRulesDeleteRulesetParts::RulesetId(ref ruleset_id) => {
+            QueryRulesDeleteRulesetParts::RulesetId(ruleset_id) => {
                 let encoded_ruleset_id: Cow<str> =
                     percent_encode(ruleset_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(14usize + encoded_ruleset_id.len());
@@ -290,7 +290,7 @@ impl<'a, 'b> QueryRulesDeleteRuleset<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Query Rules Get Rule API"]
 pub enum QueryRulesGetRuleParts<'b> {
     #[doc = "RulesetId and RuleId"]
@@ -300,7 +300,7 @@ impl<'b> QueryRulesGetRuleParts<'b> {
     #[doc = "Builds a relative URL path to the Query Rules Get Rule API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            QueryRulesGetRuleParts::RulesetIdRuleId(ref ruleset_id, ref rule_id) => {
+            QueryRulesGetRuleParts::RulesetIdRuleId(ruleset_id, rule_id) => {
                 let encoded_ruleset_id: Cow<str> =
                     percent_encode(ruleset_id.as_bytes(), PARTS_ENCODED).into();
                 let encoded_rule_id: Cow<str> =
@@ -415,7 +415,7 @@ impl<'a, 'b> QueryRulesGetRule<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Query Rules Get Ruleset API"]
 pub enum QueryRulesGetRulesetParts<'b> {
     #[doc = "RulesetId"]
@@ -425,7 +425,7 @@ impl<'b> QueryRulesGetRulesetParts<'b> {
     #[doc = "Builds a relative URL path to the Query Rules Get Ruleset API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            QueryRulesGetRulesetParts::RulesetId(ref ruleset_id) => {
+            QueryRulesGetRulesetParts::RulesetId(ruleset_id) => {
                 let encoded_ruleset_id: Cow<str> =
                     percent_encode(ruleset_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(14usize + encoded_ruleset_id.len());
@@ -534,7 +534,7 @@ impl<'a, 'b> QueryRulesGetRuleset<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Query Rules List Rulesets API"]
 pub enum QueryRulesListRulesetsParts {
     #[doc = "No parts"]
@@ -664,7 +664,7 @@ impl<'a, 'b> QueryRulesListRulesets<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Query Rules Put Rule API"]
 pub enum QueryRulesPutRuleParts<'b> {
     #[doc = "RulesetId and RuleId"]
@@ -674,7 +674,7 @@ impl<'b> QueryRulesPutRuleParts<'b> {
     #[doc = "Builds a relative URL path to the Query Rules Put Rule API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            QueryRulesPutRuleParts::RulesetIdRuleId(ref ruleset_id, ref rule_id) => {
+            QueryRulesPutRuleParts::RulesetIdRuleId(ruleset_id, rule_id) => {
                 let encoded_ruleset_id: Cow<str> =
                     percent_encode(ruleset_id.as_bytes(), PARTS_ENCODED).into();
                 let encoded_rule_id: Cow<str> =
@@ -812,7 +812,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Query Rules Put Ruleset API"]
 pub enum QueryRulesPutRulesetParts<'b> {
     #[doc = "RulesetId"]
@@ -822,7 +822,7 @@ impl<'b> QueryRulesPutRulesetParts<'b> {
     #[doc = "Builds a relative URL path to the Query Rules Put Ruleset API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            QueryRulesPutRulesetParts::RulesetId(ref ruleset_id) => {
+            QueryRulesPutRulesetParts::RulesetId(ruleset_id) => {
                 let encoded_ruleset_id: Cow<str> =
                     percent_encode(ruleset_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(14usize + encoded_ruleset_id.len());

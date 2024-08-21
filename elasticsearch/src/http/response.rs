@@ -40,10 +40,7 @@ pub struct Response {
 impl Response {
     /// Creates a new instance of an Elasticsearch response
     pub fn new(response: reqwest::Response, method: Method) -> Self {
-        Self {
-            response: response,
-            method: method,
-        }
+        Self { response, method }
     }
 
     /// Get the response content-length, if known.
@@ -466,7 +463,7 @@ pub mod tests {
             Some("Missing mandatory contexts in context query")
         );
 
-        assert!(error.additional_details().len() > 0);
+        assert!(!error.additional_details().is_empty());
         assert_eq!(
             error.additional_details().get("phase"),
             Some(&json!("query"))

@@ -49,7 +49,7 @@ use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Rollup Delete Job API"]
 pub enum RollupDeleteJobParts<'b> {
     #[doc = "Id"]
@@ -60,7 +60,7 @@ impl<'b> RollupDeleteJobParts<'b> {
     #[doc = "Builds a relative URL path to the Rollup Delete Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            RollupDeleteJobParts::Id(ref id) => {
+            RollupDeleteJobParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_id.len());
                 p.push_str("/_rollup/job/");
@@ -172,7 +172,7 @@ impl<'a, 'b> RollupDeleteJob<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Rollup Get Jobs API"]
 pub enum RollupGetJobsParts<'b> {
     #[doc = "Id"]
@@ -185,7 +185,7 @@ impl<'b> RollupGetJobsParts<'b> {
     #[doc = "Builds a relative URL path to the Rollup Get Jobs API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            RollupGetJobsParts::Id(ref id) => {
+            RollupGetJobsParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_id.len());
                 p.push_str("/_rollup/job/");
@@ -298,7 +298,7 @@ impl<'a, 'b> RollupGetJobs<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Rollup Get Rollup Caps API"]
 pub enum RollupGetRollupCapsParts<'b> {
     #[doc = "Id"]
@@ -311,7 +311,7 @@ impl<'b> RollupGetRollupCapsParts<'b> {
     #[doc = "Builds a relative URL path to the Rollup Get Rollup Caps API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            RollupGetRollupCapsParts::Id(ref id) => {
+            RollupGetRollupCapsParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(14usize + encoded_id.len());
                 p.push_str("/_rollup/data/");
@@ -424,7 +424,7 @@ impl<'a, 'b> RollupGetRollupCaps<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Rollup Get Rollup Index Caps API"]
 pub enum RollupGetRollupIndexCapsParts<'b> {
     #[doc = "Index"]
@@ -435,11 +435,11 @@ impl<'b> RollupGetRollupIndexCapsParts<'b> {
     #[doc = "Builds a relative URL path to the Rollup Get Rollup Index Caps API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            RollupGetRollupIndexCapsParts::Index(ref index) => {
+            RollupGetRollupIndexCapsParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(14usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_rollup/data");
                 p.into()
@@ -549,7 +549,7 @@ impl<'a, 'b> RollupGetRollupIndexCaps<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Rollup Put Job API"]
 pub enum RollupPutJobParts<'b> {
     #[doc = "Id"]
@@ -560,7 +560,7 @@ impl<'b> RollupPutJobParts<'b> {
     #[doc = "Builds a relative URL path to the Rollup Put Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            RollupPutJobParts::Id(ref id) => {
+            RollupPutJobParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_id.len());
                 p.push_str("/_rollup/job/");
@@ -695,7 +695,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Rollup Rollup Search API"]
 pub enum RollupRollupSearchParts<'b> {
     #[doc = "Index"]
@@ -706,12 +706,12 @@ impl<'b> RollupRollupSearchParts<'b> {
     #[doc = "Builds a relative URL path to the Rollup Rollup Search API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            RollupRollupSearchParts::Index(ref index) => {
+            RollupRollupSearchParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_rollup_search");
                 p.into()
@@ -867,7 +867,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Rollup Start Job API"]
 pub enum RollupStartJobParts<'b> {
     #[doc = "Id"]
@@ -878,7 +878,7 @@ impl<'b> RollupStartJobParts<'b> {
     #[doc = "Builds a relative URL path to the Rollup Start Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            RollupStartJobParts::Id(ref id) => {
+            RollupStartJobParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(20usize + encoded_id.len());
                 p.push_str("/_rollup/job/");
@@ -1014,7 +1014,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Rollup Stop Job API"]
 pub enum RollupStopJobParts<'b> {
     #[doc = "Id"]
@@ -1025,7 +1025,7 @@ impl<'b> RollupStopJobParts<'b> {
     #[doc = "Builds a relative URL path to the Rollup Stop Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            RollupStopJobParts::Id(ref id) => {
+            RollupStopJobParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(19usize + encoded_id.len());
                 p.push_str("/_rollup/job/");

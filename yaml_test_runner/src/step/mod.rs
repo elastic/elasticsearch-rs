@@ -167,7 +167,7 @@ impl Expr {
             // which should be removed.
             if Self::is_string_body(values[0].as_ref()) {
                 values.remove(0);
-            } else if values[0] == "" {
+            } else if values[0].is_empty() {
                 // some tests start the json path with a dot, leading to an empty first element
                 values.remove(0);
             }

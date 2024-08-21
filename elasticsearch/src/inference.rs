@@ -47,7 +47,7 @@ use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Inference Delete API"]
 pub enum InferenceDeleteParts<'b> {
     #[doc = "InferenceId"]
@@ -60,7 +60,7 @@ impl<'b> InferenceDeleteParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Delete API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            InferenceDeleteParts::InferenceId(ref inference_id) => {
+            InferenceDeleteParts::InferenceId(inference_id) => {
                 let encoded_inference_id: Cow<str> =
                     percent_encode(inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(12usize + encoded_inference_id.len());
@@ -68,7 +68,7 @@ impl<'b> InferenceDeleteParts<'b> {
                 p.push_str(encoded_inference_id.as_ref());
                 p.into()
             }
-            InferenceDeleteParts::TaskTypeInferenceId(ref task_type, ref inference_id) => {
+            InferenceDeleteParts::TaskTypeInferenceId(task_type, inference_id) => {
                 let encoded_task_type: Cow<str> =
                     percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
                 let encoded_inference_id: Cow<str> =
@@ -78,7 +78,7 @@ impl<'b> InferenceDeleteParts<'b> {
                 );
                 p.push_str("/_inference/");
                 p.push_str(encoded_task_type.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_inference_id.as_ref());
                 p.into()
             }
@@ -205,7 +205,7 @@ impl<'a, 'b> InferenceDelete<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Inference Get API"]
 pub enum InferenceGetParts<'b> {
     #[doc = "No parts"]
@@ -221,7 +221,7 @@ impl<'b> InferenceGetParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             InferenceGetParts::None => "/_inference".into(),
-            InferenceGetParts::InferenceId(ref inference_id) => {
+            InferenceGetParts::InferenceId(inference_id) => {
                 let encoded_inference_id: Cow<str> =
                     percent_encode(inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(12usize + encoded_inference_id.len());
@@ -229,7 +229,7 @@ impl<'b> InferenceGetParts<'b> {
                 p.push_str(encoded_inference_id.as_ref());
                 p.into()
             }
-            InferenceGetParts::TaskTypeInferenceId(ref task_type, ref inference_id) => {
+            InferenceGetParts::TaskTypeInferenceId(task_type, inference_id) => {
                 let encoded_task_type: Cow<str> =
                     percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
                 let encoded_inference_id: Cow<str> =
@@ -239,7 +239,7 @@ impl<'b> InferenceGetParts<'b> {
                 );
                 p.push_str("/_inference/");
                 p.push_str(encoded_task_type.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_inference_id.as_ref());
                 p.into()
             }
@@ -348,7 +348,7 @@ impl<'a, 'b> InferenceGet<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Inference Inference API"]
 pub enum InferenceInferenceParts<'b> {
     #[doc = "InferenceId"]
@@ -361,7 +361,7 @@ impl<'b> InferenceInferenceParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Inference API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            InferenceInferenceParts::InferenceId(ref inference_id) => {
+            InferenceInferenceParts::InferenceId(inference_id) => {
                 let encoded_inference_id: Cow<str> =
                     percent_encode(inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(12usize + encoded_inference_id.len());
@@ -369,7 +369,7 @@ impl<'b> InferenceInferenceParts<'b> {
                 p.push_str(encoded_inference_id.as_ref());
                 p.into()
             }
-            InferenceInferenceParts::TaskTypeInferenceId(ref task_type, ref inference_id) => {
+            InferenceInferenceParts::TaskTypeInferenceId(task_type, inference_id) => {
                 let encoded_task_type: Cow<str> =
                     percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
                 let encoded_inference_id: Cow<str> =
@@ -379,7 +379,7 @@ impl<'b> InferenceInferenceParts<'b> {
                 );
                 p.push_str("/_inference/");
                 p.push_str(encoded_task_type.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_inference_id.as_ref());
                 p.into()
             }
@@ -511,7 +511,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Inference Put API"]
 pub enum InferencePutParts<'b> {
     #[doc = "InferenceId"]
@@ -524,7 +524,7 @@ impl<'b> InferencePutParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Put API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            InferencePutParts::InferenceId(ref inference_id) => {
+            InferencePutParts::InferenceId(inference_id) => {
                 let encoded_inference_id: Cow<str> =
                     percent_encode(inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(12usize + encoded_inference_id.len());
@@ -532,7 +532,7 @@ impl<'b> InferencePutParts<'b> {
                 p.push_str(encoded_inference_id.as_ref());
                 p.into()
             }
-            InferencePutParts::TaskTypeInferenceId(ref task_type, ref inference_id) => {
+            InferencePutParts::TaskTypeInferenceId(task_type, inference_id) => {
                 let encoded_task_type: Cow<str> =
                     percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
                 let encoded_inference_id: Cow<str> =
@@ -542,7 +542,7 @@ impl<'b> InferencePutParts<'b> {
                 );
                 p.push_str("/_inference/");
                 p.push_str(encoded_task_type.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_inference_id.as_ref());
                 p.into()
             }

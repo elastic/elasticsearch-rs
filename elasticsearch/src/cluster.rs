@@ -45,7 +45,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cluster Allocation Explain API"]
 pub enum ClusterAllocationExplainParts {
     #[doc = "No parts"]
@@ -213,7 +213,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cluster Delete Component Template API"]
 pub enum ClusterDeleteComponentTemplateParts<'b> {
     #[doc = "Name"]
@@ -223,7 +223,7 @@ impl<'b> ClusterDeleteComponentTemplateParts<'b> {
     #[doc = "Builds a relative URL path to the Cluster Delete Component Template API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ClusterDeleteComponentTemplateParts::Name(ref name) => {
+            ClusterDeleteComponentTemplateParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(21usize + encoded_name.len());
                 p.push_str("/_component_template/");
@@ -349,7 +349,7 @@ impl<'a, 'b> ClusterDeleteComponentTemplate<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cluster Delete Voting Config Exclusions API"]
 pub enum ClusterDeleteVotingConfigExclusionsParts {
     #[doc = "No parts"]
@@ -481,7 +481,7 @@ impl<'a, 'b> ClusterDeleteVotingConfigExclusions<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cluster Exists Component Template API"]
 pub enum ClusterExistsComponentTemplateParts<'b> {
     #[doc = "Name"]
@@ -491,7 +491,7 @@ impl<'b> ClusterExistsComponentTemplateParts<'b> {
     #[doc = "Builds a relative URL path to the Cluster Exists Component Template API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ClusterExistsComponentTemplateParts::Name(ref name) => {
+            ClusterExistsComponentTemplateParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(21usize + encoded_name.len());
                 p.push_str("/_component_template/");
@@ -617,7 +617,7 @@ impl<'a, 'b> ClusterExistsComponentTemplate<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cluster Get Component Template API"]
 pub enum ClusterGetComponentTemplateParts<'b> {
     #[doc = "No parts"]
@@ -630,7 +630,7 @@ impl<'b> ClusterGetComponentTemplateParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             ClusterGetComponentTemplateParts::None => "/_component_template".into(),
-            ClusterGetComponentTemplateParts::Name(ref name) => {
+            ClusterGetComponentTemplateParts::Name(name) => {
                 let name_str = name.join(",");
                 let encoded_name: Cow<str> =
                     percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
@@ -767,7 +767,7 @@ impl<'a, 'b> ClusterGetComponentTemplate<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cluster Get Settings API"]
 pub enum ClusterGetSettingsParts {
     #[doc = "No parts"]
@@ -915,7 +915,7 @@ impl<'a, 'b> ClusterGetSettings<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cluster Health API"]
 pub enum ClusterHealthParts<'b> {
     #[doc = "No parts"]
@@ -928,7 +928,7 @@ impl<'b> ClusterHealthParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             ClusterHealthParts::None => "/_cluster/health".into(),
-            ClusterHealthParts::Index(ref index) => {
+            ClusterHealthParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
@@ -1141,7 +1141,7 @@ impl<'a, 'b> ClusterHealth<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cluster Info API"]
 pub enum ClusterInfoParts<'b> {
     #[doc = "Target"]
@@ -1151,7 +1151,7 @@ impl<'b> ClusterInfoParts<'b> {
     #[doc = "Builds a relative URL path to the Cluster Info API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ClusterInfoParts::Target(ref target) => {
+            ClusterInfoParts::Target(target) => {
                 let target_str = target.join(",");
                 let encoded_target: Cow<str> =
                     percent_encode(target_str.as_bytes(), PARTS_ENCODED).into();
@@ -1261,7 +1261,7 @@ impl<'a, 'b> ClusterInfo<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cluster Pending Tasks API"]
 pub enum ClusterPendingTasksParts {
     #[doc = "No parts"]
@@ -1391,7 +1391,7 @@ impl<'a, 'b> ClusterPendingTasks<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cluster Post Voting Config Exclusions API"]
 pub enum ClusterPostVotingConfigExclusionsParts {
     #[doc = "No parts"]
@@ -1568,7 +1568,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cluster Put Component Template API"]
 pub enum ClusterPutComponentTemplateParts<'b> {
     #[doc = "Name"]
@@ -1578,7 +1578,7 @@ impl<'b> ClusterPutComponentTemplateParts<'b> {
     #[doc = "Builds a relative URL path to the Cluster Put Component Template API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            ClusterPutComponentTemplateParts::Name(ref name) => {
+            ClusterPutComponentTemplateParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(21usize + encoded_name.len());
                 p.push_str("/_component_template/");
@@ -1739,7 +1739,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cluster Put Settings API"]
 pub enum ClusterPutSettingsParts {
     #[doc = "No parts"]
@@ -1904,7 +1904,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cluster Remote Info API"]
 pub enum ClusterRemoteInfoParts {
     #[doc = "No parts"]
@@ -2016,7 +2016,7 @@ impl<'a, 'b> ClusterRemoteInfo<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cluster Reroute API"]
 pub enum ClusterRerouteParts {
     #[doc = "No parts"]
@@ -2212,7 +2212,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cluster State API"]
 pub enum ClusterStateParts<'b> {
     #[doc = "No parts"]
@@ -2227,7 +2227,7 @@ impl<'b> ClusterStateParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             ClusterStateParts::None => "/_cluster/state".into(),
-            ClusterStateParts::Metric(ref metric) => {
+            ClusterStateParts::Metric(metric) => {
                 let metric_str = metric.join(",");
                 let encoded_metric: Cow<str> =
                     percent_encode(metric_str.as_bytes(), PARTS_ENCODED).into();
@@ -2236,7 +2236,7 @@ impl<'b> ClusterStateParts<'b> {
                 p.push_str(encoded_metric.as_ref());
                 p.into()
             }
-            ClusterStateParts::MetricIndex(ref metric, ref index) => {
+            ClusterStateParts::MetricIndex(metric, index) => {
                 let metric_str = metric.join(",");
                 let index_str = index.join(",");
                 let encoded_metric: Cow<str> =
@@ -2247,7 +2247,7 @@ impl<'b> ClusterStateParts<'b> {
                     String::with_capacity(17usize + encoded_metric.len() + encoded_index.len());
                 p.push_str("/_cluster/state/");
                 p.push_str(encoded_metric.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.into()
             }
@@ -2425,7 +2425,7 @@ impl<'a, 'b> ClusterState<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cluster Stats API"]
 pub enum ClusterStatsParts<'b> {
     #[doc = "No parts"]
@@ -2438,7 +2438,7 @@ impl<'b> ClusterStatsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             ClusterStatsParts::None => "/_cluster/stats".into(),
-            ClusterStatsParts::NodeId(ref node_id) => {
+            ClusterStatsParts::NodeId(node_id) => {
                 let node_id_str = node_id.join(",");
                 let encoded_node_id: Cow<str> =
                     percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();

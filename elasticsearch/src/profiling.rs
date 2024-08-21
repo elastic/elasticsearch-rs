@@ -40,7 +40,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Profiling Flamegraph API"]
 pub enum ProfilingFlamegraphParts {
     #[doc = "No parts"]
@@ -175,7 +175,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Profiling Stacktraces API"]
 pub enum ProfilingStacktracesParts {
     #[doc = "No parts"]
@@ -310,7 +310,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Profiling Status API"]
 pub enum ProfilingStatusParts {
     #[doc = "No parts"]
@@ -449,7 +449,7 @@ impl<'a, 'b> ProfilingStatus<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Profiling Topn Functions API"]
 pub enum ProfilingTopnFunctionsParts {
     #[doc = "No parts"]

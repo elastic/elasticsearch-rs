@@ -46,7 +46,7 @@ use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Nodes Clear Repositories Metering Archive API"]
 pub enum NodesClearRepositoriesMeteringArchiveParts<'b> {
     #[doc = "NodeId and MaxArchiveVersion"]
@@ -58,8 +58,8 @@ impl<'b> NodesClearRepositoriesMeteringArchiveParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             NodesClearRepositoriesMeteringArchiveParts::NodeIdMaxArchiveVersion(
-                ref node_id,
-                ref max_archive_version,
+                node_id,
+                max_archive_version,
             ) => {
                 let node_id_str = node_id.join(",");
                 let max_archive_version_str = max_archive_version.to_string();
@@ -184,7 +184,7 @@ impl<'a, 'b> NodesClearRepositoriesMeteringArchive<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Nodes Get Repositories Metering Info API"]
 pub enum NodesGetRepositoriesMeteringInfoParts<'b> {
     #[doc = "NodeId"]
@@ -195,7 +195,7 @@ impl<'b> NodesGetRepositoriesMeteringInfoParts<'b> {
     #[doc = "Builds a relative URL path to the Nodes Get Repositories Metering Info API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            NodesGetRepositoriesMeteringInfoParts::NodeId(ref node_id) => {
+            NodesGetRepositoriesMeteringInfoParts::NodeId(node_id) => {
                 let node_id_str = node_id.join(",");
                 let encoded_node_id: Cow<str> =
                     percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
@@ -309,7 +309,7 @@ impl<'a, 'b> NodesGetRepositoriesMeteringInfo<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Nodes Hot Threads API"]
 pub enum NodesHotThreadsParts<'b> {
     #[doc = "No parts"]
@@ -322,7 +322,7 @@ impl<'b> NodesHotThreadsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             NodesHotThreadsParts::None => "/_nodes/hot_threads".into(),
-            NodesHotThreadsParts::NodeId(ref node_id) => {
+            NodesHotThreadsParts::NodeId(node_id) => {
                 let node_id_str = node_id.join(",");
                 let encoded_node_id: Cow<str> =
                     percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
@@ -497,7 +497,7 @@ impl<'a, 'b> NodesHotThreads<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Nodes Info API"]
 pub enum NodesInfoParts<'b> {
     #[doc = "No parts"]
@@ -514,7 +514,7 @@ impl<'b> NodesInfoParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             NodesInfoParts::None => "/_nodes".into(),
-            NodesInfoParts::NodeId(ref node_id) => {
+            NodesInfoParts::NodeId(node_id) => {
                 let node_id_str = node_id.join(",");
                 let encoded_node_id: Cow<str> =
                     percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
@@ -523,7 +523,7 @@ impl<'b> NodesInfoParts<'b> {
                 p.push_str(encoded_node_id.as_ref());
                 p.into()
             }
-            NodesInfoParts::Metric(ref metric) => {
+            NodesInfoParts::Metric(metric) => {
                 let metric_str = metric.join(",");
                 let encoded_metric: Cow<str> =
                     percent_encode(metric_str.as_bytes(), PARTS_ENCODED).into();
@@ -532,7 +532,7 @@ impl<'b> NodesInfoParts<'b> {
                 p.push_str(encoded_metric.as_ref());
                 p.into()
             }
-            NodesInfoParts::NodeIdMetric(ref node_id, ref metric) => {
+            NodesInfoParts::NodeIdMetric(node_id, metric) => {
                 let node_id_str = node_id.join(",");
                 let metric_str = metric.join(",");
                 let encoded_node_id: Cow<str> =
@@ -543,7 +543,7 @@ impl<'b> NodesInfoParts<'b> {
                     String::with_capacity(9usize + encoded_node_id.len() + encoded_metric.len());
                 p.push_str("/_nodes/");
                 p.push_str(encoded_node_id.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_metric.as_ref());
                 p.into()
             }
@@ -666,7 +666,7 @@ impl<'a, 'b> NodesInfo<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Nodes Reload Secure Settings API"]
 pub enum NodesReloadSecureSettingsParts<'b> {
     #[doc = "No parts"]
@@ -679,7 +679,7 @@ impl<'b> NodesReloadSecureSettingsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             NodesReloadSecureSettingsParts::None => "/_nodes/reload_secure_settings".into(),
-            NodesReloadSecureSettingsParts::NodeId(ref node_id) => {
+            NodesReloadSecureSettingsParts::NodeId(node_id) => {
                 let node_id_str = node_id.join(",");
                 let encoded_node_id: Cow<str> =
                     percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
@@ -823,7 +823,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Nodes Stats API"]
 pub enum NodesStatsParts<'b> {
     #[doc = "No parts"]
@@ -844,7 +844,7 @@ impl<'b> NodesStatsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             NodesStatsParts::None => "/_nodes/stats".into(),
-            NodesStatsParts::NodeId(ref node_id) => {
+            NodesStatsParts::NodeId(node_id) => {
                 let node_id_str = node_id.join(",");
                 let encoded_node_id: Cow<str> =
                     percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
@@ -854,7 +854,7 @@ impl<'b> NodesStatsParts<'b> {
                 p.push_str("/stats");
                 p.into()
             }
-            NodesStatsParts::Metric(ref metric) => {
+            NodesStatsParts::Metric(metric) => {
                 let metric_str = metric.join(",");
                 let encoded_metric: Cow<str> =
                     percent_encode(metric_str.as_bytes(), PARTS_ENCODED).into();
@@ -863,7 +863,7 @@ impl<'b> NodesStatsParts<'b> {
                 p.push_str(encoded_metric.as_ref());
                 p.into()
             }
-            NodesStatsParts::NodeIdMetric(ref node_id, ref metric) => {
+            NodesStatsParts::NodeIdMetric(node_id, metric) => {
                 let node_id_str = node_id.join(",");
                 let metric_str = metric.join(",");
                 let encoded_node_id: Cow<str> =
@@ -878,7 +878,7 @@ impl<'b> NodesStatsParts<'b> {
                 p.push_str(encoded_metric.as_ref());
                 p.into()
             }
-            NodesStatsParts::MetricIndexMetric(ref metric, ref index_metric) => {
+            NodesStatsParts::MetricIndexMetric(metric, index_metric) => {
                 let metric_str = metric.join(",");
                 let index_metric_str = index_metric.join(",");
                 let encoded_metric: Cow<str> =
@@ -890,11 +890,11 @@ impl<'b> NodesStatsParts<'b> {
                 );
                 p.push_str("/_nodes/stats/");
                 p.push_str(encoded_metric.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index_metric.as_ref());
                 p.into()
             }
-            NodesStatsParts::NodeIdMetricIndexMetric(ref node_id, ref metric, ref index_metric) => {
+            NodesStatsParts::NodeIdMetricIndexMetric(node_id, metric, index_metric) => {
                 let node_id_str = node_id.join(",");
                 let metric_str = metric.join(",");
                 let index_metric_str = index_metric.join(",");
@@ -914,7 +914,7 @@ impl<'b> NodesStatsParts<'b> {
                 p.push_str(encoded_node_id.as_ref());
                 p.push_str("/stats/");
                 p.push_str(encoded_metric.as_ref());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index_metric.as_ref());
                 p.into()
             }
@@ -1104,7 +1104,7 @@ impl<'a, 'b> NodesStats<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Nodes Usage API"]
 pub enum NodesUsageParts<'b> {
     #[doc = "No parts"]
@@ -1121,7 +1121,7 @@ impl<'b> NodesUsageParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             NodesUsageParts::None => "/_nodes/usage".into(),
-            NodesUsageParts::NodeId(ref node_id) => {
+            NodesUsageParts::NodeId(node_id) => {
                 let node_id_str = node_id.join(",");
                 let encoded_node_id: Cow<str> =
                     percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
@@ -1131,7 +1131,7 @@ impl<'b> NodesUsageParts<'b> {
                 p.push_str("/usage");
                 p.into()
             }
-            NodesUsageParts::Metric(ref metric) => {
+            NodesUsageParts::Metric(metric) => {
                 let metric_str = metric.join(",");
                 let encoded_metric: Cow<str> =
                     percent_encode(metric_str.as_bytes(), PARTS_ENCODED).into();
@@ -1140,7 +1140,7 @@ impl<'b> NodesUsageParts<'b> {
                 p.push_str(encoded_metric.as_ref());
                 p.into()
             }
-            NodesUsageParts::NodeIdMetric(ref node_id, ref metric) => {
+            NodesUsageParts::NodeIdMetric(node_id, metric) => {
                 let node_id_str = node_id.join(",");
                 let metric_str = metric.join(",");
                 let encoded_node_id: Cow<str> =

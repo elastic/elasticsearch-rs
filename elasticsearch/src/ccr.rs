@@ -48,7 +48,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ccr Delete Auto Follow Pattern API"]
 pub enum CcrDeleteAutoFollowPatternParts<'b> {
     #[doc = "Name"]
@@ -58,7 +58,7 @@ impl<'b> CcrDeleteAutoFollowPatternParts<'b> {
     #[doc = "Builds a relative URL path to the Ccr Delete Auto Follow Pattern API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            CcrDeleteAutoFollowPatternParts::Name(ref name) => {
+            CcrDeleteAutoFollowPatternParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(18usize + encoded_name.len());
                 p.push_str("/_ccr/auto_follow/");
@@ -175,7 +175,7 @@ impl<'a, 'b> CcrDeleteAutoFollowPattern<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ccr Follow API"]
 pub enum CcrFollowParts<'b> {
     #[doc = "Index"]
@@ -185,11 +185,11 @@ impl<'b> CcrFollowParts<'b> {
     #[doc = "Builds a relative URL path to the Ccr Follow API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            CcrFollowParts::Index(ref index) => {
+            CcrFollowParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_ccr/follow");
                 p.into()
@@ -338,7 +338,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ccr Follow Info API"]
 pub enum CcrFollowInfoParts<'b> {
     #[doc = "Index"]
@@ -348,12 +348,12 @@ impl<'b> CcrFollowInfoParts<'b> {
     #[doc = "Builds a relative URL path to the Ccr Follow Info API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            CcrFollowInfoParts::Index(ref index) => {
+            CcrFollowInfoParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(11usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_ccr/info");
                 p.into()
@@ -468,7 +468,7 @@ impl<'a, 'b> CcrFollowInfo<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ccr Follow Stats API"]
 pub enum CcrFollowStatsParts<'b> {
     #[doc = "Index"]
@@ -478,12 +478,12 @@ impl<'b> CcrFollowStatsParts<'b> {
     #[doc = "Builds a relative URL path to the Ccr Follow Stats API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            CcrFollowStatsParts::Index(ref index) => {
+            CcrFollowStatsParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(12usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_ccr/stats");
                 p.into()
@@ -598,7 +598,7 @@ impl<'a, 'b> CcrFollowStats<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ccr Forget Follower API"]
 pub enum CcrForgetFollowerParts<'b> {
     #[doc = "Index"]
@@ -608,11 +608,11 @@ impl<'b> CcrForgetFollowerParts<'b> {
     #[doc = "Builds a relative URL path to the Ccr Forget Follower API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            CcrForgetFollowerParts::Index(ref index) => {
+            CcrForgetFollowerParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(22usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_ccr/forget_follower");
                 p.into()
@@ -751,7 +751,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ccr Get Auto Follow Pattern API"]
 pub enum CcrGetAutoFollowPatternParts<'b> {
     #[doc = "No parts"]
@@ -764,7 +764,7 @@ impl<'b> CcrGetAutoFollowPatternParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CcrGetAutoFollowPatternParts::None => "/_ccr/auto_follow".into(),
-            CcrGetAutoFollowPatternParts::Name(ref name) => {
+            CcrGetAutoFollowPatternParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(18usize + encoded_name.len());
                 p.push_str("/_ccr/auto_follow/");
@@ -881,7 +881,7 @@ impl<'a, 'b> CcrGetAutoFollowPattern<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ccr Pause Auto Follow Pattern API"]
 pub enum CcrPauseAutoFollowPatternParts<'b> {
     #[doc = "Name"]
@@ -891,7 +891,7 @@ impl<'b> CcrPauseAutoFollowPatternParts<'b> {
     #[doc = "Builds a relative URL path to the Ccr Pause Auto Follow Pattern API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            CcrPauseAutoFollowPatternParts::Name(ref name) => {
+            CcrPauseAutoFollowPatternParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(24usize + encoded_name.len());
                 p.push_str("/_ccr/auto_follow/");
@@ -1033,7 +1033,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ccr Pause Follow API"]
 pub enum CcrPauseFollowParts<'b> {
     #[doc = "Index"]
@@ -1043,11 +1043,11 @@ impl<'b> CcrPauseFollowParts<'b> {
     #[doc = "Builds a relative URL path to the Ccr Pause Follow API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            CcrPauseFollowParts::Index(ref index) => {
+            CcrPauseFollowParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(19usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_ccr/pause_follow");
                 p.into()
@@ -1186,7 +1186,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ccr Put Auto Follow Pattern API"]
 pub enum CcrPutAutoFollowPatternParts<'b> {
     #[doc = "Name"]
@@ -1196,7 +1196,7 @@ impl<'b> CcrPutAutoFollowPatternParts<'b> {
     #[doc = "Builds a relative URL path to the Ccr Put Auto Follow Pattern API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            CcrPutAutoFollowPatternParts::Name(ref name) => {
+            CcrPutAutoFollowPatternParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(18usize + encoded_name.len());
                 p.push_str("/_ccr/auto_follow/");
@@ -1337,7 +1337,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ccr Resume Auto Follow Pattern API"]
 pub enum CcrResumeAutoFollowPatternParts<'b> {
     #[doc = "Name"]
@@ -1347,7 +1347,7 @@ impl<'b> CcrResumeAutoFollowPatternParts<'b> {
     #[doc = "Builds a relative URL path to the Ccr Resume Auto Follow Pattern API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            CcrResumeAutoFollowPatternParts::Name(ref name) => {
+            CcrResumeAutoFollowPatternParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(25usize + encoded_name.len());
                 p.push_str("/_ccr/auto_follow/");
@@ -1489,7 +1489,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ccr Resume Follow API"]
 pub enum CcrResumeFollowParts<'b> {
     #[doc = "Index"]
@@ -1499,11 +1499,11 @@ impl<'b> CcrResumeFollowParts<'b> {
     #[doc = "Builds a relative URL path to the Ccr Resume Follow API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            CcrResumeFollowParts::Index(ref index) => {
+            CcrResumeFollowParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(20usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_ccr/resume_follow");
                 p.into()
@@ -1642,7 +1642,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ccr Stats API"]
 pub enum CcrStatsParts {
     #[doc = "No parts"]
@@ -1772,7 +1772,7 @@ impl<'a, 'b> CcrStats<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ccr Unfollow API"]
 pub enum CcrUnfollowParts<'b> {
     #[doc = "Index"]
@@ -1782,11 +1782,11 @@ impl<'b> CcrUnfollowParts<'b> {
     #[doc = "Builds a relative URL path to the Ccr Unfollow API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            CcrUnfollowParts::Index(ref index) => {
+            CcrUnfollowParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(15usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_ccr/unfollow");
                 p.into()

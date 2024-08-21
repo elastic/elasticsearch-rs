@@ -39,3 +39,7 @@ globset = "~0.4"
 
 [dev-dependencies]
 tokio = { version = "1.0", default-features = false, features = ["macros", "net", "time"] }
+
+[lints.clippy]
+# yaml tests contain approximate values of PI
+approx_constant = "allow"

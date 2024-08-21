@@ -8,5 +8,4 @@ Security APIs
 - Manage role mappings
 - Manage API keys
 - Manage Bearer tokens
-- Authenticate users against an OpenID Connect or SAML authentication realm when using a
-custom web application other than Kibana
+- Authenticate users against an OpenID Connect or SAML authentication realm when using a custom web application other than Kibana

@@ -45,7 +45,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Monitoring Bulk API"]
 pub enum MonitoringBulkParts<'b> {
     #[doc = "No parts"]
@@ -58,7 +58,7 @@ impl<'b> MonitoringBulkParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MonitoringBulkParts::None => "/_monitoring/bulk".into(),
-            MonitoringBulkParts::Type(ref ty) => {
+            MonitoringBulkParts::Type(ty) => {
                 let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(18usize + encoded_ty.len());
                 p.push_str("/_monitoring/");

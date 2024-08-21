@@ -44,7 +44,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Features Get Features API"]
 pub enum FeaturesGetFeaturesParts {
     #[doc = "No parts"]
@@ -166,7 +166,7 @@ impl<'a, 'b> FeaturesGetFeatures<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Features Reset Features API"]
 pub enum FeaturesResetFeaturesParts {
     #[doc = "No parts"]

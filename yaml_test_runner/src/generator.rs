@@ -310,7 +310,7 @@ impl<'a> YamlTests<'a> {
                         Ok(())
                     }
                 }),
-                Some(quote! { #ident(&client).await?; }),
+                Some(quote! { #ident(client).await?; }),
             )
         } else {
             (None, None)
@@ -374,113 +374,111 @@ pub fn generate_tests_from_yaml(
 ) -> anyhow::Result<()> {
     let skips = serde_yaml::from_str::<GlobalSkip>(include_str!("./../skip.yml"))?;
     let paths = fs::read_dir(download_dir)?;
-    for entry in paths {
-        if let Ok(entry) = entry {
-            if let Ok(file_type) = entry.file_type() {
-                if file_type.is_dir() {
-                    generate_tests_from_yaml(
-                        api,
-                        suite,
-                        version,
-                        base_download_dir,
-                        &entry.path(),
-                        generated_dir,
-                    )?;
-                } else if file_type.is_file() {
-                    let path = entry.path();
-                    // skip non-yaml files
-                    let extension = path.extension().unwrap_or_else(|| "".as_ref());
-                    if extension != "yml" && extension != "yaml" {
-                        continue;
+    for entry in paths.flatten() {
+        if let Ok(file_type) = entry.file_type() {
+            if file_type.is_dir() {
+                generate_tests_from_yaml(
+                    api,
+                    suite,
+                    version,
+                    base_download_dir,
+                    &entry.path(),
+                    generated_dir,
+                )?;
+            } else if file_type.is_file() {
+                let path = entry.path();
+                // skip non-yaml files
+                let extension = path.extension().unwrap_or_else(|| "".as_ref());
+                if extension != "yml" && extension != "yaml" {
+                    continue;
+                }
+
+                let relative_path = path.strip_prefix(base_download_dir)?;
+                let test_suite = {
+                    let components = relative_path.components();
+                    let mut top_dir = "".to_string();
+                    for c in components {
+                        if c != Component::RootDir {
+                            top_dir = c.as_os_str().to_string_lossy().into_owned();
+                            break;
+                        }
                     }
 
-                    let relative_path = path.strip_prefix(&base_download_dir)?;
-                    let test_suite = {
-                        let components = relative_path.components();
-                        let mut top_dir = "".to_string();
-                        for c in components {
-                            if c != Component::RootDir {
-                                top_dir = c.as_os_str().to_string_lossy().into_owned();
-                                break;
+                    match top_dir.as_str() {
+                        "free" => TestSuite::Free,
+                        "xpack" | "platinum" => TestSuite::XPack,
+                        dir => panic!("Unknown test suite '{}' {:?}", dir, path),
+                    }
+                };
+
+                if &test_suite != suite {
+                    // Belongs to another test suite
+                    continue;
+                }
+
+                let yaml = fs::read_to_string(entry.path()).unwrap();
+
+                // a yaml test can contain multiple yaml docs, so use yaml_rust to parse
+                let result = YamlLoader::load_from_str(&yaml);
+                if result.is_err() {
+                    error!(
+                        "skipping {}. cannot read as Yaml struct: {}",
+                        relative_path.to_slash_lossy(),
+                        result.err().unwrap().to_string()
+                    );
+                    continue;
+                }
+
+                let docs = result.unwrap();
+                let mut test =
+                    YamlTests::new(relative_path, version, &skips, test_suite, docs.len());
+
+                let results : Vec<Result<(), failure::Error>> = docs
+                    .iter()
+                    .map(|doc| {
+                        let hash = doc
+                            .as_hash()
+                            .ok_or_else(|| failure::err_msg(format!(
+                                "expected hash but found {:?}",
+                                &doc
+                            )))?;
+
+                        let (key, value) = hash.iter().next().unwrap();
+                        match (key, value) {
+                            (Yaml::String(name), Yaml::Array(steps)) => {
+                                let steps = parse_steps(api, steps)?;
+                                let test_fn = TestFn::new(name, steps);
+                                match name.as_str() {
+                                    "setup" => test.add_setup(test_fn),
+                                    "teardown" => test.add_teardown(test_fn),
+                                    _ => test.add_test_fn(test_fn),
+                                };
+                                Ok(())
+                            }
+                            (k, v) => {
+                                Err(failure::err_msg(format!(
+                                    "expected string key and array value in {:?}, but found {:?} and {:?}",
+                                    relative_path,
+                                    &k,
+                                    &v,
+                                )))
                             }
                         }
+                    })
+                    .collect();
 
-                        match top_dir.as_str() {
-                            "free" => TestSuite::Free,
-                            "xpack" | "platinum" => TestSuite::XPack,
-                            dir => panic!("Unknown test suite '{}' {:?}", dir, path),
-                        }
-                    };
-
-                    if &test_suite != suite {
-                        // Belongs to another test suite
-                        continue;
-                    }
-
-                    let yaml = fs::read_to_string(&entry.path()).unwrap();
-
-                    // a yaml test can contain multiple yaml docs, so use yaml_rust to parse
-                    let result = YamlLoader::load_from_str(&yaml);
-                    if result.is_err() {
-                        error!(
-                            "skipping {}. cannot read as Yaml struct: {}",
-                            relative_path.to_slash_lossy(),
-                            result.err().unwrap().to_string()
-                        );
-                        continue;
-                    }
-
-                    let docs = result.unwrap();
-                    let mut test =
-                        YamlTests::new(relative_path, version, &skips, test_suite, docs.len());
-
-                    let results : Vec<Result<(), failure::Error>> = docs
-                        .iter()
-                        .map(|doc| {
-                            let hash = doc
-                                .as_hash()
-                                .ok_or_else(|| failure::err_msg(format!(
-                                    "expected hash but found {:?}",
-                                    &doc
-                                )))?;
-
-                            let (key, value) = hash.iter().next().unwrap();
-                            match (key, value) {
-                                (Yaml::String(name), Yaml::Array(steps)) => {
-                                    let steps = parse_steps(api, steps)?;
-                                    let test_fn = TestFn::new(name, steps);
-                                    match name.as_str() {
-                                        "setup" => test.add_setup(test_fn),
-                                        "teardown" => test.add_teardown(test_fn),
-                                        _ => test.add_test_fn(test_fn),
-                                    };
-                                    Ok(())
-                                }
-                                (k, v) => {
-                                    Err(failure::err_msg(format!(
-                                        "expected string key and array value in {:?}, but found {:?} and {:?}",
-                                        relative_path,
-                                        &k,
-                                        &v,
-                                    )))
-                                }
-                            }
-                        })
-                        .collect();
-
-                    //if there has been an Err in any step of the yaml test file, don't create a test for it
-                    match ok_or_accumulate(&results) {
-                        Ok(_) => write_test_file(test, relative_path, generated_dir)?,
-                        Err(e) => {
-                            info!("skipping {} because {}", relative_path.to_slash_lossy(), e)
-                        }
+                //if there has been an Err in any step of the yaml test file, don't create a test for it
+                match ok_or_accumulate(&results) {
+                    Ok(_) => write_test_file(test, relative_path, generated_dir)?,
+                    Err(e) => {
+                        info!("skipping {} because {}", relative_path.to_slash_lossy(), e)
                     }
                 }
             }
         }
     }
 
-    write_mod_files(&generated_dir, true)?;
+    write_mod_files(generated_dir, true)?;
 
     Ok(())
 }
@@ -493,21 +491,19 @@ fn write_mod_files(generated_dir: &PathBuf, toplevel: bool) -> anyhow::Result<()
 
     let paths = fs::read_dir(generated_dir)?;
     let mut mods = vec![];
-    for path in paths {
-        if let Ok(entry) = path {
-            let path = entry.path();
-            let name = path.file_stem().unwrap().to_string_lossy();
+    for path in paths.flatten() {
+        let path = path.path();
+        let name = path.file_stem().unwrap().to_string_lossy();
 
-            if name != "mod" {
-                mods.push(format!(
-                    "pub mod {};",
-                    path.file_stem().unwrap().to_string_lossy()
-                ));
-            }
+        if name != "mod" {
+            mods.push(format!(
+                "pub mod {};",
+                path.file_stem().unwrap().to_string_lossy()
+            ));
+        }
 
-            if path.is_dir() && !(toplevel && name == "common") {
-                write_mod_files(&entry.path(), false)?;
-            }
+        if path.is_dir() && !(toplevel && name == "common") {
+            write_mod_files(&path, false)?;
         }
     }
 
@@ -554,7 +550,7 @@ fn test_file_path(relative_path: &Path) -> anyhow::Result<PathBuf> {
 fn write_test_file(
     test: YamlTests,
     relative_path: &Path,
-    generated_dir: &PathBuf,
+    generated_dir: &Path,
 ) -> anyhow::Result<()> {
     if test.skip_test("*") {
         info!(
@@ -568,7 +564,7 @@ fn write_test_file(
     path = generated_dir.join(path);
     path.set_extension("rs");
 
-    fs::create_dir_all(&path.parent().unwrap())?;
+    fs::create_dir_all(path.parent().unwrap())?;
     let mut file = File::create(&path)?;
     file.write_all(
         r#"/*

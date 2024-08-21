@@ -46,7 +46,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Transform Delete Transform API"]
 pub enum TransformDeleteTransformParts<'b> {
     #[doc = "TransformId"]
@@ -56,7 +56,7 @@ impl<'b> TransformDeleteTransformParts<'b> {
     #[doc = "Builds a relative URL path to the Transform Delete Transform API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TransformDeleteTransformParts::TransformId(ref transform_id) => {
+            TransformDeleteTransformParts::TransformId(transform_id) => {
                 let encoded_transform_id: Cow<str> =
                     percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(12usize + encoded_transform_id.len());
@@ -192,7 +192,7 @@ impl<'a, 'b> TransformDeleteTransform<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Transform Get Node Stats API"]
 pub enum TransformGetNodeStatsParts {
     #[doc = "No parts"]
@@ -304,7 +304,7 @@ impl<'a, 'b> TransformGetNodeStats<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Transform Get Transform API"]
 pub enum TransformGetTransformParts<'b> {
     #[doc = "TransformId"]
@@ -316,7 +316,7 @@ impl<'b> TransformGetTransformParts<'b> {
     #[doc = "Builds a relative URL path to the Transform Get Transform API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TransformGetTransformParts::TransformId(ref transform_id) => {
+            TransformGetTransformParts::TransformId(transform_id) => {
                 let encoded_transform_id: Cow<str> =
                     percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(12usize + encoded_transform_id.len());
@@ -462,7 +462,7 @@ impl<'a, 'b> TransformGetTransform<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Transform Get Transform Stats API"]
 pub enum TransformGetTransformStatsParts<'b> {
     #[doc = "TransformId"]
@@ -472,7 +472,7 @@ impl<'b> TransformGetTransformStatsParts<'b> {
     #[doc = "Builds a relative URL path to the Transform Get Transform Stats API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TransformGetTransformStatsParts::TransformId(ref transform_id) => {
+            TransformGetTransformStatsParts::TransformId(transform_id) => {
                 let encoded_transform_id: Cow<str> =
                     percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(19usize + encoded_transform_id.len());
@@ -618,7 +618,7 @@ impl<'a, 'b> TransformGetTransformStats<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Transform Preview Transform API"]
 pub enum TransformPreviewTransformParts<'b> {
     #[doc = "TransformId"]
@@ -630,7 +630,7 @@ impl<'b> TransformPreviewTransformParts<'b> {
     #[doc = "Builds a relative URL path to the Transform Preview Transform API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TransformPreviewTransformParts::TransformId(ref transform_id) => {
+            TransformPreviewTransformParts::TransformId(transform_id) => {
                 let encoded_transform_id: Cow<str> =
                     percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(21usize + encoded_transform_id.len());
@@ -777,7 +777,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Transform Put Transform API"]
 pub enum TransformPutTransformParts<'b> {
     #[doc = "TransformId"]
@@ -787,7 +787,7 @@ impl<'b> TransformPutTransformParts<'b> {
     #[doc = "Builds a relative URL path to the Transform Put Transform API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TransformPutTransformParts::TransformId(ref transform_id) => {
+            TransformPutTransformParts::TransformId(transform_id) => {
                 let encoded_transform_id: Cow<str> =
                     percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(12usize + encoded_transform_id.len());
@@ -939,7 +939,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Transform Reset Transform API"]
 pub enum TransformResetTransformParts<'b> {
     #[doc = "TransformId"]
@@ -949,7 +949,7 @@ impl<'b> TransformResetTransformParts<'b> {
     #[doc = "Builds a relative URL path to the Transform Reset Transform API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TransformResetTransformParts::TransformId(ref transform_id) => {
+            TransformResetTransformParts::TransformId(transform_id) => {
                 let encoded_transform_id: Cow<str> =
                     percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(19usize + encoded_transform_id.len());
@@ -1102,7 +1102,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Transform Schedule Now Transform API"]
 pub enum TransformScheduleNowTransformParts<'b> {
     #[doc = "TransformId"]
@@ -1112,7 +1112,7 @@ impl<'b> TransformScheduleNowTransformParts<'b> {
     #[doc = "Builds a relative URL path to the Transform Schedule Now Transform API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TransformScheduleNowTransformParts::TransformId(ref transform_id) => {
+            TransformScheduleNowTransformParts::TransformId(transform_id) => {
                 let encoded_transform_id: Cow<str> =
                     percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(26usize + encoded_transform_id.len());
@@ -1255,7 +1255,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Transform Start Transform API"]
 pub enum TransformStartTransformParts<'b> {
     #[doc = "TransformId"]
@@ -1265,7 +1265,7 @@ impl<'b> TransformStartTransformParts<'b> {
     #[doc = "Builds a relative URL path to the Transform Start Transform API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TransformStartTransformParts::TransformId(ref transform_id) => {
+            TransformStartTransformParts::TransformId(transform_id) => {
                 let encoded_transform_id: Cow<str> =
                     percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(19usize + encoded_transform_id.len());
@@ -1418,7 +1418,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Transform Stop Transform API"]
 pub enum TransformStopTransformParts<'b> {
     #[doc = "TransformId"]
@@ -1428,7 +1428,7 @@ impl<'b> TransformStopTransformParts<'b> {
     #[doc = "Builds a relative URL path to the Transform Stop Transform API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TransformStopTransformParts::TransformId(ref transform_id) => {
+            TransformStopTransformParts::TransformId(transform_id) => {
                 let encoded_transform_id: Cow<str> =
                     percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(18usize + encoded_transform_id.len());
@@ -1611,7 +1611,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Transform Update Transform API"]
 pub enum TransformUpdateTransformParts<'b> {
     #[doc = "TransformId"]
@@ -1621,7 +1621,7 @@ impl<'b> TransformUpdateTransformParts<'b> {
     #[doc = "Builds a relative URL path to the Transform Update Transform API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TransformUpdateTransformParts::TransformId(ref transform_id) => {
+            TransformUpdateTransformParts::TransformId(transform_id) => {
                 let encoded_transform_id: Cow<str> =
                     percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(20usize + encoded_transform_id.len());
@@ -1774,7 +1774,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Transform Upgrade Transforms API"]
 pub enum TransformUpgradeTransformsParts {
     #[doc = "No parts"]

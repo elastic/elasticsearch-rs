@@ -91,7 +91,7 @@ macro_rules! assert_request_status_code {
     ($status_code:expr) => {{
         let status_code = $status_code.as_u16();
         assert!(
-            status_code >= 400 && status_code < 600,
+            (400..600).contains(&status_code),
             "expected status code in range 400-599 but was {}",
             status_code
         );

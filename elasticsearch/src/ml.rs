@@ -44,7 +44,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Clear Trained Model Deployment Cache API"]
 pub enum MlClearTrainedModelDeploymentCacheParts<'b> {
     #[doc = "ModelId"]
@@ -54,7 +54,7 @@ impl<'b> MlClearTrainedModelDeploymentCacheParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Clear Trained Model Deployment Cache API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlClearTrainedModelDeploymentCacheParts::ModelId(ref model_id) => {
+            MlClearTrainedModelDeploymentCacheParts::ModelId(model_id) => {
                 let encoded_model_id: Cow<str> =
                     percent_encode(model_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(44usize + encoded_model_id.len());
@@ -190,7 +190,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Close Job API"]
 pub enum MlCloseJobParts<'b> {
     #[doc = "JobId"]
@@ -200,7 +200,7 @@ impl<'b> MlCloseJobParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Close Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlCloseJobParts::JobId(ref job_id) => {
+            MlCloseJobParts::JobId(job_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(30usize + encoded_job_id.len());
@@ -363,7 +363,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Delete Calendar API"]
 pub enum MlDeleteCalendarParts<'b> {
     #[doc = "CalendarId"]
@@ -373,7 +373,7 @@ impl<'b> MlDeleteCalendarParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Delete Calendar API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlDeleteCalendarParts::CalendarId(ref calendar_id) => {
+            MlDeleteCalendarParts::CalendarId(calendar_id) => {
                 let encoded_calendar_id: Cow<str> =
                     percent_encode(calendar_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(15usize + encoded_calendar_id.len());
@@ -482,7 +482,7 @@ impl<'a, 'b> MlDeleteCalendar<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Delete Calendar Event API"]
 pub enum MlDeleteCalendarEventParts<'b> {
     #[doc = "CalendarId and EventId"]
@@ -492,7 +492,7 @@ impl<'b> MlDeleteCalendarEventParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Delete Calendar Event API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlDeleteCalendarEventParts::CalendarIdEventId(ref calendar_id, ref event_id) => {
+            MlDeleteCalendarEventParts::CalendarIdEventId(calendar_id, event_id) => {
                 let encoded_calendar_id: Cow<str> =
                     percent_encode(calendar_id.as_bytes(), PARTS_ENCODED).into();
                 let encoded_event_id: Cow<str> =
@@ -607,7 +607,7 @@ impl<'a, 'b> MlDeleteCalendarEvent<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Delete Calendar Job API"]
 pub enum MlDeleteCalendarJobParts<'b> {
     #[doc = "CalendarId and JobId"]
@@ -617,7 +617,7 @@ impl<'b> MlDeleteCalendarJobParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Delete Calendar Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlDeleteCalendarJobParts::CalendarIdJobId(ref calendar_id, ref job_id) => {
+            MlDeleteCalendarJobParts::CalendarIdJobId(calendar_id, job_id) => {
                 let encoded_calendar_id: Cow<str> =
                     percent_encode(calendar_id.as_bytes(), PARTS_ENCODED).into();
                 let encoded_job_id: Cow<str> =
@@ -732,7 +732,7 @@ impl<'a, 'b> MlDeleteCalendarJob<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Delete Data Frame Analytics API"]
 pub enum MlDeleteDataFrameAnalyticsParts<'b> {
     #[doc = "Id"]
@@ -742,7 +742,7 @@ impl<'b> MlDeleteDataFrameAnalyticsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Delete Data Frame Analytics API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlDeleteDataFrameAnalyticsParts::Id(ref id) => {
+            MlDeleteDataFrameAnalyticsParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(26usize + encoded_id.len());
                 p.push_str("/_ml/data_frame/analytics/");
@@ -868,7 +868,7 @@ impl<'a, 'b> MlDeleteDataFrameAnalytics<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Delete Datafeed API"]
 pub enum MlDeleteDatafeedParts<'b> {
     #[doc = "DatafeedId"]
@@ -878,7 +878,7 @@ impl<'b> MlDeleteDatafeedParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Delete Datafeed API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlDeleteDatafeedParts::DatafeedId(ref datafeed_id) => {
+            MlDeleteDatafeedParts::DatafeedId(datafeed_id) => {
                 let encoded_datafeed_id: Cow<str> =
                     percent_encode(datafeed_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(15usize + encoded_datafeed_id.len());
@@ -996,7 +996,7 @@ impl<'a, 'b> MlDeleteDatafeed<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Delete Expired Data API"]
 pub enum MlDeleteExpiredDataParts<'b> {
     #[doc = "JobId"]
@@ -1008,7 +1008,7 @@ impl<'b> MlDeleteExpiredDataParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Delete Expired Data API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlDeleteExpiredDataParts::JobId(ref job_id) => {
+            MlDeleteExpiredDataParts::JobId(job_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(26usize + encoded_job_id.len());
@@ -1161,7 +1161,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Delete Filter API"]
 pub enum MlDeleteFilterParts<'b> {
     #[doc = "FilterId"]
@@ -1171,7 +1171,7 @@ impl<'b> MlDeleteFilterParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Delete Filter API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlDeleteFilterParts::FilterId(ref filter_id) => {
+            MlDeleteFilterParts::FilterId(filter_id) => {
                 let encoded_filter_id: Cow<str> =
                     percent_encode(filter_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_filter_id.len());
@@ -1280,7 +1280,7 @@ impl<'a, 'b> MlDeleteFilter<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Delete Forecast API"]
 pub enum MlDeleteForecastParts<'b> {
     #[doc = "JobId"]
@@ -1292,7 +1292,7 @@ impl<'b> MlDeleteForecastParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Delete Forecast API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlDeleteForecastParts::JobId(ref job_id) => {
+            MlDeleteForecastParts::JobId(job_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(33usize + encoded_job_id.len());
@@ -1301,7 +1301,7 @@ impl<'b> MlDeleteForecastParts<'b> {
                 p.push_str("/_forecast");
                 p.into()
             }
-            MlDeleteForecastParts::JobIdForecastId(ref job_id, ref forecast_id) => {
+            MlDeleteForecastParts::JobIdForecastId(job_id, forecast_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let encoded_forecast_id: Cow<str> =
@@ -1434,7 +1434,7 @@ impl<'a, 'b> MlDeleteForecast<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Delete Job API"]
 pub enum MlDeleteJobParts<'b> {
     #[doc = "JobId"]
@@ -1444,7 +1444,7 @@ impl<'b> MlDeleteJobParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Delete Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlDeleteJobParts::JobId(ref job_id) => {
+            MlDeleteJobParts::JobId(job_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(23usize + encoded_job_id.len());
@@ -1580,7 +1580,7 @@ impl<'a, 'b> MlDeleteJob<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Delete Model Snapshot API"]
 pub enum MlDeleteModelSnapshotParts<'b> {
     #[doc = "JobId and SnapshotId"]
@@ -1590,7 +1590,7 @@ impl<'b> MlDeleteModelSnapshotParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Delete Model Snapshot API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlDeleteModelSnapshotParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
+            MlDeleteModelSnapshotParts::JobIdSnapshotId(job_id, snapshot_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let encoded_snapshot_id: Cow<str> =
@@ -1705,7 +1705,7 @@ impl<'a, 'b> MlDeleteModelSnapshot<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Delete Trained Model API"]
 pub enum MlDeleteTrainedModelParts<'b> {
     #[doc = "ModelId"]
@@ -1715,7 +1715,7 @@ impl<'b> MlDeleteTrainedModelParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Delete Trained Model API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlDeleteTrainedModelParts::ModelId(ref model_id) => {
+            MlDeleteTrainedModelParts::ModelId(model_id) => {
                 let encoded_model_id: Cow<str> =
                     percent_encode(model_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(20usize + encoded_model_id.len());
@@ -1842,7 +1842,7 @@ impl<'a, 'b> MlDeleteTrainedModel<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Delete Trained Model Alias API"]
 pub enum MlDeleteTrainedModelAliasParts<'b> {
     #[doc = "ModelId and ModelAlias"]
@@ -1852,7 +1852,7 @@ impl<'b> MlDeleteTrainedModelAliasParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Delete Trained Model Alias API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlDeleteTrainedModelAliasParts::ModelIdModelAlias(ref model_id, ref model_alias) => {
+            MlDeleteTrainedModelAliasParts::ModelIdModelAlias(model_id, model_alias) => {
                 let encoded_model_id: Cow<str> =
                     percent_encode(model_id.as_bytes(), PARTS_ENCODED).into();
                 let encoded_model_alias: Cow<str> =
@@ -1967,7 +1967,7 @@ impl<'a, 'b> MlDeleteTrainedModelAlias<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Estimate Model Memory API"]
 pub enum MlEstimateModelMemoryParts {
     #[doc = "No parts"]
@@ -2104,7 +2104,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Evaluate Data Frame API"]
 pub enum MlEvaluateDataFrameParts {
     #[doc = "No parts"]
@@ -2239,7 +2239,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Explain Data Frame Analytics API"]
 pub enum MlExplainDataFrameAnalyticsParts<'b> {
     #[doc = "No parts"]
@@ -2252,7 +2252,7 @@ impl<'b> MlExplainDataFrameAnalyticsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlExplainDataFrameAnalyticsParts::None => "/_ml/data_frame/analytics/_explain".into(),
-            MlExplainDataFrameAnalyticsParts::Id(ref id) => {
+            MlExplainDataFrameAnalyticsParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(35usize + encoded_id.len());
                 p.push_str("/_ml/data_frame/analytics/");
@@ -2387,7 +2387,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Flush Job API"]
 pub enum MlFlushJobParts<'b> {
     #[doc = "JobId"]
@@ -2397,7 +2397,7 @@ impl<'b> MlFlushJobParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Flush Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlFlushJobParts::JobId(ref job_id) => {
+            MlFlushJobParts::JobId(job_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(30usize + encoded_job_id.len());
@@ -2580,7 +2580,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Forecast API"]
 pub enum MlForecastParts<'b> {
     #[doc = "JobId"]
@@ -2590,7 +2590,7 @@ impl<'b> MlForecastParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Forecast API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlForecastParts::JobId(ref job_id) => {
+            MlForecastParts::JobId(job_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(33usize + encoded_job_id.len());
@@ -2753,7 +2753,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Get Buckets API"]
 pub enum MlGetBucketsParts<'b> {
     #[doc = "JobId and Timestamp"]
@@ -2765,7 +2765,7 @@ impl<'b> MlGetBucketsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Buckets API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetBucketsParts::JobIdTimestamp(ref job_id, ref timestamp) => {
+            MlGetBucketsParts::JobIdTimestamp(job_id, timestamp) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let encoded_timestamp: Cow<str> =
@@ -2778,7 +2778,7 @@ impl<'b> MlGetBucketsParts<'b> {
                 p.push_str(encoded_timestamp.as_ref());
                 p.into()
             }
-            MlGetBucketsParts::JobId(ref job_id) => {
+            MlGetBucketsParts::JobId(job_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(39usize + encoded_job_id.len());
@@ -3004,7 +3004,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Get Calendar Events API"]
 pub enum MlGetCalendarEventsParts<'b> {
     #[doc = "CalendarId"]
@@ -3014,7 +3014,7 @@ impl<'b> MlGetCalendarEventsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Calendar Events API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetCalendarEventsParts::CalendarId(ref calendar_id) => {
+            MlGetCalendarEventsParts::CalendarId(calendar_id) => {
                 let encoded_calendar_id: Cow<str> =
                     percent_encode(calendar_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(22usize + encoded_calendar_id.len());
@@ -3169,7 +3169,7 @@ impl<'a, 'b> MlGetCalendarEvents<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Get Calendars API"]
 pub enum MlGetCalendarsParts<'b> {
     #[doc = "No parts"]
@@ -3182,7 +3182,7 @@ impl<'b> MlGetCalendarsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlGetCalendarsParts::None => "/_ml/calendars".into(),
-            MlGetCalendarsParts::CalendarId(ref calendar_id) => {
+            MlGetCalendarsParts::CalendarId(calendar_id) => {
                 let encoded_calendar_id: Cow<str> =
                     percent_encode(calendar_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(15usize + encoded_calendar_id.len());
@@ -3337,7 +3337,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Get Categories API"]
 pub enum MlGetCategoriesParts<'b> {
     #[doc = "JobId and CategoryId"]
@@ -3349,7 +3349,7 @@ impl<'b> MlGetCategoriesParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Categories API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetCategoriesParts::JobIdCategoryId(ref job_id, ref category_id) => {
+            MlGetCategoriesParts::JobIdCategoryId(job_id, category_id) => {
                 let category_id_str = category_id.to_string();
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
@@ -3364,7 +3364,7 @@ impl<'b> MlGetCategoriesParts<'b> {
                 p.push_str(encoded_category_id.as_ref());
                 p.into()
             }
-            MlGetCategoriesParts::JobId(ref job_id) => {
+            MlGetCategoriesParts::JobId(job_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(42usize + encoded_job_id.len());
@@ -3530,7 +3530,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Get Data Frame Analytics API"]
 pub enum MlGetDataFrameAnalyticsParts<'b> {
     #[doc = "Id"]
@@ -3542,7 +3542,7 @@ impl<'b> MlGetDataFrameAnalyticsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Data Frame Analytics API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetDataFrameAnalyticsParts::Id(ref id) => {
+            MlGetDataFrameAnalyticsParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(26usize + encoded_id.len());
                 p.push_str("/_ml/data_frame/analytics/");
@@ -3687,7 +3687,7 @@ impl<'a, 'b> MlGetDataFrameAnalytics<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Get Data Frame Analytics Stats API"]
 pub enum MlGetDataFrameAnalyticsStatsParts<'b> {
     #[doc = "No parts"]
@@ -3700,7 +3700,7 @@ impl<'b> MlGetDataFrameAnalyticsStatsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlGetDataFrameAnalyticsStatsParts::None => "/_ml/data_frame/analytics/_stats".into(),
-            MlGetDataFrameAnalyticsStatsParts::Id(ref id) => {
+            MlGetDataFrameAnalyticsStatsParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(33usize + encoded_id.len());
                 p.push_str("/_ml/data_frame/analytics/");
@@ -3845,7 +3845,7 @@ impl<'a, 'b> MlGetDataFrameAnalyticsStats<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Get Datafeed Stats API"]
 pub enum MlGetDatafeedStatsParts<'b> {
     #[doc = "DatafeedId"]
@@ -3857,7 +3857,7 @@ impl<'b> MlGetDatafeedStatsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Datafeed Stats API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetDatafeedStatsParts::DatafeedId(ref datafeed_id) => {
+            MlGetDatafeedStatsParts::DatafeedId(datafeed_id) => {
                 let encoded_datafeed_id: Cow<str> =
                     percent_encode(datafeed_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(22usize + encoded_datafeed_id.len());
@@ -3977,7 +3977,7 @@ impl<'a, 'b> MlGetDatafeedStats<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Get Datafeeds API"]
 pub enum MlGetDatafeedsParts<'b> {
     #[doc = "DatafeedId"]
@@ -3989,7 +3989,7 @@ impl<'b> MlGetDatafeedsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Datafeeds API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetDatafeedsParts::DatafeedId(ref datafeed_id) => {
+            MlGetDatafeedsParts::DatafeedId(datafeed_id) => {
                 let encoded_datafeed_id: Cow<str> =
                     percent_encode(datafeed_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(15usize + encoded_datafeed_id.len());
@@ -4117,7 +4117,7 @@ impl<'a, 'b> MlGetDatafeeds<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Get Filters API"]
 pub enum MlGetFiltersParts<'b> {
     #[doc = "No parts"]
@@ -4130,7 +4130,7 @@ impl<'b> MlGetFiltersParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlGetFiltersParts::None => "/_ml/filters".into(),
-            MlGetFiltersParts::FilterId(ref filter_id) => {
+            MlGetFiltersParts::FilterId(filter_id) => {
                 let encoded_filter_id: Cow<str> =
                     percent_encode(filter_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_filter_id.len());
@@ -4257,7 +4257,7 @@ impl<'a, 'b> MlGetFilters<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Get Influencers API"]
 pub enum MlGetInfluencersParts<'b> {
     #[doc = "JobId"]
@@ -4267,7 +4267,7 @@ impl<'b> MlGetInfluencersParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Influencers API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetInfluencersParts::JobId(ref job_id) => {
+            MlGetInfluencersParts::JobId(job_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(43usize + encoded_job_id.len());
@@ -4483,7 +4483,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Get Job Stats API"]
 pub enum MlGetJobStatsParts<'b> {
     #[doc = "No parts"]
@@ -4496,7 +4496,7 @@ impl<'b> MlGetJobStatsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlGetJobStatsParts::None => "/_ml/anomaly_detectors/_stats".into(),
-            MlGetJobStatsParts::JobId(ref job_id) => {
+            MlGetJobStatsParts::JobId(job_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(30usize + encoded_job_id.len());
@@ -4615,7 +4615,7 @@ impl<'a, 'b> MlGetJobStats<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Get Jobs API"]
 pub enum MlGetJobsParts<'b> {
     #[doc = "JobId"]
@@ -4627,7 +4627,7 @@ impl<'b> MlGetJobsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Jobs API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetJobsParts::JobId(ref job_id) => {
+            MlGetJobsParts::JobId(job_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(23usize + encoded_job_id.len());
@@ -4755,7 +4755,7 @@ impl<'a, 'b> MlGetJobs<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Get Memory Stats API"]
 pub enum MlGetMemoryStatsParts<'b> {
     #[doc = "No parts"]
@@ -4768,7 +4768,7 @@ impl<'b> MlGetMemoryStatsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlGetMemoryStatsParts::None => "/_ml/memory/_stats".into(),
-            MlGetMemoryStatsParts::NodeId(ref node_id) => {
+            MlGetMemoryStatsParts::NodeId(node_id) => {
                 let encoded_node_id: Cow<str> =
                     percent_encode(node_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(19usize + encoded_node_id.len());
@@ -4896,7 +4896,7 @@ impl<'a, 'b> MlGetMemoryStats<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Get Model Snapshot Upgrade Stats API"]
 pub enum MlGetModelSnapshotUpgradeStatsParts<'b> {
     #[doc = "JobId and SnapshotId"]
@@ -4906,7 +4906,7 @@ impl<'b> MlGetModelSnapshotUpgradeStatsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Model Snapshot Upgrade Stats API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetModelSnapshotUpgradeStatsParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
+            MlGetModelSnapshotUpgradeStatsParts::JobIdSnapshotId(job_id, snapshot_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let encoded_snapshot_id: Cow<str> =
@@ -5031,7 +5031,7 @@ impl<'a, 'b> MlGetModelSnapshotUpgradeStats<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Get Model Snapshots API"]
 pub enum MlGetModelSnapshotsParts<'b> {
     #[doc = "JobId and SnapshotId"]
@@ -5043,7 +5043,7 @@ impl<'b> MlGetModelSnapshotsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Model Snapshots API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetModelSnapshotsParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
+            MlGetModelSnapshotsParts::JobIdSnapshotId(job_id, snapshot_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let encoded_snapshot_id: Cow<str> =
@@ -5057,7 +5057,7 @@ impl<'b> MlGetModelSnapshotsParts<'b> {
                 p.push_str(encoded_snapshot_id.as_ref());
                 p.into()
             }
-            MlGetModelSnapshotsParts::JobId(ref job_id) => {
+            MlGetModelSnapshotsParts::JobId(job_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(39usize + encoded_job_id.len());
@@ -5253,7 +5253,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Get Overall Buckets API"]
 pub enum MlGetOverallBucketsParts<'b> {
     #[doc = "JobId"]
@@ -5263,7 +5263,7 @@ impl<'b> MlGetOverallBucketsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Overall Buckets API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetOverallBucketsParts::JobId(ref job_id) => {
+            MlGetOverallBucketsParts::JobId(job_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(47usize + encoded_job_id.len());
@@ -5469,7 +5469,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Get Records API"]
 pub enum MlGetRecordsParts<'b> {
     #[doc = "JobId"]
@@ -5479,7 +5479,7 @@ impl<'b> MlGetRecordsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Records API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetRecordsParts::JobId(ref job_id) => {
+            MlGetRecordsParts::JobId(job_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(39usize + encoded_job_id.len());
@@ -5695,7 +5695,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Get Trained Models API"]
 pub enum MlGetTrainedModelsParts<'b> {
     #[doc = "ModelId"]
@@ -5707,7 +5707,7 @@ impl<'b> MlGetTrainedModelsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Trained Models API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetTrainedModelsParts::ModelId(ref model_id) => {
+            MlGetTrainedModelsParts::ModelId(model_id) => {
                 let encoded_model_id: Cow<str> =
                     percent_encode(model_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(20usize + encoded_model_id.len());
@@ -5890,7 +5890,7 @@ impl<'a, 'b> MlGetTrainedModels<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Get Trained Models Stats API"]
 pub enum MlGetTrainedModelsStatsParts<'b> {
     #[doc = "ModelId"]
@@ -5902,7 +5902,7 @@ impl<'b> MlGetTrainedModelsStatsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Trained Models Stats API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetTrainedModelsStatsParts::ModelId(ref model_id) => {
+            MlGetTrainedModelsStatsParts::ModelId(model_id) => {
                 let encoded_model_id: Cow<str> =
                     percent_encode(model_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(27usize + encoded_model_id.len());
@@ -6040,7 +6040,7 @@ impl<'a, 'b> MlGetTrainedModelsStats<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Infer Trained Model API"]
 pub enum MlInferTrainedModelParts<'b> {
     #[doc = "ModelId"]
@@ -6050,7 +6050,7 @@ impl<'b> MlInferTrainedModelParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Infer Trained Model API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlInferTrainedModelParts::ModelId(ref model_id) => {
+            MlInferTrainedModelParts::ModelId(model_id) => {
                 let encoded_model_id: Cow<str> =
                     percent_encode(model_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(27usize + encoded_model_id.len());
@@ -6193,7 +6193,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Info API"]
 pub enum MlInfoParts {
     #[doc = "No parts"]
@@ -6305,7 +6305,7 @@ impl<'a, 'b> MlInfo<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Open Job API"]
 pub enum MlOpenJobParts<'b> {
     #[doc = "JobId"]
@@ -6315,7 +6315,7 @@ impl<'b> MlOpenJobParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Open Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlOpenJobParts::JobId(ref job_id) => {
+            MlOpenJobParts::JobId(job_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(29usize + encoded_job_id.len());
@@ -6448,7 +6448,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Post Calendar Events API"]
 pub enum MlPostCalendarEventsParts<'b> {
     #[doc = "CalendarId"]
@@ -6458,7 +6458,7 @@ impl<'b> MlPostCalendarEventsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Post Calendar Events API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlPostCalendarEventsParts::CalendarId(ref calendar_id) => {
+            MlPostCalendarEventsParts::CalendarId(calendar_id) => {
                 let encoded_calendar_id: Cow<str> =
                     percent_encode(calendar_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(22usize + encoded_calendar_id.len());
@@ -6591,7 +6591,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Post Data API"]
 pub enum MlPostDataParts<'b> {
     #[doc = "JobId"]
@@ -6601,7 +6601,7 @@ impl<'b> MlPostDataParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Post Data API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlPostDataParts::JobId(ref job_id) => {
+            MlPostDataParts::JobId(job_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(29usize + encoded_job_id.len());
@@ -6754,7 +6754,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Preview Data Frame Analytics API"]
 pub enum MlPreviewDataFrameAnalyticsParts<'b> {
     #[doc = "No parts"]
@@ -6767,7 +6767,7 @@ impl<'b> MlPreviewDataFrameAnalyticsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MlPreviewDataFrameAnalyticsParts::None => "/_ml/data_frame/analytics/_preview".into(),
-            MlPreviewDataFrameAnalyticsParts::Id(ref id) => {
+            MlPreviewDataFrameAnalyticsParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(35usize + encoded_id.len());
                 p.push_str("/_ml/data_frame/analytics/");
@@ -6902,7 +6902,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Preview Datafeed API"]
 pub enum MlPreviewDatafeedParts<'b> {
     #[doc = "DatafeedId"]
@@ -6914,7 +6914,7 @@ impl<'b> MlPreviewDatafeedParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Preview Datafeed API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlPreviewDatafeedParts::DatafeedId(ref datafeed_id) => {
+            MlPreviewDatafeedParts::DatafeedId(datafeed_id) => {
                 let encoded_datafeed_id: Cow<str> =
                     percent_encode(datafeed_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(24usize + encoded_datafeed_id.len());
@@ -7071,7 +7071,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Put Calendar API"]
 pub enum MlPutCalendarParts<'b> {
     #[doc = "CalendarId"]
@@ -7081,7 +7081,7 @@ impl<'b> MlPutCalendarParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Put Calendar API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlPutCalendarParts::CalendarId(ref calendar_id) => {
+            MlPutCalendarParts::CalendarId(calendar_id) => {
                 let encoded_calendar_id: Cow<str> =
                     percent_encode(calendar_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(15usize + encoded_calendar_id.len());
@@ -7213,7 +7213,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Put Calendar Job API"]
 pub enum MlPutCalendarJobParts<'b> {
     #[doc = "CalendarId and JobId"]
@@ -7223,7 +7223,7 @@ impl<'b> MlPutCalendarJobParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Put Calendar Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlPutCalendarJobParts::CalendarIdJobId(ref calendar_id, ref job_id) => {
+            MlPutCalendarJobParts::CalendarIdJobId(calendar_id, job_id) => {
                 let encoded_calendar_id: Cow<str> =
                     percent_encode(calendar_id.as_bytes(), PARTS_ENCODED).into();
                 let encoded_job_id: Cow<str> =
@@ -7361,7 +7361,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Put Data Frame Analytics API"]
 pub enum MlPutDataFrameAnalyticsParts<'b> {
     #[doc = "Id"]
@@ -7371,7 +7371,7 @@ impl<'b> MlPutDataFrameAnalyticsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Put Data Frame Analytics API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlPutDataFrameAnalyticsParts::Id(ref id) => {
+            MlPutDataFrameAnalyticsParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(26usize + encoded_id.len());
                 p.push_str("/_ml/data_frame/analytics/");
@@ -7502,7 +7502,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Put Datafeed API"]
 pub enum MlPutDatafeedParts<'b> {
     #[doc = "DatafeedId"]
@@ -7512,7 +7512,7 @@ impl<'b> MlPutDatafeedParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Put Datafeed API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlPutDatafeedParts::DatafeedId(ref datafeed_id) => {
+            MlPutDatafeedParts::DatafeedId(datafeed_id) => {
                 let encoded_datafeed_id: Cow<str> =
                     percent_encode(datafeed_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(15usize + encoded_datafeed_id.len());
@@ -7685,7 +7685,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Put Filter API"]
 pub enum MlPutFilterParts<'b> {
     #[doc = "FilterId"]
@@ -7695,7 +7695,7 @@ impl<'b> MlPutFilterParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Put Filter API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlPutFilterParts::FilterId(ref filter_id) => {
+            MlPutFilterParts::FilterId(filter_id) => {
                 let encoded_filter_id: Cow<str> =
                     percent_encode(filter_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_filter_id.len());
@@ -7827,7 +7827,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Put Job API"]
 pub enum MlPutJobParts<'b> {
     #[doc = "JobId"]
@@ -7837,7 +7837,7 @@ impl<'b> MlPutJobParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Put Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlPutJobParts::JobId(ref job_id) => {
+            MlPutJobParts::JobId(job_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(23usize + encoded_job_id.len());
@@ -8010,7 +8010,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Put Trained Model API"]
 pub enum MlPutTrainedModelParts<'b> {
     #[doc = "ModelId"]
@@ -8020,7 +8020,7 @@ impl<'b> MlPutTrainedModelParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Put Trained Model API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlPutTrainedModelParts::ModelId(ref model_id) => {
+            MlPutTrainedModelParts::ModelId(model_id) => {
                 let encoded_model_id: Cow<str> =
                     percent_encode(model_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(20usize + encoded_model_id.len());
@@ -8172,7 +8172,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Put Trained Model Alias API"]
 pub enum MlPutTrainedModelAliasParts<'b> {
     #[doc = "ModelId and ModelAlias"]
@@ -8182,7 +8182,7 @@ impl<'b> MlPutTrainedModelAliasParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Put Trained Model Alias API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlPutTrainedModelAliasParts::ModelIdModelAlias(ref model_id, ref model_alias) => {
+            MlPutTrainedModelAliasParts::ModelIdModelAlias(model_id, model_alias) => {
                 let encoded_model_id: Cow<str> =
                     percent_encode(model_id.as_bytes(), PARTS_ENCODED).into();
                 let encoded_model_alias: Cow<str> =
@@ -8330,7 +8330,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Put Trained Model Definition Part API"]
 pub enum MlPutTrainedModelDefinitionPartParts<'b> {
     #[doc = "ModelId and Part"]
@@ -8340,7 +8340,7 @@ impl<'b> MlPutTrainedModelDefinitionPartParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Put Trained Model Definition Part API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlPutTrainedModelDefinitionPartParts::ModelIdPart(ref model_id, ref part) => {
+            MlPutTrainedModelDefinitionPartParts::ModelIdPart(model_id, part) => {
                 let part_str = part.to_string();
                 let encoded_model_id: Cow<str> =
                     percent_encode(model_id.as_bytes(), PARTS_ENCODED).into();
@@ -8478,7 +8478,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Put Trained Model Vocabulary API"]
 pub enum MlPutTrainedModelVocabularyParts<'b> {
     #[doc = "ModelId"]
@@ -8488,7 +8488,7 @@ impl<'b> MlPutTrainedModelVocabularyParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Put Trained Model Vocabulary API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlPutTrainedModelVocabularyParts::ModelId(ref model_id) => {
+            MlPutTrainedModelVocabularyParts::ModelId(model_id) => {
                 let encoded_model_id: Cow<str> =
                     percent_encode(model_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(31usize + encoded_model_id.len());
@@ -8621,7 +8621,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Reset Job API"]
 pub enum MlResetJobParts<'b> {
     #[doc = "JobId"]
@@ -8631,7 +8631,7 @@ impl<'b> MlResetJobParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Reset Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlResetJobParts::JobId(ref job_id) => {
+            MlResetJobParts::JobId(job_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(30usize + encoded_job_id.len());
@@ -8784,7 +8784,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Revert Model Snapshot API"]
 pub enum MlRevertModelSnapshotParts<'b> {
     #[doc = "JobId and SnapshotId"]
@@ -8794,7 +8794,7 @@ impl<'b> MlRevertModelSnapshotParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Revert Model Snapshot API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlRevertModelSnapshotParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
+            MlRevertModelSnapshotParts::JobIdSnapshotId(job_id, snapshot_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let encoded_snapshot_id: Cow<str> =
@@ -8943,7 +8943,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Set Upgrade Mode API"]
 pub enum MlSetUpgradeModeParts {
     #[doc = "No parts"]
@@ -9098,7 +9098,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Start Data Frame Analytics API"]
 pub enum MlStartDataFrameAnalyticsParts<'b> {
     #[doc = "Id"]
@@ -9108,7 +9108,7 @@ impl<'b> MlStartDataFrameAnalyticsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Start Data Frame Analytics API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlStartDataFrameAnalyticsParts::Id(ref id) => {
+            MlStartDataFrameAnalyticsParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(33usize + encoded_id.len());
                 p.push_str("/_ml/data_frame/analytics/");
@@ -9250,7 +9250,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Start Datafeed API"]
 pub enum MlStartDatafeedParts<'b> {
     #[doc = "DatafeedId"]
@@ -9260,7 +9260,7 @@ impl<'b> MlStartDatafeedParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Start Datafeed API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlStartDatafeedParts::DatafeedId(ref datafeed_id) => {
+            MlStartDatafeedParts::DatafeedId(datafeed_id) => {
                 let encoded_datafeed_id: Cow<str> =
                     percent_encode(datafeed_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(22usize + encoded_datafeed_id.len());
@@ -9423,7 +9423,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Start Trained Model Deployment API"]
 pub enum MlStartTrainedModelDeploymentParts<'b> {
     #[doc = "ModelId"]
@@ -9433,7 +9433,7 @@ impl<'b> MlStartTrainedModelDeploymentParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Start Trained Model Deployment API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlStartTrainedModelDeploymentParts::ModelId(ref model_id) => {
+            MlStartTrainedModelDeploymentParts::ModelId(model_id) => {
                 let encoded_model_id: Cow<str> =
                     percent_encode(model_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(38usize + encoded_model_id.len());
@@ -9646,7 +9646,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Stop Data Frame Analytics API"]
 pub enum MlStopDataFrameAnalyticsParts<'b> {
     #[doc = "Id"]
@@ -9656,7 +9656,7 @@ impl<'b> MlStopDataFrameAnalyticsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Stop Data Frame Analytics API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlStopDataFrameAnalyticsParts::Id(ref id) => {
+            MlStopDataFrameAnalyticsParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(32usize + encoded_id.len());
                 p.push_str("/_ml/data_frame/analytics/");
@@ -9818,7 +9818,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Stop Datafeed API"]
 pub enum MlStopDatafeedParts<'b> {
     #[doc = "DatafeedId"]
@@ -9828,7 +9828,7 @@ impl<'b> MlStopDatafeedParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Stop Datafeed API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlStopDatafeedParts::DatafeedId(ref datafeed_id) => {
+            MlStopDatafeedParts::DatafeedId(datafeed_id) => {
                 let encoded_datafeed_id: Cow<str> =
                     percent_encode(datafeed_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(21usize + encoded_datafeed_id.len());
@@ -10001,7 +10001,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Stop Trained Model Deployment API"]
 pub enum MlStopTrainedModelDeploymentParts<'b> {
     #[doc = "ModelId"]
@@ -10011,7 +10011,7 @@ impl<'b> MlStopTrainedModelDeploymentParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Stop Trained Model Deployment API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlStopTrainedModelDeploymentParts::ModelId(ref model_id) => {
+            MlStopTrainedModelDeploymentParts::ModelId(model_id) => {
                 let encoded_model_id: Cow<str> =
                     percent_encode(model_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(37usize + encoded_model_id.len());
@@ -10164,7 +10164,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Update Data Frame Analytics API"]
 pub enum MlUpdateDataFrameAnalyticsParts<'b> {
     #[doc = "Id"]
@@ -10174,7 +10174,7 @@ impl<'b> MlUpdateDataFrameAnalyticsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Update Data Frame Analytics API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlUpdateDataFrameAnalyticsParts::Id(ref id) => {
+            MlUpdateDataFrameAnalyticsParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(34usize + encoded_id.len());
                 p.push_str("/_ml/data_frame/analytics/");
@@ -10306,7 +10306,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Update Datafeed API"]
 pub enum MlUpdateDatafeedParts<'b> {
     #[doc = "DatafeedId"]
@@ -10316,7 +10316,7 @@ impl<'b> MlUpdateDatafeedParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Update Datafeed API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlUpdateDatafeedParts::DatafeedId(ref datafeed_id) => {
+            MlUpdateDatafeedParts::DatafeedId(datafeed_id) => {
                 let encoded_datafeed_id: Cow<str> =
                     percent_encode(datafeed_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(23usize + encoded_datafeed_id.len());
@@ -10490,7 +10490,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Update Filter API"]
 pub enum MlUpdateFilterParts<'b> {
     #[doc = "FilterId"]
@@ -10500,7 +10500,7 @@ impl<'b> MlUpdateFilterParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Update Filter API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlUpdateFilterParts::FilterId(ref filter_id) => {
+            MlUpdateFilterParts::FilterId(filter_id) => {
                 let encoded_filter_id: Cow<str> =
                     percent_encode(filter_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(21usize + encoded_filter_id.len());
@@ -10633,7 +10633,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Update Job API"]
 pub enum MlUpdateJobParts<'b> {
     #[doc = "JobId"]
@@ -10643,7 +10643,7 @@ impl<'b> MlUpdateJobParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Update Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlUpdateJobParts::JobId(ref job_id) => {
+            MlUpdateJobParts::JobId(job_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(31usize + encoded_job_id.len());
@@ -10776,7 +10776,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Update Model Snapshot API"]
 pub enum MlUpdateModelSnapshotParts<'b> {
     #[doc = "JobId and SnapshotId"]
@@ -10786,7 +10786,7 @@ impl<'b> MlUpdateModelSnapshotParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Update Model Snapshot API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlUpdateModelSnapshotParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
+            MlUpdateModelSnapshotParts::JobIdSnapshotId(job_id, snapshot_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let encoded_snapshot_id: Cow<str> =
@@ -10925,7 +10925,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Update Trained Model Deployment API"]
 pub enum MlUpdateTrainedModelDeploymentParts<'b> {
     #[doc = "ModelId"]
@@ -10935,7 +10935,7 @@ impl<'b> MlUpdateTrainedModelDeploymentParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Update Trained Model Deployment API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlUpdateTrainedModelDeploymentParts::ModelId(ref model_id) => {
+            MlUpdateTrainedModelDeploymentParts::ModelId(model_id) => {
                 let encoded_model_id: Cow<str> =
                     percent_encode(model_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(39usize + encoded_model_id.len());
@@ -11078,7 +11078,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Upgrade Job Snapshot API"]
 pub enum MlUpgradeJobSnapshotParts<'b> {
     #[doc = "JobId and SnapshotId"]
@@ -11088,7 +11088,7 @@ impl<'b> MlUpgradeJobSnapshotParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Upgrade Job Snapshot API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlUpgradeJobSnapshotParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
+            MlUpgradeJobSnapshotParts::JobIdSnapshotId(job_id, snapshot_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let encoded_snapshot_id: Cow<str> =
@@ -11247,7 +11247,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Validate API"]
 pub enum MlValidateParts {
     #[doc = "No parts"]
@@ -11382,7 +11382,7 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Ml Validate Detector API"]
 pub enum MlValidateDetectorParts {
     #[doc = "No parts"]

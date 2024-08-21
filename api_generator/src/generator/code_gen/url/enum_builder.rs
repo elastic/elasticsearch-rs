@@ -91,7 +91,7 @@ impl<'a> EnumBuilder<'a> {
                 0 => Self::parts_none(),
                 _ => {
                     self.has_lifetime = true;
-                    Self::parts(&path)
+                    Self::parts(path)
                 }
             };
 
@@ -113,18 +113,18 @@ impl<'a> EnumBuilder<'a> {
             .join("");
 
         let doc = match params.len() {
-            1 => doc(params[0].replace("_", " ").to_pascal_case()),
+            1 => doc(params[0].replace('_', " ").to_pascal_case()),
             n => {
                 let mut d: String = params
                     .iter()
                     .enumerate()
                     .filter(|&(i, _)| i != n - 1)
-                    .map(|(_, e)| e.replace("_", " ").to_pascal_case())
+                    .map(|(_, e)| e.replace('_', " ").to_pascal_case())
                     .collect::<Vec<_>>()
                     .join(", ");
 
                 d.push_str(
-                    format!(" and {}", params[n - 1].replace("_", " ").to_pascal_case()).as_str(),
+                    format!(" and {}", params[n - 1].replace('_', " ").to_pascal_case()).as_str(),
                 );
                 doc(d)
             }
@@ -181,7 +181,7 @@ impl<'a> EnumBuilder<'a> {
             .iter()
             .map(|&p| {
                 syn::Pat::Ident(
-                    syn::BindingMode::ByRef(syn::Mutability::Immutable),
+                    syn::BindingMode::ByValue(syn::Mutability::Immutable),
                     ident(valid_name(p)),
                     None,
                 )
@@ -282,6 +282,7 @@ impl<'a> EnumBuilder<'a> {
                             syn::NestedMetaItem::MetaItem(syn::MetaItem::Word(ident("Debug"))),
                             syn::NestedMetaItem::MetaItem(syn::MetaItem::Word(ident("Clone"))),
                             syn::NestedMetaItem::MetaItem(syn::MetaItem::Word(ident("PartialEq"))),
+                            syn::NestedMetaItem::MetaItem(syn::MetaItem::Word(ident("Eq"))),
                         ],
                     ),
                 },
@@ -299,7 +300,7 @@ impl<'a> From<&'a (String, ApiEndpoint)> for EnumBuilder<'a> {
         let endpoint = &value.1;
         let mut builder = EnumBuilder::new(value.0.to_pascal_case().as_ref());
         for path in &endpoint.url.paths {
-            builder = builder.with_path(&path);
+            builder = builder.with_path(path);
         }
 
         builder
@@ -391,7 +392,7 @@ mod tests {
         assert_eq!(ty_b("SearchParts"), enum_ty);
 
         let expected_decl = quote!(
-            #[derive(Debug, Clone, PartialEq)]
+            #[derive(Debug, Clone, PartialEq, Eq)]
             #[doc = "API parts for the Search API"]
             pub enum SearchParts<'b> {
                 #[doc = "No parts"]
@@ -411,7 +412,7 @@ mod tests {
                 pub fn url(self) -> Cow<'static, str> {
                     match self {
                         SearchParts::None => "/_search".into(),
-                        SearchParts::Index(ref index) => {
+                        SearchParts::Index(index) => {
                             let index_str = index.join(",");
                             let encoded_index: Cow<str> = percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                             let mut p = String::with_capacity(9usize + encoded_index.len());
@@ -420,7 +421,7 @@ mod tests {
                             p.push_str("/_search");
                             p.into()
                         }
-                        SearchParts::IndexType(ref index, ref ty) => {
+                        SearchParts::IndexType(index, ty) => {
                             let index_str = index.join(",");
                             let ty_str = ty.join(",");
                             let encoded_index: Cow<str> = percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();

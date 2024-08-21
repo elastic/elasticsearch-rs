@@ -47,7 +47,7 @@ use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Tasks Cancel API"]
 pub enum TasksCancelParts<'b> {
     #[doc = "No parts"]
@@ -61,7 +61,7 @@ impl<'b> TasksCancelParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             TasksCancelParts::None => "/_tasks/_cancel".into(),
-            TasksCancelParts::TaskId(ref task_id) => {
+            TasksCancelParts::TaskId(task_id) => {
                 let encoded_task_id: Cow<str> =
                     percent_encode(task_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_task_id.len());
@@ -240,7 +240,7 @@ where
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Tasks Get API"]
 pub enum TasksGetParts<'b> {
     #[doc = "TaskId"]
@@ -251,7 +251,7 @@ impl<'b> TasksGetParts<'b> {
     #[doc = "Builds a relative URL path to the Tasks Get API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            TasksGetParts::TaskId(ref task_id) => {
+            TasksGetParts::TaskId(task_id) => {
                 let encoded_task_id: Cow<str> =
                     percent_encode(task_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(8usize + encoded_task_id.len());
@@ -382,7 +382,7 @@ impl<'a, 'b> TasksGet<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Tasks List API"]
 pub enum TasksListParts {
     #[doc = "No parts"]

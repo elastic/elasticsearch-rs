@@ -108,7 +108,7 @@ impl Do {
         } else if !self.allowed_warnings.is_empty() {
             let allowed = &self.allowed_warnings;
             tokens.append(quote! {
-                let allowed_warnings = vec![#(#allowed),*];
+                let allowed_warnings = [#(#allowed),*];
                 let warnings: Vec<&str> = response.warning_headers()
                     .filter(|w| !w.starts_with("[types removal]") && !allowed_warnings.iter().any(|a| w.contains(a)))
                     .collect();
@@ -434,9 +434,7 @@ impl ApiCall {
                                     Err(e) => {
                                         return Err(failure::err_msg(format!(
                                             r#"cannot parse bool from "{}" for param "{}", {}"#,
-                                            s,
-                                            n,
-                                            e.to_string()
+                                            s, n, e
                                         )))
                                     }
                                 },
@@ -447,9 +445,7 @@ impl ApiCall {
                                     Err(e) => {
                                         return Err(failure::err_msg(format!(
                                             r#"cannot parse f64 from "{}" for param "{}", {}"#,
-                                            s,
-                                            n,
-                                            e.to_string()
+                                            s, n, e
                                         )))
                                     }
                                 },
@@ -467,9 +463,7 @@ impl ApiCall {
                                             Err(e) => {
                                                 return Err(failure::err_msg(format!(
                                                     r#"cannot parse i32 from "{}" for param "{}", {}"#,
-                                                    s,
-                                                    n,
-                                                    e.to_string()
+                                                    s, n, e
                                                 )))
                                             }
                                         }

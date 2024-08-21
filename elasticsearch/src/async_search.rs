@@ -46,7 +46,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Async Search Delete API"]
 pub enum AsyncSearchDeleteParts<'b> {
     #[doc = "Id"]
@@ -56,7 +56,7 @@ impl<'b> AsyncSearchDeleteParts<'b> {
     #[doc = "Builds a relative URL path to the Async Search Delete API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            AsyncSearchDeleteParts::Id(ref id) => {
+            AsyncSearchDeleteParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(15usize + encoded_id.len());
                 p.push_str("/_async_search/");
@@ -164,7 +164,7 @@ impl<'a, 'b> AsyncSearchDelete<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Async Search Get API"]
 pub enum AsyncSearchGetParts<'b> {
     #[doc = "Id"]
@@ -174,7 +174,7 @@ impl<'b> AsyncSearchGetParts<'b> {
     #[doc = "Builds a relative URL path to the Async Search Get API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            AsyncSearchGetParts::Id(ref id) => {
+            AsyncSearchGetParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(15usize + encoded_id.len());
                 p.push_str("/_async_search/");
@@ -309,7 +309,7 @@ impl<'a, 'b> AsyncSearchGet<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Async Search Status API"]
 pub enum AsyncSearchStatusParts<'b> {
     #[doc = "Id"]
@@ -319,7 +319,7 @@ impl<'b> AsyncSearchStatusParts<'b> {
     #[doc = "Builds a relative URL path to the Async Search Status API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            AsyncSearchStatusParts::Id(ref id) => {
+            AsyncSearchStatusParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(22usize + encoded_id.len());
                 p.push_str("/_async_search/status/");
@@ -436,7 +436,7 @@ impl<'a, 'b> AsyncSearchStatus<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Async Search Submit API"]
 pub enum AsyncSearchSubmitParts<'b> {
     #[doc = "No parts"]
@@ -449,12 +449,12 @@ impl<'b> AsyncSearchSubmitParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             AsyncSearchSubmitParts::None => "/_async_search".into(),
-            AsyncSearchSubmitParts::Index(ref index) => {
+            AsyncSearchSubmitParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(15usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_async_search");
                 p.into()

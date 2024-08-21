@@ -47,7 +47,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Eql Delete API"]
 pub enum EqlDeleteParts<'b> {
     #[doc = "Id"]
@@ -57,7 +57,7 @@ impl<'b> EqlDeleteParts<'b> {
     #[doc = "Builds a relative URL path to the Eql Delete API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            EqlDeleteParts::Id(ref id) => {
+            EqlDeleteParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_id.len());
                 p.push_str("/_eql/search/");
@@ -165,7 +165,7 @@ impl<'a, 'b> EqlDelete<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Eql Get API"]
 pub enum EqlGetParts<'b> {
     #[doc = "Id"]
@@ -175,7 +175,7 @@ impl<'b> EqlGetParts<'b> {
     #[doc = "Builds a relative URL path to the Eql Get API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            EqlGetParts::Id(ref id) => {
+            EqlGetParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_id.len());
                 p.push_str("/_eql/search/");
@@ -301,7 +301,7 @@ impl<'a, 'b> EqlGet<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Eql Get Status API"]
 pub enum EqlGetStatusParts<'b> {
     #[doc = "Id"]
@@ -311,7 +311,7 @@ impl<'b> EqlGetStatusParts<'b> {
     #[doc = "Builds a relative URL path to the Eql Get Status API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            EqlGetStatusParts::Id(ref id) => {
+            EqlGetStatusParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(20usize + encoded_id.len());
                 p.push_str("/_eql/search/status/");
@@ -419,7 +419,7 @@ impl<'a, 'b> EqlGetStatus<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Eql Search API"]
 pub enum EqlSearchParts<'b> {
     #[doc = "Index"]
@@ -429,11 +429,11 @@ impl<'b> EqlSearchParts<'b> {
     #[doc = "Builds a relative URL path to the Eql Search API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            EqlSearchParts::Index(ref index) => {
+            EqlSearchParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_eql/search");
                 p.into()

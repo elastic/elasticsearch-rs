@@ -44,7 +44,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Migration Deprecations API"]
 pub enum MigrationDeprecationsParts<'b> {
     #[doc = "No parts"]
@@ -57,11 +57,11 @@ impl<'b> MigrationDeprecationsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MigrationDeprecationsParts::None => "/_migration/deprecations".into(),
-            MigrationDeprecationsParts::Index(ref index) => {
+            MigrationDeprecationsParts::Index(index) => {
                 let encoded_index: Cow<str> =
                     percent_encode(index.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(25usize + encoded_index.len());
-                p.push_str("/");
+                p.push('/');
                 p.push_str(encoded_index.as_ref());
                 p.push_str("/_migration/deprecations");
                 p.into()
@@ -167,7 +167,7 @@ impl<'a, 'b> MigrationDeprecations<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Migration Get Feature Upgrade Status API"]
 pub enum MigrationGetFeatureUpgradeStatusParts {
     #[doc = "No parts"]
@@ -279,7 +279,7 @@ impl<'a, 'b> MigrationGetFeatureUpgradeStatus<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Migration Post Feature Upgrade API"]
 pub enum MigrationPostFeatureUpgradeParts {
     #[doc = "No parts"]

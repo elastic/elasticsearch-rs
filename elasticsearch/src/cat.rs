@@ -135,7 +135,7 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Aliases API"]
 pub enum CatAliasesParts<'b> {
     #[doc = "No parts"]
@@ -148,7 +148,7 @@ impl<'b> CatAliasesParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatAliasesParts::None => "/_cat/aliases".into(),
-            CatAliasesParts::Name(ref name) => {
+            CatAliasesParts::Name(name) => {
                 let name_str = name.join(",");
                 let encoded_name: Cow<str> =
                     percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
@@ -326,7 +326,7 @@ impl<'a, 'b> CatAliases<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Allocation API"]
 pub enum CatAllocationParts<'b> {
     #[doc = "No parts"]
@@ -339,7 +339,7 @@ impl<'b> CatAllocationParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatAllocationParts::None => "/_cat/allocation".into(),
-            CatAllocationParts::NodeId(ref node_id) => {
+            CatAllocationParts::NodeId(node_id) => {
                 let node_id_str = node_id.join(",");
                 let encoded_node_id: Cow<str> =
                     percent_encode(node_id_str.as_bytes(), PARTS_ENCODED).into();
@@ -525,7 +525,7 @@ impl<'a, 'b> CatAllocation<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Component Templates API"]
 pub enum CatComponentTemplatesParts<'b> {
     #[doc = "No parts"]
@@ -538,7 +538,7 @@ impl<'b> CatComponentTemplatesParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatComponentTemplatesParts::None => "/_cat/component_templates".into(),
-            CatComponentTemplatesParts::Name(ref name) => {
+            CatComponentTemplatesParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(26usize + encoded_name.len());
                 p.push_str("/_cat/component_templates/");
@@ -713,7 +713,7 @@ impl<'a, 'b> CatComponentTemplates<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Count API"]
 pub enum CatCountParts<'b> {
     #[doc = "No parts"]
@@ -726,7 +726,7 @@ impl<'b> CatCountParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatCountParts::None => "/_cat/count".into(),
-            CatCountParts::Index(ref index) => {
+            CatCountParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
@@ -885,7 +885,7 @@ impl<'a, 'b> CatCount<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Fielddata API"]
 pub enum CatFielddataParts<'b> {
     #[doc = "No parts"]
@@ -898,7 +898,7 @@ impl<'b> CatFielddataParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatFielddataParts::None => "/_cat/fielddata".into(),
-            CatFielddataParts::Fields(ref fields) => {
+            CatFielddataParts::Fields(fields) => {
                 let fields_str = fields.join(",");
                 let encoded_fields: Cow<str> =
                     percent_encode(fields_str.as_bytes(), PARTS_ENCODED).into();
@@ -1076,7 +1076,7 @@ impl<'a, 'b> CatFielddata<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Health API"]
 pub enum CatHealthParts {
     #[doc = "No parts"]
@@ -1255,7 +1255,7 @@ impl<'a, 'b> CatHealth<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Help API"]
 pub enum CatHelpParts {
     #[doc = "No parts"]
@@ -1388,7 +1388,7 @@ impl<'a, 'b> CatHelp<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Indices API"]
 pub enum CatIndicesParts<'b> {
     #[doc = "No parts"]
@@ -1401,7 +1401,7 @@ impl<'b> CatIndicesParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatIndicesParts::None => "/_cat/indices".into(),
-            CatIndicesParts::Index(ref index) => {
+            CatIndicesParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
@@ -1624,7 +1624,7 @@ impl<'a, 'b> CatIndices<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Master API"]
 pub enum CatMasterParts {
     #[doc = "No parts"]
@@ -1803,7 +1803,7 @@ impl<'a, 'b> CatMaster<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Ml Data Frame Analytics API"]
 pub enum CatMlDataFrameAnalyticsParts<'b> {
     #[doc = "No parts"]
@@ -1816,7 +1816,7 @@ impl<'b> CatMlDataFrameAnalyticsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatMlDataFrameAnalyticsParts::None => "/_cat/ml/data_frame/analytics".into(),
-            CatMlDataFrameAnalyticsParts::Id(ref id) => {
+            CatMlDataFrameAnalyticsParts::Id(id) => {
                 let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(30usize + encoded_id.len());
                 p.push_str("/_cat/ml/data_frame/analytics/");
@@ -2000,7 +2000,7 @@ impl<'a, 'b> CatMlDataFrameAnalytics<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Ml Datafeeds API"]
 pub enum CatMlDatafeedsParts<'b> {
     #[doc = "No parts"]
@@ -2013,7 +2013,7 @@ impl<'b> CatMlDatafeedsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatMlDatafeedsParts::None => "/_cat/ml/datafeeds".into(),
-            CatMlDatafeedsParts::DatafeedId(ref datafeed_id) => {
+            CatMlDatafeedsParts::DatafeedId(datafeed_id) => {
                 let encoded_datafeed_id: Cow<str> =
                     percent_encode(datafeed_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(19usize + encoded_datafeed_id.len());
@@ -2189,7 +2189,7 @@ impl<'a, 'b> CatMlDatafeeds<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Ml Jobs API"]
 pub enum CatMlJobsParts<'b> {
     #[doc = "No parts"]
@@ -2202,7 +2202,7 @@ impl<'b> CatMlJobsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatMlJobsParts::None => "/_cat/ml/anomaly_detectors".into(),
-            CatMlJobsParts::JobId(ref job_id) => {
+            CatMlJobsParts::JobId(job_id) => {
                 let encoded_job_id: Cow<str> =
                     percent_encode(job_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(27usize + encoded_job_id.len());
@@ -2387,7 +2387,7 @@ impl<'a, 'b> CatMlJobs<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Ml Trained Models API"]
 pub enum CatMlTrainedModelsParts<'b> {
     #[doc = "No parts"]
@@ -2400,7 +2400,7 @@ impl<'b> CatMlTrainedModelsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatMlTrainedModelsParts::None => "/_cat/ml/trained_models".into(),
-            CatMlTrainedModelsParts::ModelId(ref model_id) => {
+            CatMlTrainedModelsParts::ModelId(model_id) => {
                 let encoded_model_id: Cow<str> =
                     percent_encode(model_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(24usize + encoded_model_id.len());
@@ -2603,7 +2603,7 @@ impl<'a, 'b> CatMlTrainedModels<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Nodeattrs API"]
 pub enum CatNodeattrsParts {
     #[doc = "No parts"]
@@ -2782,7 +2782,7 @@ impl<'a, 'b> CatNodeattrs<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Nodes API"]
 pub enum CatNodesParts {
     #[doc = "No parts"]
@@ -2988,7 +2988,7 @@ impl<'a, 'b> CatNodes<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Pending Tasks API"]
 pub enum CatPendingTasksParts {
     #[doc = "No parts"]
@@ -3176,7 +3176,7 @@ impl<'a, 'b> CatPendingTasks<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Plugins API"]
 pub enum CatPluginsParts {
     #[doc = "No parts"]
@@ -3364,7 +3364,7 @@ impl<'a, 'b> CatPlugins<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Recovery API"]
 pub enum CatRecoveryParts<'b> {
     #[doc = "No parts"]
@@ -3377,7 +3377,7 @@ impl<'b> CatRecoveryParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatRecoveryParts::None => "/_cat/recovery".into(),
-            CatRecoveryParts::Index(ref index) => {
+            CatRecoveryParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
@@ -3582,7 +3582,7 @@ impl<'a, 'b> CatRecovery<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Repositories API"]
 pub enum CatRepositoriesParts {
     #[doc = "No parts"]
@@ -3761,7 +3761,7 @@ impl<'a, 'b> CatRepositories<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Segments API"]
 pub enum CatSegmentsParts<'b> {
     #[doc = "No parts"]
@@ -3774,7 +3774,7 @@ impl<'b> CatSegmentsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatSegmentsParts::None => "/_cat/segments".into(),
-            CatSegmentsParts::Index(ref index) => {
+            CatSegmentsParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
@@ -3942,7 +3942,7 @@ impl<'a, 'b> CatSegments<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Shards API"]
 pub enum CatShardsParts<'b> {
     #[doc = "No parts"]
@@ -3955,7 +3955,7 @@ impl<'b> CatShardsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatShardsParts::None => "/_cat/shards".into(),
-            CatShardsParts::Index(ref index) => {
+            CatShardsParts::Index(index) => {
                 let index_str = index.join(",");
                 let encoded_index: Cow<str> =
                     percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
@@ -4141,7 +4141,7 @@ impl<'a, 'b> CatShards<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Snapshots API"]
 pub enum CatSnapshotsParts<'b> {
     #[doc = "No parts"]
@@ -4154,7 +4154,7 @@ impl<'b> CatSnapshotsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatSnapshotsParts::None => "/_cat/snapshots".into(),
-            CatSnapshotsParts::Repository(ref repository) => {
+            CatSnapshotsParts::Repository(repository) => {
                 let repository_str = repository.join(",");
                 let encoded_repository: Cow<str> =
                     percent_encode(repository_str.as_bytes(), PARTS_ENCODED).into();
@@ -4341,7 +4341,7 @@ impl<'a, 'b> CatSnapshots<'a, 'b> {
     }
 }
 #[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Tasks API"]
 pub enum CatTasksParts {
     #[doc = "No parts"]
@@ -4553,7 +4553,7 @@ impl<'a, 'b> CatTasks<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Templates API"]
 pub enum CatTemplatesParts<'b> {
     #[doc = "No parts"]
@@ -4566,7 +4566,7 @@ impl<'b> CatTemplatesParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatTemplatesParts::None => "/_cat/templates".into(),
-            CatTemplatesParts::Name(ref name) => {
+            CatTemplatesParts::Name(name) => {
                 let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(16usize + encoded_name.len());
                 p.push_str("/_cat/templates/");
@@ -4741,7 +4741,7 @@ impl<'a, 'b> CatTemplates<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Thread Pool API"]
 pub enum CatThreadPoolParts<'b> {
     #[doc = "No parts"]
@@ -4754,7 +4754,7 @@ impl<'b> CatThreadPoolParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatThreadPoolParts::None => "/_cat/thread_pool".into(),
-            CatThreadPoolParts::ThreadPoolPatterns(ref thread_pool_patterns) => {
+            CatThreadPoolParts::ThreadPoolPatterns(thread_pool_patterns) => {
                 let thread_pool_patterns_str = thread_pool_patterns.join(",");
                 let encoded_thread_pool_patterns: Cow<str> =
                     percent_encode(thread_pool_patterns_str.as_bytes(), PARTS_ENCODED).into();
@@ -4940,7 +4940,7 @@ impl<'a, 'b> CatThreadPool<'a, 'b> {
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Cat Transforms API"]
 pub enum CatTransformsParts<'b> {
     #[doc = "No parts"]
@@ -4953,7 +4953,7 @@ impl<'b> CatTransformsParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             CatTransformsParts::None => "/_cat/transforms".into(),
-            CatTransformsParts::TransformId(ref transform_id) => {
+            CatTransformsParts::TransformId(transform_id) => {
                 let encoded_transform_id: Cow<str> =
                     percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(17usize + encoded_transform_id.len());
