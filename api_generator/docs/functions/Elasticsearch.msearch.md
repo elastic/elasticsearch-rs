@@ -6,6 +6,7 @@ for the search requests in the body. The body accepts a
 
 ```rust,no_run
 # use elasticsearch::{Elasticsearch, Error, MsearchParts};
+# use elasticsearch::http::request::JsonBody;
 # use serde_json::{json, Value};
 # async fn doc() -> Result<(), Box<dyn std::error::Error>> {
 let client = Elasticsearch::default();
@@ -37,9 +38,7 @@ let msearch_response = client
 let json: Value = msearch_response.json().await?;
 
 // iterate over the responses
-for response in json["responses"]
-    .as_array()
-    .into_iter()
+for response in json["responses"].as_array().unwrap()
 {
     print_hits(response["hits"]["hits"].as_array().unwrap());
 }
