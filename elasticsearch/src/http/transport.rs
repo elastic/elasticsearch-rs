@@ -41,6 +41,7 @@ use lazy_static::lazy_static;
 use serde::Serialize;
 use serde_json::Value;
 use std::{
+    convert::TryFrom,
     error, fmt,
     fmt::Debug,
     io::{self, Write},
@@ -492,10 +493,14 @@ impl Transport {
                         write!(encoder, "{}:", i).unwrap();
                         write!(encoder, "{}", k).unwrap();
                     }
-                    request_builder.header(
-                        AUTHORIZATION,
-                        HeaderValue::from_bytes(&header_value).unwrap(),
-                    )
+                    let mut header_value = HeaderValue::from_bytes(&header_value).unwrap();
+                    header_value.set_sensitive(true);
+                    request_builder.header(AUTHORIZATION, header_value)
+                }
+                Credentials::EncodedApiKey(k) => {
+                    let mut header_value = HeaderValue::try_from(format!("ApiKey {}", k)).unwrap();
+                    header_value.set_sensitive(true);
+                    request_builder.header(AUTHORIZATION, header_value)
                 }
             }
         }
