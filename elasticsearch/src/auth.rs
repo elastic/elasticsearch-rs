@@ -31,8 +31,10 @@ pub enum Credentials {
     /// This requires the `native-tls` or `rustls-tls` feature to be enabled.
     #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
     Certificate(ClientCertificate),
-    /// An id and api_key to use for API key authentication
+    /// An API key id and secret to use for API key authentication
     ApiKey(String, String),
+    /// An API key as a base64-encoded id and secret
+    EncodedApiKey(String),
 }
 
 #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]

@@ -75,6 +75,32 @@ async fn api_key_header() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
+async fn encoded_api_key_header() -> Result<(), failure::Error> {
+    let server = server::http(move |req| async move {
+        let mut header_value = b"ApiKey ".to_vec();
+        {
+            let mut encoder = EncoderWriter::new(&mut header_value, &BASE64_STANDARD);
+            write!(encoder, "id:api_key").unwrap();
+        }
+
+        assert_eq!(
+            req.headers()["authorization"],
+            String::from_utf8(header_value).unwrap()
+        );
+        http::Response::default()
+    });
+
+    let builder = client::create_builder(format!("http://{}", server.addr()).as_ref())
+        // result of `echo -n "id:api_key" | base64`
+        .auth(Credentials::EncodedApiKey("aWQ6YXBpX2tleQ==".into()));
+
+    let client = client::create(builder);
+    let _response = client.ping().send().await?;
+
+    Ok(())
+}
+
+#[tokio::test]
 async fn bearer_header() -> Result<(), failure::Error> {
     let server = server::http(move |req| async move {
         assert_eq!(req.headers()["authorization"], "Bearer access_token");
