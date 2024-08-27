@@ -30,11 +30,13 @@ The following are a list of Cargo features that can be enabled or disabled:
   API might have breaking changes in any future version, or it might even be removed entirely. This feature also
   enables `beta-apis`.
 
+Additionally, this library also runs in Web Assembly runtimes that provide the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), like node.js and web browsers.
+
 ## Getting started
 
 The client exposes all Elasticsearch APIs as associated functions, either on
 the root client, `Elasticsearch`, or on one of the _namespaced clients_, such as `Cat`, `Indices`, etc. The _namespaced clients_
-are based on the grouping of APIs within the [Elasticsearch](https://github.com/elastic/elasticsearch/tree/main/rest-api-spec) and [X-Pack](https://github.com/elastic/elasticsearch/tree/main/x-pack/plugin/src/test/resources/rest-api-spec/api) REST API specs from which much of the client is generated.
+are based on the grouping of APIs within the [Elasticsearch](https://github.com/elastic/elasticsearch/tree/main/rest-api-spec) REST API specs from which much of the client is generated.
 All API functions are `async` only, and can be `await`ed.
 
 ### Installing
@@ -158,6 +160,8 @@ fn main() -> Result<(), Error> {
     Ok(())
 }
 ```
+
+You can also configure the list of nodes of an Elasticsearch cluster using the `MultiNodeConnectionPool`, and the client will do a round-robin load balancing among those nodes. It can also periodically re-seed the list of nodes by querying the cluster.
 
 ### Making API calls
 
