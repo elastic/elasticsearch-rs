@@ -371,9 +371,11 @@ mod readme {
 extern crate dyn_clone;
 
 pub mod auth;
-pub mod cert;
 pub mod http;
 pub mod params;
+
+#[cfg(not(target_arch = "wasm32"))]
+pub mod cert;
 
 // GENERATED-BEGIN:namespace-modules
 // Generated code - do not edit until the next GENERATED-END marker

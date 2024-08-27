@@ -18,6 +18,9 @@
  */
 //! HTTP transport and connection components
 
+#[cfg(all(target_arch = "wasm32", any(feature = "native-tls", feature = "rustls-tls")))]
+compile_error!("TLS features are not compatible with the wasm target");
+
 #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
 use crate::auth::ClientCertificate;
 #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
@@ -130,6 +133,8 @@ fn build_meta() -> String {
         meta.push_str(",tls=n");
     } else if cfg!(feature = "rustls-tls") {
         meta.push_str(",tls=r");
+    } else if cfg!(target_arch = "wasm32") {
+        meta.push_str(",tls=w");
     }
 
     meta
@@ -138,15 +143,19 @@ fn build_meta() -> String {
 /// Builds a HTTP transport to make API calls to Elasticsearch
 pub struct TransportBuilder {
     client_builder: reqwest::ClientBuilder,
-    conn_pool: Box<dyn ConnectionPool>,
+    conn_pool: Arc<dyn ConnectionPool>,
     credentials: Option<Credentials>,
     #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
     cert_validation: Option<CertificateValidation>,
+    #[cfg(not(target_arch = "wasm32"))]
     proxy: Option<Url>,
+    #[cfg(not(target_arch = "wasm32"))]
     proxy_credentials: Option<Credentials>,
+    #[cfg(not(target_arch = "wasm32"))]
     disable_proxy: bool,
     headers: HeaderMap,
     meta_header: bool,
+    #[cfg(not(target_arch = "wasm32"))]
     timeout: Option<Duration>,
 }
 
@@ -159,15 +168,19 @@ impl TransportBuilder {
     {
         Self {
             client_builder: reqwest::ClientBuilder::new(),
-            conn_pool: Box::new(conn_pool),
+            conn_pool: Arc::new(conn_pool),
             credentials: None,
             #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
             cert_validation: None,
+            #[cfg(not(target_arch = "wasm32"))]
             proxy: None,
+            #[cfg(not(target_arch = "wasm32"))]
             proxy_credentials: None,
+            #[cfg(not(target_arch = "wasm32"))]
             disable_proxy: false,
             headers: HeaderMap::new(),
             meta_header: true,
+            #[cfg(not(target_arch = "wasm32"))]
             timeout: None,
         }
     }
@@ -176,6 +189,7 @@ impl TransportBuilder {
     ///
     /// An optional username and password will be used to set the
     /// `Proxy-Authorization` header using Basic Authentication.
+    #[cfg(not(target_arch = "wasm32"))]
     pub fn proxy(mut self, url: Url, username: Option<&str>, password: Option<&str>) -> Self {
         self.proxy = Some(url);
         if let Some(u) = username {
@@ -189,6 +203,7 @@ impl TransportBuilder {
     /// Whether to disable proxies, including system proxies.
     ///
     /// NOTE: System proxies are enabled by default.
+    #[cfg(not(target_arch = "wasm32"))]
     pub fn disable_proxy(mut self) -> Self {
         self.disable_proxy = true;
         self
@@ -241,6 +256,7 @@ impl TransportBuilder {
     ///
     /// The timeout is applied from when the request starts connecting until the response body has finished.
     /// Default is no timeout.
+    #[cfg(not(target_arch = "wasm32"))]
     pub fn timeout(mut self, timeout: Duration) -> Self {
         self.timeout = Some(timeout);
         self
@@ -254,6 +270,7 @@ impl TransportBuilder {
             client_builder = client_builder.default_headers(self.headers);
         }
 
+        #[cfg(not(target_arch = "wasm32"))]
         if let Some(t) = self.timeout {
             client_builder = client_builder.timeout(t);
         }
@@ -300,6 +317,7 @@ impl TransportBuilder {
             }
         }
 
+        #[cfg(not(target_arch = "wasm32"))]
         if self.disable_proxy {
             client_builder = client_builder.no_proxy();
         } else if let Some(url) = self.proxy {
@@ -316,7 +334,7 @@ impl TransportBuilder {
         let client = client_builder.build()?;
         Ok(Transport {
             client,
-            conn_pool: Arc::new(self.conn_pool),
+            conn_pool: self.conn_pool,
             credentials: self.credentials,
             send_meta: self.meta_header,
         })
@@ -363,7 +381,7 @@ impl Connection {
 pub struct Transport {
     client: reqwest::Client,
     credentials: Option<Credentials>,
-    conn_pool: Arc<Box<dyn ConnectionPool>>,
+    conn_pool: Arc<dyn ConnectionPool>,
     send_meta: bool,
 }
 
@@ -463,6 +481,7 @@ impl Transport {
         headers: HeaderMap,
         query_string: Option<&Q>,
         body: Option<B>,
+        #[allow(unused_variables)]
         timeout: Option<Duration>,
     ) -> Result<reqwest::RequestBuilder, Error>
     where
@@ -473,6 +492,7 @@ impl Transport {
         let url = connection.url.join(path.trim_start_matches('/'))?;
         let mut request_builder = self.client.request(reqwest_method, url);
 
+        #[cfg(not(target_arch = "wasm32"))]
         if let Some(t) = timeout {
             request_builder = request_builder.timeout(t);
         }
@@ -564,6 +584,47 @@ impl Transport {
         )?)
     }
 
+    async fn reseed(&self) {
+        // Requests will execute against old connection pool during reseed
+        let connection = self.conn_pool.next();
+
+        // Build node info request
+        let node_request = self.request_builder(
+            &connection,
+            Method::Get,
+            "_nodes/http?filter_path=nodes.*.http",
+            HeaderMap::default(),
+            None::<&()>,
+            None::<()>,
+            None,
+        ).unwrap();
+
+        let scheme = connection.url.scheme();
+        let resp = node_request.send().await.unwrap();
+        let json: Value = resp.json().await.unwrap();
+        let connections: Vec<Connection> = json["nodes"]
+            .as_object()
+            .unwrap()
+            .iter()
+            .map(|(_, node)| {
+                let address = node["http"]["publish_address"]
+                    .as_str()
+                    .or_else(|| {
+                        Some(
+                            node["http"]["bound_address"].as_array().unwrap()[0]
+                                .as_str()
+                                .unwrap(),
+                        )
+                    })
+                    .unwrap();
+                let url = Self::parse_to_url(address, scheme).unwrap();
+                Connection::new(url)
+            })
+            .collect();
+
+        self.conn_pool.reseed(connections);
+    }
+
     /// Creates an asynchronous request that can be awaited
     pub async fn send<B, Q>(
         &self,
@@ -578,47 +639,19 @@ impl Transport {
         B: Body,
         Q: Serialize + ?Sized,
     {
-        // Requests will execute against old connection pool during reseed
         if self.conn_pool.reseedable() {
-            let conn_pool = self.conn_pool.clone();
-            let connection = conn_pool.next();
-
-            // Build node info request
-            let node_request = self.request_builder(
-                &connection,
-                Method::Get,
-                "_nodes/http?filter_path=nodes.*.http",
-                headers.clone(),
-                None::<&Q>,
-                None::<B>,
-                timeout,
-            )?;
-
-            tokio::spawn(async move {
-                let scheme = connection.url.scheme();
-                let resp = node_request.send().await.unwrap();
-                let json: Value = resp.json().await.unwrap();
-                let connections: Vec<Connection> = json["nodes"]
-                    .as_object()
-                    .unwrap()
-                    .iter()
-                    .map(|(_, node)| {
-                        let address = node["http"]["publish_address"]
-                            .as_str()
-                            .or_else(|| {
-                                Some(
-                                    node["http"]["bound_address"].as_array().unwrap()[0]
-                                        .as_str()
-                                        .unwrap(),
-                                )
-                            })
-                            .unwrap();
-                        let url = Self::parse_to_url(address, scheme).unwrap();
-                        Connection::new(url)
-                    })
-                    .collect();
-                conn_pool.reseed(connections);
-            });
+            #[cfg(not(target_arch = "wasm32"))]
+            {
+                let transport = self.clone();
+                tokio::spawn(async move { transport.reseed().await });
+            }
+            #[cfg(target_arch = "wasm32")]
+            {
+                // Reseed synchronously (i.e. do not spawn a background task) in WASM.
+                // Running in the background is platform-dependent (web-sys / wasi), we'll
+                // address this if synchronous reseed is an issue.
+                self.reseed().await
+            }
         }
 
         let connection = self.conn_pool.next();
