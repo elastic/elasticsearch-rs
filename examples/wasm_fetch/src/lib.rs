@@ -1,11 +1,6 @@
 use wasm_bindgen::prelude::*;
 use serde::Deserialize;
 
-// When the `wee_alloc` feature is enabled, use `wee_alloc` as the global allocator.
-#[cfg(feature = "wee_alloc")]
-#[global_allocator]
-static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
-
 #[derive(Deserialize)]
 pub struct VersionInfo {
     pub number: String,

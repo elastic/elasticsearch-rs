@@ -651,7 +651,6 @@ dependencies = [
  "failure",
  "futures",
  "http",
- "hyper",
  "lazy_static",
  "os_type",
  "percent-encoding",

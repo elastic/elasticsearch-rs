@@ -18,9 +18,12 @@
  */
 //! HTTP transport and connection components
 
-#[cfg(all(any(feature = "native-tls", feature = "rustls-tls"), not(target_arch = "wasm32")))]
+#[cfg(all(target_arch = "wasm32", any(feature = "native-tls", feature = "rustls-tls")))]
+compile_error!("TLS features are not compatible with the wasm target");
+
+#[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
 use crate::auth::ClientCertificate;
-#[cfg(all(any(feature = "native-tls", feature = "rustls-tls"), not(target_arch = "wasm32")))]
+#[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
 use crate::cert::CertificateValidation;
 use crate::{
     auth::Credentials,
@@ -130,6 +133,8 @@ fn build_meta() -> String {
         meta.push_str(",tls=n");
     } else if cfg!(feature = "rustls-tls") {
         meta.push_str(",tls=r");
+    } else if cfg!(target_arch = "wasm32") {
+        meta.push_str(",tls=w");
     }
 
     meta
@@ -138,9 +143,9 @@ fn build_meta() -> String {
 /// Builds a HTTP transport to make API calls to Elasticsearch
 pub struct TransportBuilder {
     client_builder: reqwest::ClientBuilder,
-    conn_pool: Box<dyn ConnectionPool>,
+    conn_pool: Arc<dyn ConnectionPool>,
     credentials: Option<Credentials>,
-    #[cfg(all(any(feature = "native-tls", feature = "rustls-tls"), not(target_arch = "wasm32")))]
+    #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
     cert_validation: Option<CertificateValidation>,
     #[cfg(not(target_arch = "wasm32"))]
     proxy: Option<Url>,
@@ -150,6 +155,7 @@ pub struct TransportBuilder {
     disable_proxy: bool,
     headers: HeaderMap,
     meta_header: bool,
+    #[cfg(not(target_arch = "wasm32"))]
     timeout: Option<Duration>,
 }
 
@@ -162,9 +168,9 @@ impl TransportBuilder {
     {
         Self {
             client_builder: reqwest::ClientBuilder::new(),
-            conn_pool: Box::new(conn_pool),
+            conn_pool: Arc::new(conn_pool),
             credentials: None,
-            #[cfg(all(any(feature = "native-tls", feature = "rustls-tls"), not(target_arch = "wasm32")))]
+            #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
             cert_validation: None,
             #[cfg(not(target_arch = "wasm32"))]
             proxy: None,
@@ -174,6 +180,7 @@ impl TransportBuilder {
             disable_proxy: false,
             headers: HeaderMap::new(),
             meta_header: true,
+            #[cfg(not(target_arch = "wasm32"))]
             timeout: None,
         }
     }
@@ -211,7 +218,7 @@ impl TransportBuilder {
     /// Validation applied to the certificate provided to establish a HTTPS connection.
     /// By default, full validation is applied. When using a self-signed certificate,
     /// different validation can be applied.
-    #[cfg(all(any(feature = "native-tls", feature = "rustls-tls"), not(target_arch = "wasm32")))]
+    #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
     pub fn cert_validation(mut self, validation: CertificateValidation) -> Self {
         self.cert_validation = Some(validation);
         self
@@ -249,6 +256,7 @@ impl TransportBuilder {
     ///
     /// The timeout is applied from when the request starts connecting until the response body has finished.
     /// Default is no timeout.
+    #[cfg(not(target_arch = "wasm32"))]
     pub fn timeout(mut self, timeout: Duration) -> Self {
         self.timeout = Some(timeout);
         self
@@ -267,7 +275,7 @@ impl TransportBuilder {
             client_builder = client_builder.timeout(t);
         }
 
-        #[cfg(all(any(feature = "native-tls", feature = "rustls-tls"), not(target_arch = "wasm32")))]
+        #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
         {
             if let Some(Credentials::Certificate(cert)) = &self.credentials {
                 client_builder = match cert {
@@ -289,7 +297,7 @@ impl TransportBuilder {
             };
         }
 
-        #[cfg(all(any(feature = "native-tls", feature = "rustls-tls"), not(target_arch = "wasm32")))]
+        #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
         if let Some(v) = self.cert_validation {
             client_builder = match v {
                 CertificateValidation::Default => client_builder,
@@ -326,7 +334,7 @@ impl TransportBuilder {
         let client = client_builder.build()?;
         Ok(Transport {
             client,
-            conn_pool: Arc::new(self.conn_pool),
+            conn_pool: self.conn_pool,
             credentials: self.credentials,
             send_meta: self.meta_header,
         })
@@ -373,7 +381,7 @@ impl Connection {
 pub struct Transport {
     client: reqwest::Client,
     credentials: Option<Credentials>,
-    conn_pool: Arc<Box<dyn ConnectionPool>>,
+    conn_pool: Arc<dyn ConnectionPool>,
     send_meta: bool,
 }
 
@@ -494,23 +502,7 @@ impl Transport {
         // on a specific request, we want it to overwrite.
         if let Some(c) = &self.credentials {
             request_builder = match c {
-                Credentials::Basic(u, p) => {
-                    #[cfg(not(target_arch = "wasm32"))]
-                    {
-                        request_builder.basic_auth(u, Some(p))
-                    }
-                    #[cfg(target_arch = "wasm32")]
-                    {
-                        // Missing basic_auth in the wasm32 target
-                        let mut header_value = b"Basic ".to_vec();
-                        {
-                            let mut encoder = Base64Encoder::new(&mut header_value, base64::STANDARD);
-                            // The unwraps here are fine because Vec::write* is infallible.
-                            write!(encoder, "{}:{}", u, p).unwrap();
-                        }
-                        request_builder.header(reqwest::header::AUTHORIZATION, header_value)
-                    }
-                },
+                Credentials::Basic(u, p) => request_builder.basic_auth(u, Some(p)),
                 Credentials::Bearer(t) => request_builder.bearer_auth(t),
                 #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
                 Credentials::Certificate(_) => request_builder,
@@ -592,6 +584,47 @@ impl Transport {
         )?)
     }
 
+    async fn reseed(&self) {
+        // Requests will execute against old connection pool during reseed
+        let connection = self.conn_pool.next();
+
+        // Build node info request
+        let node_request = self.request_builder(
+            &connection,
+            Method::Get,
+            "_nodes/http?filter_path=nodes.*.http",
+            HeaderMap::default(),
+            None::<&()>,
+            None::<()>,
+            None,
+        ).unwrap();
+
+        let scheme = connection.url.scheme();
+        let resp = node_request.send().await.unwrap();
+        let json: Value = resp.json().await.unwrap();
+        let connections: Vec<Connection> = json["nodes"]
+            .as_object()
+            .unwrap()
+            .iter()
+            .map(|(_, node)| {
+                let address = node["http"]["publish_address"]
+                    .as_str()
+                    .or_else(|| {
+                        Some(
+                            node["http"]["bound_address"].as_array().unwrap()[0]
+                                .as_str()
+                                .unwrap(),
+                        )
+                    })
+                    .unwrap();
+                let url = Self::parse_to_url(address, scheme).unwrap();
+                Connection::new(url)
+            })
+            .collect();
+
+        self.conn_pool.reseed(connections);
+    }
+
     /// Creates an asynchronous request that can be awaited
     pub async fn send<B, Q>(
         &self,
@@ -606,47 +639,19 @@ impl Transport {
         B: Body,
         Q: Serialize + ?Sized,
     {
-        // Requests will execute against old connection pool during reseed
         if self.conn_pool.reseedable() {
-            let conn_pool = self.conn_pool.clone();
-            let connection = conn_pool.next();
-
-            // Build node info request
-            let node_request = self.request_builder(
-                &connection,
-                Method::Get,
-                "_nodes/http?filter_path=nodes.*.http",
-                headers.clone(),
-                None::<&Q>,
-                None::<B>,
-                timeout,
-            )?;
-
-            tokio::spawn(async move {
-                let scheme = connection.url.scheme();
-                let resp = node_request.send().await.unwrap();
-                let json: Value = resp.json().await.unwrap();
-                let connections: Vec<Connection> = json["nodes"]
-                    .as_object()
-                    .unwrap()
-                    .iter()
-                    .map(|(_, node)| {
-                        let address = node["http"]["publish_address"]
-                            .as_str()
-                            .or_else(|| {
-                                Some(
-                                    node["http"]["bound_address"].as_array().unwrap()[0]
-                                        .as_str()
-                                        .unwrap(),
-                                )
-                            })
-                            .unwrap();
-                        let url = Self::parse_to_url(address, scheme).unwrap();
-                        Connection::new(url)
-                    })
-                    .collect();
-                conn_pool.reseed(connections);
-            });
+            #[cfg(not(target_arch = "wasm32"))]
+            {
+                let transport = self.clone();
+                tokio::spawn(async move { transport.reseed().await });
+            }
+            #[cfg(target_arch = "wasm32")]
+            {
+                // Reseed synchronously (i.e. do not spawn a background task) in WASM.
+                // Running in the background is platform-dependent (web-sys / wasi), we'll
+                // address this if synchronous reseed is an issue.
+                self.reseed().await
+            }
         }
 
         let connection = self.conn_pool.next();
