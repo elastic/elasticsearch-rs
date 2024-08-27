@@ -150,7 +150,7 @@
 //! # }
 //! ```
 //!
-//! More control over how a [e](http::transport::Transport) is built can be
+//! More control over how a [Transport](http::transport::Transport) is built can be
 //! achieved using [TransportBuilder](http::transport::TransportBuilder) to build a transport, and
 //! passing it to [Elasticsearch::new] create a new instance of [Elasticsearch]
 //!
