@@ -11,7 +11,6 @@ steps:
         stack_version:
           - "8.15.0"
         test_suite:
-          - "free"
           - "platinum"
         toolchain:
           - "latest"

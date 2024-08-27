@@ -22,32 +22,32 @@ use once_cell::sync::Lazy;
 use std::env;
 use std::ops::Deref;
 use std::path;
-use structopt::StructOpt;
+use clap::Parser;
 
 pub mod artifacts;
 
 /// elasticsearch-rs build helpers
-#[derive(StructOpt, Debug)]
+#[derive(Parser, Debug)]
 enum Cmd {
     /// Download Elasticsearch Rest specs and YAML tests
     DownloadSpecs {
         /// Specific commit hash to download
-        #[structopt(long, short)]
+        #[arg(long, short)]
         commit_hash: Option<String>,
         /// Get the commit hash to download from a running ES server
-        #[structopt(long, short)]
+        #[arg(long, short)]
         url: Option<String>,
     },
     /// Get the commit hash of Elasticsearch running at <url>
     EsCommitHash {
         /// URL of the Elasticsearch server
-        #[structopt(long, short)]
+        #[arg(long, short)]
         url: String,
     },
 }
 
 fn main() -> anyhow::Result<()> {
-    let opt = Cmd::from_args();
+    let opt = Cmd::parse();
     match opt {
         Cmd::DownloadSpecs { commit_hash, url } => artifacts::download(commit_hash, url),
         Cmd::EsCommitHash { url } => {
