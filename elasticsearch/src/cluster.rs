@@ -2457,9 +2457,9 @@ pub struct ClusterStats<'a, 'b> {
     parts: ClusterStatsParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
-    flat_settings: Option<bool>,
     headers: HeaderMap,
     human: Option<bool>,
+    include_remotes: Option<bool>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -2475,8 +2475,8 @@ impl<'a, 'b> ClusterStats<'a, 'b> {
             headers,
             error_trace: None,
             filter_path: None,
-            flat_settings: None,
             human: None,
+            include_remotes: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -2493,11 +2493,6 @@ impl<'a, 'b> ClusterStats<'a, 'b> {
         self.filter_path = Some(filter_path);
         self
     }
-    #[doc = "Return settings in flat format (default: false)"]
-    pub fn flat_settings(mut self, flat_settings: bool) -> Self {
-        self.flat_settings = Some(flat_settings);
-        self
-    }
     #[doc = "Adds a HTTP header"]
     pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
         self.headers.insert(key, value);
@@ -2506,6 +2501,11 @@ impl<'a, 'b> ClusterStats<'a, 'b> {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
+        self
+    }
+    #[doc = "Include remote cluster data into the response (default: false)"]
+    pub fn include_remotes(mut self, include_remotes: bool) -> Self {
+        self.include_remotes = Some(include_remotes);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -2541,8 +2541,8 @@ impl<'a, 'b> ClusterStats<'a, 'b> {
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                flat_settings: Option<bool>,
                 human: Option<bool>,
+                include_remotes: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
                 timeout: Option<&'b str>,
@@ -2550,8 +2550,8 @@ impl<'a, 'b> ClusterStats<'a, 'b> {
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
-                flat_settings: self.flat_settings,
                 human: self.human,
+                include_remotes: self.include_remotes,
                 pretty: self.pretty,
                 source: self.source,
                 timeout: self.timeout,

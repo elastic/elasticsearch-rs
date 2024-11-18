@@ -326,7 +326,7 @@ impl CapabilitiesParts {
         }
     }
 }
-#[doc = "Builder for the [Capabilities API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/capabilities.html)\n\nChecks if the specified combination of method, API, parameters, and arbitrary capabilities are supported"]
+#[doc = "Builder for the [Capabilities API](https://github.com/elastic/elasticsearch/blob/main/rest-api-spec/src/yamlRestTest/resources/rest-api-spec/test/README.asciidoc#require-or-skip-api-capabilities)\n\nChecks if the specified combination of method, API, parameters, and arbitrary capabilities are supported"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -338,6 +338,7 @@ pub struct Capabilities<'a, 'b> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    local_only: Option<bool>,
     method: Option<Method>,
     parameters: Option<&'b str>,
     path: Option<&'b str>,
@@ -358,6 +359,7 @@ impl<'a, 'b> Capabilities<'a, 'b> {
             error_trace: None,
             filter_path: None,
             human: None,
+            local_only: None,
             method: None,
             parameters: None,
             path: None,
@@ -389,6 +391,11 @@ impl<'a, 'b> Capabilities<'a, 'b> {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
+        self
+    }
+    #[doc = "True if only the node being called should be considered"]
+    pub fn local_only(mut self, local_only: bool) -> Self {
+        self.local_only = Some(local_only);
         self
     }
     #[doc = "REST method to check"]
@@ -436,6 +443,7 @@ impl<'a, 'b> Capabilities<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                local_only: Option<bool>,
                 method: Option<Method>,
                 parameters: Option<&'b str>,
                 path: Option<&'b str>,
@@ -447,6 +455,7 @@ impl<'a, 'b> Capabilities<'a, 'b> {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                local_only: self.local_only,
                 method: self.method,
                 parameters: self.parameters,
                 path: self.path,
@@ -7766,6 +7775,7 @@ pub struct SearchShards<'a, 'b, B> {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     local: Option<bool>,
+    master_timeout: Option<&'b str>,
     preference: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
@@ -7791,6 +7801,7 @@ where
             human: None,
             ignore_unavailable: None,
             local: None,
+            master_timeout: None,
             preference: None,
             pretty: None,
             request_timeout: None,
@@ -7820,6 +7831,7 @@ where
             human: self.human,
             ignore_unavailable: self.ignore_unavailable,
             local: self.local,
+            master_timeout: self.master_timeout,
             preference: self.preference,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
@@ -7860,6 +7872,11 @@ where
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: bool) -> Self {
         self.local = Some(local);
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
@@ -7909,6 +7926,7 @@ where
                 human: Option<bool>,
                 ignore_unavailable: Option<bool>,
                 local: Option<bool>,
+                master_timeout: Option<&'b str>,
                 preference: Option<&'b str>,
                 pretty: Option<bool>,
                 routing: Option<&'b str>,
@@ -7922,6 +7940,7 @@ where
                 human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 local: self.local,
+                master_timeout: self.master_timeout,
                 preference: self.preference,
                 pretty: self.pretty,
                 routing: self.routing,
@@ -9521,7 +9540,7 @@ impl Elasticsearch {
     pub fn bulk<'a, 'b>(&'a self, parts: BulkParts<'b>) -> Bulk<'a, 'b, ()> {
         Bulk::new(self.transport(), parts)
     }
-    #[doc = "[Capabilities API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/capabilities.html)\n\nChecks if the specified combination of method, API, parameters, and arbitrary capabilities are supported"]
+    #[doc = "[Capabilities API](https://github.com/elastic/elasticsearch/blob/main/rest-api-spec/src/yamlRestTest/resources/rest-api-spec/test/README.asciidoc#require-or-skip-api-capabilities)\n\nChecks if the specified combination of method, API, parameters, and arbitrary capabilities are supported"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn capabilities<'a, 'b>(&'a self) -> Capabilities<'a, 'b> {

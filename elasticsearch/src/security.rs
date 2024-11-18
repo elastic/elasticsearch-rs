@@ -1770,14 +1770,12 @@ where
         Ok(response)
     }
 }
-#[cfg(feature = "beta-apis")]
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Create Cross Cluster Api Key API"]
 pub enum SecurityCreateCrossClusterApiKeyParts {
     #[doc = "No parts"]
     None,
 }
-#[cfg(feature = "beta-apis")]
 impl SecurityCreateCrossClusterApiKeyParts {
     #[doc = "Builds a relative URL path to the Security Create Cross Cluster Api Key API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -1789,8 +1787,6 @@ impl SecurityCreateCrossClusterApiKeyParts {
     }
 }
 #[doc = "Builder for the [Security Create Cross Cluster Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/security-api-create-cross-cluster-api-key.html)\n\nCreates a cross-cluster API key for API key based remote cluster access."]
-#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
-#[cfg(feature = "beta-apis")]
 #[derive(Clone, Debug)]
 pub struct SecurityCreateCrossClusterApiKey<'a, 'b, B> {
     transport: &'a Transport,
@@ -1804,7 +1800,6 @@ pub struct SecurityCreateCrossClusterApiKey<'a, 'b, B> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "beta-apis")]
 impl<'a, 'b, B> SecurityCreateCrossClusterApiKey<'a, 'b, B>
 where
     B: Body,
@@ -8395,14 +8390,12 @@ where
         Ok(response)
     }
 }
-#[cfg(feature = "beta-apis")]
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Security Update Cross Cluster Api Key API"]
 pub enum SecurityUpdateCrossClusterApiKeyParts<'b> {
     #[doc = "Id"]
     Id(&'b str),
 }
-#[cfg(feature = "beta-apis")]
 impl<'b> SecurityUpdateCrossClusterApiKeyParts<'b> {
     #[doc = "Builds a relative URL path to the Security Update Cross Cluster Api Key API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -8418,8 +8411,6 @@ impl<'b> SecurityUpdateCrossClusterApiKeyParts<'b> {
     }
 }
 #[doc = "Builder for the [Security Update Cross Cluster Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/security-api-update-cross-cluster-api-key.html)\n\nUpdates attributes of an existing cross-cluster API key."]
-#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
-#[cfg(feature = "beta-apis")]
 #[derive(Clone, Debug)]
 pub struct SecurityUpdateCrossClusterApiKey<'a, 'b, B> {
     transport: &'a Transport,
@@ -8433,7 +8424,6 @@ pub struct SecurityUpdateCrossClusterApiKey<'a, 'b, B> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "beta-apis")]
 impl<'a, 'b, B> SecurityUpdateCrossClusterApiKey<'a, 'b, B>
 where
     B: Body,
@@ -8947,8 +8937,6 @@ impl<'a> Security<'a> {
         SecurityCreateApiKey::new(self.transport())
     }
     #[doc = "[Security Create Cross Cluster Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/security-api-create-cross-cluster-api-key.html)\n\nCreates a cross-cluster API key for API key based remote cluster access."]
-    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
-    #[cfg(feature = "beta-apis")]
     pub fn create_cross_cluster_api_key<'b>(
         &'a self,
     ) -> SecurityCreateCrossClusterApiKey<'a, 'b, ()> {
@@ -9206,8 +9194,6 @@ impl<'a> Security<'a> {
         SecurityUpdateApiKey::new(self.transport(), parts)
     }
     #[doc = "[Security Update Cross Cluster Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/security-api-update-cross-cluster-api-key.html)\n\nUpdates attributes of an existing cross-cluster API key."]
-    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
-    #[cfg(feature = "beta-apis")]
     pub fn update_cross_cluster_api_key<'b>(
         &'a self,
         parts: SecurityUpdateCrossClusterApiKeyParts<'b>,

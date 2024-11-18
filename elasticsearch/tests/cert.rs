@@ -28,7 +28,9 @@
 extern crate os_type;
 
 pub mod common;
+
 use common::*;
+use std::ops::Deref;
 
 use elasticsearch::cert::{Certificate, CertificateValidation};
 use os_type::OSType;
@@ -54,6 +56,7 @@ fn expected_error_message() -> String {
 #[tokio::test]
 #[cfg(feature = "native-tls")]
 async fn default_certificate_validation() -> Result<(), failure::Error> {
+    eprintln!("Got tracker: {:?}", common::TRACKER.deref());
     let builder = client::create_default_builder().cert_validation(CertificateValidation::Default);
     let client = client::create(builder);
     let result = client.ping().send().await;
@@ -107,6 +110,7 @@ async fn default_certificate_validation_rustls_tls() -> Result<(), failure::Erro
 /// Allows any certificate through
 #[tokio::test]
 async fn none_certificate_validation() -> Result<(), failure::Error> {
+    eprintln!("Got tracker: {:?}", common::TRACKER.deref());
     let builder = client::create_default_builder().cert_validation(CertificateValidation::None);
     let client = client::create(builder);
     let _response = client.ping().send().await?;
@@ -118,6 +122,7 @@ async fn none_certificate_validation() -> Result<(), failure::Error> {
 #[tokio::test]
 #[cfg(feature = "rustls-tls")] // Fails with native-tls
 async fn full_certificate_ca_validation() -> Result<(), failure::Error> {
+    eprintln!("Got tracker: {:?}", common::TRACKER.deref());
     let cert = Certificate::from_pem(CA_CERT)?;
     let builder =
         client::create_default_builder().cert_validation(CertificateValidation::Full(cert));

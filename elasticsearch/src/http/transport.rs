@@ -18,7 +18,10 @@
  */
 //! HTTP transport and connection components
 
-#[cfg(all(target_arch = "wasm32", any(feature = "native-tls", feature = "rustls-tls")))]
+#[cfg(all(
+    target_arch = "wasm32",
+    any(feature = "native-tls", feature = "rustls-tls")
+))]
 compile_error!("TLS features are not compatible with the wasm target");
 
 #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
@@ -481,8 +484,7 @@ impl Transport {
         headers: HeaderMap,
         query_string: Option<&Q>,
         body: Option<B>,
-        #[allow(unused_variables)]
-        timeout: Option<Duration>,
+        #[allow(unused_variables)] timeout: Option<Duration>,
     ) -> Result<reqwest::RequestBuilder, Error>
     where
         B: Body,
@@ -589,15 +591,17 @@ impl Transport {
         let connection = self.conn_pool.next();
 
         // Build node info request
-        let node_request = self.request_builder(
-            &connection,
-            Method::Get,
-            "_nodes/http?filter_path=nodes.*.http",
-            HeaderMap::default(),
-            None::<&()>,
-            None::<()>,
-            None,
-        ).unwrap();
+        let node_request = self
+            .request_builder(
+                &connection,
+                Method::Get,
+                "_nodes/http?filter_path=nodes.*.http",
+                HeaderMap::default(),
+                None::<&()>,
+                None::<()>,
+                None,
+            )
+            .unwrap();
 
         let scheme = connection.url.scheme();
         let resp = node_request.send().await.unwrap();

@@ -16,8 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+use std::sync::LazyLock;
+
 pub mod client;
 pub mod server;
 
 #[allow(unused)]
 pub static DEFAULT_USER_AGENT: &str = concat!("elasticsearch-rs/", env!("CARGO_PKG_VERSION"));
+
+#[derive(Debug)]
+pub struct Tracker {}
+
+impl Drop for Tracker {
+    fn drop(&mut self) {
+        eprintln!("Destroying tracker");
+    }
+}
+
+pub static TRACKER: std::sync::LazyLock<Tracker> = LazyLock::new(|| {
+    eprintln!("Creating tracker");
+    Tracker {}
+});

@@ -954,6 +954,154 @@ where
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Query Rules Test API"]
+pub enum QueryRulesTestParts<'b> {
+    #[doc = "RulesetId"]
+    RulesetId(&'b str),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> QueryRulesTestParts<'b> {
+    #[doc = "Builds a relative URL path to the Query Rules Test API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            QueryRulesTestParts::RulesetId(ruleset_id) => {
+                let encoded_ruleset_id: Cow<str> =
+                    percent_encode(ruleset_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(20usize + encoded_ruleset_id.len());
+                p.push_str("/_query_rules/");
+                p.push_str(encoded_ruleset_id.as_ref());
+                p.push_str("/_test");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Query Rules Test API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/test-query-ruleset.html)\n\nTests a query ruleset to identify the rules that would match input criteria"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct QueryRulesTest<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: QueryRulesTestParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> QueryRulesTest<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [QueryRulesTest] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: QueryRulesTestParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        QueryRulesTest {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> QueryRulesTest<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        QueryRulesTest {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Query Rules Test API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Post;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
 #[doc = "Namespace client for QueryRules APIs"]
 pub struct QueryRules<'a> {
     transport: &'a Transport,
@@ -1008,6 +1156,12 @@ impl<'a> QueryRules<'a> {
         parts: QueryRulesPutRulesetParts<'b>,
     ) -> QueryRulesPutRuleset<'a, 'b, ()> {
         QueryRulesPutRuleset::new(self.transport(), parts)
+    }
+    #[doc = "[Query Rules Test API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/test-query-ruleset.html)\n\nTests a query ruleset to identify the rules that would match input criteria"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn test<'b>(&'a self, parts: QueryRulesTestParts<'b>) -> QueryRulesTest<'a, 'b, ()> {
+        QueryRulesTest::new(self.transport(), parts)
     }
 }
 impl Elasticsearch {

@@ -1217,9 +1217,11 @@ pub struct IndicesCreateDataStream<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> IndicesCreateDataStream<'a, 'b, B>
 where
@@ -1236,9 +1238,11 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -1254,9 +1258,11 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1279,6 +1285,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -1292,6 +1303,11 @@ where
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
+        self
+    }
+    #[doc = "Specify timeout for acknowledging the cluster state update"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Create Data Stream API that can be awaited"]
@@ -1308,15 +1324,19 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -1762,14 +1782,12 @@ impl<'a, 'b> IndicesDeleteAlias<'a, 'b> {
         Ok(response)
     }
 }
-#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Indices Delete Data Lifecycle API"]
 pub enum IndicesDeleteDataLifecycleParts<'b> {
     #[doc = "Name"]
     Name(&'b [&'b str]),
 }
-#[cfg(feature = "experimental-apis")]
 impl<'b> IndicesDeleteDataLifecycleParts<'b> {
     #[doc = "Builds a relative URL path to the Indices Delete Data Lifecycle API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -1788,8 +1806,6 @@ impl<'b> IndicesDeleteDataLifecycleParts<'b> {
     }
 }
 #[doc = "Builder for the [Indices Delete Data Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/data-streams-delete-lifecycle.html)\n\nDeletes the data stream lifecycle of the selected data streams."]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
 pub struct IndicesDeleteDataLifecycle<'a, 'b> {
     transport: &'a Transport,
@@ -1805,7 +1821,6 @@ pub struct IndicesDeleteDataLifecycle<'a, 'b> {
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
-#[cfg(feature = "experimental-apis")]
 impl<'a, 'b> IndicesDeleteDataLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesDeleteDataLifecycle] with the specified API parts"]
     pub fn new(transport: &'a Transport, parts: IndicesDeleteDataLifecycleParts<'b>) -> Self {
@@ -1948,6 +1963,7 @@ pub struct IndicesDeleteDataStream<'a, 'b> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -1964,6 +1980,7 @@ impl<'a, 'b> IndicesDeleteDataStream<'a, 'b> {
             expand_wildcards: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -1992,6 +2009,11 @@ impl<'a, 'b> IndicesDeleteDataStream<'a, 'b> {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -2025,6 +2047,7 @@ impl<'a, 'b> IndicesDeleteDataStream<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -2033,6 +2056,7 @@ impl<'a, 'b> IndicesDeleteDataStream<'a, 'b> {
                 expand_wildcards: self.expand_wildcards,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -3311,14 +3335,12 @@ impl<'a, 'b> IndicesExistsTemplate<'a, 'b> {
         Ok(response)
     }
 }
-#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Indices Explain Data Lifecycle API"]
 pub enum IndicesExplainDataLifecycleParts<'b> {
     #[doc = "Index"]
     Index(&'b str),
 }
-#[cfg(feature = "experimental-apis")]
 impl<'b> IndicesExplainDataLifecycleParts<'b> {
     #[doc = "Builds a relative URL path to the Indices Explain Data Lifecycle API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -3336,8 +3358,6 @@ impl<'b> IndicesExplainDataLifecycleParts<'b> {
     }
 }
 #[doc = "Builder for the [Indices Explain Data Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/data-streams-explain-lifecycle.html)\n\nRetrieves information about the index's current data stream lifecycle, such as any potential encountered error, time since creation etc."]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
 pub struct IndicesExplainDataLifecycle<'a, 'b> {
     transport: &'a Transport,
@@ -3352,7 +3372,6 @@ pub struct IndicesExplainDataLifecycle<'a, 'b> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "experimental-apis")]
 impl<'a, 'b> IndicesExplainDataLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesExplainDataLifecycle] with the specified API parts"]
     pub fn new(transport: &'a Transport, parts: IndicesExplainDataLifecycleParts<'b>) -> Self {
@@ -4418,14 +4437,12 @@ impl<'a, 'b> IndicesGetAlias<'a, 'b> {
         Ok(response)
     }
 }
-#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Indices Get Data Lifecycle API"]
 pub enum IndicesGetDataLifecycleParts<'b> {
     #[doc = "Name"]
     Name(&'b [&'b str]),
 }
-#[cfg(feature = "experimental-apis")]
 impl<'b> IndicesGetDataLifecycleParts<'b> {
     #[doc = "Builds a relative URL path to the Indices Get Data Lifecycle API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -4444,8 +4461,6 @@ impl<'b> IndicesGetDataLifecycleParts<'b> {
     }
 }
 #[doc = "Builder for the [Indices Get Data Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/data-streams-get-lifecycle.html)\n\nReturns the data stream lifecycle of the selected data streams."]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
 pub struct IndicesGetDataLifecycle<'a, 'b> {
     transport: &'a Transport,
@@ -4456,11 +4471,11 @@ pub struct IndicesGetDataLifecycle<'a, 'b> {
     headers: HeaderMap,
     human: Option<bool>,
     include_defaults: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "experimental-apis")]
 impl<'a, 'b> IndicesGetDataLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGetDataLifecycle] with the specified API parts"]
     pub fn new(transport: &'a Transport, parts: IndicesGetDataLifecycleParts<'b>) -> Self {
@@ -4474,6 +4489,7 @@ impl<'a, 'b> IndicesGetDataLifecycle<'a, 'b> {
             filter_path: None,
             human: None,
             include_defaults: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -4509,6 +4525,11 @@ impl<'a, 'b> IndicesGetDataLifecycle<'a, 'b> {
         self.include_defaults = Some(include_defaults);
         self
     }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -4541,6 +4562,7 @@ impl<'a, 'b> IndicesGetDataLifecycle<'a, 'b> {
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
                 include_defaults: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -4550,6 +4572,7 @@ impl<'a, 'b> IndicesGetDataLifecycle<'a, 'b> {
                 filter_path: self.filter_path,
                 human: self.human,
                 include_defaults: self.include_defaults,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -4599,9 +4622,11 @@ pub struct IndicesGetDataStream<'a, 'b> {
     headers: HeaderMap,
     human: Option<bool>,
     include_defaults: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    verbose: Option<bool>,
 }
 impl<'a, 'b> IndicesGetDataStream<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGetDataStream] with the specified API parts"]
@@ -4616,9 +4641,11 @@ impl<'a, 'b> IndicesGetDataStream<'a, 'b> {
             filter_path: None,
             human: None,
             include_defaults: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
+            verbose: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -4651,6 +4678,11 @@ impl<'a, 'b> IndicesGetDataStream<'a, 'b> {
         self.include_defaults = Some(include_defaults);
         self
     }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -4664,6 +4696,11 @@ impl<'a, 'b> IndicesGetDataStream<'a, 'b> {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
+        self
+    }
+    #[doc = "Whether the maximum timestamp for each data stream should be calculated and returned (default: false)"]
+    pub fn verbose(mut self, verbose: bool) -> Self {
+        self.verbose = Some(verbose);
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Get Data Stream API that can be awaited"]
@@ -4683,8 +4720,10 @@ impl<'a, 'b> IndicesGetDataStream<'a, 'b> {
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
                 include_defaults: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                verbose: Option<bool>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -4692,8 +4731,10 @@ impl<'a, 'b> IndicesGetDataStream<'a, 'b> {
                 filter_path: self.filter_path,
                 human: self.human,
                 include_defaults: self.include_defaults,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
+                verbose: self.verbose,
             };
             Some(query_params)
         };
@@ -5611,9 +5652,11 @@ pub struct IndicesMigrateToDataStream<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> IndicesMigrateToDataStream<'a, 'b, B>
 where
@@ -5630,9 +5673,11 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -5648,9 +5693,11 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -5673,6 +5720,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -5686,6 +5738,11 @@ where
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
+        self
+    }
+    #[doc = "Specify timeout for acknowledging the cluster state update"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Migrate To Data Stream API that can be awaited"]
@@ -5702,15 +5759,19 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -6092,6 +6153,7 @@ pub struct IndicesPromoteDataStream<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -6111,6 +6173,7 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -6129,6 +6192,7 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
@@ -6152,6 +6216,11 @@ where
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -6183,6 +6252,7 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -6190,6 +6260,7 @@ where
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -6370,14 +6441,12 @@ where
         Ok(response)
     }
 }
-#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Indices Put Data Lifecycle API"]
 pub enum IndicesPutDataLifecycleParts<'b> {
     #[doc = "Name"]
     Name(&'b [&'b str]),
 }
-#[cfg(feature = "experimental-apis")]
 impl<'b> IndicesPutDataLifecycleParts<'b> {
     #[doc = "Builds a relative URL path to the Indices Put Data Lifecycle API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -6396,8 +6465,6 @@ impl<'b> IndicesPutDataLifecycleParts<'b> {
     }
 }
 #[doc = "Builder for the [Indices Put Data Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/data-streams-put-lifecycle.html)\n\nUpdates the data stream lifecycle of the selected data streams."]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
 pub struct IndicesPutDataLifecycle<'a, 'b, B> {
     transport: &'a Transport,
@@ -6414,7 +6481,6 @@ pub struct IndicesPutDataLifecycle<'a, 'b, B> {
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
-#[cfg(feature = "experimental-apis")]
 impl<'a, 'b, B> IndicesPutDataLifecycle<'a, 'b, B>
 where
     B: Body,
@@ -8020,11 +8086,13 @@ impl<'b> IndicesResolveIndexParts<'b> {
 pub struct IndicesResolveIndex<'a, 'b> {
     transport: &'a Transport,
     parts: IndicesResolveIndexParts<'b>,
+    allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<&'b [ExpandWildcards]>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -8037,14 +8105,21 @@ impl<'a, 'b> IndicesResolveIndex<'a, 'b> {
             transport,
             parts,
             headers,
+            allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
             filter_path: None,
             human: None,
+            ignore_unavailable: None,
             pretty: None,
             request_timeout: None,
             source: None,
         }
+    }
+    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -8069,6 +8144,11 @@ impl<'a, 'b> IndicesResolveIndex<'a, 'b> {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -8096,20 +8176,24 @@ impl<'a, 'b> IndicesResolveIndex<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                allow_no_indices: Option<bool>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                ignore_unavailable: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
+                allow_no_indices: self.allow_no_indices,
                 error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
                 filter_path: self.filter_path,
                 human: self.human,
+                ignore_unavailable: self.ignore_unavailable,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -10316,8 +10400,6 @@ impl<'a> Indices<'a> {
         IndicesDeleteAlias::new(self.transport(), parts)
     }
     #[doc = "[Indices Delete Data Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/data-streams-delete-lifecycle.html)\n\nDeletes the data stream lifecycle of the selected data streams."]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
     pub fn delete_data_lifecycle<'b>(
         &'a self,
         parts: IndicesDeleteDataLifecycleParts<'b>,
@@ -10389,8 +10471,6 @@ impl<'a> Indices<'a> {
         IndicesExistsTemplate::new(self.transport(), parts)
     }
     #[doc = "[Indices Explain Data Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/data-streams-explain-lifecycle.html)\n\nRetrieves information about the index's current data stream lifecycle, such as any potential encountered error, time since creation etc."]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
     pub fn explain_data_lifecycle<'b>(
         &'a self,
         parts: IndicesExplainDataLifecycleParts<'b>,
@@ -10426,8 +10506,6 @@ impl<'a> Indices<'a> {
         IndicesGetAlias::new(self.transport(), parts)
     }
     #[doc = "[Indices Get Data Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/data-streams-get-lifecycle.html)\n\nReturns the data stream lifecycle of the selected data streams."]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
     pub fn get_data_lifecycle<'b>(
         &'a self,
         parts: IndicesGetDataLifecycleParts<'b>,
@@ -10503,8 +10581,6 @@ impl<'a> Indices<'a> {
         IndicesPutAlias::new(self.transport(), parts)
     }
     #[doc = "[Indices Put Data Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/data-streams-put-lifecycle.html)\n\nUpdates the data stream lifecycle of the selected data streams."]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
     pub fn put_data_lifecycle<'b>(
         &'a self,
         parts: IndicesPutDataLifecycleParts<'b>,

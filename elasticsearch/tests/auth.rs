@@ -23,9 +23,11 @@ use elasticsearch::auth::Credentials;
 
 use base64::{engine::general_purpose::STANDARD as BASE64_STANDARD, write::EncoderWriter};
 use std::io::Write;
+use std::ops::Deref;
 
 #[tokio::test]
 async fn basic_auth_header() -> Result<(), failure::Error> {
+    eprintln!("Got tracker: {:?}", common::TRACKER.deref());
     let server = server::http(move |req| async move {
         let mut header_value = b"Basic ".to_vec();
         {
