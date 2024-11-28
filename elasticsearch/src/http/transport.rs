@@ -222,8 +222,8 @@ impl TransportBuilder {
     }
 
     /// Gzip compress the body of requests, adds the `Content-Encoding: gzip` header.
-    pub fn request_body_compression(mut self, use_compression: bool) -> Self {
-        self.request_body_compression = use_compression;
+    pub fn request_body_compression(mut self, enabled: bool) -> Self {
+        self.request_body_compression = enabled;
         self
     }
 
