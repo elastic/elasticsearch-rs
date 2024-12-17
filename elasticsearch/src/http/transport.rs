@@ -18,7 +18,10 @@
  */
 //! HTTP transport and connection components
 
-#[cfg(all(target_arch = "wasm32", any(feature = "native-tls", feature = "rustls-tls")))]
+#[cfg(all(
+    target_arch = "wasm32",
+    any(feature = "native-tls", feature = "rustls-tls")
+))]
 compile_error!("TLS features are not compatible with the wasm target");
 
 #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
@@ -30,8 +33,8 @@ use crate::{
     error::Error,
     http::{
         headers::{
-            HeaderMap, HeaderName, HeaderValue, ACCEPT, AUTHORIZATION, CONTENT_TYPE,
-            DEFAULT_ACCEPT, DEFAULT_CONTENT_TYPE, DEFAULT_USER_AGENT, USER_AGENT,
+            HeaderMap, HeaderName, HeaderValue, ACCEPT, AUTHORIZATION, CONTENT_ENCODING,
+            CONTENT_TYPE, DEFAULT_ACCEPT, DEFAULT_CONTENT_TYPE, DEFAULT_USER_AGENT, USER_AGENT,
         },
         request::Body,
         response::Response,
@@ -40,6 +43,7 @@ use crate::{
 };
 use base64::{engine::general_purpose::STANDARD as BASE64_STANDARD, write::EncoderWriter, Engine};
 use bytes::BytesMut;
+use flate2::{write::GzEncoder, Compression};
 use lazy_static::lazy_static;
 use serde::Serialize;
 use serde_json::Value;
@@ -147,6 +151,7 @@ pub struct TransportBuilder {
     credentials: Option<Credentials>,
     #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
     cert_validation: Option<CertificateValidation>,
+    request_body_compression: bool,
     #[cfg(not(target_arch = "wasm32"))]
     proxy: Option<Url>,
     #[cfg(not(target_arch = "wasm32"))]
@@ -172,6 +177,7 @@ impl TransportBuilder {
             credentials: None,
             #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
             cert_validation: None,
+            request_body_compression: false,
             #[cfg(not(target_arch = "wasm32"))]
             proxy: None,
             #[cfg(not(target_arch = "wasm32"))]
@@ -212,6 +218,12 @@ impl TransportBuilder {
     /// Credentials for the client to use for authentication to Elasticsearch
     pub fn auth(mut self, credentials: Credentials) -> Self {
         self.credentials = Some(credentials);
+        self
+    }
+
+    /// Gzip compress the body of requests, adds the `Content-Encoding: gzip` header.
+    pub fn request_body_compression(mut self, enabled: bool) -> Self {
+        self.request_body_compression = enabled;
         self
     }
 
@@ -335,6 +347,7 @@ impl TransportBuilder {
         Ok(Transport {
             client,
             conn_pool: self.conn_pool,
+            request_body_compression: self.request_body_compression,
             credentials: self.credentials,
             send_meta: self.meta_header,
         })
@@ -381,6 +394,7 @@ impl Connection {
 pub struct Transport {
     client: reqwest::Client,
     credentials: Option<Credentials>,
+    request_body_compression: bool,
     conn_pool: Arc<dyn ConnectionPool>,
     send_meta: bool,
 }
@@ -481,8 +495,7 @@ impl Transport {
         headers: HeaderMap,
         query_string: Option<&Q>,
         body: Option<B>,
-        #[allow(unused_variables)]
-        timeout: Option<Duration>,
+        #[allow(unused_variables)] timeout: Option<Duration>,
     ) -> Result<reqwest::RequestBuilder, Error>
     where
         B: Body,
@@ -552,7 +565,17 @@ impl Transport {
                 bytes_mut.split().freeze()
             };
 
-            request_builder = request_builder.body(bytes);
+            match self.request_body_compression {
+                true => {
+                    let mut encoder = GzEncoder::new(Vec::new(), Compression::default());
+                    encoder.write_all(&bytes)?;
+                    request_builder = request_builder.body(encoder.finish()?);
+                    request_builder = request_builder.header(CONTENT_ENCODING, "gzip");
+                }
+                false => {
+                    request_builder = request_builder.body(bytes);
+                }
+            }
         };
 
         if let Some(q) = query_string {
@@ -589,15 +612,17 @@ impl Transport {
         let connection = self.conn_pool.next();
 
         // Build node info request
-        let node_request = self.request_builder(
-            &connection,
-            Method::Get,
-            "_nodes/http?filter_path=nodes.*.http",
-            HeaderMap::default(),
-            None::<&()>,
-            None::<()>,
-            None,
-        ).unwrap();
+        let node_request = self
+            .request_builder(
+                &connection,
+                Method::Get,
+                "_nodes/http?filter_path=nodes.*.http",
+                HeaderMap::default(),
+                None::<&()>,
+                None::<()>,
+                None,
+            )
+            .unwrap();
 
         let scheme = connection.url.scheme();
         let resp = node_request.send().await.unwrap();
