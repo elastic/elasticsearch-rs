@@ -1,6 +1,6 @@
 [package]
 name = "api_generator"
-version = "8.15.0-alpha.1"
+version = "8.18.0-alpha.1"
 publish = false
 description = "Generates source code for elasticsearch package, from the Elasticsearch REST API specs"
 repository = "https://github.com/elastic/elasticsearch-rs"
