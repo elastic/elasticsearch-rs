@@ -1,6 +1,6 @@
 [package]
 name = "elasticsearch"
-version = "8.15.0-alpha.1"
+version = "9.0.0-alpha.1"
 edition = "2018"
 authors = ["Elastic and Contributors"]
 description = "Official Elasticsearch Rust client"
