@@ -46,7 +46,7 @@ that is compatible with the version of Elasticsearch you're using
 
 ```toml
 [dependencies]
-elasticsearch = "8.7.0-alpha.1"
+elasticsearch = "8.17.0-alpha.1"
 ```
 
 The following _optional_ dependencies may also be useful to create requests and read responses
