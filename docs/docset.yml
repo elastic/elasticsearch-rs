@@ -5,3 +5,4 @@ toc:
   - toc: reference
 subs:
   es:   "Elasticsearch"
+  version: "9.0.0-alpha.1"

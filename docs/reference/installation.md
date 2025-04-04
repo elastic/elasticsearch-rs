@@ -9,13 +9,13 @@ Add `elasticsearch` crate and version to Cargo.toml. Choose the version that is 
 
 ```toml
 [dependencies]
-elasticsearch = "8.7.0-alpha.1"
+elasticsearch = "{{version}}"
 ```
 
 The following *optional* dependencies may also be useful to create requests and read responses:
 
 ```toml
-serde = "~1"
-serde_json = "~1"
+serde = "1"
+serde_json = "1"
 ```
 
