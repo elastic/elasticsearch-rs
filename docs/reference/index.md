@@ -31,7 +31,7 @@ The Elasticsearch Rust client is forward compatible; meaning that the client sup
 
 ## Create a client [_create_a_client]
 
-To create a client to make API calls to Elasticsearch running on `\https://localhost:9200`
+To create a client to make API calls to Elasticsearch running on `https://localhost:9200`
 
 ```rust
 let client = Elasticsearch::default();
