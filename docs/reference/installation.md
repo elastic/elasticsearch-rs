@@ -7,7 +7,7 @@ mapped_pages:
 
 Add `elasticsearch` crate and version to Cargo.toml. Choose the version that is compatible with the version of {{es}} you are using:
 
-```toml
+```toml subs=true
 [dependencies]
 elasticsearch = "{{version}}"
 ```
