@@ -621,6 +621,164 @@ impl<'a, 'b> InferenceGet<'a, 'b> {
     }
 }
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Inference Inference API"]
+pub enum InferenceInferenceParts<'b> {
+    #[doc = "InferenceId"]
+    InferenceId(&'b str),
+    #[doc = "TaskType and InferenceId"]
+    TaskTypeInferenceId(&'b str, &'b str),
+}
+impl<'b> InferenceInferenceParts<'b> {
+    #[doc = "Builds a relative URL path to the Inference Inference API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            InferenceInferenceParts::InferenceId(inference_id) => {
+                let encoded_inference_id: Cow<str> =
+                    percent_encode(inference_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(12usize + encoded_inference_id.len());
+                p.push_str("/_inference/");
+                p.push_str(encoded_inference_id.as_ref());
+                p.into()
+            }
+            InferenceInferenceParts::TaskTypeInferenceId(task_type, inference_id) => {
+                let encoded_task_type: Cow<str> =
+                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                let encoded_inference_id: Cow<str> =
+                    percent_encode(inference_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    13usize + encoded_task_type.len() + encoded_inference_id.len(),
+                );
+                p.push_str("/_inference/");
+                p.push_str(encoded_task_type.as_ref());
+                p.push('/');
+                p.push_str(encoded_inference_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Inference Inference API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/post-inference-api.html)\n\nPerform inference"]
+#[derive(Clone, Debug)]
+pub struct InferenceInference<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: InferenceInferenceParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b, B> InferenceInference<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [InferenceInference] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: InferenceInferenceParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        InferenceInference {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> InferenceInference<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        InferenceInference {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Inference Inference API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Post;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Inference Put API"]
 pub enum InferencePutParts<'b> {
     #[doc = "InferenceId"]
@@ -3944,6 +4102,13 @@ impl<'a> Inference<'a> {
     #[doc = "[Inference Get API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/get-inference-api.html)\n\nGet an inference endpoint"]
     pub fn get<'b>(&'a self, parts: InferenceGetParts<'b>) -> InferenceGet<'a, 'b> {
         InferenceGet::new(self.transport(), parts)
+    }
+    #[doc = "[Inference Inference API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/post-inference-api.html)\n\nPerform inference"]
+    pub fn inference<'b>(
+        &'a self,
+        parts: InferenceInferenceParts<'b>,
+    ) -> InferenceInference<'a, 'b, ()> {
+        InferenceInference::new(self.transport(), parts)
     }
     #[doc = "[Inference Put API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/put-inference-api.html)\n\nConfigure an inference endpoint for use in the Inference API"]
     pub fn put<'b>(&'a self, parts: InferencePutParts<'b>) -> InferencePut<'a, 'b, ()> {
