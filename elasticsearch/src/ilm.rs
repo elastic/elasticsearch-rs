@@ -71,7 +71,7 @@ impl<'b> IlmDeleteLifecycleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ilm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/ilm-delete-lifecycle.html)\n\nDeletes the specified lifecycle policy definition. A currently used policy cannot be deleted."]
+#[doc = "Builder for the [Ilm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/ilm-delete-lifecycle.html)\n\nDeletes the specified lifecycle policy definition. A currently used policy cannot be deleted."]
 #[derive(Clone, Debug)]
 pub struct IlmDeleteLifecycle<'a, 'b> {
     transport: &'a Transport,
@@ -80,9 +80,11 @@ pub struct IlmDeleteLifecycle<'a, 'b> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b> IlmDeleteLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [IlmDeleteLifecycle] with the specified API parts"]
@@ -95,9 +97,11 @@ impl<'a, 'b> IlmDeleteLifecycle<'a, 'b> {
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -120,6 +124,11 @@ impl<'a, 'b> IlmDeleteLifecycle<'a, 'b> {
         self.human = Some(human);
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -133,6 +142,11 @@ impl<'a, 'b> IlmDeleteLifecycle<'a, 'b> {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous call to the Ilm Delete Lifecycle API that can be awaited"]
@@ -149,15 +163,19 @@ impl<'a, 'b> IlmDeleteLifecycle<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -191,7 +209,7 @@ impl<'b> IlmExplainLifecycleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ilm Explain Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/ilm-explain-lifecycle.html)\n\nRetrieves information about the index's current lifecycle state, such as the currently executing phase, action, and step."]
+#[doc = "Builder for the [Ilm Explain Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/ilm-explain-lifecycle.html)\n\nRetrieves information about the index's current lifecycle state, such as the currently executing phase, action, and step."]
 #[derive(Clone, Debug)]
 pub struct IlmExplainLifecycle<'a, 'b> {
     transport: &'a Transport,
@@ -200,6 +218,7 @@ pub struct IlmExplainLifecycle<'a, 'b> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     only_errors: Option<bool>,
     only_managed: Option<bool>,
     pretty: Option<bool>,
@@ -217,6 +236,7 @@ impl<'a, 'b> IlmExplainLifecycle<'a, 'b> {
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             only_errors: None,
             only_managed: None,
             pretty: None,
@@ -242,6 +262,11 @@ impl<'a, 'b> IlmExplainLifecycle<'a, 'b> {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "filters the indices included in the response to ones in an ILM error state, implies only_managed"]
@@ -283,6 +308,7 @@ impl<'a, 'b> IlmExplainLifecycle<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 only_errors: Option<bool>,
                 only_managed: Option<bool>,
                 pretty: Option<bool>,
@@ -292,6 +318,7 @@ impl<'a, 'b> IlmExplainLifecycle<'a, 'b> {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 only_errors: self.only_errors,
                 only_managed: self.only_managed,
                 pretty: self.pretty,
@@ -331,7 +358,7 @@ impl<'b> IlmGetLifecycleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ilm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/ilm-get-lifecycle.html)\n\nReturns the specified policy definition. Includes the policy version and last modified date."]
+#[doc = "Builder for the [Ilm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/ilm-get-lifecycle.html)\n\nReturns the specified policy definition. Includes the policy version and last modified date."]
 #[derive(Clone, Debug)]
 pub struct IlmGetLifecycle<'a, 'b> {
     transport: &'a Transport,
@@ -340,9 +367,11 @@ pub struct IlmGetLifecycle<'a, 'b> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b> IlmGetLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [IlmGetLifecycle] with the specified API parts"]
@@ -355,9 +384,11 @@ impl<'a, 'b> IlmGetLifecycle<'a, 'b> {
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -380,6 +411,11 @@ impl<'a, 'b> IlmGetLifecycle<'a, 'b> {
         self.human = Some(human);
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -393,6 +429,11 @@ impl<'a, 'b> IlmGetLifecycle<'a, 'b> {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous call to the Ilm Get Lifecycle API that can be awaited"]
@@ -409,15 +450,19 @@ impl<'a, 'b> IlmGetLifecycle<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -443,7 +488,7 @@ impl IlmGetStatusParts {
         }
     }
 }
-#[doc = "Builder for the [Ilm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/ilm-get-status.html)\n\nRetrieves the current index lifecycle management (ILM) status."]
+#[doc = "Builder for the [Ilm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/ilm-get-status.html)\n\nRetrieves the current index lifecycle management (ILM) status."]
 #[derive(Clone, Debug)]
 pub struct IlmGetStatus<'a, 'b> {
     transport: &'a Transport,
@@ -555,7 +600,7 @@ impl IlmMigrateToDataTiersParts {
         }
     }
 }
-#[doc = "Builder for the [Ilm Migrate To Data Tiers API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/ilm-migrate-to-data-tiers.html)\n\nMigrates the indices and ILM policies away from custom node attribute allocation routing to data tiers routing"]
+#[doc = "Builder for the [Ilm Migrate To Data Tiers API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/ilm-migrate-to-data-tiers.html)\n\nMigrates the indices and ILM policies away from custom node attribute allocation routing to data tiers routing"]
 #[derive(Clone, Debug)]
 pub struct IlmMigrateToDataTiers<'a, 'b, B> {
     transport: &'a Transport,
@@ -566,6 +611,7 @@ pub struct IlmMigrateToDataTiers<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -586,6 +632,7 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -605,6 +652,7 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
@@ -633,6 +681,11 @@ where
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -665,6 +718,7 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -673,6 +727,7 @@ where
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -707,7 +762,7 @@ impl<'b> IlmMoveToStepParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ilm Move To Step API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/ilm-move-to-step.html)\n\nManually moves an index into the specified step and executes that step."]
+#[doc = "Builder for the [Ilm Move To Step API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/ilm-move-to-step.html)\n\nManually moves an index into the specified step and executes that step."]
 #[derive(Clone, Debug)]
 pub struct IlmMoveToStep<'a, 'b, B> {
     transport: &'a Transport,
@@ -849,7 +904,7 @@ impl<'b> IlmPutLifecycleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ilm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/ilm-put-lifecycle.html)\n\nCreates a lifecycle policy"]
+#[doc = "Builder for the [Ilm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/ilm-put-lifecycle.html)\n\nCreates a lifecycle policy"]
 #[derive(Clone, Debug)]
 pub struct IlmPutLifecycle<'a, 'b, B> {
     transport: &'a Transport,
@@ -859,9 +914,11 @@ pub struct IlmPutLifecycle<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> IlmPutLifecycle<'a, 'b, B>
 where
@@ -878,9 +935,11 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -896,9 +955,11 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -921,6 +982,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -934,6 +1000,11 @@ where
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous call to the Ilm Put Lifecycle API that can be awaited"]
@@ -950,15 +1021,19 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -992,7 +1067,7 @@ impl<'b> IlmRemovePolicyParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ilm Remove Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/ilm-remove-policy.html)\n\nRemoves the assigned lifecycle policy and stops managing the specified index"]
+#[doc = "Builder for the [Ilm Remove Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/ilm-remove-policy.html)\n\nRemoves the assigned lifecycle policy and stops managing the specified index"]
 #[derive(Clone, Debug)]
 pub struct IlmRemovePolicy<'a, 'b, B> {
     transport: &'a Transport,
@@ -1135,7 +1210,7 @@ impl<'b> IlmRetryParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ilm Retry API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/ilm-retry-policy.html)\n\nRetries executing the policy for an index that is in the ERROR step."]
+#[doc = "Builder for the [Ilm Retry API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/ilm-retry-policy.html)\n\nRetries executing the policy for an index that is in the ERROR step."]
 #[derive(Clone, Debug)]
 pub struct IlmRetry<'a, 'b, B> {
     transport: &'a Transport,
@@ -1270,7 +1345,7 @@ impl IlmStartParts {
         }
     }
 }
-#[doc = "Builder for the [Ilm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/ilm-start.html)\n\nStart the index lifecycle management (ILM) plugin."]
+#[doc = "Builder for the [Ilm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/ilm-start.html)\n\nStart the index lifecycle management (ILM) plugin."]
 #[derive(Clone, Debug)]
 pub struct IlmStart<'a, 'b, B> {
     transport: &'a Transport,
@@ -1280,9 +1355,11 @@ pub struct IlmStart<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> IlmStart<'a, 'b, B>
 where
@@ -1299,9 +1376,11 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -1317,9 +1396,11 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1342,6 +1423,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -1355,6 +1441,11 @@ where
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous call to the Ilm Start API that can be awaited"]
@@ -1371,15 +1462,19 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -1405,7 +1500,7 @@ impl IlmStopParts {
         }
     }
 }
-#[doc = "Builder for the [Ilm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/ilm-stop.html)\n\nHalts all lifecycle management operations and stops the index lifecycle management (ILM) plugin"]
+#[doc = "Builder for the [Ilm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/ilm-stop.html)\n\nHalts all lifecycle management operations and stops the index lifecycle management (ILM) plugin"]
 #[derive(Clone, Debug)]
 pub struct IlmStop<'a, 'b, B> {
     transport: &'a Transport,
@@ -1415,9 +1510,11 @@ pub struct IlmStop<'a, 'b, B> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> IlmStop<'a, 'b, B>
 where
@@ -1434,9 +1531,11 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -1452,9 +1551,11 @@ where
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
+            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1477,6 +1578,11 @@ where
         self.human = Some(human);
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -1490,6 +1596,11 @@ where
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous call to the Ilm Stop API that can be awaited"]
@@ -1506,15 +1617,19 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -1538,59 +1653,59 @@ impl<'a> Ilm<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Ilm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/ilm-delete-lifecycle.html)\n\nDeletes the specified lifecycle policy definition. A currently used policy cannot be deleted."]
+    #[doc = "[Ilm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/ilm-delete-lifecycle.html)\n\nDeletes the specified lifecycle policy definition. A currently used policy cannot be deleted."]
     pub fn delete_lifecycle<'b>(
         &'a self,
         parts: IlmDeleteLifecycleParts<'b>,
     ) -> IlmDeleteLifecycle<'a, 'b> {
         IlmDeleteLifecycle::new(self.transport(), parts)
     }
-    #[doc = "[Ilm Explain Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/ilm-explain-lifecycle.html)\n\nRetrieves information about the index's current lifecycle state, such as the currently executing phase, action, and step."]
+    #[doc = "[Ilm Explain Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/ilm-explain-lifecycle.html)\n\nRetrieves information about the index's current lifecycle state, such as the currently executing phase, action, and step."]
     pub fn explain_lifecycle<'b>(
         &'a self,
         parts: IlmExplainLifecycleParts<'b>,
     ) -> IlmExplainLifecycle<'a, 'b> {
         IlmExplainLifecycle::new(self.transport(), parts)
     }
-    #[doc = "[Ilm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/ilm-get-lifecycle.html)\n\nReturns the specified policy definition. Includes the policy version and last modified date."]
+    #[doc = "[Ilm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/ilm-get-lifecycle.html)\n\nReturns the specified policy definition. Includes the policy version and last modified date."]
     pub fn get_lifecycle<'b>(&'a self, parts: IlmGetLifecycleParts<'b>) -> IlmGetLifecycle<'a, 'b> {
         IlmGetLifecycle::new(self.transport(), parts)
     }
-    #[doc = "[Ilm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/ilm-get-status.html)\n\nRetrieves the current index lifecycle management (ILM) status."]
+    #[doc = "[Ilm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/ilm-get-status.html)\n\nRetrieves the current index lifecycle management (ILM) status."]
     pub fn get_status<'b>(&'a self) -> IlmGetStatus<'a, 'b> {
         IlmGetStatus::new(self.transport())
     }
-    #[doc = "[Ilm Migrate To Data Tiers API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/ilm-migrate-to-data-tiers.html)\n\nMigrates the indices and ILM policies away from custom node attribute allocation routing to data tiers routing"]
+    #[doc = "[Ilm Migrate To Data Tiers API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/ilm-migrate-to-data-tiers.html)\n\nMigrates the indices and ILM policies away from custom node attribute allocation routing to data tiers routing"]
     pub fn migrate_to_data_tiers<'b>(&'a self) -> IlmMigrateToDataTiers<'a, 'b, ()> {
         IlmMigrateToDataTiers::new(self.transport())
     }
-    #[doc = "[Ilm Move To Step API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/ilm-move-to-step.html)\n\nManually moves an index into the specified step and executes that step."]
+    #[doc = "[Ilm Move To Step API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/ilm-move-to-step.html)\n\nManually moves an index into the specified step and executes that step."]
     pub fn move_to_step<'b>(&'a self, parts: IlmMoveToStepParts<'b>) -> IlmMoveToStep<'a, 'b, ()> {
         IlmMoveToStep::new(self.transport(), parts)
     }
-    #[doc = "[Ilm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/ilm-put-lifecycle.html)\n\nCreates a lifecycle policy"]
+    #[doc = "[Ilm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/ilm-put-lifecycle.html)\n\nCreates a lifecycle policy"]
     pub fn put_lifecycle<'b>(
         &'a self,
         parts: IlmPutLifecycleParts<'b>,
     ) -> IlmPutLifecycle<'a, 'b, ()> {
         IlmPutLifecycle::new(self.transport(), parts)
     }
-    #[doc = "[Ilm Remove Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/ilm-remove-policy.html)\n\nRemoves the assigned lifecycle policy and stops managing the specified index"]
+    #[doc = "[Ilm Remove Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/ilm-remove-policy.html)\n\nRemoves the assigned lifecycle policy and stops managing the specified index"]
     pub fn remove_policy<'b>(
         &'a self,
         parts: IlmRemovePolicyParts<'b>,
     ) -> IlmRemovePolicy<'a, 'b, ()> {
         IlmRemovePolicy::new(self.transport(), parts)
     }
-    #[doc = "[Ilm Retry API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/ilm-retry-policy.html)\n\nRetries executing the policy for an index that is in the ERROR step."]
+    #[doc = "[Ilm Retry API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/ilm-retry-policy.html)\n\nRetries executing the policy for an index that is in the ERROR step."]
     pub fn retry<'b>(&'a self, parts: IlmRetryParts<'b>) -> IlmRetry<'a, 'b, ()> {
         IlmRetry::new(self.transport(), parts)
     }
-    #[doc = "[Ilm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/ilm-start.html)\n\nStart the index lifecycle management (ILM) plugin."]
+    #[doc = "[Ilm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/ilm-start.html)\n\nStart the index lifecycle management (ILM) plugin."]
     pub fn start<'b>(&'a self) -> IlmStart<'a, 'b, ()> {
         IlmStart::new(self.transport())
     }
-    #[doc = "[Ilm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/ilm-stop.html)\n\nHalts all lifecycle management operations and stops the index lifecycle management (ILM) plugin"]
+    #[doc = "[Ilm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/ilm-stop.html)\n\nHalts all lifecycle management operations and stops the index lifecycle management (ILM) plugin"]
     pub fn stop<'b>(&'a self) -> IlmStop<'a, 'b, ()> {
         IlmStop::new(self.transport())
     }
