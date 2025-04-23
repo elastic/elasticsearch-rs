@@ -34,7 +34,7 @@ use void::Void;
 /// A response from Elasticsearch
 pub struct Response {
     response: reqwest::Response,
-    method: Method,
+    method: Method, // reqwest's Response has the URL but not the method
 }
 
 impl Response {
