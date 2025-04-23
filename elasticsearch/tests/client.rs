@@ -39,7 +39,7 @@ use serde_json::{json, Value};
 use std::time::Duration;
 
 #[tokio::test]
-async fn default_user_agent_content_type_accept_headers() -> Result<(), failure::Error> {
+async fn default_user_agent_content_type_accept_headers() -> anyhow::Result<()> {
     let server = server::http(move |req| async move {
         assert_eq!(req.headers()["user-agent"], DEFAULT_USER_AGENT);
         assert_eq!(req.headers()["content-type"], "application/json");
@@ -54,7 +54,7 @@ async fn default_user_agent_content_type_accept_headers() -> Result<(), failure:
 }
 
 #[tokio::test]
-async fn default_header() -> Result<(), failure::Error> {
+async fn default_header() -> anyhow::Result<()> {
     let server = server::http(move |req| async move {
         assert_eq!(req.headers()["x-opaque-id"], "foo");
         http::Response::default()
@@ -72,7 +72,7 @@ async fn default_header() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
-async fn override_default_header() -> Result<(), failure::Error> {
+async fn override_default_header() -> anyhow::Result<()> {
     let server = server::http(move |req| async move {
         assert_eq!(req.headers()["x-opaque-id"], "bar");
         http::Response::default()
@@ -97,7 +97,7 @@ async fn override_default_header() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
-async fn x_opaque_id_header() -> Result<(), failure::Error> {
+async fn x_opaque_id_header() -> anyhow::Result<()> {
     let server = server::http(move |req| async move {
         assert_eq!(req.headers()["x-opaque-id"], "foo");
         http::Response::default()
@@ -182,7 +182,7 @@ async fn call_request_timeout_supersedes_global_timeout() {
 }
 
 #[tokio::test]
-async fn warning_headers() -> Result<(), failure::Error> {
+async fn warning_headers() -> anyhow::Result<()> {
     let client = client::create_default();
     let index = "warnings-test";
     let _delete_response = client
@@ -200,7 +200,8 @@ async fn warning_headers() -> Result<(), failure::Error> {
     // ES|QL produces a warning when no limit is defined
     let response = client
         .esql()
-        .query().body(json!({ "query": "from warnings-test | keep *" }))
+        .query()
+        .body(json!({ "query": "from warnings-test | keep *" }))
         .send()
         .await?;
 
@@ -223,7 +224,7 @@ async fn warning_headers() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
-async fn serialize_querystring() -> Result<(), failure::Error> {
+async fn serialize_querystring() -> anyhow::Result<()> {
     let server = server::http(move |req| async move {
         assert_eq!(req.method(), Method::GET);
         assert_eq!(req.uri().path(), "/_search");
@@ -248,7 +249,7 @@ async fn serialize_querystring() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
-async fn search_with_body() -> Result<(), failure::Error> {
+async fn search_with_body() -> anyhow::Result<()> {
     let client = client::create_default();
     let _ = index_documents(&client).await?;
     let response = client
@@ -291,7 +292,7 @@ async fn search_with_body() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
-async fn search_with_no_body() -> Result<(), failure::Error> {
+async fn search_with_no_body() -> anyhow::Result<()> {
     let client = client::create_default();
     let _ = index_documents(&client).await?;
     let response = client
@@ -314,7 +315,7 @@ async fn search_with_no_body() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
-async fn read_response_as_bytes() -> Result<(), failure::Error> {
+async fn read_response_as_bytes() -> anyhow::Result<()> {
     let client = client::create_default();
     let _ = index_documents(&client).await?;
     let response = client
@@ -340,7 +341,7 @@ async fn read_response_as_bytes() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
-async fn cat_health_format_json() -> Result<(), failure::Error> {
+async fn cat_health_format_json() -> anyhow::Result<()> {
     let client = client::create_default();
     let response = client
         .cat()
@@ -364,7 +365,7 @@ async fn cat_health_format_json() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
-async fn cat_health_header_json() -> Result<(), failure::Error> {
+async fn cat_health_header_json() -> anyhow::Result<()> {
     let client = client::create_default();
     let response = client
         .cat()
@@ -388,7 +389,7 @@ async fn cat_health_header_json() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
-async fn cat_health_text() -> Result<(), failure::Error> {
+async fn cat_health_text() -> anyhow::Result<()> {
     let client = client::create_default();
     let response = client.cat().health().pretty(true).send().await?;
 
@@ -406,7 +407,7 @@ async fn cat_health_text() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
-async fn clone_search_with_body() -> Result<(), failure::Error> {
+async fn clone_search_with_body() -> anyhow::Result<()> {
     let client = client::create_default();
     let _ = index_documents(&client).await?;
     let base_request = client.search(SearchParts::None);
@@ -432,7 +433,7 @@ async fn clone_search_with_body() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
-async fn byte_slice_body() -> Result<(), failure::Error> {
+async fn byte_slice_body() -> anyhow::Result<()> {
     let client = client::create_default();
     let body = b"{\"query\":{\"match_all\":{}}}";
 

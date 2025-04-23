@@ -18,6 +18,7 @@
  */
 use super::Step;
 use crate::step::Expr;
+use anyhow::anyhow;
 use quote::{ToTokens, Tokens};
 use yaml_rust::Yaml;
 
@@ -36,15 +37,15 @@ impl From<Comparison> for Step {
 }
 
 impl Comparison {
-    pub fn try_parse(yaml: &Yaml, op: &str) -> Result<Comparison, failure::Error> {
+    pub fn try_parse(yaml: &Yaml, op: &str) -> anyhow::Result<Comparison> {
         let hash = yaml
             .as_hash()
-            .ok_or_else(|| failure::err_msg(format!("expected hash but found {:?}", yaml)))?;
+            .ok_or_else(|| anyhow!("expected hash but found {:?}", yaml))?;
 
         let (k, v) = hash.iter().next().unwrap();
         let expr = k
             .as_str()
-            .ok_or_else(|| failure::err_msg(format!("expected string key but found {:?}", k)))?;
+            .ok_or_else(|| anyhow!("expected string key but found {:?}", k))?;
 
         Ok(Comparison {
             expr: expr.into(),

@@ -20,10 +20,10 @@
 // Licensed under Apache License, Version 2.0
 // https://github.com/seanmonstar/reqwest/blob/master/LICENSE-APACHE
 
+use axum::handler::HandlerWithoutStateExt;
 use std::future::IntoFuture;
 use std::net::SocketAddr;
 use std::{future::Future, sync::mpsc as std_mpsc, thread, time::Duration};
-use axum::handler::HandlerWithoutStateExt;
 use tokio::sync::oneshot;
 
 use tokio::runtime;
@@ -72,8 +72,8 @@ where
             let listener = tokio::net::TcpListener::bind(bind_addr).await.unwrap();
             let local_addr = listener.local_addr().unwrap();
 
-            let server = axum::serve(listener, func.into_make_service())
-                .with_graceful_shutdown(async {
+            let server =
+                axum::serve(listener, func.into_make_service()).with_graceful_shutdown(async {
                     let _ = shutdown_rx.await;
                 });
 

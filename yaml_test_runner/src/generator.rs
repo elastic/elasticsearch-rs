@@ -17,6 +17,7 @@
  * under the License.
  */
 use crate::step::*;
+use anyhow::anyhow;
 use api_generator::generator::Api;
 use inflector::Inflector;
 use path_slash::PathExt;
@@ -272,7 +273,7 @@ impl<'a> YamlTests<'a> {
                     },
                     None => Some(quote! {
                         #[tokio::test]
-                        async fn #fn_name() -> Result<(), failure::Error> {
+                        async fn #fn_name() -> anyhow::Result<()> {
                             let client = client::get();
                             #general_setup_call
                             #setup_call
@@ -305,7 +306,7 @@ impl<'a> YamlTests<'a> {
 
             (
                 Some(quote! {
-                    async fn #ident(client: &Elasticsearch) -> Result<(), failure::Error> {
+                    async fn #ident(client: &Elasticsearch) -> anyhow::Result<()> {
                         #(#tokens)*
                         Ok(())
                     }
@@ -433,15 +434,15 @@ pub fn generate_tests_from_yaml(
                 let mut test =
                     YamlTests::new(relative_path, version, &skips, test_suite, docs.len());
 
-                let results : Vec<Result<(), failure::Error>> = docs
+                let results : Vec<anyhow::Result<()>> = docs
                     .iter()
                     .map(|doc| {
                         let hash = doc
                             .as_hash()
-                            .ok_or_else(|| failure::err_msg(format!(
+                            .ok_or_else(|| anyhow!(
                                 "expected hash but found {:?}",
                                 &doc
-                            )))?;
+                            ))?;
 
                         let (key, value) = hash.iter().next().unwrap();
                         match (key, value) {
@@ -456,12 +457,12 @@ pub fn generate_tests_from_yaml(
                                 Ok(())
                             }
                             (k, v) => {
-                                Err(failure::err_msg(format!(
+                                Err(anyhow!(
                                     "expected string key and array value in {:?}, but found {:?} and {:?}",
                                     relative_path,
                                     &k,
                                     &v,
-                                )))
+                                ))
                             }
                         }
                     })

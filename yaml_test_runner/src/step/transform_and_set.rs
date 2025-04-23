@@ -18,6 +18,7 @@
  */
 use super::Step;
 use crate::step::Expr;
+use anyhow::anyhow;
 use inflector::Inflector;
 use quote::{ToTokens, Tokens};
 use yaml_rust::Yaml;
@@ -92,19 +93,19 @@ impl From<TransformAndSet> for Step {
 }
 
 impl TransformAndSet {
-    pub fn try_parse(yaml: &Yaml) -> Result<TransformAndSet, failure::Error> {
+    pub fn try_parse(yaml: &Yaml) -> anyhow::Result<TransformAndSet> {
         let hash = yaml
             .as_hash()
-            .ok_or_else(|| failure::err_msg(format!("expected hash but found {:?}", yaml)))?;
+            .ok_or_else(|| anyhow!("expected hash but found {:?}", yaml))?;
 
         let (k, v) = hash.iter().next().unwrap();
         let ident = k
             .as_str()
-            .ok_or_else(|| failure::err_msg(format!("expected string key but found {:?}", k)))?;
+            .ok_or_else(|| anyhow!("expected string key but found {:?}", k))?;
 
         let transformation = v
             .as_str()
-            .ok_or_else(|| failure::err_msg(format!("expected string value but found {:?}", v)))?;
+            .ok_or_else(|| anyhow!("expected string value but found {:?}", v))?;
 
         Ok(TransformAndSet {
             ident: syn::Ident::from(ident),
