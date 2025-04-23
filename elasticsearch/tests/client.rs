@@ -27,7 +27,7 @@ use elasticsearch::{
         },
         StatusCode,
     },
-    indices::{IndicesCloseParts, IndicesCreateParts, IndicesDeleteParts},
+    indices::{IndicesCreateParts, IndicesDeleteParts},
     params::TrackTotalHits,
     SearchParts,
 };
@@ -182,9 +182,9 @@ async fn call_request_timeout_supersedes_global_timeout() {
 }
 
 #[tokio::test]
-async fn deprecation_warning_headers() -> Result<(), failure::Error> {
+async fn warning_headers() -> Result<(), failure::Error> {
     let client = client::create_default();
-    let index = "deprecation-warnings";
+    let index = "warnings-test";
     let _delete_response = client
         .indices()
         .delete(IndicesDeleteParts::Index(&[index]))
@@ -197,10 +197,10 @@ async fn deprecation_warning_headers() -> Result<(), failure::Error> {
         .send()
         .await?;
 
+    // ES|QL produces a warning when no limit is defined
     let response = client
-        .indices()
-        .close(IndicesCloseParts::Index(&[index]))
-        .wait_for_active_shards("index-setting")
+        .esql()
+        .query().body(json!({ "query": "from warnings-test | keep *" }))
         .send()
         .await?;
 
@@ -208,7 +208,7 @@ async fn deprecation_warning_headers() -> Result<(), failure::Error> {
     let warnings = response.warning_headers().collect::<Vec<&str>>();
     assert!(!warnings.is_empty());
     assert!(
-        warnings.iter().any(|&w| w.contains("unsupported")),
+        warnings.iter().any(|&w| w.contains("No limit defined")),
         "warnings= {:?}",
         &warnings
     );
