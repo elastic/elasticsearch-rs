@@ -256,7 +256,7 @@ fn main() {
 }
 
 fn update_docs(old_version: &str, new_version: &Version) {
-    for entry in glob("docs/*.asciidoc").unwrap()
+    for entry in glob("docs/**/*.md").unwrap()
         .chain(glob("README.md").unwrap())
         .chain(glob("elasticsearch/src/lib.rs").unwrap()) {
         match entry {
