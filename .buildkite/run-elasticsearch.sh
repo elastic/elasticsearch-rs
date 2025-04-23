@@ -84,14 +84,14 @@ fi
 
 # Pull the container, retry on failures up to 5 times with
 # short delays between each attempt. Fixes most transient network errors.
-docker_pull_attempts=0
-until [ "$docker_pull_attempts" -ge 5 ]
-do
-   docker pull docker.elastic.co/elasticsearch/"$elasticsearch_container" && break
-   docker_pull_attempts=$((docker_pull_attempts+1))
-   echo "Failed to pull image, retrying in 10 seconds (retry $docker_pull_attempts/5)..."
-   sleep 10
-done
+#docker_pull_attempts=0
+#until [ "$docker_pull_attempts" -ge 5 ]
+#do
+#   docker pull docker.elastic.co/elasticsearch/"$elasticsearch_container" && break
+#   docker_pull_attempts=$((docker_pull_attempts+1))
+#   echo "Failed to pull image, retrying in 10 seconds (retry $docker_pull_attempts/5)..."
+#   sleep 10
+#done
 
 NUMBER_OF_NODES=${NUMBER_OF_NODES-1}
 http_port=9200
