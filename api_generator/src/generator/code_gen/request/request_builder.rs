@@ -154,7 +154,7 @@ impl<'a> RequestBuilder<'a> {
                 }
             });
 
-            let query_ctor = endpoint_params.iter().map(|(param_name, _)| {
+            let query_ctor = endpoint_params.keys().map(|param_name| {
                 let field_name = ident(valid_name(param_name).to_lowercase());
                 quote! {
                     #field_name: self.#field_name

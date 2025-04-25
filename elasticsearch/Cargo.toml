@@ -62,3 +62,7 @@ xml-rs = "0.8"
 
 [build-dependencies]
 rustc_version = "0.4"
+
+[lints.clippy]
+needless_lifetimes = "allow" # generated lifetimes
+uninlined_format_args = "allow" # too pedantic

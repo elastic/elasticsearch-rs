@@ -485,7 +485,7 @@ impl Transport {
     /// [Elasticsearch service in Elastic Cloud](https://www.elastic.co/cloud/).
     ///
     /// * `cloud_id`: The Elastic Cloud Id retrieved from the cloud web console, that uniquely
-    ///               identifies the deployment instance.
+    ///   identifies the deployment instance.
     /// * `credentials`: A set of credentials the client should use to authenticate to Elasticsearch service.
     pub fn cloud(cloud_id: &str, credentials: Credentials) -> Result<Transport, Error> {
         let conn_pool = CloudConnectionPool::new(cloud_id)?;
