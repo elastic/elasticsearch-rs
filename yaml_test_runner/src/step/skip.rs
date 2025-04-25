@@ -89,7 +89,7 @@ impl Skip {
         }
     }
 
-    pub fn try_parse(yaml: &Yaml) -> Result<Skip, failure::Error> {
+    pub fn try_parse(yaml: &Yaml) -> anyhow::Result<Skip> {
         let version = yaml["version"]
             .as_str()
             .map_or_else(|| None, |y| Some(y.to_string()));

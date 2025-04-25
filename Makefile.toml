@@ -3,7 +3,7 @@ default_to_workspace = false
 
 [env]
 # Determines the version of Elasticsearch docker container used
-STACK_VERSION = { value = "8.0.0-SNAPSHOT", condition = { env_not_set = ["STACK_VERSION"] }}
+STACK_VERSION = { value = "9.0.0-SNAPSHOT", condition = { env_not_set = ["STACK_VERSION"] }}
 # Determines the distribution of docker container used. Either platinum or free
 TEST_SUITE = { value = "free", condition = { env_not_set = ["TEST_SUITE"] }}
 # Set publish flags to dry-run by default, to force user to explicitly define for publishing
@@ -256,7 +256,7 @@ fn main() {
 }
 
 fn update_docs(old_version: &str, new_version: &Version) {
-    for entry in glob("docs/*.asciidoc").unwrap()
+    for entry in glob("docs/**/*.md").unwrap()
         .chain(glob("README.md").unwrap())
         .chain(glob("elasticsearch/src/lib.rs").unwrap()) {
         match entry {

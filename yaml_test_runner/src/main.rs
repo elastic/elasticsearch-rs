@@ -125,7 +125,7 @@ fn main() -> anyhow::Result<()> {
 
 fn branch_suite_and_version_from_elasticsearch(
     url: &str,
-) -> Result<(String, TestSuite, String, semver::Version), failure::Error> {
+) -> anyhow::Result<(String, TestSuite, String, semver::Version)> {
     let client = reqwest::blocking::ClientBuilder::new()
         .danger_accept_invalid_certs(true)
         .build()?;

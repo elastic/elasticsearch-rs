@@ -17,6 +17,7 @@
  * under the License.
  */
 use crate::regex::*;
+use anyhow::anyhow;
 use api_generator::generator::Api;
 use std::fmt::Write;
 use yaml_rust::{Yaml, YamlEmitter};
@@ -42,18 +43,18 @@ pub use set::*;
 pub use skip::*;
 pub use transform_and_set::*;
 
-pub fn parse_steps(api: &Api, steps: &[Yaml]) -> Result<Vec<Step>, failure::Error> {
+pub fn parse_steps(api: &Api, steps: &[Yaml]) -> anyhow::Result<Vec<Step>> {
     let mut parsed_steps: Vec<Step> = Vec::new();
     for step in steps {
         let hash = step
             .as_hash()
-            .ok_or_else(|| failure::err_msg(format!("expected hash but found {:?}", step)))?;
+            .ok_or_else(|| anyhow!("expected hash but found {:?}", step))?;
 
         let (key, value) = {
             let (k, yaml) = hash.iter().next().unwrap();
-            let key = k.as_str().ok_or_else(|| {
-                failure::err_msg(format!("expected string key but found {:?}", k))
-            })?;
+            let key = k
+                .as_str()
+                .ok_or_else(|| anyhow!("expected string key but found {:?}", k))?;
 
             (key, yaml)
         };
@@ -99,7 +100,7 @@ pub fn parse_steps(api: &Api, steps: &[Yaml]) -> Result<Vec<Step>, failure::Erro
                 let comp = Comparison::try_parse(value, op)?;
                 parsed_steps.push(comp.into())
             }
-            op => return Err(failure::err_msg(format!("unknown step operation: {}", op))),
+            op => return Err(anyhow!("unknown step operation: {}", op)),
         }
     }
 
@@ -228,7 +229,7 @@ impl Step {
 
 /// Checks whether there are any Errs in the collection, and accumulates them into one
 /// error message if there are.
-pub fn ok_or_accumulate<T>(results: &[Result<T, failure::Error>]) -> Result<(), failure::Error> {
+pub fn ok_or_accumulate<T>(results: &[anyhow::Result<T>]) -> anyhow::Result<()> {
     let errs = results
         .iter()
         .filter_map(|r| r.as_ref().err())
@@ -239,7 +240,7 @@ pub fn ok_or_accumulate<T>(results: &[Result<T, failure::Error>]) -> Result<(), 
         let mut msgs = errs.iter().map(|e| e.to_string()).collect::<Vec<_>>();
         msgs.sort();
         msgs.dedup_by(|a, b| a == b);
-        Err(failure::err_msg(msgs.join(", ")))
+        Err(anyhow!(msgs.join(", ")))
     }
 }
 

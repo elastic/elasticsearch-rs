@@ -18,11 +18,11 @@
  */
 
 use anyhow::bail;
+use clap::Parser;
 use once_cell::sync::Lazy;
 use std::env;
 use std::ops::Deref;
 use std::path;
-use clap::Parser;
 
 pub mod artifacts;
 

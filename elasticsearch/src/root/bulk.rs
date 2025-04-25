@@ -686,7 +686,7 @@ mod tests {
     }
 
     #[test]
-    fn serialize_bulk_operations_with_same_type_writes_to_bytes() -> Result<(), failure::Error> {
+    fn serialize_bulk_operations_with_same_type_writes_to_bytes() -> anyhow::Result<()> {
         let mut bytes = BytesMut::new();
         let mut ops: Vec<BulkOperation<Value>> = Vec::with_capacity(4);
 
@@ -760,8 +760,7 @@ mod tests {
     }
 
     #[test]
-    fn serialize_bulk_operations_with_different_types_writes_to_bytes() -> Result<(), failure::Error>
-    {
+    fn serialize_bulk_operations_with_different_types_writes_to_bytes() -> anyhow::Result<()> {
         #[derive(Serialize)]
         struct IndexDoc<'a> {
             foo: &'a str,
