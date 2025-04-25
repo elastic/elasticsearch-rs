@@ -38,3 +38,6 @@ void = "1"
 
 [dev-dependencies]
 tempfile = "3.12"
+
+[lints.clippy]
+uninlined_format_args = "allow" # too pedantic

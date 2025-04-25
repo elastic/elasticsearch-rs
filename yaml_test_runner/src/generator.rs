@@ -425,7 +425,7 @@ pub fn generate_tests_from_yaml(
                     error!(
                         "skipping {}. cannot read as Yaml struct: {}",
                         relative_path.to_slash_lossy(),
-                        result.err().unwrap().to_string()
+                        result.err().unwrap()
                     );
                     continue;
                 }
