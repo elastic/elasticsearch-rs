@@ -18,6 +18,7 @@
  */
 use super::Step;
 use crate::step::Expr;
+use anyhow::anyhow;
 use quote::{ToTokens, Tokens};
 use yaml_rust::Yaml;
 
@@ -32,10 +33,10 @@ impl From<IsTrue> for Step {
 }
 
 impl IsTrue {
-    pub fn try_parse(yaml: &Yaml) -> Result<IsTrue, failure::Error> {
-        let expr = yaml.as_str().ok_or_else(|| {
-            failure::err_msg(format!("expected string key but found {:?}", &yaml))
-        })?;
+    pub fn try_parse(yaml: &Yaml) -> anyhow::Result<IsTrue> {
+        let expr = yaml
+            .as_str()
+            .ok_or_else(|| anyhow!("expected string key but found {:?}", &yaml))?;
 
         Ok(IsTrue { expr: expr.into() })
     }

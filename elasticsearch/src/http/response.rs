@@ -34,7 +34,7 @@ use void::Void;
 /// A response from Elasticsearch
 pub struct Response {
     response: reqwest::Response,
-    method: Method,
+    method: Method, // reqwest's Response has the URL but not the method
 }
 
 impl Response {
@@ -371,7 +371,7 @@ pub mod tests {
     use serde_json::json;
 
     #[test]
-    fn deserialize_error_string() -> Result<(), failure::Error> {
+    fn deserialize_error_string() -> anyhow::Result<()> {
         let json = r#"{"error":"no handler found for uri [/test_1/test/1/_update?_source=foo%2Cbar] and method [POST]"}"#;
         let ex: Exception = serde_json::from_str(json)?;
 
@@ -383,7 +383,7 @@ pub mod tests {
     }
 
     #[test]
-    fn deserialize_illegal_argument_exception() -> Result<(), failure::Error> {
+    fn deserialize_illegal_argument_exception() -> anyhow::Result<()> {
         let json = r#"{
           "error": {
             "root_cause": [{
@@ -477,7 +477,7 @@ pub mod tests {
     }
 
     #[test]
-    fn deserialize_index_not_found_exception() -> Result<(), failure::Error> {
+    fn deserialize_index_not_found_exception() -> anyhow::Result<()> {
         let json = r#"{
           "error": {
             "root_cause": [{

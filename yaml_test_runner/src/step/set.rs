@@ -18,6 +18,7 @@
  */
 use super::Step;
 use crate::step::Expr;
+use anyhow::anyhow;
 use quote::{ToTokens, Tokens};
 use yaml_rust::Yaml;
 
@@ -33,19 +34,19 @@ impl From<Set> for Step {
 }
 
 impl Set {
-    pub fn try_parse(yaml: &Yaml) -> Result<Set, failure::Error> {
+    pub fn try_parse(yaml: &Yaml) -> anyhow::Result<Set> {
         let hash = yaml
             .as_hash()
-            .ok_or_else(|| failure::err_msg(format!("expected hash but found {:?}", yaml)))?;
+            .ok_or_else(|| anyhow!("expected hash but found {:?}", yaml))?;
 
         let (k, v) = hash.iter().next().unwrap();
         let expr = k
             .as_str()
-            .ok_or_else(|| failure::err_msg(format!("expected string key but found {:?}", k)))?;
+            .ok_or_else(|| anyhow!("expected string key but found {:?}", k))?;
 
         let id = v
             .as_str()
-            .ok_or_else(|| failure::err_msg(format!("expected string value but found {:?}", v)))?;
+            .ok_or_else(|| anyhow!("expected string value but found {:?}", v))?;
 
         Ok(Set {
             ident: syn::Ident::from(id),

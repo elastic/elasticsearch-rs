@@ -18,6 +18,7 @@
  */
 use super::Step;
 use crate::step::{json_string_from_yaml, Expr};
+use anyhow::anyhow;
 use quote::{ToTokens, Tokens};
 use yaml_rust::Yaml;
 
@@ -33,10 +34,10 @@ impl From<Contains> for Step {
 }
 
 impl Contains {
-    pub fn try_parse(yaml: &Yaml) -> Result<Contains, failure::Error> {
+    pub fn try_parse(yaml: &Yaml) -> anyhow::Result<Contains> {
         let hash = yaml
             .as_hash()
-            .ok_or_else(|| failure::err_msg(format!("expected hash but found {:?}", yaml)))?;
+            .ok_or_else(|| anyhow!("expected hash but found {:?}", yaml))?;
 
         let (k, v) = hash.iter().next().unwrap();
         let expr = k.as_str().unwrap().trim();

@@ -25,7 +25,7 @@ use base64::{engine::general_purpose::STANDARD as BASE64_STANDARD, write::Encode
 use std::io::Write;
 
 #[tokio::test]
-async fn basic_auth_header() -> Result<(), failure::Error> {
+async fn basic_auth_header() -> anyhow::Result<()> {
     let server = server::http(move |req| async move {
         let mut header_value = b"Basic ".to_vec();
         {
@@ -50,7 +50,7 @@ async fn basic_auth_header() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
-async fn api_key_header() -> Result<(), failure::Error> {
+async fn api_key_header() -> anyhow::Result<()> {
     let server = server::http(move |req| async move {
         let mut header_value = b"ApiKey ".to_vec();
         {
@@ -75,7 +75,7 @@ async fn api_key_header() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
-async fn encoded_api_key_header() -> Result<(), failure::Error> {
+async fn encoded_api_key_header() -> anyhow::Result<()> {
     let server = server::http(move |req| async move {
         let mut header_value = b"ApiKey ".to_vec();
         {
@@ -101,7 +101,7 @@ async fn encoded_api_key_header() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
-async fn bearer_header() -> Result<(), failure::Error> {
+async fn bearer_header() -> anyhow::Result<()> {
     let server = server::http(move |req| async move {
         assert_eq!(req.headers()["authorization"], "Bearer access_token");
         http::Response::default()
@@ -118,7 +118,7 @@ async fn bearer_header() -> Result<(), failure::Error> {
 
 // TODO: test PKI authentication. Could configure a HttpsConnector, maybe using https://github.com/sfackler/hyper-openssl?, or send to PKI configured Elasticsearch.
 //#[tokio::test]
-//async fn client_certificate() -> Result<(), failure::Error> {
+//async fn client_certificate() -> anyhow::Result<()> {
 //    let server = server::http(move |req| {
 //        async move {
 //            http::Response::default()
