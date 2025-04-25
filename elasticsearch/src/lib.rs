@@ -23,24 +23,20 @@
 //!
 //! # Versions and Compatibility
 //!
-//! | Rust client | Elasticsearch |
-//! |-------------|---------------|
-//! | 7.x         | 7.x           |
-//!
 //! A major version of the client is compatible with the same major version of Elasticsearch.
 //! Since Elasticsearch is developed following [Semantic Versioning](https://semver.org/) principles,
 //! Any minor/patch version of the client can be used against any minor/patch version of Elasticsearch
 //! **within the same major version lineage**. For example,
 //!
-//! - A `7.5.0` client can be used against `7.0.0` Elasticsearch
-//! - A `7.4.0` client can be used against `7.5.1` Elasticsearch
+//! - A `8.5.0` client can be used against `8.0.0` Elasticsearch
+//! - A `8.4.0` client can be used against `8.5.1` Elasticsearch
 //!
-//! In the former case, a 7.5.0 client may contain additional API functions that are not available
-//! in 7.0.0 Elasticsearch. In this case, these APIs cannot be used, but for any APIs available in
+//! In the former case, a 8.5.0 client may contain additional API functions that are not available
+//! in 8.0.0 Elasticsearch. In this case, these APIs cannot be used, but for any APIs available in
 //! Elasticsearch, the respective API functions on the client will be compatible.
 //!
-//! In the latter case, a 7.4.0 client won't contain API functions for APIs that are introduced in
-//! Elasticsearch 7.5.0+, but for all other APIs available in Elasticsearch, the respective API
+//! In the latter case, a 8.4.0 client won't contain API functions for APIs that are introduced in
+//! Elasticsearch 8.5.0+, but for all other APIs available in Elasticsearch, the respective API
 //! functions on the client will be compatible.
 //!
 //! **No compatibility assurances are given between different major versions of the client and
@@ -66,7 +62,7 @@
 //!
 //! ```toml,no_run
 //! [dependencies]
-//! elasticsearch = "8.7.0-alpha.1"
+//! elasticsearch = "9.0.0-alpha.1"
 //! ```
 //! The following _optional_ dependencies may also be useful to create requests and read responses
 //!

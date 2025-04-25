@@ -18,6 +18,7 @@
  */
 use super::{ok_or_accumulate, Step};
 use crate::regex::{clean_regex, *};
+use anyhow::anyhow;
 use api_generator::generator::{Api, ApiEndpoint, TypeKind};
 use inflector::Inflector;
 use itertools::Itertools;
@@ -135,10 +136,10 @@ impl Do {
         read_response
     }
 
-    pub fn try_parse(api: &Api, yaml: &Yaml) -> Result<Do, failure::Error> {
+    pub fn try_parse(api: &Api, yaml: &Yaml) -> anyhow::Result<Do> {
         let hash = yaml
             .as_hash()
-            .ok_or_else(|| failure::err_msg(format!("expected hash but found {:?}", yaml)))?;
+            .ok_or_else(|| anyhow!("expected hash but found {:?}", yaml))?;
 
         let mut call: Option<(&str, &Yaml)> = None;
         let mut headers = BTreeMap::new();
@@ -152,25 +153,25 @@ impl Do {
                 .unwrap()
         }
 
-        let results: Vec<Result<(), failure::Error>> = hash
+        let results: Vec<anyhow::Result<()>> = hash
             .iter()
             .map(|(k, v)| {
-                let key = k.as_str().ok_or_else(|| {
-                    failure::err_msg(format!("expected string but found {:?}", k))
-                })?;
+                let key = k
+                    .as_str()
+                    .ok_or_else(|| anyhow!("expected string but found {:?}", k))?;
 
                 match key {
                     "headers" => {
-                        let hash = v.as_hash().ok_or_else(|| {
-                            failure::err_msg(format!("expected hash but found {:?}", v))
-                        })?;
+                        let hash = v
+                            .as_hash()
+                            .ok_or_else(|| anyhow!("expected hash but found {:?}", v))?;
                         for (hk, hv) in hash.iter() {
-                            let h = hk.as_str().ok_or_else(|| {
-                                failure::err_msg(format!("expected string but found {:?}", hk))
-                            })?;
-                            let v = hv.as_str().ok_or_else(|| {
-                                failure::err_msg(format!("expected string but found {:?}", hv))
-                            })?;
+                            let h = hk
+                                .as_str()
+                                .ok_or_else(|| anyhow!("expected string but found {:?}", hk))?;
+                            let v = hv
+                                .as_str()
+                                .ok_or_else(|| anyhow!("expected string but found {:?}", hv))?;
                             headers.insert(h.into(), v.into());
                         }
                         Ok(())
@@ -198,10 +199,10 @@ impl Do {
 
         ok_or_accumulate(&results)?;
 
-        let (call, value) = call.ok_or_else(|| failure::err_msg("no API found in do"))?;
+        let (call, value) = call.ok_or_else(|| anyhow!("no API found in do"))?;
         let endpoint = api
             .endpoint_for_api_call(call)
-            .ok_or_else(|| failure::err_msg(format!(r#"no API found for "{}""#, call)))?;
+            .ok_or_else(|| anyhow!(r#"no API found for "{}""#, call))?;
         let api_call = ApiCall::try_from(api, endpoint, value, headers)?;
 
         Ok(Do {
@@ -277,10 +278,10 @@ impl ApiCall {
         endpoint: &ApiEndpoint,
         yaml: &Yaml,
         headers: BTreeMap<String, String>,
-    ) -> Result<ApiCall, failure::Error> {
+    ) -> anyhow::Result<ApiCall> {
         let hash = yaml
             .as_hash()
-            .ok_or_else(|| failure::err_msg(format!("expected hash but found {:?}", yaml)))?;
+            .ok_or_else(|| anyhow!("expected hash but found {:?}", yaml))?;
 
         let mut parts: Vec<(&str, &Yaml)> = vec![];
         let mut params: Vec<(&str, &Yaml)> = vec![];
@@ -332,13 +333,14 @@ impl ApiCall {
         enum_name: &str,
         variant: &str,
         options: &[serde_json::Value],
-    ) -> Result<Tokens, failure::Error> {
+    ) -> anyhow::Result<Tokens> {
         if !variant.is_empty() && !options.contains(&serde_json::Value::String(variant.to_owned()))
         {
-            return Err(failure::err_msg(format!(
+            return Err(anyhow!(
                 "options {:?} does not contain value {}",
-                &options, variant
-            )));
+                &options,
+                variant
+            ));
         }
 
         let e: String = enum_name.to_pascal_case();
@@ -350,10 +352,7 @@ impl ApiCall {
             } else if e == "Size" {
                 syn::Ident::from("Unspecified")
             } else {
-                return Err(failure::err_msg(format!(
-                    "unhandled empty value for {}",
-                    &e
-                )));
+                return Err(anyhow!("unhandled empty value for {}", &e));
             }
         } else {
             syn::Ident::from(variant.to_pascal_case())
@@ -366,7 +365,7 @@ impl ApiCall {
         api: &Api,
         endpoint: &ApiEndpoint,
         params: &[(&str, &Yaml)],
-    ) -> Result<Option<Tokens>, failure::Error> {
+    ) -> anyhow::Result<Option<Tokens>> {
         match params.len() {
             0 => Ok(None),
             _ => {
@@ -379,7 +378,7 @@ impl ApiCall {
                         Some(t) => Ok(t),
                         None => match api.common_params.get(*n) {
                             Some(t) => Ok(t),
-                            None => Err(failure::err_msg(format!(r#"no param found for "{}""#, n))),
+                            None => Err(anyhow!(r#"no param found for "{}""#, n)),
                         },
                     }?;
 
@@ -394,7 +393,7 @@ impl ApiCall {
                                     if n == &"expand_wildcards" {
                                         // expand_wildcards might be defined as a comma-separated
                                         // string. e.g.
-                                        let idents: Vec<Result<Tokens, failure::Error>> = s
+                                        let idents: Vec<anyhow::Result<Tokens>> = s
                                             .split(',')
                                             .collect::<Vec<_>>()
                                             .iter()
@@ -412,7 +411,7 @@ impl ApiCall {
                                                     .#param_ident(&[#(#idents),*])
                                                 });
                                             }
-                                            Err(e) => return Err(failure::err_msg(e)),
+                                            Err(e) => return Err(anyhow!(e)),
                                         }
                                     } else {
                                         let e = Self::generate_enum(n, s.as_str(), &ty.options)?;
@@ -432,10 +431,12 @@ impl ApiCall {
                                         .#param_ident(#b)
                                     }),
                                     Err(e) => {
-                                        return Err(failure::err_msg(format!(
+                                        return Err(anyhow!(
                                             r#"cannot parse bool from "{}" for param "{}", {}"#,
-                                            s, n, e
-                                        )))
+                                            s,
+                                            n,
+                                            e
+                                        ))
                                     }
                                 },
                                 TypeKind::Double => match s.parse::<f64>() {
@@ -443,10 +444,12 @@ impl ApiCall {
                                         .#param_ident(#f)
                                     }),
                                     Err(e) => {
-                                        return Err(failure::err_msg(format!(
+                                        return Err(anyhow!(
                                             r#"cannot parse f64 from "{}" for param "{}", {}"#,
-                                            s, n, e
-                                        )))
+                                            s,
+                                            n,
+                                            e
+                                        ))
                                     }
                                 },
                                 TypeKind::Integer => {
@@ -461,10 +464,12 @@ impl ApiCall {
                                                 .#param_ident(#i)
                                             }),
                                             Err(e) => {
-                                                return Err(failure::err_msg(format!(
+                                                return Err(anyhow!(
                                                     r#"cannot parse i32 from "{}" for param "{}", {}"#,
-                                                    s, n, e
-                                                )))
+                                                    s,
+                                                    n,
+                                                    e
+                                                ))
                                             }
                                         }
                                     }
@@ -558,16 +563,13 @@ impl ApiCall {
                                 .iter()
                                 .map(|i| match i {
                                     Yaml::String(s) => Ok(s),
-                                    y => Err(failure::err_msg(format!(
-                                        "unsupported array value {:?}",
-                                        y
-                                    ))),
+                                    y => Err(anyhow!("unsupported array value {:?}", y)),
                                 })
                                 .filter_map(Result::ok)
                                 .collect();
 
                             if n == &"expand_wildcards" {
-                                let result: Vec<Result<Tokens, failure::Error>> = result
+                                let result: Vec<anyhow::Result<Tokens>> = result
                                     .iter()
                                     .map(|s| Self::generate_enum(n, s.as_str(), &ty.options))
                                     .collect();
@@ -581,7 +583,7 @@ impl ApiCall {
                                             .#param_ident(&[#(#result),*])
                                         });
                                     }
-                                    Err(e) => return Err(failure::err_msg(e)),
+                                    Err(e) => return Err(anyhow!(e)),
                                 }
                             } else {
                                 tokens.append(quote! {
@@ -640,7 +642,7 @@ impl ApiCall {
         api_call: &str,
         endpoint: &ApiEndpoint,
         parts: &[(&str, &Yaml)],
-    ) -> Result<Option<Tokens>, failure::Error> {
+    ) -> anyhow::Result<Option<Tokens>> {
         // TODO: ideally, this should share the logic from EnumBuilder
         let enum_name = {
             let name = api_call.to_pascal_case().replace(".", "");
@@ -662,10 +664,10 @@ impl ApiCall {
 
             // check there's actually a None value
             if !param_counts.contains(&0) {
-                return Err(failure::err_msg(format!(
+                return Err(anyhow!(
                     r#"no path for "{}" API with no url parts"#,
                     api_call
-                )));
+                ));
             }
 
             return match endpoint.url.paths.len() {
@@ -710,10 +712,11 @@ impl ApiCall {
             }
         }
         .ok_or_else(|| {
-            failure::err_msg(format!(
+            anyhow!(
                 r#"no path for "{}" API with url parts {:?}"#,
-                &api_call, parts
-            ))
+                &api_call,
+                parts
+            )
         })?;
 
         let path_parts = path.path.params();
@@ -726,7 +729,7 @@ impl ApiCall {
             syn::Ident::from(v)
         };
 
-        let part_tokens: Vec<Result<Tokens, failure::Error>> = parts
+        let part_tokens: Vec<anyhow::Result<Tokens>> = parts
             .iter()
             // don't rely on URL parts being ordered in the yaml test in the same order as specified
             // in the REST spec.
@@ -736,12 +739,10 @@ impl ApiCall {
                 f.cmp(&s)
             })
             .map(|(p, v)| {
-                let ty = path.parts.get(*p).ok_or_else(|| {
-                    failure::err_msg(format!(
-                        r#"no url part found for "{}" in {}"#,
-                        p, &path.path
-                    ))
-                })?;
+                let ty = path
+                    .parts
+                    .get(*p)
+                    .ok_or_else(|| anyhow!(r#"no url part found for "{}" in {}"#, p, &path.path))?;
 
                 match v {
                     Yaml::String(s) => {
@@ -802,10 +803,7 @@ impl ApiCall {
                             .iter()
                             .map(|i| match i {
                                 Yaml::String(s) => Ok(s),
-                                y => Err(failure::err_msg(format!(
-                                    "unsupported array value {:?}",
-                                    y
-                                ))),
+                                y => Err(anyhow!("unsupported array value {:?}", y)),
                             })
                             .collect();
 
@@ -826,10 +824,10 @@ impl ApiCall {
                                     _ => Ok(quote! { &[#(#result),*] }),
                                 }
                             }
-                            Err(e) => Err(failure::err_msg(e)),
+                            Err(e) => Err(anyhow!(e)),
                         }
                     }
-                    _ => Err(failure::err_msg(format!("unsupported value {:?}", v))),
+                    _ => Err(anyhow!("unsupported value {:?}", v)),
                 }
             })
             .collect();
@@ -842,7 +840,7 @@ impl ApiCall {
                     quote! { #enum_name::#variant_name(#(#part_tokens),*) },
                 ))
             }
-            Err(e) => Err(failure::err_msg(e)),
+            Err(e) => Err(anyhow!(e)),
         }
     }
 
@@ -851,7 +849,7 @@ impl ApiCall {
     /// When reading a body from the YAML test, it'll be converted to a Yaml variant,
     /// usually a Hash. To get the JSON representation back requires converting
     /// back to JSON
-    fn generate_body(endpoint: &ApiEndpoint, v: &Yaml) -> Result<Option<Tokens>, failure::Error> {
+    fn generate_body(endpoint: &ApiEndpoint, v: &Yaml) -> anyhow::Result<Option<Tokens>> {
         match v {
             Yaml::Null => Ok(None),
             Yaml::String(s) => {

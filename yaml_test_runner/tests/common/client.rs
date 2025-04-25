@@ -109,7 +109,7 @@ pub fn get() -> &'static Elasticsearch {
 /// and the response parsed from json or yaml
 pub async fn read_response(
     response: Response,
-) -> Result<(Method, StatusCode, String, Value), failure::Error> {
+) -> anyhow::Result<(Method, StatusCode, String, Value)> {
     let is_json = response.content_type().starts_with("application/json");
     let is_yaml = response.content_type().starts_with("application/yaml");
     let method = response.method();

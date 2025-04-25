@@ -3,7 +3,7 @@
 # Launch one or more Elasticsearch nodes via the Docker image,
 # to form a cluster suitable for running the REST API tests.
 #
-# Export the STACK_VERSION variable, eg. '8.0.0-SNAPSHOT'.
+# Export the STACK_VERSION variable, eg. '9.0.0-SNAPSHOT'.
 # Export the TEST_SUITE variable, eg. 'free' or 'platinum' defaults to 'free'.
 # Export the NUMBER_OF_NODES variable to start more than 1 node
 

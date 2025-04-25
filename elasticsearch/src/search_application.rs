@@ -68,7 +68,7 @@ impl<'b> SearchApplicationDeleteParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Search Application Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/delete-search-application.html)\n\nDeletes a search application."]
+#[doc = "Builder for the [Search Application Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/delete-search-application.html)\n\nDeletes a search application."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -171,132 +171,6 @@ impl<'a, 'b> SearchApplicationDelete<'a, 'b> {
 }
 #[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq, Eq)]
-#[doc = "API parts for the Search Application Delete Behavioral Analytics API"]
-pub enum SearchApplicationDeleteBehavioralAnalyticsParts<'b> {
-    #[doc = "Name"]
-    Name(&'b str),
-}
-#[cfg(feature = "experimental-apis")]
-impl<'b> SearchApplicationDeleteBehavioralAnalyticsParts<'b> {
-    #[doc = "Builds a relative URL path to the Search Application Delete Behavioral Analytics API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            SearchApplicationDeleteBehavioralAnalyticsParts::Name(name) => {
-                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(24usize + encoded_name.len());
-                p.push_str("/_application/analytics/");
-                p.push_str(encoded_name.as_ref());
-                p.into()
-            }
-        }
-    }
-}
-#[doc = "Builder for the [Search Application Delete Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/delete-analytics-collection.html)\n\nDelete a behavioral analytics collection."]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
-#[derive(Clone, Debug)]
-pub struct SearchApplicationDeleteBehavioralAnalytics<'a, 'b> {
-    transport: &'a Transport,
-    parts: SearchApplicationDeleteBehavioralAnalyticsParts<'b>,
-    error_trace: Option<bool>,
-    filter_path: Option<&'b [&'b str]>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    request_timeout: Option<Duration>,
-    source: Option<&'b str>,
-}
-#[cfg(feature = "experimental-apis")]
-impl<'a, 'b> SearchApplicationDeleteBehavioralAnalytics<'a, 'b> {
-    #[doc = "Creates a new instance of [SearchApplicationDeleteBehavioralAnalytics] with the specified API parts"]
-    pub fn new(
-        transport: &'a Transport,
-        parts: SearchApplicationDeleteBehavioralAnalyticsParts<'b>,
-    ) -> Self {
-        let headers = HeaderMap::new();
-        SearchApplicationDeleteBehavioralAnalytics {
-            transport,
-            parts,
-            headers,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            pretty: None,
-            request_timeout: None,
-            source: None,
-        }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
-    pub fn request_timeout(mut self, timeout: Duration) -> Self {
-        self.request_timeout = Some(timeout);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Search Application Delete Behavioral Analytics API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = http::Method::Delete;
-        let headers = self.headers;
-        let timeout = self.request_timeout;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                error_trace: Option<bool>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                filter_path: Option<&'b [&'b str]>,
-                human: Option<bool>,
-                pretty: Option<bool>,
-                source: Option<&'b str>,
-            }
-            let query_params = QueryParams {
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                human: self.human,
-                pretty: self.pretty,
-                source: self.source,
-            };
-            Some(query_params)
-        };
-        let body = Option::<()>::None;
-        let response = self
-            .transport
-            .send(method, &path, headers, query_string.as_ref(), body, timeout)
-            .await?;
-        Ok(response)
-    }
-}
-#[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Search Application Get API"]
 pub enum SearchApplicationGetParts<'b> {
     #[doc = "Name"]
@@ -317,7 +191,7 @@ impl<'b> SearchApplicationGetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Search Application Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/get-search-application.html)\n\nReturns the details about a search application."]
+#[doc = "Builder for the [Search Application Get API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/get-search-application.html)\n\nReturns the details about a search application."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -420,137 +294,6 @@ impl<'a, 'b> SearchApplicationGet<'a, 'b> {
 }
 #[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq, Eq)]
-#[doc = "API parts for the Search Application Get Behavioral Analytics API"]
-pub enum SearchApplicationGetBehavioralAnalyticsParts<'b> {
-    #[doc = "No parts"]
-    None,
-    #[doc = "Name"]
-    Name(&'b [&'b str]),
-}
-#[cfg(feature = "experimental-apis")]
-impl<'b> SearchApplicationGetBehavioralAnalyticsParts<'b> {
-    #[doc = "Builds a relative URL path to the Search Application Get Behavioral Analytics API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            SearchApplicationGetBehavioralAnalyticsParts::None => "/_application/analytics".into(),
-            SearchApplicationGetBehavioralAnalyticsParts::Name(name) => {
-                let name_str = name.join(",");
-                let encoded_name: Cow<str> =
-                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(24usize + encoded_name.len());
-                p.push_str("/_application/analytics/");
-                p.push_str(encoded_name.as_ref());
-                p.into()
-            }
-        }
-    }
-}
-#[doc = "Builder for the [Search Application Get Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/list-analytics-collection.html)\n\nReturns the existing behavioral analytics collections."]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
-#[derive(Clone, Debug)]
-pub struct SearchApplicationGetBehavioralAnalytics<'a, 'b> {
-    transport: &'a Transport,
-    parts: SearchApplicationGetBehavioralAnalyticsParts<'b>,
-    error_trace: Option<bool>,
-    filter_path: Option<&'b [&'b str]>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    request_timeout: Option<Duration>,
-    source: Option<&'b str>,
-}
-#[cfg(feature = "experimental-apis")]
-impl<'a, 'b> SearchApplicationGetBehavioralAnalytics<'a, 'b> {
-    #[doc = "Creates a new instance of [SearchApplicationGetBehavioralAnalytics] with the specified API parts"]
-    pub fn new(
-        transport: &'a Transport,
-        parts: SearchApplicationGetBehavioralAnalyticsParts<'b>,
-    ) -> Self {
-        let headers = HeaderMap::new();
-        SearchApplicationGetBehavioralAnalytics {
-            transport,
-            parts,
-            headers,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            pretty: None,
-            request_timeout: None,
-            source: None,
-        }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
-    pub fn request_timeout(mut self, timeout: Duration) -> Self {
-        self.request_timeout = Some(timeout);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Search Application Get Behavioral Analytics API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = http::Method::Get;
-        let headers = self.headers;
-        let timeout = self.request_timeout;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                error_trace: Option<bool>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                filter_path: Option<&'b [&'b str]>,
-                human: Option<bool>,
-                pretty: Option<bool>,
-                source: Option<&'b str>,
-            }
-            let query_params = QueryParams {
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                human: self.human,
-                pretty: self.pretty,
-                source: self.source,
-            };
-            Some(query_params)
-        };
-        let body = Option::<()>::None;
-        let response = self
-            .transport
-            .send(method, &path, headers, query_string.as_ref(), body, timeout)
-            .await?;
-        Ok(response)
-    }
-}
-#[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Search Application List API"]
 pub enum SearchApplicationListParts {
     #[doc = "No parts"]
@@ -565,7 +308,7 @@ impl SearchApplicationListParts {
         }
     }
 }
-#[doc = "Builder for the [Search Application List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/list-search-applications.html)\n\nReturns the existing search applications."]
+#[doc = "Builder for the [Search Application List API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/list-search-applications.html)\n\nReturns the existing search applications."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -695,178 +438,6 @@ impl<'a, 'b> SearchApplicationList<'a, 'b> {
 }
 #[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq, Eq)]
-#[doc = "API parts for the Search Application Post Behavioral Analytics Event API"]
-pub enum SearchApplicationPostBehavioralAnalyticsEventParts<'b> {
-    #[doc = "CollectionName and EventType"]
-    CollectionNameEventType(&'b str, &'b str),
-}
-#[cfg(feature = "experimental-apis")]
-impl<'b> SearchApplicationPostBehavioralAnalyticsEventParts<'b> {
-    #[doc = "Builds a relative URL path to the Search Application Post Behavioral Analytics Event API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            SearchApplicationPostBehavioralAnalyticsEventParts::CollectionNameEventType(
-                collection_name,
-                event_type,
-            ) => {
-                let encoded_collection_name: Cow<str> =
-                    percent_encode(collection_name.as_bytes(), PARTS_ENCODED).into();
-                let encoded_event_type: Cow<str> =
-                    percent_encode(event_type.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(
-                    31usize + encoded_collection_name.len() + encoded_event_type.len(),
-                );
-                p.push_str("/_application/analytics/");
-                p.push_str(encoded_collection_name.as_ref());
-                p.push_str("/event/");
-                p.push_str(encoded_event_type.as_ref());
-                p.into()
-            }
-        }
-    }
-}
-#[doc = "Builder for the [Search Application Post Behavioral Analytics Event API](http://todo.com/tbd)\n\nCreates a behavioral analytics event for existing collection."]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
-#[derive(Clone, Debug)]
-pub struct SearchApplicationPostBehavioralAnalyticsEvent<'a, 'b, B> {
-    transport: &'a Transport,
-    parts: SearchApplicationPostBehavioralAnalyticsEventParts<'b>,
-    body: Option<B>,
-    debug: Option<bool>,
-    error_trace: Option<bool>,
-    filter_path: Option<&'b [&'b str]>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    request_timeout: Option<Duration>,
-    source: Option<&'b str>,
-}
-#[cfg(feature = "experimental-apis")]
-impl<'a, 'b, B> SearchApplicationPostBehavioralAnalyticsEvent<'a, 'b, B>
-where
-    B: Body,
-{
-    #[doc = "Creates a new instance of [SearchApplicationPostBehavioralAnalyticsEvent] with the specified API parts"]
-    pub fn new(
-        transport: &'a Transport,
-        parts: SearchApplicationPostBehavioralAnalyticsEventParts<'b>,
-    ) -> Self {
-        let headers = HeaderMap::new();
-        SearchApplicationPostBehavioralAnalyticsEvent {
-            transport,
-            parts,
-            headers,
-            body: None,
-            debug: None,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            pretty: None,
-            request_timeout: None,
-            source: None,
-        }
-    }
-    #[doc = "The body for the API call"]
-    pub fn body<T>(
-        self,
-        body: T,
-    ) -> SearchApplicationPostBehavioralAnalyticsEvent<'a, 'b, JsonBody<T>>
-    where
-        T: Serialize,
-    {
-        SearchApplicationPostBehavioralAnalyticsEvent {
-            transport: self.transport,
-            parts: self.parts,
-            body: Some(body.into()),
-            debug: self.debug,
-            error_trace: self.error_trace,
-            filter_path: self.filter_path,
-            headers: self.headers,
-            human: self.human,
-            pretty: self.pretty,
-            request_timeout: self.request_timeout,
-            source: self.source,
-        }
-    }
-    #[doc = "If true, returns event information that will be stored"]
-    pub fn debug(mut self, debug: bool) -> Self {
-        self.debug = Some(debug);
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
-    pub fn request_timeout(mut self, timeout: Duration) -> Self {
-        self.request_timeout = Some(timeout);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Search Application Post Behavioral Analytics Event API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = http::Method::Post;
-        let headers = self.headers;
-        let timeout = self.request_timeout;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                debug: Option<bool>,
-                error_trace: Option<bool>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                filter_path: Option<&'b [&'b str]>,
-                human: Option<bool>,
-                pretty: Option<bool>,
-                source: Option<&'b str>,
-            }
-            let query_params = QueryParams {
-                debug: self.debug,
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                human: self.human,
-                pretty: self.pretty,
-                source: self.source,
-            };
-            Some(query_params)
-        };
-        let body = self.body;
-        let response = self
-            .transport
-            .send(method, &path, headers, query_string.as_ref(), body, timeout)
-            .await?;
-        Ok(response)
-    }
-}
-#[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Search Application Put API"]
 pub enum SearchApplicationPutParts<'b> {
     #[doc = "Name"]
@@ -887,7 +458,7 @@ impl<'b> SearchApplicationPutParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Search Application Put API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/put-search-application.html)\n\nCreates or updates a search application."]
+#[doc = "Builder for the [Search Application Put API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/put-search-application.html)\n\nCreates or updates a search application."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -1023,155 +594,6 @@ where
 }
 #[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq, Eq)]
-#[doc = "API parts for the Search Application Put Behavioral Analytics API"]
-pub enum SearchApplicationPutBehavioralAnalyticsParts<'b> {
-    #[doc = "Name"]
-    Name(&'b str),
-}
-#[cfg(feature = "experimental-apis")]
-impl<'b> SearchApplicationPutBehavioralAnalyticsParts<'b> {
-    #[doc = "Builds a relative URL path to the Search Application Put Behavioral Analytics API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            SearchApplicationPutBehavioralAnalyticsParts::Name(name) => {
-                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(24usize + encoded_name.len());
-                p.push_str("/_application/analytics/");
-                p.push_str(encoded_name.as_ref());
-                p.into()
-            }
-        }
-    }
-}
-#[doc = "Builder for the [Search Application Put Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/put-analytics-collection.html)\n\nCreates a behavioral analytics collection."]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
-#[derive(Clone, Debug)]
-pub struct SearchApplicationPutBehavioralAnalytics<'a, 'b, B> {
-    transport: &'a Transport,
-    parts: SearchApplicationPutBehavioralAnalyticsParts<'b>,
-    body: Option<B>,
-    error_trace: Option<bool>,
-    filter_path: Option<&'b [&'b str]>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    request_timeout: Option<Duration>,
-    source: Option<&'b str>,
-}
-#[cfg(feature = "experimental-apis")]
-impl<'a, 'b, B> SearchApplicationPutBehavioralAnalytics<'a, 'b, B>
-where
-    B: Body,
-{
-    #[doc = "Creates a new instance of [SearchApplicationPutBehavioralAnalytics] with the specified API parts"]
-    pub fn new(
-        transport: &'a Transport,
-        parts: SearchApplicationPutBehavioralAnalyticsParts<'b>,
-    ) -> Self {
-        let headers = HeaderMap::new();
-        SearchApplicationPutBehavioralAnalytics {
-            transport,
-            parts,
-            headers,
-            body: None,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            pretty: None,
-            request_timeout: None,
-            source: None,
-        }
-    }
-    #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SearchApplicationPutBehavioralAnalytics<'a, 'b, JsonBody<T>>
-    where
-        T: Serialize,
-    {
-        SearchApplicationPutBehavioralAnalytics {
-            transport: self.transport,
-            parts: self.parts,
-            body: Some(body.into()),
-            error_trace: self.error_trace,
-            filter_path: self.filter_path,
-            headers: self.headers,
-            human: self.human,
-            pretty: self.pretty,
-            request_timeout: self.request_timeout,
-            source: self.source,
-        }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
-    pub fn request_timeout(mut self, timeout: Duration) -> Self {
-        self.request_timeout = Some(timeout);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Search Application Put Behavioral Analytics API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = http::Method::Put;
-        let headers = self.headers;
-        let timeout = self.request_timeout;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                error_trace: Option<bool>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                filter_path: Option<&'b [&'b str]>,
-                human: Option<bool>,
-                pretty: Option<bool>,
-                source: Option<&'b str>,
-            }
-            let query_params = QueryParams {
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                human: self.human,
-                pretty: self.pretty,
-                source: self.source,
-            };
-            Some(query_params)
-        };
-        let body = self.body;
-        let response = self
-            .transport
-            .send(method, &path, headers, query_string.as_ref(), body, timeout)
-            .await?;
-        Ok(response)
-    }
-}
-#[cfg(feature = "experimental-apis")]
-#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Search Application Render Query API"]
 pub enum SearchApplicationRenderQueryParts<'b> {
     #[doc = "Name"]
@@ -1193,7 +615,7 @@ impl<'b> SearchApplicationRenderQueryParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Search Application Render Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/search-application-render-query.html)\n\nRenders a query for given search application search parameters"]
+#[doc = "Builder for the [Search Application Render Query API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/search-application-render-query.html)\n\nRenders a query for given search application search parameters"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -1340,7 +762,7 @@ impl<'b> SearchApplicationSearchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Search Application Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/search-application-search.html)\n\nPerform a search against a search application"]
+#[doc = "Builder for the [Search Application Search API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/search-application-search.html)\n\nPerform a search against a search application"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -1492,7 +914,7 @@ impl<'a> SearchApplication<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Search Application Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/delete-search-application.html)\n\nDeletes a search application."]
+    #[doc = "[Search Application Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/delete-search-application.html)\n\nDeletes a search application."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn delete<'b>(
@@ -1501,46 +923,19 @@ impl<'a> SearchApplication<'a> {
     ) -> SearchApplicationDelete<'a, 'b> {
         SearchApplicationDelete::new(self.transport(), parts)
     }
-    #[doc = "[Search Application Delete Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/delete-analytics-collection.html)\n\nDelete a behavioral analytics collection."]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
-    pub fn delete_behavioral_analytics<'b>(
-        &'a self,
-        parts: SearchApplicationDeleteBehavioralAnalyticsParts<'b>,
-    ) -> SearchApplicationDeleteBehavioralAnalytics<'a, 'b> {
-        SearchApplicationDeleteBehavioralAnalytics::new(self.transport(), parts)
-    }
-    #[doc = "[Search Application Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/get-search-application.html)\n\nReturns the details about a search application."]
+    #[doc = "[Search Application Get API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/get-search-application.html)\n\nReturns the details about a search application."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn get<'b>(&'a self, parts: SearchApplicationGetParts<'b>) -> SearchApplicationGet<'a, 'b> {
         SearchApplicationGet::new(self.transport(), parts)
     }
-    #[doc = "[Search Application Get Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/list-analytics-collection.html)\n\nReturns the existing behavioral analytics collections."]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
-    pub fn get_behavioral_analytics<'b>(
-        &'a self,
-        parts: SearchApplicationGetBehavioralAnalyticsParts<'b>,
-    ) -> SearchApplicationGetBehavioralAnalytics<'a, 'b> {
-        SearchApplicationGetBehavioralAnalytics::new(self.transport(), parts)
-    }
-    #[doc = "[Search Application List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/list-search-applications.html)\n\nReturns the existing search applications."]
+    #[doc = "[Search Application List API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/list-search-applications.html)\n\nReturns the existing search applications."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn list<'b>(&'a self) -> SearchApplicationList<'a, 'b> {
         SearchApplicationList::new(self.transport())
     }
-    #[doc = "[Search Application Post Behavioral Analytics Event API](http://todo.com/tbd)\n\nCreates a behavioral analytics event for existing collection."]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
-    pub fn post_behavioral_analytics_event<'b>(
-        &'a self,
-        parts: SearchApplicationPostBehavioralAnalyticsEventParts<'b>,
-    ) -> SearchApplicationPostBehavioralAnalyticsEvent<'a, 'b, ()> {
-        SearchApplicationPostBehavioralAnalyticsEvent::new(self.transport(), parts)
-    }
-    #[doc = "[Search Application Put API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/put-search-application.html)\n\nCreates or updates a search application."]
+    #[doc = "[Search Application Put API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/put-search-application.html)\n\nCreates or updates a search application."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn put<'b>(
@@ -1549,16 +944,7 @@ impl<'a> SearchApplication<'a> {
     ) -> SearchApplicationPut<'a, 'b, ()> {
         SearchApplicationPut::new(self.transport(), parts)
     }
-    #[doc = "[Search Application Put Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/put-analytics-collection.html)\n\nCreates a behavioral analytics collection."]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
-    pub fn put_behavioral_analytics<'b>(
-        &'a self,
-        parts: SearchApplicationPutBehavioralAnalyticsParts<'b>,
-    ) -> SearchApplicationPutBehavioralAnalytics<'a, 'b, ()> {
-        SearchApplicationPutBehavioralAnalytics::new(self.transport(), parts)
-    }
-    #[doc = "[Search Application Render Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/search-application-render-query.html)\n\nRenders a query for given search application search parameters"]
+    #[doc = "[Search Application Render Query API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/search-application-render-query.html)\n\nRenders a query for given search application search parameters"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn render_query<'b>(
@@ -1567,7 +953,7 @@ impl<'a> SearchApplication<'a> {
     ) -> SearchApplicationRenderQuery<'a, 'b, ()> {
         SearchApplicationRenderQuery::new(self.transport(), parts)
     }
-    #[doc = "[Search Application Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/search-application-search.html)\n\nPerform a search against a search application"]
+    #[doc = "[Search Application Search API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/search-application-search.html)\n\nPerform a search against a search application"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn search<'b>(
