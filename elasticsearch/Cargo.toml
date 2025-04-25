@@ -26,6 +26,7 @@ native-tls = ["reqwest/native-tls"]
 rustls-tls = ["reqwest/rustls-tls"]
 
 [dependencies]
+parking_lot = "0.12"
 base64 = "0.22"
 bytes = "1"
 dyn-clone = "1"
