@@ -15,3 +15,6 @@ chrono = { version = "0.4", features = ["serde"] }
 zip = "2"
 regex = "1"
 xshell = "0.2"
+
+[lints.clippy]
+uninlined_format_args = "allow" # too pedantic

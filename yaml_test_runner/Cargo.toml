@@ -43,3 +43,4 @@ tokio = { version = "1", default-features = false, features = ["macros", "net", 
 [lints.clippy]
 # yaml tests contain approximate values of PI
 approx_constant = "allow"
+uninlined_format_args = "allow" # too pedantic
