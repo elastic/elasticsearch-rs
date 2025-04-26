@@ -67,7 +67,7 @@ impl<'b> EqlDeleteParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Eql Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/eql-search-api.html)\n\nDeletes an async EQL search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
+#[doc = "Builder for the [Eql Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.18/eql-search-api.html)\n\nDeletes an async EQL search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
 #[derive(Clone, Debug)]
 pub struct EqlDelete<'a, 'b> {
     transport: &'a Transport,
@@ -185,7 +185,7 @@ impl<'b> EqlGetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Eql Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/eql-search-api.html)\n\nReturns async results from previously executed Event Query Language (EQL) search"]
+#[doc = "Builder for the [Eql Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.18/eql-search-api.html)\n\nReturns async results from previously executed Event Query Language (EQL) search"]
 #[derive(Clone, Debug)]
 pub struct EqlGet<'a, 'b> {
     transport: &'a Transport,
@@ -321,7 +321,7 @@ impl<'b> EqlGetStatusParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Eql Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/eql-search-api.html)\n\nReturns the status of a previously submitted async or stored Event Query Language (EQL) search"]
+#[doc = "Builder for the [Eql Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.18/eql-search-api.html)\n\nReturns the status of a previously submitted async or stored Event Query Language (EQL) search"]
 #[derive(Clone, Debug)]
 pub struct EqlGetStatus<'a, 'b> {
     transport: &'a Transport,
@@ -441,11 +441,13 @@ impl<'b> EqlSearchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Eql Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/eql-search-api.html)\n\nReturns results matching a query expressed in Event Query Language (EQL)"]
+#[doc = "Builder for the [Eql Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.18/eql-search-api.html)\n\nReturns results matching a query expressed in Event Query Language (EQL)"]
 #[derive(Clone, Debug)]
 pub struct EqlSearch<'a, 'b, B> {
     transport: &'a Transport,
     parts: EqlSearchParts<'b>,
+    allow_partial_search_results: Option<bool>,
+    allow_partial_sequence_results: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -469,6 +471,8 @@ where
             transport,
             parts,
             headers,
+            allow_partial_search_results: None,
+            allow_partial_sequence_results: None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -481,6 +485,16 @@ where
             wait_for_completion_timeout: None,
         }
     }
+    #[doc = "Control whether the query should keep running in case of shard failures, and return partial results"]
+    pub fn allow_partial_search_results(mut self, allow_partial_search_results: bool) -> Self {
+        self.allow_partial_search_results = Some(allow_partial_search_results);
+        self
+    }
+    #[doc = "Control whether a sequence query should return partial results or no results at all in case of shard failures. This option has effect only if [allow_partial_search_results] is true."]
+    pub fn allow_partial_sequence_results(mut self, allow_partial_sequence_results: bool) -> Self {
+        self.allow_partial_sequence_results = Some(allow_partial_sequence_results);
+        self
+    }
     #[doc = "The body for the API call"]
     pub fn body<T>(self, body: T) -> EqlSearch<'a, 'b, JsonBody<T>>
     where
@@ -490,6 +504,8 @@ where
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
+            allow_partial_search_results: self.allow_partial_search_results,
+            allow_partial_sequence_results: self.allow_partial_sequence_results,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             headers: self.headers,
@@ -565,6 +581,8 @@ where
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                allow_partial_search_results: Option<bool>,
+                allow_partial_sequence_results: Option<bool>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -576,6 +594,8 @@ where
                 wait_for_completion_timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
+                allow_partial_search_results: self.allow_partial_search_results,
+                allow_partial_sequence_results: self.allow_partial_sequence_results,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
@@ -607,19 +627,19 @@ impl<'a> Eql<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Eql Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/eql-search-api.html)\n\nDeletes an async EQL search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
+    #[doc = "[Eql Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.18/eql-search-api.html)\n\nDeletes an async EQL search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
     pub fn delete<'b>(&'a self, parts: EqlDeleteParts<'b>) -> EqlDelete<'a, 'b> {
         EqlDelete::new(self.transport(), parts)
     }
-    #[doc = "[Eql Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/eql-search-api.html)\n\nReturns async results from previously executed Event Query Language (EQL) search"]
+    #[doc = "[Eql Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.18/eql-search-api.html)\n\nReturns async results from previously executed Event Query Language (EQL) search"]
     pub fn get<'b>(&'a self, parts: EqlGetParts<'b>) -> EqlGet<'a, 'b> {
         EqlGet::new(self.transport(), parts)
     }
-    #[doc = "[Eql Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/eql-search-api.html)\n\nReturns the status of a previously submitted async or stored Event Query Language (EQL) search"]
+    #[doc = "[Eql Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/8.18/eql-search-api.html)\n\nReturns the status of a previously submitted async or stored Event Query Language (EQL) search"]
     pub fn get_status<'b>(&'a self, parts: EqlGetStatusParts<'b>) -> EqlGetStatus<'a, 'b> {
         EqlGetStatus::new(self.transport(), parts)
     }
-    #[doc = "[Eql Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/eql-search-api.html)\n\nReturns results matching a query expressed in Event Query Language (EQL)"]
+    #[doc = "[Eql Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.18/eql-search-api.html)\n\nReturns results matching a query expressed in Event Query Language (EQL)"]
     pub fn search<'b>(&'a self, parts: EqlSearchParts<'b>) -> EqlSearch<'a, 'b, ()> {
         EqlSearch::new(self.transport(), parts)
     }

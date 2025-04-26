@@ -71,7 +71,7 @@ impl<'b> SimulateIngestParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Simulate Ingest API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/simulate-ingest-api.html)\n\nSimulates running ingest with example documents."]
+#[doc = "Builder for the [Simulate Ingest API](https://www.elastic.co/guide/en/elasticsearch/reference/8.18/simulate-ingest-api.html)\n\nSimulates running ingest with example documents."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -223,7 +223,7 @@ impl<'a> Simulate<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Simulate Ingest API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/simulate-ingest-api.html)\n\nSimulates running ingest with example documents."]
+    #[doc = "[Simulate Ingest API](https://www.elastic.co/guide/en/elasticsearch/reference/8.18/simulate-ingest-api.html)\n\nSimulates running ingest with example documents."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn ingest<'b>(&'a self, parts: SimulateIngestParts<'b>) -> SimulateIngest<'a, 'b, ()> {
