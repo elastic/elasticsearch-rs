@@ -58,7 +58,7 @@ impl EsqlAsyncQueryParts {
         }
     }
 }
-#[doc = "Builder for the [Esql Async Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/esql-async-query-api.html)\n\nExecutes an ESQL request asynchronously"]
+#[doc = "Builder for the [Esql Async Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.18/esql-async-query-api.html)\n\nExecutes an ESQL request asynchronously"]
 #[derive(Clone, Debug)]
 pub struct EsqlAsyncQuery<'a, 'b, B> {
     transport: &'a Transport,
@@ -210,6 +210,124 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Esql Async Query Delete API"]
+pub enum EsqlAsyncQueryDeleteParts<'b> {
+    #[doc = "Id"]
+    Id(&'b str),
+}
+impl<'b> EsqlAsyncQueryDeleteParts<'b> {
+    #[doc = "Builds a relative URL path to the Esql Async Query Delete API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            EsqlAsyncQueryDeleteParts::Id(id) => {
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(14usize + encoded_id.len());
+                p.push_str("/_query/async/");
+                p.push_str(encoded_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Esql Async Query Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.18/esql-async-query-delete-api.html)\n\nDelete an async query request given its ID."]
+#[derive(Clone, Debug)]
+pub struct EsqlAsyncQueryDelete<'a, 'b> {
+    transport: &'a Transport,
+    parts: EsqlAsyncQueryDeleteParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b> EsqlAsyncQueryDelete<'a, 'b> {
+    #[doc = "Creates a new instance of [EsqlAsyncQueryDelete] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: EsqlAsyncQueryDeleteParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        EsqlAsyncQueryDelete {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Esql Async Query Delete API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Delete;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Esql Async Query Get API"]
 pub enum EsqlAsyncQueryGetParts<'b> {
     #[doc = "Id"]
@@ -229,7 +347,7 @@ impl<'b> EsqlAsyncQueryGetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Esql Async Query Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/esql-async-query-get-api.html)\n\nRetrieves the results of a previously submitted async query request given its ID."]
+#[doc = "Builder for the [Esql Async Query Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.18/esql-async-query-get-api.html)\n\nRetrieves the results of a previously submitted async query request given its ID."]
 #[derive(Clone, Debug)]
 pub struct EsqlAsyncQueryGet<'a, 'b> {
     transport: &'a Transport,
@@ -355,6 +473,148 @@ impl<'a, 'b> EsqlAsyncQueryGet<'a, 'b> {
     }
 }
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Esql Async Query Stop API"]
+pub enum EsqlAsyncQueryStopParts<'b> {
+    #[doc = "Id"]
+    Id(&'b str),
+}
+impl<'b> EsqlAsyncQueryStopParts<'b> {
+    #[doc = "Builds a relative URL path to the Esql Async Query Stop API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            EsqlAsyncQueryStopParts::Id(id) => {
+                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(19usize + encoded_id.len());
+                p.push_str("/_query/async/");
+                p.push_str(encoded_id.as_ref());
+                p.push_str("/stop");
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Esql Async Query Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.18/esql-async-query-stop-api.html)\n\nStops a previously submitted async query request given its ID and collects the results."]
+#[derive(Clone, Debug)]
+pub struct EsqlAsyncQueryStop<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: EsqlAsyncQueryStopParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b, B> EsqlAsyncQueryStop<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [EsqlAsyncQueryStop] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: EsqlAsyncQueryStopParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        EsqlAsyncQueryStop {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> EsqlAsyncQueryStop<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        EsqlAsyncQueryStop {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Esql Async Query Stop API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Post;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Esql Query API"]
 pub enum EsqlQueryParts {
     #[doc = "No parts"]
@@ -368,7 +628,7 @@ impl EsqlQueryParts {
         }
     }
 }
-#[doc = "Builder for the [Esql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/esql-query-api.html)\n\nExecutes an ESQL request"]
+#[doc = "Builder for the [Esql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.18/esql-query-api.html)\n\nExecutes an ESQL request"]
 #[derive(Clone, Debug)]
 pub struct EsqlQuery<'a, 'b, B> {
     transport: &'a Transport,
@@ -531,18 +791,32 @@ impl<'a> Esql<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Esql Async Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/esql-async-query-api.html)\n\nExecutes an ESQL request asynchronously"]
+    #[doc = "[Esql Async Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.18/esql-async-query-api.html)\n\nExecutes an ESQL request asynchronously"]
     pub fn async_query<'b>(&'a self) -> EsqlAsyncQuery<'a, 'b, ()> {
         EsqlAsyncQuery::new(self.transport())
     }
-    #[doc = "[Esql Async Query Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/esql-async-query-get-api.html)\n\nRetrieves the results of a previously submitted async query request given its ID."]
+    #[doc = "[Esql Async Query Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.18/esql-async-query-delete-api.html)\n\nDelete an async query request given its ID."]
+    pub fn async_query_delete<'b>(
+        &'a self,
+        parts: EsqlAsyncQueryDeleteParts<'b>,
+    ) -> EsqlAsyncQueryDelete<'a, 'b> {
+        EsqlAsyncQueryDelete::new(self.transport(), parts)
+    }
+    #[doc = "[Esql Async Query Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.18/esql-async-query-get-api.html)\n\nRetrieves the results of a previously submitted async query request given its ID."]
     pub fn async_query_get<'b>(
         &'a self,
         parts: EsqlAsyncQueryGetParts<'b>,
     ) -> EsqlAsyncQueryGet<'a, 'b> {
         EsqlAsyncQueryGet::new(self.transport(), parts)
     }
-    #[doc = "[Esql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.15/esql-query-api.html)\n\nExecutes an ESQL request"]
+    #[doc = "[Esql Async Query Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.18/esql-async-query-stop-api.html)\n\nStops a previously submitted async query request given its ID and collects the results."]
+    pub fn async_query_stop<'b>(
+        &'a self,
+        parts: EsqlAsyncQueryStopParts<'b>,
+    ) -> EsqlAsyncQueryStop<'a, 'b, ()> {
+        EsqlAsyncQueryStop::new(self.transport(), parts)
+    }
+    #[doc = "[Esql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.18/esql-query-api.html)\n\nExecutes an ESQL request"]
     pub fn query<'b>(&'a self) -> EsqlQuery<'a, 'b, ()> {
         EsqlQuery::new(self.transport())
     }
