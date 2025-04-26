@@ -26,6 +26,7 @@ native-tls = ["reqwest/native-tls"]
 rustls-tls = ["reqwest/rustls-tls"]
 
 [dependencies]
+parking_lot = "0.12"
 base64 = "0.22"
 bytes = "1"
 dyn-clone = "1"
@@ -66,3 +67,7 @@ xml-rs = "0.8"
 
 [build-dependencies]
 rustc_version = "0.4"
+
+[lints.clippy]
+needless_lifetimes = "allow" # generated lifetimes
+uninlined_format_args = "allow" # too pedantic

@@ -54,10 +54,11 @@ use std::{
     io::{self, Write},
     sync::{
         atomic::{AtomicBool, AtomicUsize, Ordering},
-        Arc, RwLock,
+        Arc,
     },
     time::{Duration, Instant},
 };
+use parking_lot::RwLock;
 use url::Url;
 
 /// Error that can occur when building a [Transport]
@@ -68,6 +69,9 @@ pub enum BuildError {
 
     /// Certificate error
     Cert(reqwest::Error),
+
+    /// Configuration error
+    Config(String),
 }
 
 impl From<io::Error> for BuildError {
@@ -88,6 +92,7 @@ impl error::Error for BuildError {
         match *self {
             BuildError::Io(ref err) => err.description(),
             BuildError::Cert(ref err) => err.description(),
+            BuildError::Config(ref err) => err.as_str(),
         }
     }
 
@@ -95,6 +100,7 @@ impl error::Error for BuildError {
         match *self {
             BuildError::Io(ref err) => Some(err as &dyn error::Error),
             BuildError::Cert(ref err) => Some(err as &dyn error::Error),
+            BuildError::Config(_) => None,
         }
     }
 }
@@ -104,6 +110,7 @@ impl fmt::Display for BuildError {
         match *self {
             BuildError::Io(ref err) => fmt::Display::fmt(err, f),
             BuildError::Cert(ref err) => fmt::Display::fmt(err, f),
+            BuildError::Config(ref err) => fmt::Display::fmt(err, f),
         }
     }
 }
@@ -337,7 +344,7 @@ impl TransportBuilder {
             if let Some(c) = self.proxy_credentials {
                 proxy = match c {
                     Credentials::Basic(u, p) => proxy.basic_auth(&u, &p),
-                    _ => proxy,
+                    _ => return Err(BuildError::Config("Only Basic Authentication is supported for proxies".into())),
                 };
             }
             client_builder = client_builder.proxy(proxy);
@@ -348,7 +355,7 @@ impl TransportBuilder {
             client,
             conn_pool: self.conn_pool,
             request_body_compression: self.request_body_compression,
-            credentials: self.credentials,
+            credentials: Arc::new(RwLock::new(self.credentials)),
             send_meta: self.meta_header,
         })
     }
@@ -393,7 +400,7 @@ impl Connection {
 #[derive(Debug, Clone)]
 pub struct Transport {
     client: reqwest::Client,
-    credentials: Option<Credentials>,
+    credentials: Arc<RwLock<Option<Credentials>>>,
     request_body_compression: bool,
     conn_pool: Arc<dyn ConnectionPool>,
     send_meta: bool,
@@ -478,7 +485,7 @@ impl Transport {
     /// [Elasticsearch service in Elastic Cloud](https://www.elastic.co/cloud/).
     ///
     /// * `cloud_id`: The Elastic Cloud Id retrieved from the cloud web console, that uniquely
-    ///               identifies the deployment instance.
+    ///   identifies the deployment instance.
     /// * `credentials`: A set of credentials the client should use to authenticate to Elasticsearch service.
     pub fn cloud(cloud_id: &str, credentials: Credentials) -> Result<Transport, Error> {
         let conn_pool = CloudConnectionPool::new(cloud_id)?;
@@ -513,7 +520,8 @@ impl Transport {
         // set credentials before any headers, as credentials append to existing headers in reqwest,
         // whilst setting headers() overwrites, so if an Authorization header has been specified
         // on a specific request, we want it to overwrite.
-        if let Some(c) = &self.credentials {
+        let creds_guard = self.credentials.read();
+        if let Some(c) = creds_guard.as_ref() {
             request_builder = match c {
                 Credentials::Basic(u, p) => request_builder.basic_auth(u, Some(p)),
                 Credentials::Bearer(t) => request_builder.bearer_auth(t),
@@ -537,6 +545,7 @@ impl Transport {
                 }
             }
         }
+        drop(creds_guard);
 
         // default headers first, overwrite with any provided
         let mut request_headers = HeaderMap::with_capacity(4 + headers.len());
@@ -695,6 +704,12 @@ impl Transport {
             Ok(r) => Ok(Response::new(r, method)),
             Err(e) => Err(e.into()),
         }
+    }
+
+    /// Update the auth credentials for this transport and all its clones, and all clients
+    /// using them. Typically used to refresh a bearer token.
+    pub fn set_auth(&self, credentials: Credentials) {
+        *self.credentials.write() = Some(credentials);
     }
 }
 
@@ -895,14 +910,14 @@ where
     ConnSelector: ConnectionSelector + Clone,
 {
     fn next(&self) -> Connection {
-        let inner = self.inner.read().expect("lock poisoned");
+        let inner = self.inner.read();
         self.connection_selector
             .try_next(&inner.connections)
             .unwrap()
     }
 
     fn reseedable(&self) -> bool {
-        let inner = self.inner.read().expect("lock poisoned");
+        let inner = self.inner.read();
         let reseed_frequency = match self.reseed_frequency {
             Some(wait) => wait,
             None => return false,
@@ -928,10 +943,11 @@ where
     }
 
     fn reseed(&self, mut connection: Vec<Connection>) {
-        let mut inner = self.inner.write().expect("lock poisoned");
+        let mut inner = self.inner.write();
         inner.last_update = Some(Instant::now());
         inner.connections.clear();
         inner.connections.append(&mut connection);
+        drop(inner);
         self.reseeding.store(false, Ordering::Relaxed);
     }
 }
@@ -1210,7 +1226,7 @@ pub mod tests {
         );
 
         // Set internal last_update to a minute ago
-        let mut inner = connection_pool.inner.write().expect("lock poisoned");
+        let mut inner = connection_pool.inner.write();
         inner.last_update = Some(Instant::now() - Duration::from_secs(60));
         drop(inner);
 
@@ -1248,5 +1264,38 @@ pub mod tests {
     fn round_robin_next_empty_fails() {
         let connections = MultiNodeConnectionPool::round_robin(vec![], None);
         connections.next();
+    }
+
+    #[test]
+    fn set_credentials() -> Result<(), failure::Error> {
+        let t1: Transport = TransportBuilder::new(SingleNodeConnectionPool::default())
+            .auth(Credentials::Basic("foo".to_string(), "bar".to_string()))
+            .build()?;
+
+        if let Some(Credentials::Basic(login, password)) = t1.credentials.read().as_ref() {
+            assert_eq!(login, "foo");
+            assert_eq!(password, "bar");
+        } else {
+            panic!("Expected Basic credentials");
+        }
+
+        let t2 = t1.clone();
+
+        t1.set_auth(Credentials::Bearer("The bear".to_string()));
+
+        if let Some(Credentials::Bearer(token)) = t1.credentials.read().as_ref() {
+            assert_eq!(token, "The bear");
+        } else {
+            panic!("Expected Bearer credentials");
+        }
+
+        // Verify that cloned transport also has the same credentials
+        if let Some(Credentials::Bearer(token)) = t2.credentials.read().as_ref() {
+            assert_eq!(token, "The bear");
+        } else {
+            panic!("Expected Bearer credentials");
+        }
+
+        Ok(())
     }
 }
