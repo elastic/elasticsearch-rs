@@ -1267,7 +1267,7 @@ pub mod tests {
     }
 
     #[test]
-    fn set_credentials() -> anyhow::Result<()> {
+    fn set_credentials() -> Result<(), failure::Error> {
         let t1: Transport = TransportBuilder::new(SingleNodeConnectionPool::default())
             .auth(Credentials::Basic("foo".to_string(), "bar".to_string()))
             .build()?;
