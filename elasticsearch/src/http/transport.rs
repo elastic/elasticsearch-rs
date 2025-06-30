@@ -543,6 +543,9 @@ impl Transport {
                     header_value.set_sensitive(true);
                     request_builder.header(AUTHORIZATION, header_value)
                 }
+                Credentials::AuthorizationHeader(header) => {
+                    request_builder.header(AUTHORIZATION, header.clone())
+                }
             }
         }
         drop(creds_guard);

@@ -116,6 +116,22 @@ async fn bearer_header() -> anyhow::Result<()> {
     Ok(())
 }
 
+#[tokio::test]
+async fn arbitrary_auth_header() -> anyhow::Result<()> {
+    let server = server::http(move |req| async move {
+        assert_eq!(req.headers()["authorization"], "Foo bar baz");
+        http::Response::default()
+    });
+
+    let builder = client::create_builder(format!("http://{}", server.addr()).as_ref())
+        .auth(Credentials::AuthorizationHeader("Foo bar baz".into()));
+
+    let client = client::create(builder);
+    let _response = client.ping().send().await?;
+
+    Ok(())
+}
+
 // TODO: test PKI authentication. Could configure a HttpsConnector, maybe using https://github.com/sfackler/hyper-openssl?, or send to PKI configured Elasticsearch.
 //#[tokio::test]
 //async fn client_certificate() -> anyhow::Result<()> {
