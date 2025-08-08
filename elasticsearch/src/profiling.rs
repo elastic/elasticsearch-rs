@@ -54,7 +54,7 @@ impl ProfilingFlamegraphParts {
         }
     }
 }
-#[doc = "Builder for the [Profiling Flamegraph API](https://www.elastic.co/guide/en/observability/9.0/universal-profiling.html)\n\nExtracts a UI-optimized structure to render flamegraphs from Universal Profiling."]
+#[doc = "Builder for the [Profiling Flamegraph API](https://www.elastic.co/guide/en/observability/9.1/universal-profiling.html)\n\nExtracts a UI-optimized structure to render flamegraphs from Universal Profiling."]
 #[derive(Clone, Debug)]
 pub struct ProfilingFlamegraph<'a, 'b, B> {
     transport: &'a Transport,
@@ -189,7 +189,7 @@ impl ProfilingStacktracesParts {
         }
     }
 }
-#[doc = "Builder for the [Profiling Stacktraces API](https://www.elastic.co/guide/en/observability/9.0/universal-profiling.html)\n\nExtracts raw stacktrace information from Universal Profiling."]
+#[doc = "Builder for the [Profiling Stacktraces API](https://www.elastic.co/guide/en/observability/9.1/universal-profiling.html)\n\nExtracts raw stacktrace information from Universal Profiling."]
 #[derive(Clone, Debug)]
 pub struct ProfilingStacktraces<'a, 'b, B> {
     transport: &'a Transport,
@@ -324,7 +324,7 @@ impl ProfilingStatusParts {
         }
     }
 }
-#[doc = "Builder for the [Profiling Status API](https://www.elastic.co/guide/en/observability/9.0/universal-profiling.html)\n\nReturns basic information about the status of Universal Profiling."]
+#[doc = "Builder for the [Profiling Status API](https://www.elastic.co/guide/en/observability/9.1/universal-profiling.html)\n\nReturns basic information about the status of Universal Profiling."]
 #[derive(Clone, Debug)]
 pub struct ProfilingStatus<'a, 'b> {
     transport: &'a Transport,
@@ -463,7 +463,7 @@ impl ProfilingTopnFunctionsParts {
         }
     }
 }
-#[doc = "Builder for the [Profiling Topn Functions API](https://www.elastic.co/guide/en/observability/9.0/universal-profiling.html)\n\nExtracts a list of topN functions from Universal Profiling."]
+#[doc = "Builder for the [Profiling Topn Functions API](https://www.elastic.co/guide/en/observability/9.1/universal-profiling.html)\n\nExtracts a list of topN functions from Universal Profiling."]
 #[derive(Clone, Debug)]
 pub struct ProfilingTopnFunctions<'a, 'b, B> {
     transport: &'a Transport,
@@ -596,19 +596,19 @@ impl<'a> Profiling<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Profiling Flamegraph API](https://www.elastic.co/guide/en/observability/9.0/universal-profiling.html)\n\nExtracts a UI-optimized structure to render flamegraphs from Universal Profiling."]
+    #[doc = "[Profiling Flamegraph API](https://www.elastic.co/guide/en/observability/9.1/universal-profiling.html)\n\nExtracts a UI-optimized structure to render flamegraphs from Universal Profiling."]
     pub fn flamegraph<'b>(&'a self) -> ProfilingFlamegraph<'a, 'b, ()> {
         ProfilingFlamegraph::new(self.transport())
     }
-    #[doc = "[Profiling Stacktraces API](https://www.elastic.co/guide/en/observability/9.0/universal-profiling.html)\n\nExtracts raw stacktrace information from Universal Profiling."]
+    #[doc = "[Profiling Stacktraces API](https://www.elastic.co/guide/en/observability/9.1/universal-profiling.html)\n\nExtracts raw stacktrace information from Universal Profiling."]
     pub fn stacktraces<'b>(&'a self) -> ProfilingStacktraces<'a, 'b, ()> {
         ProfilingStacktraces::new(self.transport())
     }
-    #[doc = "[Profiling Status API](https://www.elastic.co/guide/en/observability/9.0/universal-profiling.html)\n\nReturns basic information about the status of Universal Profiling."]
+    #[doc = "[Profiling Status API](https://www.elastic.co/guide/en/observability/9.1/universal-profiling.html)\n\nReturns basic information about the status of Universal Profiling."]
     pub fn status<'b>(&'a self) -> ProfilingStatus<'a, 'b> {
         ProfilingStatus::new(self.transport())
     }
-    #[doc = "[Profiling Topn Functions API](https://www.elastic.co/guide/en/observability/9.0/universal-profiling.html)\n\nExtracts a list of topN functions from Universal Profiling."]
+    #[doc = "[Profiling Topn Functions API](https://www.elastic.co/guide/en/observability/9.1/universal-profiling.html)\n\nExtracts a list of topN functions from Universal Profiling."]
     pub fn topn_functions<'b>(&'a self) -> ProfilingTopnFunctions<'a, 'b, ()> {
         ProfilingTopnFunctions::new(self.transport())
     }

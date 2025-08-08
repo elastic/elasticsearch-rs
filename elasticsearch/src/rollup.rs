@@ -70,7 +70,7 @@ impl<'b> RollupDeleteJobParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Rollup Delete Job API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/rollup-delete-job.html)\n\nDeletes an existing rollup job."]
+#[doc = "Builder for the [Rollup Delete Job API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/rollup-delete-job.html)\n\nDeletes an existing rollup job."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -196,7 +196,7 @@ impl<'b> RollupGetJobsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Rollup Get Jobs API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/rollup-get-job.html)\n\nRetrieves the configuration, stats, and status of rollup jobs."]
+#[doc = "Builder for the [Rollup Get Jobs API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/rollup-get-job.html)\n\nRetrieves the configuration, stats, and status of rollup jobs."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -322,7 +322,7 @@ impl<'b> RollupGetRollupCapsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Rollup Get Rollup Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/rollup-get-rollup-caps.html)\n\nReturns the capabilities of any rollup jobs that have been configured for a specific index or index pattern."]
+#[doc = "Builder for the [Rollup Get Rollup Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/rollup-get-rollup-caps.html)\n\nReturns the capabilities of any rollup jobs that have been configured for a specific index or index pattern."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -447,7 +447,7 @@ impl<'b> RollupGetRollupIndexCapsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Rollup Get Rollup Index Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/rollup-get-rollup-index-caps.html)\n\nReturns the rollup capabilities of all jobs inside of a rollup index (e.g. the index where rollup data is stored)."]
+#[doc = "Builder for the [Rollup Get Rollup Index Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/rollup-get-rollup-index-caps.html)\n\nReturns the rollup capabilities of all jobs inside of a rollup index (e.g. the index where rollup data is stored)."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -570,7 +570,7 @@ impl<'b> RollupPutJobParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Rollup Put Job API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/rollup-put-job.html)\n\nCreates a rollup job."]
+#[doc = "Builder for the [Rollup Put Job API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/rollup-put-job.html)\n\nCreates a rollup job."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -719,7 +719,7 @@ impl<'b> RollupRollupSearchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Rollup Rollup Search API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/rollup-search.html)\n\nEnables searching rolled-up data using the standard query DSL."]
+#[doc = "Builder for the [Rollup Rollup Search API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/rollup-search.html)\n\nEnables searching rolled-up data using the standard query DSL."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -889,7 +889,7 @@ impl<'b> RollupStartJobParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Rollup Start Job API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/rollup-start-job.html)\n\nStarts an existing, stopped rollup job."]
+#[doc = "Builder for the [Rollup Start Job API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/rollup-start-job.html)\n\nStarts an existing, stopped rollup job."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -1036,7 +1036,7 @@ impl<'b> RollupStopJobParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Rollup Stop Job API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/rollup-stop-job.html)\n\nStops an existing, started rollup job."]
+#[doc = "Builder for the [Rollup Stop Job API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/rollup-stop-job.html)\n\nStops an existing, started rollup job."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -1195,19 +1195,19 @@ impl<'a> Rollup<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Rollup Delete Job API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/rollup-delete-job.html)\n\nDeletes an existing rollup job."]
+    #[doc = "[Rollup Delete Job API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/rollup-delete-job.html)\n\nDeletes an existing rollup job."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn delete_job<'b>(&'a self, parts: RollupDeleteJobParts<'b>) -> RollupDeleteJob<'a, 'b> {
         RollupDeleteJob::new(self.transport(), parts)
     }
-    #[doc = "[Rollup Get Jobs API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/rollup-get-job.html)\n\nRetrieves the configuration, stats, and status of rollup jobs."]
+    #[doc = "[Rollup Get Jobs API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/rollup-get-job.html)\n\nRetrieves the configuration, stats, and status of rollup jobs."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn get_jobs<'b>(&'a self, parts: RollupGetJobsParts<'b>) -> RollupGetJobs<'a, 'b> {
         RollupGetJobs::new(self.transport(), parts)
     }
-    #[doc = "[Rollup Get Rollup Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/rollup-get-rollup-caps.html)\n\nReturns the capabilities of any rollup jobs that have been configured for a specific index or index pattern."]
+    #[doc = "[Rollup Get Rollup Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/rollup-get-rollup-caps.html)\n\nReturns the capabilities of any rollup jobs that have been configured for a specific index or index pattern."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn get_rollup_caps<'b>(
@@ -1216,7 +1216,7 @@ impl<'a> Rollup<'a> {
     ) -> RollupGetRollupCaps<'a, 'b> {
         RollupGetRollupCaps::new(self.transport(), parts)
     }
-    #[doc = "[Rollup Get Rollup Index Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/rollup-get-rollup-index-caps.html)\n\nReturns the rollup capabilities of all jobs inside of a rollup index (e.g. the index where rollup data is stored)."]
+    #[doc = "[Rollup Get Rollup Index Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/rollup-get-rollup-index-caps.html)\n\nReturns the rollup capabilities of all jobs inside of a rollup index (e.g. the index where rollup data is stored)."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn get_rollup_index_caps<'b>(
@@ -1225,13 +1225,13 @@ impl<'a> Rollup<'a> {
     ) -> RollupGetRollupIndexCaps<'a, 'b> {
         RollupGetRollupIndexCaps::new(self.transport(), parts)
     }
-    #[doc = "[Rollup Put Job API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/rollup-put-job.html)\n\nCreates a rollup job."]
+    #[doc = "[Rollup Put Job API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/rollup-put-job.html)\n\nCreates a rollup job."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn put_job<'b>(&'a self, parts: RollupPutJobParts<'b>) -> RollupPutJob<'a, 'b, ()> {
         RollupPutJob::new(self.transport(), parts)
     }
-    #[doc = "[Rollup Rollup Search API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/rollup-search.html)\n\nEnables searching rolled-up data using the standard query DSL."]
+    #[doc = "[Rollup Rollup Search API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/rollup-search.html)\n\nEnables searching rolled-up data using the standard query DSL."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn rollup_search<'b>(
@@ -1240,13 +1240,13 @@ impl<'a> Rollup<'a> {
     ) -> RollupRollupSearch<'a, 'b, ()> {
         RollupRollupSearch::new(self.transport(), parts)
     }
-    #[doc = "[Rollup Start Job API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/rollup-start-job.html)\n\nStarts an existing, stopped rollup job."]
+    #[doc = "[Rollup Start Job API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/rollup-start-job.html)\n\nStarts an existing, stopped rollup job."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn start_job<'b>(&'a self, parts: RollupStartJobParts<'b>) -> RollupStartJob<'a, 'b, ()> {
         RollupStartJob::new(self.transport(), parts)
     }
-    #[doc = "[Rollup Stop Job API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/rollup-stop-job.html)\n\nStops an existing, started rollup job."]
+    #[doc = "[Rollup Stop Job API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/rollup-stop-job.html)\n\nStops an existing, started rollup job."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn stop_job<'b>(&'a self, parts: RollupStopJobParts<'b>) -> RollupStopJob<'a, 'b, ()> {

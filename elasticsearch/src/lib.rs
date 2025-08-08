@@ -411,6 +411,7 @@ pub mod slm;
 pub mod snapshot;
 pub mod sql;
 pub mod ssl;
+pub mod streams;
 pub mod synonyms;
 pub mod tasks;
 pub mod text_structure;

@@ -79,7 +79,7 @@ impl<'b> NodesClearRepositoriesMeteringArchiveParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Nodes Clear Repositories Metering Archive API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/clear-repositories-metering-archive-api.html)\n\nRemoves the archived repositories metering information present in the cluster."]
+#[doc = "Builder for the [Nodes Clear Repositories Metering Archive API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/clear-repositories-metering-archive-api.html)\n\nRemoves the archived repositories metering information present in the cluster."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -208,7 +208,7 @@ impl<'b> NodesGetRepositoriesMeteringInfoParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Nodes Get Repositories Metering Info API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/get-repositories-metering-api.html)\n\nReturns cluster repositories metering information."]
+#[doc = "Builder for the [Nodes Get Repositories Metering Info API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/get-repositories-metering-api.html)\n\nReturns cluster repositories metering information."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -335,7 +335,7 @@ impl<'b> NodesHotThreadsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
+#[doc = "Builder for the [Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
 #[derive(Clone, Debug)]
 pub struct NodesHotThreads<'a, 'b> {
     transport: &'a Transport,
@@ -550,7 +550,7 @@ impl<'b> NodesInfoParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
+#[doc = "Builder for the [Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
 #[derive(Clone, Debug)]
 pub struct NodesInfo<'a, 'b> {
     transport: &'a Transport,
@@ -692,7 +692,7 @@ impl<'b> NodesReloadSecureSettingsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
+#[doc = "Builder for the [Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
 #[derive(Clone, Debug)]
 pub struct NodesReloadSecureSettings<'a, 'b, B> {
     transport: &'a Transport,
@@ -921,7 +921,7 @@ impl<'b> NodesStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
+#[doc = "Builder for the [Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
 #[derive(Clone, Debug)]
 pub struct NodesStats<'a, 'b> {
     transport: &'a Transport,
@@ -1158,7 +1158,7 @@ impl<'b> NodesUsageParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
+#[doc = "Builder for the [Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
 #[derive(Clone, Debug)]
 pub struct NodesUsage<'a, 'b> {
     transport: &'a Transport,
@@ -1277,7 +1277,7 @@ impl<'a> Nodes<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Nodes Clear Repositories Metering Archive API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/clear-repositories-metering-archive-api.html)\n\nRemoves the archived repositories metering information present in the cluster."]
+    #[doc = "[Nodes Clear Repositories Metering Archive API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/clear-repositories-metering-archive-api.html)\n\nRemoves the archived repositories metering information present in the cluster."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn clear_repositories_metering_archive<'b>(
@@ -1286,7 +1286,7 @@ impl<'a> Nodes<'a> {
     ) -> NodesClearRepositoriesMeteringArchive<'a, 'b> {
         NodesClearRepositoriesMeteringArchive::new(self.transport(), parts)
     }
-    #[doc = "[Nodes Get Repositories Metering Info API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/get-repositories-metering-api.html)\n\nReturns cluster repositories metering information."]
+    #[doc = "[Nodes Get Repositories Metering Info API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/get-repositories-metering-api.html)\n\nReturns cluster repositories metering information."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn get_repositories_metering_info<'b>(
@@ -1295,26 +1295,26 @@ impl<'a> Nodes<'a> {
     ) -> NodesGetRepositoriesMeteringInfo<'a, 'b> {
         NodesGetRepositoriesMeteringInfo::new(self.transport(), parts)
     }
-    #[doc = "[Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
+    #[doc = "[Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
     pub fn hot_threads<'b>(&'a self, parts: NodesHotThreadsParts<'b>) -> NodesHotThreads<'a, 'b> {
         NodesHotThreads::new(self.transport(), parts)
     }
-    #[doc = "[Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
+    #[doc = "[Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
     pub fn info<'b>(&'a self, parts: NodesInfoParts<'b>) -> NodesInfo<'a, 'b> {
         NodesInfo::new(self.transport(), parts)
     }
-    #[doc = "[Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
+    #[doc = "[Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
     pub fn reload_secure_settings<'b>(
         &'a self,
         parts: NodesReloadSecureSettingsParts<'b>,
     ) -> NodesReloadSecureSettings<'a, 'b, ()> {
         NodesReloadSecureSettings::new(self.transport(), parts)
     }
-    #[doc = "[Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
+    #[doc = "[Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
     pub fn stats<'b>(&'a self, parts: NodesStatsParts<'b>) -> NodesStats<'a, 'b> {
         NodesStats::new(self.transport(), parts)
     }
-    #[doc = "[Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
+    #[doc = "[Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
     pub fn usage<'b>(&'a self, parts: NodesUsageParts<'b>) -> NodesUsage<'a, 'b> {
         NodesUsage::new(self.transport(), parts)
     }

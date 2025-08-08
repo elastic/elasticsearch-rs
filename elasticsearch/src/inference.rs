@@ -66,7 +66,7 @@ impl<'b> InferenceChatCompletionUnifiedParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Chat Completion Unified API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/chat-completion-inference.html)\n\nPerform chat completion inference"]
+#[doc = "Builder for the [Inference Chat Completion Unified API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/chat-completion-inference.html)\n\nPerform chat completion inference"]
 #[derive(Clone, Debug)]
 pub struct InferenceChatCompletionUnified<'a, 'b, B> {
     transport: &'a Transport,
@@ -208,7 +208,7 @@ impl<'b> InferenceCompletionParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Completion API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/post-inference-api.html)\n\nPerform completion inference"]
+#[doc = "Builder for the [Inference Completion API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-inference-api.html)\n\nPerform completion inference"]
 #[derive(Clone, Debug)]
 pub struct InferenceCompletion<'a, 'b, B> {
     transport: &'a Transport,
@@ -366,7 +366,7 @@ impl<'b> InferenceDeleteParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/delete-inference-api.html)\n\nDelete an inference endpoint"]
+#[doc = "Builder for the [Inference Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/delete-inference-api.html)\n\nDelete an inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferenceDelete<'a, 'b> {
     transport: &'a Transport,
@@ -522,7 +522,7 @@ impl<'b> InferenceGetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Get API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/get-inference-api.html)\n\nGet an inference endpoint"]
+#[doc = "Builder for the [Inference Get API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/get-inference-api.html)\n\nGet an inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferenceGet<'a, 'b> {
     transport: &'a Transport,
@@ -657,7 +657,7 @@ impl<'b> InferenceInferenceParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Inference API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/post-inference-api.html)\n\nPerform inference"]
+#[doc = "Builder for the [Inference Inference API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-inference-api.html)\n\nPerform inference"]
 #[derive(Clone, Debug)]
 pub struct InferenceInference<'a, 'b, B> {
     transport: &'a Transport,
@@ -815,7 +815,7 @@ impl<'b> InferencePutParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/put-inference-api.html)\n\nConfigure an inference endpoint for use in the Inference API"]
+#[doc = "Builder for the [Inference Put API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/put-inference-api.html)\n\nConfigure an inference endpoint for use in the Inference API"]
 #[derive(Clone, Debug)]
 pub struct InferencePut<'a, 'b, B> {
     transport: &'a Transport,
@@ -966,7 +966,7 @@ impl<'b> InferencePutAlibabacloudParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Alibabacloud API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-alibabacloud-ai-search.html)\n\nConfigure an AlibabaCloud AI Search inference endpoint"]
+#[doc = "Builder for the [Inference Put Alibabacloud API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-alibabacloud-ai-search.html)\n\nConfigure an AlibabaCloud AI Search inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutAlibabacloud<'a, 'b, B> {
     transport: &'a Transport,
@@ -1117,7 +1117,7 @@ impl<'b> InferencePutAmazonbedrockParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Amazonbedrock API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-amazon-bedrock.html)\n\nConfigure an Amazon Bedrock inference endpoint"]
+#[doc = "Builder for the [Inference Put Amazonbedrock API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-amazon-bedrock.html)\n\nConfigure an Amazon Bedrock inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutAmazonbedrock<'a, 'b, B> {
     transport: &'a Transport,
@@ -1239,6 +1239,157 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Inference Put Amazonsagemaker API"]
+pub enum InferencePutAmazonsagemakerParts<'b> {
+    #[doc = "TaskType and AmazonsagemakerInferenceId"]
+    TaskTypeAmazonsagemakerInferenceId(&'b str, &'b str),
+}
+impl<'b> InferencePutAmazonsagemakerParts<'b> {
+    #[doc = "Builds a relative URL path to the Inference Put Amazonsagemaker API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            InferencePutAmazonsagemakerParts::TaskTypeAmazonsagemakerInferenceId(
+                task_type,
+                amazonsagemaker_inference_id,
+            ) => {
+                let encoded_task_type: Cow<str> =
+                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                let encoded_amazonsagemaker_inference_id: Cow<str> =
+                    percent_encode(amazonsagemaker_inference_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    13usize + encoded_task_type.len() + encoded_amazonsagemaker_inference_id.len(),
+                );
+                p.push_str("/_inference/");
+                p.push_str(encoded_task_type.as_ref());
+                p.push('/');
+                p.push_str(encoded_amazonsagemaker_inference_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Inference Put Amazonsagemaker API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-amazon-sagemaker.html)\n\nConfigure a Amazon SageMaker inference endpoint"]
+#[derive(Clone, Debug)]
+pub struct InferencePutAmazonsagemaker<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: InferencePutAmazonsagemakerParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b, B> InferencePutAmazonsagemaker<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [InferencePutAmazonsagemaker] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: InferencePutAmazonsagemakerParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        InferencePutAmazonsagemaker {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> InferencePutAmazonsagemaker<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        InferencePutAmazonsagemaker {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Inference Put Amazonsagemaker API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Put;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Inference Put Anthropic API"]
 pub enum InferencePutAnthropicParts<'b> {
     #[doc = "TaskType and AnthropicInferenceId"]
@@ -1268,7 +1419,7 @@ impl<'b> InferencePutAnthropicParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Anthropic API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-anthropic.html)\n\nConfigure an Anthropic inference endpoint"]
+#[doc = "Builder for the [Inference Put Anthropic API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-anthropic.html)\n\nConfigure an Anthropic inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutAnthropic<'a, 'b, B> {
     transport: &'a Transport,
@@ -1419,7 +1570,7 @@ impl<'b> InferencePutAzureaistudioParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Azureaistudio API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-azure-ai-studio.html)\n\nConfigure an Azure AI Studio inference endpoint"]
+#[doc = "Builder for the [Inference Put Azureaistudio API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-azure-ai-studio.html)\n\nConfigure an Azure AI Studio inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutAzureaistudio<'a, 'b, B> {
     transport: &'a Transport,
@@ -1570,7 +1721,7 @@ impl<'b> InferencePutAzureopenaiParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Azureopenai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-azure-openai.html)\n\nConfigure an Azure OpenAI inference endpoint"]
+#[doc = "Builder for the [Inference Put Azureopenai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-azure-openai.html)\n\nConfigure an Azure OpenAI inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutAzureopenai<'a, 'b, B> {
     transport: &'a Transport,
@@ -1718,7 +1869,7 @@ impl<'b> InferencePutCohereParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Cohere API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-cohere.html)\n\nConfigure a Cohere inference endpoint"]
+#[doc = "Builder for the [Inference Put Cohere API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-cohere.html)\n\nConfigure a Cohere inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutCohere<'a, 'b, B> {
     transport: &'a Transport,
@@ -1840,6 +1991,305 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Inference Put Custom API"]
+pub enum InferencePutCustomParts<'b> {
+    #[doc = "TaskType and CustomInferenceId"]
+    TaskTypeCustomInferenceId(&'b str, &'b str),
+}
+impl<'b> InferencePutCustomParts<'b> {
+    #[doc = "Builds a relative URL path to the Inference Put Custom API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            InferencePutCustomParts::TaskTypeCustomInferenceId(task_type, custom_inference_id) => {
+                let encoded_task_type: Cow<str> =
+                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                let encoded_custom_inference_id: Cow<str> =
+                    percent_encode(custom_inference_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    13usize + encoded_task_type.len() + encoded_custom_inference_id.len(),
+                );
+                p.push_str("/_inference/");
+                p.push_str(encoded_task_type.as_ref());
+                p.push('/');
+                p.push_str(encoded_custom_inference_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Inference Put Custom API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-custom)\n\nConfigure a custom inference endpoint"]
+#[derive(Clone, Debug)]
+pub struct InferencePutCustom<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: InferencePutCustomParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b, B> InferencePutCustom<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [InferencePutCustom] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: InferencePutCustomParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        InferencePutCustom {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> InferencePutCustom<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        InferencePutCustom {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Inference Put Custom API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Put;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Inference Put Deepseek API"]
+pub enum InferencePutDeepseekParts<'b> {
+    #[doc = "TaskType and DeepseekInferenceId"]
+    TaskTypeDeepseekInferenceId(&'b str, &'b str),
+}
+impl<'b> InferencePutDeepseekParts<'b> {
+    #[doc = "Builds a relative URL path to the Inference Put Deepseek API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            InferencePutDeepseekParts::TaskTypeDeepseekInferenceId(
+                task_type,
+                deepseek_inference_id,
+            ) => {
+                let encoded_task_type: Cow<str> =
+                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                let encoded_deepseek_inference_id: Cow<str> =
+                    percent_encode(deepseek_inference_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    13usize + encoded_task_type.len() + encoded_deepseek_inference_id.len(),
+                );
+                p.push_str("/_inference/");
+                p.push_str(encoded_task_type.as_ref());
+                p.push('/');
+                p.push_str(encoded_deepseek_inference_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Inference Put Deepseek API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-deepseek.html)\n\nConfigure a DeepSeek inference endpoint"]
+#[derive(Clone, Debug)]
+pub struct InferencePutDeepseek<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: InferencePutDeepseekParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+impl<'a, 'b, B> InferencePutDeepseek<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [InferencePutDeepseek] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: InferencePutDeepseekParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        InferencePutDeepseek {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> InferencePutDeepseek<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        InferencePutDeepseek {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Inference Put Deepseek API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Put;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Inference Put Elasticsearch API"]
 pub enum InferencePutElasticsearchParts<'b> {
     #[doc = "TaskType and ElasticsearchInferenceId"]
@@ -1869,7 +2319,7 @@ impl<'b> InferencePutElasticsearchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Elasticsearch API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-elasticsearch.html)\n\nConfigure an Elasticsearch inference endpoint"]
+#[doc = "Builder for the [Inference Put Elasticsearch API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-elasticsearch.html)\n\nConfigure an Elasticsearch inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutElasticsearch<'a, 'b, B> {
     transport: &'a Transport,
@@ -2017,7 +2467,7 @@ impl<'b> InferencePutElserParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Elser API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-elser.html)\n\nConfigure an ELSER inference endpoint"]
+#[doc = "Builder for the [Inference Put Elser API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-elser.html)\n\nConfigure an ELSER inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutElser<'a, 'b, B> {
     transport: &'a Transport,
@@ -2168,7 +2618,7 @@ impl<'b> InferencePutGoogleaistudioParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Googleaistudio API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-google-ai-studio.html)\n\nConfigure a Google AI Studio inference endpoint"]
+#[doc = "Builder for the [Inference Put Googleaistudio API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-google-ai-studio.html)\n\nConfigure a Google AI Studio inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutGoogleaistudio<'a, 'b, B> {
     transport: &'a Transport,
@@ -2319,7 +2769,7 @@ impl<'b> InferencePutGooglevertexaiParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Googlevertexai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-google-vertex-ai.html)\n\nConfigure a Google Vertex AI inference endpoint"]
+#[doc = "Builder for the [Inference Put Googlevertexai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-google-vertex-ai.html)\n\nConfigure a Google Vertex AI inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutGooglevertexai<'a, 'b, B> {
     transport: &'a Transport,
@@ -2470,7 +2920,7 @@ impl<'b> InferencePutHuggingFaceParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Hugging Face API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-hugging-face.html)\n\nConfigure a HuggingFace inference endpoint"]
+#[doc = "Builder for the [Inference Put Hugging Face API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-hugging-face.html)\n\nConfigure a HuggingFace inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutHuggingFace<'a, 'b, B> {
     transport: &'a Transport,
@@ -2618,7 +3068,7 @@ impl<'b> InferencePutJinaaiParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Jinaai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-jinaai.html)\n\nConfigure a JinaAI inference endpoint"]
+#[doc = "Builder for the [Inference Put Jinaai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-jinaai.html)\n\nConfigure a JinaAI inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutJinaai<'a, 'b, B> {
     transport: &'a Transport,
@@ -2769,7 +3219,7 @@ impl<'b> InferencePutMistralParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Mistral API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-mistral.html)\n\nConfigure a Mistral inference endpoint"]
+#[doc = "Builder for the [Inference Put Mistral API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-mistral.html)\n\nConfigure a Mistral inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutMistral<'a, 'b, B> {
     transport: &'a Transport,
@@ -2917,7 +3367,7 @@ impl<'b> InferencePutOpenaiParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Openai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-openai.html)\n\nConfigure an OpenAI inference endpoint"]
+#[doc = "Builder for the [Inference Put Openai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-openai.html)\n\nConfigure an OpenAI inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutOpenai<'a, 'b, B> {
     transport: &'a Transport,
@@ -3068,7 +3518,7 @@ impl<'b> InferencePutVoyageaiParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Voyageai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/inference-apis.html)\n\nConfigure a VoyageAI inference endpoint"]
+#[doc = "Builder for the [Inference Put Voyageai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/inference-apis.html)\n\nConfigure a VoyageAI inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutVoyageai<'a, 'b, B> {
     transport: &'a Transport,
@@ -3219,7 +3669,7 @@ impl<'b> InferencePutWatsonxParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Watsonx API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-watsonx-ai.html)\n\nConfigure a Watsonx inference endpoint"]
+#[doc = "Builder for the [Inference Put Watsonx API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-watsonx-ai.html)\n\nConfigure a Watsonx inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutWatsonx<'a, 'b, B> {
     transport: &'a Transport,
@@ -3361,7 +3811,7 @@ impl<'b> InferenceRerankParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Rerank API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/post-inference-api.html)\n\nPerform reranking inference"]
+#[doc = "Builder for the [Inference Rerank API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-inference-api.html)\n\nPerform reranking inference"]
 #[derive(Clone, Debug)]
 pub struct InferenceRerank<'a, 'b, B> {
     transport: &'a Transport,
@@ -3503,7 +3953,7 @@ impl<'b> InferenceSparseEmbeddingParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Sparse Embedding API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/post-inference-api.html)\n\nPerform sparse embedding inference"]
+#[doc = "Builder for the [Inference Sparse Embedding API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-inference-api.html)\n\nPerform sparse embedding inference"]
 #[derive(Clone, Debug)]
 pub struct InferenceSparseEmbedding<'a, 'b, B> {
     transport: &'a Transport,
@@ -3646,7 +4096,7 @@ impl<'b> InferenceStreamCompletionParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Stream Completion API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/post-stream-inference-api.html)\n\nPerform streaming completion inference"]
+#[doc = "Builder for the [Inference Stream Completion API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-stream-inference-api.html)\n\nPerform streaming completion inference"]
 #[derive(Clone, Debug)]
 pub struct InferenceStreamCompletion<'a, 'b, B> {
     transport: &'a Transport,
@@ -3788,7 +4238,7 @@ impl<'b> InferenceTextEmbeddingParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Text Embedding API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/post-inference-api.html)\n\nPerform text embedding inference"]
+#[doc = "Builder for the [Inference Text Embedding API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-inference-api.html)\n\nPerform text embedding inference"]
 #[derive(Clone, Debug)]
 pub struct InferenceTextEmbedding<'a, 'b, B> {
     transport: &'a Transport,
@@ -3948,7 +4398,7 @@ impl<'b> InferenceUpdateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Update API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/update-inference-api.html)\n\nUpdate inference"]
+#[doc = "Builder for the [Inference Update API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/update-inference-api.html)\n\nUpdate inference"]
 #[derive(Clone, Debug)]
 pub struct InferenceUpdate<'a, 'b, B> {
     transport: &'a Transport,
@@ -4081,177 +4531,198 @@ impl<'a> Inference<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Inference Chat Completion Unified API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/chat-completion-inference.html)\n\nPerform chat completion inference"]
+    #[doc = "[Inference Chat Completion Unified API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/chat-completion-inference.html)\n\nPerform chat completion inference"]
     pub fn chat_completion_unified<'b>(
         &'a self,
         parts: InferenceChatCompletionUnifiedParts<'b>,
     ) -> InferenceChatCompletionUnified<'a, 'b, ()> {
         InferenceChatCompletionUnified::new(self.transport(), parts)
     }
-    #[doc = "[Inference Completion API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/post-inference-api.html)\n\nPerform completion inference"]
+    #[doc = "[Inference Completion API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-inference-api.html)\n\nPerform completion inference"]
     pub fn completion<'b>(
         &'a self,
         parts: InferenceCompletionParts<'b>,
     ) -> InferenceCompletion<'a, 'b, ()> {
         InferenceCompletion::new(self.transport(), parts)
     }
-    #[doc = "[Inference Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/delete-inference-api.html)\n\nDelete an inference endpoint"]
+    #[doc = "[Inference Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/delete-inference-api.html)\n\nDelete an inference endpoint"]
     pub fn delete<'b>(&'a self, parts: InferenceDeleteParts<'b>) -> InferenceDelete<'a, 'b> {
         InferenceDelete::new(self.transport(), parts)
     }
-    #[doc = "[Inference Get API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/get-inference-api.html)\n\nGet an inference endpoint"]
+    #[doc = "[Inference Get API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/get-inference-api.html)\n\nGet an inference endpoint"]
     pub fn get<'b>(&'a self, parts: InferenceGetParts<'b>) -> InferenceGet<'a, 'b> {
         InferenceGet::new(self.transport(), parts)
     }
-    #[doc = "[Inference Inference API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/post-inference-api.html)\n\nPerform inference"]
+    #[doc = "[Inference Inference API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-inference-api.html)\n\nPerform inference"]
     pub fn inference<'b>(
         &'a self,
         parts: InferenceInferenceParts<'b>,
     ) -> InferenceInference<'a, 'b, ()> {
         InferenceInference::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/put-inference-api.html)\n\nConfigure an inference endpoint for use in the Inference API"]
+    #[doc = "[Inference Put API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/put-inference-api.html)\n\nConfigure an inference endpoint for use in the Inference API"]
     pub fn put<'b>(&'a self, parts: InferencePutParts<'b>) -> InferencePut<'a, 'b, ()> {
         InferencePut::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Alibabacloud API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-alibabacloud-ai-search.html)\n\nConfigure an AlibabaCloud AI Search inference endpoint"]
+    #[doc = "[Inference Put Alibabacloud API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-alibabacloud-ai-search.html)\n\nConfigure an AlibabaCloud AI Search inference endpoint"]
     pub fn put_alibabacloud<'b>(
         &'a self,
         parts: InferencePutAlibabacloudParts<'b>,
     ) -> InferencePutAlibabacloud<'a, 'b, ()> {
         InferencePutAlibabacloud::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Amazonbedrock API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-amazon-bedrock.html)\n\nConfigure an Amazon Bedrock inference endpoint"]
+    #[doc = "[Inference Put Amazonbedrock API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-amazon-bedrock.html)\n\nConfigure an Amazon Bedrock inference endpoint"]
     pub fn put_amazonbedrock<'b>(
         &'a self,
         parts: InferencePutAmazonbedrockParts<'b>,
     ) -> InferencePutAmazonbedrock<'a, 'b, ()> {
         InferencePutAmazonbedrock::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Anthropic API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-anthropic.html)\n\nConfigure an Anthropic inference endpoint"]
+    #[doc = "[Inference Put Amazonsagemaker API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-amazon-sagemaker.html)\n\nConfigure a Amazon SageMaker inference endpoint"]
+    pub fn put_amazonsagemaker<'b>(
+        &'a self,
+        parts: InferencePutAmazonsagemakerParts<'b>,
+    ) -> InferencePutAmazonsagemaker<'a, 'b, ()> {
+        InferencePutAmazonsagemaker::new(self.transport(), parts)
+    }
+    #[doc = "[Inference Put Anthropic API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-anthropic.html)\n\nConfigure an Anthropic inference endpoint"]
     pub fn put_anthropic<'b>(
         &'a self,
         parts: InferencePutAnthropicParts<'b>,
     ) -> InferencePutAnthropic<'a, 'b, ()> {
         InferencePutAnthropic::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Azureaistudio API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-azure-ai-studio.html)\n\nConfigure an Azure AI Studio inference endpoint"]
+    #[doc = "[Inference Put Azureaistudio API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-azure-ai-studio.html)\n\nConfigure an Azure AI Studio inference endpoint"]
     pub fn put_azureaistudio<'b>(
         &'a self,
         parts: InferencePutAzureaistudioParts<'b>,
     ) -> InferencePutAzureaistudio<'a, 'b, ()> {
         InferencePutAzureaistudio::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Azureopenai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-azure-openai.html)\n\nConfigure an Azure OpenAI inference endpoint"]
+    #[doc = "[Inference Put Azureopenai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-azure-openai.html)\n\nConfigure an Azure OpenAI inference endpoint"]
     pub fn put_azureopenai<'b>(
         &'a self,
         parts: InferencePutAzureopenaiParts<'b>,
     ) -> InferencePutAzureopenai<'a, 'b, ()> {
         InferencePutAzureopenai::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Cohere API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-cohere.html)\n\nConfigure a Cohere inference endpoint"]
+    #[doc = "[Inference Put Cohere API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-cohere.html)\n\nConfigure a Cohere inference endpoint"]
     pub fn put_cohere<'b>(
         &'a self,
         parts: InferencePutCohereParts<'b>,
     ) -> InferencePutCohere<'a, 'b, ()> {
         InferencePutCohere::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Elasticsearch API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-elasticsearch.html)\n\nConfigure an Elasticsearch inference endpoint"]
+    #[doc = "[Inference Put Custom API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-custom)\n\nConfigure a custom inference endpoint"]
+    pub fn put_custom<'b>(
+        &'a self,
+        parts: InferencePutCustomParts<'b>,
+    ) -> InferencePutCustom<'a, 'b, ()> {
+        InferencePutCustom::new(self.transport(), parts)
+    }
+    #[doc = "[Inference Put Deepseek API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-deepseek.html)\n\nConfigure a DeepSeek inference endpoint"]
+    pub fn put_deepseek<'b>(
+        &'a self,
+        parts: InferencePutDeepseekParts<'b>,
+    ) -> InferencePutDeepseek<'a, 'b, ()> {
+        InferencePutDeepseek::new(self.transport(), parts)
+    }
+    #[doc = "[Inference Put Elasticsearch API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-elasticsearch.html)\n\nConfigure an Elasticsearch inference endpoint"]
     pub fn put_elasticsearch<'b>(
         &'a self,
         parts: InferencePutElasticsearchParts<'b>,
     ) -> InferencePutElasticsearch<'a, 'b, ()> {
         InferencePutElasticsearch::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Elser API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-elser.html)\n\nConfigure an ELSER inference endpoint"]
+    #[doc = "[Inference Put Elser API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-elser.html)\n\nConfigure an ELSER inference endpoint"]
     pub fn put_elser<'b>(
         &'a self,
         parts: InferencePutElserParts<'b>,
     ) -> InferencePutElser<'a, 'b, ()> {
         InferencePutElser::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Googleaistudio API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-google-ai-studio.html)\n\nConfigure a Google AI Studio inference endpoint"]
+    #[doc = "[Inference Put Googleaistudio API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-google-ai-studio.html)\n\nConfigure a Google AI Studio inference endpoint"]
     pub fn put_googleaistudio<'b>(
         &'a self,
         parts: InferencePutGoogleaistudioParts<'b>,
     ) -> InferencePutGoogleaistudio<'a, 'b, ()> {
         InferencePutGoogleaistudio::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Googlevertexai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-google-vertex-ai.html)\n\nConfigure a Google Vertex AI inference endpoint"]
+    #[doc = "[Inference Put Googlevertexai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-google-vertex-ai.html)\n\nConfigure a Google Vertex AI inference endpoint"]
     pub fn put_googlevertexai<'b>(
         &'a self,
         parts: InferencePutGooglevertexaiParts<'b>,
     ) -> InferencePutGooglevertexai<'a, 'b, ()> {
         InferencePutGooglevertexai::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Hugging Face API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-hugging-face.html)\n\nConfigure a HuggingFace inference endpoint"]
+    #[doc = "[Inference Put Hugging Face API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-hugging-face.html)\n\nConfigure a HuggingFace inference endpoint"]
     pub fn put_hugging_face<'b>(
         &'a self,
         parts: InferencePutHuggingFaceParts<'b>,
     ) -> InferencePutHuggingFace<'a, 'b, ()> {
         InferencePutHuggingFace::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Jinaai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-jinaai.html)\n\nConfigure a JinaAI inference endpoint"]
+    #[doc = "[Inference Put Jinaai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-jinaai.html)\n\nConfigure a JinaAI inference endpoint"]
     pub fn put_jinaai<'b>(
         &'a self,
         parts: InferencePutJinaaiParts<'b>,
     ) -> InferencePutJinaai<'a, 'b, ()> {
         InferencePutJinaai::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Mistral API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-mistral.html)\n\nConfigure a Mistral inference endpoint"]
+    #[doc = "[Inference Put Mistral API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-mistral.html)\n\nConfigure a Mistral inference endpoint"]
     pub fn put_mistral<'b>(
         &'a self,
         parts: InferencePutMistralParts<'b>,
     ) -> InferencePutMistral<'a, 'b, ()> {
         InferencePutMistral::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Openai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-openai.html)\n\nConfigure an OpenAI inference endpoint"]
+    #[doc = "[Inference Put Openai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-openai.html)\n\nConfigure an OpenAI inference endpoint"]
     pub fn put_openai<'b>(
         &'a self,
         parts: InferencePutOpenaiParts<'b>,
     ) -> InferencePutOpenai<'a, 'b, ()> {
         InferencePutOpenai::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Voyageai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/inference-apis.html)\n\nConfigure a VoyageAI inference endpoint"]
+    #[doc = "[Inference Put Voyageai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/inference-apis.html)\n\nConfigure a VoyageAI inference endpoint"]
     pub fn put_voyageai<'b>(
         &'a self,
         parts: InferencePutVoyageaiParts<'b>,
     ) -> InferencePutVoyageai<'a, 'b, ()> {
         InferencePutVoyageai::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Watsonx API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/infer-service-watsonx-ai.html)\n\nConfigure a Watsonx inference endpoint"]
+    #[doc = "[Inference Put Watsonx API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-watsonx-ai.html)\n\nConfigure a Watsonx inference endpoint"]
     pub fn put_watsonx<'b>(
         &'a self,
         parts: InferencePutWatsonxParts<'b>,
     ) -> InferencePutWatsonx<'a, 'b, ()> {
         InferencePutWatsonx::new(self.transport(), parts)
     }
-    #[doc = "[Inference Rerank API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/post-inference-api.html)\n\nPerform reranking inference"]
+    #[doc = "[Inference Rerank API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-inference-api.html)\n\nPerform reranking inference"]
     pub fn rerank<'b>(&'a self, parts: InferenceRerankParts<'b>) -> InferenceRerank<'a, 'b, ()> {
         InferenceRerank::new(self.transport(), parts)
     }
-    #[doc = "[Inference Sparse Embedding API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/post-inference-api.html)\n\nPerform sparse embedding inference"]
+    #[doc = "[Inference Sparse Embedding API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-inference-api.html)\n\nPerform sparse embedding inference"]
     pub fn sparse_embedding<'b>(
         &'a self,
         parts: InferenceSparseEmbeddingParts<'b>,
     ) -> InferenceSparseEmbedding<'a, 'b, ()> {
         InferenceSparseEmbedding::new(self.transport(), parts)
     }
-    #[doc = "[Inference Stream Completion API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/post-stream-inference-api.html)\n\nPerform streaming completion inference"]
+    #[doc = "[Inference Stream Completion API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-stream-inference-api.html)\n\nPerform streaming completion inference"]
     pub fn stream_completion<'b>(
         &'a self,
         parts: InferenceStreamCompletionParts<'b>,
     ) -> InferenceStreamCompletion<'a, 'b, ()> {
         InferenceStreamCompletion::new(self.transport(), parts)
     }
-    #[doc = "[Inference Text Embedding API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/post-inference-api.html)\n\nPerform text embedding inference"]
+    #[doc = "[Inference Text Embedding API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-inference-api.html)\n\nPerform text embedding inference"]
     pub fn text_embedding<'b>(
         &'a self,
         parts: InferenceTextEmbeddingParts<'b>,
     ) -> InferenceTextEmbedding<'a, 'b, ()> {
         InferenceTextEmbedding::new(self.transport(), parts)
     }
-    #[doc = "[Inference Update API](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/update-inference-api.html)\n\nUpdate inference"]
+    #[doc = "[Inference Update API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/update-inference-api.html)\n\nUpdate inference"]
     pub fn update<'b>(&'a self, parts: InferenceUpdateParts<'b>) -> InferenceUpdate<'a, 'b, ()> {
         InferenceUpdate::new(self.transport(), parts)
     }
