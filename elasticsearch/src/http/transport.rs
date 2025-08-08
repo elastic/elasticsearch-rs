@@ -543,6 +543,9 @@ impl Transport {
                     header_value.set_sensitive(true);
                     request_builder.header(AUTHORIZATION, header_value)
                 }
+                Credentials::AuthorizationHeader(header) => {
+                    request_builder.header(AUTHORIZATION, header.clone())
+                }
             }
         }
         drop(creds_guard);
@@ -710,6 +713,20 @@ impl Transport {
     /// using them. Typically used to refresh a bearer token.
     pub fn set_auth(&self, credentials: Credentials) {
         *self.credentials.write() = Some(credentials);
+    }
+
+    /// Creates a new `Transport` that is a clone of this one, except for authentication
+    /// credentials. This is the opposite of [`Transport::set_auth()`]. Typically used
+    /// when working in multi-tenant environments where credentials can vary with every
+    /// request.
+    pub fn clone_with_auth(&self, credentials: Option<Credentials>) -> Self {
+        Self {
+            client: self.client.clone(),
+            credentials: Arc::new(RwLock::new(credentials)),
+            conn_pool: self.conn_pool.clone(),
+            request_body_compression: self.request_body_compression,
+            send_meta: self.send_meta,
+        }
     }
 }
 
@@ -1290,6 +1307,30 @@ pub mod tests {
         }
 
         // Verify that cloned transport also has the same credentials
+        if let Some(Credentials::Bearer(token)) = t2.credentials.read().as_ref() {
+            assert_eq!(token, "The bear");
+        } else {
+            panic!("Expected Bearer credentials");
+        }
+
+        Ok(())
+    }
+
+    #[test]
+    fn clone_with_credentials() -> anyhow::Result<()> {
+        let t1: Transport = TransportBuilder::new(SingleNodeConnectionPool::default())
+            .auth(Credentials::Basic("foo".to_string(), "bar".to_string()))
+            .build()?;
+
+        let t2 = t1.clone_with_auth(Some(Credentials::Bearer("The bear".to_string())));
+
+        if let Some(Credentials::Basic(login, password)) = t1.credentials.read().as_ref() {
+            assert_eq!(login, "foo");
+            assert_eq!(password, "bar");
+        } else {
+            panic!("Expected Basic credentials");
+        }
+
         if let Some(Credentials::Bearer(token)) = t2.credentials.read().as_ref() {
             assert_eq!(token, "The bear");
         } else {

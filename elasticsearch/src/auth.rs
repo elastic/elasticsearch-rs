@@ -35,6 +35,8 @@ pub enum Credentials {
     ApiKey(String, String),
     /// An API key as a base64-encoded id and secret
     EncodedApiKey(String),
+    /// An arbitrary value for the Authorization header
+    AuthorizationHeader(String),
 }
 
 #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
