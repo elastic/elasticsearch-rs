@@ -62,7 +62,7 @@
 //!
 //! ```toml,no_run
 //! [dependencies]
-//! elasticsearch = "9.0.0-alpha.1"
+//! elasticsearch = "9.1.0-alpha.1"
 //! ```
 //! The following _optional_ dependencies may also be useful to create requests and read responses
 //!

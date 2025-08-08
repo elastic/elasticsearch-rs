@@ -120,7 +120,7 @@ checksum = "e16d2d3311acee920a9eb8d33b8cbc1787ce4a264e85f964c2404b969bdcd487"
 
 [[package]]
 name = "api_generator"
-version = "9.0.0-alpha.1"
+version = "9.1.0-alpha.1"
 dependencies = [
  "Inflector",
  "anyhow",
@@ -627,7 +627,7 @@ checksum = "48c757948c5ede0e46177b7add2e67155f70e33c07fea8284df6576da70b3719"
 
 [[package]]
 name = "elasticsearch"
-version = "9.0.0-alpha.1"
+version = "9.1.0-alpha.1"
 dependencies = [
  "anyhow",
  "axum",
@@ -3085,7 +3085,7 @@ checksum = "32ac00cd3f8ec9c1d33fb3e7958a82df6989c42d747bd326c822b1d625283547"
 
 [[package]]
 name = "xtask"
-version = "9.0.0-alpha.1"
+version = "9.1.0-alpha.1"
 dependencies = [
  "anyhow",
  "chrono",
@@ -3119,7 +3119,7 @@ dependencies = [
 
 [[package]]
 name = "yaml_test_runner"
-version = "9.0.0-alpha.1"
+version = "9.1.0-alpha.1"
 dependencies = [
  "Inflector",
  "anyhow",
