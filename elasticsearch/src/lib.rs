@@ -62,7 +62,7 @@
 //!
 //! ```toml,no_run
 //! [dependencies]
-//! elasticsearch = "9.0.0-alpha.1"
+//! elasticsearch = "9.1.0-alpha.1"
 //! ```
 //! The following _optional_ dependencies may also be useful to create requests and read responses
 //!
@@ -411,6 +411,7 @@ pub mod slm;
 pub mod snapshot;
 pub mod sql;
 pub mod ssl;
+pub mod streams;
 pub mod synonyms;
 pub mod tasks;
 pub mod text_structure;

@@ -35,6 +35,7 @@ written = [
     "snapshot.rs",
     "sql.rs",
     "ssl.rs",
+    "streams.rs",
     "synonyms.rs",
     "tasks.rs",
     "text_structure.rs",

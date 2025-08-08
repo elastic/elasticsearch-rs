@@ -270,6 +270,19 @@ fn update_docs(old_version: &str, new_version: &Version) {
             Err(e) => panic!("{:?}", e),
         }
     }
+
+    for entry in glob("docs/docset.yml").unwrap() {
+        match entry {
+            Ok(path) => {
+                let mut content = read_file(&path);
+                content = content.replace(
+                    &format!("version: \"{}\"", old_version),
+                    &format!("version: \"{}\"", new_version.to_string()));
+                write_file(&path, content);
+            }
+            Err(e) => panic!("{:?}", e),
+        }
+    }
 }
 
 fn update_cargo_toml(new_version: &Version) -> String {

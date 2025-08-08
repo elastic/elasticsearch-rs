@@ -1,6 +1,6 @@
 [package]
 name = "example_wasm_fetch"
-version = "0.1.0"
+version = "9.1.0-alpha.1"
 publish = false
 authors = ["Elastic and Contributors"]
 edition = "2021"

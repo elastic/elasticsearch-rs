@@ -45,6 +45,7 @@ use base64::{engine::general_purpose::STANDARD as BASE64_STANDARD, write::Encode
 use bytes::BytesMut;
 use flate2::{write::GzEncoder, Compression};
 use lazy_static::lazy_static;
+use parking_lot::RwLock;
 use serde::Serialize;
 use serde_json::Value;
 use std::{
@@ -58,7 +59,6 @@ use std::{
     },
     time::{Duration, Instant},
 };
-use parking_lot::RwLock;
 use url::Url;
 
 /// Error that can occur when building a [Transport]
@@ -344,7 +344,11 @@ impl TransportBuilder {
             if let Some(c) = self.proxy_credentials {
                 proxy = match c {
                     Credentials::Basic(u, p) => proxy.basic_auth(&u, &p),
-                    _ => return Err(BuildError::Config("Only Basic Authentication is supported for proxies".into())),
+                    _ => {
+                        return Err(BuildError::Config(
+                            "Only Basic Authentication is supported for proxies".into(),
+                        ))
+                    }
                 };
             }
             client_builder = client_builder.proxy(proxy);
