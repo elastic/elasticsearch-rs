@@ -1,29 +1,21 @@
 [config]
 default_to_workspace = false
+init_task = "init"
 
 [env]
-# Determines the version of Elasticsearch docker container used
-STACK_VERSION = { value = "8.0.0-SNAPSHOT", condition = { env_not_set = ["STACK_VERSION"] }}
-# Determines the distribution of docker container used. Either platinum or free
-TEST_SUITE = { value = "free", condition = { env_not_set = ["TEST_SUITE"] }}
 # Set publish flags to dry-run by default, to force user to explicitly define for publishing
 CARGO_MAKE_CARGO_PUBLISH_FLAGS = "--dry-run"
 # RUST_BACKTRACE is set to "full" in cargo make's builtin makefiles/stable.toml
 RUST_BACKTRACE = { value = "0", condition = { env_not_set = ["RUST_BACKTRACE"]}}
+ELASTICSEARCH_URL = "https://elastic:changeme@localhost:9200"
 
-[tasks.set-free-env]
-category = "Elasticsearch"
-description = "Sets ELASTICSEARCH_URL environment variable if not already set for later tasks when free test suite used"
+[tasks.init]
 private = true
-condition = { env = { "TEST_SUITE" = "free" }, env_not_set = ["ELASTICSEARCH_URL"] }
-env = { "ELASTICSEARCH_URL" = "http://elastic:changeme@localhost:9200" }
-
-[tasks.set-platinum-env]
-category = "Elasticsearch"
-description = "Sets ELASTICSEARCH_URL environment variable if not already set for later tasks when platinum test suite used"
-private = true
-condition = { env = { "TEST_SUITE" = "platinum" }, env_not_set = ["ELASTICSEARCH_URL"] }
-env = { "ELASTICSEARCH_URL" = "https://elastic:changeme@localhost:9200" }
+condition = { env_not_set = ["STACK_VERSION"] }
+script = [
+    'echo "Environment variable STACK_VERSION is required but not set."',
+    'exit 1',
+]
 
 [tasks.download-specs]
 category = "Elasticsearch"
@@ -35,36 +27,9 @@ command = "cargo"
 args = ["run", "-q", "-p", "xtask", "--", "download-specs", "--url", "${ELASTICSEARCH_URL}"]
 dependencies = ["start-elasticsearch"]
 
-[tasks.run-yaml-test-runner]
-category = "Elasticsearch"
-description = '''
-Runs yaml_test_runner package to generate tests from yaml files for a given Elasticsearch commit.
-The commit to use is retrieved from the running Elasticsearch instance
-'''
-private = true
-command = "cargo"
-args = ["run", "-p", "yaml_test_runner", "--", "-u", "${ELASTICSEARCH_URL}"]
-dependencies = ["download-specs"]
-
-[tasks.test-yaml-test-runner]
-category = "Elasticsearch"
-private = true
-condition = { env_set = [ "ELASTICSEARCH_URL" ], env_false = ["CARGO_MAKE_CI"] }
-command = "cargo"
-args = ["test", "-p", "yaml_test_runner", "--", "--test-threads", "1"]
-dependencies = ["generate-yaml-tests"]
-
-[tasks.test-yaml-test-runner-ci]
-category = "Elasticsearch"
-private = true
-condition = { env_set = [ "ELASTICSEARCH_URL" ], env_true = ["CARGO_MAKE_CI"] }
-script = ["cargo test -p yaml_test_runner -- --test-threads 1 | tee test_results/results.txt"]
-dependencies = ["generate-yaml-tests"]
-
 [tasks.test-elasticsearch]
 category = "Elasticsearch"
 private = true
-condition = { env_set = [ "ELASTICSEARCH_URL" ], env = { "TEST_SUITE" = "platinum" } }
 command = "cargo"
 args = ["test", "-p", "elasticsearch"]
 dependencies = ["start-elasticsearch"]
@@ -97,8 +62,7 @@ script = ["[ -d test_results ] || mkdir -p test_results"]
 [tasks.run-elasticsearch]
 category = "Elasticsearch"
 private = true
-condition = { env_set = [ "STACK_VERSION", "TEST_SUITE" ], env_false = ["CARGO_MAKE_CI"] }
-dependencies = ["set-free-env", "set-platinum-env"]
+condition = { env_set = [ "STACK_VERSION" ], env_false = ["CARGO_MAKE_CI"] }
 
 [tasks.run-elasticsearch.linux]
 command = "./.buildkite/run-elasticsearch.sh"
@@ -110,7 +74,7 @@ command = "./.buildkite/run-elasticsearch.sh"
 script_runner = "cmd"
 script = [
 '''
-bash -c "STACK_VERSION=%STACK_VERSION% TEST_SUITE=%TEST_SUITE% DETACH=%DETACH% CLEANUP=%CLEANUP% bash .buildkite/run-elasticsearch.sh"
+bash -c "STACK_VERSION=%STACK_VERSION% DETACH=%DETACH% CLEANUP=%CLEANUP% bash .buildkite/run-elasticsearch.sh"
 '''
 ]
 
@@ -147,13 +111,6 @@ private = false
 description = "Stops Elasticsearch docker container, if running"
 env = { "CLEANUP" = true, "DETACH" = false }
 
-[tasks.test-yaml]
-category = "Elasticsearch"
-description = "Generates and runs yaml_test_runner package platinum/free tests against a given Elasticsearch version"
-condition = { env_set = [ "STACK_VERSION", "TEST_SUITE" ] }
-dependencies = ["generate-yaml-tests", "create-test-results-dir", "test-yaml-test-runner", "test-yaml-test-runner-ci"]
-run_task = "stop-elasticsearch"
-
 [tasks.test-generator]
 category = "Elasticsearch"
 clear = true
@@ -165,15 +122,8 @@ args = ["test", "-p", "api_generator"]
 category = "Elasticsearch"
 clear = true
 description = "Runs elasticsearch package tests against a given Elasticsearch version"
-env = { "TEST_SUITE" = { value = "platinum", condition = { env_set = ["TEST_SUITE"] } } }
 dependencies = ["test-elasticsearch"]
 run_task = "stop-elasticsearch"
-
-[tasks.generate-yaml-tests]
-category = "Elasticsearch"
-description = "Generates Elasticsearch client tests from YAML tests"
-dependencies = ["run-yaml-test-runner"]
-run_task = "format"
 
 [tasks.generate-api]
 category = "Elasticsearch"
@@ -330,7 +280,6 @@ script = ['''
     echo - start-elasticsearch: Starts Elasticsearch docker container with the given version and distribution
     echo - stop-elasticsearch: Stops Elasticsearch docker container, if running
     echo
-    echo - test-yaml: Generates and runs yaml_test_runner package platinum/free tests against a given Elasticsearch version
     echo - test-generator: Generates and runs api_generator package tests
     echo - test: Runs elasticsearch package tests against a given Elasticsearch version
     echo
@@ -345,7 +294,6 @@ script = ['''
     echo
     echo Most tasks use these environment variables:
     echo - STACK_VERSION (default '${STACK_VERSION}'): the version of Elasticsearch
-    echo - TEST_SUITE ('free' or 'platinum', default '${TEST_SUITE}'): the distribution of Elasticsearch
     echo - CI (default not set): set when running on CI to determine whether to start Elasticsearch and format test output as JSON
     echo
     echo Run 'cargo make --list-all-steps' for a complete list of available tasks.

@@ -6,6 +6,9 @@
 # - Initial version after refactor
 # - Validate STACK_VERSION asap
 
+# Hardcoded, there's no more a distinction between "free" and "platinum" and security is on by default
+export TEST_SUITE="platinum"
+
 function require_stack_version() {
   if [[ -z $STACK_VERSION ]]; then
     echo -e "\033[31;1mERROR:\033[0m Required environment variable [STACK_VERSION] not set\033[0m"
