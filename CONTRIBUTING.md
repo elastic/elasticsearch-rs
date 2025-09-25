@@ -76,18 +76,6 @@ The `Elasticsearch` category of steps are specifically defined for this project 
   cargo make test --env STACK_VERSION=7.9.0
   ```
 
-- Run YAML tests
-
-  Optionally pass
-
-  - `STACK_VERSION`: Elasticsearch version like `7.9.0` or can be
-  a snapshot release like `7.x-SNAPSHOT`
-  - `TEST_SUITE`: Elasticsearch distribution of `free` or `platinum`
-
-  ```sh
-  cargo make test-yaml --env STACK_VERSION=7.9.0 --env TEST_SUITE=free
-  ```
-
 ### Packages
 
 The workspace contains the following packages:
@@ -108,15 +96,6 @@ The minimum REST API spec version compatible with the generator is `v7.4.0`.
 The `quote!` macro is particularly useful as it accepts Rust code that can include placeholder tokens (prefixed with `#`)
 that will be interpolated during expansion. Unlike procedural macros, the token stream returned by the `quote!` macro
 can be `to_string()`'ed and written to disk, and this is used to create much of the client scaffolding.
-
-- #### `yaml_test_runner`
-
-  A small executable that downloads YAML tests from GitHub and generates client tests from the YAML tests. The
-  version of YAML tests to download are determined from the commit hash of a running Elasticsearch instance.
-
-  The `yaml_test_runner` package can be run with `cargo make test-yaml` to run the generated client tests,
-  passing environment variables `TEST_SUITE` and `STACK_VERSION` to control the distribution and version,
-  respectively.
 
 ### Design principles
 
