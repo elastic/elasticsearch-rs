@@ -44,7 +44,6 @@ use crate::{
 use base64::{engine::general_purpose::STANDARD as BASE64_STANDARD, write::EncoderWriter, Engine};
 use bytes::BytesMut;
 use flate2::{write::GzEncoder, Compression};
-use lazy_static::lazy_static;
 use parking_lot::RwLock;
 use serde::Serialize;
 use serde_json::Value;
@@ -55,7 +54,7 @@ use std::{
     io::{self, Write},
     sync::{
         atomic::{AtomicBool, AtomicUsize, Ordering},
-        Arc,
+        Arc, LazyLock,
     },
     time::{Duration, Instant},
 };
@@ -118,10 +117,8 @@ impl fmt::Display for BuildError {
 /// Default address to Elasticsearch running on `https://localhost:9200`
 pub static DEFAULT_ADDRESS: &str = "https://localhost:9200";
 
-lazy_static! {
-    /// Client metadata header: service, language, transport, followed by additional information
-    static ref CLIENT_META: String = build_meta();
-}
+/// Client metadata header: service, language, transport, followed by additional information
+static CLIENT_META: LazyLock<String> = LazyLock::new(|| build_meta());
 
 fn build_meta() -> String {
     let mut version_parts = env!("CARGO_PKG_VERSION").split(&['.', '-'][..]);
