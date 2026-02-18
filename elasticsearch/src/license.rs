@@ -1072,7 +1072,7 @@ impl<'a> License<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for License APIs"]
-    pub fn license(&self) -> License {
+    pub fn license(&self) -> License<'_> {
         License::new(self.transport())
     }
 }

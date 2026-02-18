@@ -11949,7 +11949,7 @@ impl<'a> Ml<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Machine Learning APIs"]
-    pub fn ml(&self) -> Ml {
+    pub fn ml(&self) -> Ml<'_> {
         Ml::new(self.transport())
     }
 }

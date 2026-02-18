@@ -239,7 +239,7 @@ impl<'a> Monitoring<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Monitoring APIs"]
-    pub fn monitoring(&self) -> Monitoring {
+    pub fn monitoring(&self) -> Monitoring<'_> {
         Monitoring::new(self.transport())
     }
 }

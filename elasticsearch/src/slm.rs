@@ -1437,7 +1437,7 @@ impl<'a> Slm<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Snapshot Lifecycle Management APIs"]
-    pub fn slm(&self) -> Slm {
+    pub fn slm(&self) -> Slm<'_> {
         Slm::new(self.transport())
     }
 }

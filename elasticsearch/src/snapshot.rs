@@ -2478,7 +2478,7 @@ impl<'a> Snapshot<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Snapshot APIs"]
-    pub fn snapshot(&self) -> Snapshot {
+    pub fn snapshot(&self) -> Snapshot<'_> {
         Snapshot::new(self.transport())
     }
 }

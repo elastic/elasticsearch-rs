@@ -5294,7 +5294,7 @@ impl<'a> Cat<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Cat APIs"]
-    pub fn cat(&self) -> Cat {
+    pub fn cat(&self) -> Cat<'_> {
         Cat::new(self.transport())
     }
 }

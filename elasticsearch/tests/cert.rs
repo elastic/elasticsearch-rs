@@ -35,6 +35,7 @@ use common::*;
 use elasticsearch::cert::{Certificate, CertificateValidation};
 use os_type::OSType;
 
+#[cfg(feature = "rustls-tls")] // unused with native-tls
 static CA_CERT: &[u8] = include_bytes!("../../.buildkite/certs/ca.crt");
 //static CA_CHAIN_CERT: &[u8] = include_bytes!("../../.ci/certs/ca-chain.crt");
 static TESTNODE_CERT: &[u8] = include_bytes!("../../.buildkite/certs/testnode.crt");

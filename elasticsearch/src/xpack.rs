@@ -319,7 +319,7 @@ impl<'a> Xpack<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for X-Pack APIs"]
-    pub fn xpack(&self) -> Xpack {
+    pub fn xpack(&self) -> Xpack<'_> {
         Xpack::new(self.transport())
     }
 }

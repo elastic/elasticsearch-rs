@@ -1256,7 +1256,7 @@ impl<'a> Rollup<'a> {
 #[cfg(feature = "experimental-apis")]
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Rollup APIs"]
-    pub fn rollup(&self) -> Rollup {
+    pub fn rollup(&self) -> Rollup<'_> {
         Rollup::new(self.transport())
     }
 }

@@ -1104,7 +1104,7 @@ impl<'a> Esql<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Esql APIs"]
-    pub fn esql(&self) -> Esql {
+    pub fn esql(&self) -> Esql<'_> {
         Esql::new(self.transport())
     }
 }

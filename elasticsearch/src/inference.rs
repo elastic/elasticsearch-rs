@@ -4729,7 +4729,7 @@ impl<'a> Inference<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Inference APIs"]
-    pub fn inference(&self) -> Inference {
+    pub fn inference(&self) -> Inference<'_> {
         Inference::new(self.transport())
     }
 }

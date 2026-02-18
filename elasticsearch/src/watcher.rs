@@ -1988,7 +1988,7 @@ impl<'a> Watcher<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Watcher APIs"]
-    pub fn watcher(&self) -> Watcher {
+    pub fn watcher(&self) -> Watcher<'_> {
         Watcher::new(self.transport())
     }
 }
