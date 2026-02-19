@@ -142,15 +142,15 @@ args = ["doc", "-p", "elasticsearch", "--no-deps", "--open", "--all-features"]
 category = "Elasticsearch"
 description = """
 Generates release notes for Elasticsearch client using a common release notes generator docker image.
-Assumes the clients-team repo is checked out as a sibling directory of elasticsearch-rs
+Assumes the devtools-team repo is checked out as a sibling directory of elasticsearch-rs
 """
-condition = { env_set = ["OLD_VERSION", "NEW_VERSION"], files_exist = [ "${CARGO_MAKE_WORKING_DIRECTORY}/../clients-team/scripts/release-notes-generator/Dockerfile" ] }
+condition = { env_set = ["OLD_VERSION", "NEW_VERSION"], files_exist = [ "${CARGO_MAKE_WORKING_DIRECTORY}/../devtools-team/scripts/release-notes-generator/Dockerfile" ] }
 script_runner = "@shell"
 script = [
 """
-cd ./../clients-team/scripts/release-notes-generator
-docker build --file ./Dockerfile --tag clients-team/release_notes_generator .
-docker run -v "${CARGO_MAKE_WORKING_DIRECTORY}/.buildkite/release/config.yml:/usr/src/release_notes_generator/config.yml" --rm clients-team/release_notes_generator -o ${OLD_VERSION} -n ${NEW_VERSION}
+cd ./../devtools-team/scripts/release-notes-generator
+docker build --file ./Dockerfile --tag devtools-team/release_notes_generator .
+docker run -v "${CARGO_MAKE_WORKING_DIRECTORY}/.buildkite/release/config.yml:/usr/src/release_notes_generator/config.yml" --rm devtools-team/release_notes_generator -o ${OLD_VERSION} -n ${NEW_VERSION}
 """
 ]
 
