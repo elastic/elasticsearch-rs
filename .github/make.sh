@@ -12,6 +12,7 @@
 # Targets:
 # ---------------------------
 # bumpmatrix <VERSION> : bump stack version in test matrix to version
+# codegen  <VERSION>   : generate endpoints
 #
 # ------------------------------------------------------- #
 
@@ -56,6 +57,11 @@ case $CMD in
         TASK=bumpmatrix
         TASK_ARGS=("$VERSION")
         ;;
+    codegen)
+        echo -e "\033[36;1mTARGET: codegen API $VERSION\033[0m"
+        TASK=codegen
+        TASK_ARGS=("$VERSION")
+        ;;
     *)
         echo -e "\nUsage:\n\t $CMD is not supported right now\n"
         exit 1
@@ -84,6 +90,15 @@ if [[ "$CMD" == "bumpmatrix" ]]; then
   TEST_CONFIG_FILE=.buildkite/pipeline.yml
   sed -E -i.bak 's/[0-9]+\.[0-9]+\.[0-9]+-SNAPSHOT/'$VERSION'/g' $TEST_CONFIG_FILE
   rm ${TEST_CONFIG_FILE}.bak
+  exit 0
+fi
+
+if [[ "$CMD" == "codegen" ]]; then
+  docker run \
+     --rm -v $repo:/usr/src/elasticsearch-rs \
+     $product \
+     /bin/bash -c "STACK_VERSION=$VERSION cargo make generate-api"
+
   exit 0
 fi
 
