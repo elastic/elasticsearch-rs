@@ -118,7 +118,7 @@ impl fmt::Display for BuildError {
 pub static DEFAULT_ADDRESS: &str = "https://localhost:9200";
 
 /// Client metadata header: service, language, transport, followed by additional information
-static CLIENT_META: LazyLock<String> = LazyLock::new(|| build_meta());
+static CLIENT_META: LazyLock<String> = LazyLock::new(build_meta);
 
 fn build_meta() -> String {
     let mut version_parts = env!("CARGO_PKG_VERSION").split(&['.', '-'][..]);
