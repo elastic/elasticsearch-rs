@@ -66,12 +66,14 @@ esac
 # Build Container
 # ------------------------------------------------------- #
 
-echo -e "\033[34;1mINFO: building $product container\033[0m"
+build_container() {
+  echo -e "\033[34;1mINFO: building $product container\033[0m"
 
-docker build \
-  --build-arg BUILDER_UID="$(id -u)" \
-  --file $repo/.buildkite/Dockerfile \
-  --tag ${product} \
+  docker build \
+    --build-arg BUILDER_UID="$(id -u)" \
+    --file $repo/.buildkite/Dockerfile \
+    --tag ${product} \
+}
   .
 
 # ------------------------------------------------------- #
