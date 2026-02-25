@@ -25,7 +25,7 @@ echo -e "--- Build [:rust: elastic/elasticsearch-rs container]"
 
 docker pull rust:"${RUST_TOOLCHAIN}"
 
-docker build --build-arg RUST_TOOLCHAIN="${RUST_TOOLCHAIN}" --file .buildkite/DockerFile --tag elastic/elasticsearch-rs .
+docker build --build-arg RUST_TOOLCHAIN="${RUST_TOOLCHAIN}" --file .buildkite/Dockerfile --tag elastic/elasticsearch-rs .
 
 echo -e "--- Run [:rust: elastic/elasticsearch-rs container]"
 
