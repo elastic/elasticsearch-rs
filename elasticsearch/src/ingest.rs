@@ -1816,7 +1816,7 @@ impl<'a> Ingest<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Ingest APIs"]
-    pub fn ingest(&self) -> Ingest {
+    pub fn ingest(&self) -> Ingest<'_> {
         Ingest::new(self.transport())
     }
 }

@@ -461,7 +461,7 @@ impl<'a> Logstash<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Logstash APIs"]
-    pub fn logstash(&self) -> Logstash {
+    pub fn logstash(&self) -> Logstash<'_> {
         Logstash::new(self.transport())
     }
 }

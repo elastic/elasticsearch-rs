@@ -12207,7 +12207,7 @@ impl<'a> Indices<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Indices APIs"]
-    pub fn indices(&self) -> Indices {
+    pub fn indices(&self) -> Indices<'_> {
         Indices::new(self.transport())
     }
 }

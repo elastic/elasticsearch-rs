@@ -444,7 +444,7 @@ impl<'a> Migration<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Migration APIs"]
-    pub fn migration(&self) -> Migration {
+    pub fn migration(&self) -> Migration<'_> {
         Migration::new(self.transport())
     }
 }

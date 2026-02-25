@@ -63,7 +63,7 @@ impl fmt::Display for PathString {
 
 impl PathString {
     /// Splits a path into a vector of parameter and literal parts
-    pub fn split(&self) -> Vec<PathPart> {
+    pub fn split(&self) -> Vec<PathPart<'_>> {
         PathString::parse(self.0.as_bytes(), PathParseState::Literal, Vec::new())
     }
 

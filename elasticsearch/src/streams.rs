@@ -498,7 +498,7 @@ impl<'a> Streams<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Streams APIs"]
-    pub fn streams(&self) -> Streams {
+    pub fn streams(&self) -> Streams<'_> {
         Streams::new(self.transport())
     }
 }

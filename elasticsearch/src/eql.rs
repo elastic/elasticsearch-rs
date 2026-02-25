@@ -687,7 +687,7 @@ impl<'a> Eql<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Eql APIs"]
-    pub fn eql(&self) -> Eql {
+    pub fn eql(&self) -> Eql<'_> {
         Eql::new(self.transport())
     }
 }

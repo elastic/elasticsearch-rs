@@ -1166,7 +1166,7 @@ impl<'a> QueryRules<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for QueryRules APIs"]
-    pub fn query_rules(&self) -> QueryRules {
+    pub fn query_rules(&self) -> QueryRules<'_> {
         QueryRules::new(self.transport())
     }
 }

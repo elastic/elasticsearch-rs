@@ -2679,7 +2679,7 @@ impl<'a> Cluster<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Cluster APIs"]
-    pub fn cluster(&self) -> Cluster {
+    pub fn cluster(&self) -> Cluster<'_> {
         Cluster::new(self.transport())
     }
 }

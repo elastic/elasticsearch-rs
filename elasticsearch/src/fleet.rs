@@ -976,7 +976,7 @@ impl<'a> Fleet<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Fleet APIs"]
-    pub fn fleet(&self) -> Fleet {
+    pub fn fleet(&self) -> Fleet<'_> {
         Fleet::new(self.transport())
     }
 }

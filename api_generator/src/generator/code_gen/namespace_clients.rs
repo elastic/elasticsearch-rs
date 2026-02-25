@@ -112,7 +112,7 @@ pub fn generate(api: &Api, docs_dir: &PathBuf) -> anyhow::Result<Vec<(String, St
             #cfg_attr
             impl Elasticsearch {
                 #namespace_fn_doc
-                pub fn #namespace_name(&self) -> #namespace_client_name {
+                pub fn #namespace_name(&self) -> #namespace_client_name<'_> {
                     #namespace_client_name::new(self.transport())
                 }
             }

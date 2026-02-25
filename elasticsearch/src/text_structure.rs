@@ -1002,7 +1002,7 @@ impl<'a> TextStructure<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for TextStructure APIs"]
-    pub fn text_structure(&self) -> TextStructure {
+    pub fn text_structure(&self) -> TextStructure<'_> {
         TextStructure::new(self.transport())
     }
 }

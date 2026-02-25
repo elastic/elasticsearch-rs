@@ -340,7 +340,7 @@ impl<'a> Features<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Features APIs"]
-    pub fn features(&self) -> Features {
+    pub fn features(&self) -> Features<'_> {
         Features::new(self.transport())
     }
 }

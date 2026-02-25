@@ -2016,7 +2016,7 @@ impl<'a> Ccr<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Cross Cluster Replication APIs"]
-    pub fn ccr(&self) -> Ccr {
+    pub fn ccr(&self) -> Ccr<'_> {
         Ccr::new(self.transport())
     }
 }

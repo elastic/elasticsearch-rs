@@ -9353,7 +9353,7 @@ impl<'a> Security<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Security APIs"]
-    pub fn security(&self) -> Security {
+    pub fn security(&self) -> Security<'_> {
         Security::new(self.transport())
     }
 }

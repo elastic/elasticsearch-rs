@@ -1321,7 +1321,7 @@ impl<'a> Nodes<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Nodes APIs"]
-    pub fn nodes(&self) -> Nodes {
+    pub fn nodes(&self) -> Nodes<'_> {
         Nodes::new(self.transport())
     }
 }

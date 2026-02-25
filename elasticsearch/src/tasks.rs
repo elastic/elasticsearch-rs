@@ -600,7 +600,7 @@ impl<'a> Tasks<'a> {
 #[cfg(feature = "experimental-apis")]
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Tasks APIs"]
-    pub fn tasks(&self) -> Tasks {
+    pub fn tasks(&self) -> Tasks<'_> {
         Tasks::new(self.transport())
     }
 }
