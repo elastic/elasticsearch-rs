@@ -24,15 +24,6 @@
 // cargo make generate-api
 // -----------------------------------------------
 
-//! Licensing APIs
-//!
-//! [Manage Elastic Stack license](https://www.elastic.co/guide/en/elasticsearch/reference/master/licensing-apis.html), including
-//!
-//! - Retrieve, update or delete a license
-//! - Start a 30 day trial of the Platinum license features
-//! - Start indefinite use of the Basic license features
-//! - Get the status of trial and basic license features
-
 #![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
@@ -49,51 +40,75 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq, Eq)]
-#[doc = "API parts for the License Delete API"]
-pub enum LicenseDeleteParts {
+#[doc = "API parts for the Project Create Many Routing API"]
+pub enum ProjectCreateManyRoutingParts {
     #[doc = "No parts"]
     None,
 }
-impl LicenseDeleteParts {
-    #[doc = "Builds a relative URL path to the License Delete API"]
+#[cfg(feature = "experimental-apis")]
+impl ProjectCreateManyRoutingParts {
+    #[doc = "Builds a relative URL path to the Project Create Many Routing API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            LicenseDeleteParts::None => "/_license".into(),
+            ProjectCreateManyRoutingParts::None => "/_project_routing".into(),
         }
     }
 }
-#[doc = "Builder for the [License Delete API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-license-delete)\n\nDelete the license"]
+#[doc = "Builder for the [Project Create Many Routing API](https://www.elastic.co/docs/api/doc/elasticsearch#TODO)\n\nCreate or update named project routing expressions"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
-pub struct LicenseDelete<'a, 'b> {
+pub struct ProjectCreateManyRouting<'a, 'b, B> {
     transport: &'a Transport,
-    parts: LicenseDeleteParts,
+    parts: ProjectCreateManyRoutingParts,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
-    timeout: Option<&'b str>,
 }
-impl<'a, 'b> LicenseDelete<'a, 'b> {
-    #[doc = "Creates a new instance of [LicenseDelete]"]
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> ProjectCreateManyRouting<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [ProjectCreateManyRouting]"]
     pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
-        LicenseDelete {
+        ProjectCreateManyRouting {
             transport,
-            parts: LicenseDeleteParts::None,
+            parts: ProjectCreateManyRoutingParts::None,
             headers,
+            body: None,
             error_trace: None,
             filter_path: None,
             human: None,
-            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
-            timeout: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> ProjectCreateManyRouting<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        ProjectCreateManyRouting {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -116,9 +131,150 @@ impl<'a, 'b> LicenseDelete<'a, 'b> {
         self.human = Some(human);
         self
     }
-    #[doc = "Timeout for processing on master node"]
-    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
-        self.master_timeout = Some(master_timeout);
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Project Create Many Routing API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Put;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Project Create Routing API"]
+pub enum ProjectCreateRoutingParts<'b> {
+    #[doc = "Name"]
+    Name(&'b str),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> ProjectCreateRoutingParts<'b> {
+    #[doc = "Builds a relative URL path to the Project Create Routing API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            ProjectCreateRoutingParts::Name(name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(18usize + encoded_name.len());
+                p.push_str("/_project_routing/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Project Create Routing API](https://www.elastic.co/docs/api/doc/elasticsearch#TODO)\n\nCreate or update named project routing expression"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct ProjectCreateRouting<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: ProjectCreateRoutingParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> ProjectCreateRouting<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [ProjectCreateRouting] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: ProjectCreateRoutingParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        ProjectCreateRouting {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> ProjectCreateRouting<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        ProjectCreateRouting {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -136,12 +292,130 @@ impl<'a, 'b> LicenseDelete<'a, 'b> {
         self.source = Some(source);
         self
     }
-    #[doc = "Timeout for acknowledgement of update from all nodes in cluster"]
-    pub fn timeout(mut self, timeout: &'b str) -> Self {
-        self.timeout = Some(timeout);
+    #[doc = "Creates an asynchronous call to the Project Create Routing API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Put;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Project Delete Routing API"]
+pub enum ProjectDeleteRoutingParts<'b> {
+    #[doc = "Name"]
+    Name(&'b str),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> ProjectDeleteRoutingParts<'b> {
+    #[doc = "Builds a relative URL path to the Project Delete Routing API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            ProjectDeleteRoutingParts::Name(name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(18usize + encoded_name.len());
+                p.push_str("/_project_routing/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Project Delete Routing API](https://www.elastic.co/docs/api/doc/elasticsearch#TODO)\n\nDelete named project routing expression"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct ProjectDeleteRouting<'a, 'b> {
+    transport: &'a Transport,
+    parts: ProjectDeleteRoutingParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> ProjectDeleteRouting<'a, 'b> {
+    #[doc = "Creates a new instance of [ProjectDeleteRouting] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: ProjectDeleteRoutingParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        ProjectDeleteRouting {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
-    #[doc = "Creates an asynchronous call to the License Delete API that can be awaited"]
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Project Delete Routing API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = http::Method::Delete;
@@ -155,147 +429,13 @@ impl<'a, 'b> LicenseDelete<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
-                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
-                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
-                master_timeout: self.master_timeout,
-                pretty: self.pretty,
-                source: self.source,
-                timeout: self.timeout,
-            };
-            Some(query_params)
-        };
-        let body = Option::<()>::None;
-        let response = self
-            .transport
-            .send(method, &path, headers, query_string.as_ref(), body, timeout)
-            .await?;
-        Ok(response)
-    }
-}
-#[derive(Debug, Clone, PartialEq, Eq)]
-#[doc = "API parts for the License Get API"]
-pub enum LicenseGetParts {
-    #[doc = "No parts"]
-    None,
-}
-impl LicenseGetParts {
-    #[doc = "Builds a relative URL path to the License Get API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            LicenseGetParts::None => "/_license".into(),
-        }
-    }
-}
-#[doc = "Builder for the [License Get API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-license-get)\n\nGet license information"]
-#[derive(Clone, Debug)]
-pub struct LicenseGet<'a, 'b> {
-    transport: &'a Transport,
-    parts: LicenseGetParts,
-    accept_enterprise: Option<bool>,
-    error_trace: Option<bool>,
-    filter_path: Option<&'b [&'b str]>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    local: Option<bool>,
-    pretty: Option<bool>,
-    request_timeout: Option<Duration>,
-    source: Option<&'b str>,
-}
-impl<'a, 'b> LicenseGet<'a, 'b> {
-    #[doc = "Creates a new instance of [LicenseGet]"]
-    pub fn new(transport: &'a Transport) -> Self {
-        let headers = HeaderMap::new();
-        LicenseGet {
-            transport,
-            parts: LicenseGetParts::None,
-            headers,
-            accept_enterprise: None,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            local: None,
-            pretty: None,
-            request_timeout: None,
-            source: None,
-        }
-    }
-    #[doc = "Supported for backwards compatibility with 7.x. If this param is used it must be set to true"]
-    pub fn accept_enterprise(mut self, accept_enterprise: bool) -> Self {
-        self.accept_enterprise = Some(accept_enterprise);
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: bool) -> Self {
-        self.local = Some(local);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
-    pub fn request_timeout(mut self, timeout: Duration) -> Self {
-        self.request_timeout = Some(timeout);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the License Get API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = http::Method::Get;
-        let headers = self.headers;
-        let timeout = self.request_timeout;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                accept_enterprise: Option<bool>,
-                error_trace: Option<bool>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                filter_path: Option<&'b [&'b str]>,
-                human: Option<bool>,
-                local: Option<bool>,
-                pretty: Option<bool>,
-                source: Option<&'b str>,
-            }
-            let query_params = QueryParams {
-                accept_enterprise: self.accept_enterprise,
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                human: self.human,
-                local: self.local,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -309,25 +449,29 @@ impl<'a, 'b> LicenseGet<'a, 'b> {
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq, Eq)]
-#[doc = "API parts for the License Get Basic Status API"]
-pub enum LicenseGetBasicStatusParts {
+#[doc = "API parts for the Project Get Many Routing API"]
+pub enum ProjectGetManyRoutingParts {
     #[doc = "No parts"]
     None,
 }
-impl LicenseGetBasicStatusParts {
-    #[doc = "Builds a relative URL path to the License Get Basic Status API"]
+#[cfg(feature = "experimental-apis")]
+impl ProjectGetManyRoutingParts {
+    #[doc = "Builds a relative URL path to the Project Get Many Routing API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            LicenseGetBasicStatusParts::None => "/_license/basic_status".into(),
+            ProjectGetManyRoutingParts::None => "/_project_routing".into(),
         }
     }
 }
-#[doc = "Builder for the [License Get Basic Status API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-license-get-basic-status)\n\nGet the basic license status"]
+#[doc = "Builder for the [Project Get Many Routing API](https://www.elastic.co/docs/api/doc/elasticsearch#TODO)\n\nGet named project routing expressions"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
-pub struct LicenseGetBasicStatus<'a, 'b> {
+pub struct ProjectGetManyRouting<'a, 'b> {
     transport: &'a Transport,
-    parts: LicenseGetBasicStatusParts,
+    parts: ProjectGetManyRoutingParts,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -336,13 +480,14 @@ pub struct LicenseGetBasicStatus<'a, 'b> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-impl<'a, 'b> LicenseGetBasicStatus<'a, 'b> {
-    #[doc = "Creates a new instance of [LicenseGetBasicStatus]"]
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> ProjectGetManyRouting<'a, 'b> {
+    #[doc = "Creates a new instance of [ProjectGetManyRouting]"]
     pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
-        LicenseGetBasicStatus {
+        ProjectGetManyRouting {
             transport,
-            parts: LicenseGetBasicStatusParts::None,
+            parts: ProjectGetManyRoutingParts::None,
             headers,
             error_trace: None,
             filter_path: None,
@@ -387,7 +532,7 @@ impl<'a, 'b> LicenseGetBasicStatus<'a, 'b> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous call to the License Get Basic Status API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Project Get Many Routing API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = http::Method::Get;
@@ -421,25 +566,35 @@ impl<'a, 'b> LicenseGetBasicStatus<'a, 'b> {
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq, Eq)]
-#[doc = "API parts for the License Get Trial Status API"]
-pub enum LicenseGetTrialStatusParts {
-    #[doc = "No parts"]
-    None,
+#[doc = "API parts for the Project Get Routing API"]
+pub enum ProjectGetRoutingParts<'b> {
+    #[doc = "Name"]
+    Name(&'b str),
 }
-impl LicenseGetTrialStatusParts {
-    #[doc = "Builds a relative URL path to the License Get Trial Status API"]
+#[cfg(feature = "experimental-apis")]
+impl<'b> ProjectGetRoutingParts<'b> {
+    #[doc = "Builds a relative URL path to the Project Get Routing API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            LicenseGetTrialStatusParts::None => "/_license/trial_status".into(),
+            ProjectGetRoutingParts::Name(name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(18usize + encoded_name.len());
+                p.push_str("/_project_routing/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
         }
     }
 }
-#[doc = "Builder for the [License Get Trial Status API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-license-get-trial-status)\n\nGet the trial status"]
+#[doc = "Builder for the [Project Get Routing API](https://www.elastic.co/docs/api/doc/elasticsearch#TODO)\n\nGet named project routing expression"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
-pub struct LicenseGetTrialStatus<'a, 'b> {
+pub struct ProjectGetRouting<'a, 'b> {
     transport: &'a Transport,
-    parts: LicenseGetTrialStatusParts,
+    parts: ProjectGetRoutingParts<'b>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -448,13 +603,14 @@ pub struct LicenseGetTrialStatus<'a, 'b> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-impl<'a, 'b> LicenseGetTrialStatus<'a, 'b> {
-    #[doc = "Creates a new instance of [LicenseGetTrialStatus]"]
-    pub fn new(transport: &'a Transport) -> Self {
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> ProjectGetRouting<'a, 'b> {
+    #[doc = "Creates a new instance of [ProjectGetRouting] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: ProjectGetRoutingParts<'b>) -> Self {
         let headers = HeaderMap::new();
-        LicenseGetTrialStatus {
+        ProjectGetRouting {
             transport,
-            parts: LicenseGetTrialStatusParts::None,
+            parts,
             headers,
             error_trace: None,
             filter_path: None,
@@ -499,7 +655,7 @@ impl<'a, 'b> LicenseGetTrialStatus<'a, 'b> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous call to the License Get Trial Status API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Project Get Routing API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = http::Method::Get;
@@ -534,83 +690,69 @@ impl<'a, 'b> LicenseGetTrialStatus<'a, 'b> {
     }
 }
 #[derive(Debug, Clone, PartialEq, Eq)]
-#[doc = "API parts for the License Post API"]
-pub enum LicensePostParts {
+#[doc = "API parts for the Project Tags API"]
+pub enum ProjectTagsParts {
     #[doc = "No parts"]
     None,
 }
-impl LicensePostParts {
-    #[doc = "Builds a relative URL path to the License Post API"]
+impl ProjectTagsParts {
+    #[doc = "Builds a relative URL path to the Project Tags API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            LicensePostParts::None => "/_license".into(),
+            ProjectTagsParts::None => "/_project/tags".into(),
         }
     }
 }
-#[doc = "Builder for the [License Post API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-license-post)\n\nUpdate the license"]
+#[doc = "Builder for the [Project Tags API](https://www.elastic.co/docs/api/doc/elasticsearch-serverless/operation/operation-project-tags)\n\nReturn tags defined for the project"]
 #[derive(Clone, Debug)]
-pub struct LicensePost<'a, 'b, B> {
+pub struct ProjectTags<'a, 'b, B> {
     transport: &'a Transport,
-    parts: LicensePostParts,
-    acknowledge: Option<bool>,
+    parts: ProjectTagsParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
-    timeout: Option<&'b str>,
 }
-impl<'a, 'b, B> LicensePost<'a, 'b, B>
+impl<'a, 'b, B> ProjectTags<'a, 'b, B>
 where
     B: Body,
 {
-    #[doc = "Creates a new instance of [LicensePost]"]
+    #[doc = "Creates a new instance of [ProjectTags]"]
     pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
-        LicensePost {
+        ProjectTags {
             transport,
-            parts: LicensePostParts::None,
+            parts: ProjectTagsParts::None,
             headers,
-            acknowledge: None,
             body: None,
             error_trace: None,
             filter_path: None,
             human: None,
-            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
-            timeout: None,
         }
     }
-    #[doc = "whether the user has acknowledged acknowledge messages (default: false)"]
-    pub fn acknowledge(mut self, acknowledge: bool) -> Self {
-        self.acknowledge = Some(acknowledge);
-        self
-    }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> LicensePost<'a, 'b, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> ProjectTags<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
-        LicensePost {
+        ProjectTags {
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
-            acknowledge: self.acknowledge,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
-            master_timeout: self.master_timeout,
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
-            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -633,11 +775,6 @@ where
         self.human = Some(human);
         self
     }
-    #[doc = "Timeout for processing on master node"]
-    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
-        self.master_timeout = Some(master_timeout);
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -653,40 +790,32 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Timeout for acknowledgement of update from all nodes in cluster"]
-    pub fn timeout(mut self, timeout: &'b str) -> Self {
-        self.timeout = Some(timeout);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the License Post API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Project Tags API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = http::Method::Post;
+        let method = match self.body {
+            Some(_) => http::Method::Post,
+            None => http::Method::Get,
+        };
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
-                acknowledge: Option<bool>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
-                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
-                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
-                acknowledge: self.acknowledge,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
-                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
-                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -698,381 +827,65 @@ where
         Ok(response)
     }
 }
-#[derive(Debug, Clone, PartialEq, Eq)]
-#[doc = "API parts for the License Post Start Basic API"]
-pub enum LicensePostStartBasicParts {
-    #[doc = "No parts"]
-    None,
-}
-impl LicensePostStartBasicParts {
-    #[doc = "Builds a relative URL path to the License Post Start Basic API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            LicensePostStartBasicParts::None => "/_license/start_basic".into(),
-        }
-    }
-}
-#[doc = "Builder for the [License Post Start Basic API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-license-post-start-basic)\n\nStart a basic license"]
-#[derive(Clone, Debug)]
-pub struct LicensePostStartBasic<'a, 'b, B> {
-    transport: &'a Transport,
-    parts: LicensePostStartBasicParts,
-    acknowledge: Option<bool>,
-    body: Option<B>,
-    error_trace: Option<bool>,
-    filter_path: Option<&'b [&'b str]>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    master_timeout: Option<&'b str>,
-    pretty: Option<bool>,
-    request_timeout: Option<Duration>,
-    source: Option<&'b str>,
-    timeout: Option<&'b str>,
-}
-impl<'a, 'b, B> LicensePostStartBasic<'a, 'b, B>
-where
-    B: Body,
-{
-    #[doc = "Creates a new instance of [LicensePostStartBasic]"]
-    pub fn new(transport: &'a Transport) -> Self {
-        let headers = HeaderMap::new();
-        LicensePostStartBasic {
-            transport,
-            parts: LicensePostStartBasicParts::None,
-            headers,
-            acknowledge: None,
-            body: None,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            master_timeout: None,
-            pretty: None,
-            request_timeout: None,
-            source: None,
-            timeout: None,
-        }
-    }
-    #[doc = "whether the user has acknowledged acknowledge messages (default: false)"]
-    pub fn acknowledge(mut self, acknowledge: bool) -> Self {
-        self.acknowledge = Some(acknowledge);
-        self
-    }
-    #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> LicensePostStartBasic<'a, 'b, JsonBody<T>>
-    where
-        T: Serialize,
-    {
-        LicensePostStartBasic {
-            transport: self.transport,
-            parts: self.parts,
-            body: Some(body.into()),
-            acknowledge: self.acknowledge,
-            error_trace: self.error_trace,
-            filter_path: self.filter_path,
-            headers: self.headers,
-            human: self.human,
-            master_timeout: self.master_timeout,
-            pretty: self.pretty,
-            request_timeout: self.request_timeout,
-            source: self.source,
-            timeout: self.timeout,
-        }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Timeout for processing on master node"]
-    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
-        self.master_timeout = Some(master_timeout);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
-    pub fn request_timeout(mut self, timeout: Duration) -> Self {
-        self.request_timeout = Some(timeout);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Timeout for acknowledgement of update from all nodes in cluster"]
-    pub fn timeout(mut self, timeout: &'b str) -> Self {
-        self.timeout = Some(timeout);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the License Post Start Basic API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = http::Method::Post;
-        let headers = self.headers;
-        let timeout = self.request_timeout;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                acknowledge: Option<bool>,
-                error_trace: Option<bool>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                filter_path: Option<&'b [&'b str]>,
-                human: Option<bool>,
-                master_timeout: Option<&'b str>,
-                pretty: Option<bool>,
-                source: Option<&'b str>,
-                timeout: Option<&'b str>,
-            }
-            let query_params = QueryParams {
-                acknowledge: self.acknowledge,
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                human: self.human,
-                master_timeout: self.master_timeout,
-                pretty: self.pretty,
-                source: self.source,
-                timeout: self.timeout,
-            };
-            Some(query_params)
-        };
-        let body = self.body;
-        let response = self
-            .transport
-            .send(method, &path, headers, query_string.as_ref(), body, timeout)
-            .await?;
-        Ok(response)
-    }
-}
-#[derive(Debug, Clone, PartialEq, Eq)]
-#[doc = "API parts for the License Post Start Trial API"]
-pub enum LicensePostStartTrialParts {
-    #[doc = "No parts"]
-    None,
-}
-impl LicensePostStartTrialParts {
-    #[doc = "Builds a relative URL path to the License Post Start Trial API"]
-    pub fn url(self) -> Cow<'static, str> {
-        match self {
-            LicensePostStartTrialParts::None => "/_license/start_trial".into(),
-        }
-    }
-}
-#[doc = "Builder for the [License Post Start Trial API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-license-post-start-trial)\n\nStart a trial"]
-#[derive(Clone, Debug)]
-pub struct LicensePostStartTrial<'a, 'b, B> {
-    transport: &'a Transport,
-    parts: LicensePostStartTrialParts,
-    acknowledge: Option<bool>,
-    body: Option<B>,
-    error_trace: Option<bool>,
-    filter_path: Option<&'b [&'b str]>,
-    headers: HeaderMap,
-    human: Option<bool>,
-    master_timeout: Option<&'b str>,
-    pretty: Option<bool>,
-    request_timeout: Option<Duration>,
-    source: Option<&'b str>,
-    ty: Option<&'b str>,
-}
-impl<'a, 'b, B> LicensePostStartTrial<'a, 'b, B>
-where
-    B: Body,
-{
-    #[doc = "Creates a new instance of [LicensePostStartTrial]"]
-    pub fn new(transport: &'a Transport) -> Self {
-        let headers = HeaderMap::new();
-        LicensePostStartTrial {
-            transport,
-            parts: LicensePostStartTrialParts::None,
-            headers,
-            acknowledge: None,
-            body: None,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            master_timeout: None,
-            pretty: None,
-            request_timeout: None,
-            source: None,
-            ty: None,
-        }
-    }
-    #[doc = "whether the user has acknowledged acknowledge messages (default: false)"]
-    pub fn acknowledge(mut self, acknowledge: bool) -> Self {
-        self.acknowledge = Some(acknowledge);
-        self
-    }
-    #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> LicensePostStartTrial<'a, 'b, JsonBody<T>>
-    where
-        T: Serialize,
-    {
-        LicensePostStartTrial {
-            transport: self.transport,
-            parts: self.parts,
-            body: Some(body.into()),
-            acknowledge: self.acknowledge,
-            error_trace: self.error_trace,
-            filter_path: self.filter_path,
-            headers: self.headers,
-            human: self.human,
-            master_timeout: self.master_timeout,
-            pretty: self.pretty,
-            request_timeout: self.request_timeout,
-            source: self.source,
-            ty: self.ty,
-        }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Adds a HTTP header"]
-    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
-        self.headers.insert(key, value);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Timeout for processing on master node"]
-    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
-        self.master_timeout = Some(master_timeout);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
-    pub fn request_timeout(mut self, timeout: Duration) -> Self {
-        self.request_timeout = Some(timeout);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'b str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "The type of trial license to generate (default: \"trial\")"]
-    pub fn ty(mut self, ty: &'b str) -> Self {
-        self.ty = Some(ty);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the License Post Start Trial API that can be awaited"]
-    pub async fn send(self) -> Result<Response, Error> {
-        let path = self.parts.url();
-        let method = http::Method::Post;
-        let headers = self.headers;
-        let timeout = self.request_timeout;
-        let query_string = {
-            #[serde_with::skip_serializing_none]
-            #[derive(Serialize)]
-            struct QueryParams<'b> {
-                acknowledge: Option<bool>,
-                error_trace: Option<bool>,
-                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                filter_path: Option<&'b [&'b str]>,
-                human: Option<bool>,
-                master_timeout: Option<&'b str>,
-                pretty: Option<bool>,
-                source: Option<&'b str>,
-                #[serde(rename = "type")]
-                ty: Option<&'b str>,
-            }
-            let query_params = QueryParams {
-                acknowledge: self.acknowledge,
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                human: self.human,
-                master_timeout: self.master_timeout,
-                pretty: self.pretty,
-                source: self.source,
-                ty: self.ty,
-            };
-            Some(query_params)
-        };
-        let body = self.body;
-        let response = self
-            .transport
-            .send(method, &path, headers, query_string.as_ref(), body, timeout)
-            .await?;
-        Ok(response)
-    }
-}
-#[doc = "Namespace client for License APIs"]
-pub struct License<'a> {
+#[doc = "Namespace client for Project APIs"]
+pub struct Project<'a> {
     transport: &'a Transport,
 }
-impl<'a> License<'a> {
-    #[doc = "Creates a new instance of [License]"]
+impl<'a> Project<'a> {
+    #[doc = "Creates a new instance of [Project]"]
     pub fn new(transport: &'a Transport) -> Self {
         Self { transport }
     }
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[License Delete API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-license-delete)\n\nDelete the license"]
-    pub fn delete<'b>(&'a self) -> LicenseDelete<'a, 'b> {
-        LicenseDelete::new(self.transport())
+    #[doc = "[Project Create Many Routing API](https://www.elastic.co/docs/api/doc/elasticsearch#TODO)\n\nCreate or update named project routing expressions"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn create_many_routing<'b>(&'a self) -> ProjectCreateManyRouting<'a, 'b, ()> {
+        ProjectCreateManyRouting::new(self.transport())
     }
-    #[doc = "[License Get API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-license-get)\n\nGet license information"]
-    pub fn get<'b>(&'a self) -> LicenseGet<'a, 'b> {
-        LicenseGet::new(self.transport())
+    #[doc = "[Project Create Routing API](https://www.elastic.co/docs/api/doc/elasticsearch#TODO)\n\nCreate or update named project routing expression"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn create_routing<'b>(
+        &'a self,
+        parts: ProjectCreateRoutingParts<'b>,
+    ) -> ProjectCreateRouting<'a, 'b, ()> {
+        ProjectCreateRouting::new(self.transport(), parts)
     }
-    #[doc = "[License Get Basic Status API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-license-get-basic-status)\n\nGet the basic license status"]
-    pub fn get_basic_status<'b>(&'a self) -> LicenseGetBasicStatus<'a, 'b> {
-        LicenseGetBasicStatus::new(self.transport())
+    #[doc = "[Project Delete Routing API](https://www.elastic.co/docs/api/doc/elasticsearch#TODO)\n\nDelete named project routing expression"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn delete_routing<'b>(
+        &'a self,
+        parts: ProjectDeleteRoutingParts<'b>,
+    ) -> ProjectDeleteRouting<'a, 'b> {
+        ProjectDeleteRouting::new(self.transport(), parts)
     }
-    #[doc = "[License Get Trial Status API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-license-get-trial-status)\n\nGet the trial status"]
-    pub fn get_trial_status<'b>(&'a self) -> LicenseGetTrialStatus<'a, 'b> {
-        LicenseGetTrialStatus::new(self.transport())
+    #[doc = "[Project Get Many Routing API](https://www.elastic.co/docs/api/doc/elasticsearch#TODO)\n\nGet named project routing expressions"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn get_many_routing<'b>(&'a self) -> ProjectGetManyRouting<'a, 'b> {
+        ProjectGetManyRouting::new(self.transport())
     }
-    #[doc = "[License Post API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-license-post)\n\nUpdate the license"]
-    pub fn post<'b>(&'a self) -> LicensePost<'a, 'b, ()> {
-        LicensePost::new(self.transport())
+    #[doc = "[Project Get Routing API](https://www.elastic.co/docs/api/doc/elasticsearch#TODO)\n\nGet named project routing expression"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn get_routing<'b>(
+        &'a self,
+        parts: ProjectGetRoutingParts<'b>,
+    ) -> ProjectGetRouting<'a, 'b> {
+        ProjectGetRouting::new(self.transport(), parts)
     }
-    #[doc = "[License Post Start Basic API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-license-post-start-basic)\n\nStart a basic license"]
-    pub fn post_start_basic<'b>(&'a self) -> LicensePostStartBasic<'a, 'b, ()> {
-        LicensePostStartBasic::new(self.transport())
-    }
-    #[doc = "[License Post Start Trial API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-license-post-start-trial)\n\nStart a trial"]
-    pub fn post_start_trial<'b>(&'a self) -> LicensePostStartTrial<'a, 'b, ()> {
-        LicensePostStartTrial::new(self.transport())
+    #[doc = "[Project Tags API](https://www.elastic.co/docs/api/doc/elasticsearch-serverless/operation/operation-project-tags)\n\nReturn tags defined for the project"]
+    pub fn tags<'b>(&'a self) -> ProjectTags<'a, 'b, ()> {
+        ProjectTags::new(self.transport())
     }
 }
 impl Elasticsearch {
-    #[doc = "Creates a namespace client for License APIs"]
-    pub fn license(&self) -> License {
-        License::new(self.transport())
+    #[doc = "Creates a namespace client for Project APIs"]
+    pub fn project(&self) -> Project {
+        Project::new(self.transport())
     }
 }

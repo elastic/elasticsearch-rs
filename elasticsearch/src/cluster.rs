@@ -59,21 +59,25 @@ impl ClusterAllocationExplainParts {
         }
     }
 }
-#[doc = "Builder for the [Cluster Allocation Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-allocation-explain.html)\n\nProvides explanations for shard allocations in the cluster."]
+#[doc = "Builder for the [Cluster Allocation Explain API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-allocation-explain)\n\nExplain the shard allocations"]
 #[derive(Clone, Debug)]
 pub struct ClusterAllocationExplain<'a, 'b, B> {
     transport: &'a Transport,
     parts: ClusterAllocationExplainParts,
     body: Option<B>,
+    current_node: Option<&'b str>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     include_disk_info: Option<bool>,
     include_yes_decisions: Option<bool>,
+    index: Option<&'b str>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
+    primary: Option<bool>,
     request_timeout: Option<Duration>,
+    shard: Option<i32>,
     source: Option<&'b str>,
 }
 impl<'a, 'b, B> ClusterAllocationExplain<'a, 'b, B>
@@ -88,14 +92,18 @@ where
             parts: ClusterAllocationExplainParts::None,
             headers,
             body: None,
+            current_node: None,
             error_trace: None,
             filter_path: None,
             human: None,
             include_disk_info: None,
             include_yes_decisions: None,
+            index: None,
             master_timeout: None,
             pretty: None,
+            primary: None,
             request_timeout: None,
+            shard: None,
             source: None,
         }
     }
@@ -108,17 +116,26 @@ where
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
+            current_node: self.current_node,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             headers: self.headers,
             human: self.human,
             include_disk_info: self.include_disk_info,
             include_yes_decisions: self.include_yes_decisions,
+            index: self.index,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
+            primary: self.primary,
             request_timeout: self.request_timeout,
+            shard: self.shard,
             source: self.source,
         }
+    }
+    #[doc = "Specifies the node ID or the name of the node to only explain a shard that is currently located on the specified node"]
+    pub fn current_node(mut self, current_node: &'b str) -> Self {
+        self.current_node = Some(current_node);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -150,6 +167,11 @@ where
         self.include_yes_decisions = Some(include_yes_decisions);
         self
     }
+    #[doc = "Specifies the name of the index that you would like an explanation for"]
+    pub fn index(mut self, index: &'b str) -> Self {
+        self.index = Some(index);
+        self
+    }
     #[doc = "Timeout for connection to master node"]
     pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
@@ -160,9 +182,19 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "If true, returns explanation for the primary shard for the given shard ID"]
+    pub fn primary(mut self, primary: bool) -> Self {
+        self.primary = Some(primary);
+        self
+    }
     #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "Specifies the ID of the shard that you would like an explanation for"]
+    pub fn shard(mut self, shard: i32) -> Self {
+        self.shard = Some(shard);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -183,24 +215,32 @@ where
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                current_node: Option<&'b str>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
                 include_disk_info: Option<bool>,
                 include_yes_decisions: Option<bool>,
+                index: Option<&'b str>,
                 master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
+                primary: Option<bool>,
+                shard: Option<i32>,
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
+                current_node: self.current_node,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
                 include_disk_info: self.include_disk_info,
                 include_yes_decisions: self.include_yes_decisions,
+                index: self.index,
                 master_timeout: self.master_timeout,
                 pretty: self.pretty,
+                primary: self.primary,
+                shard: self.shard,
                 source: self.source,
             };
             Some(query_params)
@@ -217,14 +257,16 @@ where
 #[doc = "API parts for the Cluster Delete Component Template API"]
 pub enum ClusterDeleteComponentTemplateParts<'b> {
     #[doc = "Name"]
-    Name(&'b str),
+    Name(&'b [&'b str]),
 }
 impl<'b> ClusterDeleteComponentTemplateParts<'b> {
     #[doc = "Builds a relative URL path to the Cluster Delete Component Template API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
             ClusterDeleteComponentTemplateParts::Name(name) => {
-                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(21usize + encoded_name.len());
                 p.push_str("/_component_template/");
                 p.push_str(encoded_name.as_ref());
@@ -233,7 +275,7 @@ impl<'b> ClusterDeleteComponentTemplateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cluster Delete Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/indices-component-template.html)\n\nDeletes a component template"]
+#[doc = "Builder for the [Cluster Delete Component Template API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-put-component-template)\n\nDelete component templates"]
 #[derive(Clone, Debug)]
 pub struct ClusterDeleteComponentTemplate<'a, 'b> {
     transport: &'a Transport,
@@ -365,7 +407,7 @@ impl ClusterDeleteVotingConfigExclusionsParts {
         }
     }
 }
-#[doc = "Builder for the [Cluster Delete Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/voting-config-exclusions.html)\n\nClears cluster voting config exclusions."]
+#[doc = "Builder for the [Cluster Delete Voting Config Exclusions API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-post-voting-config-exclusions)\n\nClear cluster voting config exclusions"]
 #[derive(Clone, Debug)]
 pub struct ClusterDeleteVotingConfigExclusions<'a, 'b> {
     transport: &'a Transport,
@@ -485,14 +527,16 @@ impl<'a, 'b> ClusterDeleteVotingConfigExclusions<'a, 'b> {
 #[doc = "API parts for the Cluster Exists Component Template API"]
 pub enum ClusterExistsComponentTemplateParts<'b> {
     #[doc = "Name"]
-    Name(&'b str),
+    Name(&'b [&'b str]),
 }
 impl<'b> ClusterExistsComponentTemplateParts<'b> {
     #[doc = "Builds a relative URL path to the Cluster Exists Component Template API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
             ClusterExistsComponentTemplateParts::Name(name) => {
-                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(21usize + encoded_name.len());
                 p.push_str("/_component_template/");
                 p.push_str(encoded_name.as_ref());
@@ -501,7 +545,7 @@ impl<'b> ClusterExistsComponentTemplateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cluster Exists Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/indices-component-template.html)\n\nReturns information about whether a particular component template exist"]
+#[doc = "Builder for the [Cluster Exists Component Template API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-put-component-template)\n\nCheck component templates"]
 #[derive(Clone, Debug)]
 pub struct ClusterExistsComponentTemplate<'a, 'b> {
     transport: &'a Transport,
@@ -623,7 +667,7 @@ pub enum ClusterGetComponentTemplateParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "Name"]
-    Name(&'b [&'b str]),
+    Name(&'b str),
 }
 impl<'b> ClusterGetComponentTemplateParts<'b> {
     #[doc = "Builds a relative URL path to the Cluster Get Component Template API"]
@@ -631,9 +675,7 @@ impl<'b> ClusterGetComponentTemplateParts<'b> {
         match self {
             ClusterGetComponentTemplateParts::None => "/_component_template".into(),
             ClusterGetComponentTemplateParts::Name(name) => {
-                let name_str = name.join(",");
-                let encoded_name: Cow<str> =
-                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(21usize + encoded_name.len());
                 p.push_str("/_component_template/");
                 p.push_str(encoded_name.as_ref());
@@ -642,7 +684,7 @@ impl<'b> ClusterGetComponentTemplateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cluster Get Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/indices-component-template.html)\n\nReturns one or more component templates"]
+#[doc = "Builder for the [Cluster Get Component Template API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-put-component-template)\n\nGet component templates"]
 #[derive(Clone, Debug)]
 pub struct ClusterGetComponentTemplate<'a, 'b> {
     transport: &'a Transport,
@@ -657,7 +699,7 @@ pub struct ClusterGetComponentTemplate<'a, 'b> {
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
-    settings_filter: Option<&'b str>,
+    settings_filter: Option<&'b [&'b str]>,
     source: Option<&'b str>,
 }
 impl<'a, 'b> ClusterGetComponentTemplate<'a, 'b> {
@@ -732,7 +774,7 @@ impl<'a, 'b> ClusterGetComponentTemplate<'a, 'b> {
         self
     }
     #[doc = "Filter out results, for example to filter out sensitive information. Supports wildcards or full settings keys"]
-    pub fn settings_filter(mut self, settings_filter: &'b str) -> Self {
+    pub fn settings_filter(mut self, settings_filter: &'b [&'b str]) -> Self {
         self.settings_filter = Some(settings_filter);
         self
     }
@@ -760,7 +802,8 @@ impl<'a, 'b> ClusterGetComponentTemplate<'a, 'b> {
                 local: Option<bool>,
                 master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
-                settings_filter: Option<&'b str>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                settings_filter: Option<&'b [&'b str]>,
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
@@ -799,7 +842,7 @@ impl ClusterGetSettingsParts {
         }
     }
 }
-#[doc = "Builder for the [Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-get-settings.html)\n\nReturns cluster settings."]
+#[doc = "Builder for the [Cluster Get Settings API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-get-settings)\n\nGet cluster-wide settings"]
 #[derive(Clone, Debug)]
 pub struct ClusterGetSettings<'a, 'b> {
     transport: &'a Transport,
@@ -958,13 +1001,13 @@ impl<'b> ClusterHealthParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-health.html)\n\nReturns basic information about the health of the cluster."]
+#[doc = "Builder for the [Cluster Health API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-health)\n\nGet the cluster health status"]
 #[derive(Clone, Debug)]
 pub struct ClusterHealth<'a, 'b> {
     transport: &'a Transport,
     parts: ClusterHealthParts<'b>,
     error_trace: Option<bool>,
-    expand_wildcards: Option<&'b [ExpandWildcards]>,
+    expand_wildcards: Option<&'b [&'b str]>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
@@ -1015,7 +1058,7 @@ impl<'a, 'b> ClusterHealth<'a, 'b> {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [&'b str]) -> Self {
         self.expand_wildcards = Some(expand_wildcards);
         self
     }
@@ -1114,7 +1157,7 @@ impl<'a, 'b> ClusterHealth<'a, 'b> {
             struct QueryParams<'b> {
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                expand_wildcards: Option<&'b [ExpandWildcards]>,
+                expand_wildcards: Option<&'b [&'b str]>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
@@ -1181,7 +1224,7 @@ impl<'b> ClusterInfoParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cluster Info API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-info.html)\n\nReturns different information about the cluster."]
+#[doc = "Builder for the [Cluster Info API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-info)\n\nGet cluster info"]
 #[derive(Clone, Debug)]
 pub struct ClusterInfo<'a, 'b> {
     transport: &'a Transport,
@@ -1293,7 +1336,7 @@ impl ClusterPendingTasksParts {
         }
     }
 }
-#[doc = "Builder for the [Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-pending.html)\n\nReturns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
+#[doc = "Builder for the [Cluster Pending Tasks API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-pending-tasks)\n\nGet the pending cluster tasks"]
 #[derive(Clone, Debug)]
 pub struct ClusterPendingTasks<'a, 'b> {
     transport: &'a Transport,
@@ -1425,7 +1468,7 @@ impl ClusterPostVotingConfigExclusionsParts {
         }
     }
 }
-#[doc = "Builder for the [Cluster Post Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/voting-config-exclusions.html)\n\nUpdates the cluster voting config exclusions by node ids or node names."]
+#[doc = "Builder for the [Cluster Post Voting Config Exclusions API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-post-voting-config-exclusions)\n\nUpdate voting configuration exclusions"]
 #[derive(Clone, Debug)]
 pub struct ClusterPostVotingConfigExclusions<'a, 'b, B> {
     transport: &'a Transport,
@@ -1436,8 +1479,8 @@ pub struct ClusterPostVotingConfigExclusions<'a, 'b, B> {
     headers: HeaderMap,
     human: Option<bool>,
     master_timeout: Option<&'b str>,
-    node_ids: Option<&'b str>,
-    node_names: Option<&'b str>,
+    node_ids: Option<&'b [&'b str]>,
+    node_names: Option<&'b [&'b str]>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
@@ -1515,12 +1558,12 @@ where
         self
     }
     #[doc = "A comma-separated list of the persistent ids of the nodes to exclude from the voting configuration. If specified, you may not also specify ?node_names."]
-    pub fn node_ids(mut self, node_ids: &'b str) -> Self {
+    pub fn node_ids(mut self, node_ids: &'b [&'b str]) -> Self {
         self.node_ids = Some(node_ids);
         self
     }
     #[doc = "A comma-separated list of the names of the nodes to exclude from the voting configuration. If specified, you may not also specify ?node_ids."]
-    pub fn node_names(mut self, node_names: &'b str) -> Self {
+    pub fn node_names(mut self, node_names: &'b [&'b str]) -> Self {
         self.node_names = Some(node_names);
         self
     }
@@ -1559,8 +1602,10 @@ where
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
                 master_timeout: Option<&'b str>,
-                node_ids: Option<&'b str>,
-                node_names: Option<&'b str>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                node_ids: Option<&'b [&'b str]>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                node_names: Option<&'b [&'b str]>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
                 timeout: Option<&'b str>,
@@ -1606,7 +1651,7 @@ impl<'b> ClusterPutComponentTemplateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cluster Put Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/indices-component-template.html)\n\nCreates or updates a component template"]
+#[doc = "Builder for the [Cluster Put Component Template API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-put-component-template)\n\nCreate or update a component template"]
 #[derive(Clone, Debug)]
 pub struct ClusterPutComponentTemplate<'a, 'b, B> {
     transport: &'a Transport,
@@ -1771,7 +1816,7 @@ impl ClusterPutSettingsParts {
         }
     }
 }
-#[doc = "Builder for the [Cluster Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-update-settings.html)\n\nUpdates the cluster settings."]
+#[doc = "Builder for the [Cluster Put Settings API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-put-settings)\n\nUpdate the cluster settings"]
 #[derive(Clone, Debug)]
 pub struct ClusterPutSettings<'a, 'b, B> {
     transport: &'a Transport,
@@ -1842,7 +1887,7 @@ where
         self.filter_path = Some(filter_path);
         self
     }
-    #[doc = "Return settings in flat format (default: false)"]
+    #[doc = "Return settings in flat format"]
     pub fn flat_settings(mut self, flat_settings: bool) -> Self {
         self.flat_settings = Some(flat_settings);
         self
@@ -1936,7 +1981,7 @@ impl ClusterRemoteInfoParts {
         }
     }
 }
-#[doc = "Builder for the [Cluster Remote Info API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-remote-info.html)\n\nReturns the information about configured remote clusters."]
+#[doc = "Builder for the [Cluster Remote Info API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-remote-info)\n\nGet remote cluster information"]
 #[derive(Clone, Debug)]
 pub struct ClusterRemoteInfo<'a, 'b> {
     transport: &'a Transport,
@@ -2048,7 +2093,7 @@ impl ClusterRerouteParts {
         }
     }
 }
-#[doc = "Builder for the [Cluster Reroute API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-reroute.html)\n\nAllows to manually change the allocation of individual shards in the cluster."]
+#[doc = "Builder for the [Cluster Reroute API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-reroute)\n\nReroute the cluster"]
 #[derive(Clone, Debug)]
 pub struct ClusterReroute<'a, 'b, B> {
     transport: &'a Transport,
@@ -2272,14 +2317,14 @@ impl<'b> ClusterStateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-state.html)\n\nReturns a comprehensive information about the state of the cluster."]
+#[doc = "Builder for the [Cluster State API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-state)\n\nGet the cluster state"]
 #[derive(Clone, Debug)]
 pub struct ClusterState<'a, 'b> {
     transport: &'a Transport,
     parts: ClusterStateParts<'b>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
-    expand_wildcards: Option<&'b [ExpandWildcards]>,
+    expand_wildcards: Option<&'b [&'b str]>,
     filter_path: Option<&'b [&'b str]>,
     flat_settings: Option<bool>,
     headers: HeaderMap,
@@ -2328,7 +2373,7 @@ impl<'a, 'b> ClusterState<'a, 'b> {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [&'b str]) -> Self {
         self.expand_wildcards = Some(expand_wildcards);
         self
     }
@@ -2362,7 +2407,7 @@ impl<'a, 'b> ClusterState<'a, 'b> {
         self.local = Some(local);
         self
     }
-    #[doc = "Specify timeout for connection to master"]
+    #[doc = "Timeout for waiting for new cluster state in case it is blocked"]
     pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
@@ -2405,7 +2450,7 @@ impl<'a, 'b> ClusterState<'a, 'b> {
                 allow_no_indices: Option<bool>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                expand_wildcards: Option<&'b [ExpandWildcards]>,
+                expand_wildcards: Option<&'b [&'b str]>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 flat_settings: Option<bool>,
@@ -2468,7 +2513,7 @@ impl<'b> ClusterStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-stats.html)\n\nReturns high-level overview of cluster statistics."]
+#[doc = "Builder for the [Cluster Stats API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-stats)\n\nGet cluster statistics"]
 #[derive(Clone, Debug)]
 pub struct ClusterStats<'a, 'b> {
     transport: &'a Transport,
@@ -2596,83 +2641,83 @@ impl<'a> Cluster<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Cluster Allocation Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-allocation-explain.html)\n\nProvides explanations for shard allocations in the cluster."]
+    #[doc = "[Cluster Allocation Explain API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-allocation-explain)\n\nExplain the shard allocations"]
     pub fn allocation_explain<'b>(&'a self) -> ClusterAllocationExplain<'a, 'b, ()> {
         ClusterAllocationExplain::new(self.transport())
     }
-    #[doc = "[Cluster Delete Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/indices-component-template.html)\n\nDeletes a component template"]
+    #[doc = "[Cluster Delete Component Template API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-put-component-template)\n\nDelete component templates"]
     pub fn delete_component_template<'b>(
         &'a self,
         parts: ClusterDeleteComponentTemplateParts<'b>,
     ) -> ClusterDeleteComponentTemplate<'a, 'b> {
         ClusterDeleteComponentTemplate::new(self.transport(), parts)
     }
-    #[doc = "[Cluster Delete Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/voting-config-exclusions.html)\n\nClears cluster voting config exclusions."]
+    #[doc = "[Cluster Delete Voting Config Exclusions API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-post-voting-config-exclusions)\n\nClear cluster voting config exclusions"]
     pub fn delete_voting_config_exclusions<'b>(
         &'a self,
     ) -> ClusterDeleteVotingConfigExclusions<'a, 'b> {
         ClusterDeleteVotingConfigExclusions::new(self.transport())
     }
-    #[doc = "[Cluster Exists Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/indices-component-template.html)\n\nReturns information about whether a particular component template exist"]
+    #[doc = "[Cluster Exists Component Template API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-put-component-template)\n\nCheck component templates"]
     pub fn exists_component_template<'b>(
         &'a self,
         parts: ClusterExistsComponentTemplateParts<'b>,
     ) -> ClusterExistsComponentTemplate<'a, 'b> {
         ClusterExistsComponentTemplate::new(self.transport(), parts)
     }
-    #[doc = "[Cluster Get Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/indices-component-template.html)\n\nReturns one or more component templates"]
+    #[doc = "[Cluster Get Component Template API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-put-component-template)\n\nGet component templates"]
     pub fn get_component_template<'b>(
         &'a self,
         parts: ClusterGetComponentTemplateParts<'b>,
     ) -> ClusterGetComponentTemplate<'a, 'b> {
         ClusterGetComponentTemplate::new(self.transport(), parts)
     }
-    #[doc = "[Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-get-settings.html)\n\nReturns cluster settings."]
+    #[doc = "[Cluster Get Settings API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-get-settings)\n\nGet cluster-wide settings"]
     pub fn get_settings<'b>(&'a self) -> ClusterGetSettings<'a, 'b> {
         ClusterGetSettings::new(self.transport())
     }
-    #[doc = "[Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-health.html)\n\nReturns basic information about the health of the cluster."]
+    #[doc = "[Cluster Health API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-health)\n\nGet the cluster health status"]
     pub fn health<'b>(&'a self, parts: ClusterHealthParts<'b>) -> ClusterHealth<'a, 'b> {
         ClusterHealth::new(self.transport(), parts)
     }
-    #[doc = "[Cluster Info API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-info.html)\n\nReturns different information about the cluster."]
+    #[doc = "[Cluster Info API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-info)\n\nGet cluster info"]
     pub fn info<'b>(&'a self, parts: ClusterInfoParts<'b>) -> ClusterInfo<'a, 'b> {
         ClusterInfo::new(self.transport(), parts)
     }
-    #[doc = "[Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-pending.html)\n\nReturns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
+    #[doc = "[Cluster Pending Tasks API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-pending-tasks)\n\nGet the pending cluster tasks"]
     pub fn pending_tasks<'b>(&'a self) -> ClusterPendingTasks<'a, 'b> {
         ClusterPendingTasks::new(self.transport())
     }
-    #[doc = "[Cluster Post Voting Config Exclusions API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/voting-config-exclusions.html)\n\nUpdates the cluster voting config exclusions by node ids or node names."]
+    #[doc = "[Cluster Post Voting Config Exclusions API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-post-voting-config-exclusions)\n\nUpdate voting configuration exclusions"]
     pub fn post_voting_config_exclusions<'b>(
         &'a self,
     ) -> ClusterPostVotingConfigExclusions<'a, 'b, ()> {
         ClusterPostVotingConfigExclusions::new(self.transport())
     }
-    #[doc = "[Cluster Put Component Template API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/indices-component-template.html)\n\nCreates or updates a component template"]
+    #[doc = "[Cluster Put Component Template API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-put-component-template)\n\nCreate or update a component template"]
     pub fn put_component_template<'b>(
         &'a self,
         parts: ClusterPutComponentTemplateParts<'b>,
     ) -> ClusterPutComponentTemplate<'a, 'b, ()> {
         ClusterPutComponentTemplate::new(self.transport(), parts)
     }
-    #[doc = "[Cluster Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-update-settings.html)\n\nUpdates the cluster settings."]
+    #[doc = "[Cluster Put Settings API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-put-settings)\n\nUpdate the cluster settings"]
     pub fn put_settings<'b>(&'a self) -> ClusterPutSettings<'a, 'b, ()> {
         ClusterPutSettings::new(self.transport())
     }
-    #[doc = "[Cluster Remote Info API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-remote-info.html)\n\nReturns the information about configured remote clusters."]
+    #[doc = "[Cluster Remote Info API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-remote-info)\n\nGet remote cluster information"]
     pub fn remote_info<'b>(&'a self) -> ClusterRemoteInfo<'a, 'b> {
         ClusterRemoteInfo::new(self.transport())
     }
-    #[doc = "[Cluster Reroute API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-reroute.html)\n\nAllows to manually change the allocation of individual shards in the cluster."]
+    #[doc = "[Cluster Reroute API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-reroute)\n\nReroute the cluster"]
     pub fn reroute<'b>(&'a self) -> ClusterReroute<'a, 'b, ()> {
         ClusterReroute::new(self.transport())
     }
-    #[doc = "[Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-state.html)\n\nReturns a comprehensive information about the state of the cluster."]
+    #[doc = "[Cluster State API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-state)\n\nGet the cluster state"]
     pub fn state<'b>(&'a self, parts: ClusterStateParts<'b>) -> ClusterState<'a, 'b> {
         ClusterState::new(self.transport(), parts)
     }
-    #[doc = "[Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cluster-stats.html)\n\nReturns high-level overview of cluster statistics."]
+    #[doc = "[Cluster Stats API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-stats)\n\nGet cluster statistics"]
     pub fn stats<'b>(&'a self, parts: ClusterStatsParts<'b>) -> ClusterStats<'a, 'b> {
         ClusterStats::new(self.transport(), parts)
     }
