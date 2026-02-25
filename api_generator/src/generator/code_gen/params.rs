@@ -69,9 +69,8 @@ fn generate_param(tokens: &mut Tokens, e: &ApiEnum) {
             } else if !v.contains('(') {
                 (v.to_owned(), syn::Ident::from(v.to_pascal_case()))
             } else {
-                lazy_static! {
-                    static ref PARENS_REGEX: Regex = Regex::new(r"^(.*?)\s*\(.*?\)\s*$").unwrap();
-                }
+                static PARENS_REGEX: LazyLock<Regex> =
+                    LazyLock::new(|| Regex::new(r"^(.*?)\s*\(.*?\)\s*$").unwrap());
                 if let Some(c) = PARENS_REGEX.captures(v) {
                     (
                         c.get(1).unwrap().as_str().to_owned(),
