@@ -24,6 +24,8 @@
 // cargo make generate-api
 // -----------------------------------------------
 
+#![cfg(feature = "experimental-apis")]
+#![doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
@@ -40,25 +42,36 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Streams Logs Disable API"]
-pub enum StreamsLogsDisableParts {
-    #[doc = "No parts"]
-    None,
+pub enum StreamsLogsDisableParts<'b> {
+    #[doc = "Name"]
+    Name(&'b str),
 }
-impl StreamsLogsDisableParts {
+#[cfg(feature = "experimental-apis")]
+impl<'b> StreamsLogsDisableParts<'b> {
     #[doc = "Builds a relative URL path to the Streams Logs Disable API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            StreamsLogsDisableParts::None => "/_streams/logs/_disable".into(),
+            StreamsLogsDisableParts::Name(name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(19usize + encoded_name.len());
+                p.push_str("/_streams/");
+                p.push_str(encoded_name.as_ref());
+                p.push_str("/_disable");
+                p.into()
+            }
         }
     }
 }
-#[doc = "Builder for the [Streams Logs Disable API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/streams-logs-disable.html)\n\nDisable the Logs Streams feature for this cluster"]
+#[doc = "Builder for the [Streams Logs Disable API](https://www.elastic.co/docs/api/doc/elasticsearch#TODO)\n\nDisable the Logs Streams feature for this cluster"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
 pub struct StreamsLogsDisable<'a, 'b, B> {
     transport: &'a Transport,
-    parts: StreamsLogsDisableParts,
+    parts: StreamsLogsDisableParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -70,16 +83,17 @@ pub struct StreamsLogsDisable<'a, 'b, B> {
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
+#[cfg(feature = "experimental-apis")]
 impl<'a, 'b, B> StreamsLogsDisable<'a, 'b, B>
 where
     B: Body,
 {
-    #[doc = "Creates a new instance of [StreamsLogsDisable]"]
-    pub fn new(transport: &'a Transport) -> Self {
+    #[doc = "Creates a new instance of [StreamsLogsDisable] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: StreamsLogsDisableParts<'b>) -> Self {
         let headers = HeaderMap::new();
         StreamsLogsDisable {
             transport,
-            parts: StreamsLogsDisableParts::None,
+            parts,
             headers,
             body: None,
             error_trace: None,
@@ -195,25 +209,36 @@ where
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Streams Logs Enable API"]
-pub enum StreamsLogsEnableParts {
-    #[doc = "No parts"]
-    None,
+pub enum StreamsLogsEnableParts<'b> {
+    #[doc = "Name"]
+    Name(&'b str),
 }
-impl StreamsLogsEnableParts {
+#[cfg(feature = "experimental-apis")]
+impl<'b> StreamsLogsEnableParts<'b> {
     #[doc = "Builds a relative URL path to the Streams Logs Enable API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            StreamsLogsEnableParts::None => "/_streams/logs/_enable".into(),
+            StreamsLogsEnableParts::Name(name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(18usize + encoded_name.len());
+                p.push_str("/_streams/");
+                p.push_str(encoded_name.as_ref());
+                p.push_str("/_enable");
+                p.into()
+            }
         }
     }
 }
-#[doc = "Builder for the [Streams Logs Enable API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/streams-logs-enable.html)\n\nEnable the Logs Streams feature for this cluster"]
+#[doc = "Builder for the [Streams Logs Enable API](https://www.elastic.co/docs/api/doc/elasticsearch#TODO)\n\nEnable the Logs Streams feature for this cluster"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
 pub struct StreamsLogsEnable<'a, 'b, B> {
     transport: &'a Transport,
-    parts: StreamsLogsEnableParts,
+    parts: StreamsLogsEnableParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -225,16 +250,17 @@ pub struct StreamsLogsEnable<'a, 'b, B> {
     source: Option<&'b str>,
     timeout: Option<&'b str>,
 }
+#[cfg(feature = "experimental-apis")]
 impl<'a, 'b, B> StreamsLogsEnable<'a, 'b, B>
 where
     B: Body,
 {
-    #[doc = "Creates a new instance of [StreamsLogsEnable]"]
-    pub fn new(transport: &'a Transport) -> Self {
+    #[doc = "Creates a new instance of [StreamsLogsEnable] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: StreamsLogsEnableParts<'b>) -> Self {
         let headers = HeaderMap::new();
         StreamsLogsEnable {
             transport,
-            parts: StreamsLogsEnableParts::None,
+            parts,
             headers,
             body: None,
             error_trace: None,
@@ -350,12 +376,14 @@ where
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Streams Status API"]
 pub enum StreamsStatusParts {
     #[doc = "No parts"]
     None,
 }
+#[cfg(feature = "experimental-apis")]
 impl StreamsStatusParts {
     #[doc = "Builds a relative URL path to the Streams Status API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -364,7 +392,9 @@ impl StreamsStatusParts {
         }
     }
 }
-#[doc = "Builder for the [Streams Status API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/streams-status.html)\n\nReturn the current status of the streams feature for each streams type"]
+#[doc = "Builder for the [Streams Status API](https://www.elastic.co/docs/api/doc/elasticsearch#TODO)\n\nReturn the current status of the streams feature for each streams type"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
 pub struct StreamsStatus<'a, 'b> {
     transport: &'a Transport,
@@ -373,11 +403,12 @@ pub struct StreamsStatus<'a, 'b> {
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    mater_timeout: Option<&'b str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
+#[cfg(feature = "experimental-apis")]
 impl<'a, 'b> StreamsStatus<'a, 'b> {
     #[doc = "Creates a new instance of [StreamsStatus]"]
     pub fn new(transport: &'a Transport) -> Self {
@@ -389,7 +420,7 @@ impl<'a, 'b> StreamsStatus<'a, 'b> {
             error_trace: None,
             filter_path: None,
             human: None,
-            mater_timeout: None,
+            master_timeout: None,
             pretty: None,
             request_timeout: None,
             source: None,
@@ -416,8 +447,8 @@ impl<'a, 'b> StreamsStatus<'a, 'b> {
         self
     }
     #[doc = "Period to wait for a response. If no response is received before the timeout expires, the request fails and returns an error."]
-    pub fn mater_timeout(mut self, mater_timeout: &'b str) -> Self {
-        self.mater_timeout = Some(mater_timeout);
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -449,7 +480,7 @@ impl<'a, 'b> StreamsStatus<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
-                mater_timeout: Option<&'b str>,
+                master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
             }
@@ -457,7 +488,7 @@ impl<'a, 'b> StreamsStatus<'a, 'b> {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
-                mater_timeout: self.mater_timeout,
+                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 source: self.source,
             };
@@ -472,9 +503,12 @@ impl<'a, 'b> StreamsStatus<'a, 'b> {
     }
 }
 #[doc = "Namespace client for Streams APIs"]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
 pub struct Streams<'a> {
     transport: &'a Transport,
 }
+#[cfg(feature = "experimental-apis")]
 impl<'a> Streams<'a> {
     #[doc = "Creates a new instance of [Streams]"]
     pub fn new(transport: &'a Transport) -> Self {
@@ -483,19 +517,32 @@ impl<'a> Streams<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Streams Logs Disable API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/streams-logs-disable.html)\n\nDisable the Logs Streams feature for this cluster"]
-    pub fn logs_disable<'b>(&'a self) -> StreamsLogsDisable<'a, 'b, ()> {
-        StreamsLogsDisable::new(self.transport())
+    #[doc = "[Streams Logs Disable API](https://www.elastic.co/docs/api/doc/elasticsearch#TODO)\n\nDisable the Logs Streams feature for this cluster"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn logs_disable<'b>(
+        &'a self,
+        parts: StreamsLogsDisableParts<'b>,
+    ) -> StreamsLogsDisable<'a, 'b, ()> {
+        StreamsLogsDisable::new(self.transport(), parts)
     }
-    #[doc = "[Streams Logs Enable API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/streams-logs-enable.html)\n\nEnable the Logs Streams feature for this cluster"]
-    pub fn logs_enable<'b>(&'a self) -> StreamsLogsEnable<'a, 'b, ()> {
-        StreamsLogsEnable::new(self.transport())
+    #[doc = "[Streams Logs Enable API](https://www.elastic.co/docs/api/doc/elasticsearch#TODO)\n\nEnable the Logs Streams feature for this cluster"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn logs_enable<'b>(
+        &'a self,
+        parts: StreamsLogsEnableParts<'b>,
+    ) -> StreamsLogsEnable<'a, 'b, ()> {
+        StreamsLogsEnable::new(self.transport(), parts)
     }
-    #[doc = "[Streams Status API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/streams-status.html)\n\nReturn the current status of the streams feature for each streams type"]
+    #[doc = "[Streams Status API](https://www.elastic.co/docs/api/doc/elasticsearch#TODO)\n\nReturn the current status of the streams feature for each streams type"]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
     pub fn status<'b>(&'a self) -> StreamsStatus<'a, 'b> {
         StreamsStatus::new(self.transport())
     }
 }
+#[cfg(feature = "experimental-apis")]
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Streams APIs"]
     pub fn streams(&self) -> Streams {

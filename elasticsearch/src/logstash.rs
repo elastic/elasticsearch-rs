@@ -65,7 +65,7 @@ impl<'b> LogstashDeletePipelineParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Logstash Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/logstash-api-delete-pipeline.html)\n\nDeletes Logstash Pipelines used by Central Management"]
+#[doc = "Builder for the [Logstash Delete Pipeline API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-logstash-delete-pipeline)\n\nDelete a Logstash pipeline"]
 #[derive(Clone, Debug)]
 pub struct LogstashDeletePipeline<'a, 'b> {
     transport: &'a Transport,
@@ -169,7 +169,7 @@ pub enum LogstashGetPipelineParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "Id"]
-    Id(&'b str),
+    Id(&'b [&'b str]),
 }
 impl<'b> LogstashGetPipelineParts<'b> {
     #[doc = "Builds a relative URL path to the Logstash Get Pipeline API"]
@@ -177,7 +177,8 @@ impl<'b> LogstashGetPipelineParts<'b> {
         match self {
             LogstashGetPipelineParts::None => "/_logstash/pipeline".into(),
             LogstashGetPipelineParts::Id(id) => {
-                let encoded_id: Cow<str> = percent_encode(id.as_bytes(), PARTS_ENCODED).into();
+                let id_str = id.join(",");
+                let encoded_id: Cow<str> = percent_encode(id_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(20usize + encoded_id.len());
                 p.push_str("/_logstash/pipeline/");
                 p.push_str(encoded_id.as_ref());
@@ -186,7 +187,7 @@ impl<'b> LogstashGetPipelineParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Logstash Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/logstash-api-get-pipeline.html)\n\nRetrieves Logstash Pipelines used by Central Management"]
+#[doc = "Builder for the [Logstash Get Pipeline API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-logstash-get-pipeline)\n\nGet Logstash pipelines"]
 #[derive(Clone, Debug)]
 pub struct LogstashGetPipeline<'a, 'b> {
     transport: &'a Transport,
@@ -304,7 +305,7 @@ impl<'b> LogstashPutPipelineParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Logstash Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/logstash-api-put-pipeline.html)\n\nAdds and updates Logstash Pipelines used for Central Management"]
+#[doc = "Builder for the [Logstash Put Pipeline API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-logstash-put-pipeline)\n\nCreate or update a Logstash pipeline"]
 #[derive(Clone, Debug)]
 pub struct LogstashPutPipeline<'a, 'b, B> {
     transport: &'a Transport,
@@ -437,21 +438,21 @@ impl<'a> Logstash<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Logstash Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/logstash-api-delete-pipeline.html)\n\nDeletes Logstash Pipelines used by Central Management"]
+    #[doc = "[Logstash Delete Pipeline API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-logstash-delete-pipeline)\n\nDelete a Logstash pipeline"]
     pub fn delete_pipeline<'b>(
         &'a self,
         parts: LogstashDeletePipelineParts<'b>,
     ) -> LogstashDeletePipeline<'a, 'b> {
         LogstashDeletePipeline::new(self.transport(), parts)
     }
-    #[doc = "[Logstash Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/logstash-api-get-pipeline.html)\n\nRetrieves Logstash Pipelines used by Central Management"]
+    #[doc = "[Logstash Get Pipeline API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-logstash-get-pipeline)\n\nGet Logstash pipelines"]
     pub fn get_pipeline<'b>(
         &'a self,
         parts: LogstashGetPipelineParts<'b>,
     ) -> LogstashGetPipeline<'a, 'b> {
         LogstashGetPipeline::new(self.transport(), parts)
     }
-    #[doc = "[Logstash Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/logstash-api-put-pipeline.html)\n\nAdds and updates Logstash Pipelines used for Central Management"]
+    #[doc = "[Logstash Put Pipeline API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-logstash-put-pipeline)\n\nCreate or update a Logstash pipeline"]
     pub fn put_pipeline<'b>(
         &'a self,
         parts: LogstashPutPipelineParts<'b>,

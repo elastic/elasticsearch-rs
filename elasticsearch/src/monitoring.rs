@@ -47,33 +47,23 @@ use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Monitoring Bulk API"]
-pub enum MonitoringBulkParts<'b> {
+pub enum MonitoringBulkParts {
     #[doc = "No parts"]
     None,
-    #[doc = "Type"]
-    Type(&'b str),
 }
-impl<'b> MonitoringBulkParts<'b> {
+impl MonitoringBulkParts {
     #[doc = "Builds a relative URL path to the Monitoring Bulk API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
             MonitoringBulkParts::None => "/_monitoring/bulk".into(),
-            MonitoringBulkParts::Type(ty) => {
-                let encoded_ty: Cow<str> = percent_encode(ty.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(18usize + encoded_ty.len());
-                p.push_str("/_monitoring/");
-                p.push_str(encoded_ty.as_ref());
-                p.push_str("/bulk");
-                p.into()
-            }
         }
     }
 }
-#[doc = "Builder for the [Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/monitor-elasticsearch-cluster.html)\n\nUsed by the monitoring features to send monitoring data."]
+#[doc = "Builder for the [Monitoring Bulk API](https://www.elastic.co/docs/api/doc/elasticsearch)\n\nSend monitoring data"]
 #[derive(Clone, Debug)]
 pub struct MonitoringBulk<'a, 'b, B> {
     transport: &'a Transport,
-    parts: MonitoringBulkParts<'b>,
+    parts: MonitoringBulkParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -90,12 +80,12 @@ impl<'a, 'b, B> MonitoringBulk<'a, 'b, B>
 where
     B: Body,
 {
-    #[doc = "Creates a new instance of [MonitoringBulk] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: MonitoringBulkParts<'b>) -> Self {
+    #[doc = "Creates a new instance of [MonitoringBulk]"]
+    pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
         MonitoringBulk {
             transport,
-            parts,
+            parts: MonitoringBulkParts::None,
             headers,
             body: None,
             error_trace: None,
@@ -232,9 +222,9 @@ impl<'a> Monitoring<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/monitor-elasticsearch-cluster.html)\n\nUsed by the monitoring features to send monitoring data."]
-    pub fn bulk<'b>(&'a self, parts: MonitoringBulkParts<'b>) -> MonitoringBulk<'a, 'b, ()> {
-        MonitoringBulk::new(self.transport(), parts)
+    #[doc = "[Monitoring Bulk API](https://www.elastic.co/docs/api/doc/elasticsearch)\n\nSend monitoring data"]
+    pub fn bulk<'b>(&'a self) -> MonitoringBulk<'a, 'b, ()> {
+        MonitoringBulk::new(self.transport())
     }
 }
 impl Elasticsearch {

@@ -160,13 +160,14 @@ impl<'b> CatAliasesParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-alias.html)\n\nShows information about currently configured aliases to indices including filter and routing infos."]
+#[doc = "Builder for the [Cat Aliases API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-aliases)\n\nGet aliases"]
 #[derive(Clone, Debug)]
 pub struct CatAliases<'a, 'b> {
     transport: &'a Transport,
     parts: CatAliasesParts<'b>,
+    bytes: Option<Bytes>,
     error_trace: Option<bool>,
-    expand_wildcards: Option<&'b [ExpandWildcards]>,
+    expand_wildcards: Option<&'b [&'b str]>,
     filter_path: Option<&'b [&'b str]>,
     format: Option<&'b str>,
     h: Option<&'b [&'b str]>,
@@ -178,6 +179,7 @@ pub struct CatAliases<'a, 'b> {
     request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
+    time: Option<Time>,
     v: Option<bool>,
 }
 impl<'a, 'b> CatAliases<'a, 'b> {
@@ -190,6 +192,7 @@ impl<'a, 'b> CatAliases<'a, 'b> {
             transport,
             parts,
             headers,
+            bytes: None,
             error_trace: None,
             expand_wildcards: None,
             filter_path: None,
@@ -202,8 +205,14 @@ impl<'a, 'b> CatAliases<'a, 'b> {
             request_timeout: None,
             s: None,
             source: None,
+            time: None,
             v: None,
         }
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Bytes) -> Self {
+        self.bytes = Some(bytes);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -211,7 +220,7 @@ impl<'a, 'b> CatAliases<'a, 'b> {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [&'b str]) -> Self {
         self.expand_wildcards = Some(expand_wildcards);
         self
     }
@@ -270,6 +279,11 @@ impl<'a, 'b> CatAliases<'a, 'b> {
         self.source = Some(source);
         self
     }
+    #[doc = "The unit in which to display time values"]
+    pub fn time(mut self, time: Time) -> Self {
+        self.time = Some(time);
+        self
+    }
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: bool) -> Self {
         self.v = Some(v);
@@ -285,9 +299,10 @@ impl<'a, 'b> CatAliases<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                bytes: Option<Bytes>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                expand_wildcards: Option<&'b [ExpandWildcards]>,
+                expand_wildcards: Option<&'b [&'b str]>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 format: Option<&'b str>,
@@ -300,9 +315,11 @@ impl<'a, 'b> CatAliases<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 s: Option<&'b [&'b str]>,
                 source: Option<&'b str>,
+                time: Option<Time>,
                 v: Option<bool>,
             }
             let query_params = QueryParams {
+                bytes: self.bytes,
                 error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
                 filter_path: self.filter_path,
@@ -314,6 +331,7 @@ impl<'a, 'b> CatAliases<'a, 'b> {
                 pretty: self.pretty,
                 s: self.s,
                 source: self.source,
+                time: self.time,
                 v: self.v,
             };
             Some(query_params)
@@ -351,7 +369,7 @@ impl<'b> CatAllocationParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Allocation API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-allocation.html)\n\nProvides a snapshot of how many shards are allocated to each data node and how much disk space they are using."]
+#[doc = "Builder for the [Cat Allocation API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-allocation)\n\nGet shard allocation information"]
 #[derive(Clone, Debug)]
 pub struct CatAllocation<'a, 'b> {
     transport: &'a Transport,
@@ -370,6 +388,7 @@ pub struct CatAllocation<'a, 'b> {
     request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
+    time: Option<Time>,
     v: Option<bool>,
 }
 impl<'a, 'b> CatAllocation<'a, 'b> {
@@ -395,6 +414,7 @@ impl<'a, 'b> CatAllocation<'a, 'b> {
             request_timeout: None,
             s: None,
             source: None,
+            time: None,
             v: None,
         }
     }
@@ -468,6 +488,11 @@ impl<'a, 'b> CatAllocation<'a, 'b> {
         self.source = Some(source);
         self
     }
+    #[doc = "The unit in which to display time values"]
+    pub fn time(mut self, time: Time) -> Self {
+        self.time = Some(time);
+        self
+    }
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: bool) -> Self {
         self.v = Some(v);
@@ -498,6 +523,7 @@ impl<'a, 'b> CatAllocation<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 s: Option<&'b [&'b str]>,
                 source: Option<&'b str>,
+                time: Option<Time>,
                 v: Option<bool>,
             }
             let query_params = QueryParams {
@@ -513,6 +539,7 @@ impl<'a, 'b> CatAllocation<'a, 'b> {
                 pretty: self.pretty,
                 s: self.s,
                 source: self.source,
+                time: self.time,
                 v: self.v,
             };
             Some(query_params)
@@ -526,33 +553,36 @@ impl<'a, 'b> CatAllocation<'a, 'b> {
     }
 }
 #[derive(Debug, Clone, PartialEq, Eq)]
-#[doc = "API parts for the Cat Component Templates API"]
-pub enum CatComponentTemplatesParts<'b> {
+#[doc = "API parts for the Cat Circuit Breaker API"]
+pub enum CatCircuitBreakerParts<'b> {
     #[doc = "No parts"]
     None,
-    #[doc = "Name"]
-    Name(&'b str),
+    #[doc = "CircuitBreakerPatterns"]
+    CircuitBreakerPatterns(&'b [&'b str]),
 }
-impl<'b> CatComponentTemplatesParts<'b> {
-    #[doc = "Builds a relative URL path to the Cat Component Templates API"]
+impl<'b> CatCircuitBreakerParts<'b> {
+    #[doc = "Builds a relative URL path to the Cat Circuit Breaker API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            CatComponentTemplatesParts::None => "/_cat/component_templates".into(),
-            CatComponentTemplatesParts::Name(name) => {
-                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
-                let mut p = String::with_capacity(26usize + encoded_name.len());
-                p.push_str("/_cat/component_templates/");
-                p.push_str(encoded_name.as_ref());
+            CatCircuitBreakerParts::None => "/_cat/circuit_breaker".into(),
+            CatCircuitBreakerParts::CircuitBreakerPatterns(circuit_breaker_patterns) => {
+                let circuit_breaker_patterns_str = circuit_breaker_patterns.join(",");
+                let encoded_circuit_breaker_patterns: Cow<str> =
+                    percent_encode(circuit_breaker_patterns_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(22usize + encoded_circuit_breaker_patterns.len());
+                p.push_str("/_cat/circuit_breaker/");
+                p.push_str(encoded_circuit_breaker_patterns.as_ref());
                 p.into()
             }
         }
     }
 }
-#[doc = "Builder for the [Cat Component Templates API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-component-templates.html)\n\nReturns information about existing component_templates templates."]
+#[doc = "Builder for the [Cat Circuit Breaker API](https://www.elastic.co/docs/api/doc/elasticsearch#TODO)\n\nGet circuit breakers statistics"]
 #[derive(Clone, Debug)]
-pub struct CatComponentTemplates<'a, 'b> {
+pub struct CatCircuitBreaker<'a, 'b> {
     transport: &'a Transport,
-    parts: CatComponentTemplatesParts<'b>,
+    parts: CatCircuitBreakerParts<'b>,
+    bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     format: Option<&'b str>,
@@ -566,18 +596,20 @@ pub struct CatComponentTemplates<'a, 'b> {
     request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
+    time: Option<Time>,
     v: Option<bool>,
 }
-impl<'a, 'b> CatComponentTemplates<'a, 'b> {
-    #[doc = "Creates a new instance of [CatComponentTemplates] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: CatComponentTemplatesParts<'b>) -> Self {
+impl<'a, 'b> CatCircuitBreaker<'a, 'b> {
+    #[doc = "Creates a new instance of [CatCircuitBreaker] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: CatCircuitBreakerParts<'b>) -> Self {
         let mut headers = HeaderMap::with_capacity(2);
         headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
         headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
-        CatComponentTemplates {
+        CatCircuitBreaker {
             transport,
             parts,
             headers,
+            bytes: None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -590,8 +622,14 @@ impl<'a, 'b> CatComponentTemplates<'a, 'b> {
             request_timeout: None,
             s: None,
             source: None,
+            time: None,
             v: None,
         }
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Bytes) -> Self {
+        self.bytes = Some(bytes);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -658,6 +696,217 @@ impl<'a, 'b> CatComponentTemplates<'a, 'b> {
         self.source = Some(source);
         self
     }
+    #[doc = "The unit in which to display time values"]
+    pub fn time(mut self, time: Time) -> Self {
+        self.time = Some(time);
+        self
+    }
+    #[doc = "Verbose mode. Display column headers"]
+    pub fn v(mut self, v: bool) -> Self {
+        self.v = Some(v);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Cat Circuit Breaker API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                bytes: Option<Bytes>,
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                format: Option<&'b str>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                h: Option<&'b [&'b str]>,
+                help: Option<bool>,
+                human: Option<bool>,
+                local: Option<bool>,
+                master_timeout: Option<&'b str>,
+                pretty: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                s: Option<&'b [&'b str]>,
+                source: Option<&'b str>,
+                time: Option<Time>,
+                v: Option<bool>,
+            }
+            let query_params = QueryParams {
+                bytes: self.bytes,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                format: self.format,
+                h: self.h,
+                help: self.help,
+                human: self.human,
+                local: self.local,
+                master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                s: self.s,
+                source: self.source,
+                time: self.time,
+                v: self.v,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Cat Component Templates API"]
+pub enum CatComponentTemplatesParts<'b> {
+    #[doc = "No parts"]
+    None,
+    #[doc = "Name"]
+    Name(&'b str),
+}
+impl<'b> CatComponentTemplatesParts<'b> {
+    #[doc = "Builds a relative URL path to the Cat Component Templates API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            CatComponentTemplatesParts::None => "/_cat/component_templates".into(),
+            CatComponentTemplatesParts::Name(name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(26usize + encoded_name.len());
+                p.push_str("/_cat/component_templates/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Cat Component Templates API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-component-templates)\n\nGet component templates"]
+#[derive(Clone, Debug)]
+pub struct CatComponentTemplates<'a, 'b> {
+    transport: &'a Transport,
+    parts: CatComponentTemplatesParts<'b>,
+    bytes: Option<Bytes>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    format: Option<&'b str>,
+    h: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    help: Option<bool>,
+    human: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<&'b str>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    s: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
+    time: Option<Time>,
+    v: Option<bool>,
+}
+impl<'a, 'b> CatComponentTemplates<'a, 'b> {
+    #[doc = "Creates a new instance of [CatComponentTemplates] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: CatComponentTemplatesParts<'b>) -> Self {
+        let mut headers = HeaderMap::with_capacity(2);
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+        headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
+        CatComponentTemplates {
+            transport,
+            parts,
+            headers,
+            bytes: None,
+            error_trace: None,
+            filter_path: None,
+            format: None,
+            h: None,
+            help: None,
+            human: None,
+            local: None,
+            master_timeout: None,
+            pretty: None,
+            request_timeout: None,
+            s: None,
+            source: None,
+            time: None,
+            v: None,
+        }
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Bytes) -> Self {
+        self.bytes = Some(bytes);
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: &'b str) -> Self {
+        self.format = Some(format);
+        self
+    }
+    #[doc = "Comma-separated list of column names to display"]
+    pub fn h(mut self, h: &'b [&'b str]) -> Self {
+        self.h = Some(h);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: bool) -> Self {
+        self.help = Some(help);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: bool) -> Self {
+        self.local = Some(local);
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
+        self.master_timeout = Some(master_timeout);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: &'b [&'b str]) -> Self {
+        self.s = Some(s);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "The unit in which to display time values"]
+    pub fn time(mut self, time: Time) -> Self {
+        self.time = Some(time);
+        self
+    }
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: bool) -> Self {
         self.v = Some(v);
@@ -673,6 +922,7 @@ impl<'a, 'b> CatComponentTemplates<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                bytes: Option<Bytes>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -687,9 +937,11 @@ impl<'a, 'b> CatComponentTemplates<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 s: Option<&'b [&'b str]>,
                 source: Option<&'b str>,
+                time: Option<Time>,
                 v: Option<bool>,
             }
             let query_params = QueryParams {
+                bytes: self.bytes,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 format: self.format,
@@ -701,6 +953,7 @@ impl<'a, 'b> CatComponentTemplates<'a, 'b> {
                 pretty: self.pretty,
                 s: self.s,
                 source: self.source,
+                time: self.time,
                 v: self.v,
             };
             Some(query_params)
@@ -738,11 +991,12 @@ impl<'b> CatCountParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Count API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-count.html)\n\nProvides quick access to the document count of the entire cluster, or individual indices."]
+#[doc = "Builder for the [Cat Count API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-count)\n\nGet a document count"]
 #[derive(Clone, Debug)]
 pub struct CatCount<'a, 'b> {
     transport: &'a Transport,
     parts: CatCountParts<'b>,
+    bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     format: Option<&'b str>,
@@ -754,6 +1008,7 @@ pub struct CatCount<'a, 'b> {
     request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
+    time: Option<Time>,
     v: Option<bool>,
 }
 impl<'a, 'b> CatCount<'a, 'b> {
@@ -766,6 +1021,7 @@ impl<'a, 'b> CatCount<'a, 'b> {
             transport,
             parts,
             headers,
+            bytes: None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -776,8 +1032,14 @@ impl<'a, 'b> CatCount<'a, 'b> {
             request_timeout: None,
             s: None,
             source: None,
+            time: None,
             v: None,
         }
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Bytes) -> Self {
+        self.bytes = Some(bytes);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -834,6 +1096,11 @@ impl<'a, 'b> CatCount<'a, 'b> {
         self.source = Some(source);
         self
     }
+    #[doc = "The unit in which to display time values"]
+    pub fn time(mut self, time: Time) -> Self {
+        self.time = Some(time);
+        self
+    }
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: bool) -> Self {
         self.v = Some(v);
@@ -849,6 +1116,7 @@ impl<'a, 'b> CatCount<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                bytes: Option<Bytes>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -861,9 +1129,11 @@ impl<'a, 'b> CatCount<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 s: Option<&'b [&'b str]>,
                 source: Option<&'b str>,
+                time: Option<Time>,
                 v: Option<bool>,
             }
             let query_params = QueryParams {
+                bytes: self.bytes,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 format: self.format,
@@ -873,6 +1143,7 @@ impl<'a, 'b> CatCount<'a, 'b> {
                 pretty: self.pretty,
                 s: self.s,
                 source: self.source,
+                time: self.time,
                 v: self.v,
             };
             Some(query_params)
@@ -910,7 +1181,7 @@ impl<'b> CatFielddataParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Fielddata API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-fielddata.html)\n\nShows how much heap memory is currently being used by fielddata on every data node in the cluster."]
+#[doc = "Builder for the [Cat Fielddata API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-fielddata)\n\nGet field data cache information"]
 #[derive(Clone, Debug)]
 pub struct CatFielddata<'a, 'b> {
     transport: &'a Transport,
@@ -928,6 +1199,7 @@ pub struct CatFielddata<'a, 'b> {
     request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
+    time: Option<Time>,
     v: Option<bool>,
 }
 impl<'a, 'b> CatFielddata<'a, 'b> {
@@ -952,6 +1224,7 @@ impl<'a, 'b> CatFielddata<'a, 'b> {
             request_timeout: None,
             s: None,
             source: None,
+            time: None,
             v: None,
         }
     }
@@ -1020,6 +1293,11 @@ impl<'a, 'b> CatFielddata<'a, 'b> {
         self.source = Some(source);
         self
     }
+    #[doc = "The unit in which to display time values"]
+    pub fn time(mut self, time: Time) -> Self {
+        self.time = Some(time);
+        self
+    }
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: bool) -> Self {
         self.v = Some(v);
@@ -1050,6 +1328,7 @@ impl<'a, 'b> CatFielddata<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 s: Option<&'b [&'b str]>,
                 source: Option<&'b str>,
+                time: Option<Time>,
                 v: Option<bool>,
             }
             let query_params = QueryParams {
@@ -1064,6 +1343,7 @@ impl<'a, 'b> CatFielddata<'a, 'b> {
                 pretty: self.pretty,
                 s: self.s,
                 source: self.source,
+                time: self.time,
                 v: self.v,
             };
             Some(query_params)
@@ -1090,11 +1370,12 @@ impl CatHealthParts {
         }
     }
 }
-#[doc = "Builder for the [Cat Health API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-health.html)\n\nReturns a concise representation of the cluster health."]
+#[doc = "Builder for the [Cat Health API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-health)\n\nGet the cluster health status"]
 #[derive(Clone, Debug)]
 pub struct CatHealth<'a, 'b> {
     transport: &'a Transport,
     parts: CatHealthParts,
+    bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     format: Option<&'b str>,
@@ -1120,6 +1401,7 @@ impl<'a, 'b> CatHealth<'a, 'b> {
             transport,
             parts: CatHealthParts::None,
             headers,
+            bytes: None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -1134,6 +1416,11 @@ impl<'a, 'b> CatHealth<'a, 'b> {
             ts: None,
             v: None,
         }
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Bytes) -> Self {
+        self.bytes = Some(bytes);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -1215,6 +1502,7 @@ impl<'a, 'b> CatHealth<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                bytes: Option<Bytes>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -1232,6 +1520,7 @@ impl<'a, 'b> CatHealth<'a, 'b> {
                 v: Option<bool>,
             }
             let query_params = QueryParams {
+                bytes: self.bytes,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 format: self.format,
@@ -1269,7 +1558,7 @@ impl CatHelpParts {
         }
     }
 }
-#[doc = "Builder for the [Cat Help API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat.html)\n\nReturns help for the Cat APIs."]
+#[doc = "Builder for the [Cat Help API](https://www.elastic.co/docs/api/doc/elasticsearch/group/endpoint-cat)\n\nGet CAT help"]
 #[derive(Clone, Debug)]
 pub struct CatHelp<'a, 'b> {
     transport: &'a Transport,
@@ -1394,14 +1683,14 @@ impl<'b> CatIndicesParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Indices API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-indices.html)\n\nReturns information about indices: number of primaries and replicas, document counts, disk size, ..."]
+#[doc = "Builder for the [Cat Indices API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-indices)\n\nGet index information"]
 #[derive(Clone, Debug)]
 pub struct CatIndices<'a, 'b> {
     transport: &'a Transport,
     parts: CatIndicesParts<'b>,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
-    expand_wildcards: Option<&'b [ExpandWildcards]>,
+    expand_wildcards: Option<&'b [&'b str]>,
     filter_path: Option<&'b [&'b str]>,
     format: Option<&'b str>,
     h: Option<&'b [&'b str]>,
@@ -1460,7 +1749,7 @@ impl<'a, 'b> CatIndices<'a, 'b> {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [&'b str]) -> Self {
         self.expand_wildcards = Some(expand_wildcards);
         self
     }
@@ -1557,7 +1846,7 @@ impl<'a, 'b> CatIndices<'a, 'b> {
                 bytes: Option<Bytes>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                expand_wildcards: Option<&'b [ExpandWildcards]>,
+                expand_wildcards: Option<&'b [&'b str]>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 format: Option<&'b str>,
@@ -1619,11 +1908,12 @@ impl CatMasterParts {
         }
     }
 }
-#[doc = "Builder for the [Cat Master API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-master.html)\n\nReturns information about the master node."]
+#[doc = "Builder for the [Cat Master API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-master)\n\nGet master node information"]
 #[derive(Clone, Debug)]
 pub struct CatMaster<'a, 'b> {
     transport: &'a Transport,
     parts: CatMasterParts,
+    bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     format: Option<&'b str>,
@@ -1637,6 +1927,7 @@ pub struct CatMaster<'a, 'b> {
     request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
+    time: Option<Time>,
     v: Option<bool>,
 }
 impl<'a, 'b> CatMaster<'a, 'b> {
@@ -1649,6 +1940,7 @@ impl<'a, 'b> CatMaster<'a, 'b> {
             transport,
             parts: CatMasterParts::None,
             headers,
+            bytes: None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -1661,8 +1953,14 @@ impl<'a, 'b> CatMaster<'a, 'b> {
             request_timeout: None,
             s: None,
             source: None,
+            time: None,
             v: None,
         }
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Bytes) -> Self {
+        self.bytes = Some(bytes);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -1729,6 +2027,11 @@ impl<'a, 'b> CatMaster<'a, 'b> {
         self.source = Some(source);
         self
     }
+    #[doc = "The unit in which to display time values"]
+    pub fn time(mut self, time: Time) -> Self {
+        self.time = Some(time);
+        self
+    }
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: bool) -> Self {
         self.v = Some(v);
@@ -1744,6 +2047,7 @@ impl<'a, 'b> CatMaster<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                bytes: Option<Bytes>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -1758,9 +2062,11 @@ impl<'a, 'b> CatMaster<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 s: Option<&'b [&'b str]>,
                 source: Option<&'b str>,
+                time: Option<Time>,
                 v: Option<bool>,
             }
             let query_params = QueryParams {
+                bytes: self.bytes,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 format: self.format,
@@ -1772,6 +2078,7 @@ impl<'a, 'b> CatMaster<'a, 'b> {
                 pretty: self.pretty,
                 s: self.s,
                 source: self.source,
+                time: self.time,
                 v: self.v,
             };
             Some(query_params)
@@ -1807,7 +2114,7 @@ impl<'b> CatMlDataFrameAnalyticsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Ml Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-dfanalytics.html)\n\nGets configuration and usage information about data frame analytics jobs."]
+#[doc = "Builder for the [Cat Ml Data Frame Analytics API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-ml-data-frame-analytics)\n\nGet data frame analytics jobs"]
 #[derive(Clone, Debug)]
 pub struct CatMlDataFrameAnalytics<'a, 'b> {
     transport: &'a Transport,
@@ -2005,12 +2312,13 @@ impl<'b> CatMlDatafeedsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Ml Datafeeds API](http://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-datafeeds.html)\n\nGets configuration and usage information about datafeeds."]
+#[doc = "Builder for the [Cat Ml Datafeeds API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-ml-datafeeds)\n\nGet datafeeds"]
 #[derive(Clone, Debug)]
 pub struct CatMlDatafeeds<'a, 'b> {
     transport: &'a Transport,
     parts: CatMlDatafeedsParts<'b>,
     allow_no_match: Option<bool>,
+    bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     format: Option<&'b str>,
@@ -2036,6 +2344,7 @@ impl<'a, 'b> CatMlDatafeeds<'a, 'b> {
             parts,
             headers,
             allow_no_match: None,
+            bytes: None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -2053,6 +2362,11 @@ impl<'a, 'b> CatMlDatafeeds<'a, 'b> {
     #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
     pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
         self.allow_no_match = Some(allow_no_match);
+        self
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Bytes) -> Self {
+        self.bytes = Some(bytes);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2131,6 +2445,7 @@ impl<'a, 'b> CatMlDatafeeds<'a, 'b> {
             #[derive(Serialize)]
             struct QueryParams<'b> {
                 allow_no_match: Option<bool>,
+                bytes: Option<Bytes>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -2148,6 +2463,7 @@ impl<'a, 'b> CatMlDatafeeds<'a, 'b> {
             }
             let query_params = QueryParams {
                 allow_no_match: self.allow_no_match,
+                bytes: self.bytes,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 format: self.format,
@@ -2194,7 +2510,7 @@ impl<'b> CatMlJobsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Ml Jobs API](http://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-anomaly-detectors.html)\n\nGets configuration and usage information about anomaly detection jobs."]
+#[doc = "Builder for the [Cat Ml Jobs API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-ml-jobs)\n\nGet anomaly detection jobs"]
 #[derive(Clone, Debug)]
 pub struct CatMlJobs<'a, 'b> {
     transport: &'a Transport,
@@ -2392,7 +2708,7 @@ impl<'b> CatMlTrainedModelsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Ml Trained Models API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-trained-model.html)\n\nGets configuration and usage information about inference trained models."]
+#[doc = "Builder for the [Cat Ml Trained Models API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-ml-trained-models)\n\nGet trained models"]
 #[derive(Clone, Debug)]
 pub struct CatMlTrainedModels<'a, 'b> {
     transport: &'a Transport,
@@ -2598,11 +2914,12 @@ impl CatNodeattrsParts {
         }
     }
 }
-#[doc = "Builder for the [Cat Nodeattrs API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-nodeattrs.html)\n\nReturns information about custom node attributes."]
+#[doc = "Builder for the [Cat Nodeattrs API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-nodeattrs)\n\nGet node attribute information"]
 #[derive(Clone, Debug)]
 pub struct CatNodeattrs<'a, 'b> {
     transport: &'a Transport,
     parts: CatNodeattrsParts,
+    bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     format: Option<&'b str>,
@@ -2616,6 +2933,7 @@ pub struct CatNodeattrs<'a, 'b> {
     request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
+    time: Option<Time>,
     v: Option<bool>,
 }
 impl<'a, 'b> CatNodeattrs<'a, 'b> {
@@ -2628,6 +2946,7 @@ impl<'a, 'b> CatNodeattrs<'a, 'b> {
             transport,
             parts: CatNodeattrsParts::None,
             headers,
+            bytes: None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -2640,8 +2959,14 @@ impl<'a, 'b> CatNodeattrs<'a, 'b> {
             request_timeout: None,
             s: None,
             source: None,
+            time: None,
             v: None,
         }
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Bytes) -> Self {
+        self.bytes = Some(bytes);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -2708,6 +3033,11 @@ impl<'a, 'b> CatNodeattrs<'a, 'b> {
         self.source = Some(source);
         self
     }
+    #[doc = "The unit in which to display time values"]
+    pub fn time(mut self, time: Time) -> Self {
+        self.time = Some(time);
+        self
+    }
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: bool) -> Self {
         self.v = Some(v);
@@ -2723,6 +3053,7 @@ impl<'a, 'b> CatNodeattrs<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                bytes: Option<Bytes>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -2737,9 +3068,11 @@ impl<'a, 'b> CatNodeattrs<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 s: Option<&'b [&'b str]>,
                 source: Option<&'b str>,
+                time: Option<Time>,
                 v: Option<bool>,
             }
             let query_params = QueryParams {
+                bytes: self.bytes,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 format: self.format,
@@ -2751,6 +3084,7 @@ impl<'a, 'b> CatNodeattrs<'a, 'b> {
                 pretty: self.pretty,
                 s: self.s,
                 source: self.source,
+                time: self.time,
                 v: self.v,
             };
             Some(query_params)
@@ -2777,7 +3111,7 @@ impl CatNodesParts {
         }
     }
 }
-#[doc = "Builder for the [Cat Nodes API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-nodes.html)\n\nReturns basic statistics about performance of cluster nodes."]
+#[doc = "Builder for the [Cat Nodes API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-nodes)\n\nGet node information"]
 #[derive(Clone, Debug)]
 pub struct CatNodes<'a, 'b> {
     transport: &'a Transport,
@@ -2983,11 +3317,12 @@ impl CatPendingTasksParts {
         }
     }
 }
-#[doc = "Builder for the [Cat Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-pending-tasks.html)\n\nReturns a concise representation of the cluster pending tasks."]
+#[doc = "Builder for the [Cat Pending Tasks API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-pending-tasks)\n\nGet pending task information"]
 #[derive(Clone, Debug)]
 pub struct CatPendingTasks<'a, 'b> {
     transport: &'a Transport,
     parts: CatPendingTasksParts,
+    bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     format: Option<&'b str>,
@@ -3014,6 +3349,7 @@ impl<'a, 'b> CatPendingTasks<'a, 'b> {
             transport,
             parts: CatPendingTasksParts::None,
             headers,
+            bytes: None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -3029,6 +3365,11 @@ impl<'a, 'b> CatPendingTasks<'a, 'b> {
             time: None,
             v: None,
         }
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Bytes) -> Self {
+        self.bytes = Some(bytes);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -3115,6 +3456,7 @@ impl<'a, 'b> CatPendingTasks<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                bytes: Option<Bytes>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -3133,6 +3475,7 @@ impl<'a, 'b> CatPendingTasks<'a, 'b> {
                 v: Option<bool>,
             }
             let query_params = QueryParams {
+                bytes: self.bytes,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 format: self.format,
@@ -3171,11 +3514,12 @@ impl CatPluginsParts {
         }
     }
 }
-#[doc = "Builder for the [Cat Plugins API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-plugins.html)\n\nReturns information about installed plugins across nodes node."]
+#[doc = "Builder for the [Cat Plugins API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-plugins)\n\nGet plugin information"]
 #[derive(Clone, Debug)]
 pub struct CatPlugins<'a, 'b> {
     transport: &'a Transport,
     parts: CatPluginsParts,
+    bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     format: Option<&'b str>,
@@ -3190,6 +3534,7 @@ pub struct CatPlugins<'a, 'b> {
     request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
+    time: Option<Time>,
     v: Option<bool>,
 }
 impl<'a, 'b> CatPlugins<'a, 'b> {
@@ -3202,6 +3547,7 @@ impl<'a, 'b> CatPlugins<'a, 'b> {
             transport,
             parts: CatPluginsParts::None,
             headers,
+            bytes: None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -3215,8 +3561,14 @@ impl<'a, 'b> CatPlugins<'a, 'b> {
             request_timeout: None,
             s: None,
             source: None,
+            time: None,
             v: None,
         }
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Bytes) -> Self {
+        self.bytes = Some(bytes);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -3288,6 +3640,11 @@ impl<'a, 'b> CatPlugins<'a, 'b> {
         self.source = Some(source);
         self
     }
+    #[doc = "The unit in which to display time values"]
+    pub fn time(mut self, time: Time) -> Self {
+        self.time = Some(time);
+        self
+    }
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: bool) -> Self {
         self.v = Some(v);
@@ -3303,6 +3660,7 @@ impl<'a, 'b> CatPlugins<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                bytes: Option<Bytes>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -3318,9 +3676,11 @@ impl<'a, 'b> CatPlugins<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 s: Option<&'b [&'b str]>,
                 source: Option<&'b str>,
+                time: Option<Time>,
                 v: Option<bool>,
             }
             let query_params = QueryParams {
+                bytes: self.bytes,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 format: self.format,
@@ -3333,6 +3693,7 @@ impl<'a, 'b> CatPlugins<'a, 'b> {
                 pretty: self.pretty,
                 s: self.s,
                 source: self.source,
+                time: self.time,
                 v: self.v,
             };
             Some(query_params)
@@ -3370,7 +3731,7 @@ impl<'b> CatRecoveryParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-recovery.html)\n\nReturns information about index shard recoveries, both on-going completed."]
+#[doc = "Builder for the [Cat Recovery API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-recovery)\n\nGet shard recovery information"]
 #[derive(Clone, Debug)]
 pub struct CatRecovery<'a, 'b> {
     transport: &'a Transport,
@@ -3577,11 +3938,12 @@ impl CatRepositoriesParts {
         }
     }
 }
-#[doc = "Builder for the [Cat Repositories API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-repositories.html)\n\nReturns information about snapshot repositories registered in the cluster."]
+#[doc = "Builder for the [Cat Repositories API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-repositories)\n\nGet snapshot repository information"]
 #[derive(Clone, Debug)]
 pub struct CatRepositories<'a, 'b> {
     transport: &'a Transport,
     parts: CatRepositoriesParts,
+    bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     format: Option<&'b str>,
@@ -3595,6 +3957,7 @@ pub struct CatRepositories<'a, 'b> {
     request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
+    time: Option<Time>,
     v: Option<bool>,
 }
 impl<'a, 'b> CatRepositories<'a, 'b> {
@@ -3607,6 +3970,7 @@ impl<'a, 'b> CatRepositories<'a, 'b> {
             transport,
             parts: CatRepositoriesParts::None,
             headers,
+            bytes: None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -3619,8 +3983,14 @@ impl<'a, 'b> CatRepositories<'a, 'b> {
             request_timeout: None,
             s: None,
             source: None,
+            time: None,
             v: None,
         }
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Bytes) -> Self {
+        self.bytes = Some(bytes);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -3687,6 +4057,11 @@ impl<'a, 'b> CatRepositories<'a, 'b> {
         self.source = Some(source);
         self
     }
+    #[doc = "The unit in which to display time values"]
+    pub fn time(mut self, time: Time) -> Self {
+        self.time = Some(time);
+        self
+    }
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: bool) -> Self {
         self.v = Some(v);
@@ -3702,6 +4077,7 @@ impl<'a, 'b> CatRepositories<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                bytes: Option<Bytes>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -3716,9 +4092,11 @@ impl<'a, 'b> CatRepositories<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 s: Option<&'b [&'b str]>,
                 source: Option<&'b str>,
+                time: Option<Time>,
                 v: Option<bool>,
             }
             let query_params = QueryParams {
+                bytes: self.bytes,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 format: self.format,
@@ -3730,6 +4108,7 @@ impl<'a, 'b> CatRepositories<'a, 'b> {
                 pretty: self.pretty,
                 s: self.s,
                 source: self.source,
+                time: self.time,
                 v: self.v,
             };
             Some(query_params)
@@ -3767,25 +4146,31 @@ impl<'b> CatSegmentsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-segments.html)\n\nProvides low-level information about the segments in the shards of an index."]
+#[doc = "Builder for the [Cat Segments API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-segments)\n\nGet segment information"]
 #[derive(Clone, Debug)]
 pub struct CatSegments<'a, 'b> {
     transport: &'a Transport,
     parts: CatSegmentsParts<'b>,
+    allow_closed: Option<bool>,
+    allow_no_indices: Option<bool>,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
+    expand_wildcards: Option<&'b [&'b str]>,
     filter_path: Option<&'b [&'b str]>,
     format: Option<&'b str>,
     h: Option<&'b [&'b str]>,
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
+    ignore_throttled: Option<bool>,
+    ignore_unavailable: Option<bool>,
     local: Option<bool>,
     master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
+    time: Option<Time>,
     v: Option<bool>,
 }
 impl<'a, 'b> CatSegments<'a, 'b> {
@@ -3798,21 +4183,37 @@ impl<'a, 'b> CatSegments<'a, 'b> {
             transport,
             parts,
             headers,
+            allow_closed: None,
+            allow_no_indices: None,
             bytes: None,
             error_trace: None,
+            expand_wildcards: None,
             filter_path: None,
             format: None,
             h: None,
             help: None,
             human: None,
+            ignore_throttled: None,
+            ignore_unavailable: None,
             local: None,
             master_timeout: None,
             pretty: None,
             request_timeout: None,
             s: None,
             source: None,
+            time: None,
             v: None,
         }
+    }
+    #[doc = "If true, allow closed indices to be returned in the response otherwise if false, keep the legacy behaviour of throwing an exception if index pattern matches closed indices"]
+    pub fn allow_closed(mut self, allow_closed: bool) -> Self {
+        self.allow_closed = Some(allow_closed);
+        self
+    }
+    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified). Only allowed when providing an index expression."]
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
+        self
     }
     #[doc = "The unit in which to display byte values"]
     pub fn bytes(mut self, bytes: Bytes) -> Self {
@@ -3822,6 +4223,11 @@ impl<'a, 'b> CatSegments<'a, 'b> {
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
         self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [&'b str]) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -3854,6 +4260,16 @@ impl<'a, 'b> CatSegments<'a, 'b> {
         self.human = Some(human);
         self
     }
+    #[doc = "Whether specified concrete, expanded or aliased indices should be ignored when throttled. Only allowed when providing an index expression."]
+    pub fn ignore_throttled(mut self, ignore_throttled: bool) -> Self {
+        self.ignore_throttled = Some(ignore_throttled);
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed). Only allowed when providing an index expression."]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
+        self
+    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: bool) -> Self {
         self.local = Some(local);
@@ -3884,6 +4300,11 @@ impl<'a, 'b> CatSegments<'a, 'b> {
         self.source = Some(source);
         self
     }
+    #[doc = "The unit in which to display time values"]
+    pub fn time(mut self, time: Time) -> Self {
+        self.time = Some(time);
+        self
+    }
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: bool) -> Self {
         self.v = Some(v);
@@ -3899,8 +4320,12 @@ impl<'a, 'b> CatSegments<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                allow_closed: Option<bool>,
+                allow_no_indices: Option<bool>,
                 bytes: Option<Bytes>,
                 error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                expand_wildcards: Option<&'b [&'b str]>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 format: Option<&'b str>,
@@ -3908,27 +4333,36 @@ impl<'a, 'b> CatSegments<'a, 'b> {
                 h: Option<&'b [&'b str]>,
                 help: Option<bool>,
                 human: Option<bool>,
+                ignore_throttled: Option<bool>,
+                ignore_unavailable: Option<bool>,
                 local: Option<bool>,
                 master_timeout: Option<&'b str>,
                 pretty: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 s: Option<&'b [&'b str]>,
                 source: Option<&'b str>,
+                time: Option<Time>,
                 v: Option<bool>,
             }
             let query_params = QueryParams {
+                allow_closed: self.allow_closed,
+                allow_no_indices: self.allow_no_indices,
                 bytes: self.bytes,
                 error_trace: self.error_trace,
+                expand_wildcards: self.expand_wildcards,
                 filter_path: self.filter_path,
                 format: self.format,
                 h: self.h,
                 help: self.help,
                 human: self.human,
+                ignore_throttled: self.ignore_throttled,
+                ignore_unavailable: self.ignore_unavailable,
                 local: self.local,
                 master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 s: self.s,
                 source: self.source,
+                time: self.time,
                 v: self.v,
             };
             Some(query_params)
@@ -3966,7 +4400,7 @@ impl<'b> CatShardsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-shards.html)\n\nProvides a detailed view of shard allocation on nodes."]
+#[doc = "Builder for the [Cat Shards API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-shards)\n\nGet shard information"]
 #[derive(Clone, Debug)]
 pub struct CatShards<'a, 'b> {
     transport: &'a Transport,
@@ -4165,11 +4599,12 @@ impl<'b> CatSnapshotsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Snapshots API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-snapshots.html)\n\nReturns all snapshots in a specific repository."]
+#[doc = "Builder for the [Cat Snapshots API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-snapshots)\n\nGet snapshot information"]
 #[derive(Clone, Debug)]
 pub struct CatSnapshots<'a, 'b> {
     transport: &'a Transport,
     parts: CatSnapshotsParts<'b>,
+    bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     format: Option<&'b str>,
@@ -4196,6 +4631,7 @@ impl<'a, 'b> CatSnapshots<'a, 'b> {
             transport,
             parts,
             headers,
+            bytes: None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -4211,6 +4647,11 @@ impl<'a, 'b> CatSnapshots<'a, 'b> {
             time: None,
             v: None,
         }
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Bytes) -> Self {
+        self.bytes = Some(bytes);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -4297,6 +4738,7 @@ impl<'a, 'b> CatSnapshots<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                bytes: Option<Bytes>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -4315,6 +4757,7 @@ impl<'a, 'b> CatSnapshots<'a, 'b> {
                 v: Option<bool>,
             }
             let query_params = QueryParams {
+                bytes: self.bytes,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 format: self.format,
@@ -4355,7 +4798,7 @@ impl CatTasksParts {
         }
     }
 }
-#[doc = "Builder for the [Cat Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/tasks.html)\n\nReturns information about the tasks currently executing on one or more nodes in the cluster."]
+#[doc = "Builder for the [Cat Tasks API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-tasks)\n\nGet task information"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -4363,6 +4806,7 @@ pub struct CatTasks<'a, 'b> {
     transport: &'a Transport,
     parts: CatTasksParts,
     actions: Option<&'b [&'b str]>,
+    bytes: Option<Bytes>,
     detailed: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -4394,6 +4838,7 @@ impl<'a, 'b> CatTasks<'a, 'b> {
             parts: CatTasksParts::None,
             headers,
             actions: None,
+            bytes: None,
             detailed: None,
             error_trace: None,
             filter_path: None,
@@ -4416,6 +4861,11 @@ impl<'a, 'b> CatTasks<'a, 'b> {
     #[doc = "A comma-separated list of actions that should be returned. Leave empty to return all."]
     pub fn actions(mut self, actions: &'b [&'b str]) -> Self {
         self.actions = Some(actions);
+        self
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Bytes) -> Self {
+        self.bytes = Some(bytes);
         self
     }
     #[doc = "Return detailed task information (default: false)"]
@@ -4520,6 +4970,7 @@ impl<'a, 'b> CatTasks<'a, 'b> {
             struct QueryParams<'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 actions: Option<&'b [&'b str]>,
+                bytes: Option<Bytes>,
                 detailed: Option<bool>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
@@ -4543,6 +4994,7 @@ impl<'a, 'b> CatTasks<'a, 'b> {
             }
             let query_params = QueryParams {
                 actions: self.actions,
+                bytes: self.bytes,
                 detailed: self.detailed,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
@@ -4593,11 +5045,12 @@ impl<'b> CatTemplatesParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Templates API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-templates.html)\n\nReturns information about existing templates."]
+#[doc = "Builder for the [Cat Templates API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-templates)\n\nGet index template information"]
 #[derive(Clone, Debug)]
 pub struct CatTemplates<'a, 'b> {
     transport: &'a Transport,
     parts: CatTemplatesParts<'b>,
+    bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     format: Option<&'b str>,
@@ -4611,6 +5064,7 @@ pub struct CatTemplates<'a, 'b> {
     request_timeout: Option<Duration>,
     s: Option<&'b [&'b str]>,
     source: Option<&'b str>,
+    time: Option<Time>,
     v: Option<bool>,
 }
 impl<'a, 'b> CatTemplates<'a, 'b> {
@@ -4623,6 +5077,7 @@ impl<'a, 'b> CatTemplates<'a, 'b> {
             transport,
             parts,
             headers,
+            bytes: None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -4635,8 +5090,14 @@ impl<'a, 'b> CatTemplates<'a, 'b> {
             request_timeout: None,
             s: None,
             source: None,
+            time: None,
             v: None,
         }
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Bytes) -> Self {
+        self.bytes = Some(bytes);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -4703,6 +5164,11 @@ impl<'a, 'b> CatTemplates<'a, 'b> {
         self.source = Some(source);
         self
     }
+    #[doc = "The unit in which to display time values"]
+    pub fn time(mut self, time: Time) -> Self {
+        self.time = Some(time);
+        self
+    }
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: bool) -> Self {
         self.v = Some(v);
@@ -4718,6 +5184,7 @@ impl<'a, 'b> CatTemplates<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                bytes: Option<Bytes>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -4732,9 +5199,11 @@ impl<'a, 'b> CatTemplates<'a, 'b> {
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 s: Option<&'b [&'b str]>,
                 source: Option<&'b str>,
+                time: Option<Time>,
                 v: Option<bool>,
             }
             let query_params = QueryParams {
+                bytes: self.bytes,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 format: self.format,
@@ -4746,6 +5215,7 @@ impl<'a, 'b> CatTemplates<'a, 'b> {
                 pretty: self.pretty,
                 s: self.s,
                 source: self.source,
+                time: self.time,
                 v: self.v,
             };
             Some(query_params)
@@ -4783,11 +5253,12 @@ impl<'b> CatThreadPoolParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Thread Pool API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-thread-pool.html)\n\nReturns cluster-wide thread pool statistics per node.\nBy default the active, queue and rejected statistics are returned for all thread pools."]
+#[doc = "Builder for the [Cat Thread Pool API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-thread-pool)\n\nGet thread pool statistics"]
 #[derive(Clone, Debug)]
 pub struct CatThreadPool<'a, 'b> {
     transport: &'a Transport,
     parts: CatThreadPoolParts<'b>,
+    bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     format: Option<&'b str>,
@@ -4814,6 +5285,7 @@ impl<'a, 'b> CatThreadPool<'a, 'b> {
             transport,
             parts,
             headers,
+            bytes: None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -4829,6 +5301,11 @@ impl<'a, 'b> CatThreadPool<'a, 'b> {
             time: None,
             v: None,
         }
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Bytes) -> Self {
+        self.bytes = Some(bytes);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -4915,6 +5392,7 @@ impl<'a, 'b> CatThreadPool<'a, 'b> {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                bytes: Option<Bytes>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -4933,6 +5411,7 @@ impl<'a, 'b> CatThreadPool<'a, 'b> {
                 v: Option<bool>,
             }
             let query_params = QueryParams {
+                bytes: self.bytes,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 format: self.format,
@@ -4981,12 +5460,13 @@ impl<'b> CatTransformsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Cat Transforms API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-transforms.html)\n\nGets configuration and usage information about transforms."]
+#[doc = "Builder for the [Cat Transforms API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-transforms)\n\nGet transform information"]
 #[derive(Clone, Debug)]
 pub struct CatTransforms<'a, 'b> {
     transport: &'a Transport,
     parts: CatTransformsParts<'b>,
     allow_no_match: Option<bool>,
+    bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     format: Option<&'b str>,
@@ -5014,6 +5494,7 @@ impl<'a, 'b> CatTransforms<'a, 'b> {
             parts,
             headers,
             allow_no_match: None,
+            bytes: None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -5033,6 +5514,11 @@ impl<'a, 'b> CatTransforms<'a, 'b> {
     #[doc = "Whether to ignore if a wildcard expression matches no transforms. (This includes `_all` string or when no transforms have been specified)"]
     pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
         self.allow_no_match = Some(allow_no_match);
+        self
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Bytes) -> Self {
+        self.bytes = Some(bytes);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -5121,6 +5607,7 @@ impl<'a, 'b> CatTransforms<'a, 'b> {
             #[derive(Serialize)]
             struct QueryParams<'b> {
                 allow_no_match: Option<bool>,
+                bytes: Option<Bytes>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -5140,6 +5627,7 @@ impl<'a, 'b> CatTransforms<'a, 'b> {
             }
             let query_params = QueryParams {
                 allow_no_match: self.allow_no_match,
+                bytes: self.bytes,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 format: self.format,
@@ -5176,118 +5664,125 @@ impl<'a> Cat<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Cat Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-alias.html)\n\nShows information about currently configured aliases to indices including filter and routing infos."]
+    #[doc = "[Cat Aliases API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-aliases)\n\nGet aliases"]
     pub fn aliases<'b>(&'a self, parts: CatAliasesParts<'b>) -> CatAliases<'a, 'b> {
         CatAliases::new(self.transport(), parts)
     }
-    #[doc = "[Cat Allocation API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-allocation.html)\n\nProvides a snapshot of how many shards are allocated to each data node and how much disk space they are using."]
+    #[doc = "[Cat Allocation API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-allocation)\n\nGet shard allocation information"]
     pub fn allocation<'b>(&'a self, parts: CatAllocationParts<'b>) -> CatAllocation<'a, 'b> {
         CatAllocation::new(self.transport(), parts)
     }
-    #[doc = "[Cat Component Templates API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-component-templates.html)\n\nReturns information about existing component_templates templates."]
+    #[doc = "[Cat Circuit Breaker API](https://www.elastic.co/docs/api/doc/elasticsearch#TODO)\n\nGet circuit breakers statistics"]
+    pub fn circuit_breaker<'b>(
+        &'a self,
+        parts: CatCircuitBreakerParts<'b>,
+    ) -> CatCircuitBreaker<'a, 'b> {
+        CatCircuitBreaker::new(self.transport(), parts)
+    }
+    #[doc = "[Cat Component Templates API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-component-templates)\n\nGet component templates"]
     pub fn component_templates<'b>(
         &'a self,
         parts: CatComponentTemplatesParts<'b>,
     ) -> CatComponentTemplates<'a, 'b> {
         CatComponentTemplates::new(self.transport(), parts)
     }
-    #[doc = "[Cat Count API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-count.html)\n\nProvides quick access to the document count of the entire cluster, or individual indices."]
+    #[doc = "[Cat Count API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-count)\n\nGet a document count"]
     pub fn count<'b>(&'a self, parts: CatCountParts<'b>) -> CatCount<'a, 'b> {
         CatCount::new(self.transport(), parts)
     }
-    #[doc = "[Cat Fielddata API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-fielddata.html)\n\nShows how much heap memory is currently being used by fielddata on every data node in the cluster."]
+    #[doc = "[Cat Fielddata API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-fielddata)\n\nGet field data cache information"]
     pub fn fielddata<'b>(&'a self, parts: CatFielddataParts<'b>) -> CatFielddata<'a, 'b> {
         CatFielddata::new(self.transport(), parts)
     }
-    #[doc = "[Cat Health API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-health.html)\n\nReturns a concise representation of the cluster health."]
+    #[doc = "[Cat Health API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-health)\n\nGet the cluster health status"]
     pub fn health<'b>(&'a self) -> CatHealth<'a, 'b> {
         CatHealth::new(self.transport())
     }
-    #[doc = "[Cat Help API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat.html)\n\nReturns help for the Cat APIs."]
+    #[doc = "[Cat Help API](https://www.elastic.co/docs/api/doc/elasticsearch/group/endpoint-cat)\n\nGet CAT help"]
     pub fn help<'b>(&'a self) -> CatHelp<'a, 'b> {
         CatHelp::new(self.transport())
     }
-    #[doc = "[Cat Indices API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-indices.html)\n\nReturns information about indices: number of primaries and replicas, document counts, disk size, ..."]
+    #[doc = "[Cat Indices API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-indices)\n\nGet index information"]
     pub fn indices<'b>(&'a self, parts: CatIndicesParts<'b>) -> CatIndices<'a, 'b> {
         CatIndices::new(self.transport(), parts)
     }
-    #[doc = "[Cat Master API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-master.html)\n\nReturns information about the master node."]
+    #[doc = "[Cat Master API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-master)\n\nGet master node information"]
     pub fn master<'b>(&'a self) -> CatMaster<'a, 'b> {
         CatMaster::new(self.transport())
     }
-    #[doc = "[Cat Ml Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-dfanalytics.html)\n\nGets configuration and usage information about data frame analytics jobs."]
+    #[doc = "[Cat Ml Data Frame Analytics API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-ml-data-frame-analytics)\n\nGet data frame analytics jobs"]
     pub fn ml_data_frame_analytics<'b>(
         &'a self,
         parts: CatMlDataFrameAnalyticsParts<'b>,
     ) -> CatMlDataFrameAnalytics<'a, 'b> {
         CatMlDataFrameAnalytics::new(self.transport(), parts)
     }
-    #[doc = "[Cat Ml Datafeeds API](http://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-datafeeds.html)\n\nGets configuration and usage information about datafeeds."]
+    #[doc = "[Cat Ml Datafeeds API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-ml-datafeeds)\n\nGet datafeeds"]
     pub fn ml_datafeeds<'b>(&'a self, parts: CatMlDatafeedsParts<'b>) -> CatMlDatafeeds<'a, 'b> {
         CatMlDatafeeds::new(self.transport(), parts)
     }
-    #[doc = "[Cat Ml Jobs API](http://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-anomaly-detectors.html)\n\nGets configuration and usage information about anomaly detection jobs."]
+    #[doc = "[Cat Ml Jobs API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-ml-jobs)\n\nGet anomaly detection jobs"]
     pub fn ml_jobs<'b>(&'a self, parts: CatMlJobsParts<'b>) -> CatMlJobs<'a, 'b> {
         CatMlJobs::new(self.transport(), parts)
     }
-    #[doc = "[Cat Ml Trained Models API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-trained-model.html)\n\nGets configuration and usage information about inference trained models."]
+    #[doc = "[Cat Ml Trained Models API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-ml-trained-models)\n\nGet trained models"]
     pub fn ml_trained_models<'b>(
         &'a self,
         parts: CatMlTrainedModelsParts<'b>,
     ) -> CatMlTrainedModels<'a, 'b> {
         CatMlTrainedModels::new(self.transport(), parts)
     }
-    #[doc = "[Cat Nodeattrs API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-nodeattrs.html)\n\nReturns information about custom node attributes."]
+    #[doc = "[Cat Nodeattrs API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-nodeattrs)\n\nGet node attribute information"]
     pub fn nodeattrs<'b>(&'a self) -> CatNodeattrs<'a, 'b> {
         CatNodeattrs::new(self.transport())
     }
-    #[doc = "[Cat Nodes API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-nodes.html)\n\nReturns basic statistics about performance of cluster nodes."]
+    #[doc = "[Cat Nodes API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-nodes)\n\nGet node information"]
     pub fn nodes<'b>(&'a self) -> CatNodes<'a, 'b> {
         CatNodes::new(self.transport())
     }
-    #[doc = "[Cat Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-pending-tasks.html)\n\nReturns a concise representation of the cluster pending tasks."]
+    #[doc = "[Cat Pending Tasks API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-pending-tasks)\n\nGet pending task information"]
     pub fn pending_tasks<'b>(&'a self) -> CatPendingTasks<'a, 'b> {
         CatPendingTasks::new(self.transport())
     }
-    #[doc = "[Cat Plugins API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-plugins.html)\n\nReturns information about installed plugins across nodes node."]
+    #[doc = "[Cat Plugins API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-plugins)\n\nGet plugin information"]
     pub fn plugins<'b>(&'a self) -> CatPlugins<'a, 'b> {
         CatPlugins::new(self.transport())
     }
-    #[doc = "[Cat Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-recovery.html)\n\nReturns information about index shard recoveries, both on-going completed."]
+    #[doc = "[Cat Recovery API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-recovery)\n\nGet shard recovery information"]
     pub fn recovery<'b>(&'a self, parts: CatRecoveryParts<'b>) -> CatRecovery<'a, 'b> {
         CatRecovery::new(self.transport(), parts)
     }
-    #[doc = "[Cat Repositories API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-repositories.html)\n\nReturns information about snapshot repositories registered in the cluster."]
+    #[doc = "[Cat Repositories API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-repositories)\n\nGet snapshot repository information"]
     pub fn repositories<'b>(&'a self) -> CatRepositories<'a, 'b> {
         CatRepositories::new(self.transport())
     }
-    #[doc = "[Cat Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-segments.html)\n\nProvides low-level information about the segments in the shards of an index."]
+    #[doc = "[Cat Segments API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-segments)\n\nGet segment information"]
     pub fn segments<'b>(&'a self, parts: CatSegmentsParts<'b>) -> CatSegments<'a, 'b> {
         CatSegments::new(self.transport(), parts)
     }
-    #[doc = "[Cat Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-shards.html)\n\nProvides a detailed view of shard allocation on nodes."]
+    #[doc = "[Cat Shards API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-shards)\n\nGet shard information"]
     pub fn shards<'b>(&'a self, parts: CatShardsParts<'b>) -> CatShards<'a, 'b> {
         CatShards::new(self.transport(), parts)
     }
-    #[doc = "[Cat Snapshots API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-snapshots.html)\n\nReturns all snapshots in a specific repository."]
+    #[doc = "[Cat Snapshots API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-snapshots)\n\nGet snapshot information"]
     pub fn snapshots<'b>(&'a self, parts: CatSnapshotsParts<'b>) -> CatSnapshots<'a, 'b> {
         CatSnapshots::new(self.transport(), parts)
     }
-    #[doc = "[Cat Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/tasks.html)\n\nReturns information about the tasks currently executing on one or more nodes in the cluster."]
+    #[doc = "[Cat Tasks API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-tasks)\n\nGet task information"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn tasks<'b>(&'a self) -> CatTasks<'a, 'b> {
         CatTasks::new(self.transport())
     }
-    #[doc = "[Cat Templates API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-templates.html)\n\nReturns information about existing templates."]
+    #[doc = "[Cat Templates API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-templates)\n\nGet index template information"]
     pub fn templates<'b>(&'a self, parts: CatTemplatesParts<'b>) -> CatTemplates<'a, 'b> {
         CatTemplates::new(self.transport(), parts)
     }
-    #[doc = "[Cat Thread Pool API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-thread-pool.html)\n\nReturns cluster-wide thread pool statistics per node.\nBy default the active, queue and rejected statistics are returned for all thread pools."]
+    #[doc = "[Cat Thread Pool API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-thread-pool)\n\nGet thread pool statistics"]
     pub fn thread_pool<'b>(&'a self, parts: CatThreadPoolParts<'b>) -> CatThreadPool<'a, 'b> {
         CatThreadPool::new(self.transport(), parts)
     }
-    #[doc = "[Cat Transforms API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/cat-transforms.html)\n\nGets configuration and usage information about transforms."]
+    #[doc = "[Cat Transforms API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cat-transforms)\n\nGet transform information"]
     pub fn transforms<'b>(&'a self, parts: CatTransformsParts<'b>) -> CatTransforms<'a, 'b> {
         CatTransforms::new(self.transport(), parts)
     }
