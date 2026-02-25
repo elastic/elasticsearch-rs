@@ -27,7 +27,6 @@ repo=$(realpath "$script_path/../")
 CMD=$1
 TASK=$1
 TASK_ARGS=()
-VERSION=$2
 STACK_VERSION=$VERSION
 set -euo pipefail
 
