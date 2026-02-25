@@ -58,6 +58,7 @@ case $CMD in
         TASK_ARGS=("$VERSION")
         ;;
     codegen)
+        VERSION=$(git rev-parse --abbrev-ref HEAD)
         echo -e "\033[36;1mTARGET: codegen API $VERSION\033[0m"
         TASK=codegen
         TASK_ARGS=("$VERSION")
