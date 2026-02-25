@@ -4,14 +4,11 @@ steps:
       provider: "gcp"
     env:
       STACK_VERSION: "{{ matrix.stack_version }}"
-      TEST_SUITE: "{{ matrix.test_suite }}"
       RUST_TOOLCHAIN: "{{ matrix.toolchain }}"
     matrix:
       setup:
         stack_version:
           - "8.15.0"
-        test_suite:
-          - "platinum"
         toolchain:
           - "latest"
     command: ./.buildkite/run-tests
