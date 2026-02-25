@@ -27,6 +27,7 @@ repo=$(realpath "$script_path/../")
 CMD=$1
 TASK=$1
 TASK_ARGS=()
+VERSION=$2
 STACK_VERSION=$VERSION
 set -euo pipefail
 
@@ -57,6 +58,7 @@ case $CMD in
         TASK_ARGS=("$VERSION")
         ;;
     codegen)
+        VERSION=$(git rev-parse --abbrev-ref HEAD)
         echo -e "\033[36;1mTARGET: codegen API $VERSION\033[0m"
         TASK=codegen
         TASK_ARGS=("$VERSION")
