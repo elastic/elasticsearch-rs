@@ -23,9 +23,8 @@ description = '''Download Rest API specs and YAML tests'''
 private = true
 command = "cargo"
 # cargo-make insists on installing cargo-xtask and ignores .cargo/config.toml
-#args = ["xtask", "download-specs", "--url", "${ELASTICSEARCH_URL}"]
-args = ["run", "-q", "-p", "xtask", "--", "download-specs", "--url", "${ELASTICSEARCH_URL}"]
-dependencies = ["start-elasticsearch"]
+#args = ["xtask", "download-specs"]
+args = ["run", "-q", "-p", "xtask", "--", "download-specs"]
 
 [tasks.test-elasticsearch]
 category = "Elasticsearch"
