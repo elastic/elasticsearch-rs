@@ -26,5 +26,3 @@ COPY elasticsearch/Cargo.toml ./elasticsearch/Cargo.toml
 COPY elasticsearch/src ./elasticsearch/src
 COPY elasticsearch/build.rs ./elasticsearch/build.rs
 COPY xtask ./xtask
-
-RUN cargo build --tests
