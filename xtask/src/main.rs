@@ -17,7 +17,6 @@
  * under the License.
  */
 
-use anyhow::bail;
 use clap::Parser;
 use once_cell::sync::Lazy;
 use std::env;
@@ -30,30 +29,14 @@ pub mod artifacts;
 #[derive(Parser, Debug)]
 enum Cmd {
     /// Download Elasticsearch Rest specs and YAML tests
-    DownloadSpecs {
-        /// Specific commit hash to download
-        #[arg(long, short)]
-        commit_hash: Option<String>,
-        /// Get the commit hash to download from a running ES server
-        #[arg(long, short)]
-        url: Option<String>,
-    },
-    /// Get the commit hash of Elasticsearch running at <url>
-    EsCommitHash {
-        /// URL of the Elasticsearch server
-        #[arg(long, short)]
-        url: String,
-    },
+    /// based on the STACK_VERSION environment variable
+    DownloadSpecs {},
 }
 
 fn main() -> anyhow::Result<()> {
     let opt = Cmd::parse();
     match opt {
-        Cmd::DownloadSpecs { commit_hash, url } => artifacts::download(commit_hash, url),
-        Cmd::EsCommitHash { url } => {
-            print!("{}", get_es_commit_hash(url)?);
-            Ok(())
-        }
+        Cmd::DownloadSpecs {} => artifacts::download(STACK_VERSION.deref()),
     }
 }
 
@@ -64,22 +47,3 @@ pub static ROOT_DIR: Lazy<path::PathBuf> = Lazy::new(|| {
 
 pub static STACK_VERSION: Lazy<String> =
     Lazy::new(|| env::var("STACK_VERSION").expect("Missing STACK_VERSION environment variable"));
-
-pub fn get_es_commit_hash(url: String) -> anyhow::Result<String> {
-    let client = reqwest::blocking::ClientBuilder::new()
-        .danger_accept_invalid_certs(true)
-        .build()?;
-
-    let response = client.get(url).send()?;
-    if response.status() != reqwest::StatusCode::OK {
-        bail!(
-            "Cannot fetch ES information - status code {}",
-            response.status()
-        )
-    }
-
-    let json: serde_json::Value = response.json()?;
-    let branch = json["version"]["build_hash"].as_str().unwrap().to_string();
-
-    Ok(branch)
-}
