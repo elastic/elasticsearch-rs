@@ -20,71 +20,46 @@
 use super::*;
 use anyhow::Context;
 use chrono::{DateTime, FixedOffset};
+use regex::Regex;
 use reqwest::blocking as reqwest;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fs;
 use std::io;
 
-pub fn download(commit_hash: Option<String>, url: Option<String>) -> anyhow::Result<()> {
-    // Get commit hash from ES if its URL has been provided
-    let commit_hash = if let Some(url) = url {
-        Some(super::get_es_commit_hash(url)?)
+pub fn download(stack_version: &str) -> anyhow::Result<()> {
+    let api_stack_version = if stack_version == "main" {
+        "master"
     } else {
-        commit_hash
+        let re = Regex::new(r"^\d+\.\d+$").expect("valid stack version regex");
+        anyhow::ensure!(
+            re.is_match(stack_version),
+            "STACK_VERSION must be two numeric parts separated by a dot (e.g. 9.0); got {}",
+            stack_version
+        );
+        stack_version
     };
 
-    // Check if it's already there
-    if let Some(expected_hash) = &commit_hash {
-        if let Some(project) = read_local_project()? {
-            if &project.commit_hash == expected_hash {
-                println!("Specs were already downloaded.");
-                return Ok(());
-            }
-        }
-    }
-
-    let spec_dir = ROOT_DIR.join("checkout").join(STACK_VERSION.deref());
-
-    let artifacts_url = format!(
-        "https://artifacts-api.elastic.co/v1/versions/{}",
-        *STACK_VERSION
+    let spec_dir = ROOT_DIR.join("checkout").join(stack_version);
+    let snapshot_url = format!(
+        "https://artifacts-snapshot.elastic.co/elasticsearch/latest/{}.json",
+        api_stack_version
     );
-    println!("Downloading build info from {}", &artifacts_url);
+    println!("Downloading build info from {}", &snapshot_url);
+    let artifacts = reqwest::get(&snapshot_url)?.json::<SnapshotRoot>()?;
+    let manifest_url = artifacts.manifest_url;
+    let version = artifacts.version;
+    println!("Downloading manifest from {}", &manifest_url);
 
-    let artifacts = reqwest::get(&artifacts_url)?.json::<Artifacts>()?;
-
-    let project = match &commit_hash {
-        Some(hash) => artifacts
-            .version
-            .builds
-            .iter()
-            .find(|build| {
-                build
-                    .projects
-                    .get("elasticsearch")
-                    .filter(|es| &es.commit_hash == hash)
-                    .is_some()
-            })
-            .with_context(|| format!("Cannot find commit hash {}", hash))?
-            .projects
-            .get("elasticsearch")
-            .unwrap(), // ES is guaranteed to be there
-
-        None => artifacts
-            .version
-            .builds
-            .iter()
-            .max_by_key(|build| build.start_time)
-            .unwrap()
-            .projects
-            .get("elasticsearch")
-            .with_context(|| "Project 'elasticsearch' not found")?,
-    };
+    let manifest = reqwest::get(&manifest_url)?.json::<Manifest>()?;
+    let project = manifest
+        .projects
+        .get("elasticsearch")
+        .with_context(|| "Project 'elasticsearch' not found")?;
 
     let specs_url = project
         .packages
-        .get(&format!("rest-resources-zip-{}.zip", *STACK_VERSION))
+        .get(&format!("rest-resources-zip-{}.zip", version))
         .with_context(|| "Package 'rest-resources-zip' not found")?
         .url
         .clone();
@@ -118,19 +93,15 @@ pub fn read_local_project() -> anyhow::Result<Option<Project>> {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct Artifacts {
-    pub version: Version,
-    // manifests
-}
-
-#[derive(Deserialize, Debug)]
-pub struct Version {
+pub struct SnapshotRoot {
     pub version: String,
-    pub builds: Vec<Build>,
+    pub build_id: String,
+    pub manifest_url: String,
+    // pub_summary_url: String,
 }
 
 #[derive(Deserialize, Debug)]
-pub struct Build {
+pub struct Manifest {
     pub projects: HashMap<String, Project>,
     #[serde(with = "rfc2822_format")]
     pub start_time: DateTime<FixedOffset>,
@@ -157,7 +128,6 @@ pub struct Project {
 pub struct Package {
     pub url: String,
     pub sha_url: String,
-    pub asc_url: String,
     pub architecture: Option<String>,
 
     #[serde(rename = "type")]

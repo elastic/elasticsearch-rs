@@ -1,0 +1,26 @@
+name: Backport
+
+on:
+  pull_request_target:
+    types: ["labeled", "closed"]
+
+jobs:
+  backport:
+    name: Backport PR
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true && !(contains(github.event.pull_request.labels.*.name, 'backport'))
+
+    steps:
+      - name: Backport Action
+        uses: sorenlouv/backport-github-action@516854e7c9f962b9939085c9a92ea28411d1ae90  # v10.2.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          auto_backport_label_prefix: 'backport '
+
+      - name: Info log
+        if: ${{ success() }}
+        run: cat ~/.backport/backport.info.log
+
+      - name: Debug log
+        if: ${{ failure() }}
+        run: cat ~/.backport/backport.debug.log

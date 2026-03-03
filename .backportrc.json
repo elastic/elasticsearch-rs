@@ -1,0 +1,9 @@
+{
+  "repoOwner": "elastic",
+  "repoName": "elasticsearch-rs",
+  "fork": false,
+  "branchLabelMapping": {
+    "^backport (\\d+\\.\\d+)$": "$1"
+  },
+  "targetBranchChoices": ["8.19", "9.2", "9.3"]
+}

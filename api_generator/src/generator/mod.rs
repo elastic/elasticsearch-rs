@@ -644,6 +644,25 @@ pub fn read_api(download_dir: &PathBuf) -> anyhow::Result<Api> {
                 });
             }
 
+            // collect unique enum values from URL parts as well
+            for path in &api_endpoint.url.paths {
+                for part in path.parts.iter().filter(|p| p.1.ty == TypeKind::Enum) {
+                    let options: Vec<String> = part
+                        .1
+                        .options
+                        .iter()
+                        .map(|v| v.as_str().unwrap().to_string())
+                        .collect();
+
+                    enums.insert(ApiEnum {
+                        name: part.0.to_string(),
+                        description: part.1.description.clone(),
+                        values: options,
+                        stability: api_endpoint.stability,
+                    });
+                }
+            }
+
             // collect api endpoints into namespaces
             if !namespaces.contains_key(&namespace) {
                 let mut api_namespace = ApiNamespace::default();
@@ -760,5 +779,70 @@ mod tests {
 
         assert_eq!(&d2, Deprecated::combine(&d1, &d2));
         assert_eq!(&None, Deprecated::combine(&d1, &None));
+    }
+
+    #[test]
+    fn test_read_api_collects_enums_from_url_parts() {
+        use std::io::Write;
+
+        let dir = tempfile::tempdir().unwrap();
+
+        // Root endpoint so namespaces.remove("root").unwrap() succeeds
+        let mut ping = std::fs::File::create(dir.path().join("ping.json")).unwrap();
+        write!(
+            ping,
+            r#"{{
+                "ping": {{
+                    "documentation": {{ "url": "https://example.com" }},
+                    "stability": "stable",
+                    "url": {{ "paths": [{{ "path": "/", "methods": ["HEAD"] }}] }},
+                    "params": {{}},
+                    "body": null
+                }}
+            }}"#
+        )
+        .unwrap();
+
+        // Endpoint with an enum-typed URL part
+        let mut spec = std::fs::File::create(dir.path().join("test_ns.test_method.json")).unwrap();
+        write!(
+            spec,
+            r#"{{
+                "test_ns.test_method": {{
+                    "documentation": {{ "url": "https://example.com" }},
+                    "stability": "stable",
+                    "url": {{
+                        "paths": [{{
+                            "path": "/{{status}}/_test",
+                            "methods": ["GET"],
+                            "parts": {{
+                                "status": {{
+                                    "type": "enum",
+                                    "options": ["green", "yellow", "red"],
+                                    "description": "Health status"
+                                }}
+                            }}
+                        }}]
+                    }},
+                    "params": {{}},
+                    "body": null
+                }}
+            }}"#
+        )
+        .unwrap();
+
+        let api = read_api(&dir.path().to_path_buf()).unwrap();
+
+        let status_enum = api
+            .enums
+            .iter()
+            .find(|e| e.name == "status")
+            .expect("should contain 'status' enum from URL part");
+
+        assert_eq!(
+            status_enum.values,
+            vec!["green".to_string(), "yellow".to_string(), "red".to_string()]
+        );
+        assert_eq!(status_enum.description, Some("Health status".to_string()));
     }
 }
