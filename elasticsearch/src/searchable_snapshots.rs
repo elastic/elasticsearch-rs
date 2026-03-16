@@ -75,7 +75,7 @@ impl<'b> SearchableSnapshotsCacheStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Searchable Snapshots Cache Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/searchable-snapshots-apis.html)\n\nRetrieve node-level cache statistics about searchable snapshots."]
+#[doc = "Builder for the [Searchable Snapshots Cache Stats API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-searchable-snapshots-cache-stats)\n\nGet cache statistics"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -204,7 +204,7 @@ impl<'b> SearchableSnapshotsClearCacheParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Searchable Snapshots Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/searchable-snapshots-apis.html)\n\nClear the cache of searchable snapshots."]
+#[doc = "Builder for the [Searchable Snapshots Clear Cache API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-searchable-snapshots-clear-cache)\n\nClear the cache of searchable snapshots."]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -214,7 +214,7 @@ pub struct SearchableSnapshotsClearCache<'a, 'b, B> {
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
-    expand_wildcards: Option<&'b [ExpandWildcards]>,
+    expand_wildcards: Option<&'b [&'b str]>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
@@ -279,7 +279,7 @@ where
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [&'b str]) -> Self {
         self.expand_wildcards = Some(expand_wildcards);
         self
     }
@@ -331,7 +331,7 @@ where
                 allow_no_indices: Option<bool>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                expand_wildcards: Option<&'b [ExpandWildcards]>,
+                expand_wildcards: Option<&'b [&'b str]>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
@@ -387,7 +387,7 @@ impl<'b> SearchableSnapshotsMountParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Searchable Snapshots Mount API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/searchable-snapshots-api-mount-snapshot.html)\n\nMount a snapshot as a searchable index."]
+#[doc = "Builder for the [Searchable Snapshots Mount API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-searchable-snapshots-mount)\n\nMount a snapshot"]
 #[derive(Clone, Debug)]
 pub struct SearchableSnapshotsMount<'a, 'b, B> {
     transport: &'a Transport,
@@ -564,7 +564,7 @@ impl<'b> SearchableSnapshotsStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Searchable Snapshots Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/searchable-snapshots-apis.html)\n\nRetrieve shard-level statistics about searchable snapshots."]
+#[doc = "Builder for the [Searchable Snapshots Stats API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-searchable-snapshots-stats)\n\nGet searchable snapshot statistics"]
 #[derive(Clone, Debug)]
 pub struct SearchableSnapshotsStats<'a, 'b> {
     transport: &'a Transport,
@@ -683,7 +683,7 @@ impl<'a> SearchableSnapshots<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Searchable Snapshots Cache Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/searchable-snapshots-apis.html)\n\nRetrieve node-level cache statistics about searchable snapshots."]
+    #[doc = "[Searchable Snapshots Cache Stats API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-searchable-snapshots-cache-stats)\n\nGet cache statistics"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn cache_stats<'b>(
@@ -692,7 +692,7 @@ impl<'a> SearchableSnapshots<'a> {
     ) -> SearchableSnapshotsCacheStats<'a, 'b> {
         SearchableSnapshotsCacheStats::new(self.transport(), parts)
     }
-    #[doc = "[Searchable Snapshots Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/searchable-snapshots-apis.html)\n\nClear the cache of searchable snapshots."]
+    #[doc = "[Searchable Snapshots Clear Cache API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-searchable-snapshots-clear-cache)\n\nClear the cache of searchable snapshots."]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn clear_cache<'b>(
@@ -701,14 +701,14 @@ impl<'a> SearchableSnapshots<'a> {
     ) -> SearchableSnapshotsClearCache<'a, 'b, ()> {
         SearchableSnapshotsClearCache::new(self.transport(), parts)
     }
-    #[doc = "[Searchable Snapshots Mount API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/searchable-snapshots-api-mount-snapshot.html)\n\nMount a snapshot as a searchable index."]
+    #[doc = "[Searchable Snapshots Mount API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-searchable-snapshots-mount)\n\nMount a snapshot"]
     pub fn mount<'b>(
         &'a self,
         parts: SearchableSnapshotsMountParts<'b>,
     ) -> SearchableSnapshotsMount<'a, 'b, ()> {
         SearchableSnapshotsMount::new(self.transport(), parts)
     }
-    #[doc = "[Searchable Snapshots Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/searchable-snapshots-apis.html)\n\nRetrieve shard-level statistics about searchable snapshots."]
+    #[doc = "[Searchable Snapshots Stats API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-searchable-snapshots-stats)\n\nGet searchable snapshot statistics"]
     pub fn stats<'b>(
         &'a self,
         parts: SearchableSnapshotsStatsParts<'b>,
