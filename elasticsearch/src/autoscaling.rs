@@ -634,7 +634,7 @@ impl<'a> Autoscaling<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Autoscaling APIs"]
-    pub fn autoscaling(&self) -> Autoscaling {
+    pub fn autoscaling(&self) -> Autoscaling<'_> {
         Autoscaling::new(self.transport())
     }
 }

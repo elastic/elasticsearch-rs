@@ -5296,7 +5296,7 @@ impl<'a> Connector<'a> {
 #[cfg(feature = "experimental-apis")]
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Connector APIs"]
-    pub fn connector(&self) -> Connector {
+    pub fn connector(&self) -> Connector<'_> {
         Connector::new(self.transport())
     }
 }

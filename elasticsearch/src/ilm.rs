@@ -1712,7 +1712,7 @@ impl<'a> Ilm<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Index Lifecycle Management APIs"]
-    pub fn ilm(&self) -> Ilm {
+    pub fn ilm(&self) -> Ilm<'_> {
         Ilm::new(self.transport())
     }
 }
