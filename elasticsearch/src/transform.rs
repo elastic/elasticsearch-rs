@@ -2022,7 +2022,7 @@ impl<'a> Transform<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Transform APIs"]
-    pub fn transform(&self) -> Transform {
+    pub fn transform(&self) -> Transform<'_> {
         Transform::new(self.transport())
     }
 }

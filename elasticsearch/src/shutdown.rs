@@ -505,7 +505,7 @@ impl<'a> Shutdown<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Shutdown APIs"]
-    pub fn shutdown(&self) -> Shutdown {
+    pub fn shutdown(&self) -> Shutdown<'_> {
         Shutdown::new(self.transport())
     }
 }

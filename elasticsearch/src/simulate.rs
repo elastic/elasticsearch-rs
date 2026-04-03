@@ -233,7 +233,7 @@ impl<'a> Simulate<'a> {
 #[cfg(feature = "experimental-apis")]
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Simulate APIs"]
-    pub fn simulate(&self) -> Simulate {
+    pub fn simulate(&self) -> Simulate<'_> {
         Simulate::new(self.transport())
     }
 }

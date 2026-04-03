@@ -232,7 +232,7 @@ impl<'a> Graph<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Graph APIs"]
-    pub fn graph(&self) -> Graph {
+    pub fn graph(&self) -> Graph<'_> {
         Graph::new(self.transport())
     }
 }

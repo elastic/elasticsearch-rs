@@ -175,7 +175,7 @@ impl<'a> Ssl<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Ssl APIs"]
-    pub fn ssl(&self) -> Ssl {
+    pub fn ssl(&self) -> Ssl<'_> {
         Ssl::new(self.transport())
     }
 }

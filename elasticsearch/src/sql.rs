@@ -897,7 +897,7 @@ impl<'a> Sql<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Sql APIs"]
-    pub fn sql(&self) -> Sql {
+    pub fn sql(&self) -> Sql<'_> {
         Sql::new(self.transport())
     }
 }

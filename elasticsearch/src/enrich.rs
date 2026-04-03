@@ -784,7 +784,7 @@ impl<'a> Enrich<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Enrich APIs"]
-    pub fn enrich(&self) -> Enrich {
+    pub fn enrich(&self) -> Enrich<'_> {
         Enrich::new(self.transport())
     }
 }

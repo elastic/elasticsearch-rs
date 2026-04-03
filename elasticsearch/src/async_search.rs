@@ -1056,7 +1056,7 @@ impl<'a> AsyncSearch<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for AsyncSearch APIs"]
-    pub fn async_search(&self) -> AsyncSearch {
+    pub fn async_search(&self) -> AsyncSearch<'_> {
         AsyncSearch::new(self.transport())
     }
 }
