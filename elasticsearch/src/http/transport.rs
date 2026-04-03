@@ -628,8 +628,7 @@ impl Transport {
         let connection = self.conn_pool.next();
 
         // Build node info request
-        let node_request = self
-            .request_builder(
+        let node_request = match self.request_builder(
                 &connection,
                 Method::Get,
                 "_nodes/http?filter_path=nodes.*.http",
@@ -637,32 +636,74 @@ impl Transport {
                 None::<&()>,
                 None::<()>,
                 None,
-            )
-            .unwrap();
+            ) {
+                Ok(reqwest) => reqwest,
+                Err(e) => {
+                    // Avoid panic: request builder failed.
+                    eprintln!("Elasticsearch reseed: request build failed: {e}");
+                    return;
+                }
+            };
 
         let scheme = connection.url.scheme();
-        let resp = node_request.send().await.unwrap();
-        let json: Value = resp.json().await.unwrap();
-        let connections: Vec<Connection> = json["nodes"]
-            .as_object()
-            .unwrap()
+        let resp = match node_request.send().await {
+            Ok(response) => response,
+            Err(err) => {
+                // Avoid panic: request send failed.
+                eprintln!("Elasticsearch reseed: request failed: {err}");
+                return;
+            }
+        };
+        let json: Value = match resp.json().await {
+            Ok(value) => value,
+            Err(err) => {
+                // Avoid panic: response JSON invalid.
+                eprintln!("Elasticsearch reseed: response parse failed: {err}");
+                return;
+            }
+        };
+        let nodes = match json["nodes"].as_object() {
+            Some(nodes) => nodes,
+            None => {
+                // Avoid panic: missing nodes field.
+                eprintln!("Elasticsearch reseed: response missing nodes");
+                return;
+            }
+        };
+        let connections: Vec<Connection> = nodes
             .iter()
-            .map(|(_, node)| {
-                let address = node["http"]["publish_address"]
-                    .as_str()
-                    .or_else(|| {
-                        Some(
-                            node["http"]["bound_address"].as_array().unwrap()[0]
-                                .as_str()
-                                .unwrap(),
-                        )
-                    })
-                    .unwrap();
-                let url = Self::parse_to_url(address, scheme).unwrap();
-                Connection::new(url)
+            .filter_map(|(_, node)| {
+                let address = node["http"]["publish_address"].as_str().or_else(|| {
+                    node["http"]["bound_address"]
+                        .as_array()
+                        .and_then(|addresses| addresses.first())
+                        .and_then(|address| address.as_str())
+                });
+                let address = match address {
+                    Some(address) => address,
+                    None => {
+                        // Skip nodes without addresses.
+                        eprintln!("Elasticsearch reseed: node missing address");
+                        return None;
+                    }
+                };
+                let url = match Self::parse_to_url(address, scheme) {
+                    Ok(url) => url,
+                    Err(err) => {
+                        // Skip nodes with unparseable addresses.
+                        eprintln!("Elasticsearch reseed: address parse failed: {err}");
+                        return None;
+                    }
+                };
+                Some(Connection::new(url))
             })
             .collect();
 
+        if connections.is_empty() {
+            // Avoid reseeding with an empty connection list.
+            eprintln!("Elasticsearch reseed: no connections parsed");
+            return;
+        }
         self.conn_pool.reseed(connections);
     }
 
