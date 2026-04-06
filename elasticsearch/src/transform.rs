@@ -67,7 +67,7 @@ impl<'b> TransformDeleteTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Delete Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/delete-transform.html)\n\nDeletes an existing transform."]
+#[doc = "Builder for the [Transform Delete Transform API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-delete-transform)\n\nDelete a transform"]
 #[derive(Clone, Debug)]
 pub struct TransformDeleteTransform<'a, 'b> {
     transport: &'a Transport,
@@ -206,7 +206,7 @@ impl TransformGetNodeStatsParts {
         }
     }
 }
-#[doc = "Builder for the [Transform Get Node Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/get-transform-node-stats.html)\n\nRetrieves transform usage information for transform nodes."]
+#[doc = "Builder for the [Transform Get Node Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/get-transform-node-stats.html)\n\nRetrieves transform usage information for transform nodes"]
 #[derive(Clone, Debug)]
 pub struct TransformGetNodeStats<'a, 'b> {
     transport: &'a Transport,
@@ -308,7 +308,7 @@ impl<'a, 'b> TransformGetNodeStats<'a, 'b> {
 #[doc = "API parts for the Transform Get Transform API"]
 pub enum TransformGetTransformParts<'b> {
     #[doc = "TransformId"]
-    TransformId(&'b str),
+    TransformId(&'b [&'b str]),
     #[doc = "No parts"]
     None,
 }
@@ -317,8 +317,9 @@ impl<'b> TransformGetTransformParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             TransformGetTransformParts::TransformId(transform_id) => {
+                let transform_id_str = transform_id.join(",");
                 let encoded_transform_id: Cow<str> =
-                    percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(transform_id_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(12usize + encoded_transform_id.len());
                 p.push_str("/_transform/");
                 p.push_str(encoded_transform_id.as_ref());
@@ -328,7 +329,7 @@ impl<'b> TransformGetTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Get Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/get-transform.html)\n\nRetrieves configuration information for transforms."]
+#[doc = "Builder for the [Transform Get Transform API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-get-transform)\n\nGet transforms"]
 #[derive(Clone, Debug)]
 pub struct TransformGetTransform<'a, 'b> {
     transport: &'a Transport,
@@ -466,15 +467,16 @@ impl<'a, 'b> TransformGetTransform<'a, 'b> {
 #[doc = "API parts for the Transform Get Transform Stats API"]
 pub enum TransformGetTransformStatsParts<'b> {
     #[doc = "TransformId"]
-    TransformId(&'b str),
+    TransformId(&'b [&'b str]),
 }
 impl<'b> TransformGetTransformStatsParts<'b> {
     #[doc = "Builds a relative URL path to the Transform Get Transform Stats API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
             TransformGetTransformStatsParts::TransformId(transform_id) => {
+                let transform_id_str = transform_id.join(",");
                 let encoded_transform_id: Cow<str> =
-                    percent_encode(transform_id.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(transform_id_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(19usize + encoded_transform_id.len());
                 p.push_str("/_transform/");
                 p.push_str(encoded_transform_id.as_ref());
@@ -484,7 +486,7 @@ impl<'b> TransformGetTransformStatsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Get Transform Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/get-transform-stats.html)\n\nRetrieves usage information for transforms."]
+#[doc = "Builder for the [Transform Get Transform Stats API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-get-transform-stats)\n\nGet transform stats"]
 #[derive(Clone, Debug)]
 pub struct TransformGetTransformStats<'a, 'b> {
     transport: &'a Transport,
@@ -643,7 +645,7 @@ impl<'b> TransformPreviewTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Preview Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/preview-transform.html)\n\nPreviews a transform."]
+#[doc = "Builder for the [Transform Preview Transform API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-preview-transform)\n\nPreview a transform"]
 #[derive(Clone, Debug)]
 pub struct TransformPreviewTransform<'a, 'b, B> {
     transport: &'a Transport,
@@ -798,7 +800,7 @@ impl<'b> TransformPutTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Put Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/put-transform.html)\n\nInstantiates a transform."]
+#[doc = "Builder for the [Transform Put Transform API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-put-transform)\n\nCreate a transform"]
 #[derive(Clone, Debug)]
 pub struct TransformPutTransform<'a, 'b, B> {
     transport: &'a Transport,
@@ -961,7 +963,7 @@ impl<'b> TransformResetTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Reset Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/reset-transform.html)\n\nResets an existing transform."]
+#[doc = "Builder for the [Transform Reset Transform API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-reset-transform)\n\nReset a transform"]
 #[derive(Clone, Debug)]
 pub struct TransformResetTransform<'a, 'b, B> {
     transport: &'a Transport,
@@ -1124,7 +1126,7 @@ impl<'b> TransformScheduleNowTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Schedule Now Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/schedule-now-transform.html)\n\nSchedules now a transform."]
+#[doc = "Builder for the [Transform Schedule Now Transform API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-schedule-now-transform)\n\nSchedule a transform to start now"]
 #[derive(Clone, Debug)]
 pub struct TransformScheduleNowTransform<'a, 'b, B> {
     transport: &'a Transport,
@@ -1256,6 +1258,161 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Transform Set Upgrade Mode API"]
+pub enum TransformSetUpgradeModeParts {
+    #[doc = "No parts"]
+    None,
+}
+impl TransformSetUpgradeModeParts {
+    #[doc = "Builds a relative URL path to the Transform Set Upgrade Mode API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            TransformSetUpgradeModeParts::None => "/_transform/set_upgrade_mode".into(),
+        }
+    }
+}
+#[doc = "Builder for the [Transform Set Upgrade Mode API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-set-upgrade-mode)\n\nSet upgrade_mode for transform indices"]
+#[derive(Clone, Debug)]
+pub struct TransformSetUpgradeMode<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: TransformSetUpgradeModeParts,
+    body: Option<B>,
+    enabled: Option<bool>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
+}
+impl<'a, 'b, B> TransformSetUpgradeMode<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [TransformSetUpgradeMode]"]
+    pub fn new(transport: &'a Transport) -> Self {
+        let headers = HeaderMap::new();
+        TransformSetUpgradeMode {
+            transport,
+            parts: TransformSetUpgradeModeParts::None,
+            headers,
+            body: None,
+            enabled: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+            timeout: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> TransformSetUpgradeMode<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        TransformSetUpgradeMode {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            enabled: self.enabled,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+            timeout: self.timeout,
+        }
+    }
+    #[doc = "Whether to enable upgrade_mode Transform setting or not. Defaults to false."]
+    pub fn enabled(mut self, enabled: bool) -> Self {
+        self.enabled = Some(enabled);
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Controls the time to wait before action times out. Defaults to 30 seconds"]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Transform Set Upgrade Mode API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Post;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                enabled: Option<bool>,
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+                timeout: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                enabled: self.enabled,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Transform Start Transform API"]
 pub enum TransformStartTransformParts<'b> {
     #[doc = "TransformId"]
@@ -1277,7 +1434,7 @@ impl<'b> TransformStartTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Start Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/start-transform.html)\n\nStarts one or more transforms."]
+#[doc = "Builder for the [Transform Start Transform API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-start-transform)\n\nStart a transform"]
 #[derive(Clone, Debug)]
 pub struct TransformStartTransform<'a, 'b, B> {
     transport: &'a Transport,
@@ -1440,7 +1597,7 @@ impl<'b> TransformStopTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Stop Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/stop-transform.html)\n\nStops one or more transforms."]
+#[doc = "Builder for the [Transform Stop Transform API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-stop-transform)\n\nStop transforms"]
 #[derive(Clone, Debug)]
 pub struct TransformStopTransform<'a, 'b, B> {
     transport: &'a Transport,
@@ -1633,7 +1790,7 @@ impl<'b> TransformUpdateTransformParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Transform Update Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/update-transform.html)\n\nUpdates certain properties of a transform."]
+#[doc = "Builder for the [Transform Update Transform API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-update-transform)\n\nUpdate a transform"]
 #[derive(Clone, Debug)]
 pub struct TransformUpdateTransform<'a, 'b, B> {
     transport: &'a Transport,
@@ -1788,7 +1945,7 @@ impl TransformUpgradeTransformsParts {
         }
     }
 }
-#[doc = "Builder for the [Transform Upgrade Transforms API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/upgrade-transforms.html)\n\nUpgrades all transforms."]
+#[doc = "Builder for the [Transform Upgrade Transforms API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-upgrade-transforms)\n\nUpgrade all transforms"]
 #[derive(Clone, Debug)]
 pub struct TransformUpgradeTransforms<'a, 'b, B> {
     transport: &'a Transport,
@@ -1941,81 +2098,85 @@ impl<'a> Transform<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Transform Delete Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/delete-transform.html)\n\nDeletes an existing transform."]
+    #[doc = "[Transform Delete Transform API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-delete-transform)\n\nDelete a transform"]
     pub fn delete_transform<'b>(
         &'a self,
         parts: TransformDeleteTransformParts<'b>,
     ) -> TransformDeleteTransform<'a, 'b> {
         TransformDeleteTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Get Node Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/get-transform-node-stats.html)\n\nRetrieves transform usage information for transform nodes."]
+    #[doc = "[Transform Get Node Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/get-transform-node-stats.html)\n\nRetrieves transform usage information for transform nodes"]
     pub fn get_node_stats<'b>(&'a self) -> TransformGetNodeStats<'a, 'b> {
         TransformGetNodeStats::new(self.transport())
     }
-    #[doc = "[Transform Get Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/get-transform.html)\n\nRetrieves configuration information for transforms."]
+    #[doc = "[Transform Get Transform API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-get-transform)\n\nGet transforms"]
     pub fn get_transform<'b>(
         &'a self,
         parts: TransformGetTransformParts<'b>,
     ) -> TransformGetTransform<'a, 'b> {
         TransformGetTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Get Transform Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/get-transform-stats.html)\n\nRetrieves usage information for transforms."]
+    #[doc = "[Transform Get Transform Stats API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-get-transform-stats)\n\nGet transform stats"]
     pub fn get_transform_stats<'b>(
         &'a self,
         parts: TransformGetTransformStatsParts<'b>,
     ) -> TransformGetTransformStats<'a, 'b> {
         TransformGetTransformStats::new(self.transport(), parts)
     }
-    #[doc = "[Transform Preview Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/preview-transform.html)\n\nPreviews a transform."]
+    #[doc = "[Transform Preview Transform API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-preview-transform)\n\nPreview a transform"]
     pub fn preview_transform<'b>(
         &'a self,
         parts: TransformPreviewTransformParts<'b>,
     ) -> TransformPreviewTransform<'a, 'b, ()> {
         TransformPreviewTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Put Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/put-transform.html)\n\nInstantiates a transform."]
+    #[doc = "[Transform Put Transform API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-put-transform)\n\nCreate a transform"]
     pub fn put_transform<'b>(
         &'a self,
         parts: TransformPutTransformParts<'b>,
     ) -> TransformPutTransform<'a, 'b, ()> {
         TransformPutTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Reset Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/reset-transform.html)\n\nResets an existing transform."]
+    #[doc = "[Transform Reset Transform API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-reset-transform)\n\nReset a transform"]
     pub fn reset_transform<'b>(
         &'a self,
         parts: TransformResetTransformParts<'b>,
     ) -> TransformResetTransform<'a, 'b, ()> {
         TransformResetTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Schedule Now Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/schedule-now-transform.html)\n\nSchedules now a transform."]
+    #[doc = "[Transform Schedule Now Transform API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-schedule-now-transform)\n\nSchedule a transform to start now"]
     pub fn schedule_now_transform<'b>(
         &'a self,
         parts: TransformScheduleNowTransformParts<'b>,
     ) -> TransformScheduleNowTransform<'a, 'b, ()> {
         TransformScheduleNowTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Start Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/start-transform.html)\n\nStarts one or more transforms."]
+    #[doc = "[Transform Set Upgrade Mode API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-set-upgrade-mode)\n\nSet upgrade_mode for transform indices"]
+    pub fn set_upgrade_mode<'b>(&'a self) -> TransformSetUpgradeMode<'a, 'b, ()> {
+        TransformSetUpgradeMode::new(self.transport())
+    }
+    #[doc = "[Transform Start Transform API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-start-transform)\n\nStart a transform"]
     pub fn start_transform<'b>(
         &'a self,
         parts: TransformStartTransformParts<'b>,
     ) -> TransformStartTransform<'a, 'b, ()> {
         TransformStartTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Stop Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/stop-transform.html)\n\nStops one or more transforms."]
+    #[doc = "[Transform Stop Transform API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-stop-transform)\n\nStop transforms"]
     pub fn stop_transform<'b>(
         &'a self,
         parts: TransformStopTransformParts<'b>,
     ) -> TransformStopTransform<'a, 'b, ()> {
         TransformStopTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Update Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/update-transform.html)\n\nUpdates certain properties of a transform."]
+    #[doc = "[Transform Update Transform API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-update-transform)\n\nUpdate a transform"]
     pub fn update_transform<'b>(
         &'a self,
         parts: TransformUpdateTransformParts<'b>,
     ) -> TransformUpdateTransform<'a, 'b, ()> {
         TransformUpdateTransform::new(self.transport(), parts)
     }
-    #[doc = "[Transform Upgrade Transforms API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/upgrade-transforms.html)\n\nUpgrades all transforms."]
+    #[doc = "[Transform Upgrade Transforms API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-transform-upgrade-transforms)\n\nUpgrade all transforms"]
     pub fn upgrade_transforms<'b>(&'a self) -> TransformUpgradeTransforms<'a, 'b, ()> {
         TransformUpgradeTransforms::new(self.transport())
     }
