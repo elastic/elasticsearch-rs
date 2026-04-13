@@ -67,7 +67,7 @@ impl<'b> EqlDeleteParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Eql Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/eql-search-api.html)\n\nDeletes an async EQL search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
+#[doc = "Builder for the [Eql Delete API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-eql-delete)\n\nDelete an async EQL search"]
 #[derive(Clone, Debug)]
 pub struct EqlDelete<'a, 'b> {
     transport: &'a Transport,
@@ -185,7 +185,7 @@ impl<'b> EqlGetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Eql Get API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/eql-search-api.html)\n\nReturns async results from previously executed Event Query Language (EQL) search"]
+#[doc = "Builder for the [Eql Get API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-eql-get)\n\nGet async EQL search results"]
 #[derive(Clone, Debug)]
 pub struct EqlGet<'a, 'b> {
     transport: &'a Transport,
@@ -321,7 +321,7 @@ impl<'b> EqlGetStatusParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Eql Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/eql-search-api.html)\n\nReturns the status of a previously submitted async or stored Event Query Language (EQL) search"]
+#[doc = "Builder for the [Eql Get Status API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-eql-get-status)\n\nGet the async EQL status"]
 #[derive(Clone, Debug)]
 pub struct EqlGetStatus<'a, 'b> {
     transport: &'a Transport,
@@ -423,15 +423,16 @@ impl<'a, 'b> EqlGetStatus<'a, 'b> {
 #[doc = "API parts for the Eql Search API"]
 pub enum EqlSearchParts<'b> {
     #[doc = "Index"]
-    Index(&'b str),
+    Index(&'b [&'b str]),
 }
 impl<'b> EqlSearchParts<'b> {
     #[doc = "Builds a relative URL path to the Eql Search API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
             EqlSearchParts::Index(index) => {
+                let index_str = index.join(",");
                 let encoded_index: Cow<str> =
-                    percent_encode(index.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(index_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(13usize + encoded_index.len());
                 p.push('/');
                 p.push_str(encoded_index.as_ref());
@@ -441,7 +442,7 @@ impl<'b> EqlSearchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Eql Search API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/eql-search-api.html)\n\nReturns results matching a query expressed in Event Query Language (EQL)"]
+#[doc = "Builder for the [Eql Search API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-eql-search)\n\nGet EQL search results"]
 #[derive(Clone, Debug)]
 pub struct EqlSearch<'a, 'b, B> {
     transport: &'a Transport,
@@ -452,7 +453,7 @@ pub struct EqlSearch<'a, 'b, B> {
     body: Option<B>,
     ccs_minimize_roundtrips: Option<bool>,
     error_trace: Option<bool>,
-    expand_wildcards: Option<&'b [ExpandWildcards]>,
+    expand_wildcards: Option<&'b [&'b str]>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
@@ -460,6 +461,7 @@ pub struct EqlSearch<'a, 'b, B> {
     keep_alive: Option<&'b str>,
     keep_on_completion: Option<bool>,
     pretty: Option<bool>,
+    project_routing: Option<&'b str>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
     wait_for_completion_timeout: Option<&'b str>,
@@ -488,6 +490,7 @@ where
             keep_alive: None,
             keep_on_completion: None,
             pretty: None,
+            project_routing: None,
             request_timeout: None,
             source: None,
             wait_for_completion_timeout: None,
@@ -530,6 +533,7 @@ where
             keep_alive: self.keep_alive,
             keep_on_completion: self.keep_on_completion,
             pretty: self.pretty,
+            project_routing: self.project_routing,
             request_timeout: self.request_timeout,
             source: self.source,
             wait_for_completion_timeout: self.wait_for_completion_timeout,
@@ -546,7 +550,7 @@ where
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [&'b str]) -> Self {
         self.expand_wildcards = Some(expand_wildcards);
         self
     }
@@ -585,6 +589,11 @@ where
         self.pretty = Some(pretty);
         self
     }
+    #[doc = "A Lucene query using project metadata tags to limit which projects to search, such as _alias:_origin or _alias:*pr*. Only supported in serverless."]
+    pub fn project_routing(mut self, project_routing: &'b str) -> Self {
+        self.project_routing = Some(project_routing);
+        self
+    }
     #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
     pub fn request_timeout(mut self, timeout: Duration) -> Self {
         self.request_timeout = Some(timeout);
@@ -619,7 +628,7 @@ where
                 ccs_minimize_roundtrips: Option<bool>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                expand_wildcards: Option<&'b [ExpandWildcards]>,
+                expand_wildcards: Option<&'b [&'b str]>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
@@ -627,6 +636,7 @@ where
                 keep_alive: Option<&'b str>,
                 keep_on_completion: Option<bool>,
                 pretty: Option<bool>,
+                project_routing: Option<&'b str>,
                 source: Option<&'b str>,
                 wait_for_completion_timeout: Option<&'b str>,
             }
@@ -643,6 +653,7 @@ where
                 keep_alive: self.keep_alive,
                 keep_on_completion: self.keep_on_completion,
                 pretty: self.pretty,
+                project_routing: self.project_routing,
                 source: self.source,
                 wait_for_completion_timeout: self.wait_for_completion_timeout,
             };
@@ -668,19 +679,19 @@ impl<'a> Eql<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Eql Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/eql-search-api.html)\n\nDeletes an async EQL search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
+    #[doc = "[Eql Delete API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-eql-delete)\n\nDelete an async EQL search"]
     pub fn delete<'b>(&'a self, parts: EqlDeleteParts<'b>) -> EqlDelete<'a, 'b> {
         EqlDelete::new(self.transport(), parts)
     }
-    #[doc = "[Eql Get API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/eql-search-api.html)\n\nReturns async results from previously executed Event Query Language (EQL) search"]
+    #[doc = "[Eql Get API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-eql-get)\n\nGet async EQL search results"]
     pub fn get<'b>(&'a self, parts: EqlGetParts<'b>) -> EqlGet<'a, 'b> {
         EqlGet::new(self.transport(), parts)
     }
-    #[doc = "[Eql Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/eql-search-api.html)\n\nReturns the status of a previously submitted async or stored Event Query Language (EQL) search"]
+    #[doc = "[Eql Get Status API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-eql-get-status)\n\nGet the async EQL status"]
     pub fn get_status<'b>(&'a self, parts: EqlGetStatusParts<'b>) -> EqlGetStatus<'a, 'b> {
         EqlGetStatus::new(self.transport(), parts)
     }
-    #[doc = "[Eql Search API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/eql-search-api.html)\n\nReturns results matching a query expressed in Event Query Language (EQL)"]
+    #[doc = "[Eql Search API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-eql-search)\n\nGet EQL search results"]
     pub fn search<'b>(&'a self, parts: EqlSearchParts<'b>) -> EqlSearch<'a, 'b, ()> {
         EqlSearch::new(self.transport(), parts)
     }

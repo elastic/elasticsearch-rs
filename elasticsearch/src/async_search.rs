@@ -66,7 +66,7 @@ impl<'b> AsyncSearchDeleteParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Async Search Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/async-search.html)\n\nDeletes an async search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
+#[doc = "Builder for the [Async Search Delete API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-async-search-submit)\n\nDelete an async search"]
 #[derive(Clone, Debug)]
 pub struct AsyncSearchDelete<'a, 'b> {
     transport: &'a Transport,
@@ -184,7 +184,7 @@ impl<'b> AsyncSearchGetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Async Search Get API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/async-search.html)\n\nRetrieves the results of a previously submitted async search request given its ID."]
+#[doc = "Builder for the [Async Search Get API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-async-search-submit)\n\nGet async search results"]
 #[derive(Clone, Debug)]
 pub struct AsyncSearchGet<'a, 'b> {
     transport: &'a Transport,
@@ -329,7 +329,7 @@ impl<'b> AsyncSearchStatusParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Async Search Status API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/async-search.html)\n\nRetrieves the status of a previously submitted async search request given its ID."]
+#[doc = "Builder for the [Async Search Status API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-async-search-submit)\n\nGet the async search status"]
 #[derive(Clone, Debug)]
 pub struct AsyncSearchStatus<'a, 'b> {
     transport: &'a Transport,
@@ -462,7 +462,7 @@ impl<'b> AsyncSearchSubmitParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Async Search Submit API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/async-search.html)\n\nExecutes a search request asynchronously."]
+#[doc = "Builder for the [Async Search Submit API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-async-search-submit)\n\nRun an async search"]
 #[derive(Clone, Debug)]
 pub struct AsyncSearchSubmit<'a, 'b, B> {
     transport: &'a Transport,
@@ -481,10 +481,10 @@ pub struct AsyncSearchSubmit<'a, 'b, B> {
     df: Option<&'b str>,
     docvalue_fields: Option<&'b [&'b str]>,
     error_trace: Option<bool>,
-    expand_wildcards: Option<&'b [ExpandWildcards]>,
+    expand_wildcards: Option<&'b [&'b str]>,
     explain: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
-    from: Option<i64>,
+    from: Option<i32>,
     headers: HeaderMap,
     human: Option<bool>,
     ignore_throttled: Option<bool>,
@@ -492,9 +492,10 @@ pub struct AsyncSearchSubmit<'a, 'b, B> {
     keep_alive: Option<&'b str>,
     keep_on_completion: Option<bool>,
     lenient: Option<bool>,
-    max_concurrent_shard_requests: Option<i64>,
+    max_concurrent_shard_requests: Option<i32>,
     preference: Option<&'b str>,
     pretty: Option<bool>,
+    project_routing: Option<&'b str>,
     q: Option<&'b str>,
     request_cache: Option<bool>,
     request_timeout: Option<Duration>,
@@ -502,7 +503,7 @@ pub struct AsyncSearchSubmit<'a, 'b, B> {
     routing: Option<&'b [&'b str]>,
     search_type: Option<SearchType>,
     seq_no_primary_term: Option<bool>,
-    size: Option<i64>,
+    size: Option<i32>,
     sort: Option<&'b [&'b str]>,
     source: Option<&'b str>,
     stats: Option<&'b [&'b str]>,
@@ -557,6 +558,7 @@ where
             max_concurrent_shard_requests: None,
             preference: None,
             pretty: None,
+            project_routing: None,
             q: None,
             request_cache: None,
             request_timeout: None,
@@ -658,6 +660,7 @@ where
             max_concurrent_shard_requests: self.max_concurrent_shard_requests,
             preference: self.preference,
             pretty: self.pretty,
+            project_routing: self.project_routing,
             q: self.q,
             request_cache: self.request_cache,
             request_timeout: self.request_timeout,
@@ -709,7 +712,7 @@ where
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [&'b str]) -> Self {
         self.expand_wildcards = Some(expand_wildcards);
         self
     }
@@ -723,8 +726,8 @@ where
         self.filter_path = Some(filter_path);
         self
     }
-    #[doc = "Starting offset (default: 0)"]
-    pub fn from(mut self, from: i64) -> Self {
+    #[doc = "Starting offset"]
+    pub fn from(mut self, from: i32) -> Self {
         self.from = Some(from);
         self
     }
@@ -764,7 +767,7 @@ where
         self
     }
     #[doc = "The number of concurrent shard requests per node this search executes concurrently. This value should be used to limit the impact of the search on the cluster in order to limit the number of concurrent shard requests"]
-    pub fn max_concurrent_shard_requests(mut self, max_concurrent_shard_requests: i64) -> Self {
+    pub fn max_concurrent_shard_requests(mut self, max_concurrent_shard_requests: i32) -> Self {
         self.max_concurrent_shard_requests = Some(max_concurrent_shard_requests);
         self
     }
@@ -776,6 +779,11 @@ where
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "A Lucene query using project metadata tags to limit which projects to search, such as _alias:_origin or _alias:*pr*. Only supported in serverless."]
+    pub fn project_routing(mut self, project_routing: &'b str) -> Self {
+        self.project_routing = Some(project_routing);
         self
     }
     #[doc = "Query in the Lucene query string syntax"]
@@ -813,8 +821,8 @@ where
         self.seq_no_primary_term = Some(seq_no_primary_term);
         self
     }
-    #[doc = "Number of hits to return (default: 10)"]
-    pub fn size(mut self, size: i64) -> Self {
+    #[doc = "Number of hits to return"]
+    pub fn size(mut self, size: i32) -> Self {
         self.size = Some(size);
         self
     }
@@ -921,20 +929,21 @@ where
                 docvalue_fields: Option<&'b [&'b str]>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
-                expand_wildcards: Option<&'b [ExpandWildcards]>,
+                expand_wildcards: Option<&'b [&'b str]>,
                 explain: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                from: Option<i64>,
+                from: Option<i32>,
                 human: Option<bool>,
                 ignore_throttled: Option<bool>,
                 ignore_unavailable: Option<bool>,
                 keep_alive: Option<&'b str>,
                 keep_on_completion: Option<bool>,
                 lenient: Option<bool>,
-                max_concurrent_shard_requests: Option<i64>,
+                max_concurrent_shard_requests: Option<i32>,
                 preference: Option<&'b str>,
                 pretty: Option<bool>,
+                project_routing: Option<&'b str>,
                 q: Option<&'b str>,
                 request_cache: Option<bool>,
                 rest_total_hits_as_int: Option<bool>,
@@ -942,7 +951,7 @@ where
                 routing: Option<&'b [&'b str]>,
                 search_type: Option<SearchType>,
                 seq_no_primary_term: Option<bool>,
-                size: Option<i64>,
+                size: Option<i32>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 sort: Option<&'b [&'b str]>,
                 source: Option<&'b str>,
@@ -989,6 +998,7 @@ where
                 max_concurrent_shard_requests: self.max_concurrent_shard_requests,
                 preference: self.preference,
                 pretty: self.pretty,
+                project_routing: self.project_routing,
                 q: self.q,
                 request_cache: self.request_cache,
                 rest_total_hits_as_int: self.rest_total_hits_as_int,
@@ -1034,19 +1044,19 @@ impl<'a> AsyncSearch<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Async Search Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/async-search.html)\n\nDeletes an async search by ID. If the search is still running, the search request will be cancelled. Otherwise, the saved search results are deleted."]
+    #[doc = "[Async Search Delete API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-async-search-submit)\n\nDelete an async search"]
     pub fn delete<'b>(&'a self, parts: AsyncSearchDeleteParts<'b>) -> AsyncSearchDelete<'a, 'b> {
         AsyncSearchDelete::new(self.transport(), parts)
     }
-    #[doc = "[Async Search Get API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/async-search.html)\n\nRetrieves the results of a previously submitted async search request given its ID."]
+    #[doc = "[Async Search Get API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-async-search-submit)\n\nGet async search results"]
     pub fn get<'b>(&'a self, parts: AsyncSearchGetParts<'b>) -> AsyncSearchGet<'a, 'b> {
         AsyncSearchGet::new(self.transport(), parts)
     }
-    #[doc = "[Async Search Status API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/async-search.html)\n\nRetrieves the status of a previously submitted async search request given its ID."]
+    #[doc = "[Async Search Status API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-async-search-submit)\n\nGet the async search status"]
     pub fn status<'b>(&'a self, parts: AsyncSearchStatusParts<'b>) -> AsyncSearchStatus<'a, 'b> {
         AsyncSearchStatus::new(self.transport(), parts)
     }
-    #[doc = "[Async Search Submit API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/async-search.html)\n\nExecutes a search request asynchronously."]
+    #[doc = "[Async Search Submit API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-async-search-submit)\n\nRun an async search"]
     pub fn submit<'b>(
         &'a self,
         parts: AsyncSearchSubmitParts<'b>,
