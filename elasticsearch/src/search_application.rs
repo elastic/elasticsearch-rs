@@ -966,7 +966,7 @@ impl<'a> SearchApplication<'a> {
 #[cfg(feature = "experimental-apis")]
 impl Elasticsearch {
     #[doc = "Creates a namespace client for SearchApplication APIs"]
-    pub fn search_application(&self) -> SearchApplication {
+    pub fn search_application(&self) -> SearchApplication<'_> {
         SearchApplication::new(self.transport())
     }
 }

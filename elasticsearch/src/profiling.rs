@@ -615,7 +615,7 @@ impl<'a> Profiling<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Profiling APIs"]
-    pub fn profiling(&self) -> Profiling {
+    pub fn profiling(&self) -> Profiling<'_> {
         Profiling::new(self.transport())
     }
 }

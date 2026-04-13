@@ -718,7 +718,7 @@ impl<'a> SearchableSnapshots<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for SearchableSnapshots APIs"]
-    pub fn searchable_snapshots(&self) -> SearchableSnapshots {
+    pub fn searchable_snapshots(&self) -> SearchableSnapshots<'_> {
         SearchableSnapshots::new(self.transport())
     }
 }

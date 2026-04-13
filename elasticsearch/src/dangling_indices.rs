@@ -518,7 +518,7 @@ impl<'a> DanglingIndices<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for DanglingIndices APIs"]
-    pub fn dangling_indices(&self) -> DanglingIndices {
+    pub fn dangling_indices(&self) -> DanglingIndices<'_> {
         DanglingIndices::new(self.transport())
     }
 }

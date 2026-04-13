@@ -1062,7 +1062,7 @@ impl<'a> Synonyms<'a> {
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Synonyms APIs"]
-    pub fn synonyms(&self) -> Synonyms {
+    pub fn synonyms(&self) -> Synonyms<'_> {
         Synonyms::new(self.transport())
     }
 }
