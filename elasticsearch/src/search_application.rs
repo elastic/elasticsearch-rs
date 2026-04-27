@@ -28,8 +28,8 @@
 //!
 //! Use Search Application APIs to manage tasks and resources related to Search Applications.
 
-#![cfg(feature = "experimental-apis")]
-#![doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#![cfg(feature = "beta-apis")]
+#![doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
 #![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
@@ -46,14 +46,14 @@ use crate::{
 use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
-#[cfg(feature = "experimental-apis")]
+#[cfg(feature = "beta-apis")]
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Search Application Delete API"]
 pub enum SearchApplicationDeleteParts<'b> {
     #[doc = "Name"]
     Name(&'b str),
 }
-#[cfg(feature = "experimental-apis")]
+#[cfg(feature = "beta-apis")]
 impl<'b> SearchApplicationDeleteParts<'b> {
     #[doc = "Builds a relative URL path to the Search Application Delete API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -68,9 +68,9 @@ impl<'b> SearchApplicationDeleteParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Search Application Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/delete-search-application.html)\n\nDeletes a search application."]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
+#[doc = "Builder for the [Search Application Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/delete-search-application.html)\n\nDelete a search application"]
+#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
+#[cfg(feature = "beta-apis")]
 #[derive(Clone, Debug)]
 pub struct SearchApplicationDelete<'a, 'b> {
     transport: &'a Transport,
@@ -83,7 +83,7 @@ pub struct SearchApplicationDelete<'a, 'b> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "experimental-apis")]
+#[cfg(feature = "beta-apis")]
 impl<'a, 'b> SearchApplicationDelete<'a, 'b> {
     #[doc = "Creates a new instance of [SearchApplicationDelete] with the specified API parts"]
     pub fn new(transport: &'a Transport, parts: SearchApplicationDeleteParts<'b>) -> Self {
@@ -191,7 +191,7 @@ impl<'b> SearchApplicationDeleteBehavioralAnalyticsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Search Application Delete Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/delete-analytics-collection.html)\n\nDelete a behavioral analytics collection."]
+#[doc = "Builder for the [Search Application Delete Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/delete-analytics-collection.html)\n\nDelete a behavioral analytics collection"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -295,14 +295,14 @@ impl<'a, 'b> SearchApplicationDeleteBehavioralAnalytics<'a, 'b> {
         Ok(response)
     }
 }
-#[cfg(feature = "experimental-apis")]
+#[cfg(feature = "beta-apis")]
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Search Application Get API"]
 pub enum SearchApplicationGetParts<'b> {
     #[doc = "Name"]
     Name(&'b str),
 }
-#[cfg(feature = "experimental-apis")]
+#[cfg(feature = "beta-apis")]
 impl<'b> SearchApplicationGetParts<'b> {
     #[doc = "Builds a relative URL path to the Search Application Get API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -317,9 +317,9 @@ impl<'b> SearchApplicationGetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Search Application Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/get-search-application.html)\n\nReturns the details about a search application."]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
+#[doc = "Builder for the [Search Application Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/get-search-application.html)\n\nGet search application details"]
+#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
+#[cfg(feature = "beta-apis")]
 #[derive(Clone, Debug)]
 pub struct SearchApplicationGet<'a, 'b> {
     transport: &'a Transport,
@@ -332,7 +332,7 @@ pub struct SearchApplicationGet<'a, 'b> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "experimental-apis")]
+#[cfg(feature = "beta-apis")]
 impl<'a, 'b> SearchApplicationGet<'a, 'b> {
     #[doc = "Creates a new instance of [SearchApplicationGet] with the specified API parts"]
     pub fn new(transport: &'a Transport, parts: SearchApplicationGetParts<'b>) -> Self {
@@ -445,7 +445,7 @@ impl<'b> SearchApplicationGetBehavioralAnalyticsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Search Application Get Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/list-analytics-collection.html)\n\nReturns the existing behavioral analytics collections."]
+#[doc = "Builder for the [Search Application Get Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/list-analytics-collection.html)\n\nGet behavioral analytics collections"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -549,14 +549,14 @@ impl<'a, 'b> SearchApplicationGetBehavioralAnalytics<'a, 'b> {
         Ok(response)
     }
 }
-#[cfg(feature = "experimental-apis")]
+#[cfg(feature = "beta-apis")]
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Search Application List API"]
 pub enum SearchApplicationListParts {
     #[doc = "No parts"]
     None,
 }
-#[cfg(feature = "experimental-apis")]
+#[cfg(feature = "beta-apis")]
 impl SearchApplicationListParts {
     #[doc = "Builds a relative URL path to the Search Application List API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -565,9 +565,9 @@ impl SearchApplicationListParts {
         }
     }
 }
-#[doc = "Builder for the [Search Application List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/list-search-applications.html)\n\nReturns the existing search applications."]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
+#[doc = "Builder for the [Search Application List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/list-analytics-collection.html)\n\nGet search applications"]
+#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
+#[cfg(feature = "beta-apis")]
 #[derive(Clone, Debug)]
 pub struct SearchApplicationList<'a, 'b> {
     transport: &'a Transport,
@@ -583,7 +583,7 @@ pub struct SearchApplicationList<'a, 'b> {
     size: Option<i32>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "experimental-apis")]
+#[cfg(feature = "beta-apis")]
 impl<'a, 'b> SearchApplicationList<'a, 'b> {
     #[doc = "Creates a new instance of [SearchApplicationList]"]
     pub fn new(transport: &'a Transport) -> Self {
@@ -698,7 +698,7 @@ impl<'a, 'b> SearchApplicationList<'a, 'b> {
 #[doc = "API parts for the Search Application Post Behavioral Analytics Event API"]
 pub enum SearchApplicationPostBehavioralAnalyticsEventParts<'b> {
     #[doc = "CollectionName and EventType"]
-    CollectionNameEventType(&'b str, &'b str),
+    CollectionNameEventType(&'b str, EventType),
 }
 #[cfg(feature = "experimental-apis")]
 impl<'b> SearchApplicationPostBehavioralAnalyticsEventParts<'b> {
@@ -709,10 +709,11 @@ impl<'b> SearchApplicationPostBehavioralAnalyticsEventParts<'b> {
                 collection_name,
                 event_type,
             ) => {
+                let event_type_str = event_type.to_string();
                 let encoded_collection_name: Cow<str> =
                     percent_encode(collection_name.as_bytes(), PARTS_ENCODED).into();
                 let encoded_event_type: Cow<str> =
-                    percent_encode(event_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(event_type_str.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
                     31usize + encoded_collection_name.len() + encoded_event_type.len(),
                 );
@@ -725,7 +726,7 @@ impl<'b> SearchApplicationPostBehavioralAnalyticsEventParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Search Application Post Behavioral Analytics Event API](http://todo.com/tbd)\n\nCreates a behavioral analytics event for existing collection."]
+#[doc = "Builder for the [Search Application Post Behavioral Analytics Event API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/post-analytics-collection-event.html)\n\nCreate a behavioral analytics collection event"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -865,14 +866,14 @@ where
         Ok(response)
     }
 }
-#[cfg(feature = "experimental-apis")]
+#[cfg(feature = "beta-apis")]
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Search Application Put API"]
 pub enum SearchApplicationPutParts<'b> {
     #[doc = "Name"]
     Name(&'b str),
 }
-#[cfg(feature = "experimental-apis")]
+#[cfg(feature = "beta-apis")]
 impl<'b> SearchApplicationPutParts<'b> {
     #[doc = "Builds a relative URL path to the Search Application Put API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -887,9 +888,9 @@ impl<'b> SearchApplicationPutParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Search Application Put API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/put-search-application.html)\n\nCreates or updates a search application."]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
+#[doc = "Builder for the [Search Application Put API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/put-search-application.html)\n\nCreate or update a search application"]
+#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
+#[cfg(feature = "beta-apis")]
 #[derive(Clone, Debug)]
 pub struct SearchApplicationPut<'a, 'b, B> {
     transport: &'a Transport,
@@ -904,7 +905,7 @@ pub struct SearchApplicationPut<'a, 'b, B> {
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
 }
-#[cfg(feature = "experimental-apis")]
+#[cfg(feature = "beta-apis")]
 impl<'a, 'b, B> SearchApplicationPut<'a, 'b, B>
 where
     B: Body,
@@ -1043,7 +1044,7 @@ impl<'b> SearchApplicationPutBehavioralAnalyticsParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Search Application Put Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/put-analytics-collection.html)\n\nCreates a behavioral analytics collection."]
+#[doc = "Builder for the [Search Application Put Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/put-analytics-collection.html)\n\nCreate a behavioral analytics collection"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -1193,7 +1194,7 @@ impl<'b> SearchApplicationRenderQueryParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Search Application Render Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/search-application-render-query.html)\n\nRenders a query for given search application search parameters"]
+#[doc = "Builder for the [Search Application Render Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/search-application-render-query.html)\n\nRender a search application query"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -1317,14 +1318,14 @@ where
         Ok(response)
     }
 }
-#[cfg(feature = "experimental-apis")]
+#[cfg(feature = "beta-apis")]
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Search Application Search API"]
 pub enum SearchApplicationSearchParts<'b> {
     #[doc = "Name"]
     Name(&'b str),
 }
-#[cfg(feature = "experimental-apis")]
+#[cfg(feature = "beta-apis")]
 impl<'b> SearchApplicationSearchParts<'b> {
     #[doc = "Builds a relative URL path to the Search Application Search API"]
     pub fn url(self) -> Cow<'static, str> {
@@ -1340,9 +1341,9 @@ impl<'b> SearchApplicationSearchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Search Application Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/search-application-search.html)\n\nPerform a search against a search application"]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
+#[doc = "Builder for the [Search Application Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/search-application-search.html)\n\nRun a search application search"]
+#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
+#[cfg(feature = "beta-apis")]
 #[derive(Clone, Debug)]
 pub struct SearchApplicationSearch<'a, 'b, B> {
     transport: &'a Transport,
@@ -1357,7 +1358,7 @@ pub struct SearchApplicationSearch<'a, 'b, B> {
     source: Option<&'b str>,
     typed_keys: Option<bool>,
 }
-#[cfg(feature = "experimental-apis")]
+#[cfg(feature = "beta-apis")]
 impl<'a, 'b, B> SearchApplicationSearch<'a, 'b, B>
 where
     B: Body,
@@ -1478,12 +1479,12 @@ where
     }
 }
 #[doc = "Namespace client for SearchApplication APIs"]
-#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-#[cfg(feature = "experimental-apis")]
+#[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
+#[cfg(feature = "beta-apis")]
 pub struct SearchApplication<'a> {
     transport: &'a Transport,
 }
-#[cfg(feature = "experimental-apis")]
+#[cfg(feature = "beta-apis")]
 impl<'a> SearchApplication<'a> {
     #[doc = "Creates a new instance of [SearchApplication]"]
     pub fn new(transport: &'a Transport) -> Self {
@@ -1492,16 +1493,16 @@ impl<'a> SearchApplication<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Search Application Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/delete-search-application.html)\n\nDeletes a search application."]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
+    #[doc = "[Search Application Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/delete-search-application.html)\n\nDelete a search application"]
+    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
+    #[cfg(feature = "beta-apis")]
     pub fn delete<'b>(
         &'a self,
         parts: SearchApplicationDeleteParts<'b>,
     ) -> SearchApplicationDelete<'a, 'b> {
         SearchApplicationDelete::new(self.transport(), parts)
     }
-    #[doc = "[Search Application Delete Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/delete-analytics-collection.html)\n\nDelete a behavioral analytics collection."]
+    #[doc = "[Search Application Delete Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/delete-analytics-collection.html)\n\nDelete a behavioral analytics collection"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn delete_behavioral_analytics<'b>(
@@ -1510,13 +1511,13 @@ impl<'a> SearchApplication<'a> {
     ) -> SearchApplicationDeleteBehavioralAnalytics<'a, 'b> {
         SearchApplicationDeleteBehavioralAnalytics::new(self.transport(), parts)
     }
-    #[doc = "[Search Application Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/get-search-application.html)\n\nReturns the details about a search application."]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
+    #[doc = "[Search Application Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/get-search-application.html)\n\nGet search application details"]
+    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
+    #[cfg(feature = "beta-apis")]
     pub fn get<'b>(&'a self, parts: SearchApplicationGetParts<'b>) -> SearchApplicationGet<'a, 'b> {
         SearchApplicationGet::new(self.transport(), parts)
     }
-    #[doc = "[Search Application Get Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/list-analytics-collection.html)\n\nReturns the existing behavioral analytics collections."]
+    #[doc = "[Search Application Get Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/list-analytics-collection.html)\n\nGet behavioral analytics collections"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn get_behavioral_analytics<'b>(
@@ -1525,13 +1526,13 @@ impl<'a> SearchApplication<'a> {
     ) -> SearchApplicationGetBehavioralAnalytics<'a, 'b> {
         SearchApplicationGetBehavioralAnalytics::new(self.transport(), parts)
     }
-    #[doc = "[Search Application List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/list-search-applications.html)\n\nReturns the existing search applications."]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
+    #[doc = "[Search Application List API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/list-analytics-collection.html)\n\nGet search applications"]
+    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
+    #[cfg(feature = "beta-apis")]
     pub fn list<'b>(&'a self) -> SearchApplicationList<'a, 'b> {
         SearchApplicationList::new(self.transport())
     }
-    #[doc = "[Search Application Post Behavioral Analytics Event API](http://todo.com/tbd)\n\nCreates a behavioral analytics event for existing collection."]
+    #[doc = "[Search Application Post Behavioral Analytics Event API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/post-analytics-collection-event.html)\n\nCreate a behavioral analytics collection event"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn post_behavioral_analytics_event<'b>(
@@ -1540,16 +1541,16 @@ impl<'a> SearchApplication<'a> {
     ) -> SearchApplicationPostBehavioralAnalyticsEvent<'a, 'b, ()> {
         SearchApplicationPostBehavioralAnalyticsEvent::new(self.transport(), parts)
     }
-    #[doc = "[Search Application Put API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/put-search-application.html)\n\nCreates or updates a search application."]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
+    #[doc = "[Search Application Put API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/put-search-application.html)\n\nCreate or update a search application"]
+    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
+    #[cfg(feature = "beta-apis")]
     pub fn put<'b>(
         &'a self,
         parts: SearchApplicationPutParts<'b>,
     ) -> SearchApplicationPut<'a, 'b, ()> {
         SearchApplicationPut::new(self.transport(), parts)
     }
-    #[doc = "[Search Application Put Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/put-analytics-collection.html)\n\nCreates a behavioral analytics collection."]
+    #[doc = "[Search Application Put Behavioral Analytics API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/put-analytics-collection.html)\n\nCreate a behavioral analytics collection"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn put_behavioral_analytics<'b>(
@@ -1558,7 +1559,7 @@ impl<'a> SearchApplication<'a> {
     ) -> SearchApplicationPutBehavioralAnalytics<'a, 'b, ()> {
         SearchApplicationPutBehavioralAnalytics::new(self.transport(), parts)
     }
-    #[doc = "[Search Application Render Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/search-application-render-query.html)\n\nRenders a query for given search application search parameters"]
+    #[doc = "[Search Application Render Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/search-application-render-query.html)\n\nRender a search application query"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn render_query<'b>(
@@ -1567,9 +1568,9 @@ impl<'a> SearchApplication<'a> {
     ) -> SearchApplicationRenderQuery<'a, 'b, ()> {
         SearchApplicationRenderQuery::new(self.transport(), parts)
     }
-    #[doc = "[Search Application Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/search-application-search.html)\n\nPerform a search against a search application"]
-    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
-    #[cfg(feature = "experimental-apis")]
+    #[doc = "[Search Application Search API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/search-application-search.html)\n\nRun a search application search"]
+    #[doc = "&nbsp;\n# Optional, beta\nThis requires the `beta-apis` feature. On track to become stable but breaking changes can\nhappen in minor versions.\n        "]
+    #[cfg(feature = "beta-apis")]
     pub fn search<'b>(
         &'a self,
         parts: SearchApplicationSearchParts<'b>,
@@ -1577,7 +1578,7 @@ impl<'a> SearchApplication<'a> {
         SearchApplicationSearch::new(self.transport(), parts)
     }
 }
-#[cfg(feature = "experimental-apis")]
+#[cfg(feature = "beta-apis")]
 impl Elasticsearch {
     #[doc = "Creates a namespace client for SearchApplication APIs"]
     pub fn search_application(&self) -> SearchApplication {
