@@ -66,7 +66,7 @@ impl<'b> InferenceChatCompletionUnifiedParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Chat Completion Unified API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/chat-completion-inference.html)\n\nPerform chat completion inference"]
+#[doc = "Builder for the [Inference Chat Completion Unified API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-unified-inference)\n\nPerform chat completion inference"]
 #[derive(Clone, Debug)]
 pub struct InferenceChatCompletionUnified<'a, 'b, B> {
     transport: &'a Transport,
@@ -79,6 +79,7 @@ pub struct InferenceChatCompletionUnified<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferenceChatCompletionUnified<'a, 'b, B>
 where
@@ -98,6 +99,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -116,6 +118,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -153,6 +156,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference request to complete."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Chat Completion Unified API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -169,6 +177,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -176,6 +185,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -208,7 +218,7 @@ impl<'b> InferenceCompletionParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Completion API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-inference-api.html)\n\nPerform completion inference"]
+#[doc = "Builder for the [Inference Completion API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-inference)\n\nPerform completion inference on the service"]
 #[derive(Clone, Debug)]
 pub struct InferenceCompletion<'a, 'b, B> {
     transport: &'a Transport,
@@ -221,6 +231,7 @@ pub struct InferenceCompletion<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferenceCompletion<'a, 'b, B>
 where
@@ -240,6 +251,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -258,6 +270,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -295,6 +308,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference request to complete."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Completion API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -311,6 +329,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -318,6 +337,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -335,7 +355,7 @@ pub enum InferenceDeleteParts<'b> {
     #[doc = "InferenceId"]
     InferenceId(&'b str),
     #[doc = "TaskType and InferenceId"]
-    TaskTypeInferenceId(&'b str, &'b str),
+    TaskTypeInferenceId(TaskType, &'b str),
 }
 impl<'b> InferenceDeleteParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Delete API"]
@@ -350,8 +370,9 @@ impl<'b> InferenceDeleteParts<'b> {
                 p.into()
             }
             InferenceDeleteParts::TaskTypeInferenceId(task_type, inference_id) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_inference_id: Cow<str> =
                     percent_encode(inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -366,7 +387,7 @@ impl<'b> InferenceDeleteParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/delete-inference-api.html)\n\nDelete an inference endpoint"]
+#[doc = "Builder for the [Inference Delete API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-delete)\n\nDelete an inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferenceDelete<'a, 'b> {
     transport: &'a Transport,
@@ -490,7 +511,7 @@ pub enum InferenceGetParts<'b> {
     #[doc = "InferenceId"]
     InferenceId(&'b str),
     #[doc = "TaskType and InferenceId"]
-    TaskTypeInferenceId(&'b str, &'b str),
+    TaskTypeInferenceId(TaskType, &'b str),
 }
 impl<'b> InferenceGetParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Get API"]
@@ -506,8 +527,9 @@ impl<'b> InferenceGetParts<'b> {
                 p.into()
             }
             InferenceGetParts::TaskTypeInferenceId(task_type, inference_id) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_inference_id: Cow<str> =
                     percent_encode(inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -522,7 +544,7 @@ impl<'b> InferenceGetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Get API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/get-inference-api.html)\n\nGet an inference endpoint"]
+#[doc = "Builder for the [Inference Get API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-get)\n\nGet an inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferenceGet<'a, 'b> {
     transport: &'a Transport,
@@ -626,7 +648,7 @@ pub enum InferenceInferenceParts<'b> {
     #[doc = "InferenceId"]
     InferenceId(&'b str),
     #[doc = "TaskType and InferenceId"]
-    TaskTypeInferenceId(&'b str, &'b str),
+    TaskTypeInferenceId(TaskType, &'b str),
 }
 impl<'b> InferenceInferenceParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Inference API"]
@@ -641,8 +663,9 @@ impl<'b> InferenceInferenceParts<'b> {
                 p.into()
             }
             InferenceInferenceParts::TaskTypeInferenceId(task_type, inference_id) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_inference_id: Cow<str> =
                     percent_encode(inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -657,7 +680,7 @@ impl<'b> InferenceInferenceParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Inference API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-inference-api.html)\n\nPerform inference"]
+#[doc = "Builder for the [Inference Inference API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-inference)\n\nPerform inference on the service"]
 #[derive(Clone, Debug)]
 pub struct InferenceInference<'a, 'b, B> {
     transport: &'a Transport,
@@ -670,6 +693,7 @@ pub struct InferenceInference<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferenceInference<'a, 'b, B>
 where
@@ -689,6 +713,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -707,6 +732,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -744,6 +770,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "The amount of time to wait for the inference request to complete."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Inference API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -760,6 +791,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -767,6 +799,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -784,7 +817,7 @@ pub enum InferencePutParts<'b> {
     #[doc = "InferenceId"]
     InferenceId(&'b str),
     #[doc = "TaskType and InferenceId"]
-    TaskTypeInferenceId(&'b str, &'b str),
+    TaskTypeInferenceId(TaskType, &'b str),
 }
 impl<'b> InferencePutParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Put API"]
@@ -799,8 +832,9 @@ impl<'b> InferencePutParts<'b> {
                 p.into()
             }
             InferencePutParts::TaskTypeInferenceId(task_type, inference_id) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_inference_id: Cow<str> =
                     percent_encode(inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -815,7 +849,7 @@ impl<'b> InferencePutParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/put-inference-api.html)\n\nConfigure an inference endpoint for use in the Inference API"]
+#[doc = "Builder for the [Inference Put API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put)\n\nCreate an inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePut<'a, 'b, B> {
     transport: &'a Transport,
@@ -828,6 +862,7 @@ pub struct InferencePut<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferencePut<'a, 'b, B>
 where
@@ -847,6 +882,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -865,6 +901,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -902,6 +939,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference endpoint to be created."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Put API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -918,6 +960,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -925,6 +968,166 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Inference Put Ai21 API"]
+pub enum InferencePutAi21Parts<'b> {
+    #[doc = "TaskType and Ai21InferenceId"]
+    TaskTypeAi21InferenceId(TaskType, &'b str),
+}
+impl<'b> InferencePutAi21Parts<'b> {
+    #[doc = "Builds a relative URL path to the Inference Put Ai21 API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            InferencePutAi21Parts::TaskTypeAi21InferenceId(task_type, ai21_inference_id) => {
+                let task_type_str = task_type.to_string();
+                let encoded_task_type: Cow<str> =
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_ai21_inference_id: Cow<str> =
+                    percent_encode(ai21_inference_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    13usize + encoded_task_type.len() + encoded_ai21_inference_id.len(),
+                );
+                p.push_str("/_inference/");
+                p.push_str(encoded_task_type.as_ref());
+                p.push('/');
+                p.push_str(encoded_ai21_inference_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Inference Put Ai21 API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-ai21)\n\nCreate a AI21 inference endpoint"]
+#[derive(Clone, Debug)]
+pub struct InferencePutAi21<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: InferencePutAi21Parts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
+}
+impl<'a, 'b, B> InferencePutAi21<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [InferencePutAi21] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: InferencePutAi21Parts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        InferencePutAi21 {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+            timeout: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> InferencePutAi21<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        InferencePutAi21 {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+            timeout: self.timeout,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Specifies the amount of time to wait for the inference endpoint to be created."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Inference Put Ai21 API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Put;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+                timeout: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -940,7 +1143,7 @@ where
 #[doc = "API parts for the Inference Put Alibabacloud API"]
 pub enum InferencePutAlibabacloudParts<'b> {
     #[doc = "TaskType and AlibabacloudInferenceId"]
-    TaskTypeAlibabacloudInferenceId(&'b str, &'b str),
+    TaskTypeAlibabacloudInferenceId(TaskType, &'b str),
 }
 impl<'b> InferencePutAlibabacloudParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Put Alibabacloud API"]
@@ -950,8 +1153,9 @@ impl<'b> InferencePutAlibabacloudParts<'b> {
                 task_type,
                 alibabacloud_inference_id,
             ) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_alibabacloud_inference_id: Cow<str> =
                     percent_encode(alibabacloud_inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -966,7 +1170,7 @@ impl<'b> InferencePutAlibabacloudParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Alibabacloud API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-alibabacloud-ai-search.html)\n\nConfigure an AlibabaCloud AI Search inference endpoint"]
+#[doc = "Builder for the [Inference Put Alibabacloud API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-alibabacloud)\n\nCreate an AlibabaCloud AI Search inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutAlibabacloud<'a, 'b, B> {
     transport: &'a Transport,
@@ -979,6 +1183,7 @@ pub struct InferencePutAlibabacloud<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferencePutAlibabacloud<'a, 'b, B>
 where
@@ -998,6 +1203,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -1016,6 +1222,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1053,6 +1260,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference endpoint to be created."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Put Alibabacloud API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -1069,6 +1281,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1076,6 +1289,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -1091,7 +1305,7 @@ where
 #[doc = "API parts for the Inference Put Amazonbedrock API"]
 pub enum InferencePutAmazonbedrockParts<'b> {
     #[doc = "TaskType and AmazonbedrockInferenceId"]
-    TaskTypeAmazonbedrockInferenceId(&'b str, &'b str),
+    TaskTypeAmazonbedrockInferenceId(TaskType, &'b str),
 }
 impl<'b> InferencePutAmazonbedrockParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Put Amazonbedrock API"]
@@ -1101,8 +1315,9 @@ impl<'b> InferencePutAmazonbedrockParts<'b> {
                 task_type,
                 amazonbedrock_inference_id,
             ) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_amazonbedrock_inference_id: Cow<str> =
                     percent_encode(amazonbedrock_inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -1117,7 +1332,7 @@ impl<'b> InferencePutAmazonbedrockParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Amazonbedrock API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-amazon-bedrock.html)\n\nConfigure an Amazon Bedrock inference endpoint"]
+#[doc = "Builder for the [Inference Put Amazonbedrock API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-amazonbedrock)\n\nCreate an Amazon Bedrock inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutAmazonbedrock<'a, 'b, B> {
     transport: &'a Transport,
@@ -1130,6 +1345,7 @@ pub struct InferencePutAmazonbedrock<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferencePutAmazonbedrock<'a, 'b, B>
 where
@@ -1149,6 +1365,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -1167,6 +1384,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1204,6 +1422,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference endpoint to be created."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Put Amazonbedrock API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -1220,6 +1443,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1227,6 +1451,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -1242,7 +1467,7 @@ where
 #[doc = "API parts for the Inference Put Amazonsagemaker API"]
 pub enum InferencePutAmazonsagemakerParts<'b> {
     #[doc = "TaskType and AmazonsagemakerInferenceId"]
-    TaskTypeAmazonsagemakerInferenceId(&'b str, &'b str),
+    TaskTypeAmazonsagemakerInferenceId(TaskType, &'b str),
 }
 impl<'b> InferencePutAmazonsagemakerParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Put Amazonsagemaker API"]
@@ -1252,8 +1477,9 @@ impl<'b> InferencePutAmazonsagemakerParts<'b> {
                 task_type,
                 amazonsagemaker_inference_id,
             ) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_amazonsagemaker_inference_id: Cow<str> =
                     percent_encode(amazonsagemaker_inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -1268,7 +1494,7 @@ impl<'b> InferencePutAmazonsagemakerParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Amazonsagemaker API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-amazon-sagemaker.html)\n\nConfigure a Amazon SageMaker inference endpoint"]
+#[doc = "Builder for the [Inference Put Amazonsagemaker API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-amazonsagemaker)\n\nCreate an Amazon SageMaker inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutAmazonsagemaker<'a, 'b, B> {
     transport: &'a Transport,
@@ -1281,6 +1507,7 @@ pub struct InferencePutAmazonsagemaker<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferencePutAmazonsagemaker<'a, 'b, B>
 where
@@ -1300,6 +1527,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -1318,6 +1546,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1355,6 +1584,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference endpoint to be created."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Put Amazonsagemaker API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -1371,6 +1605,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1378,6 +1613,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -1393,7 +1629,7 @@ where
 #[doc = "API parts for the Inference Put Anthropic API"]
 pub enum InferencePutAnthropicParts<'b> {
     #[doc = "TaskType and AnthropicInferenceId"]
-    TaskTypeAnthropicInferenceId(&'b str, &'b str),
+    TaskTypeAnthropicInferenceId(TaskType, &'b str),
 }
 impl<'b> InferencePutAnthropicParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Put Anthropic API"]
@@ -1403,8 +1639,9 @@ impl<'b> InferencePutAnthropicParts<'b> {
                 task_type,
                 anthropic_inference_id,
             ) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_anthropic_inference_id: Cow<str> =
                     percent_encode(anthropic_inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -1419,7 +1656,7 @@ impl<'b> InferencePutAnthropicParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Anthropic API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-anthropic.html)\n\nConfigure an Anthropic inference endpoint"]
+#[doc = "Builder for the [Inference Put Anthropic API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-anthropic)\n\nCreate an Anthropic inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutAnthropic<'a, 'b, B> {
     transport: &'a Transport,
@@ -1432,6 +1669,7 @@ pub struct InferencePutAnthropic<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferencePutAnthropic<'a, 'b, B>
 where
@@ -1451,6 +1689,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -1469,6 +1708,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1506,6 +1746,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference endpoint to be created."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Put Anthropic API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -1522,6 +1767,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1529,6 +1775,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -1544,7 +1791,7 @@ where
 #[doc = "API parts for the Inference Put Azureaistudio API"]
 pub enum InferencePutAzureaistudioParts<'b> {
     #[doc = "TaskType and AzureaistudioInferenceId"]
-    TaskTypeAzureaistudioInferenceId(&'b str, &'b str),
+    TaskTypeAzureaistudioInferenceId(TaskType, &'b str),
 }
 impl<'b> InferencePutAzureaistudioParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Put Azureaistudio API"]
@@ -1554,8 +1801,9 @@ impl<'b> InferencePutAzureaistudioParts<'b> {
                 task_type,
                 azureaistudio_inference_id,
             ) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_azureaistudio_inference_id: Cow<str> =
                     percent_encode(azureaistudio_inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -1570,7 +1818,7 @@ impl<'b> InferencePutAzureaistudioParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Azureaistudio API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-azure-ai-studio.html)\n\nConfigure an Azure AI Studio inference endpoint"]
+#[doc = "Builder for the [Inference Put Azureaistudio API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-azureaistudio)\n\nCreate an Azure AI studio inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutAzureaistudio<'a, 'b, B> {
     transport: &'a Transport,
@@ -1583,6 +1831,7 @@ pub struct InferencePutAzureaistudio<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferencePutAzureaistudio<'a, 'b, B>
 where
@@ -1602,6 +1851,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -1620,6 +1870,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1657,6 +1908,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference endpoint to be created."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Put Azureaistudio API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -1673,6 +1929,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1680,6 +1937,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -1695,7 +1953,7 @@ where
 #[doc = "API parts for the Inference Put Azureopenai API"]
 pub enum InferencePutAzureopenaiParts<'b> {
     #[doc = "TaskType and AzureopenaiInferenceId"]
-    TaskTypeAzureopenaiInferenceId(&'b str, &'b str),
+    TaskTypeAzureopenaiInferenceId(TaskType, &'b str),
 }
 impl<'b> InferencePutAzureopenaiParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Put Azureopenai API"]
@@ -1705,8 +1963,9 @@ impl<'b> InferencePutAzureopenaiParts<'b> {
                 task_type,
                 azureopenai_inference_id,
             ) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_azureopenai_inference_id: Cow<str> =
                     percent_encode(azureopenai_inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -1721,7 +1980,7 @@ impl<'b> InferencePutAzureopenaiParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Azureopenai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-azure-openai.html)\n\nConfigure an Azure OpenAI inference endpoint"]
+#[doc = "Builder for the [Inference Put Azureopenai API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-azureopenai)\n\nCreate an Azure OpenAI inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutAzureopenai<'a, 'b, B> {
     transport: &'a Transport,
@@ -1734,6 +1993,7 @@ pub struct InferencePutAzureopenai<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferencePutAzureopenai<'a, 'b, B>
 where
@@ -1753,6 +2013,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -1771,6 +2032,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1808,6 +2070,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference endpoint to be created."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Put Azureopenai API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -1824,6 +2091,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1831,6 +2099,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -1846,15 +2115,16 @@ where
 #[doc = "API parts for the Inference Put Cohere API"]
 pub enum InferencePutCohereParts<'b> {
     #[doc = "TaskType and CohereInferenceId"]
-    TaskTypeCohereInferenceId(&'b str, &'b str),
+    TaskTypeCohereInferenceId(TaskType, &'b str),
 }
 impl<'b> InferencePutCohereParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Put Cohere API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
             InferencePutCohereParts::TaskTypeCohereInferenceId(task_type, cohere_inference_id) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_cohere_inference_id: Cow<str> =
                     percent_encode(cohere_inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -1869,7 +2139,7 @@ impl<'b> InferencePutCohereParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Cohere API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-cohere.html)\n\nConfigure a Cohere inference endpoint"]
+#[doc = "Builder for the [Inference Put Cohere API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-cohere)\n\nCreate a Cohere inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutCohere<'a, 'b, B> {
     transport: &'a Transport,
@@ -1882,6 +2152,7 @@ pub struct InferencePutCohere<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferencePutCohere<'a, 'b, B>
 where
@@ -1901,6 +2172,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -1919,6 +2191,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1956,6 +2229,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference endpoint to be created."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Put Cohere API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -1972,6 +2250,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1979,6 +2258,169 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Inference Put Contextualai API"]
+pub enum InferencePutContextualaiParts<'b> {
+    #[doc = "TaskType and ContextualaiInferenceId"]
+    TaskTypeContextualaiInferenceId(TaskType, &'b str),
+}
+impl<'b> InferencePutContextualaiParts<'b> {
+    #[doc = "Builds a relative URL path to the Inference Put Contextualai API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            InferencePutContextualaiParts::TaskTypeContextualaiInferenceId(
+                task_type,
+                contextualai_inference_id,
+            ) => {
+                let task_type_str = task_type.to_string();
+                let encoded_task_type: Cow<str> =
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_contextualai_inference_id: Cow<str> =
+                    percent_encode(contextualai_inference_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    13usize + encoded_task_type.len() + encoded_contextualai_inference_id.len(),
+                );
+                p.push_str("/_inference/");
+                p.push_str(encoded_task_type.as_ref());
+                p.push('/');
+                p.push_str(encoded_contextualai_inference_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Inference Put Contextualai API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-contextualai)\n\nCreate an Contextual AI inference endpoint"]
+#[derive(Clone, Debug)]
+pub struct InferencePutContextualai<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: InferencePutContextualaiParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
+}
+impl<'a, 'b, B> InferencePutContextualai<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [InferencePutContextualai] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: InferencePutContextualaiParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        InferencePutContextualai {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+            timeout: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> InferencePutContextualai<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        InferencePutContextualai {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+            timeout: self.timeout,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Specifies the amount of time to wait for the inference endpoint to be created."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Inference Put Contextualai API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Put;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+                timeout: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -1994,15 +2436,16 @@ where
 #[doc = "API parts for the Inference Put Custom API"]
 pub enum InferencePutCustomParts<'b> {
     #[doc = "TaskType and CustomInferenceId"]
-    TaskTypeCustomInferenceId(&'b str, &'b str),
+    TaskTypeCustomInferenceId(TaskType, &'b str),
 }
 impl<'b> InferencePutCustomParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Put Custom API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
             InferencePutCustomParts::TaskTypeCustomInferenceId(task_type, custom_inference_id) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_custom_inference_id: Cow<str> =
                     percent_encode(custom_inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -2017,7 +2460,7 @@ impl<'b> InferencePutCustomParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Custom API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-custom)\n\nConfigure a custom inference endpoint"]
+#[doc = "Builder for the [Inference Put Custom API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-custom)\n\nCreate a custom inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutCustom<'a, 'b, B> {
     transport: &'a Transport,
@@ -2142,7 +2585,7 @@ where
 #[doc = "API parts for the Inference Put Deepseek API"]
 pub enum InferencePutDeepseekParts<'b> {
     #[doc = "TaskType and DeepseekInferenceId"]
-    TaskTypeDeepseekInferenceId(&'b str, &'b str),
+    TaskTypeDeepseekInferenceId(TaskType, &'b str),
 }
 impl<'b> InferencePutDeepseekParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Put Deepseek API"]
@@ -2152,8 +2595,9 @@ impl<'b> InferencePutDeepseekParts<'b> {
                 task_type,
                 deepseek_inference_id,
             ) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_deepseek_inference_id: Cow<str> =
                     percent_encode(deepseek_inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -2168,7 +2612,7 @@ impl<'b> InferencePutDeepseekParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Deepseek API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-deepseek.html)\n\nConfigure a DeepSeek inference endpoint"]
+#[doc = "Builder for the [Inference Put Deepseek API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-deepseek)\n\nCreate a DeepSeek inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutDeepseek<'a, 'b, B> {
     transport: &'a Transport,
@@ -2181,6 +2625,7 @@ pub struct InferencePutDeepseek<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferencePutDeepseek<'a, 'b, B>
 where
@@ -2200,6 +2645,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -2218,6 +2664,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2255,6 +2702,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference endpoint to be created."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Put Deepseek API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -2271,6 +2723,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -2278,6 +2731,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -2293,7 +2747,7 @@ where
 #[doc = "API parts for the Inference Put Elasticsearch API"]
 pub enum InferencePutElasticsearchParts<'b> {
     #[doc = "TaskType and ElasticsearchInferenceId"]
-    TaskTypeElasticsearchInferenceId(&'b str, &'b str),
+    TaskTypeElasticsearchInferenceId(TaskType, &'b str),
 }
 impl<'b> InferencePutElasticsearchParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Put Elasticsearch API"]
@@ -2303,8 +2757,9 @@ impl<'b> InferencePutElasticsearchParts<'b> {
                 task_type,
                 elasticsearch_inference_id,
             ) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_elasticsearch_inference_id: Cow<str> =
                     percent_encode(elasticsearch_inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -2319,7 +2774,7 @@ impl<'b> InferencePutElasticsearchParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Elasticsearch API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-elasticsearch.html)\n\nConfigure an Elasticsearch inference endpoint"]
+#[doc = "Builder for the [Inference Put Elasticsearch API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-elasticsearch)\n\nCreate an Elasticsearch inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutElasticsearch<'a, 'b, B> {
     transport: &'a Transport,
@@ -2332,6 +2787,7 @@ pub struct InferencePutElasticsearch<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferencePutElasticsearch<'a, 'b, B>
 where
@@ -2351,6 +2807,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -2369,6 +2826,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2406,6 +2864,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference endpoint to be created."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Put Elasticsearch API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -2422,6 +2885,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -2429,6 +2893,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -2444,15 +2909,16 @@ where
 #[doc = "API parts for the Inference Put Elser API"]
 pub enum InferencePutElserParts<'b> {
     #[doc = "TaskType and ElserInferenceId"]
-    TaskTypeElserInferenceId(&'b str, &'b str),
+    TaskTypeElserInferenceId(TaskType, &'b str),
 }
 impl<'b> InferencePutElserParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Put Elser API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
             InferencePutElserParts::TaskTypeElserInferenceId(task_type, elser_inference_id) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_elser_inference_id: Cow<str> =
                     percent_encode(elser_inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -2467,7 +2933,7 @@ impl<'b> InferencePutElserParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Elser API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-elser.html)\n\nConfigure an ELSER inference endpoint"]
+#[doc = "Builder for the [Inference Put Elser API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-elser)\n\nCreate an ELSER inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutElser<'a, 'b, B> {
     transport: &'a Transport,
@@ -2480,6 +2946,7 @@ pub struct InferencePutElser<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferencePutElser<'a, 'b, B>
 where
@@ -2499,6 +2966,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -2517,6 +2985,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2554,6 +3023,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference endpoint to be created."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Put Elser API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -2570,6 +3044,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -2577,6 +3052,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -2592,7 +3068,7 @@ where
 #[doc = "API parts for the Inference Put Googleaistudio API"]
 pub enum InferencePutGoogleaistudioParts<'b> {
     #[doc = "TaskType and GoogleaistudioInferenceId"]
-    TaskTypeGoogleaistudioInferenceId(&'b str, &'b str),
+    TaskTypeGoogleaistudioInferenceId(TaskType, &'b str),
 }
 impl<'b> InferencePutGoogleaistudioParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Put Googleaistudio API"]
@@ -2602,8 +3078,9 @@ impl<'b> InferencePutGoogleaistudioParts<'b> {
                 task_type,
                 googleaistudio_inference_id,
             ) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_googleaistudio_inference_id: Cow<str> =
                     percent_encode(googleaistudio_inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -2618,7 +3095,7 @@ impl<'b> InferencePutGoogleaistudioParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Googleaistudio API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-google-ai-studio.html)\n\nConfigure a Google AI Studio inference endpoint"]
+#[doc = "Builder for the [Inference Put Googleaistudio API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-googleaistudio)\n\nCreate an Google AI Studio inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutGoogleaistudio<'a, 'b, B> {
     transport: &'a Transport,
@@ -2631,6 +3108,7 @@ pub struct InferencePutGoogleaistudio<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferencePutGoogleaistudio<'a, 'b, B>
 where
@@ -2650,6 +3128,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -2668,6 +3147,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2705,6 +3185,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference endpoint to be created."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Put Googleaistudio API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -2721,6 +3206,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -2728,6 +3214,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -2743,7 +3230,7 @@ where
 #[doc = "API parts for the Inference Put Googlevertexai API"]
 pub enum InferencePutGooglevertexaiParts<'b> {
     #[doc = "TaskType and GooglevertexaiInferenceId"]
-    TaskTypeGooglevertexaiInferenceId(&'b str, &'b str),
+    TaskTypeGooglevertexaiInferenceId(TaskType, &'b str),
 }
 impl<'b> InferencePutGooglevertexaiParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Put Googlevertexai API"]
@@ -2753,8 +3240,9 @@ impl<'b> InferencePutGooglevertexaiParts<'b> {
                 task_type,
                 googlevertexai_inference_id,
             ) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_googlevertexai_inference_id: Cow<str> =
                     percent_encode(googlevertexai_inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -2769,7 +3257,7 @@ impl<'b> InferencePutGooglevertexaiParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Googlevertexai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-google-vertex-ai.html)\n\nConfigure a Google Vertex AI inference endpoint"]
+#[doc = "Builder for the [Inference Put Googlevertexai API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-googlevertexai)\n\nCreate a Google Vertex AI inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutGooglevertexai<'a, 'b, B> {
     transport: &'a Transport,
@@ -2782,6 +3270,7 @@ pub struct InferencePutGooglevertexai<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferencePutGooglevertexai<'a, 'b, B>
 where
@@ -2801,6 +3290,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -2819,6 +3309,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2856,6 +3347,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference endpoint to be created."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Put Googlevertexai API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -2872,6 +3368,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -2879,6 +3376,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -2894,7 +3392,7 @@ where
 #[doc = "API parts for the Inference Put Hugging Face API"]
 pub enum InferencePutHuggingFaceParts<'b> {
     #[doc = "TaskType and HuggingfaceInferenceId"]
-    TaskTypeHuggingfaceInferenceId(&'b str, &'b str),
+    TaskTypeHuggingfaceInferenceId(TaskType, &'b str),
 }
 impl<'b> InferencePutHuggingFaceParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Put Hugging Face API"]
@@ -2904,8 +3402,9 @@ impl<'b> InferencePutHuggingFaceParts<'b> {
                 task_type,
                 huggingface_inference_id,
             ) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_huggingface_inference_id: Cow<str> =
                     percent_encode(huggingface_inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -2920,7 +3419,7 @@ impl<'b> InferencePutHuggingFaceParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Hugging Face API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-hugging-face.html)\n\nConfigure a HuggingFace inference endpoint"]
+#[doc = "Builder for the [Inference Put Hugging Face API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-hugging-face)\n\nCreate a Hugging Face inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutHuggingFace<'a, 'b, B> {
     transport: &'a Transport,
@@ -2933,6 +3432,7 @@ pub struct InferencePutHuggingFace<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferencePutHuggingFace<'a, 'b, B>
 where
@@ -2952,6 +3452,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -2970,6 +3471,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -3007,6 +3509,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference endpoint to be created."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Put Hugging Face API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -3023,6 +3530,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -3030,6 +3538,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -3045,15 +3554,16 @@ where
 #[doc = "API parts for the Inference Put Jinaai API"]
 pub enum InferencePutJinaaiParts<'b> {
     #[doc = "TaskType and JinaaiInferenceId"]
-    TaskTypeJinaaiInferenceId(&'b str, &'b str),
+    TaskTypeJinaaiInferenceId(TaskType, &'b str),
 }
 impl<'b> InferencePutJinaaiParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Put Jinaai API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
             InferencePutJinaaiParts::TaskTypeJinaaiInferenceId(task_type, jinaai_inference_id) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_jinaai_inference_id: Cow<str> =
                     percent_encode(jinaai_inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -3068,7 +3578,7 @@ impl<'b> InferencePutJinaaiParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Jinaai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-jinaai.html)\n\nConfigure a JinaAI inference endpoint"]
+#[doc = "Builder for the [Inference Put Jinaai API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-jinaai)\n\nCreate an JinaAI inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutJinaai<'a, 'b, B> {
     transport: &'a Transport,
@@ -3081,6 +3591,7 @@ pub struct InferencePutJinaai<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferencePutJinaai<'a, 'b, B>
 where
@@ -3100,6 +3611,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -3118,6 +3630,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -3155,6 +3668,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference endpoint to be created."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Put Jinaai API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -3171,6 +3689,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -3178,6 +3697,166 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Inference Put Llama API"]
+pub enum InferencePutLlamaParts<'b> {
+    #[doc = "TaskType and LlamaInferenceId"]
+    TaskTypeLlamaInferenceId(TaskType, &'b str),
+}
+impl<'b> InferencePutLlamaParts<'b> {
+    #[doc = "Builds a relative URL path to the Inference Put Llama API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            InferencePutLlamaParts::TaskTypeLlamaInferenceId(task_type, llama_inference_id) => {
+                let task_type_str = task_type.to_string();
+                let encoded_task_type: Cow<str> =
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
+                let encoded_llama_inference_id: Cow<str> =
+                    percent_encode(llama_inference_id.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(
+                    13usize + encoded_task_type.len() + encoded_llama_inference_id.len(),
+                );
+                p.push_str("/_inference/");
+                p.push_str(encoded_task_type.as_ref());
+                p.push('/');
+                p.push_str(encoded_llama_inference_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Inference Put Llama API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-llama)\n\nCreate a Llama inference endpoint"]
+#[derive(Clone, Debug)]
+pub struct InferencePutLlama<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: InferencePutLlamaParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
+}
+impl<'a, 'b, B> InferencePutLlama<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [InferencePutLlama] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: InferencePutLlamaParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        InferencePutLlama {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+            timeout: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> InferencePutLlama<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        InferencePutLlama {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+            timeout: self.timeout,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Specifies the amount of time to wait for the inference endpoint to be created."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Inference Put Llama API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Put;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+                timeout: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -3193,7 +3872,7 @@ where
 #[doc = "API parts for the Inference Put Mistral API"]
 pub enum InferencePutMistralParts<'b> {
     #[doc = "TaskType and MistralInferenceId"]
-    TaskTypeMistralInferenceId(&'b str, &'b str),
+    TaskTypeMistralInferenceId(TaskType, &'b str),
 }
 impl<'b> InferencePutMistralParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Put Mistral API"]
@@ -3203,8 +3882,9 @@ impl<'b> InferencePutMistralParts<'b> {
                 task_type,
                 mistral_inference_id,
             ) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_mistral_inference_id: Cow<str> =
                     percent_encode(mistral_inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -3219,7 +3899,7 @@ impl<'b> InferencePutMistralParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Mistral API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-mistral.html)\n\nConfigure a Mistral inference endpoint"]
+#[doc = "Builder for the [Inference Put Mistral API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-mistral)\n\nCreate a Mistral inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutMistral<'a, 'b, B> {
     transport: &'a Transport,
@@ -3232,6 +3912,7 @@ pub struct InferencePutMistral<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferencePutMistral<'a, 'b, B>
 where
@@ -3251,6 +3932,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -3269,6 +3951,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -3306,6 +3989,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference endpoint to be created."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Put Mistral API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -3322,6 +4010,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -3329,6 +4018,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -3344,15 +4034,16 @@ where
 #[doc = "API parts for the Inference Put Openai API"]
 pub enum InferencePutOpenaiParts<'b> {
     #[doc = "TaskType and OpenaiInferenceId"]
-    TaskTypeOpenaiInferenceId(&'b str, &'b str),
+    TaskTypeOpenaiInferenceId(TaskType, &'b str),
 }
 impl<'b> InferencePutOpenaiParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Put Openai API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
             InferencePutOpenaiParts::TaskTypeOpenaiInferenceId(task_type, openai_inference_id) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_openai_inference_id: Cow<str> =
                     percent_encode(openai_inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -3367,7 +4058,7 @@ impl<'b> InferencePutOpenaiParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Openai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-openai.html)\n\nConfigure an OpenAI inference endpoint"]
+#[doc = "Builder for the [Inference Put Openai API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-openai)\n\nCreate an OpenAI inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutOpenai<'a, 'b, B> {
     transport: &'a Transport,
@@ -3380,6 +4071,7 @@ pub struct InferencePutOpenai<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferencePutOpenai<'a, 'b, B>
 where
@@ -3399,6 +4091,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -3417,6 +4110,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -3454,6 +4148,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference endpoint to be created."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Put Openai API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -3470,6 +4169,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -3477,6 +4177,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -3492,7 +4193,7 @@ where
 #[doc = "API parts for the Inference Put Voyageai API"]
 pub enum InferencePutVoyageaiParts<'b> {
     #[doc = "TaskType and VoyageaiInferenceId"]
-    TaskTypeVoyageaiInferenceId(&'b str, &'b str),
+    TaskTypeVoyageaiInferenceId(TaskType, &'b str),
 }
 impl<'b> InferencePutVoyageaiParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Put Voyageai API"]
@@ -3502,8 +4203,9 @@ impl<'b> InferencePutVoyageaiParts<'b> {
                 task_type,
                 voyageai_inference_id,
             ) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_voyageai_inference_id: Cow<str> =
                     percent_encode(voyageai_inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -3518,7 +4220,7 @@ impl<'b> InferencePutVoyageaiParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Voyageai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/inference-apis.html)\n\nConfigure a VoyageAI inference endpoint"]
+#[doc = "Builder for the [Inference Put Voyageai API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-voyageai)\n\nCreate a VoyageAI inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutVoyageai<'a, 'b, B> {
     transport: &'a Transport,
@@ -3531,6 +4233,7 @@ pub struct InferencePutVoyageai<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferencePutVoyageai<'a, 'b, B>
 where
@@ -3550,6 +4253,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -3568,6 +4272,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -3605,6 +4310,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference endpoint to be created."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Put Voyageai API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -3621,6 +4331,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -3628,6 +4339,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -3643,7 +4355,7 @@ where
 #[doc = "API parts for the Inference Put Watsonx API"]
 pub enum InferencePutWatsonxParts<'b> {
     #[doc = "TaskType and WatsonxInferenceId"]
-    TaskTypeWatsonxInferenceId(&'b str, &'b str),
+    TaskTypeWatsonxInferenceId(TaskType, &'b str),
 }
 impl<'b> InferencePutWatsonxParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Put Watsonx API"]
@@ -3653,8 +4365,9 @@ impl<'b> InferencePutWatsonxParts<'b> {
                 task_type,
                 watsonx_inference_id,
             ) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_watsonx_inference_id: Cow<str> =
                     percent_encode(watsonx_inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -3669,7 +4382,7 @@ impl<'b> InferencePutWatsonxParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Put Watsonx API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-watsonx-ai.html)\n\nConfigure a Watsonx inference endpoint"]
+#[doc = "Builder for the [Inference Put Watsonx API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-watsonx)\n\nCreate a Watsonx inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferencePutWatsonx<'a, 'b, B> {
     transport: &'a Transport,
@@ -3682,6 +4395,7 @@ pub struct InferencePutWatsonx<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferencePutWatsonx<'a, 'b, B>
 where
@@ -3701,6 +4415,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -3719,6 +4434,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -3756,6 +4472,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference endpoint to be created."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Put Watsonx API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -3772,6 +4493,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -3779,6 +4501,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -3811,7 +4534,7 @@ impl<'b> InferenceRerankParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Rerank API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-inference-api.html)\n\nPerform reranking inference"]
+#[doc = "Builder for the [Inference Rerank API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-inference)\n\nPerform reranking inference on the service"]
 #[derive(Clone, Debug)]
 pub struct InferenceRerank<'a, 'b, B> {
     transport: &'a Transport,
@@ -3824,6 +4547,7 @@ pub struct InferenceRerank<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferenceRerank<'a, 'b, B>
 where
@@ -3843,6 +4567,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -3861,6 +4586,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -3898,6 +4624,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "The amount of time to wait for the inference request to complete."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Rerank API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -3914,6 +4645,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -3921,6 +4653,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -3953,7 +4686,7 @@ impl<'b> InferenceSparseEmbeddingParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Sparse Embedding API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-inference-api.html)\n\nPerform sparse embedding inference"]
+#[doc = "Builder for the [Inference Sparse Embedding API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-inference)\n\nPerform sparse embedding inference on the service"]
 #[derive(Clone, Debug)]
 pub struct InferenceSparseEmbedding<'a, 'b, B> {
     transport: &'a Transport,
@@ -3966,6 +4699,7 @@ pub struct InferenceSparseEmbedding<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferenceSparseEmbedding<'a, 'b, B>
 where
@@ -3985,6 +4719,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -4003,6 +4738,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -4040,6 +4776,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference request to complete."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Sparse Embedding API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -4056,6 +4797,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -4063,6 +4805,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -4096,7 +4839,7 @@ impl<'b> InferenceStreamCompletionParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Stream Completion API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-stream-inference-api.html)\n\nPerform streaming completion inference"]
+#[doc = "Builder for the [Inference Stream Completion API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-stream-inference)\n\nPerform streaming inference"]
 #[derive(Clone, Debug)]
 pub struct InferenceStreamCompletion<'a, 'b, B> {
     transport: &'a Transport,
@@ -4109,6 +4852,7 @@ pub struct InferenceStreamCompletion<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferenceStreamCompletion<'a, 'b, B>
 where
@@ -4128,6 +4872,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -4146,6 +4891,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -4183,6 +4929,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "The amount of time to wait for the inference request to complete."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Stream Completion API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -4199,6 +4950,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -4206,6 +4958,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -4238,7 +4991,7 @@ impl<'b> InferenceTextEmbeddingParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Text Embedding API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-inference-api.html)\n\nPerform text embedding inference"]
+#[doc = "Builder for the [Inference Text Embedding API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-inference)\n\nPerform text embedding inference on the service"]
 #[derive(Clone, Debug)]
 pub struct InferenceTextEmbedding<'a, 'b, B> {
     transport: &'a Transport,
@@ -4251,6 +5004,7 @@ pub struct InferenceTextEmbedding<'a, 'b, B> {
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> InferenceTextEmbedding<'a, 'b, B>
 where
@@ -4270,6 +5024,7 @@ where
             pretty: None,
             request_timeout: None,
             source: None,
+            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -4288,6 +5043,7 @@ where
             pretty: self.pretty,
             request_timeout: self.request_timeout,
             source: self.source,
+            timeout: self.timeout,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -4325,6 +5081,11 @@ where
         self.source = Some(source);
         self
     }
+    #[doc = "Specifies the amount of time to wait for the inference request to complete."]
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
+        self.timeout = Some(timeout);
+        self
+    }
     #[doc = "Creates an asynchronous call to the Inference Text Embedding API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -4341,6 +5102,7 @@ where
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -4348,6 +5110,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -4365,7 +5128,7 @@ pub enum InferenceUpdateParts<'b> {
     #[doc = "InferenceId"]
     InferenceId(&'b str),
     #[doc = "TaskType and InferenceId"]
-    TaskTypeInferenceId(&'b str, &'b str),
+    TaskTypeInferenceId(TaskType, &'b str),
 }
 impl<'b> InferenceUpdateParts<'b> {
     #[doc = "Builds a relative URL path to the Inference Update API"]
@@ -4381,8 +5144,9 @@ impl<'b> InferenceUpdateParts<'b> {
                 p.into()
             }
             InferenceUpdateParts::TaskTypeInferenceId(task_type, inference_id) => {
+                let task_type_str = task_type.to_string();
                 let encoded_task_type: Cow<str> =
-                    percent_encode(task_type.as_bytes(), PARTS_ENCODED).into();
+                    percent_encode(task_type_str.as_bytes(), PARTS_ENCODED).into();
                 let encoded_inference_id: Cow<str> =
                     percent_encode(inference_id.as_bytes(), PARTS_ENCODED).into();
                 let mut p = String::with_capacity(
@@ -4398,7 +5162,7 @@ impl<'b> InferenceUpdateParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Inference Update API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/update-inference-api.html)\n\nUpdate inference"]
+#[doc = "Builder for the [Inference Update API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-update)\n\nUpdate an inference endpoint"]
 #[derive(Clone, Debug)]
 pub struct InferenceUpdate<'a, 'b, B> {
     transport: &'a Transport,
@@ -4531,198 +5295,219 @@ impl<'a> Inference<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Inference Chat Completion Unified API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/chat-completion-inference.html)\n\nPerform chat completion inference"]
+    #[doc = "[Inference Chat Completion Unified API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-unified-inference)\n\nPerform chat completion inference"]
     pub fn chat_completion_unified<'b>(
         &'a self,
         parts: InferenceChatCompletionUnifiedParts<'b>,
     ) -> InferenceChatCompletionUnified<'a, 'b, ()> {
         InferenceChatCompletionUnified::new(self.transport(), parts)
     }
-    #[doc = "[Inference Completion API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-inference-api.html)\n\nPerform completion inference"]
+    #[doc = "[Inference Completion API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-inference)\n\nPerform completion inference on the service"]
     pub fn completion<'b>(
         &'a self,
         parts: InferenceCompletionParts<'b>,
     ) -> InferenceCompletion<'a, 'b, ()> {
         InferenceCompletion::new(self.transport(), parts)
     }
-    #[doc = "[Inference Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/delete-inference-api.html)\n\nDelete an inference endpoint"]
+    #[doc = "[Inference Delete API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-delete)\n\nDelete an inference endpoint"]
     pub fn delete<'b>(&'a self, parts: InferenceDeleteParts<'b>) -> InferenceDelete<'a, 'b> {
         InferenceDelete::new(self.transport(), parts)
     }
-    #[doc = "[Inference Get API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/get-inference-api.html)\n\nGet an inference endpoint"]
+    #[doc = "[Inference Get API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-get)\n\nGet an inference endpoint"]
     pub fn get<'b>(&'a self, parts: InferenceGetParts<'b>) -> InferenceGet<'a, 'b> {
         InferenceGet::new(self.transport(), parts)
     }
-    #[doc = "[Inference Inference API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-inference-api.html)\n\nPerform inference"]
+    #[doc = "[Inference Inference API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-inference)\n\nPerform inference on the service"]
     pub fn inference<'b>(
         &'a self,
         parts: InferenceInferenceParts<'b>,
     ) -> InferenceInference<'a, 'b, ()> {
         InferenceInference::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/put-inference-api.html)\n\nConfigure an inference endpoint for use in the Inference API"]
+    #[doc = "[Inference Put API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put)\n\nCreate an inference endpoint"]
     pub fn put<'b>(&'a self, parts: InferencePutParts<'b>) -> InferencePut<'a, 'b, ()> {
         InferencePut::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Alibabacloud API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-alibabacloud-ai-search.html)\n\nConfigure an AlibabaCloud AI Search inference endpoint"]
+    #[doc = "[Inference Put Ai21 API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-ai21)\n\nCreate a AI21 inference endpoint"]
+    pub fn put_ai21<'b>(
+        &'a self,
+        parts: InferencePutAi21Parts<'b>,
+    ) -> InferencePutAi21<'a, 'b, ()> {
+        InferencePutAi21::new(self.transport(), parts)
+    }
+    #[doc = "[Inference Put Alibabacloud API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-alibabacloud)\n\nCreate an AlibabaCloud AI Search inference endpoint"]
     pub fn put_alibabacloud<'b>(
         &'a self,
         parts: InferencePutAlibabacloudParts<'b>,
     ) -> InferencePutAlibabacloud<'a, 'b, ()> {
         InferencePutAlibabacloud::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Amazonbedrock API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-amazon-bedrock.html)\n\nConfigure an Amazon Bedrock inference endpoint"]
+    #[doc = "[Inference Put Amazonbedrock API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-amazonbedrock)\n\nCreate an Amazon Bedrock inference endpoint"]
     pub fn put_amazonbedrock<'b>(
         &'a self,
         parts: InferencePutAmazonbedrockParts<'b>,
     ) -> InferencePutAmazonbedrock<'a, 'b, ()> {
         InferencePutAmazonbedrock::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Amazonsagemaker API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-amazon-sagemaker.html)\n\nConfigure a Amazon SageMaker inference endpoint"]
+    #[doc = "[Inference Put Amazonsagemaker API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-amazonsagemaker)\n\nCreate an Amazon SageMaker inference endpoint"]
     pub fn put_amazonsagemaker<'b>(
         &'a self,
         parts: InferencePutAmazonsagemakerParts<'b>,
     ) -> InferencePutAmazonsagemaker<'a, 'b, ()> {
         InferencePutAmazonsagemaker::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Anthropic API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-anthropic.html)\n\nConfigure an Anthropic inference endpoint"]
+    #[doc = "[Inference Put Anthropic API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-anthropic)\n\nCreate an Anthropic inference endpoint"]
     pub fn put_anthropic<'b>(
         &'a self,
         parts: InferencePutAnthropicParts<'b>,
     ) -> InferencePutAnthropic<'a, 'b, ()> {
         InferencePutAnthropic::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Azureaistudio API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-azure-ai-studio.html)\n\nConfigure an Azure AI Studio inference endpoint"]
+    #[doc = "[Inference Put Azureaistudio API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-azureaistudio)\n\nCreate an Azure AI studio inference endpoint"]
     pub fn put_azureaistudio<'b>(
         &'a self,
         parts: InferencePutAzureaistudioParts<'b>,
     ) -> InferencePutAzureaistudio<'a, 'b, ()> {
         InferencePutAzureaistudio::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Azureopenai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-azure-openai.html)\n\nConfigure an Azure OpenAI inference endpoint"]
+    #[doc = "[Inference Put Azureopenai API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-azureopenai)\n\nCreate an Azure OpenAI inference endpoint"]
     pub fn put_azureopenai<'b>(
         &'a self,
         parts: InferencePutAzureopenaiParts<'b>,
     ) -> InferencePutAzureopenai<'a, 'b, ()> {
         InferencePutAzureopenai::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Cohere API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-cohere.html)\n\nConfigure a Cohere inference endpoint"]
+    #[doc = "[Inference Put Cohere API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-cohere)\n\nCreate a Cohere inference endpoint"]
     pub fn put_cohere<'b>(
         &'a self,
         parts: InferencePutCohereParts<'b>,
     ) -> InferencePutCohere<'a, 'b, ()> {
         InferencePutCohere::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Custom API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-custom)\n\nConfigure a custom inference endpoint"]
+    #[doc = "[Inference Put Contextualai API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-contextualai)\n\nCreate an Contextual AI inference endpoint"]
+    pub fn put_contextualai<'b>(
+        &'a self,
+        parts: InferencePutContextualaiParts<'b>,
+    ) -> InferencePutContextualai<'a, 'b, ()> {
+        InferencePutContextualai::new(self.transport(), parts)
+    }
+    #[doc = "[Inference Put Custom API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-custom)\n\nCreate a custom inference endpoint"]
     pub fn put_custom<'b>(
         &'a self,
         parts: InferencePutCustomParts<'b>,
     ) -> InferencePutCustom<'a, 'b, ()> {
         InferencePutCustom::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Deepseek API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-deepseek.html)\n\nConfigure a DeepSeek inference endpoint"]
+    #[doc = "[Inference Put Deepseek API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-deepseek)\n\nCreate a DeepSeek inference endpoint"]
     pub fn put_deepseek<'b>(
         &'a self,
         parts: InferencePutDeepseekParts<'b>,
     ) -> InferencePutDeepseek<'a, 'b, ()> {
         InferencePutDeepseek::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Elasticsearch API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-elasticsearch.html)\n\nConfigure an Elasticsearch inference endpoint"]
+    #[doc = "[Inference Put Elasticsearch API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-elasticsearch)\n\nCreate an Elasticsearch inference endpoint"]
     pub fn put_elasticsearch<'b>(
         &'a self,
         parts: InferencePutElasticsearchParts<'b>,
     ) -> InferencePutElasticsearch<'a, 'b, ()> {
         InferencePutElasticsearch::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Elser API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-elser.html)\n\nConfigure an ELSER inference endpoint"]
+    #[doc = "[Inference Put Elser API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-elser)\n\nCreate an ELSER inference endpoint"]
     pub fn put_elser<'b>(
         &'a self,
         parts: InferencePutElserParts<'b>,
     ) -> InferencePutElser<'a, 'b, ()> {
         InferencePutElser::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Googleaistudio API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-google-ai-studio.html)\n\nConfigure a Google AI Studio inference endpoint"]
+    #[doc = "[Inference Put Googleaistudio API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-googleaistudio)\n\nCreate an Google AI Studio inference endpoint"]
     pub fn put_googleaistudio<'b>(
         &'a self,
         parts: InferencePutGoogleaistudioParts<'b>,
     ) -> InferencePutGoogleaistudio<'a, 'b, ()> {
         InferencePutGoogleaistudio::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Googlevertexai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-google-vertex-ai.html)\n\nConfigure a Google Vertex AI inference endpoint"]
+    #[doc = "[Inference Put Googlevertexai API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-googlevertexai)\n\nCreate a Google Vertex AI inference endpoint"]
     pub fn put_googlevertexai<'b>(
         &'a self,
         parts: InferencePutGooglevertexaiParts<'b>,
     ) -> InferencePutGooglevertexai<'a, 'b, ()> {
         InferencePutGooglevertexai::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Hugging Face API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-hugging-face.html)\n\nConfigure a HuggingFace inference endpoint"]
+    #[doc = "[Inference Put Hugging Face API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-hugging-face)\n\nCreate a Hugging Face inference endpoint"]
     pub fn put_hugging_face<'b>(
         &'a self,
         parts: InferencePutHuggingFaceParts<'b>,
     ) -> InferencePutHuggingFace<'a, 'b, ()> {
         InferencePutHuggingFace::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Jinaai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-jinaai.html)\n\nConfigure a JinaAI inference endpoint"]
+    #[doc = "[Inference Put Jinaai API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-jinaai)\n\nCreate an JinaAI inference endpoint"]
     pub fn put_jinaai<'b>(
         &'a self,
         parts: InferencePutJinaaiParts<'b>,
     ) -> InferencePutJinaai<'a, 'b, ()> {
         InferencePutJinaai::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Mistral API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-mistral.html)\n\nConfigure a Mistral inference endpoint"]
+    #[doc = "[Inference Put Llama API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-llama)\n\nCreate a Llama inference endpoint"]
+    pub fn put_llama<'b>(
+        &'a self,
+        parts: InferencePutLlamaParts<'b>,
+    ) -> InferencePutLlama<'a, 'b, ()> {
+        InferencePutLlama::new(self.transport(), parts)
+    }
+    #[doc = "[Inference Put Mistral API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-mistral)\n\nCreate a Mistral inference endpoint"]
     pub fn put_mistral<'b>(
         &'a self,
         parts: InferencePutMistralParts<'b>,
     ) -> InferencePutMistral<'a, 'b, ()> {
         InferencePutMistral::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Openai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-openai.html)\n\nConfigure an OpenAI inference endpoint"]
+    #[doc = "[Inference Put Openai API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-openai)\n\nCreate an OpenAI inference endpoint"]
     pub fn put_openai<'b>(
         &'a self,
         parts: InferencePutOpenaiParts<'b>,
     ) -> InferencePutOpenai<'a, 'b, ()> {
         InferencePutOpenai::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Voyageai API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/inference-apis.html)\n\nConfigure a VoyageAI inference endpoint"]
+    #[doc = "[Inference Put Voyageai API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-voyageai)\n\nCreate a VoyageAI inference endpoint"]
     pub fn put_voyageai<'b>(
         &'a self,
         parts: InferencePutVoyageaiParts<'b>,
     ) -> InferencePutVoyageai<'a, 'b, ()> {
         InferencePutVoyageai::new(self.transport(), parts)
     }
-    #[doc = "[Inference Put Watsonx API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/infer-service-watsonx-ai.html)\n\nConfigure a Watsonx inference endpoint"]
+    #[doc = "[Inference Put Watsonx API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-put-watsonx)\n\nCreate a Watsonx inference endpoint"]
     pub fn put_watsonx<'b>(
         &'a self,
         parts: InferencePutWatsonxParts<'b>,
     ) -> InferencePutWatsonx<'a, 'b, ()> {
         InferencePutWatsonx::new(self.transport(), parts)
     }
-    #[doc = "[Inference Rerank API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-inference-api.html)\n\nPerform reranking inference"]
+    #[doc = "[Inference Rerank API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-inference)\n\nPerform reranking inference on the service"]
     pub fn rerank<'b>(&'a self, parts: InferenceRerankParts<'b>) -> InferenceRerank<'a, 'b, ()> {
         InferenceRerank::new(self.transport(), parts)
     }
-    #[doc = "[Inference Sparse Embedding API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-inference-api.html)\n\nPerform sparse embedding inference"]
+    #[doc = "[Inference Sparse Embedding API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-inference)\n\nPerform sparse embedding inference on the service"]
     pub fn sparse_embedding<'b>(
         &'a self,
         parts: InferenceSparseEmbeddingParts<'b>,
     ) -> InferenceSparseEmbedding<'a, 'b, ()> {
         InferenceSparseEmbedding::new(self.transport(), parts)
     }
-    #[doc = "[Inference Stream Completion API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-stream-inference-api.html)\n\nPerform streaming completion inference"]
+    #[doc = "[Inference Stream Completion API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-stream-inference)\n\nPerform streaming inference"]
     pub fn stream_completion<'b>(
         &'a self,
         parts: InferenceStreamCompletionParts<'b>,
     ) -> InferenceStreamCompletion<'a, 'b, ()> {
         InferenceStreamCompletion::new(self.transport(), parts)
     }
-    #[doc = "[Inference Text Embedding API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/post-inference-api.html)\n\nPerform text embedding inference"]
+    #[doc = "[Inference Text Embedding API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-inference)\n\nPerform text embedding inference on the service"]
     pub fn text_embedding<'b>(
         &'a self,
         parts: InferenceTextEmbeddingParts<'b>,
     ) -> InferenceTextEmbedding<'a, 'b, ()> {
         InferenceTextEmbedding::new(self.transport(), parts)
     }
-    #[doc = "[Inference Update API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/update-inference-api.html)\n\nUpdate inference"]
+    #[doc = "[Inference Update API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-inference-update)\n\nUpdate an inference endpoint"]
     pub fn update<'b>(&'a self, parts: InferenceUpdateParts<'b>) -> InferenceUpdate<'a, 'b, ()> {
         InferenceUpdate::new(self.transport(), parts)
     }
