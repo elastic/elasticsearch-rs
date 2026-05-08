@@ -19,12 +19,19 @@ script = [
 
 [tasks.download-specs]
 category = "Elasticsearch"
-description = '''Download Rest API specs and YAML tests'''
+description = '''Download Rest API specs'''
 private = true
 command = "cargo"
 # cargo-make insists on installing cargo-xtask and ignores .cargo/config.toml
 #args = ["xtask", "download-specs"]
 args = ["run", "-q", "-p", "xtask", "--", "download-specs"]
+
+[tasks.clone-client-tests]
+category = "Elasticsearch"
+description = '''Clone YAML test repository'''
+private = true
+command = "cargo"
+args = ["run", "-q", "-p", "xtask", "--", "clone-client-tests"]
 
 [tasks.test-elasticsearch]
 category = "Elasticsearch"
@@ -42,7 +49,7 @@ The commit to use is retrieved from the running Elasticsearch instance
 private = true
 command = "cargo"
 args = ["run", "-p", "yaml_test_runner", "--", "-u", "${ELASTICSEARCH_URL}"]
-dependencies = ["download-specs"]
+dependencies = ["clone-client-tests"]
 
 [tasks.test-yaml-test-runner]
 category = "Elasticsearch"

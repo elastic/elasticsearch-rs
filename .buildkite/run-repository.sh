@@ -41,4 +41,4 @@ docker run \
   --volume ${repo}/test_results:/usr/src/elasticsearch-rs/test_results \
   --rm \
   elastic/elasticsearch-rs \
-  /bin/bash -c "cargo make test"
+  /bin/bash -c "cargo make test test-yaml"
