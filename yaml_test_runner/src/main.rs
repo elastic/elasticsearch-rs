@@ -29,7 +29,6 @@ extern crate quote;
 extern crate simple_logger;
 
 use anyhow::bail;
-use clap::{Arg, Command};
 use log::LevelFilter;
 use serde_json::Value;
 use std::{fs, path::PathBuf, process::exit};
@@ -44,20 +43,8 @@ fn main() -> anyhow::Result<()> {
         .init()
         .unwrap();
 
-    let matches = Command::new(env!("CARGO_PKG_NAME"))
-        .about(env!("CARGO_PKG_DESCRIPTION"))
-        .arg(Arg::new("url")
-            .short('u')
-            .long("url")
-            .value_name("ELASTICSEARCH_URL")
-            .help("The url of a running Elasticsearch cluster. Used to determine the version, test suite and branch to use to compile tests")
-            .required(true))
-        .get_matches();
-
-    let url = matches
-        .get_one::<String>("url")
-        .expect("missing 'url' argument");
-    let (branch, version, sem_version) = match branch_version_from_elasticsearch(url) {
+    let url = std::env::var("ELASTICSEARCH_URL").expect("Missing ELASTICSEARCH_URL env var");
+    let (branch, version, sem_version) = match branch_version_from_elasticsearch(url.as_str()) {
         Ok(v) => v,
         Err(e) => {
             error!(

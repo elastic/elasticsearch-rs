@@ -49,7 +49,7 @@ The commit to use is retrieved from the running Elasticsearch instance
 private = true
 command = "cargo"
 args = ["run", "-p", "yaml_test_runner"]
-dependencies = ["clone-client-tests"]
+dependencies = ["clone-client-tests", "download-specs"]
 
 [tasks.test-yaml-test-runner]
 category = "Elasticsearch"
