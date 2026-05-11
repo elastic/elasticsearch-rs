@@ -29,15 +29,16 @@ use std::io;
 
 pub fn download(stack_version: &str) -> anyhow::Result<()> {
     let api_stack_version = if stack_version == "main" {
-        "master"
+        String::from("master")
     } else {
-        let re = Regex::new(r"^\d+\.\d+$").expect("valid stack version regex");
+        let re = Regex::new(r"^\d+\.\d+").expect("valid stack version regex");
         anyhow::ensure!(
             re.is_match(stack_version),
-            "STACK_VERSION must be two numeric parts separated by a dot (e.g. 9.0); got {}",
+            "STACK_VERSION must start with two numeric parts separated by a dot (e.g. 9.0); got {}",
             stack_version
         );
-        stack_version
+        let caps = re.captures(stack_version).unwrap();
+        String::from(&caps[0])
     };
 
     let spec_dir = ROOT_DIR.join("checkout").join(stack_version);
