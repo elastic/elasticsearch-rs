@@ -17,37 +17,21 @@
  * under the License.
  */
 use elasticsearch::{
-    auth::Credentials,
-    cat::CatTemplatesParts,
-    cert::CertificateValidation,
-    cluster::ClusterHealthParts,
-    http::{
-        response::Response,
-        transport::{SingleNodeConnectionPool, TransportBuilder},
-        Method, StatusCode,
-    },
-    ilm::IlmRemovePolicyParts,
-    indices::{
+    DEFAULT_ADDRESS, Elasticsearch, Error, auth::Credentials, cat::CatTemplatesParts, cert::CertificateValidation, cluster::ClusterHealthParts, http::{
+        Method, StatusCode, response::Response, transport::{SingleNodeConnectionPool, TransportBuilder}
+    }, ilm::IlmRemovePolicyParts, indices::{
         IndicesDeleteIndexTemplateParts, IndicesDeleteParts, IndicesDeleteTemplateParts,
         IndicesRefreshParts,
-    },
-    ml::{
+    }, ml::{
         MlCloseJobParts, MlDeleteDatafeedParts, MlDeleteJobParts, MlGetDatafeedsParts,
         MlGetJobsParts, MlStopDatafeedParts,
-    },
-    params::WaitForStatus,
-    security::{
+    }, params::WaitForStatus, security::{
         SecurityDeletePrivilegesParts, SecurityDeleteRoleParts, SecurityDeleteUserParts,
         SecurityGetPrivilegesParts, SecurityGetRoleParts, SecurityGetUserParts,
         SecurityPutUserParts,
-    },
-    snapshot::{SnapshotDeleteParts, SnapshotDeleteRepositoryParts},
-    tasks::TasksCancelParts,
-    transform::{
+    }, snapshot::{SnapshotDeleteParts, SnapshotDeleteRepositoryParts}, tasks::TasksCancelParts, transform::{
         TransformDeleteTransformParts, TransformGetTransformParts, TransformStopTransformParts,
-    },
-    watcher::WatcherDeleteWatchParts,
-    Elasticsearch, Error, DEFAULT_ADDRESS,
+    }, watcher::WatcherDeleteWatchParts
 };
 use once_cell::sync::Lazy;
 use serde_json::{json, Value};
@@ -179,6 +163,19 @@ pub async fn delete_snapshots(client: &Elasticsearch) -> Result<(), Error> {
 /// general setup step for an xpack yaml test
 pub async fn general_xpack_setup() -> Result<(), Error> {
     let client = get();
+
+    // allow wildcard deletes
+    let response = client
+        .cluster()
+        .put_settings()
+        .body(json!({
+            "persistent": {
+                "action.destructive_requires_name": false,
+            }
+        }))
+        .send()
+        .await?;
+    assert_response_success!(response);
 
     let _delete_watch_response = client
         .watcher()
