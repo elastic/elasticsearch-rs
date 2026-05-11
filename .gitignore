@@ -8,3 +8,4 @@ pkg
 *.log
 test_results/
 checkout/
+yaml_test_runner/tests
