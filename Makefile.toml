@@ -7,7 +7,7 @@ init_task = "init"
 CARGO_MAKE_CARGO_PUBLISH_FLAGS = "--dry-run"
 # RUST_BACKTRACE is set to "full" in cargo make's builtin makefiles/stable.toml
 RUST_BACKTRACE = { value = "0", condition = { env_not_set = ["RUST_BACKTRACE"]}}
-ELASTICSEARCH_URL = "https://elastic:changeme@localhost:9200"
+##ELASTICSEARCH_URL = "https://elastic:changeme@localhost:9200"
 
 [tasks.init]
 private = true
@@ -48,7 +48,7 @@ The commit to use is retrieved from the running Elasticsearch instance
 '''
 private = true
 command = "cargo"
-args = ["run", "-p", "yaml_test_runner", "--", "-u", "${ELASTICSEARCH_URL}"]
+args = ["run", "-p", "yaml_test_runner"]
 dependencies = ["clone-client-tests"]
 
 [tasks.test-yaml-test-runner]
