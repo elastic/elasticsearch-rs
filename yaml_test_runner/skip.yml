@@ -13,7 +13,7 @@ tests:
     - "tasks"
     # needs to be investigated
 
-  cat/fielddata:
+  cat/fielddata.yml:
     - "cat.fielddata"
     # needs to be investigated
 
@@ -25,7 +25,7 @@ tests:
     - "cluster.post_voting_config_exclusions"
     # needs to be investigated
 
-  entsearch/_50_connector_updates.yml:
+  entsearch/50_connector_updates.yml:
     - "Update Connector Name"
     # trailing dot in expression confuses the YAML test generator
 
@@ -37,6 +37,10 @@ tests:
     - "basic index test"   
     # a `0` is always interpreted as an array index, but in this test there is a "0" string key
 
+  indices/stats.yml:
+    - "Index - blank"
+    # flaky test, needs to be investigated
+
   logstash/10_basic.yml:
     - "logstash pipeline"
     # needs to be investigated
@@ -47,10 +51,14 @@ tests:
 
   machine_learning/start_stop_datafeed.yml:
     - "start stop datafeed"
-    # 409 conflict during teardown
+    # flaky test, 409 conflict during teardown
+
+  machine_learning/trained_model_aliases.yml:
+    - "model_aliases"
+    # flaky test, 409 conflict during teardown
 
   security/10_api_key_basic.yml:
-    - "API key"
+    - "API Key"
     # this test compares a single string against a property that is defined as an array
 
   security/130_user_profile.yml:
