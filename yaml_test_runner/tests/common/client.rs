@@ -17,21 +17,37 @@
  * under the License.
  */
 use elasticsearch::{
-    DEFAULT_ADDRESS, Elasticsearch, Error, auth::Credentials, cat::CatTemplatesParts, cert::CertificateValidation, cluster::ClusterHealthParts, http::{
-        Method, StatusCode, response::Response, transport::{SingleNodeConnectionPool, TransportBuilder}
-    }, ilm::IlmRemovePolicyParts, indices::{
+    auth::Credentials,
+    cat::CatTemplatesParts,
+    cert::CertificateValidation,
+    cluster::ClusterHealthParts,
+    http::{
+        response::Response,
+        transport::{SingleNodeConnectionPool, TransportBuilder},
+        Method, StatusCode,
+    },
+    ilm::IlmRemovePolicyParts,
+    indices::{
         IndicesDeleteIndexTemplateParts, IndicesDeleteParts, IndicesDeleteTemplateParts,
         IndicesRefreshParts,
-    }, ml::{
+    },
+    ml::{
         MlCloseJobParts, MlDeleteDatafeedParts, MlDeleteJobParts, MlGetDatafeedsParts,
         MlGetJobsParts, MlStopDatafeedParts,
-    }, params::WaitForStatus, security::{
+    },
+    params::WaitForStatus,
+    security::{
         SecurityDeletePrivilegesParts, SecurityDeleteRoleParts, SecurityDeleteUserParts,
         SecurityGetPrivilegesParts, SecurityGetRoleParts, SecurityGetUserParts,
         SecurityPutUserParts,
-    }, snapshot::{SnapshotDeleteParts, SnapshotDeleteRepositoryParts}, tasks::TasksCancelParts, transform::{
+    },
+    snapshot::{SnapshotDeleteParts, SnapshotDeleteRepositoryParts},
+    tasks::TasksCancelParts,
+    transform::{
         TransformDeleteTransformParts, TransformGetTransformParts, TransformStopTransformParts,
-    }, watcher::WatcherDeleteWatchParts
+    },
+    watcher::WatcherDeleteWatchParts,
+    Elasticsearch, Error, DEFAULT_ADDRESS,
 };
 use once_cell::sync::Lazy;
 use serde_json::{json, Value};

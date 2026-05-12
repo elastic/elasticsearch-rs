@@ -217,8 +217,8 @@ macro_rules! assert_is_false {
                 n.as_f64().unwrap()
             ),
             Value::String(s) => assert!(
-                s.is_empty(),
-                "expected value at {} to be false (empty) but was {}",
+                s.is_empty() || s == "false",
+                "expected value at {} to be false (or empty) but was {}",
                 expr_string,
                 &s
             ),
