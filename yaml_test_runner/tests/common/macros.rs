@@ -16,8 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-/// Asserts that a [Response] has a status code >=200 and <300
 
+/// Logs if a [Response] has a status code <200 or >=300
+#[macro_export]
+macro_rules! log_failed_response {
+    ($response:ident) => {{
+        let status_code = $response.status_code();
+        if !status_code.is_success() {
+            let text = $response
+                .text()
+                .await
+                .unwrap_or("[no response]".to_string());
+            log::info!(
+                "expected response to be successful but was {}. Response: {}",
+                status_code, text
+            );
+        }
+    }};
+}
+
+/// Asserts that a [Response] has a status code >=200 and <300
 #[macro_export]
 macro_rules! assert_response_success {
     ($response:ident) => {{

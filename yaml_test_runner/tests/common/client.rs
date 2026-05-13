@@ -53,6 +53,7 @@ use once_cell::sync::Lazy;
 use serde_json::{json, Value};
 use std::ops::Deref;
 use url::Url;
+use log;
 
 fn cluster_addr() -> String {
     match std::env::var("ELASTICSEARCH_URL") {
@@ -278,19 +279,13 @@ async fn delete_data_streams(client: &Elasticsearch) -> Result<(), Error> {
     // the delete index API to delete the previous write index.
     //
     let delete_response = client
-        .transport()
-        .send(
-            Method::Delete,
-            "/_data_stream/*",
-            elasticsearch::http::headers::HeaderMap::new(),
-            Some(&[("expand_wildcards", "hidden")]),
-            None::<()>, // body
-            None,       // timeout
-        )
+        .indices()
+        .delete_data_stream(elasticsearch::indices::IndicesDeleteDataStreamParts::Name(&["*"]))
+        .expand_wildcards(&["open", "closed", "hidden"])
+        .send()
         .await?;
 
     assert_response_success!(delete_response);
-
     Ok(())
 }
 
@@ -397,7 +392,7 @@ async fn delete_templates(client: &Elasticsearch) -> Result<(), Error> {
                 .send()
                 .await?;
         }
-        assert_response_success!(delete_template_response);
+        log_failed_response!(delete_template_response);
     }
 
     Ok(())
@@ -535,7 +530,7 @@ async fn close_and_delete_jobs(client: &Elasticsearch) -> Result<(), Error> {
             .send()
             .await?;
 
-        assert_response_success!(response);
+        log_failed_response!(response);
     }
 
     Ok(())
