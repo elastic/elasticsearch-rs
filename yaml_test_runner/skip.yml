@@ -57,6 +57,10 @@ tests:
     - "model aliases"
     # flaky test, 409 conflict during teardown
 
+  machine_learning/update_model_snapshot.yml:
+    - "ml.update_model_snapshot"
+    # flaky test, 409 conflict during teardown
+
   security/10_api_key_basic.yml:
     - "API Key"
     # this test compares a single string against a property that is defined as an array
