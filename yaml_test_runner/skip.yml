@@ -54,7 +54,7 @@ tests:
     # flaky test, 409 conflict during teardown
 
   machine_learning/trained_model_aliases.yml:
-    - "model_aliases"
+    - "model aliases"
     # flaky test, 409 conflict during teardown
 
   security/10_api_key_basic.yml:
