@@ -34,6 +34,7 @@ pub fn clone(stack_version: &str) -> anyhow::Result<()> {
     if let Err(e) = builder.clone(yaml_tests_url.as_str(), yaml_tests_dir.as_path()) {
         Err(anyhow!("Failed to clone YAML tests repository: {}.", e))
     } else {
+        println!("Cloned yaml tests from branch {} of {}.", &major_minor_version, &yaml_tests_url);
         Ok(())
     }
 }
