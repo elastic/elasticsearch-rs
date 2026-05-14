@@ -17,17 +17,17 @@ tests:
     - "cat.fielddata"
     # needs to be investigated
 
-  cluster/delete_voting_config_exclusions.yml:
-    - "cluster.delete_voting_config_exclusions"
-    # needs to be investigated
+  # cluster/delete_voting_config_exclusions.yml:
+  #   - "cluster.delete_voting_config_exclusions"
+  #   # needs to be investigated
 
-  cluster/voting_config_exclusions.yml:
-    - "cluster.post_voting_config_exclusions"
-    # needs to be investigated
+  # cluster/voting_config_exclusions.yml:
+  #   - "cluster.post_voting_config_exclusions"
+  #   # needs to be investigated
 
-  entsearch/50_connector_updates.yml:
-    - "Update Connector Name"
-    # trailing dot in expression confuses the YAML test generator
+  # entsearch/50_connector_updates.yml:
+  #   - "Update Connector Name"
+  #   # trailing dot in expression confuses the YAML test generator
 
   indices/segments.yml:
     - "basic segments test"
@@ -41,9 +41,9 @@ tests:
     - "Index - blank"
     # flaky test, needs to be investigated
 
-  logstash/10_basic.yml:
-    - "logstash pipeline"
-    # needs to be investigated
+  # logstash/10_basic.yml:
+  #   - "logstash pipeline"
+  #   # needs to be investigated
 
   machine_learning/jobs_crud.yml:
     - "Jobs crud, get, stats, open, flush, close"
