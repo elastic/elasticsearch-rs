@@ -17,7 +17,7 @@
  * under the License.
  */
 
-/// Logs if a [Response] has a status code <200 or >=300
+/// Logs if a [Response] has a status code <200 or >=300 without interrupting the build
 #[macro_export]
 macro_rules! log_failed_response {
     ($response:ident) => {{
@@ -27,9 +27,10 @@ macro_rules! log_failed_response {
                 .text()
                 .await
                 .unwrap_or("[no response]".to_string());
-            log::info!(
+            log::warn!(
                 "expected response to be successful but was {}. Response: {}",
-                status_code, text
+                status_code,
+                text
             );
         }
     }};

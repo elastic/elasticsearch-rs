@@ -49,11 +49,11 @@ use elasticsearch::{
     watcher::WatcherDeleteWatchParts,
     Elasticsearch, Error, DEFAULT_ADDRESS,
 };
+use log;
 use once_cell::sync::Lazy;
 use serde_json::{json, Value};
 use std::ops::Deref;
 use url::Url;
-use log;
 
 fn cluster_addr() -> String {
     match std::env::var("ELASTICSEARCH_URL") {
@@ -280,7 +280,9 @@ async fn delete_data_streams(client: &Elasticsearch) -> Result<(), Error> {
     //
     let delete_response = client
         .indices()
-        .delete_data_stream(elasticsearch::indices::IndicesDeleteDataStreamParts::Name(&["*"]))
+        .delete_data_stream(elasticsearch::indices::IndicesDeleteDataStreamParts::Name(
+            &["*"],
+        ))
         .expand_wildcards(&["open", "closed", "hidden"])
         .send()
         .await?;
@@ -297,7 +299,7 @@ async fn delete_indices(client: &Elasticsearch) -> Result<(), Error> {
         .send()
         .await?;
 
-    assert_response_success!(delete_response);
+    log_failed_response!(delete_response);
     Ok(())
 }
 
