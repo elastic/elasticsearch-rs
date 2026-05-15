@@ -17,18 +17,6 @@ tests:
     - "cat.fielddata"
     # needs to be investigated
 
-  # cluster/delete_voting_config_exclusions.yml:
-  #   - "cluster.delete_voting_config_exclusions"
-  #   # needs to be investigated
-
-  # cluster/voting_config_exclusions.yml:
-  #   - "cluster.post_voting_config_exclusions"
-  #   # needs to be investigated
-
-  # entsearch/50_connector_updates.yml:
-  #   - "Update Connector Name"
-  #   # trailing dot in expression confuses the YAML test generator
-
   indices/segments.yml:
     - "basic segments test"
     # a `0` is always interpreted as an array index, but in this test there is a "0" string key
@@ -40,10 +28,6 @@ tests:
   indices/stats.yml:
     - "Index - blank"
     # flaky test, needs to be investigated
-
-  # logstash/10_basic.yml:
-  #   - "logstash pipeline"
-  #   # needs to be investigated
 
   machine_learning/jobs_crud.yml:
     - "Jobs crud, get, stats, open, flush, close"
