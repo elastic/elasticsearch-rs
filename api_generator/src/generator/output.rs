@@ -7,6 +7,7 @@ use std::io::BufReader;
 use std::io::{BufRead, Write};
 use std::path::Path;
 use std::path::PathBuf;
+use std::sync::LazyLock;
 
 /// Writes the input to the specified file, preceded by a header comment indicating generated code
 pub fn write_file(
@@ -74,10 +75,9 @@ pub fn write_file(
     Ok(())
 }
 
-lazy_static! {
-    static ref START_REGEX: Regex = Regex::new("// *GENERATED-BEGIN:([a-zA-Z0-9-_]+)").unwrap();
-    static ref END_REGEX: Regex = Regex::new("// *GENERATED-END").unwrap();
-}
+static START_REGEX: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new("// *GENERATED-BEGIN:([a-zA-Z0-9-_]+)").unwrap());
+static END_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new("// *GENERATED-END").unwrap());
 
 /// Merge some generated content into an existing file. Content is fetch using the `get_content`
 /// function to accommodate for various generation strategies or content sources.

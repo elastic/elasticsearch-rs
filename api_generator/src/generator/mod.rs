@@ -31,6 +31,7 @@ use std::{
     marker::PhantomData,
     path::PathBuf,
     str::FromStr,
+    sync::LazyLock,
 };
 
 #[cfg(test)]
@@ -45,9 +46,8 @@ pub mod output;
 use output::{merge_file, write_file};
 use std::cmp::Ordering;
 
-lazy_static! {
-    static ref VERSION: Version = semver::Version::parse(env!("CARGO_PKG_VERSION")).unwrap();
-}
+static VERSION: LazyLock<Version> =
+    LazyLock::new(|| semver::Version::parse(env!("CARGO_PKG_VERSION")).unwrap());
 
 /// Record of generated files
 #[derive(Deserialize, Serialize, Default)]
