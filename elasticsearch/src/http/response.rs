@@ -164,6 +164,12 @@ impl fmt::Debug for Response {
     }
 }
 
+impl Into<reqwest::Response> for Response {
+    fn into(self) -> reqwest::Response {
+        self.response
+    }
+}
+
 /// An exception raised by Elasticsearch.
 ///
 /// Contains details that indicate why the exception was raised which can help to determine
