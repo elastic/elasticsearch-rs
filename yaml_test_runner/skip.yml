@@ -20,27 +20,27 @@ tests:
   indices/segments.yml:
     - "basic segments test"
     # a `0` is always interpreted as an array index, but in this test there is a "0" string key
-
+ 
   indices/shard_stores.yml:
     - "basic index test"   
     # a `0` is always interpreted as an array index, but in this test there is a "0" string key
-
+ 
   indices/stats.yml:
     - "Index - blank"
     # flaky test, needs to be investigated
-
+ 
   machine_learning/jobs_crud.yml:
     - "Jobs crud, get, stats, open, flush, close"
     # needs to be investigated
-
+ 
   security/10_api_key_basic.yml:
     - "API Key"
     # this test compares a single string against a property that is defined as an array
-
+ 
   security/130_user_profile.yml:
     - "Security User Profiles"
     # this appears to be a problem with the code generated for this test
-
+ 
   security/140_user.yml:
     - "security.user"
     # needs to be investigated
