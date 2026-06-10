@@ -71,7 +71,7 @@ impl<'b> IlmDeleteLifecycleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ilm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/ilm-delete-lifecycle.html)\n\nDeletes the specified lifecycle policy definition. A currently used policy cannot be deleted."]
+#[doc = "Builder for the [Ilm Delete Lifecycle API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ilm-delete-lifecycle)\n\nDelete a lifecycle policy"]
 #[derive(Clone, Debug)]
 pub struct IlmDeleteLifecycle<'a, 'b> {
     transport: &'a Transport,
@@ -209,7 +209,7 @@ impl<'b> IlmExplainLifecycleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ilm Explain Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/ilm-explain-lifecycle.html)\n\nRetrieves information about the index's current lifecycle state, such as the currently executing phase, action, and step."]
+#[doc = "Builder for the [Ilm Explain Lifecycle API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ilm-explain-lifecycle)\n\nExplain the lifecycle state"]
 #[derive(Clone, Debug)]
 pub struct IlmExplainLifecycle<'a, 'b> {
     transport: &'a Transport,
@@ -358,7 +358,7 @@ impl<'b> IlmGetLifecycleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ilm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/ilm-get-lifecycle.html)\n\nReturns the specified policy definition. Includes the policy version and last modified date."]
+#[doc = "Builder for the [Ilm Get Lifecycle API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ilm-get-lifecycle)\n\nGet lifecycle policies"]
 #[derive(Clone, Debug)]
 pub struct IlmGetLifecycle<'a, 'b> {
     transport: &'a Transport,
@@ -488,7 +488,7 @@ impl IlmGetStatusParts {
         }
     }
 }
-#[doc = "Builder for the [Ilm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/ilm-get-status.html)\n\nRetrieves the current index lifecycle management (ILM) status."]
+#[doc = "Builder for the [Ilm Get Status API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ilm-get-status)\n\nGet the ILM status"]
 #[derive(Clone, Debug)]
 pub struct IlmGetStatus<'a, 'b> {
     transport: &'a Transport,
@@ -600,7 +600,7 @@ impl IlmMigrateToDataTiersParts {
         }
     }
 }
-#[doc = "Builder for the [Ilm Migrate To Data Tiers API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/ilm-migrate-to-data-tiers.html)\n\nMigrates the indices and ILM policies away from custom node attribute allocation routing to data tiers routing"]
+#[doc = "Builder for the [Ilm Migrate To Data Tiers API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ilm-migrate-to-data-tiers)\n\nMigrate to data tiers routing"]
 #[derive(Clone, Debug)]
 pub struct IlmMigrateToDataTiers<'a, 'b, B> {
     transport: &'a Transport,
@@ -762,7 +762,7 @@ impl<'b> IlmMoveToStepParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ilm Move To Step API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/ilm-move-to-step.html)\n\nManually moves an index into the specified step and executes that step."]
+#[doc = "Builder for the [Ilm Move To Step API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ilm-move-to-step)\n\nMove to a lifecycle step"]
 #[derive(Clone, Debug)]
 pub struct IlmMoveToStep<'a, 'b, B> {
     transport: &'a Transport,
@@ -904,7 +904,7 @@ impl<'b> IlmPutLifecycleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ilm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/ilm-put-lifecycle.html)\n\nCreates a lifecycle policy"]
+#[doc = "Builder for the [Ilm Put Lifecycle API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ilm-put-lifecycle)\n\nCreate or update a lifecycle policy"]
 #[derive(Clone, Debug)]
 pub struct IlmPutLifecycle<'a, 'b, B> {
     transport: &'a Transport,
@@ -1067,7 +1067,7 @@ impl<'b> IlmRemovePolicyParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ilm Remove Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/ilm-remove-policy.html)\n\nRemoves the assigned lifecycle policy and stops managing the specified index"]
+#[doc = "Builder for the [Ilm Remove Policy API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ilm-remove-policy)\n\nRemove policies from an index"]
 #[derive(Clone, Debug)]
 pub struct IlmRemovePolicy<'a, 'b, B> {
     transport: &'a Transport,
@@ -1210,7 +1210,7 @@ impl<'b> IlmRetryParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Ilm Retry API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/ilm-retry-policy.html)\n\nRetries executing the policy for an index that is in the ERROR step."]
+#[doc = "Builder for the [Ilm Retry API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ilm-retry)\n\nRetry a policy"]
 #[derive(Clone, Debug)]
 pub struct IlmRetry<'a, 'b, B> {
     transport: &'a Transport,
@@ -1345,7 +1345,7 @@ impl IlmStartParts {
         }
     }
 }
-#[doc = "Builder for the [Ilm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/ilm-start.html)\n\nStart the index lifecycle management (ILM) plugin."]
+#[doc = "Builder for the [Ilm Start API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ilm-start)\n\nStart the ILM plugin"]
 #[derive(Clone, Debug)]
 pub struct IlmStart<'a, 'b, B> {
     transport: &'a Transport,
@@ -1500,7 +1500,7 @@ impl IlmStopParts {
         }
     }
 }
-#[doc = "Builder for the [Ilm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/ilm-stop.html)\n\nHalts all lifecycle management operations and stops the index lifecycle management (ILM) plugin"]
+#[doc = "Builder for the [Ilm Stop API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ilm-stop)\n\nStop the ILM plugin"]
 #[derive(Clone, Debug)]
 pub struct IlmStop<'a, 'b, B> {
     transport: &'a Transport,
@@ -1653,59 +1653,59 @@ impl<'a> Ilm<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Ilm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/ilm-delete-lifecycle.html)\n\nDeletes the specified lifecycle policy definition. A currently used policy cannot be deleted."]
+    #[doc = "[Ilm Delete Lifecycle API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ilm-delete-lifecycle)\n\nDelete a lifecycle policy"]
     pub fn delete_lifecycle<'b>(
         &'a self,
         parts: IlmDeleteLifecycleParts<'b>,
     ) -> IlmDeleteLifecycle<'a, 'b> {
         IlmDeleteLifecycle::new(self.transport(), parts)
     }
-    #[doc = "[Ilm Explain Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/ilm-explain-lifecycle.html)\n\nRetrieves information about the index's current lifecycle state, such as the currently executing phase, action, and step."]
+    #[doc = "[Ilm Explain Lifecycle API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ilm-explain-lifecycle)\n\nExplain the lifecycle state"]
     pub fn explain_lifecycle<'b>(
         &'a self,
         parts: IlmExplainLifecycleParts<'b>,
     ) -> IlmExplainLifecycle<'a, 'b> {
         IlmExplainLifecycle::new(self.transport(), parts)
     }
-    #[doc = "[Ilm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/ilm-get-lifecycle.html)\n\nReturns the specified policy definition. Includes the policy version and last modified date."]
+    #[doc = "[Ilm Get Lifecycle API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ilm-get-lifecycle)\n\nGet lifecycle policies"]
     pub fn get_lifecycle<'b>(&'a self, parts: IlmGetLifecycleParts<'b>) -> IlmGetLifecycle<'a, 'b> {
         IlmGetLifecycle::new(self.transport(), parts)
     }
-    #[doc = "[Ilm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/ilm-get-status.html)\n\nRetrieves the current index lifecycle management (ILM) status."]
+    #[doc = "[Ilm Get Status API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ilm-get-status)\n\nGet the ILM status"]
     pub fn get_status<'b>(&'a self) -> IlmGetStatus<'a, 'b> {
         IlmGetStatus::new(self.transport())
     }
-    #[doc = "[Ilm Migrate To Data Tiers API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/ilm-migrate-to-data-tiers.html)\n\nMigrates the indices and ILM policies away from custom node attribute allocation routing to data tiers routing"]
+    #[doc = "[Ilm Migrate To Data Tiers API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ilm-migrate-to-data-tiers)\n\nMigrate to data tiers routing"]
     pub fn migrate_to_data_tiers<'b>(&'a self) -> IlmMigrateToDataTiers<'a, 'b, ()> {
         IlmMigrateToDataTiers::new(self.transport())
     }
-    #[doc = "[Ilm Move To Step API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/ilm-move-to-step.html)\n\nManually moves an index into the specified step and executes that step."]
+    #[doc = "[Ilm Move To Step API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ilm-move-to-step)\n\nMove to a lifecycle step"]
     pub fn move_to_step<'b>(&'a self, parts: IlmMoveToStepParts<'b>) -> IlmMoveToStep<'a, 'b, ()> {
         IlmMoveToStep::new(self.transport(), parts)
     }
-    #[doc = "[Ilm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/ilm-put-lifecycle.html)\n\nCreates a lifecycle policy"]
+    #[doc = "[Ilm Put Lifecycle API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ilm-put-lifecycle)\n\nCreate or update a lifecycle policy"]
     pub fn put_lifecycle<'b>(
         &'a self,
         parts: IlmPutLifecycleParts<'b>,
     ) -> IlmPutLifecycle<'a, 'b, ()> {
         IlmPutLifecycle::new(self.transport(), parts)
     }
-    #[doc = "[Ilm Remove Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/ilm-remove-policy.html)\n\nRemoves the assigned lifecycle policy and stops managing the specified index"]
+    #[doc = "[Ilm Remove Policy API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ilm-remove-policy)\n\nRemove policies from an index"]
     pub fn remove_policy<'b>(
         &'a self,
         parts: IlmRemovePolicyParts<'b>,
     ) -> IlmRemovePolicy<'a, 'b, ()> {
         IlmRemovePolicy::new(self.transport(), parts)
     }
-    #[doc = "[Ilm Retry API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/ilm-retry-policy.html)\n\nRetries executing the policy for an index that is in the ERROR step."]
+    #[doc = "[Ilm Retry API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ilm-retry)\n\nRetry a policy"]
     pub fn retry<'b>(&'a self, parts: IlmRetryParts<'b>) -> IlmRetry<'a, 'b, ()> {
         IlmRetry::new(self.transport(), parts)
     }
-    #[doc = "[Ilm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/ilm-start.html)\n\nStart the index lifecycle management (ILM) plugin."]
+    #[doc = "[Ilm Start API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ilm-start)\n\nStart the ILM plugin"]
     pub fn start<'b>(&'a self) -> IlmStart<'a, 'b, ()> {
         IlmStart::new(self.transport())
     }
-    #[doc = "[Ilm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/ilm-stop.html)\n\nHalts all lifecycle management operations and stops the index lifecycle management (ILM) plugin"]
+    #[doc = "[Ilm Stop API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ilm-stop)\n\nStop the ILM plugin"]
     pub fn stop<'b>(&'a self) -> IlmStop<'a, 'b, ()> {
         IlmStop::new(self.transport())
     }

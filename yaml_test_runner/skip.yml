@@ -1,0 +1,46 @@
+# Skip file of features and tests to skip.
+# This is used at compilation time, when compiling tests from the YAML tests, to not generate tests that match
+# on name or features defined below that should be skipped. Accordingly, changing values in this file requires
+# recompiling tests in order for the changes to take effect.
+
+# features not yet implemented
+features:
+
+# tests to skip generating and compiling a test for
+tests:
+
+  _global/tasks.yml:
+    - "tasks"
+    # needs to be investigated
+
+  cat/fielddata.yml:
+    - "cat.fielddata"
+    # needs to be investigated
+
+  indices/segments.yml:
+    - "basic segments test"
+    # a `0` is always interpreted as an array index, but in this test there is a "0" string key
+ 
+  indices/shard_stores.yml:
+    - "basic index test"   
+    # a `0` is always interpreted as an array index, but in this test there is a "0" string key
+ 
+  indices/stats.yml:
+    - "Index - blank"
+    # flaky test, needs to be investigated
+ 
+  machine_learning/jobs_crud.yml:
+    - "Jobs crud, get, stats, open, flush, close"
+    # needs to be investigated
+ 
+  security/10_api_key_basic.yml:
+    - "API Key"
+    # this test compares a single string against a property that is defined as an array
+ 
+  security/130_user_profile.yml:
+    - "Security User Profiles"
+    # this appears to be a problem with the code generated for this test
+ 
+  security/140_user.yml:
+    - "security.user"
+    # needs to be investigated

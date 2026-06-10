@@ -26,3 +26,4 @@ COPY elasticsearch/Cargo.toml ./elasticsearch/Cargo.toml
 COPY elasticsearch/src ./elasticsearch/src
 COPY elasticsearch/build.rs ./elasticsearch/build.rs
 COPY xtask ./xtask
+COPY yaml_test_runner ./yaml_test_runner

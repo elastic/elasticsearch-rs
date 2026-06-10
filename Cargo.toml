@@ -2,6 +2,7 @@
 members = [
     "api_generator",
     "elasticsearch",
+    "yaml_test_runner",
     "xtask"
 ]
 

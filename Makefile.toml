@@ -7,7 +7,7 @@ init_task = "init"
 CARGO_MAKE_CARGO_PUBLISH_FLAGS = "--dry-run"
 # RUST_BACKTRACE is set to "full" in cargo make's builtin makefiles/stable.toml
 RUST_BACKTRACE = { value = "0", condition = { env_not_set = ["RUST_BACKTRACE"]}}
-ELASTICSEARCH_URL = "https://elastic:changeme@localhost:9200"
+##ELASTICSEARCH_URL = "https://elastic:changeme@localhost:9200"
 
 [tasks.init]
 private = true
@@ -19,12 +19,19 @@ script = [
 
 [tasks.download-specs]
 category = "Elasticsearch"
-description = '''Download Rest API specs and YAML tests'''
+description = '''Download Rest API specs'''
 private = true
 command = "cargo"
 # cargo-make insists on installing cargo-xtask and ignores .cargo/config.toml
 #args = ["xtask", "download-specs"]
 args = ["run", "-q", "-p", "xtask", "--", "download-specs"]
+
+[tasks.clone-client-tests]
+category = "Elasticsearch"
+description = '''Clone YAML test repository'''
+private = true
+command = "cargo"
+args = ["run", "-q", "-p", "xtask", "--", "clone-client-tests"]
 
 [tasks.test-elasticsearch]
 category = "Elasticsearch"
@@ -32,6 +39,32 @@ private = true
 command = "cargo"
 args = ["test", "-p", "elasticsearch"]
 dependencies = ["start-elasticsearch"]
+
+[tasks.run-yaml-test-runner]
+category = "Elasticsearch"
+description = '''
+Runs yaml_test_runner package to generate tests from yaml files for a given Elasticsearch commit.
+The commit to use is retrieved from the running Elasticsearch instance
+'''
+private = true
+command = "cargo"
+args = ["run", "-p", "yaml_test_runner"]
+dependencies = ["clone-client-tests", "download-specs"]
+
+[tasks.test-yaml-test-runner]
+category = "Elasticsearch"
+private = true
+condition = { env_set = [ "ELASTICSEARCH_URL" ], env_false = ["CARGO_MAKE_CI"] }
+command = "cargo"
+args = ["test", "-p", "yaml_test_runner", "--", "--test-threads", "1"]
+dependencies = ["start-elasticsearch", "generate-yaml-tests"]
+
+[tasks.test-yaml-test-runner-ci]
+category = "Elasticsearch"
+private = true
+condition = { env_set = [ "ELASTICSEARCH_URL" ], env_true = ["CARGO_MAKE_CI"] }
+script = ["set -o pipefail; cargo test -p yaml_test_runner -- --test-threads 1 | tee test_results/results.txt"]
+dependencies = ["start-elasticsearch", "generate-yaml-tests"]
 
 [tasks.run-api-generator]
 category = "Elasticsearch"
@@ -110,6 +143,12 @@ private = false
 description = "Stops Elasticsearch docker container, if running"
 env = { "CLEANUP" = true, "DETACH" = false }
 
+[tasks.test-yaml]
+category = "Elasticsearch"
+description = "Generates and runs yaml_test_runner package platinum/free tests against a given Elasticsearch version"
+condition = { env_set = [ "STACK_VERSION", "ELASTICSEARCH_URL" ] }
+dependencies = ["generate-yaml-tests", "create-test-results-dir", "test-yaml-test-runner", "test-yaml-test-runner-ci"]
+
 [tasks.test-generator]
 category = "Elasticsearch"
 clear = true
@@ -121,8 +160,14 @@ args = ["test", "-p", "api_generator"]
 category = "Elasticsearch"
 clear = true
 description = "Runs elasticsearch package tests against a given Elasticsearch version"
-dependencies = ["test-elasticsearch"]
+dependencies = ["test-elasticsearch", "test-yaml"]
 run_task = "stop-elasticsearch"
+
+[tasks.generate-yaml-tests]
+category = "Elasticsearch"
+description = "Generates Elasticsearch client tests from YAML tests"
+dependencies = ["run-yaml-test-runner"]
+run_task = "format"
 
 [tasks.generate-api]
 category = "Elasticsearch"
@@ -292,6 +337,7 @@ script = ['''
     echo - start-elasticsearch: Starts Elasticsearch docker container with the given version and distribution
     echo - stop-elasticsearch: Stops Elasticsearch docker container, if running
     echo
+    echo - test-yaml: Generates and runs yaml_test_runner package platinum/free tests against a given Elasticsearch version
     echo - test-generator: Generates and runs api_generator package tests
     echo - test: Runs elasticsearch package tests against a given Elasticsearch version
     echo

@@ -24,6 +24,7 @@ use std::ops::Deref;
 use std::path;
 
 pub mod artifacts;
+pub mod client_tests;
 
 /// elasticsearch-rs build helpers
 #[derive(Parser, Debug)]
@@ -31,12 +32,14 @@ enum Cmd {
     /// Download Elasticsearch Rest specs and YAML tests
     /// based on the STACK_VERSION environment variable
     DownloadSpecs {},
+    CloneClientTests {},
 }
 
 fn main() -> anyhow::Result<()> {
     let opt = Cmd::parse();
     match opt {
         Cmd::DownloadSpecs {} => artifacts::download(STACK_VERSION.deref()),
+        Cmd::CloneClientTests {} => client_tests::clone(STACK_VERSION.deref()),
     }
 }
 
