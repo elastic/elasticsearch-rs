@@ -1,5 +1,9 @@
 on: push
 name: Clippy check
+
+permissions:
+  checks: write
+
 env:
   # workaround current issue with rustfmt-nightly
   CFG_RELEASE_CHANNEL: nightly
