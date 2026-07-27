@@ -8,7 +8,7 @@ steps:
     matrix:
       setup:
         stack_version:
-          - "9.3.5-SNAPSHOT"
+          - "9.3.9-SNAPSHOT"
         toolchain:
           - "latest"
     command: ./.buildkite/run-tests
