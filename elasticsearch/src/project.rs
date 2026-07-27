@@ -24,11 +24,6 @@
 // cargo make generate-api
 // -----------------------------------------------
 
-//! Monitoring APIs
-//!
-//! The Elastic Stack [monitoring features](https://www.elastic.co/guide/en/elasticsearch/reference/master/monitor-elasticsearch-cluster.html)
-//! provide a way to keep a pulse on thehealth and performance of your Elasticsearch cluster.
-
 #![allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
@@ -46,78 +41,46 @@ use percent_encoding::percent_encode;
 use serde::Serialize;
 use std::{borrow::Cow, time::Duration};
 #[derive(Debug, Clone, PartialEq, Eq)]
-#[doc = "API parts for the Monitoring Bulk API"]
-pub enum MonitoringBulkParts {
+#[doc = "API parts for the Project Tags API"]
+pub enum ProjectTagsParts {
     #[doc = "No parts"]
     None,
 }
-impl MonitoringBulkParts {
-    #[doc = "Builds a relative URL path to the Monitoring Bulk API"]
+impl ProjectTagsParts {
+    #[doc = "Builds a relative URL path to the Project Tags API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            MonitoringBulkParts::None => "/_monitoring/bulk".into(),
+            ProjectTagsParts::None => "/_project/tags".into(),
         }
     }
 }
-#[doc = "Builder for the [Monitoring Bulk API](https://www.elastic.co/docs/api/doc/elasticsearch)\n\nSend monitoring data"]
+#[doc = "Builder for the [Project Tags API](https://www.elastic.co/docs/api/doc/elasticsearch-serverless/operation/operation-project-tags)\n\nReturn tags defined for the project"]
 #[derive(Clone, Debug)]
-pub struct MonitoringBulk<'a, 'b, B> {
+pub struct ProjectTags<'a, 'b> {
     transport: &'a Transport,
-    parts: MonitoringBulkParts,
-    body: Option<B>,
+    parts: ProjectTagsParts,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    interval: Option<&'b str>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
     source: Option<&'b str>,
-    system_api_version: Option<&'b str>,
-    system_id: Option<&'b str>,
 }
-impl<'a, 'b, B> MonitoringBulk<'a, 'b, B>
-where
-    B: Body,
-{
-    #[doc = "Creates a new instance of [MonitoringBulk]"]
+impl<'a, 'b> ProjectTags<'a, 'b> {
+    #[doc = "Creates a new instance of [ProjectTags]"]
     pub fn new(transport: &'a Transport) -> Self {
         let headers = HeaderMap::new();
-        MonitoringBulk {
+        ProjectTags {
             transport,
-            parts: MonitoringBulkParts::None,
+            parts: ProjectTagsParts::None,
             headers,
-            body: None,
             error_trace: None,
             filter_path: None,
             human: None,
-            interval: None,
             pretty: None,
             request_timeout: None,
             source: None,
-            system_api_version: None,
-            system_id: None,
-        }
-    }
-    #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Vec<T>) -> MonitoringBulk<'a, 'b, NdBody<T>>
-    where
-        T: Body,
-    {
-        MonitoringBulk {
-            transport: self.transport,
-            parts: self.parts,
-            body: Some(NdBody::new(body)),
-            error_trace: self.error_trace,
-            filter_path: self.filter_path,
-            headers: self.headers,
-            human: self.human,
-            interval: self.interval,
-            pretty: self.pretty,
-            request_timeout: self.request_timeout,
-            source: self.source,
-            system_api_version: self.system_api_version,
-            system_id: self.system_id,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -140,11 +103,6 @@ where
         self.human = Some(human);
         self
     }
-    #[doc = "Collection interval (e.g., '10s' or '10000ms') of the payload"]
-    pub fn interval(mut self, interval: &'b str) -> Self {
-        self.interval = Some(interval);
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: bool) -> Self {
         self.pretty = Some(pretty);
@@ -160,20 +118,10 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "API Version of the monitored system"]
-    pub fn system_api_version(mut self, system_api_version: &'b str) -> Self {
-        self.system_api_version = Some(system_api_version);
-        self
-    }
-    #[doc = "Identifier of the monitored system"]
-    pub fn system_id(mut self, system_id: &'b str) -> Self {
-        self.system_id = Some(system_id);
-        self
-    }
-    #[doc = "Creates an asynchronous call to the Monitoring Bulk API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Project Tags API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
-        let method = http::Method::Post;
+        let method = http::Method::Get;
         let headers = self.headers;
         let timeout = self.request_timeout;
         let query_string = {
@@ -184,25 +132,19 @@ where
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
                 human: Option<bool>,
-                interval: Option<&'b str>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
-                system_api_version: Option<&'b str>,
-                system_id: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
-                interval: self.interval,
                 pretty: self.pretty,
                 source: self.source,
-                system_api_version: self.system_api_version,
-                system_id: self.system_id,
             };
             Some(query_params)
         };
-        let body = self.body;
+        let body = Option::<()>::None;
         let response = self
             .transport
             .send(method, &path, headers, query_string.as_ref(), body, timeout)
@@ -210,26 +152,26 @@ where
         Ok(response)
     }
 }
-#[doc = "Namespace client for Monitoring APIs"]
-pub struct Monitoring<'a> {
+#[doc = "Namespace client for Project APIs"]
+pub struct Project<'a> {
     transport: &'a Transport,
 }
-impl<'a> Monitoring<'a> {
-    #[doc = "Creates a new instance of [Monitoring]"]
+impl<'a> Project<'a> {
+    #[doc = "Creates a new instance of [Project]"]
     pub fn new(transport: &'a Transport) -> Self {
         Self { transport }
     }
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Monitoring Bulk API](https://www.elastic.co/docs/api/doc/elasticsearch)\n\nSend monitoring data"]
-    pub fn bulk<'b>(&'a self) -> MonitoringBulk<'a, 'b, ()> {
-        MonitoringBulk::new(self.transport())
+    #[doc = "[Project Tags API](https://www.elastic.co/docs/api/doc/elasticsearch-serverless/operation/operation-project-tags)\n\nReturn tags defined for the project"]
+    pub fn tags<'b>(&'a self) -> ProjectTags<'a, 'b> {
+        ProjectTags::new(self.transport())
     }
 }
 impl Elasticsearch {
-    #[doc = "Creates a namespace client for Monitoring APIs"]
-    pub fn monitoring(&self) -> Monitoring {
-        Monitoring::new(self.transport())
+    #[doc = "Creates a namespace client for Project APIs"]
+    pub fn project(&self) -> Project {
+        Project::new(self.transport())
     }
 }
