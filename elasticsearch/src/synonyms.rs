@@ -72,7 +72,7 @@ impl<'b> SynonymsDeleteSynonymParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Synonyms Delete Synonym API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/delete-synonyms-set.html)\n\nDeletes a synonym set"]
+#[doc = "Builder for the [Synonyms Delete Synonym API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-synonyms-delete-synonym)\n\nDelete a synonym set"]
 #[derive(Clone, Debug)]
 pub struct SynonymsDeleteSynonym<'a, 'b> {
     transport: &'a Transport,
@@ -196,7 +196,7 @@ impl<'b> SynonymsDeleteSynonymRuleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Synonyms Delete Synonym Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/delete-synonym-rule.html)\n\nDeletes a synonym rule in a synonym set"]
+#[doc = "Builder for the [Synonyms Delete Synonym Rule API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-synonyms-delete-synonym-rule)\n\nDelete a synonym rule"]
 #[derive(Clone, Debug)]
 pub struct SynonymsDeleteSynonymRule<'a, 'b> {
     transport: &'a Transport,
@@ -323,7 +323,7 @@ impl<'b> SynonymsGetSynonymParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Synonyms Get Synonym API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/get-synonyms-set.html)\n\nRetrieves a synonym set"]
+#[doc = "Builder for the [Synonyms Get Synonym API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-synonyms-get-synonym)\n\nGet a synonym set"]
 #[derive(Clone, Debug)]
 pub struct SynonymsGetSynonym<'a, 'b> {
     transport: &'a Transport,
@@ -335,6 +335,7 @@ pub struct SynonymsGetSynonym<'a, 'b> {
     human: Option<bool>,
     pretty: Option<bool>,
     request_timeout: Option<Duration>,
+    search_after: Option<&'b str>,
     size: Option<i32>,
     source: Option<&'b str>,
 }
@@ -352,6 +353,7 @@ impl<'a, 'b> SynonymsGetSynonym<'a, 'b> {
             human: None,
             pretty: None,
             request_timeout: None,
+            search_after: None,
             size: None,
             source: None,
         }
@@ -366,7 +368,7 @@ impl<'a, 'b> SynonymsGetSynonym<'a, 'b> {
         self.filter_path = Some(filter_path);
         self
     }
-    #[doc = "Starting offset"]
+    #[doc = "Starting offset for offset-based pagination"]
     pub fn from(mut self, from: i32) -> Self {
         self.from = Some(from);
         self
@@ -391,7 +393,12 @@ impl<'a, 'b> SynonymsGetSynonym<'a, 'b> {
         self.request_timeout = Some(timeout);
         self
     }
-    #[doc = "specifies a max number of results to get"]
+    #[doc = "The rule ID of the last result from the previous page, for cursor-based pagination"]
+    pub fn search_after(mut self, search_after: &'b str) -> Self {
+        self.search_after = Some(search_after);
+        self
+    }
+    #[doc = "Maximum number of results to retrieve"]
     pub fn size(mut self, size: i32) -> Self {
         self.size = Some(size);
         self
@@ -417,6 +424,7 @@ impl<'a, 'b> SynonymsGetSynonym<'a, 'b> {
                 from: Option<i32>,
                 human: Option<bool>,
                 pretty: Option<bool>,
+                search_after: Option<&'b str>,
                 size: Option<i32>,
                 source: Option<&'b str>,
             }
@@ -426,6 +434,7 @@ impl<'a, 'b> SynonymsGetSynonym<'a, 'b> {
                 from: self.from,
                 human: self.human,
                 pretty: self.pretty,
+                search_after: self.search_after,
                 size: self.size,
                 source: self.source,
             };
@@ -465,7 +474,7 @@ impl<'b> SynonymsGetSynonymRuleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Synonyms Get Synonym Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/get-synonym-rule.html)\n\nRetrieves a synonym rule from a synonym set"]
+#[doc = "Builder for the [Synonyms Get Synonym Rule API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-synonyms-get-synonym-rule)\n\nGet a synonym rule"]
 #[derive(Clone, Debug)]
 pub struct SynonymsGetSynonymRule<'a, 'b> {
     transport: &'a Transport,
@@ -577,7 +586,7 @@ impl SynonymsGetSynonymsSetsParts {
         }
     }
 }
-#[doc = "Builder for the [Synonyms Get Synonyms Sets API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/list-synonyms-sets.html)\n\nRetrieves a summary of all defined synonym sets"]
+#[doc = "Builder for the [Synonyms Get Synonyms Sets API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-synonyms-get-synonym)\n\nGet all synonym sets"]
 #[derive(Clone, Debug)]
 pub struct SynonymsGetSynonymsSets<'a, 'b> {
     transport: &'a Transport,
@@ -713,11 +722,12 @@ impl<'b> SynonymsPutSynonymParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Synonyms Put Synonym API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/put-synonyms-set.html)\n\nCreates or updates a synonyms set"]
+#[doc = "Builder for the [Synonyms Put Synonym API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-synonyms-put-synonym)\n\nCreate or update a synonym set"]
 #[derive(Clone, Debug)]
 pub struct SynonymsPutSynonym<'a, 'b, B> {
     transport: &'a Transport,
     parts: SynonymsPutSynonymParts<'b>,
+    append: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -739,6 +749,7 @@ where
             transport,
             parts,
             headers,
+            append: None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -749,6 +760,11 @@ where
             source: None,
         }
     }
+    #[doc = "If true, rules in the body are appended to the existing set (rules with matching IDs are overwritten). If false (default), the set is replaced."]
+    pub fn append(mut self, append: bool) -> Self {
+        self.append = Some(append);
+        self
+    }
     #[doc = "The body for the API call"]
     pub fn body<T>(self, body: T) -> SynonymsPutSynonym<'a, 'b, JsonBody<T>>
     where
@@ -758,6 +774,7 @@ where
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
+            append: self.append,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             headers: self.headers,
@@ -818,6 +835,7 @@ where
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                append: Option<bool>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -827,6 +845,7 @@ where
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
+                append: self.append,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
@@ -870,7 +889,7 @@ impl<'b> SynonymsPutSynonymRuleParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Synonyms Put Synonym Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/put-synonym-rule.html)\n\nCreates or updates a synonym rule in a synonym set"]
+#[doc = "Builder for the [Synonyms Put Synonym Rule API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-synonyms-put-synonym-rule)\n\nCreate or update a synonym rule"]
 #[derive(Clone, Debug)]
 pub struct SynonymsPutSynonymRule<'a, 'b, B> {
     transport: &'a Transport,
@@ -1013,46 +1032,46 @@ impl<'a> Synonyms<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Synonyms Delete Synonym API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/delete-synonyms-set.html)\n\nDeletes a synonym set"]
+    #[doc = "[Synonyms Delete Synonym API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-synonyms-delete-synonym)\n\nDelete a synonym set"]
     pub fn delete_synonym<'b>(
         &'a self,
         parts: SynonymsDeleteSynonymParts<'b>,
     ) -> SynonymsDeleteSynonym<'a, 'b> {
         SynonymsDeleteSynonym::new(self.transport(), parts)
     }
-    #[doc = "[Synonyms Delete Synonym Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/delete-synonym-rule.html)\n\nDeletes a synonym rule in a synonym set"]
+    #[doc = "[Synonyms Delete Synonym Rule API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-synonyms-delete-synonym-rule)\n\nDelete a synonym rule"]
     pub fn delete_synonym_rule<'b>(
         &'a self,
         parts: SynonymsDeleteSynonymRuleParts<'b>,
     ) -> SynonymsDeleteSynonymRule<'a, 'b> {
         SynonymsDeleteSynonymRule::new(self.transport(), parts)
     }
-    #[doc = "[Synonyms Get Synonym API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/get-synonyms-set.html)\n\nRetrieves a synonym set"]
+    #[doc = "[Synonyms Get Synonym API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-synonyms-get-synonym)\n\nGet a synonym set"]
     pub fn get_synonym<'b>(
         &'a self,
         parts: SynonymsGetSynonymParts<'b>,
     ) -> SynonymsGetSynonym<'a, 'b> {
         SynonymsGetSynonym::new(self.transport(), parts)
     }
-    #[doc = "[Synonyms Get Synonym Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/get-synonym-rule.html)\n\nRetrieves a synonym rule from a synonym set"]
+    #[doc = "[Synonyms Get Synonym Rule API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-synonyms-get-synonym-rule)\n\nGet a synonym rule"]
     pub fn get_synonym_rule<'b>(
         &'a self,
         parts: SynonymsGetSynonymRuleParts<'b>,
     ) -> SynonymsGetSynonymRule<'a, 'b> {
         SynonymsGetSynonymRule::new(self.transport(), parts)
     }
-    #[doc = "[Synonyms Get Synonyms Sets API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/list-synonyms-sets.html)\n\nRetrieves a summary of all defined synonym sets"]
+    #[doc = "[Synonyms Get Synonyms Sets API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-synonyms-get-synonym)\n\nGet all synonym sets"]
     pub fn get_synonyms_sets<'b>(&'a self) -> SynonymsGetSynonymsSets<'a, 'b> {
         SynonymsGetSynonymsSets::new(self.transport())
     }
-    #[doc = "[Synonyms Put Synonym API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/put-synonyms-set.html)\n\nCreates or updates a synonyms set"]
+    #[doc = "[Synonyms Put Synonym API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-synonyms-put-synonym)\n\nCreate or update a synonym set"]
     pub fn put_synonym<'b>(
         &'a self,
         parts: SynonymsPutSynonymParts<'b>,
     ) -> SynonymsPutSynonym<'a, 'b, ()> {
         SynonymsPutSynonym::new(self.transport(), parts)
     }
-    #[doc = "[Synonyms Put Synonym Rule API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/put-synonym-rule.html)\n\nCreates or updates a synonym rule in a synonym set"]
+    #[doc = "[Synonyms Put Synonym Rule API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-synonyms-put-synonym-rule)\n\nCreate or update a synonym rule"]
     pub fn put_synonym_rule<'b>(
         &'a self,
         parts: SynonymsPutSynonymRuleParts<'b>,
