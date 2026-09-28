@@ -58,7 +58,7 @@ impl EsqlAsyncQueryParts {
         }
     }
 }
-#[doc = "Builder for the [Esql Async Query API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/esql-async-query-api.html)\n\nExecutes an ESQL request asynchronously"]
+#[doc = "Builder for the [Esql Async Query API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-async-query)\n\nRun an async ES|QL query"]
 #[derive(Clone, Debug)]
 pub struct EsqlAsyncQuery<'a, 'b, B> {
     transport: &'a Transport,
@@ -69,7 +69,7 @@ pub struct EsqlAsyncQuery<'a, 'b, B> {
     drop_null_columns: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
-    format: Option<&'b str>,
+    format: Option<Format>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
@@ -147,8 +147,8 @@ where
         self.filter_path = Some(filter_path);
         self
     }
-    #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'b str) -> Self {
+    #[doc = "A short version of the Accept header, e.g. json, yaml.\n\n`csv`, `tsv`, and `txt` formats will return results in a tabular format, excluding other metadata fields from the response.\n\nFor async requests, nothing will be returned if the async query doesn't finish within the timeout.\nThe query ID and running status are available in the `X-Elasticsearch-Async-Id` and `X-Elasticsearch-Async-Is-Running` HTTP headers of the response, respectively."]
+    pub fn format(mut self, format: Format) -> Self {
         self.format = Some(format);
         self
     }
@@ -193,7 +193,7 @@ where
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                format: Option<&'b str>,
+                format: Option<Format>,
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
@@ -239,7 +239,7 @@ impl<'b> EsqlAsyncQueryDeleteParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Esql Async Query Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/esql-async-query-delete-api.html)\n\nDelete an async query request given its ID."]
+#[doc = "Builder for the [Esql Async Query Delete API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-async-query-delete)\n\nDelete an async ES|QL query"]
 #[derive(Clone, Debug)]
 pub struct EsqlAsyncQueryDelete<'a, 'b> {
     transport: &'a Transport,
@@ -357,7 +357,7 @@ impl<'b> EsqlAsyncQueryGetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Esql Async Query Get API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/esql-async-query-get-api.html)\n\nRetrieves the results of a previously submitted async query request given its ID."]
+#[doc = "Builder for the [Esql Async Query Get API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-async-query-get)\n\nGet async ES|QL query results"]
 #[derive(Clone, Debug)]
 pub struct EsqlAsyncQueryGet<'a, 'b> {
     transport: &'a Transport,
@@ -365,7 +365,7 @@ pub struct EsqlAsyncQueryGet<'a, 'b> {
     drop_null_columns: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
-    format: Option<&'b str>,
+    format: Option<Format>,
     headers: HeaderMap,
     human: Option<bool>,
     keep_alive: Option<&'b str>,
@@ -409,8 +409,8 @@ impl<'a, 'b> EsqlAsyncQueryGet<'a, 'b> {
         self.filter_path = Some(filter_path);
         self
     }
-    #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'b str) -> Self {
+    #[doc = "A short version of the Accept header, for example `json` or `yaml`."]
+    pub fn format(mut self, format: Format) -> Self {
         self.format = Some(format);
         self
     }
@@ -463,7 +463,7 @@ impl<'a, 'b> EsqlAsyncQueryGet<'a, 'b> {
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                format: Option<&'b str>,
+                format: Option<Format>,
                 human: Option<bool>,
                 keep_alive: Option<&'b str>,
                 pretty: Option<bool>,
@@ -512,12 +512,13 @@ impl<'b> EsqlAsyncQueryStopParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Esql Async Query Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/esql-async-query-stop-api.html)\n\nStops a previously submitted async query request given its ID and collects the results."]
+#[doc = "Builder for the [Esql Async Query Stop API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-async-query-stop)\n\nStop async ES|QL query"]
 #[derive(Clone, Debug)]
 pub struct EsqlAsyncQueryStop<'a, 'b, B> {
     transport: &'a Transport,
     parts: EsqlAsyncQueryStopParts<'b>,
     body: Option<B>,
+    drop_null_columns: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -538,6 +539,7 @@ where
             parts,
             headers,
             body: None,
+            drop_null_columns: None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -555,6 +557,7 @@ where
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
+            drop_null_columns: self.drop_null_columns,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             headers: self.headers,
@@ -563,6 +566,11 @@ where
             request_timeout: self.request_timeout,
             source: self.source,
         }
+    }
+    #[doc = "Indicates whether columns that are entirely `null` will be removed from the `columns` and `values` portion of the results."]
+    pub fn drop_null_columns(mut self, drop_null_columns: bool) -> Self {
+        self.drop_null_columns = Some(drop_null_columns);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -609,6 +617,133 @@ where
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                drop_null_columns: Option<bool>,
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                drop_null_columns: self.drop_null_columns,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Esql Delete Data Source API"]
+pub enum EsqlDeleteDataSourceParts<'b> {
+    #[doc = "Name"]
+    Name(&'b [&'b str]),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> EsqlDeleteDataSourceParts<'b> {
+    #[doc = "Builds a relative URL path to the Esql Delete Data Source API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            EsqlDeleteDataSourceParts::Name(name) => {
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(20usize + encoded_name.len());
+                p.push_str("/_query/data_source/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Esql Delete Data Source API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-data-source-delete)\n\nDelete one or more ES|QL data sources. Fails with 409 if any dataset references them."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct EsqlDeleteDataSource<'a, 'b> {
+    transport: &'a Transport,
+    parts: EsqlDeleteDataSourceParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> EsqlDeleteDataSource<'a, 'b> {
+    #[doc = "Creates a new instance of [EsqlDeleteDataSource] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: EsqlDeleteDataSourceParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        EsqlDeleteDataSource {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Esql Delete Data Source API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Delete;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -625,7 +760,511 @@ where
             };
             Some(query_params)
         };
-        let body = self.body;
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Esql Delete Dataset API"]
+pub enum EsqlDeleteDatasetParts<'b> {
+    #[doc = "Name"]
+    Name(&'b [&'b str]),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> EsqlDeleteDatasetParts<'b> {
+    #[doc = "Builds a relative URL path to the Esql Delete Dataset API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            EsqlDeleteDatasetParts::Name(name) => {
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_name.len());
+                p.push_str("/_query/dataset/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Esql Delete Dataset API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-dataset-delete)\n\nDelete one or more ES|QL datasets."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct EsqlDeleteDataset<'a, 'b> {
+    transport: &'a Transport,
+    parts: EsqlDeleteDatasetParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> EsqlDeleteDataset<'a, 'b> {
+    #[doc = "Creates a new instance of [EsqlDeleteDataset] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: EsqlDeleteDatasetParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        EsqlDeleteDataset {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Esql Delete Dataset API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Delete;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Esql Delete View API"]
+pub enum EsqlDeleteViewParts<'b> {
+    #[doc = "Name"]
+    Name(&'b str),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> EsqlDeleteViewParts<'b> {
+    #[doc = "Builds a relative URL path to the Esql Delete View API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            EsqlDeleteViewParts::Name(name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(13usize + encoded_name.len());
+                p.push_str("/_query/view/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Esql Delete View API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-view-delete)\n\nDelete a non-materialized VIEW for ESQL."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct EsqlDeleteView<'a, 'b> {
+    transport: &'a Transport,
+    parts: EsqlDeleteViewParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> EsqlDeleteView<'a, 'b> {
+    #[doc = "Creates a new instance of [EsqlDeleteView] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: EsqlDeleteViewParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        EsqlDeleteView {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Esql Delete View API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Delete;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Esql Get Data Source API"]
+pub enum EsqlGetDataSourceParts<'b> {
+    #[doc = "Name"]
+    Name(&'b [&'b str]),
+    #[doc = "No parts"]
+    None,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> EsqlGetDataSourceParts<'b> {
+    #[doc = "Builds a relative URL path to the Esql Get Data Source API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            EsqlGetDataSourceParts::Name(name) => {
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(20usize + encoded_name.len());
+                p.push_str("/_query/data_source/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+            EsqlGetDataSourceParts::None => "/_query/data_source".into(),
+        }
+    }
+}
+#[doc = "Builder for the [Esql Get Data Source API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-data-source-get)\n\nGet one or more ES|QL data sources. Secret setting values are returned masked."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct EsqlGetDataSource<'a, 'b> {
+    transport: &'a Transport,
+    parts: EsqlGetDataSourceParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> EsqlGetDataSource<'a, 'b> {
+    #[doc = "Creates a new instance of [EsqlGetDataSource] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: EsqlGetDataSourceParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        EsqlGetDataSource {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Esql Get Data Source API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Esql Get Dataset API"]
+pub enum EsqlGetDatasetParts<'b> {
+    #[doc = "Name"]
+    Name(&'b [&'b str]),
+    #[doc = "No parts"]
+    None,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> EsqlGetDatasetParts<'b> {
+    #[doc = "Builds a relative URL path to the Esql Get Dataset API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            EsqlGetDatasetParts::Name(name) => {
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_name.len());
+                p.push_str("/_query/dataset/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+            EsqlGetDatasetParts::None => "/_query/dataset".into(),
+        }
+    }
+}
+#[doc = "Builder for the [Esql Get Dataset API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-dataset-get)\n\nGet one or more ES|QL datasets."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct EsqlGetDataset<'a, 'b> {
+    transport: &'a Transport,
+    parts: EsqlGetDatasetParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> EsqlGetDataset<'a, 'b> {
+    #[doc = "Creates a new instance of [EsqlGetDataset] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: EsqlGetDatasetParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        EsqlGetDataset {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Esql Get Dataset API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
         let response = self
             .transport
             .send(method, &path, headers, query_string.as_ref(), body, timeout)
@@ -655,7 +1294,7 @@ impl<'b> EsqlGetQueryParts<'b> {
         }
     }
 }
-#[doc = "Builder for the Esql Get Query API\n\nExecutes a get ESQL query request"]
+#[doc = "Builder for the [Esql Get Query API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-get-query)\n\nGet a specific running ES|QL query information"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -758,6 +1397,134 @@ impl<'a, 'b> EsqlGetQuery<'a, 'b> {
 }
 #[cfg(feature = "experimental-apis")]
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Esql Get View API"]
+pub enum EsqlGetViewParts<'b> {
+    #[doc = "Name"]
+    Name(&'b [&'b str]),
+    #[doc = "No parts"]
+    None,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> EsqlGetViewParts<'b> {
+    #[doc = "Builds a relative URL path to the Esql Get View API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            EsqlGetViewParts::Name(name) => {
+                let name_str = name.join(",");
+                let encoded_name: Cow<str> =
+                    percent_encode(name_str.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(13usize + encoded_name.len());
+                p.push_str("/_query/view/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+            EsqlGetViewParts::None => "/_query/view".into(),
+        }
+    }
+}
+#[doc = "Builder for the [Esql Get View API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-view-get)\n\nGet a non-materialized VIEW for ESQL."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct EsqlGetView<'a, 'b> {
+    transport: &'a Transport,
+    parts: EsqlGetViewParts<'b>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b> EsqlGetView<'a, 'b> {
+    #[doc = "Creates a new instance of [EsqlGetView] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: EsqlGetViewParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        EsqlGetView {
+            transport,
+            parts,
+            headers,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Esql Get View API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Get;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Esql List Queries API"]
 pub enum EsqlListQueriesParts {
     #[doc = "No parts"]
@@ -772,7 +1539,7 @@ impl EsqlListQueriesParts {
         }
     }
 }
-#[doc = "Builder for the Esql List Queries API\n\nExecutes a list ESQL queries request"]
+#[doc = "Builder for the [Esql List Queries API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-list-queries)\n\nGet running ES|QL queries information"]
 #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
 #[cfg(feature = "experimental-apis")]
 #[derive(Clone, Debug)]
@@ -873,6 +1640,444 @@ impl<'a, 'b> EsqlListQueries<'a, 'b> {
         Ok(response)
     }
 }
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Esql Put Data Source API"]
+pub enum EsqlPutDataSourceParts<'b> {
+    #[doc = "Name"]
+    Name(&'b str),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> EsqlPutDataSourceParts<'b> {
+    #[doc = "Builds a relative URL path to the Esql Put Data Source API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            EsqlPutDataSourceParts::Name(name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(20usize + encoded_name.len());
+                p.push_str("/_query/data_source/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Esql Put Data Source API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-data-source-put)\n\nCreates or replaces an ES|QL data source."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct EsqlPutDataSource<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: EsqlPutDataSourceParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> EsqlPutDataSource<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [EsqlPutDataSource] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: EsqlPutDataSourceParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        EsqlPutDataSource {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> EsqlPutDataSource<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        EsqlPutDataSource {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Esql Put Data Source API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Put;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Esql Put Dataset API"]
+pub enum EsqlPutDatasetParts<'b> {
+    #[doc = "Name"]
+    Name(&'b str),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> EsqlPutDatasetParts<'b> {
+    #[doc = "Builds a relative URL path to the Esql Put Dataset API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            EsqlPutDatasetParts::Name(name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(16usize + encoded_name.len());
+                p.push_str("/_query/dataset/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Esql Put Dataset API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-dataset-put)\n\nCreates or replaces an ES|QL dataset referencing a parent data source."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct EsqlPutDataset<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: EsqlPutDatasetParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> EsqlPutDataset<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [EsqlPutDataset] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: EsqlPutDatasetParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        EsqlPutDataset {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> EsqlPutDataset<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        EsqlPutDataset {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Esql Put Dataset API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Put;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
+#[cfg(feature = "experimental-apis")]
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[doc = "API parts for the Esql Put View API"]
+pub enum EsqlPutViewParts<'b> {
+    #[doc = "Name"]
+    Name(&'b str),
+}
+#[cfg(feature = "experimental-apis")]
+impl<'b> EsqlPutViewParts<'b> {
+    #[doc = "Builds a relative URL path to the Esql Put View API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            EsqlPutViewParts::Name(name) => {
+                let encoded_name: Cow<str> = percent_encode(name.as_bytes(), PARTS_ENCODED).into();
+                let mut p = String::with_capacity(13usize + encoded_name.len());
+                p.push_str("/_query/view/");
+                p.push_str(encoded_name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
+#[doc = "Builder for the [Esql Put View API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-view-put)\n\nCreates a non-materialized VIEW for ESQL."]
+#[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+#[cfg(feature = "experimental-apis")]
+#[derive(Clone, Debug)]
+pub struct EsqlPutView<'a, 'b, B> {
+    transport: &'a Transport,
+    parts: EsqlPutViewParts<'b>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'b [&'b str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    request_timeout: Option<Duration>,
+    source: Option<&'b str>,
+}
+#[cfg(feature = "experimental-apis")]
+impl<'a, 'b, B> EsqlPutView<'a, 'b, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [EsqlPutView] with the specified API parts"]
+    pub fn new(transport: &'a Transport, parts: EsqlPutViewParts<'b>) -> Self {
+        let headers = HeaderMap::new();
+        EsqlPutView {
+            transport,
+            parts,
+            headers,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            request_timeout: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> EsqlPutView<'a, 'b, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        EsqlPutView {
+            transport: self.transport,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            request_timeout: self.request_timeout,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "Sets a request timeout for this API call.\n\nThe timeout is applied from when the request starts connecting until the response body has finished."]
+    pub fn request_timeout(mut self, timeout: Duration) -> Self {
+        self.request_timeout = Some(timeout);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'b str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Esql Put View API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = http::Method::Put;
+        let headers = self.headers;
+        let timeout = self.request_timeout;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'b> {
+                error_trace: Option<bool>,
+                #[serde(serialize_with = "crate::client::serialize_coll_qs")]
+                filter_path: Option<&'b [&'b str]>,
+                human: Option<bool>,
+                pretty: Option<bool>,
+                source: Option<&'b str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .transport
+            .send(method, &path, headers, query_string.as_ref(), body, timeout)
+            .await?;
+        Ok(response)
+    }
+}
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[doc = "API parts for the Esql Query API"]
 pub enum EsqlQueryParts {
@@ -887,7 +2092,7 @@ impl EsqlQueryParts {
         }
     }
 }
-#[doc = "Builder for the [Esql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/esql-query-api.html)\n\nExecutes an ESQL request"]
+#[doc = "Builder for the [Esql Query API](https://www.elastic.co/docs/explore-analyze/query-filter/languages/esql-rest)\n\nRun an ES|QL query"]
 #[derive(Clone, Debug)]
 pub struct EsqlQuery<'a, 'b, B> {
     transport: &'a Transport,
@@ -898,7 +2103,7 @@ pub struct EsqlQuery<'a, 'b, B> {
     drop_null_columns: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
-    format: Option<&'b str>,
+    format: Option<Format>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
@@ -976,8 +2181,8 @@ where
         self.filter_path = Some(filter_path);
         self
     }
-    #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'b str) -> Self {
+    #[doc = "A short version of the Accept header, e.g. json, yaml.\n\n`csv`, `tsv`, and `txt` formats will return results in a tabular format, excluding other metadata fields from the response."]
+    pub fn format(mut self, format: Format) -> Self {
         self.format = Some(format);
         self
     }
@@ -1022,7 +2227,7 @@ where
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                format: Option<&'b str>,
+                format: Option<Format>,
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
@@ -1060,44 +2265,110 @@ impl<'a> Esql<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Esql Async Query API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/esql-async-query-api.html)\n\nExecutes an ESQL request asynchronously"]
+    #[doc = "[Esql Async Query API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-async-query)\n\nRun an async ES|QL query"]
     pub fn async_query<'b>(&'a self) -> EsqlAsyncQuery<'a, 'b, ()> {
         EsqlAsyncQuery::new(self.transport())
     }
-    #[doc = "[Esql Async Query Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/esql-async-query-delete-api.html)\n\nDelete an async query request given its ID."]
+    #[doc = "[Esql Async Query Delete API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-async-query-delete)\n\nDelete an async ES|QL query"]
     pub fn async_query_delete<'b>(
         &'a self,
         parts: EsqlAsyncQueryDeleteParts<'b>,
     ) -> EsqlAsyncQueryDelete<'a, 'b> {
         EsqlAsyncQueryDelete::new(self.transport(), parts)
     }
-    #[doc = "[Esql Async Query Get API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/esql-async-query-get-api.html)\n\nRetrieves the results of a previously submitted async query request given its ID."]
+    #[doc = "[Esql Async Query Get API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-async-query-get)\n\nGet async ES|QL query results"]
     pub fn async_query_get<'b>(
         &'a self,
         parts: EsqlAsyncQueryGetParts<'b>,
     ) -> EsqlAsyncQueryGet<'a, 'b> {
         EsqlAsyncQueryGet::new(self.transport(), parts)
     }
-    #[doc = "[Esql Async Query Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/esql-async-query-stop-api.html)\n\nStops a previously submitted async query request given its ID and collects the results."]
+    #[doc = "[Esql Async Query Stop API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-async-query-stop)\n\nStop async ES|QL query"]
     pub fn async_query_stop<'b>(
         &'a self,
         parts: EsqlAsyncQueryStopParts<'b>,
     ) -> EsqlAsyncQueryStop<'a, 'b, ()> {
         EsqlAsyncQueryStop::new(self.transport(), parts)
     }
-    #[doc = "Esql Get Query API\n\nExecutes a get ESQL query request"]
+    #[doc = "[Esql Delete Data Source API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-data-source-delete)\n\nDelete one or more ES|QL data sources. Fails with 409 if any dataset references them."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn delete_data_source<'b>(
+        &'a self,
+        parts: EsqlDeleteDataSourceParts<'b>,
+    ) -> EsqlDeleteDataSource<'a, 'b> {
+        EsqlDeleteDataSource::new(self.transport(), parts)
+    }
+    #[doc = "[Esql Delete Dataset API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-dataset-delete)\n\nDelete one or more ES|QL datasets."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn delete_dataset<'b>(
+        &'a self,
+        parts: EsqlDeleteDatasetParts<'b>,
+    ) -> EsqlDeleteDataset<'a, 'b> {
+        EsqlDeleteDataset::new(self.transport(), parts)
+    }
+    #[doc = "[Esql Delete View API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-view-delete)\n\nDelete a non-materialized VIEW for ESQL."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn delete_view<'b>(&'a self, parts: EsqlDeleteViewParts<'b>) -> EsqlDeleteView<'a, 'b> {
+        EsqlDeleteView::new(self.transport(), parts)
+    }
+    #[doc = "[Esql Get Data Source API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-data-source-get)\n\nGet one or more ES|QL data sources. Secret setting values are returned masked."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn get_data_source<'b>(
+        &'a self,
+        parts: EsqlGetDataSourceParts<'b>,
+    ) -> EsqlGetDataSource<'a, 'b> {
+        EsqlGetDataSource::new(self.transport(), parts)
+    }
+    #[doc = "[Esql Get Dataset API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-dataset-get)\n\nGet one or more ES|QL datasets."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn get_dataset<'b>(&'a self, parts: EsqlGetDatasetParts<'b>) -> EsqlGetDataset<'a, 'b> {
+        EsqlGetDataset::new(self.transport(), parts)
+    }
+    #[doc = "[Esql Get Query API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-get-query)\n\nGet a specific running ES|QL query information"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn get_query<'b>(&'a self, parts: EsqlGetQueryParts<'b>) -> EsqlGetQuery<'a, 'b> {
         EsqlGetQuery::new(self.transport(), parts)
     }
-    #[doc = "Esql List Queries API\n\nExecutes a list ESQL queries request"]
+    #[doc = "[Esql Get View API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-view-get)\n\nGet a non-materialized VIEW for ESQL."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn get_view<'b>(&'a self, parts: EsqlGetViewParts<'b>) -> EsqlGetView<'a, 'b> {
+        EsqlGetView::new(self.transport(), parts)
+    }
+    #[doc = "[Esql List Queries API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-list-queries)\n\nGet running ES|QL queries information"]
     #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
     #[cfg(feature = "experimental-apis")]
     pub fn list_queries<'b>(&'a self) -> EsqlListQueries<'a, 'b> {
         EsqlListQueries::new(self.transport())
     }
-    #[doc = "[Esql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/9.1/esql-query-api.html)\n\nExecutes an ESQL request"]
+    #[doc = "[Esql Put Data Source API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-data-source-put)\n\nCreates or replaces an ES|QL data source."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn put_data_source<'b>(
+        &'a self,
+        parts: EsqlPutDataSourceParts<'b>,
+    ) -> EsqlPutDataSource<'a, 'b, ()> {
+        EsqlPutDataSource::new(self.transport(), parts)
+    }
+    #[doc = "[Esql Put Dataset API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-dataset-put)\n\nCreates or replaces an ES|QL dataset referencing a parent data source."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn put_dataset<'b>(&'a self, parts: EsqlPutDatasetParts<'b>) -> EsqlPutDataset<'a, 'b, ()> {
+        EsqlPutDataset::new(self.transport(), parts)
+    }
+    #[doc = "[Esql Put View API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-esql-view-put)\n\nCreates a non-materialized VIEW for ESQL."]
+    #[doc = "&nbsp;\n# Optional, experimental\nThis requires the `experimental-apis` feature. Can have breaking changes in future\nversions or might even be removed entirely.\n        "]
+    #[cfg(feature = "experimental-apis")]
+    pub fn put_view<'b>(&'a self, parts: EsqlPutViewParts<'b>) -> EsqlPutView<'a, 'b, ()> {
+        EsqlPutView::new(self.transport(), parts)
+    }
+    #[doc = "[Esql Query API](https://www.elastic.co/docs/explore-analyze/query-filter/languages/esql-rest)\n\nRun an ES|QL query"]
     pub fn query<'b>(&'a self) -> EsqlQuery<'a, 'b, ()> {
         EsqlQuery::new(self.transport())
     }
