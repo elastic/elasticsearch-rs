@@ -58,7 +58,7 @@ impl EsqlAsyncQueryParts {
         }
     }
 }
-#[doc = "Builder for the [Esql Async Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/esql-async-query-api.html)\n\nExecutes an ESQL request asynchronously"]
+#[doc = "Builder for the [Esql Async Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/esql-async-query-api.html)\n\nRun an async ES|QL query"]
 #[derive(Clone, Debug)]
 pub struct EsqlAsyncQuery<'a, 'b, B> {
     transport: &'a Transport,
@@ -69,7 +69,7 @@ pub struct EsqlAsyncQuery<'a, 'b, B> {
     drop_null_columns: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
-    format: Option<&'b str>,
+    format: Option<Format>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
@@ -147,8 +147,8 @@ where
         self.filter_path = Some(filter_path);
         self
     }
-    #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'b str) -> Self {
+    #[doc = "A short version of the Accept header, e.g. json, yaml.\n\n`csv`, `tsv`, and `txt` formats will return results in a tabular format, excluding other metadata fields from the response.\n\nFor async requests, nothing will be returned if the async query doesn't finish within the timeout.\nThe query ID and running status are available in the `X-Elasticsearch-Async-Id` and `X-Elasticsearch-Async-Is-Running` HTTP headers of the response, respectively."]
+    pub fn format(mut self, format: Format) -> Self {
         self.format = Some(format);
         self
     }
@@ -193,7 +193,7 @@ where
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                format: Option<&'b str>,
+                format: Option<Format>,
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
@@ -239,7 +239,7 @@ impl<'b> EsqlAsyncQueryDeleteParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Esql Async Query Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/esql-async-query-delete-api.html)\n\nDelete an async query request given its ID."]
+#[doc = "Builder for the [Esql Async Query Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/esql-async-query-delete-api.html)\n\nDelete an async ES|QL query"]
 #[derive(Clone, Debug)]
 pub struct EsqlAsyncQueryDelete<'a, 'b> {
     transport: &'a Transport,
@@ -357,7 +357,7 @@ impl<'b> EsqlAsyncQueryGetParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Esql Async Query Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/esql-async-query-get-api.html)\n\nRetrieves the results of a previously submitted async query request given its ID."]
+#[doc = "Builder for the [Esql Async Query Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/esql-async-query-get-api.html)\n\nGet async ES|QL query results"]
 #[derive(Clone, Debug)]
 pub struct EsqlAsyncQueryGet<'a, 'b> {
     transport: &'a Transport,
@@ -365,7 +365,7 @@ pub struct EsqlAsyncQueryGet<'a, 'b> {
     drop_null_columns: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
-    format: Option<&'b str>,
+    format: Option<Format>,
     headers: HeaderMap,
     human: Option<bool>,
     keep_alive: Option<&'b str>,
@@ -409,8 +409,8 @@ impl<'a, 'b> EsqlAsyncQueryGet<'a, 'b> {
         self.filter_path = Some(filter_path);
         self
     }
-    #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'b str) -> Self {
+    #[doc = "A short version of the Accept header, for example `json` or `yaml`."]
+    pub fn format(mut self, format: Format) -> Self {
         self.format = Some(format);
         self
     }
@@ -463,7 +463,7 @@ impl<'a, 'b> EsqlAsyncQueryGet<'a, 'b> {
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                format: Option<&'b str>,
+                format: Option<Format>,
                 human: Option<bool>,
                 keep_alive: Option<&'b str>,
                 pretty: Option<bool>,
@@ -512,12 +512,13 @@ impl<'b> EsqlAsyncQueryStopParts<'b> {
         }
     }
 }
-#[doc = "Builder for the [Esql Async Query Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/esql-async-query-stop-api.html)\n\nStops a previously submitted async query request given its ID and collects the results."]
+#[doc = "Builder for the [Esql Async Query Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/esql-async-query-stop-api.html)\n\nStop async ES|QL query"]
 #[derive(Clone, Debug)]
 pub struct EsqlAsyncQueryStop<'a, 'b, B> {
     transport: &'a Transport,
     parts: EsqlAsyncQueryStopParts<'b>,
     body: Option<B>,
+    drop_null_columns: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -538,6 +539,7 @@ where
             parts,
             headers,
             body: None,
+            drop_null_columns: None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -555,6 +557,7 @@ where
             transport: self.transport,
             parts: self.parts,
             body: Some(body.into()),
+            drop_null_columns: self.drop_null_columns,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             headers: self.headers,
@@ -563,6 +566,11 @@ where
             request_timeout: self.request_timeout,
             source: self.source,
         }
+    }
+    #[doc = "Indicates whether columns that are entirely `null` will be removed from the `columns` and `values` portion of the results."]
+    pub fn drop_null_columns(mut self, drop_null_columns: bool) -> Self {
+        self.drop_null_columns = Some(drop_null_columns);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -609,6 +617,7 @@ where
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                drop_null_columns: Option<bool>,
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
@@ -617,6 +626,7 @@ where
                 source: Option<&'b str>,
             }
             let query_params = QueryParams {
+                drop_null_columns: self.drop_null_columns,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
@@ -647,7 +657,7 @@ impl EsqlQueryParts {
         }
     }
 }
-#[doc = "Builder for the [Esql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/esql-query-api.html)\n\nExecutes an ESQL request"]
+#[doc = "Builder for the [Esql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/esql-rest.html)\n\nRun an ES|QL query"]
 #[derive(Clone, Debug)]
 pub struct EsqlQuery<'a, 'b, B> {
     transport: &'a Transport,
@@ -658,7 +668,7 @@ pub struct EsqlQuery<'a, 'b, B> {
     drop_null_columns: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
-    format: Option<&'b str>,
+    format: Option<Format>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
@@ -736,8 +746,8 @@ where
         self.filter_path = Some(filter_path);
         self
     }
-    #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'b str) -> Self {
+    #[doc = "A short version of the Accept header, e.g. json, yaml.\n\n`csv`, `tsv`, and `txt` formats will return results in a tabular format, excluding other metadata fields from the response."]
+    pub fn format(mut self, format: Format) -> Self {
         self.format = Some(format);
         self
     }
@@ -782,7 +792,7 @@ where
                 error_trace: Option<bool>,
                 #[serde(serialize_with = "crate::client::serialize_coll_qs")]
                 filter_path: Option<&'b [&'b str]>,
-                format: Option<&'b str>,
+                format: Option<Format>,
                 human: Option<bool>,
                 pretty: Option<bool>,
                 source: Option<&'b str>,
@@ -820,32 +830,32 @@ impl<'a> Esql<'a> {
     pub fn transport(&self) -> &Transport {
         self.transport
     }
-    #[doc = "[Esql Async Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/esql-async-query-api.html)\n\nExecutes an ESQL request asynchronously"]
+    #[doc = "[Esql Async Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/esql-async-query-api.html)\n\nRun an async ES|QL query"]
     pub fn async_query<'b>(&'a self) -> EsqlAsyncQuery<'a, 'b, ()> {
         EsqlAsyncQuery::new(self.transport())
     }
-    #[doc = "[Esql Async Query Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/esql-async-query-delete-api.html)\n\nDelete an async query request given its ID."]
+    #[doc = "[Esql Async Query Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/esql-async-query-delete-api.html)\n\nDelete an async ES|QL query"]
     pub fn async_query_delete<'b>(
         &'a self,
         parts: EsqlAsyncQueryDeleteParts<'b>,
     ) -> EsqlAsyncQueryDelete<'a, 'b> {
         EsqlAsyncQueryDelete::new(self.transport(), parts)
     }
-    #[doc = "[Esql Async Query Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/esql-async-query-get-api.html)\n\nRetrieves the results of a previously submitted async query request given its ID."]
+    #[doc = "[Esql Async Query Get API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/esql-async-query-get-api.html)\n\nGet async ES|QL query results"]
     pub fn async_query_get<'b>(
         &'a self,
         parts: EsqlAsyncQueryGetParts<'b>,
     ) -> EsqlAsyncQueryGet<'a, 'b> {
         EsqlAsyncQueryGet::new(self.transport(), parts)
     }
-    #[doc = "[Esql Async Query Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/esql-async-query-stop-api.html)\n\nStops a previously submitted async query request given its ID and collects the results."]
+    #[doc = "[Esql Async Query Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/esql-async-query-stop-api.html)\n\nStop async ES|QL query"]
     pub fn async_query_stop<'b>(
         &'a self,
         parts: EsqlAsyncQueryStopParts<'b>,
     ) -> EsqlAsyncQueryStop<'a, 'b, ()> {
         EsqlAsyncQueryStop::new(self.transport(), parts)
     }
-    #[doc = "[Esql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/esql-query-api.html)\n\nExecutes an ESQL request"]
+    #[doc = "[Esql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/8.19/esql-rest.html)\n\nRun an ES|QL query"]
     pub fn query<'b>(&'a self) -> EsqlQuery<'a, 'b, ()> {
         EsqlQuery::new(self.transport())
     }
