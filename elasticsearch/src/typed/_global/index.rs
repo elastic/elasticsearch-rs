@@ -126,7 +126,7 @@
 ///
 /// [Documentation](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-create)
 #[derive(Debug, Clone, PartialEq)]
-pub struct Request {
+pub struct Request<TDocument = serde_json::Value> {
     /// A unique identifier for the document.
     /// To automatically generate a document ID, use the `POST /<target>/_doc/` request format and omit this parameter.
     pub id: Option<crate::typed::_types::Id>,
@@ -199,7 +199,7 @@ pub struct Request {
     /// this option for debugging only.
     pub pretty: Option<bool>,
     /// Request body.
-    pub document: serde_json::Value,
+    pub document: TDocument,
 }
 
 impl Request {
@@ -214,6 +214,7 @@ impl Request {
 pub struct RequestBuilder<
     S = (crate::typed::builder::NotSet, crate::typed::builder::NotSet),
     C = (),
+    TDocument = serde_json::Value,
 > {
     id: Option<crate::typed::_types::Id>,
     index: Option<crate::typed::_types::IndexName>,
@@ -235,12 +236,18 @@ pub struct RequestBuilder<
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
     pretty: Option<bool>,
-    document: Option<serde_json::Value>,
+    document: Option<TDocument>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet, crate::typed::builder::NotSet), C> {
+impl<C>
+    RequestBuilder<
+        (crate::typed::builder::NotSet, crate::typed::builder::NotSet),
+        C,
+        serde_json::Value,
+    >
+{
     pub(crate) fn new(client: C) -> Self {
         RequestBuilder {
             id: None,
@@ -270,8 +277,8 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet, crate::typed::builder::No
     }
 }
 
-impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
-    fn with_state<N>(self) -> RequestBuilder<N, C> {
+impl<S0, S1, C, TDocument> RequestBuilder<(S0, S1), C, TDocument> {
+    fn with_state<N>(self) -> RequestBuilder<N, C, TDocument> {
         RequestBuilder {
             id: self.id,
             index: self.index,
@@ -562,7 +569,7 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
+impl<S1, C, TDocument> RequestBuilder<(crate::typed::builder::NotSet, S1), C, TDocument> {
     /// The name of the data stream or index to target.
     /// If the target doesn't exist and matches the name or wildcard (`*`) pattern of an index template with a `data_stream` definition, this request creates the data stream.
     /// If the target doesn't exist and doesn't match a data stream template, this request creates the index.
@@ -570,28 +577,52 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
-    ) -> RequestBuilder<(crate::typed::builder::Set, S1), C> {
+    ) -> RequestBuilder<(crate::typed::builder::Set, S1), C, TDocument> {
         let mut builder = self.with_state();
         builder.index = Some(value.into());
         builder
     }
 }
 
-impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
+impl<S0, C, TDocument> RequestBuilder<(S0, crate::typed::builder::NotSet), C, TDocument> {
     /// Request body.
-    pub fn document(
+    pub fn document<T: serde::Serialize>(
         self,
-        value: impl Into<serde_json::Value>,
-    ) -> RequestBuilder<(S0, crate::typed::builder::Set), C> {
-        let mut builder = self.with_state();
-        builder.document = Some(value.into());
-        builder
+        value: T,
+    ) -> RequestBuilder<(S0, crate::typed::builder::Set), C, T> {
+        RequestBuilder {
+            id: self.id,
+            index: self.index,
+            if_primary_term: self.if_primary_term,
+            if_seq_no: self.if_seq_no,
+            include_source_on_error: self.include_source_on_error,
+            op_type: self.op_type,
+            pipeline: self.pipeline,
+            refresh: self.refresh,
+            routing: self.routing,
+            route_slice: self.route_slice,
+            timeout: self.timeout,
+            version: self.version,
+            version_type: self.version_type,
+            wait_for_active_shards: self.wait_for_active_shards,
+            require_alias: self.require_alias,
+            require_data_stream: self.require_data_stream,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            document: Some(value),
+            bound_client: self.bound_client,
+            _state: std::marker::PhantomData,
+        }
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<C, TDocument>
+    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C, TDocument>
+{
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request<TDocument> {
         Request {
             id: self.id,
             index: self.index.unwrap(),
@@ -618,8 +649,14 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<TDocument>
+    RequestBuilder<
+        (crate::typed::builder::Set, crate::typed::builder::Set),
+        &crate::Elasticsearch,
+        TDocument,
+    >
+where
+    TDocument: serde::Serialize,
 {
     /// Sends the request.
     pub async fn send(self) -> std::result::Result<Response, crate::Error> {
@@ -628,26 +665,31 @@ impl
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
+impl<S1, C, TDocument> RequestBuilder<(crate::typed::builder::NotSet, S1), C, TDocument> {
     /// `index` is missing: set it before calling `build()`.
     #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request { match index {} }
+    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request<TDocument> { match index {} }
 }
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
+impl<S1, TDocument>
+    RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch, TDocument>
+{
     /// `index` is missing: set it before calling `send()`.
     #[rustfmt::skip]
     pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
+impl<C, TDocument>
+    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C, TDocument>
+{
     /// `document` is missing: set it before calling `build()`.
     #[rustfmt::skip]
-    pub fn build(self, document: crate::typed::builder::MissingRequiredField) -> Request { match document {} }
+    pub fn build(self, document: crate::typed::builder::MissingRequiredField) -> Request<TDocument> { match document {} }
 }
-impl
+impl<TDocument>
     RequestBuilder<
         (crate::typed::builder::Set, crate::typed::builder::NotSet),
         &crate::Elasticsearch,
+        TDocument,
     >
 {
     /// `document` is missing: set it before calling `send()`.
@@ -655,7 +697,7 @@ impl
     pub async fn send(self, document: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match document {} }
 }
 
-impl Request {
+impl<TDocument> Request<TDocument> {
     /// HTTP method and path of the request, using the most specific URL for the path parameters that are set.
     fn url(&self) -> (crate::http::Method, String) {
         if let Some(id) = &self.id {
@@ -754,14 +796,17 @@ impl Request {
     }
 
     /// Body of the request.
-    pub fn body(&self) -> &serde_json::Value {
+    pub fn body(&self) -> &TDocument {
         &self.document
     }
 
     pub(crate) async fn send(
         self,
         client: &crate::Elasticsearch,
-    ) -> std::result::Result<Response, crate::Error> {
+    ) -> std::result::Result<Response, crate::Error>
+    where
+        TDocument: serde::Serialize,
+    {
         use crate::http::{headers::HeaderMap, request::JsonBody};
         let (method, path) = self.url();
         let query = self.query();

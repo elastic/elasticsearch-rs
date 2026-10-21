@@ -772,9 +772,9 @@ impl<'a> Client<'a> {
     }
 
     /// Sends a [`create`](Self::create) request built with [`create::Request::builder()`](crate::typed::_global::create::Request::builder).
-    pub async fn create_with(
+    pub async fn create_with<TDocument: serde::Serialize>(
         &self,
-        request: crate::typed::_global::create::Request,
+        request: crate::typed::_global::create::Request<TDocument>,
     ) -> std::result::Result<crate::typed::_global::create::Response, crate::Error> {
         request.send(self.client).await
     }
@@ -1475,9 +1475,9 @@ impl<'a> Client<'a> {
     }
 
     /// Sends a [`index`](Self::index) request built with [`index::Request::builder()`](crate::typed::_global::index::Request::builder).
-    pub async fn index_with(
+    pub async fn index_with<TDocument: serde::Serialize>(
         &self,
-        request: crate::typed::_global::index::Request,
+        request: crate::typed::_global::index::Request<TDocument>,
     ) -> std::result::Result<crate::typed::_global::index::Response, crate::Error> {
         request.send(self.client).await
     }
@@ -2258,9 +2258,9 @@ impl<'a> Client<'a> {
     }
 
     /// Sends a [`termvectors`](Self::termvectors) request built with [`termvectors::Request::builder()`](crate::typed::_global::termvectors::Request::builder).
-    pub async fn termvectors_with(
+    pub async fn termvectors_with<TDocument: serde::Serialize>(
         &self,
-        request: crate::typed::_global::termvectors::Request,
+        request: crate::typed::_global::termvectors::Request<TDocument>,
     ) -> std::result::Result<crate::typed::_global::termvectors::Response, crate::Error> {
         request.send(self.client).await
     }
@@ -2297,9 +2297,9 @@ impl<'a> Client<'a> {
     }
 
     /// Sends a [`update`](Self::update) request built with [`update::Request::builder()`](crate::typed::_global::update::Request::builder).
-    pub async fn update_with(
+    pub async fn update_with<TDocument: serde::Serialize, TPartialDocument: serde::Serialize>(
         &self,
-        request: crate::typed::_global::update::Request,
+        request: crate::typed::_global::update::Request<TDocument, TPartialDocument>,
     ) -> std::result::Result<crate::typed::_global::update::Response, crate::Error> {
         request.send(self.client).await
     }

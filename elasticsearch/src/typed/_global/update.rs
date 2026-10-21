@@ -26,7 +26,7 @@
 ///
 /// [Documentation](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-update)
 #[derive(Debug, Clone, PartialEq)]
-pub struct Request {
+pub struct Request<TDocument = serde_json::Value, TPartialDocument = serde_json::Value> {
     /// A unique identifier for the document to be updated.
     pub id: crate::typed::_types::Id,
     /// The name of the target index.
@@ -89,7 +89,7 @@ pub struct Request {
     pub detect_noop: Option<bool>,
     /// A partial update to an existing document.
     /// If both `doc` and `script` are specified, `doc` is ignored.
-    pub doc: Option<serde_json::Value>,
+    pub doc: Option<TPartialDocument>,
     /// If `true`, use the contents of 'doc' as the value of 'upsert'.
     /// NOTE: Using ingest pipelines with `doc_as_upsert` is not supported.
     pub doc_as_upsert: Option<bool>,
@@ -102,7 +102,7 @@ pub struct Request {
     pub source2: Option<crate::typed::_global::search::_types::SourceConfig>,
     /// If the document does not already exist, the contents of 'upsert' are inserted as a new document.
     /// If the document exists, the 'script' is run.
-    pub upsert: Option<serde_json::Value>,
+    pub upsert: Option<TDocument>,
 }
 
 impl Request {
@@ -117,6 +117,8 @@ impl Request {
 pub struct RequestBuilder<
     S = (crate::typed::builder::NotSet, crate::typed::builder::NotSet),
     C = (),
+    TDocument = serde_json::Value,
+    TPartialDocument = serde_json::Value,
 > {
     id: Option<crate::typed::_types::Id>,
     index: Option<crate::typed::_types::IndexName>,
@@ -139,17 +141,24 @@ pub struct RequestBuilder<
     human: Option<bool>,
     pretty: Option<bool>,
     detect_noop: Option<bool>,
-    doc: Option<serde_json::Value>,
+    doc: Option<TPartialDocument>,
     doc_as_upsert: Option<bool>,
     script: Option<crate::typed::_types::Script>,
     scripted_upsert: Option<bool>,
     source2: Option<crate::typed::_global::search::_types::SourceConfig>,
-    upsert: Option<serde_json::Value>,
+    upsert: Option<TDocument>,
     bound_client: C,
     _state: std::marker::PhantomData<S>,
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet, crate::typed::builder::NotSet), C> {
+impl<C>
+    RequestBuilder<
+        (crate::typed::builder::NotSet, crate::typed::builder::NotSet),
+        C,
+        serde_json::Value,
+        serde_json::Value,
+    >
+{
     pub(crate) fn new(client: C) -> Self {
         RequestBuilder {
             id: None,
@@ -185,8 +194,10 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet, crate::typed::builder::No
     }
 }
 
-impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
-    fn with_state<N>(self) -> RequestBuilder<N, C> {
+impl<S0, S1, C, TDocument, TPartialDocument>
+    RequestBuilder<(S0, S1), C, TDocument, TPartialDocument>
+{
+    fn with_state<N>(self) -> RequestBuilder<N, C, TDocument, TPartialDocument> {
         RequestBuilder {
             id: self.id,
             index: self.index,
@@ -479,15 +490,76 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 
     /// A partial update to an existing document.
     /// If both `doc` and `script` are specified, `doc` is ignored.
-    pub fn doc(mut self, value: impl Into<serde_json::Value>) -> Self {
-        self.doc = Some(value.into());
-        self
+    pub fn doc<T: serde::Serialize>(self, value: T) -> RequestBuilder<(S0, S1), C, TDocument, T> {
+        RequestBuilder {
+            id: self.id,
+            index: self.index,
+            if_primary_term: self.if_primary_term,
+            if_seq_no: self.if_seq_no,
+            include_source_on_error: self.include_source_on_error,
+            lang: self.lang,
+            refresh: self.refresh,
+            require_alias: self.require_alias,
+            retry_on_conflict: self.retry_on_conflict,
+            routing: self.routing,
+            route_slice: self.route_slice,
+            timeout: self.timeout,
+            wait_for_active_shards: self.wait_for_active_shards,
+            source: self.source,
+            source_excludes: self.source_excludes,
+            source_includes: self.source_includes,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            detect_noop: self.detect_noop,
+            doc: Some(value),
+            doc_as_upsert: self.doc_as_upsert,
+            script: self.script,
+            scripted_upsert: self.scripted_upsert,
+            source2: self.source2,
+            upsert: self.upsert,
+            bound_client: self.bound_client,
+            _state: std::marker::PhantomData,
+        }
     }
 
     /// Sets [`doc`](Self::doc) if `value` is `Some`.
-    pub fn maybe_doc(mut self, value: Option<serde_json::Value>) -> Self {
-        self.doc = value;
-        self
+    pub fn maybe_doc<T: serde::Serialize>(
+        self,
+        value: Option<T>,
+    ) -> RequestBuilder<(S0, S1), C, TDocument, T> {
+        RequestBuilder {
+            id: self.id,
+            index: self.index,
+            if_primary_term: self.if_primary_term,
+            if_seq_no: self.if_seq_no,
+            include_source_on_error: self.include_source_on_error,
+            lang: self.lang,
+            refresh: self.refresh,
+            require_alias: self.require_alias,
+            retry_on_conflict: self.retry_on_conflict,
+            routing: self.routing,
+            route_slice: self.route_slice,
+            timeout: self.timeout,
+            wait_for_active_shards: self.wait_for_active_shards,
+            source: self.source,
+            source_excludes: self.source_excludes,
+            source_includes: self.source_includes,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            detect_noop: self.detect_noop,
+            doc: value,
+            doc_as_upsert: self.doc_as_upsert,
+            script: self.script,
+            scripted_upsert: self.scripted_upsert,
+            source2: self.source2,
+            upsert: self.upsert,
+            bound_client: self.bound_client,
+            _state: std::marker::PhantomData,
+        }
     }
 
     /// If `true`, use the contents of 'doc' as the value of 'upsert'.
@@ -556,46 +628,121 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
 
     /// If the document does not already exist, the contents of 'upsert' are inserted as a new document.
     /// If the document exists, the 'script' is run.
-    pub fn upsert(mut self, value: impl Into<serde_json::Value>) -> Self {
-        self.upsert = Some(value.into());
-        self
+    pub fn upsert<T: serde::Serialize>(
+        self,
+        value: T,
+    ) -> RequestBuilder<(S0, S1), C, T, TPartialDocument> {
+        RequestBuilder {
+            id: self.id,
+            index: self.index,
+            if_primary_term: self.if_primary_term,
+            if_seq_no: self.if_seq_no,
+            include_source_on_error: self.include_source_on_error,
+            lang: self.lang,
+            refresh: self.refresh,
+            require_alias: self.require_alias,
+            retry_on_conflict: self.retry_on_conflict,
+            routing: self.routing,
+            route_slice: self.route_slice,
+            timeout: self.timeout,
+            wait_for_active_shards: self.wait_for_active_shards,
+            source: self.source,
+            source_excludes: self.source_excludes,
+            source_includes: self.source_includes,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            detect_noop: self.detect_noop,
+            doc: self.doc,
+            doc_as_upsert: self.doc_as_upsert,
+            script: self.script,
+            scripted_upsert: self.scripted_upsert,
+            source2: self.source2,
+            upsert: Some(value),
+            bound_client: self.bound_client,
+            _state: std::marker::PhantomData,
+        }
     }
 
     /// Sets [`upsert`](Self::upsert) if `value` is `Some`.
-    pub fn maybe_upsert(mut self, value: Option<serde_json::Value>) -> Self {
-        self.upsert = value;
-        self
+    pub fn maybe_upsert<T: serde::Serialize>(
+        self,
+        value: Option<T>,
+    ) -> RequestBuilder<(S0, S1), C, T, TPartialDocument> {
+        RequestBuilder {
+            id: self.id,
+            index: self.index,
+            if_primary_term: self.if_primary_term,
+            if_seq_no: self.if_seq_no,
+            include_source_on_error: self.include_source_on_error,
+            lang: self.lang,
+            refresh: self.refresh,
+            require_alias: self.require_alias,
+            retry_on_conflict: self.retry_on_conflict,
+            routing: self.routing,
+            route_slice: self.route_slice,
+            timeout: self.timeout,
+            wait_for_active_shards: self.wait_for_active_shards,
+            source: self.source,
+            source_excludes: self.source_excludes,
+            source_includes: self.source_includes,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            detect_noop: self.detect_noop,
+            doc: self.doc,
+            doc_as_upsert: self.doc_as_upsert,
+            script: self.script,
+            scripted_upsert: self.scripted_upsert,
+            source2: self.source2,
+            upsert: value,
+            bound_client: self.bound_client,
+            _state: std::marker::PhantomData,
+        }
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
+impl<S1, C, TDocument, TPartialDocument>
+    RequestBuilder<(crate::typed::builder::NotSet, S1), C, TDocument, TPartialDocument>
+{
     /// A unique identifier for the document to be updated.
     pub fn id(
         self,
         value: impl Into<crate::typed::_types::Id>,
-    ) -> RequestBuilder<(crate::typed::builder::Set, S1), C> {
+    ) -> RequestBuilder<(crate::typed::builder::Set, S1), C, TDocument, TPartialDocument> {
         let mut builder = self.with_state();
         builder.id = Some(value.into());
         builder
     }
 }
 
-impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
+impl<S0, C, TDocument, TPartialDocument>
+    RequestBuilder<(S0, crate::typed::builder::NotSet), C, TDocument, TPartialDocument>
+{
     /// The name of the target index.
     /// By default, the index is created automatically if it doesn't exist.
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
-    ) -> RequestBuilder<(S0, crate::typed::builder::Set), C> {
+    ) -> RequestBuilder<(S0, crate::typed::builder::Set), C, TDocument, TPartialDocument> {
         let mut builder = self.with_state();
         builder.index = Some(value.into());
         builder
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {
+impl<C, TDocument, TPartialDocument>
+    RequestBuilder<
+        (crate::typed::builder::Set, crate::typed::builder::Set),
+        C,
+        TDocument,
+        TPartialDocument,
+    >
+{
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request<TDocument, TPartialDocument> {
         Request {
             id: self.id.unwrap(),
             index: self.index.unwrap(),
@@ -628,8 +775,16 @@ impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set),
     }
 }
 
-impl
-    RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), &crate::Elasticsearch>
+impl<TDocument, TPartialDocument>
+    RequestBuilder<
+        (crate::typed::builder::Set, crate::typed::builder::Set),
+        &crate::Elasticsearch,
+        TDocument,
+        TPartialDocument,
+    >
+where
+    TDocument: serde::Serialize,
+    TPartialDocument: serde::Serialize,
 {
     /// Sends the request.
     pub async fn send(self) -> std::result::Result<Response, crate::Error> {
@@ -638,26 +793,44 @@ impl
     }
 }
 
-impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
+impl<S1, C, TDocument, TPartialDocument>
+    RequestBuilder<(crate::typed::builder::NotSet, S1), C, TDocument, TPartialDocument>
+{
     /// `id` is missing: set it before calling `build()`.
     #[rustfmt::skip]
-    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> Request { match id {} }
+    pub fn build(self, id: crate::typed::builder::MissingRequiredField) -> Request<TDocument, TPartialDocument> { match id {} }
 }
-impl<S1> RequestBuilder<(crate::typed::builder::NotSet, S1), &crate::Elasticsearch> {
+impl<S1, TDocument, TPartialDocument>
+    RequestBuilder<
+        (crate::typed::builder::NotSet, S1),
+        &crate::Elasticsearch,
+        TDocument,
+        TPartialDocument,
+    >
+{
     /// `id` is missing: set it before calling `send()`.
     #[rustfmt::skip]
     pub async fn send(self, id: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match id {} }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::NotSet), C> {
+impl<C, TDocument, TPartialDocument>
+    RequestBuilder<
+        (crate::typed::builder::Set, crate::typed::builder::NotSet),
+        C,
+        TDocument,
+        TPartialDocument,
+    >
+{
     /// `index` is missing: set it before calling `build()`.
     #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request { match index {} }
+    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request<TDocument, TPartialDocument> { match index {} }
 }
-impl
+impl<TDocument, TPartialDocument>
     RequestBuilder<
         (crate::typed::builder::Set, crate::typed::builder::NotSet),
         &crate::Elasticsearch,
+        TDocument,
+        TPartialDocument,
     >
 {
     /// `index` is missing: set it before calling `send()`.
@@ -665,7 +838,7 @@ impl
     pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
 }
 
-impl Request {
+impl<TDocument, TPartialDocument> Request<TDocument, TPartialDocument> {
     /// HTTP method and path of the request, using the most specific URL for the path parameters that are set.
     fn url(&self) -> (crate::http::Method, String) {
         (
@@ -764,7 +937,7 @@ impl Request {
     }
 
     /// Body of the request.
-    pub fn body(&self) -> RequestBody<'_> {
+    pub fn body(&self) -> RequestBody<'_, TDocument, TPartialDocument> {
         RequestBody {
             detect_noop: self.detect_noop.as_ref(),
             doc: self.doc.as_ref(),
@@ -779,7 +952,11 @@ impl Request {
     pub(crate) async fn send(
         self,
         client: &crate::Elasticsearch,
-    ) -> std::result::Result<Response, crate::Error> {
+    ) -> std::result::Result<Response, crate::Error>
+    where
+        TDocument: serde::Serialize,
+        TPartialDocument: serde::Serialize,
+    {
         use crate::http::{headers::HeaderMap, request::JsonBody};
         let (method, path) = self.url();
         let query = self.query();
@@ -801,11 +978,11 @@ impl Request {
 
 /// Body of a [`Request`], borrowing its values.
 #[derive(Debug, serde::Serialize)]
-pub struct RequestBody<'a> {
+pub struct RequestBody<'a, TDocument, TPartialDocument> {
     #[serde(skip_serializing_if = "Option::is_none")]
     detect_noop: Option<&'a bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    doc: Option<&'a serde_json::Value>,
+    doc: Option<&'a TPartialDocument>,
     #[serde(skip_serializing_if = "Option::is_none")]
     doc_as_upsert: Option<&'a bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -815,7 +992,7 @@ pub struct RequestBody<'a> {
     #[serde(rename = "_source", skip_serializing_if = "Option::is_none")]
     source2: Option<&'a crate::typed::_global::search::_types::SourceConfig>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    upsert: Option<&'a serde_json::Value>,
+    upsert: Option<&'a TDocument>,
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]

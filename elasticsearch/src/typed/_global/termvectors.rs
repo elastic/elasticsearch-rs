@@ -376,7 +376,7 @@ impl From<FilterBuilder> for Filter {
 ///
 /// [Documentation](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-termvectors)
 #[derive(Debug, Clone, PartialEq)]
-pub struct Request {
+pub struct Request<TDocument = serde_json::Value> {
     /// The name of the index that contains the document.
     pub index: crate::typed::_types::IndexName,
     /// A unique identifier for the document.
@@ -435,7 +435,7 @@ pub struct Request {
     /// this option for debugging only.
     pub pretty: Option<bool>,
     /// An artificial document (a document not present in the index) for which you want to retrieve term vectors.
-    pub doc: Option<serde_json::Value>,
+    pub doc: Option<TDocument>,
     /// Filter terms based on their tf-idf scores.
     /// This could be useful in order find out a good characteristic vector of a document.
     /// This feature works in a similar manner to the second phase of the More Like This Query.
@@ -483,7 +483,11 @@ impl Request {
 
 /// Builder for [`Request`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
+pub struct RequestBuilder<
+    S = (crate::typed::builder::NotSet,),
+    C = (),
+    TDocument = serde_json::Value,
+> {
     index: Option<crate::typed::_types::IndexName>,
     id: Option<crate::typed::_types::Id>,
     fields: Option<crate::typed::_types::Fields>,
@@ -502,7 +506,7 @@ pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
     filter_path: Option<RequestFilterPath>,
     human: Option<bool>,
     pretty: Option<bool>,
-    doc: Option<serde_json::Value>,
+    doc: Option<TDocument>,
     filter: Option<Filter>,
     per_field_analyzer: Option<indexmap::IndexMap<crate::typed::_types::Field, String>>,
     fields2: Option<Vec<crate::typed::_types::Field>>,
@@ -518,7 +522,7 @@ pub struct RequestBuilder<S = (crate::typed::builder::NotSet,), C = ()> {
     _state: std::marker::PhantomData<S>,
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
+impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C, serde_json::Value> {
     pub(crate) fn new(client: C) -> Self {
         RequestBuilder {
             index: None,
@@ -557,8 +561,8 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
     }
 }
 
-impl<S0, C> RequestBuilder<(S0,), C> {
-    fn with_state<N>(self) -> RequestBuilder<N, C> {
+impl<S0, C, TDocument> RequestBuilder<(S0,), C, TDocument> {
+    fn with_state<N>(self) -> RequestBuilder<N, C, TDocument> {
         RequestBuilder {
             index: self.index,
             id: self.id,
@@ -821,15 +825,79 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 
     /// An artificial document (a document not present in the index) for which you want to retrieve term vectors.
-    pub fn doc(mut self, value: impl Into<serde_json::Value>) -> Self {
-        self.doc = Some(value.into());
-        self
+    pub fn doc<T: serde::Serialize>(self, value: T) -> RequestBuilder<(S0,), C, T> {
+        RequestBuilder {
+            index: self.index,
+            id: self.id,
+            fields: self.fields,
+            field_statistics: self.field_statistics,
+            offsets: self.offsets,
+            payloads: self.payloads,
+            positions: self.positions,
+            preference: self.preference,
+            realtime: self.realtime,
+            routing: self.routing,
+            route_slice: self.route_slice,
+            term_statistics: self.term_statistics,
+            version: self.version,
+            version_type: self.version_type,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            doc: Some(value),
+            filter: self.filter,
+            per_field_analyzer: self.per_field_analyzer,
+            fields2: self.fields2,
+            field_statistics2: self.field_statistics2,
+            offsets2: self.offsets2,
+            payloads2: self.payloads2,
+            positions2: self.positions2,
+            term_statistics2: self.term_statistics2,
+            routing2: self.routing2,
+            version2: self.version2,
+            version_type2: self.version_type2,
+            bound_client: self.bound_client,
+            _state: std::marker::PhantomData,
+        }
     }
 
     /// Sets [`doc`](Self::doc) if `value` is `Some`.
-    pub fn maybe_doc(mut self, value: Option<serde_json::Value>) -> Self {
-        self.doc = value;
-        self
+    pub fn maybe_doc<T: serde::Serialize>(self, value: Option<T>) -> RequestBuilder<(S0,), C, T> {
+        RequestBuilder {
+            index: self.index,
+            id: self.id,
+            fields: self.fields,
+            field_statistics: self.field_statistics,
+            offsets: self.offsets,
+            payloads: self.payloads,
+            positions: self.positions,
+            preference: self.preference,
+            realtime: self.realtime,
+            routing: self.routing,
+            route_slice: self.route_slice,
+            term_statistics: self.term_statistics,
+            version: self.version,
+            version_type: self.version_type,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            doc: value,
+            filter: self.filter,
+            per_field_analyzer: self.per_field_analyzer,
+            fields2: self.fields2,
+            field_statistics2: self.field_statistics2,
+            offsets2: self.offsets2,
+            payloads2: self.payloads2,
+            positions2: self.positions2,
+            term_statistics2: self.term_statistics2,
+            routing2: self.routing2,
+            version2: self.version2,
+            version_type2: self.version_type2,
+            bound_client: self.bound_client,
+            _state: std::marker::PhantomData,
+        }
     }
 
     /// Filter terms based on their tf-idf scores.
@@ -1010,21 +1078,21 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
+impl<C, TDocument> RequestBuilder<(crate::typed::builder::NotSet,), C, TDocument> {
     /// The name of the index that contains the document.
     pub fn index(
         self,
         value: impl Into<crate::typed::_types::IndexName>,
-    ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
+    ) -> RequestBuilder<(crate::typed::builder::Set,), C, TDocument> {
         let mut builder = self.with_state();
         builder.index = Some(value.into());
         builder
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+impl<C, TDocument> RequestBuilder<(crate::typed::builder::Set,), C, TDocument> {
     /// Builds a [`Request`].
-    pub fn build(self) -> Request {
+    pub fn build(self) -> Request<TDocument> {
         Request {
             index: self.index.unwrap(),
             id: self.id,
@@ -1060,7 +1128,10 @@ impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
     }
 }
 
-impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
+impl<TDocument> RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch, TDocument>
+where
+    TDocument: serde::Serialize,
+{
     /// Sends the request.
     pub async fn send(self) -> std::result::Result<Response, crate::Error> {
         let client = self.bound_client;
@@ -1068,18 +1139,18 @@ impl RequestBuilder<(crate::typed::builder::Set,), &crate::Elasticsearch> {
     }
 }
 
-impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
+impl<C, TDocument> RequestBuilder<(crate::typed::builder::NotSet,), C, TDocument> {
     /// `index` is missing: set it before calling `build()`.
     #[rustfmt::skip]
-    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request { match index {} }
+    pub fn build(self, index: crate::typed::builder::MissingRequiredField) -> Request<TDocument> { match index {} }
 }
-impl RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch> {
+impl<TDocument> RequestBuilder<(crate::typed::builder::NotSet,), &crate::Elasticsearch, TDocument> {
     /// `index` is missing: set it before calling `send()`.
     #[rustfmt::skip]
     pub async fn send(self, index: crate::typed::builder::MissingRequiredField) -> std::result::Result<Response, crate::Error> { match index {} }
 }
 
-impl Request {
+impl<TDocument> Request<TDocument> {
     /// HTTP method and path of the request, using the most specific URL for the path parameters that are set.
     fn url(&self) -> (crate::http::Method, String) {
         if let Some(id) = &self.id {
@@ -1169,7 +1240,7 @@ impl Request {
     }
 
     /// Body of the request.
-    pub fn body(&self) -> RequestBody<'_> {
+    pub fn body(&self) -> RequestBody<'_, TDocument> {
         RequestBody {
             doc: self.doc.as_ref(),
             filter: self.filter.as_ref(),
@@ -1189,7 +1260,10 @@ impl Request {
     pub(crate) async fn send(
         self,
         client: &crate::Elasticsearch,
-    ) -> std::result::Result<Response, crate::Error> {
+    ) -> std::result::Result<Response, crate::Error>
+    where
+        TDocument: serde::Serialize,
+    {
         use crate::http::{headers::HeaderMap, request::JsonBody};
         let (method, path) = self.url();
         let query = self.query();
@@ -1211,9 +1285,9 @@ impl Request {
 
 /// Body of a [`Request`], borrowing its values.
 #[derive(Debug, serde::Serialize)]
-pub struct RequestBody<'a> {
+pub struct RequestBody<'a, TDocument> {
     #[serde(skip_serializing_if = "Option::is_none")]
-    doc: Option<&'a serde_json::Value>,
+    doc: Option<&'a TDocument>,
     #[serde(skip_serializing_if = "Option::is_none")]
     filter: Option<&'a Filter>,
     #[serde(skip_serializing_if = "Option::is_none")]
