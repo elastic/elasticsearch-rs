@@ -638,6 +638,7 @@ dependencies = [
  "dyn-clone",
  "flate2",
  "http",
+ "indexmap 2.9.0",
  "lazy_static",
  "os_type",
  "parking_lot",
