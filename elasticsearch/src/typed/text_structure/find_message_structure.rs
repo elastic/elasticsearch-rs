@@ -513,6 +513,29 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
         builder.messages = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`messages`](Self::messages).
+    pub fn add_messages(
+        self,
+        value: impl Into<String>,
+    ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
+        let mut builder = self.with_state();
+        builder
+            .messages
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+    /// Adds an element to [`messages`](Self::messages).
+    pub fn add_messages(mut self, value: impl Into<String>) -> Self {
+        self.messages
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {

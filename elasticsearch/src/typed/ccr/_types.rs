@@ -80,6 +80,107 @@ impl<S0> FollowIndexStatsBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.shards = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`shards`](Self::shards).
+    pub fn add_shards(
+        self,
+        value: impl Into<ShardStats>,
+    ) -> FollowIndexStatsBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .shards
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`shards`](Self::shards), with a builder.
+    pub fn add_shards_with(
+        self,
+        f: impl FnOnce(
+            ShardStatsBuilder,
+        ) -> ShardStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FollowIndexStatsBuilder<(S0, crate::typed::builder::Set)> {
+        self.add_shards(f(ShardStatsBuilder::new()).build())
+    }
+}
+
+impl<S0> FollowIndexStatsBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`shards`](Self::shards).
+    pub fn add_shards(mut self, value: impl Into<ShardStats>) -> Self {
+        self.shards
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`shards`](Self::shards), with a builder.
+    pub fn add_shards_with(
+        self,
+        f: impl FnOnce(
+            ShardStatsBuilder,
+        ) -> ShardStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_shards(f(ShardStatsBuilder::new()).build())
+    }
 }
 
 impl FollowIndexStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
@@ -2539,6 +2640,174 @@ impl<
         let mut builder = self.with_state();
         builder.read_exceptions = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`read_exceptions`](Self::read_exceptions).
+    pub fn add_read_exceptions(
+        self,
+        value: impl Into<ReadException>,
+    ) -> ShardStatsBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+        S13,
+        S14,
+        S15,
+        S16,
+        crate::typed::builder::Set,
+        S18,
+        S19,
+        S20,
+        S21,
+        S22,
+        S23,
+        S24,
+        S25,
+        S26,
+        S27,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .read_exceptions
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`read_exceptions`](Self::read_exceptions), with a builder.
+    pub fn add_read_exceptions_with(
+        self,
+        f: impl FnOnce(
+            ReadExceptionBuilder,
+        ) -> ReadExceptionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardStatsBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+        S13,
+        S14,
+        S15,
+        S16,
+        crate::typed::builder::Set,
+        S18,
+        S19,
+        S20,
+        S21,
+        S22,
+        S23,
+        S24,
+        S25,
+        S26,
+        S27,
+    )> {
+        self.add_read_exceptions(f(ReadExceptionBuilder::new()).build())
+    }
+}
+
+impl<
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+        S13,
+        S14,
+        S15,
+        S16,
+        S18,
+        S19,
+        S20,
+        S21,
+        S22,
+        S23,
+        S24,
+        S25,
+        S26,
+        S27,
+    >
+    ShardStatsBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+        S13,
+        S14,
+        S15,
+        S16,
+        crate::typed::builder::Set,
+        S18,
+        S19,
+        S20,
+        S21,
+        S22,
+        S23,
+        S24,
+        S25,
+        S26,
+        S27,
+    )>
+{
+    /// Adds an element to [`read_exceptions`](Self::read_exceptions).
+    pub fn add_read_exceptions(mut self, value: impl Into<ReadException>) -> Self {
+        self.read_exceptions
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`read_exceptions`](Self::read_exceptions), with a builder.
+    pub fn add_read_exceptions_with(
+        self,
+        f: impl FnOnce(
+            ReadExceptionBuilder,
+        ) -> ReadExceptionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_read_exceptions(f(ReadExceptionBuilder::new()).build())
     }
 }
 

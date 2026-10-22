@@ -465,6 +465,29 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
         builder.text = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`text`](Self::text).
+    pub fn add_text(
+        self,
+        value: impl Into<String>,
+    ) -> RequestBuilder<(S0, crate::typed::builder::Set), C> {
+        let mut builder = self.with_state();
+        builder
+            .text
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, C> RequestBuilder<(S0, crate::typed::builder::Set), C> {
+    /// Adds an element to [`text`](Self::text).
+    pub fn add_text(mut self, value: impl Into<String>) -> Self {
+        self.text
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {

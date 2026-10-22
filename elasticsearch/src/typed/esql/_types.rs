@@ -235,6 +235,55 @@ impl<S1, S2> AsyncEsqlResultBuilder<(crate::typed::builder::NotSet, S1, S2)> {
         builder.columns = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`columns`](Self::columns).
+    pub fn add_columns(
+        self,
+        value: impl Into<EsqlColumnInfo>,
+    ) -> AsyncEsqlResultBuilder<(crate::typed::builder::Set, S1, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .columns
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`columns`](Self::columns), with a builder.
+    pub fn add_columns_with(
+        self,
+        f: impl FnOnce(
+            EsqlColumnInfoBuilder,
+        ) -> EsqlColumnInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AsyncEsqlResultBuilder<(crate::typed::builder::Set, S1, S2)> {
+        self.add_columns(f(EsqlColumnInfoBuilder::new()).build())
+    }
+}
+
+impl<S1, S2> AsyncEsqlResultBuilder<(crate::typed::builder::Set, S1, S2)> {
+    /// Adds an element to [`columns`](Self::columns).
+    pub fn add_columns(mut self, value: impl Into<EsqlColumnInfo>) -> Self {
+        self.columns
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`columns`](Self::columns), with a builder.
+    pub fn add_columns_with(
+        self,
+        f: impl FnOnce(
+            EsqlColumnInfoBuilder,
+        ) -> EsqlColumnInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_columns(f(EsqlColumnInfoBuilder::new()).build())
+    }
 }
 
 impl<S0, S2> AsyncEsqlResultBuilder<(S0, crate::typed::builder::NotSet, S2)> {
@@ -245,6 +294,29 @@ impl<S0, S2> AsyncEsqlResultBuilder<(S0, crate::typed::builder::NotSet, S2)> {
         let mut builder = self.with_state();
         builder.values = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`values`](Self::values).
+    pub fn add_values(
+        self,
+        value: impl Into<Vec<crate::typed::_types::FieldValue>>,
+    ) -> AsyncEsqlResultBuilder<(S0, crate::typed::builder::Set, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .values
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S2> AsyncEsqlResultBuilder<(S0, crate::typed::builder::Set, S2)> {
+    /// Adds an element to [`values`](Self::values).
+    pub fn add_values(mut self, value: impl Into<Vec<crate::typed::_types::FieldValue>>) -> Self {
+        self.values
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -844,6 +916,34 @@ impl<S0, S1> ESQLDataSourceBuilder<(S0, S1, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.settings = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`settings`](Self::settings).
+    pub fn add_settings(
+        self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> ESQLDataSourceBuilder<(S0, S1, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .settings
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1> ESQLDataSourceBuilder<(S0, S1, crate::typed::builder::Set)> {
+    /// Adds an entry to [`settings`](Self::settings).
+    pub fn add_settings(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.settings
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 
@@ -1821,6 +1921,64 @@ impl<S0, S1, S2, S3, S4, S5>
         builder.details = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`details`](Self::details).
+    pub fn add_details(
+        self,
+        key: impl Into<String>,
+        value: impl Into<EsqlClusterDetails>,
+    ) -> EsqlClusterInfoBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .details
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`details`](Self::details), with a builder.
+    pub fn add_details_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            EsqlClusterDetailsBuilder,
+        ) -> EsqlClusterDetailsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> EsqlClusterInfoBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::Set)> {
+        self.add_details(key, f(EsqlClusterDetailsBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5>
+    EsqlClusterInfoBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::Set)>
+{
+    /// Adds an entry to [`details`](Self::details).
+    pub fn add_details(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<EsqlClusterDetails>,
+    ) -> Self {
+        self.details
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`details`](Self::details), with a builder.
+    pub fn add_details_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            EsqlClusterDetailsBuilder,
+        ) -> EsqlClusterDetailsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_details(key, f(EsqlClusterDetailsBuilder::new()).build())
+    }
 }
 
 impl
@@ -2456,6 +2614,55 @@ impl<S1> EsqlResultBuilder<(crate::typed::builder::NotSet, S1)> {
         builder.columns = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`columns`](Self::columns).
+    pub fn add_columns(
+        self,
+        value: impl Into<EsqlColumnInfo>,
+    ) -> EsqlResultBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .columns
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`columns`](Self::columns), with a builder.
+    pub fn add_columns_with(
+        self,
+        f: impl FnOnce(
+            EsqlColumnInfoBuilder,
+        ) -> EsqlColumnInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> EsqlResultBuilder<(crate::typed::builder::Set, S1)> {
+        self.add_columns(f(EsqlColumnInfoBuilder::new()).build())
+    }
+}
+
+impl<S1> EsqlResultBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`columns`](Self::columns).
+    pub fn add_columns(mut self, value: impl Into<EsqlColumnInfo>) -> Self {
+        self.columns
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`columns`](Self::columns), with a builder.
+    pub fn add_columns_with(
+        self,
+        f: impl FnOnce(
+            EsqlColumnInfoBuilder,
+        ) -> EsqlColumnInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_columns(f(EsqlColumnInfoBuilder::new()).build())
+    }
 }
 
 impl<S0> EsqlResultBuilder<(S0, crate::typed::builder::NotSet)> {
@@ -2466,6 +2673,29 @@ impl<S0> EsqlResultBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.values = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`values`](Self::values).
+    pub fn add_values(
+        self,
+        value: impl Into<Vec<crate::typed::_types::FieldValue>>,
+    ) -> EsqlResultBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .values
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> EsqlResultBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`values`](Self::values).
+    pub fn add_values(mut self, value: impl Into<Vec<crate::typed::_types::FieldValue>>) -> Self {
+        self.values
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 

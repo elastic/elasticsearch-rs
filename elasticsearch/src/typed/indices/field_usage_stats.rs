@@ -1359,6 +1359,74 @@ impl<S0> ShardsStatsBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.fields = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`fields`](Self::fields).
+    pub fn add_fields(
+        self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<FieldSummary>,
+    ) -> ShardsStatsBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .fields
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with(
+        self,
+        key: impl Into<crate::typed::_types::Field>,
+        f: impl FnOnce(
+            FieldSummaryBuilder,
+        ) -> FieldSummaryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardsStatsBuilder<(S0, crate::typed::builder::Set)> {
+        self.add_fields(key, f(FieldSummaryBuilder::new()).build())
+    }
+}
+
+impl<S0> ShardsStatsBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an entry to [`fields`](Self::fields).
+    pub fn add_fields(
+        mut self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<FieldSummary>,
+    ) -> Self {
+        self.fields
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with(
+        self,
+        key: impl Into<crate::typed::_types::Field>,
+        f: impl FnOnce(
+            FieldSummaryBuilder,
+        ) -> FieldSummaryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_fields(key, f(FieldSummaryBuilder::new()).build())
+    }
 }
 
 impl ShardsStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
@@ -1445,6 +1513,59 @@ impl UsageStatsIndexBuilder<(crate::typed::builder::NotSet,)> {
         let mut builder = self.with_state();
         builder.shards = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`shards`](Self::shards).
+    pub fn add_shards(
+        self,
+        value: impl Into<UsageStatsShards>,
+    ) -> UsageStatsIndexBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .shards
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`shards`](Self::shards), with a builder.
+    pub fn add_shards_with(
+        self,
+        f: impl FnOnce(
+            UsageStatsShardsBuilder,
+        ) -> UsageStatsShardsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> UsageStatsIndexBuilder<(crate::typed::builder::Set,)> {
+        self.add_shards(f(UsageStatsShardsBuilder::new()).build())
+    }
+}
+
+impl UsageStatsIndexBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`shards`](Self::shards).
+    pub fn add_shards(mut self, value: impl Into<UsageStatsShards>) -> Self {
+        self.shards
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`shards`](Self::shards), with a builder.
+    pub fn add_shards_with(
+        self,
+        f: impl FnOnce(
+            UsageStatsShardsBuilder,
+        ) -> UsageStatsShardsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_shards(f(UsageStatsShardsBuilder::new()).build())
     }
 }
 

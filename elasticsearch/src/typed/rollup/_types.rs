@@ -281,6 +281,29 @@ impl<S0> FieldMetricBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.metrics = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`metrics`](Self::metrics).
+    pub fn add_metrics(
+        self,
+        value: impl Into<Metric>,
+    ) -> FieldMetricBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .metrics
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> FieldMetricBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`metrics`](Self::metrics).
+    pub fn add_metrics(mut self, value: impl Into<Metric>) -> Self {
+        self.metrics
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl FieldMetricBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {

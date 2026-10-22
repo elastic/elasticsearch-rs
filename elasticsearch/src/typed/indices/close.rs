@@ -177,6 +177,51 @@ impl CloseShardResultBuilder<(crate::typed::builder::NotSet,)> {
         builder.failures = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`failures`](Self::failures).
+    pub fn add_failures(
+        self,
+        value: impl Into<crate::typed::_types::ShardFailure>,
+    ) -> CloseShardResultBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .failures
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`failures`](Self::failures), with a builder.
+    pub fn add_failures_with(
+        self,
+        f: impl FnOnce(
+            crate::typed::_types::ShardFailureBuilder,
+        )
+            -> crate::typed::_types::ShardFailureBuilder<(crate::typed::builder::Set,)>,
+    ) -> CloseShardResultBuilder<(crate::typed::builder::Set,)> {
+        self.add_failures(f(crate::typed::_types::ShardFailureBuilder::new()).build())
+    }
+}
+
+impl CloseShardResultBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`failures`](Self::failures).
+    pub fn add_failures(mut self, value: impl Into<crate::typed::_types::ShardFailure>) -> Self {
+        self.failures
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`failures`](Self::failures), with a builder.
+    pub fn add_failures_with(
+        self,
+        f: impl FnOnce(
+            crate::typed::_types::ShardFailureBuilder,
+        )
+            -> crate::typed::_types::ShardFailureBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_failures(f(crate::typed::_types::ShardFailureBuilder::new()).build())
+    }
 }
 
 impl CloseShardResultBuilder<(crate::typed::builder::Set,)> {

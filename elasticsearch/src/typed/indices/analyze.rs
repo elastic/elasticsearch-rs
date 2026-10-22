@@ -550,6 +550,67 @@ impl<S0> AnalyzerDetailBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.tokens = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`tokens`](Self::tokens).
+    pub fn add_tokens(
+        self,
+        value: impl Into<ExplainAnalyzeToken>,
+    ) -> AnalyzerDetailBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .tokens
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`tokens`](Self::tokens), with a builder.
+    pub fn add_tokens_with(
+        self,
+        f: impl FnOnce(
+            ExplainAnalyzeTokenBuilder,
+        ) -> ExplainAnalyzeTokenBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AnalyzerDetailBuilder<(S0, crate::typed::builder::Set)> {
+        self.add_tokens(f(ExplainAnalyzeTokenBuilder::new()).build())
+    }
+}
+
+impl<S0> AnalyzerDetailBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`tokens`](Self::tokens).
+    pub fn add_tokens(mut self, value: impl Into<ExplainAnalyzeToken>) -> Self {
+        self.tokens
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`tokens`](Self::tokens), with a builder.
+    pub fn add_tokens_with(
+        self,
+        f: impl FnOnce(
+            ExplainAnalyzeTokenBuilder,
+        ) -> ExplainAnalyzeTokenBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_tokens(f(ExplainAnalyzeTokenBuilder::new()).build())
+    }
 }
 
 impl AnalyzerDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
@@ -647,6 +708,29 @@ impl<S1> CharFilterDetailBuilder<(crate::typed::builder::NotSet, S1)> {
         let mut builder = self.with_state();
         builder.filtered_text = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`filtered_text`](Self::filtered_text).
+    pub fn add_filtered_text(
+        self,
+        value: impl Into<String>,
+    ) -> CharFilterDetailBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .filtered_text
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1> CharFilterDetailBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`filtered_text`](Self::filtered_text).
+    pub fn add_filtered_text(mut self, value: impl Into<String>) -> Self {
+        self.filtered_text
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -1759,6 +1843,67 @@ impl<S0> TokenDetailBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.tokens = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`tokens`](Self::tokens).
+    pub fn add_tokens(
+        self,
+        value: impl Into<ExplainAnalyzeToken>,
+    ) -> TokenDetailBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .tokens
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`tokens`](Self::tokens), with a builder.
+    pub fn add_tokens_with(
+        self,
+        f: impl FnOnce(
+            ExplainAnalyzeTokenBuilder,
+        ) -> ExplainAnalyzeTokenBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> TokenDetailBuilder<(S0, crate::typed::builder::Set)> {
+        self.add_tokens(f(ExplainAnalyzeTokenBuilder::new()).build())
+    }
+}
+
+impl<S0> TokenDetailBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`tokens`](Self::tokens).
+    pub fn add_tokens(mut self, value: impl Into<ExplainAnalyzeToken>) -> Self {
+        self.tokens
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`tokens`](Self::tokens), with a builder.
+    pub fn add_tokens_with(
+        self,
+        f: impl FnOnce(
+            ExplainAnalyzeTokenBuilder,
+        ) -> ExplainAnalyzeTokenBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_tokens(f(ExplainAnalyzeTokenBuilder::new()).build())
     }
 }
 

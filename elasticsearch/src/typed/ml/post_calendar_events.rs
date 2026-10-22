@@ -169,6 +169,57 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
         builder.events = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`events`](Self::events).
+    pub fn add_events(
+        self,
+        value: impl Into<crate::typed::ml::_types::CalendarEvent>,
+    ) -> RequestBuilder<(S0, crate::typed::builder::Set), C> {
+        let mut builder = self.with_state();
+        builder
+            .events
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`events`](Self::events), with a builder.
+    pub fn add_events_with(
+        self,
+        f: impl FnOnce(
+            crate::typed::ml::_types::CalendarEventBuilder,
+        ) -> crate::typed::ml::_types::CalendarEventBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RequestBuilder<(S0, crate::typed::builder::Set), C> {
+        self.add_events(f(crate::typed::ml::_types::CalendarEventBuilder::new()).build())
+    }
+}
+
+impl<S0, C> RequestBuilder<(S0, crate::typed::builder::Set), C> {
+    /// Adds an element to [`events`](Self::events).
+    pub fn add_events(mut self, value: impl Into<crate::typed::ml::_types::CalendarEvent>) -> Self {
+        self.events
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`events`](Self::events), with a builder.
+    pub fn add_events_with(
+        self,
+        f: impl FnOnce(
+            crate::typed::ml::_types::CalendarEventBuilder,
+        ) -> crate::typed::ml::_types::CalendarEventBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_events(f(crate::typed::ml::_types::CalendarEventBuilder::new()).build())
+    }
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {

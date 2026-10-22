@@ -657,6 +657,31 @@ impl<S0, S1, S2, S3, S4, S5>
         builder.seeds = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`seeds`](Self::seeds).
+    pub fn add_seeds(
+        self,
+        value: impl Into<String>,
+    ) -> ClusterRemoteSniffInfoBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .seeds
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5>
+    ClusterRemoteSniffInfoBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::Set)>
+{
+    /// Adds an element to [`seeds`](Self::seeds).
+    pub fn add_seeds(mut self, value: impl Into<String>) -> Self {
+        self.seeds
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl

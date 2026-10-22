@@ -94,6 +94,29 @@ impl<S0> CalendarBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.job_ids = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`job_ids`](Self::job_ids).
+    pub fn add_job_ids(
+        self,
+        value: impl Into<crate::typed::_types::Id>,
+    ) -> CalendarBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .job_ids
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> CalendarBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`job_ids`](Self::job_ids).
+    pub fn add_job_ids(mut self, value: impl Into<crate::typed::_types::Id>) -> Self {
+        self.job_ids
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl CalendarBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {

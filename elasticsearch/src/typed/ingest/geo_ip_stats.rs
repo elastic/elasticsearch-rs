@@ -462,6 +462,49 @@ impl<S1> GeoIpNodeDatabasesBuilder<(crate::typed::builder::NotSet, S1)> {
         builder.databases = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`databases`](Self::databases).
+    pub fn add_databases(
+        self,
+        value: impl Into<GeoIpNodeDatabaseName>,
+    ) -> GeoIpNodeDatabasesBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .databases
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`databases`](Self::databases), with a builder.
+    pub fn add_databases_with(
+        self,
+        f: impl FnOnce(
+            GeoIpNodeDatabaseNameBuilder,
+        ) -> GeoIpNodeDatabaseNameBuilder<(crate::typed::builder::Set,)>,
+    ) -> GeoIpNodeDatabasesBuilder<(crate::typed::builder::Set, S1)> {
+        self.add_databases(f(GeoIpNodeDatabaseNameBuilder::new()).build())
+    }
+}
+
+impl<S1> GeoIpNodeDatabasesBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`databases`](Self::databases).
+    pub fn add_databases(mut self, value: impl Into<GeoIpNodeDatabaseName>) -> Self {
+        self.databases
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`databases`](Self::databases), with a builder.
+    pub fn add_databases_with(
+        self,
+        f: impl FnOnce(
+            GeoIpNodeDatabaseNameBuilder,
+        ) -> GeoIpNodeDatabaseNameBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_databases(f(GeoIpNodeDatabaseNameBuilder::new()).build())
+    }
 }
 
 impl<S0> GeoIpNodeDatabasesBuilder<(S0, crate::typed::builder::NotSet)> {
@@ -473,6 +516,29 @@ impl<S0> GeoIpNodeDatabasesBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.files_in_temp = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`files_in_temp`](Self::files_in_temp).
+    pub fn add_files_in_temp(
+        self,
+        value: impl Into<String>,
+    ) -> GeoIpNodeDatabasesBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .files_in_temp
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> GeoIpNodeDatabasesBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`files_in_temp`](Self::files_in_temp).
+    pub fn add_files_in_temp(mut self, value: impl Into<String>) -> Self {
+        self.files_in_temp
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 

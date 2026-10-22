@@ -703,6 +703,29 @@ impl<S1> CombinedFieldsQueryBuilder<(crate::typed::builder::NotSet, S1)> {
         builder.fields = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`fields`](Self::fields).
+    pub fn add_fields(
+        self,
+        value: impl Into<crate::typed::_types::Field>,
+    ) -> CombinedFieldsQueryBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .fields
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1> CombinedFieldsQueryBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`fields`](Self::fields).
+    pub fn add_fields(mut self, value: impl Into<crate::typed::_types::Field>) -> Self {
+        self.fields
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0> CombinedFieldsQueryBuilder<(S0, crate::typed::builder::NotSet)> {
@@ -2612,6 +2635,45 @@ impl DisMaxQueryBuilder<(crate::typed::builder::NotSet,)> {
         let mut builder = self.with_state();
         builder.queries = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`queries`](Self::queries).
+    pub fn add_queries(
+        self,
+        value: impl Into<QueryContainer>,
+    ) -> DisMaxQueryBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .queries
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`queries`](Self::queries), with a builder.
+    pub fn add_queries_with(
+        self,
+        f: impl FnOnce(QueryContainerBuilder) -> QueryContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> DisMaxQueryBuilder<(crate::typed::builder::Set,)> {
+        self.add_queries(f(QueryContainerBuilder::new()).build())
+    }
+}
+
+impl DisMaxQueryBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`queries`](Self::queries).
+    pub fn add_queries(mut self, value: impl Into<QueryContainer>) -> Self {
+        self.queries
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`queries`](Self::queries), with a builder.
+    pub fn add_queries_with(
+        self,
+        f: impl FnOnce(QueryContainerBuilder) -> QueryContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_queries(f(QueryContainerBuilder::new()).build())
     }
 }
 
@@ -5653,6 +5715,29 @@ impl GeoPolygonPointsBuilder<(crate::typed::builder::NotSet,)> {
         builder.points = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`points`](Self::points).
+    pub fn add_points(
+        self,
+        value: impl Into<crate::typed::_types::GeoLocation>,
+    ) -> GeoPolygonPointsBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .points
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl GeoPolygonPointsBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`points`](Self::points).
+    pub fn add_points(mut self, value: impl Into<crate::typed::_types::GeoLocation>) -> Self {
+        self.points
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl GeoPolygonPointsBuilder<(crate::typed::builder::Set,)> {
@@ -6801,6 +6886,49 @@ impl IntervalsAllOfBuilder<(crate::typed::builder::NotSet,)> {
         builder.intervals = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`intervals`](Self::intervals).
+    pub fn add_intervals(
+        self,
+        value: impl Into<IntervalsContainer>,
+    ) -> IntervalsAllOfBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .intervals
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`intervals`](Self::intervals), with a builder.
+    pub fn add_intervals_with(
+        self,
+        f: impl FnOnce(
+            IntervalsContainerBuilder,
+        ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> IntervalsAllOfBuilder<(crate::typed::builder::Set,)> {
+        self.add_intervals(f(IntervalsContainerBuilder::new()).build())
+    }
+}
+
+impl IntervalsAllOfBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`intervals`](Self::intervals).
+    pub fn add_intervals(mut self, value: impl Into<IntervalsContainer>) -> Self {
+        self.intervals
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`intervals`](Self::intervals), with a builder.
+    pub fn add_intervals_with(
+        self,
+        f: impl FnOnce(
+            IntervalsContainerBuilder,
+        ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_intervals(f(IntervalsContainerBuilder::new()).build())
+    }
 }
 
 impl IntervalsAllOfBuilder<(crate::typed::builder::Set,)> {
@@ -6907,6 +7035,49 @@ impl IntervalsAnyOfBuilder<(crate::typed::builder::NotSet,)> {
         let mut builder = self.with_state();
         builder.intervals = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`intervals`](Self::intervals).
+    pub fn add_intervals(
+        self,
+        value: impl Into<IntervalsContainer>,
+    ) -> IntervalsAnyOfBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .intervals
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`intervals`](Self::intervals), with a builder.
+    pub fn add_intervals_with(
+        self,
+        f: impl FnOnce(
+            IntervalsContainerBuilder,
+        ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> IntervalsAnyOfBuilder<(crate::typed::builder::Set,)> {
+        self.add_intervals(f(IntervalsContainerBuilder::new()).build())
+    }
+}
+
+impl IntervalsAnyOfBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`intervals`](Self::intervals).
+    pub fn add_intervals(mut self, value: impl Into<IntervalsContainer>) -> Self {
+        self.intervals
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`intervals`](Self::intervals), with a builder.
+    pub fn add_intervals_with(
+        self,
+        f: impl FnOnce(
+            IntervalsContainerBuilder,
+        ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_intervals(f(IntervalsContainerBuilder::new()).build())
     }
 }
 
@@ -19760,6 +19931,45 @@ impl SpanNearQueryBuilder<(crate::typed::builder::NotSet,)> {
         builder.clauses = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`clauses`](Self::clauses).
+    pub fn add_clauses(
+        self,
+        value: impl Into<SpanQuery>,
+    ) -> SpanNearQueryBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .clauses
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`clauses`](Self::clauses), with a builder.
+    pub fn add_clauses_with(
+        self,
+        f: impl FnOnce(SpanQueryBuilder) -> SpanQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> SpanNearQueryBuilder<(crate::typed::builder::Set,)> {
+        self.add_clauses(f(SpanQueryBuilder::new()).build())
+    }
+}
+
+impl SpanNearQueryBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`clauses`](Self::clauses).
+    pub fn add_clauses(mut self, value: impl Into<SpanQuery>) -> Self {
+        self.clauses
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`clauses`](Self::clauses), with a builder.
+    pub fn add_clauses_with(
+        self,
+        f: impl FnOnce(SpanQueryBuilder) -> SpanQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_clauses(f(SpanQueryBuilder::new()).build())
+    }
 }
 
 impl SpanNearQueryBuilder<(crate::typed::builder::Set,)> {
@@ -20107,6 +20317,45 @@ impl SpanOrQueryBuilder<(crate::typed::builder::NotSet,)> {
         let mut builder = self.with_state();
         builder.clauses = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`clauses`](Self::clauses).
+    pub fn add_clauses(
+        self,
+        value: impl Into<SpanQuery>,
+    ) -> SpanOrQueryBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .clauses
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`clauses`](Self::clauses), with a builder.
+    pub fn add_clauses_with(
+        self,
+        f: impl FnOnce(SpanQueryBuilder) -> SpanQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> SpanOrQueryBuilder<(crate::typed::builder::Set,)> {
+        self.add_clauses(f(SpanQueryBuilder::new()).build())
+    }
+}
+
+impl SpanOrQueryBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`clauses`](Self::clauses).
+    pub fn add_clauses(mut self, value: impl Into<SpanQuery>) -> Self {
+        self.clauses
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`clauses`](Self::clauses), with a builder.
+    pub fn add_clauses_with(
+        self,
+        f: impl FnOnce(SpanQueryBuilder) -> SpanQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_clauses(f(SpanQueryBuilder::new()).build())
     }
 }
 
@@ -21905,6 +22154,29 @@ impl TermsSetQueryBuilder<(crate::typed::builder::NotSet,)> {
         let mut builder = self.with_state();
         builder.terms = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`terms`](Self::terms).
+    pub fn add_terms(
+        self,
+        value: impl Into<crate::typed::_types::FieldValue>,
+    ) -> TermsSetQueryBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .terms
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl TermsSetQueryBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`terms`](Self::terms).
+    pub fn add_terms(mut self, value: impl Into<crate::typed::_types::FieldValue>) -> Self {
+        self.terms
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 

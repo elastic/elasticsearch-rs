@@ -227,6 +227,32 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
         builder.docs = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`docs`](Self::docs).
+    pub fn add_docs(
+        self,
+        value: impl Into<indexmap::IndexMap<String, serde_json::Value>>,
+    ) -> RequestBuilder<(S0, crate::typed::builder::Set), C> {
+        let mut builder = self.with_state();
+        builder
+            .docs
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, C> RequestBuilder<(S0, crate::typed::builder::Set), C> {
+    /// Adds an element to [`docs`](Self::docs).
+    pub fn add_docs(
+        mut self,
+        value: impl Into<indexmap::IndexMap<String, serde_json::Value>>,
+    ) -> Self {
+        self.docs
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {

@@ -604,6 +604,60 @@ impl<S1, S2, S3> ClusterInfoBuilder<(crate::typed::builder::NotSet, S1, S2, S3)>
         builder.nodes = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`nodes`](Self::nodes).
+    pub fn add_nodes(
+        self,
+        key: impl Into<String>,
+        value: impl Into<NodeDiskUsage>,
+    ) -> ClusterInfoBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
+        let mut builder = self.with_state();
+        builder
+            .nodes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`nodes`](Self::nodes), with a builder.
+    pub fn add_nodes_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            NodeDiskUsageBuilder,
+        ) -> NodeDiskUsageBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterInfoBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
+        self.add_nodes(key, f(NodeDiskUsageBuilder::new()).build())
+    }
+}
+
+impl<S1, S2, S3> ClusterInfoBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
+    /// Adds an entry to [`nodes`](Self::nodes).
+    pub fn add_nodes(mut self, key: impl Into<String>, value: impl Into<NodeDiskUsage>) -> Self {
+        self.nodes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`nodes`](Self::nodes), with a builder.
+    pub fn add_nodes_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            NodeDiskUsageBuilder,
+        ) -> NodeDiskUsageBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_nodes(key, f(NodeDiskUsageBuilder::new()).build())
+    }
 }
 
 impl<S0, S2, S3> ClusterInfoBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
@@ -614,6 +668,30 @@ impl<S0, S2, S3> ClusterInfoBuilder<(S0, crate::typed::builder::NotSet, S2, S3)>
         let mut builder = self.with_state();
         builder.shard_sizes = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`shard_sizes`](Self::shard_sizes).
+    pub fn add_shard_sizes(
+        self,
+        key: impl Into<String>,
+        value: i64,
+    ) -> ClusterInfoBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
+        let mut builder = self.with_state();
+        builder
+            .shard_sizes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        builder
+    }
+}
+
+impl<S0, S2, S3> ClusterInfoBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
+    /// Adds an entry to [`shard_sizes`](Self::shard_sizes).
+    pub fn add_shard_sizes(mut self, key: impl Into<String>, value: i64) -> Self {
+        self.shard_sizes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        self
     }
 }
 
@@ -626,6 +704,30 @@ impl<S0, S1, S3> ClusterInfoBuilder<(S0, S1, crate::typed::builder::NotSet, S3)>
         builder.shard_paths = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`shard_paths`](Self::shard_paths).
+    pub fn add_shard_paths(
+        self,
+        key: impl Into<String>,
+        value: impl Into<String>,
+    ) -> ClusterInfoBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+        let mut builder = self.with_state();
+        builder
+            .shard_paths
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S3> ClusterInfoBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+    /// Adds an entry to [`shard_paths`](Self::shard_paths).
+    pub fn add_shard_paths(mut self, key: impl Into<String>, value: impl Into<String>) -> Self {
+        self.shard_paths
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl<S0, S1, S2> ClusterInfoBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
@@ -636,6 +738,59 @@ impl<S0, S1, S2> ClusterInfoBuilder<(S0, S1, S2, crate::typed::builder::NotSet)>
         let mut builder = self.with_state();
         builder.reserved_sizes = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`reserved_sizes`](Self::reserved_sizes).
+    pub fn add_reserved_sizes(
+        self,
+        value: impl Into<ReservedSize>,
+    ) -> ClusterInfoBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .reserved_sizes
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`reserved_sizes`](Self::reserved_sizes), with a builder.
+    pub fn add_reserved_sizes_with(
+        self,
+        f: impl FnOnce(
+            ReservedSizeBuilder,
+        ) -> ReservedSizeBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterInfoBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        self.add_reserved_sizes(f(ReservedSizeBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2> ClusterInfoBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+    /// Adds an element to [`reserved_sizes`](Self::reserved_sizes).
+    pub fn add_reserved_sizes(mut self, value: impl Into<ReservedSize>) -> Self {
+        self.reserved_sizes
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`reserved_sizes`](Self::reserved_sizes), with a builder.
+    pub fn add_reserved_sizes_with(
+        self,
+        f: impl FnOnce(
+            ReservedSizeBuilder,
+        ) -> ReservedSizeBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_reserved_sizes(f(ReservedSizeBuilder::new()).build())
     }
 }
 
@@ -848,6 +1003,29 @@ impl<S0, S1, S3, S4, S5> CurrentNodeBuilder<(S0, S1, crate::typed::builder::NotS
         builder.roles = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(
+        self,
+        value: impl Into<crate::typed::_types::NodeRole>,
+    ) -> CurrentNodeBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5)> {
+        let mut builder = self.with_state();
+        builder
+            .roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S3, S4, S5> CurrentNodeBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5)> {
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(mut self, value: impl Into<crate::typed::_types::NodeRole>) -> Self {
+        self.roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0, S1, S2, S4, S5> CurrentNodeBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4, S5)> {
@@ -858,6 +1036,30 @@ impl<S0, S1, S2, S4, S5> CurrentNodeBuilder<(S0, S1, S2, crate::typed::builder::
         let mut builder = self.with_state();
         builder.attributes = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`attributes`](Self::attributes).
+    pub fn add_attributes(
+        self,
+        key: impl Into<String>,
+        value: impl Into<String>,
+    ) -> CurrentNodeBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5)> {
+        let mut builder = self.with_state();
+        builder
+            .attributes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S4, S5> CurrentNodeBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5)> {
+    /// Adds an entry to [`attributes`](Self::attributes).
+    pub fn add_attributes(mut self, key: impl Into<String>, value: impl Into<String>) -> Self {
+        self.attributes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 
@@ -1509,6 +1711,32 @@ impl<S1, S2, S3, S4, S5>
         builder.node_attributes = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`node_attributes`](Self::node_attributes).
+    pub fn add_node_attributes(
+        self,
+        key: impl Into<String>,
+        value: impl Into<String>,
+    ) -> NodeAllocationExplanationBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5)> {
+        let mut builder = self.with_state();
+        builder
+            .node_attributes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S1, S2, S3, S4, S5>
+    NodeAllocationExplanationBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5)>
+{
+    /// Adds an entry to [`node_attributes`](Self::node_attributes).
+    pub fn add_node_attributes(mut self, key: impl Into<String>, value: impl Into<String>) -> Self {
+        self.node_attributes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl<S0, S2, S3, S4, S5>
@@ -1560,6 +1788,31 @@ impl<S0, S1, S2, S3, S5>
         let mut builder = self.with_state();
         builder.roles = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(
+        self,
+        value: impl Into<crate::typed::_types::NodeRole>,
+    ) -> NodeAllocationExplanationBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5)> {
+        let mut builder = self.with_state();
+        builder
+            .roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3, S5>
+    NodeAllocationExplanationBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5)>
+{
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(mut self, value: impl Into<crate::typed::_types::NodeRole>) -> Self {
+        self.roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -2499,6 +2752,29 @@ impl<S0, S1, S2> ReservedSizeBuilder<(S0, S1, S2, crate::typed::builder::NotSet)
         let mut builder = self.with_state();
         builder.shards = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`shards`](Self::shards).
+    pub fn add_shards(
+        self,
+        value: impl Into<String>,
+    ) -> ReservedSizeBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .shards
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2> ReservedSizeBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+    /// Adds an element to [`shards`](Self::shards).
+    pub fn add_shards(mut self, value: impl Into<String>) -> Self {
+        self.shards
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 

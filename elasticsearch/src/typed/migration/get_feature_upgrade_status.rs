@@ -120,6 +120,55 @@ impl<S0, S1, S2> MigrationFeatureBuilder<(S0, S1, S2, crate::typed::builder::Not
         builder.indices = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`indices`](Self::indices).
+    pub fn add_indices(
+        self,
+        value: impl Into<MigrationFeatureIndexInfo>,
+    ) -> MigrationFeatureBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .indices
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`indices`](Self::indices), with a builder.
+    pub fn add_indices_with(
+        self,
+        f: impl FnOnce(
+            MigrationFeatureIndexInfoBuilder,
+        ) -> MigrationFeatureIndexInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MigrationFeatureBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        self.add_indices(f(MigrationFeatureIndexInfoBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2> MigrationFeatureBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+    /// Adds an element to [`indices`](Self::indices).
+    pub fn add_indices(mut self, value: impl Into<MigrationFeatureIndexInfo>) -> Self {
+        self.indices
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`indices`](Self::indices), with a builder.
+    pub fn add_indices_with(
+        self,
+        f: impl FnOnce(
+            MigrationFeatureIndexInfoBuilder,
+        ) -> MigrationFeatureIndexInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_indices(f(MigrationFeatureIndexInfoBuilder::new()).build())
+    }
 }
 
 impl

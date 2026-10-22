@@ -877,6 +877,29 @@ impl<S0> ResolveIndexItemBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.attributes = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`attributes`](Self::attributes).
+    pub fn add_attributes(
+        self,
+        value: impl Into<String>,
+    ) -> ResolveIndexItemBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .attributes
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> ResolveIndexItemBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`attributes`](Self::attributes).
+    pub fn add_attributes(mut self, value: impl Into<String>) -> Self {
+        self.attributes
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl ResolveIndexItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {

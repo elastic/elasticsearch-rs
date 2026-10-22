@@ -1581,6 +1581,73 @@ impl RecoveryStatusBuilder<(crate::typed::builder::NotSet,)> {
         builder.shards = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`shards`](Self::shards).
+    pub fn add_shards(
+        self,
+        value: impl Into<ShardRecovery>,
+    ) -> RecoveryStatusBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .shards
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`shards`](Self::shards), with a builder.
+    pub fn add_shards_with(
+        self,
+        f: impl FnOnce(
+            ShardRecoveryBuilder,
+        ) -> ShardRecoveryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RecoveryStatusBuilder<(crate::typed::builder::Set,)> {
+        self.add_shards(f(ShardRecoveryBuilder::new()).build())
+    }
+}
+
+impl RecoveryStatusBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`shards`](Self::shards).
+    pub fn add_shards(mut self, value: impl Into<ShardRecovery>) -> Self {
+        self.shards
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`shards`](Self::shards), with a builder.
+    pub fn add_shards_with(
+        self,
+        f: impl FnOnce(
+            ShardRecoveryBuilder,
+        ) -> ShardRecoveryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_shards(f(ShardRecoveryBuilder::new()).build())
+    }
 }
 
 impl RecoveryStatusBuilder<(crate::typed::builder::Set,)> {

@@ -951,6 +951,30 @@ impl<S1, S2, S3, S4, S5, S6>
         builder.attributes = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`attributes`](Self::attributes).
+    pub fn add_attributes(
+        self,
+        key: impl Into<String>,
+        value: impl Into<String>,
+    ) -> MemoryBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5, S6)> {
+        let mut builder = self.with_state();
+        builder
+            .attributes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S1, S2, S3, S4, S5, S6> MemoryBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5, S6)> {
+    /// Adds an entry to [`attributes`](Self::attributes).
+    pub fn add_attributes(mut self, key: impl Into<String>, value: impl Into<String>) -> Self {
+        self.attributes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl<S0, S2, S3, S4, S5, S6>
@@ -1034,6 +1058,29 @@ impl<S0, S1, S2, S3, S5, S6>
         let mut builder = self.with_state();
         builder.roles = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(
+        self,
+        value: impl Into<String>,
+    ) -> MemoryBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5, S6)> {
+        let mut builder = self.with_state();
+        builder
+            .roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3, S5, S6> MemoryBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5, S6)> {
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(mut self, value: impl Into<String>) -> Self {
+        self.roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 

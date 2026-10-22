@@ -309,6 +309,29 @@ impl<S0> LatestBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.unique_key = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`unique_key`](Self::unique_key).
+    pub fn add_unique_key(
+        self,
+        value: impl Into<crate::typed::_types::Field>,
+    ) -> LatestBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .unique_key
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> LatestBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`unique_key`](Self::unique_key).
+    pub fn add_unique_key(mut self, value: impl Into<crate::typed::_types::Field>) -> Self {
+        self.unique_key
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl LatestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {

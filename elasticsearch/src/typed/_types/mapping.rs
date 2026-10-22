@@ -276,6 +276,29 @@ impl<S0, S1> AggregateMetricDoublePropertyBuilder<(S0, S1, crate::typed::builder
         builder.metrics = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`metrics`](Self::metrics).
+    pub fn add_metrics(
+        self,
+        value: impl Into<String>,
+    ) -> AggregateMetricDoublePropertyBuilder<(S0, S1, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .metrics
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1> AggregateMetricDoublePropertyBuilder<(S0, S1, crate::typed::builder::Set)> {
+    /// Adds an element to [`metrics`](Self::metrics).
+    pub fn add_metrics(mut self, value: impl Into<String>) -> Self {
+        self.metrics
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl

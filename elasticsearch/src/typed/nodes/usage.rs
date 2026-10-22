@@ -94,6 +94,30 @@ impl<S1, S2, S3> NodeUsageBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
         builder.rest_actions = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`rest_actions`](Self::rest_actions).
+    pub fn add_rest_actions(
+        self,
+        key: impl Into<String>,
+        value: i32,
+    ) -> NodeUsageBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
+        let mut builder = self.with_state();
+        builder
+            .rest_actions
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        builder
+    }
+}
+
+impl<S1, S2, S3> NodeUsageBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
+    /// Adds an entry to [`rest_actions`](Self::rest_actions).
+    pub fn add_rest_actions(mut self, key: impl Into<String>, value: i32) -> Self {
+        self.rest_actions
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        self
+    }
 }
 
 impl<S0, S2, S3> NodeUsageBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
@@ -129,6 +153,34 @@ impl<S0, S1, S2> NodeUsageBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.aggregations = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`aggregations`](Self::aggregations).
+    pub fn add_aggregations(
+        self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> NodeUsageBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .aggregations
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2> NodeUsageBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+    /// Adds an entry to [`aggregations`](Self::aggregations).
+    pub fn add_aggregations(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.aggregations
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 
@@ -656,6 +708,62 @@ impl<S0> ResponseBaseBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.nodes = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`nodes`](Self::nodes).
+    pub fn add_nodes(
+        self,
+        key: impl Into<String>,
+        value: impl Into<NodeUsage>,
+    ) -> ResponseBaseBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .nodes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`nodes`](Self::nodes), with a builder.
+    pub fn add_nodes_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            NodeUsageBuilder,
+        ) -> NodeUsageBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ResponseBaseBuilder<(S0, crate::typed::builder::Set)> {
+        self.add_nodes(key, f(NodeUsageBuilder::new()).build())
+    }
+}
+
+impl<S0> ResponseBaseBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an entry to [`nodes`](Self::nodes).
+    pub fn add_nodes(mut self, key: impl Into<String>, value: impl Into<NodeUsage>) -> Self {
+        self.nodes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`nodes`](Self::nodes), with a builder.
+    pub fn add_nodes_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            NodeUsageBuilder,
+        ) -> NodeUsageBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_nodes(key, f(NodeUsageBuilder::new()).build())
     }
 }
 

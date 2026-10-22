@@ -114,6 +114,29 @@ impl ActionsBuilder<(crate::typed::builder::NotSet,)> {
         builder.actions = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`actions`](Self::actions).
+    pub fn add_actions(
+        self,
+        value: impl Into<String>,
+    ) -> ActionsBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .actions
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl ActionsBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`actions`](Self::actions).
+    pub fn add_actions(mut self, value: impl Into<String>) -> Self {
+        self.actions
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl ActionsBuilder<(crate::typed::builder::Set,)> {
@@ -319,6 +342,34 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
         let mut builder = self.with_state();
         builder.privileges = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`privileges`](Self::privileges).
+    pub fn add_privileges(
+        self,
+        key: impl Into<String>,
+        value: impl Into<indexmap::IndexMap<String, Actions>>,
+    ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
+        let mut builder = self.with_state();
+        builder
+            .privileges
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+    /// Adds an entry to [`privileges`](Self::privileges).
+    pub fn add_privileges(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<indexmap::IndexMap<String, Actions>>,
+    ) -> Self {
+        self.privileges
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 

@@ -3033,6 +3033,59 @@ impl<S1, S2> DfsKnnProfileBuilder<(crate::typed::builder::NotSet, S1, S2)> {
         builder.query = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`query`](Self::query).
+    pub fn add_query(
+        self,
+        value: impl Into<KnnQueryProfileResult>,
+    ) -> DfsKnnProfileBuilder<(crate::typed::builder::Set, S1, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .query
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`query`](Self::query), with a builder.
+    pub fn add_query_with(
+        self,
+        f: impl FnOnce(
+            KnnQueryProfileResultBuilder,
+        ) -> KnnQueryProfileResultBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DfsKnnProfileBuilder<(crate::typed::builder::Set, S1, S2)> {
+        self.add_query(f(KnnQueryProfileResultBuilder::new()).build())
+    }
+}
+
+impl<S1, S2> DfsKnnProfileBuilder<(crate::typed::builder::Set, S1, S2)> {
+    /// Adds an element to [`query`](Self::query).
+    pub fn add_query(mut self, value: impl Into<KnnQueryProfileResult>) -> Self {
+        self.query
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`query`](Self::query), with a builder.
+    pub fn add_query_with(
+        self,
+        f: impl FnOnce(
+            KnnQueryProfileResultBuilder,
+        ) -> KnnQueryProfileResultBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_query(f(KnnQueryProfileResultBuilder::new()).build())
+    }
 }
 
 impl<S0, S2> DfsKnnProfileBuilder<(S0, crate::typed::builder::NotSet, S2)> {
@@ -3054,6 +3107,57 @@ impl<S0, S1> DfsKnnProfileBuilder<(S0, S1, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.collector = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`collector`](Self::collector).
+    pub fn add_collector(
+        self,
+        value: impl Into<KnnCollectorResult>,
+    ) -> DfsKnnProfileBuilder<(S0, S1, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .collector
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`collector`](Self::collector), with a builder.
+    pub fn add_collector_with(
+        self,
+        f: impl FnOnce(
+            KnnCollectorResultBuilder,
+        ) -> KnnCollectorResultBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DfsKnnProfileBuilder<(S0, S1, crate::typed::builder::Set)> {
+        self.add_collector(f(KnnCollectorResultBuilder::new()).build())
+    }
+}
+
+impl<S0, S1> DfsKnnProfileBuilder<(S0, S1, crate::typed::builder::Set)> {
+    /// Adds an element to [`collector`](Self::collector).
+    pub fn add_collector(mut self, value: impl Into<KnnCollectorResult>) -> Self {
+        self.collector
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`collector`](Self::collector), with a builder.
+    pub fn add_collector_with(
+        self,
+        f: impl FnOnce(
+            KnnCollectorResultBuilder,
+        ) -> KnnCollectorResultBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_collector(f(KnnCollectorResultBuilder::new()).build())
     }
 }
 
@@ -7588,6 +7692,45 @@ impl HitsMetadataBuilder<(crate::typed::builder::NotSet,)> {
         let mut builder = self.with_state();
         builder.hits = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`hits`](Self::hits).
+    pub fn add_hits(
+        self,
+        value: impl Into<Hit>,
+    ) -> HitsMetadataBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .hits
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`hits`](Self::hits), with a builder.
+    pub fn add_hits_with(
+        self,
+        f: impl FnOnce(HitBuilder) -> HitBuilder<(crate::typed::builder::Set,)>,
+    ) -> HitsMetadataBuilder<(crate::typed::builder::Set,)> {
+        self.add_hits(f(HitBuilder::new()).build())
+    }
+}
+
+impl HitsMetadataBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`hits`](Self::hits).
+    pub fn add_hits(mut self, value: impl Into<Hit>) -> Self {
+        self.hits
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`hits`](Self::hits), with a builder.
+    pub fn add_hits_with(
+        self,
+        f: impl FnOnce(HitBuilder) -> HitBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_hits(f(HitBuilder::new()).build())
     }
 }
 
@@ -12505,6 +12648,65 @@ impl ProfileBuilder<(crate::typed::builder::NotSet,)> {
         builder.shards = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`shards`](Self::shards).
+    pub fn add_shards(
+        self,
+        value: impl Into<ShardProfile>,
+    ) -> ProfileBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .shards
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`shards`](Self::shards), with a builder.
+    pub fn add_shards_with(
+        self,
+        f: impl FnOnce(
+            ShardProfileBuilder,
+        ) -> ShardProfileBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ProfileBuilder<(crate::typed::builder::Set,)> {
+        self.add_shards(f(ShardProfileBuilder::new()).build())
+    }
+}
+
+impl ProfileBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`shards`](Self::shards).
+    pub fn add_shards(mut self, value: impl Into<ShardProfile>) -> Self {
+        self.shards
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`shards`](Self::shards), with a builder.
+    pub fn add_shards_with(
+        self,
+        f: impl FnOnce(
+            ShardProfileBuilder,
+        ) -> ShardProfileBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_shards(f(ShardProfileBuilder::new()).build())
+    }
 }
 
 impl ProfileBuilder<(crate::typed::builder::Set,)> {
@@ -15458,6 +15660,57 @@ impl<S1, S2> SearchProfileBuilder<(crate::typed::builder::NotSet, S1, S2)> {
         builder.collector = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`collector`](Self::collector).
+    pub fn add_collector(
+        self,
+        value: impl Into<Collector>,
+    ) -> SearchProfileBuilder<(crate::typed::builder::Set, S1, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .collector
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`collector`](Self::collector), with a builder.
+    pub fn add_collector_with(
+        self,
+        f: impl FnOnce(
+            CollectorBuilder,
+        ) -> CollectorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SearchProfileBuilder<(crate::typed::builder::Set, S1, S2)> {
+        self.add_collector(f(CollectorBuilder::new()).build())
+    }
+}
+
+impl<S1, S2> SearchProfileBuilder<(crate::typed::builder::Set, S1, S2)> {
+    /// Adds an element to [`collector`](Self::collector).
+    pub fn add_collector(mut self, value: impl Into<Collector>) -> Self {
+        self.collector
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`collector`](Self::collector), with a builder.
+    pub fn add_collector_with(
+        self,
+        f: impl FnOnce(
+            CollectorBuilder,
+        ) -> CollectorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_collector(f(CollectorBuilder::new()).build())
+    }
 }
 
 impl<S0, S2> SearchProfileBuilder<(S0, crate::typed::builder::NotSet, S2)> {
@@ -15468,6 +15721,59 @@ impl<S0, S2> SearchProfileBuilder<(S0, crate::typed::builder::NotSet, S2)> {
         let mut builder = self.with_state();
         builder.query = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`query`](Self::query).
+    pub fn add_query(
+        self,
+        value: impl Into<QueryProfile>,
+    ) -> SearchProfileBuilder<(S0, crate::typed::builder::Set, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .query
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`query`](Self::query), with a builder.
+    pub fn add_query_with(
+        self,
+        f: impl FnOnce(
+            QueryProfileBuilder,
+        ) -> QueryProfileBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SearchProfileBuilder<(S0, crate::typed::builder::Set, S2)> {
+        self.add_query(f(QueryProfileBuilder::new()).build())
+    }
+}
+
+impl<S0, S2> SearchProfileBuilder<(S0, crate::typed::builder::Set, S2)> {
+    /// Adds an element to [`query`](Self::query).
+    pub fn add_query(mut self, value: impl Into<QueryProfile>) -> Self {
+        self.query
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`query`](Self::query), with a builder.
+    pub fn add_query_with(
+        self,
+        f: impl FnOnce(
+            QueryProfileBuilder,
+        ) -> QueryProfileBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_query(f(QueryProfileBuilder::new()).build())
     }
 }
 
@@ -16914,6 +17220,61 @@ impl<S1, S2, S3, S4, S5, S6>
         builder.aggregations = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`aggregations`](Self::aggregations).
+    pub fn add_aggregations(
+        self,
+        value: impl Into<AggregationProfile>,
+    ) -> ShardProfileBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5, S6)> {
+        let mut builder = self.with_state();
+        builder
+            .aggregations
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`aggregations`](Self::aggregations), with a builder.
+    pub fn add_aggregations_with(
+        self,
+        f: impl FnOnce(
+            AggregationProfileBuilder,
+        ) -> AggregationProfileBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardProfileBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5, S6)> {
+        self.add_aggregations(f(AggregationProfileBuilder::new()).build())
+    }
+}
+
+impl<S1, S2, S3, S4, S5, S6>
+    ShardProfileBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5, S6)>
+{
+    /// Adds an element to [`aggregations`](Self::aggregations).
+    pub fn add_aggregations(mut self, value: impl Into<AggregationProfile>) -> Self {
+        self.aggregations
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`aggregations`](Self::aggregations), with a builder.
+    pub fn add_aggregations_with(
+        self,
+        f: impl FnOnce(
+            AggregationProfileBuilder,
+        ) -> AggregationProfileBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_aggregations(f(AggregationProfileBuilder::new()).build())
+    }
 }
 
 impl<S0, S2, S3, S4, S5, S6>
@@ -16978,6 +17339,59 @@ impl<S0, S1, S2, S3, S4, S6>
         let mut builder = self.with_state();
         builder.searches = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`searches`](Self::searches).
+    pub fn add_searches(
+        self,
+        value: impl Into<SearchProfile>,
+    ) -> ShardProfileBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::Set, S6)> {
+        let mut builder = self.with_state();
+        builder
+            .searches
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`searches`](Self::searches), with a builder.
+    pub fn add_searches_with(
+        self,
+        f: impl FnOnce(
+            SearchProfileBuilder,
+        ) -> SearchProfileBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardProfileBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::Set, S6)> {
+        self.add_searches(f(SearchProfileBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S6>
+    ShardProfileBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::Set, S6)>
+{
+    /// Adds an element to [`searches`](Self::searches).
+    pub fn add_searches(mut self, value: impl Into<SearchProfile>) -> Self {
+        self.searches
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`searches`](Self::searches), with a builder.
+    pub fn add_searches_with(
+        self,
+        f: impl FnOnce(
+            SearchProfileBuilder,
+        ) -> SearchProfileBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_searches(f(SearchProfileBuilder::new()).build())
     }
 }
 

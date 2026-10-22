@@ -6454,6 +6454,32 @@ impl<S0>
         builder.expectations = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`expectations`](Self::expectations).
+    pub fn add_expectations(
+        self,
+        value: impl Into<crate::typed::support::Float64>,
+    ) -> BucketCorrelationFunctionCountCorrelationIndicatorBuilder<(S0, crate::typed::builder::Set)>
+    {
+        let mut builder = self.with_state();
+        builder
+            .expectations
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0>
+    BucketCorrelationFunctionCountCorrelationIndicatorBuilder<(S0, crate::typed::builder::Set)>
+{
+    /// Adds an element to [`expectations`](Self::expectations).
+    pub fn add_expectations(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
+        self.expectations
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl
@@ -6812,6 +6838,29 @@ impl<S0> BucketMetricValueAggregateBuilder<(S0, crate::typed::builder::NotSet)> 
         let mut builder = self.with_state();
         builder.keys = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`keys`](Self::keys).
+    pub fn add_keys(
+        self,
+        value: impl Into<String>,
+    ) -> BucketMetricValueAggregateBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .keys
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> BucketMetricValueAggregateBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`keys`](Self::keys).
+    pub fn add_keys(mut self, value: impl Into<String>) -> Self {
+        self.keys
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -10725,6 +10774,34 @@ impl<S0> CompositeBucketBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.key = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`key`](Self::key).
+    pub fn add_key(
+        self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<crate::typed::_types::FieldValue>,
+    ) -> CompositeBucketBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .key
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0> CompositeBucketBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an entry to [`key`](Self::key).
+    pub fn add_key(
+        mut self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<crate::typed::_types::FieldValue>,
+    ) -> Self {
+        self.key
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 
@@ -18377,6 +18454,49 @@ impl FrequentItemSetsAggregationBuilder<(crate::typed::builder::NotSet,)> {
         builder.fields = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`fields`](Self::fields).
+    pub fn add_fields(
+        self,
+        value: impl Into<FrequentItemSetsField>,
+    ) -> FrequentItemSetsAggregationBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .fields
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with(
+        self,
+        f: impl FnOnce(
+            FrequentItemSetsFieldBuilder,
+        ) -> FrequentItemSetsFieldBuilder<(crate::typed::builder::Set,)>,
+    ) -> FrequentItemSetsAggregationBuilder<(crate::typed::builder::Set,)> {
+        self.add_fields(f(FrequentItemSetsFieldBuilder::new()).build())
+    }
+}
+
+impl FrequentItemSetsAggregationBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`fields`](Self::fields).
+    pub fn add_fields(mut self, value: impl Into<FrequentItemSetsField>) -> Self {
+        self.fields
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with(
+        self,
+        f: impl FnOnce(
+            FrequentItemSetsFieldBuilder,
+        ) -> FrequentItemSetsFieldBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_fields(f(FrequentItemSetsFieldBuilder::new()).build())
+    }
 }
 
 impl FrequentItemSetsAggregationBuilder<(crate::typed::builder::Set,)> {
@@ -18520,6 +18640,34 @@ impl<S0, S2> FrequentItemSetsBucketBuilder<(S0, crate::typed::builder::NotSet, S
         let mut builder = self.with_state();
         builder.key = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`key`](Self::key).
+    pub fn add_key(
+        self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<Vec<String>>,
+    ) -> FrequentItemSetsBucketBuilder<(S0, crate::typed::builder::Set, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .key
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S2> FrequentItemSetsBucketBuilder<(S0, crate::typed::builder::Set, S2)> {
+    /// Adds an entry to [`key`](Self::key).
+    pub fn add_key(
+        mut self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<Vec<String>>,
+    ) -> Self {
+        self.key
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 
@@ -26389,6 +26537,36 @@ impl<S0, S1, S2, S3, S4, S5, S7>
         builder.covariance = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`covariance`](Self::covariance).
+    pub fn add_covariance(
+        self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<crate::typed::support::Float64>,
+    ) -> MatrixStatsFieldsBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::Set, S7)> {
+        let mut builder = self.with_state();
+        builder
+            .covariance
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S7>
+    MatrixStatsFieldsBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::Set, S7)>
+{
+    /// Adds an entry to [`covariance`](Self::covariance).
+    pub fn add_covariance(
+        mut self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<crate::typed::support::Float64>,
+    ) -> Self {
+        self.covariance
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl<S0, S1, S2, S3, S4, S5, S6>
@@ -26403,6 +26581,36 @@ impl<S0, S1, S2, S3, S4, S5, S6>
         let mut builder = self.with_state();
         builder.correlation = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`correlation`](Self::correlation).
+    pub fn add_correlation(
+        self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<crate::typed::support::Float64>,
+    ) -> MatrixStatsFieldsBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .correlation
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S6>
+    MatrixStatsFieldsBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::Set)>
+{
+    /// Adds an entry to [`correlation`](Self::correlation).
+    pub fn add_correlation(
+        mut self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<crate::typed::support::Float64>,
+    ) -> Self {
+        self.correlation
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 
@@ -31593,6 +31801,45 @@ impl MultiTermsAggregationBuilder<(crate::typed::builder::NotSet,)> {
         builder.terms = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`terms`](Self::terms).
+    pub fn add_terms(
+        self,
+        value: impl Into<MultiTermLookup>,
+    ) -> MultiTermsAggregationBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .terms
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`terms`](Self::terms), with a builder.
+    pub fn add_terms_with(
+        self,
+        f: impl FnOnce(MultiTermLookupBuilder) -> MultiTermLookupBuilder<(crate::typed::builder::Set,)>,
+    ) -> MultiTermsAggregationBuilder<(crate::typed::builder::Set,)> {
+        self.add_terms(f(MultiTermLookupBuilder::new()).build())
+    }
+}
+
+impl MultiTermsAggregationBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`terms`](Self::terms).
+    pub fn add_terms(mut self, value: impl Into<MultiTermLookup>) -> Self {
+        self.terms
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`terms`](Self::terms), with a builder.
+    pub fn add_terms_with(
+        self,
+        f: impl FnOnce(MultiTermLookupBuilder) -> MultiTermLookupBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_terms(f(MultiTermLookupBuilder::new()).build())
+    }
 }
 
 impl MultiTermsAggregationBuilder<(crate::typed::builder::Set,)> {
@@ -31754,6 +32001,29 @@ impl<S0> MultiTermsBucketBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.key = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`key`](Self::key).
+    pub fn add_key(
+        self,
+        value: impl Into<crate::typed::_types::FieldValue>,
+    ) -> MultiTermsBucketBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .key
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> MultiTermsBucketBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`key`](Self::key).
+    pub fn add_key(mut self, value: impl Into<crate::typed::_types::FieldValue>) -> Self {
+        self.key
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -44370,6 +44640,34 @@ impl<S0> TimeSeriesBucketBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.key = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`key`](Self::key).
+    pub fn add_key(
+        self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<crate::typed::_types::FieldValue>,
+    ) -> TimeSeriesBucketBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .key
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0> TimeSeriesBucketBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an entry to [`key`](Self::key).
+    pub fn add_key(
+        mut self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<crate::typed::_types::FieldValue>,
+    ) -> Self {
+        self.key
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl TimeSeriesBucketBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
@@ -45069,6 +45367,29 @@ impl<S1> TopMetricsBuilder<(crate::typed::builder::NotSet, S1)> {
         builder.sort = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`sort`](Self::sort).
+    pub fn add_sort(
+        self,
+        value: impl Into<TopMetricsSort>,
+    ) -> TopMetricsBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .sort
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1> TopMetricsBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`sort`](Self::sort).
+    pub fn add_sort(mut self, value: impl Into<TopMetricsSort>) -> Self {
+        self.sort
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0> TopMetricsBuilder<(S0, crate::typed::builder::NotSet)> {
@@ -45079,6 +45400,34 @@ impl<S0> TopMetricsBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.metrics = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`metrics`](Self::metrics).
+    pub fn add_metrics(
+        self,
+        key: impl Into<String>,
+        value: impl Into<TopMetricsMetrics>,
+    ) -> TopMetricsBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .metrics
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0> TopMetricsBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an entry to [`metrics`](Self::metrics).
+    pub fn add_metrics(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<TopMetricsMetrics>,
+    ) -> Self {
+        self.metrics
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 
@@ -45192,6 +45541,51 @@ impl TopMetricsAggregateBuilder<(crate::typed::builder::NotSet,)> {
         let mut builder = self.with_state();
         builder.top = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`top`](Self::top).
+    pub fn add_top(
+        self,
+        value: impl Into<TopMetrics>,
+    ) -> TopMetricsAggregateBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .top
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`top`](Self::top), with a builder.
+    pub fn add_top_with(
+        self,
+        f: impl FnOnce(
+            TopMetricsBuilder,
+        )
+            -> TopMetricsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> TopMetricsAggregateBuilder<(crate::typed::builder::Set,)> {
+        self.add_top(f(TopMetricsBuilder::new()).build())
+    }
+}
+
+impl TopMetricsAggregateBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`top`](Self::top).
+    pub fn add_top(mut self, value: impl Into<TopMetrics>) -> Self {
+        self.top
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`top`](Self::top), with a builder.
+    pub fn add_top_with(
+        self,
+        f: impl FnOnce(
+            TopMetricsBuilder,
+        )
+            -> TopMetricsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Self {
+        self.add_top(f(TopMetricsBuilder::new()).build())
     }
 }
 

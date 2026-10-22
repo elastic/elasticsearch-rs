@@ -91,6 +91,29 @@ impl<S0, S2> ReloadDetailsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
         builder.reloaded_analyzers = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`reloaded_analyzers`](Self::reloaded_analyzers).
+    pub fn add_reloaded_analyzers(
+        self,
+        value: impl Into<String>,
+    ) -> ReloadDetailsBuilder<(S0, crate::typed::builder::Set, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .reloaded_analyzers
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S2> ReloadDetailsBuilder<(S0, crate::typed::builder::Set, S2)> {
+    /// Adds an element to [`reloaded_analyzers`](Self::reloaded_analyzers).
+    pub fn add_reloaded_analyzers(mut self, value: impl Into<String>) -> Self {
+        self.reloaded_analyzers
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0, S1> ReloadDetailsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
@@ -101,6 +124,29 @@ impl<S0, S1> ReloadDetailsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.reloaded_node_ids = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`reloaded_node_ids`](Self::reloaded_node_ids).
+    pub fn add_reloaded_node_ids(
+        self,
+        value: impl Into<String>,
+    ) -> ReloadDetailsBuilder<(S0, S1, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .reloaded_node_ids
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1> ReloadDetailsBuilder<(S0, S1, crate::typed::builder::Set)> {
+    /// Adds an element to [`reloaded_node_ids`](Self::reloaded_node_ids).
+    pub fn add_reloaded_node_ids(mut self, value: impl Into<String>) -> Self {
+        self.reloaded_node_ids
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -231,6 +277,57 @@ impl<S1> ReloadResultBuilder<(crate::typed::builder::NotSet, S1)> {
         let mut builder = self.with_state();
         builder.reload_details = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`reload_details`](Self::reload_details).
+    pub fn add_reload_details(
+        self,
+        value: impl Into<ReloadDetails>,
+    ) -> ReloadResultBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .reload_details
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`reload_details`](Self::reload_details), with a builder.
+    pub fn add_reload_details_with(
+        self,
+        f: impl FnOnce(
+            ReloadDetailsBuilder,
+        ) -> ReloadDetailsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ReloadResultBuilder<(crate::typed::builder::Set, S1)> {
+        self.add_reload_details(f(ReloadDetailsBuilder::new()).build())
+    }
+}
+
+impl<S1> ReloadResultBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`reload_details`](Self::reload_details).
+    pub fn add_reload_details(mut self, value: impl Into<ReloadDetails>) -> Self {
+        self.reload_details
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`reload_details`](Self::reload_details), with a builder.
+    pub fn add_reload_details_with(
+        self,
+        f: impl FnOnce(
+            ReloadDetailsBuilder,
+        ) -> ReloadDetailsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_reload_details(f(ReloadDetailsBuilder::new()).build())
     }
 }
 

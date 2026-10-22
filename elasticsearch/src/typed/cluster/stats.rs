@@ -866,6 +866,54 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9>
         builder.failure_reasons = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`failure_reasons`](Self::failure_reasons).
+    pub fn add_failure_reasons(
+        self,
+        key: impl Into<String>,
+        value: i32,
+    ) -> CCSUsageStatsBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        crate::typed::builder::Set,
+        S7,
+        S8,
+        S9,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .failure_reasons
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S7, S8, S9>
+    CCSUsageStatsBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        crate::typed::builder::Set,
+        S7,
+        S8,
+        S9,
+    )>
+{
+    /// Adds an entry to [`failure_reasons`](Self::failure_reasons).
+    pub fn add_failure_reasons(mut self, key: impl Into<String>, value: i32) -> Self {
+        self.failure_reasons
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        self
+    }
 }
 
 impl<S0, S1, S2, S3, S4, S5, S6, S8, S9>
@@ -901,6 +949,54 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9>
         let mut builder = self.with_state();
         builder.features = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`features`](Self::features).
+    pub fn add_features(
+        self,
+        key: impl Into<String>,
+        value: i32,
+    ) -> CCSUsageStatsBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        crate::typed::builder::Set,
+        S8,
+        S9,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .features
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S6, S8, S9>
+    CCSUsageStatsBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        crate::typed::builder::Set,
+        S8,
+        S9,
+    )>
+{
+    /// Adds an entry to [`features`](Self::features).
+    pub fn add_features(mut self, key: impl Into<String>, value: i32) -> Self {
+        self.features
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        self
     }
 }
 
@@ -938,6 +1034,54 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9>
         builder.clients = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`clients`](Self::clients).
+    pub fn add_clients(
+        self,
+        key: impl Into<String>,
+        value: i32,
+    ) -> CCSUsageStatsBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        crate::typed::builder::Set,
+        S9,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .clients
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S9>
+    CCSUsageStatsBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        crate::typed::builder::Set,
+        S9,
+    )>
+{
+    /// Adds an entry to [`clients`](Self::clients).
+    pub fn add_clients(mut self, key: impl Into<String>, value: i32) -> Self {
+        self.clients
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        self
+    }
 }
 
 impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
@@ -973,6 +1117,99 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
         let mut builder = self.with_state();
         builder.clusters = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`clusters`](Self::clusters).
+    pub fn add_clusters(
+        self,
+        key: impl Into<String>,
+        value: impl Into<CCSUsageClusterStats>,
+    ) -> CCSUsageStatsBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        crate::typed::builder::Set,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .clusters
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`clusters`](Self::clusters), with a builder.
+    pub fn add_clusters_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            CCSUsageClusterStatsBuilder,
+        ) -> CCSUsageClusterStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CCSUsageStatsBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        crate::typed::builder::Set,
+    )> {
+        self.add_clusters(key, f(CCSUsageClusterStatsBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8>
+    CCSUsageStatsBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        crate::typed::builder::Set,
+    )>
+{
+    /// Adds an entry to [`clusters`](Self::clusters).
+    pub fn add_clusters(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<CCSUsageClusterStats>,
+    ) -> Self {
+        self.clusters
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`clusters`](Self::clusters), with a builder.
+    pub fn add_clusters_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            CCSUsageClusterStatsBuilder,
+        ) -> CCSUsageClusterStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_clusters(key, f(CCSUsageClusterStatsBuilder::new()).build())
     }
 }
 
@@ -1584,6 +1821,59 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8>
         builder.analyzer_types = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`analyzer_types`](Self::analyzer_types).
+    pub fn add_analyzer_types(
+        self,
+        value: impl Into<FieldTypes>,
+    ) -> CharFilterTypesBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5, S6, S7, S8)> {
+        let mut builder = self.with_state();
+        builder
+            .analyzer_types
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`analyzer_types`](Self::analyzer_types), with a builder.
+    pub fn add_analyzer_types_with(
+        self,
+        f: impl FnOnce(
+            FieldTypesBuilder,
+        ) -> FieldTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CharFilterTypesBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5, S6, S7, S8)> {
+        self.add_analyzer_types(f(FieldTypesBuilder::new()).build())
+    }
+}
+
+impl<S1, S2, S3, S4, S5, S6, S7, S8>
+    CharFilterTypesBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5, S6, S7, S8)>
+{
+    /// Adds an element to [`analyzer_types`](Self::analyzer_types).
+    pub fn add_analyzer_types(mut self, value: impl Into<FieldTypes>) -> Self {
+        self.analyzer_types
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`analyzer_types`](Self::analyzer_types), with a builder.
+    pub fn add_analyzer_types_with(
+        self,
+        f: impl FnOnce(
+            FieldTypesBuilder,
+        ) -> FieldTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_analyzer_types(f(FieldTypesBuilder::new()).build())
+    }
 }
 
 impl<S0, S2, S3, S4, S5, S6, S7, S8>
@@ -1607,6 +1897,59 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8>
         let mut builder = self.with_state();
         builder.built_in_analyzers = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`built_in_analyzers`](Self::built_in_analyzers).
+    pub fn add_built_in_analyzers(
+        self,
+        value: impl Into<FieldTypes>,
+    ) -> CharFilterTypesBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5, S6, S7, S8)> {
+        let mut builder = self.with_state();
+        builder
+            .built_in_analyzers
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`built_in_analyzers`](Self::built_in_analyzers), with a builder.
+    pub fn add_built_in_analyzers_with(
+        self,
+        f: impl FnOnce(
+            FieldTypesBuilder,
+        ) -> FieldTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CharFilterTypesBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5, S6, S7, S8)> {
+        self.add_built_in_analyzers(f(FieldTypesBuilder::new()).build())
+    }
+}
+
+impl<S0, S2, S3, S4, S5, S6, S7, S8>
+    CharFilterTypesBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5, S6, S7, S8)>
+{
+    /// Adds an element to [`built_in_analyzers`](Self::built_in_analyzers).
+    pub fn add_built_in_analyzers(mut self, value: impl Into<FieldTypes>) -> Self {
+        self.built_in_analyzers
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`built_in_analyzers`](Self::built_in_analyzers), with a builder.
+    pub fn add_built_in_analyzers_with(
+        self,
+        f: impl FnOnce(
+            FieldTypesBuilder,
+        ) -> FieldTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_built_in_analyzers(f(FieldTypesBuilder::new()).build())
     }
 }
 
@@ -1632,6 +1975,59 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8>
         builder.built_in_char_filters = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`built_in_char_filters`](Self::built_in_char_filters).
+    pub fn add_built_in_char_filters(
+        self,
+        value: impl Into<FieldTypes>,
+    ) -> CharFilterTypesBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5, S6, S7, S8)> {
+        let mut builder = self.with_state();
+        builder
+            .built_in_char_filters
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`built_in_char_filters`](Self::built_in_char_filters), with a builder.
+    pub fn add_built_in_char_filters_with(
+        self,
+        f: impl FnOnce(
+            FieldTypesBuilder,
+        ) -> FieldTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CharFilterTypesBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5, S6, S7, S8)> {
+        self.add_built_in_char_filters(f(FieldTypesBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S3, S4, S5, S6, S7, S8>
+    CharFilterTypesBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5, S6, S7, S8)>
+{
+    /// Adds an element to [`built_in_char_filters`](Self::built_in_char_filters).
+    pub fn add_built_in_char_filters(mut self, value: impl Into<FieldTypes>) -> Self {
+        self.built_in_char_filters
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`built_in_char_filters`](Self::built_in_char_filters), with a builder.
+    pub fn add_built_in_char_filters_with(
+        self,
+        f: impl FnOnce(
+            FieldTypesBuilder,
+        ) -> FieldTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_built_in_char_filters(f(FieldTypesBuilder::new()).build())
+    }
 }
 
 impl<S0, S1, S2, S4, S5, S6, S7, S8>
@@ -1655,6 +2051,59 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8>
         let mut builder = self.with_state();
         builder.built_in_filters = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`built_in_filters`](Self::built_in_filters).
+    pub fn add_built_in_filters(
+        self,
+        value: impl Into<FieldTypes>,
+    ) -> CharFilterTypesBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5, S6, S7, S8)> {
+        let mut builder = self.with_state();
+        builder
+            .built_in_filters
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`built_in_filters`](Self::built_in_filters), with a builder.
+    pub fn add_built_in_filters_with(
+        self,
+        f: impl FnOnce(
+            FieldTypesBuilder,
+        ) -> FieldTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CharFilterTypesBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5, S6, S7, S8)> {
+        self.add_built_in_filters(f(FieldTypesBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S4, S5, S6, S7, S8>
+    CharFilterTypesBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5, S6, S7, S8)>
+{
+    /// Adds an element to [`built_in_filters`](Self::built_in_filters).
+    pub fn add_built_in_filters(mut self, value: impl Into<FieldTypes>) -> Self {
+        self.built_in_filters
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`built_in_filters`](Self::built_in_filters), with a builder.
+    pub fn add_built_in_filters_with(
+        self,
+        f: impl FnOnce(
+            FieldTypesBuilder,
+        ) -> FieldTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_built_in_filters(f(FieldTypesBuilder::new()).build())
     }
 }
 
@@ -1680,6 +2129,59 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8>
         builder.built_in_tokenizers = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`built_in_tokenizers`](Self::built_in_tokenizers).
+    pub fn add_built_in_tokenizers(
+        self,
+        value: impl Into<FieldTypes>,
+    ) -> CharFilterTypesBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5, S6, S7, S8)> {
+        let mut builder = self.with_state();
+        builder
+            .built_in_tokenizers
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`built_in_tokenizers`](Self::built_in_tokenizers), with a builder.
+    pub fn add_built_in_tokenizers_with(
+        self,
+        f: impl FnOnce(
+            FieldTypesBuilder,
+        ) -> FieldTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CharFilterTypesBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5, S6, S7, S8)> {
+        self.add_built_in_tokenizers(f(FieldTypesBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S3, S5, S6, S7, S8>
+    CharFilterTypesBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5, S6, S7, S8)>
+{
+    /// Adds an element to [`built_in_tokenizers`](Self::built_in_tokenizers).
+    pub fn add_built_in_tokenizers(mut self, value: impl Into<FieldTypes>) -> Self {
+        self.built_in_tokenizers
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`built_in_tokenizers`](Self::built_in_tokenizers), with a builder.
+    pub fn add_built_in_tokenizers_with(
+        self,
+        f: impl FnOnce(
+            FieldTypesBuilder,
+        ) -> FieldTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_built_in_tokenizers(f(FieldTypesBuilder::new()).build())
+    }
 }
 
 impl<S0, S1, S2, S3, S4, S6, S7, S8>
@@ -1703,6 +2205,59 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8>
         let mut builder = self.with_state();
         builder.char_filter_types = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`char_filter_types`](Self::char_filter_types).
+    pub fn add_char_filter_types(
+        self,
+        value: impl Into<FieldTypes>,
+    ) -> CharFilterTypesBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::Set, S6, S7, S8)> {
+        let mut builder = self.with_state();
+        builder
+            .char_filter_types
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`char_filter_types`](Self::char_filter_types), with a builder.
+    pub fn add_char_filter_types_with(
+        self,
+        f: impl FnOnce(
+            FieldTypesBuilder,
+        ) -> FieldTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CharFilterTypesBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::Set, S6, S7, S8)> {
+        self.add_char_filter_types(f(FieldTypesBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S6, S7, S8>
+    CharFilterTypesBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::Set, S6, S7, S8)>
+{
+    /// Adds an element to [`char_filter_types`](Self::char_filter_types).
+    pub fn add_char_filter_types(mut self, value: impl Into<FieldTypes>) -> Self {
+        self.char_filter_types
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`char_filter_types`](Self::char_filter_types), with a builder.
+    pub fn add_char_filter_types_with(
+        self,
+        f: impl FnOnce(
+            FieldTypesBuilder,
+        ) -> FieldTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_char_filter_types(f(FieldTypesBuilder::new()).build())
     }
 }
 
@@ -1728,6 +2283,59 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8>
         builder.filter_types = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`filter_types`](Self::filter_types).
+    pub fn add_filter_types(
+        self,
+        value: impl Into<FieldTypes>,
+    ) -> CharFilterTypesBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::Set, S7, S8)> {
+        let mut builder = self.with_state();
+        builder
+            .filter_types
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`filter_types`](Self::filter_types), with a builder.
+    pub fn add_filter_types_with(
+        self,
+        f: impl FnOnce(
+            FieldTypesBuilder,
+        ) -> FieldTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CharFilterTypesBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::Set, S7, S8)> {
+        self.add_filter_types(f(FieldTypesBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S7, S8>
+    CharFilterTypesBuilder<(S0, S1, S2, S3, S4, S5, crate::typed::builder::Set, S7, S8)>
+{
+    /// Adds an element to [`filter_types`](Self::filter_types).
+    pub fn add_filter_types(mut self, value: impl Into<FieldTypes>) -> Self {
+        self.filter_types
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`filter_types`](Self::filter_types), with a builder.
+    pub fn add_filter_types_with(
+        self,
+        f: impl FnOnce(
+            FieldTypesBuilder,
+        ) -> FieldTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_filter_types(f(FieldTypesBuilder::new()).build())
+    }
 }
 
 impl<S0, S1, S2, S3, S4, S5, S6, S8>
@@ -1752,6 +2360,59 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8>
         builder.tokenizer_types = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`tokenizer_types`](Self::tokenizer_types).
+    pub fn add_tokenizer_types(
+        self,
+        value: impl Into<FieldTypes>,
+    ) -> CharFilterTypesBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::Set, S8)> {
+        let mut builder = self.with_state();
+        builder
+            .tokenizer_types
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`tokenizer_types`](Self::tokenizer_types), with a builder.
+    pub fn add_tokenizer_types_with(
+        self,
+        f: impl FnOnce(
+            FieldTypesBuilder,
+        ) -> FieldTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CharFilterTypesBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::Set, S8)> {
+        self.add_tokenizer_types(f(FieldTypesBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S6, S8>
+    CharFilterTypesBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::Set, S8)>
+{
+    /// Adds an element to [`tokenizer_types`](Self::tokenizer_types).
+    pub fn add_tokenizer_types(mut self, value: impl Into<FieldTypes>) -> Self {
+        self.tokenizer_types
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`tokenizer_types`](Self::tokenizer_types), with a builder.
+    pub fn add_tokenizer_types_with(
+        self,
+        f: impl FnOnce(
+            FieldTypesBuilder,
+        ) -> FieldTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_tokenizer_types(f(FieldTypesBuilder::new()).build())
+    }
 }
 
 impl<S0, S1, S2, S3, S4, S5, S6, S7>
@@ -1775,6 +2436,60 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7>
         let mut builder = self.with_state();
         builder.synonyms = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`synonyms`](Self::synonyms).
+    pub fn add_synonyms(
+        self,
+        key: impl Into<crate::typed::_types::Name>,
+        value: impl Into<SynonymsStats>,
+    ) -> CharFilterTypesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .synonyms
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`synonyms`](Self::synonyms), with a builder.
+    pub fn add_synonyms_with(
+        self,
+        key: impl Into<crate::typed::_types::Name>,
+        f: impl FnOnce(
+            SynonymsStatsBuilder,
+        )
+            -> SynonymsStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> CharFilterTypesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, crate::typed::builder::Set)> {
+        self.add_synonyms(key, f(SynonymsStatsBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S6, S7>
+    CharFilterTypesBuilder<(S0, S1, S2, S3, S4, S5, S6, S7, crate::typed::builder::Set)>
+{
+    /// Adds an entry to [`synonyms`](Self::synonyms).
+    pub fn add_synonyms(
+        mut self,
+        key: impl Into<crate::typed::_types::Name>,
+        value: impl Into<SynonymsStats>,
+    ) -> Self {
+        self.synonyms
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`synonyms`](Self::synonyms), with a builder.
+    pub fn add_synonyms_with(
+        self,
+        key: impl Into<crate::typed::_types::Name>,
+        f: impl FnOnce(
+            SynonymsStatsBuilder,
+        )
+            -> SynonymsStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Self {
+        self.add_synonyms(key, f(SynonymsStatsBuilder::new()).build())
     }
 }
 
@@ -4008,6 +4723,66 @@ impl<S0> ClusterIngestBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.processor_stats = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`processor_stats`](Self::processor_stats).
+    pub fn add_processor_stats(
+        self,
+        key: impl Into<String>,
+        value: impl Into<ClusterProcessor>,
+    ) -> ClusterIngestBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .processor_stats
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`processor_stats`](Self::processor_stats), with a builder.
+    pub fn add_processor_stats_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            ClusterProcessorBuilder,
+        ) -> ClusterProcessorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterIngestBuilder<(S0, crate::typed::builder::Set)> {
+        self.add_processor_stats(key, f(ClusterProcessorBuilder::new()).build())
+    }
+}
+
+impl<S0> ClusterIngestBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an entry to [`processor_stats`](Self::processor_stats).
+    pub fn add_processor_stats(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<ClusterProcessor>,
+    ) -> Self {
+        self.processor_stats
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`processor_stats`](Self::processor_stats), with a builder.
+    pub fn add_processor_stats_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            ClusterProcessorBuilder,
+        ) -> ClusterProcessorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_processor_stats(key, f(ClusterProcessorBuilder::new()).build())
+    }
 }
 
 impl ClusterIngestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
@@ -4199,6 +4974,65 @@ impl<S0, S1, S2> ClusterJvmBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> 
         let mut builder = self.with_state();
         builder.versions = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`versions`](Self::versions).
+    pub fn add_versions(
+        self,
+        value: impl Into<ClusterJvmVersion>,
+    ) -> ClusterJvmBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .versions
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`versions`](Self::versions), with a builder.
+    pub fn add_versions_with(
+        self,
+        f: impl FnOnce(
+            ClusterJvmVersionBuilder,
+        ) -> ClusterJvmVersionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterJvmBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        self.add_versions(f(ClusterJvmVersionBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2> ClusterJvmBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+    /// Adds an element to [`versions`](Self::versions).
+    pub fn add_versions(mut self, value: impl Into<ClusterJvmVersion>) -> Self {
+        self.versions
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`versions`](Self::versions), with a builder.
+    pub fn add_versions_with(
+        self,
+        f: impl FnOnce(
+            ClusterJvmVersionBuilder,
+        ) -> ClusterJvmVersionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_versions(f(ClusterJvmVersionBuilder::new()).build())
     }
 }
 
@@ -4869,6 +5703,30 @@ impl<S1> ClusterNetworkTypesBuilder<(crate::typed::builder::NotSet, S1)> {
         builder.http_types = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`http_types`](Self::http_types).
+    pub fn add_http_types(
+        self,
+        key: impl Into<String>,
+        value: i32,
+    ) -> ClusterNetworkTypesBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .http_types
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        builder
+    }
+}
+
+impl<S1> ClusterNetworkTypesBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an entry to [`http_types`](Self::http_types).
+    pub fn add_http_types(mut self, key: impl Into<String>, value: i32) -> Self {
+        self.http_types
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        self
+    }
 }
 
 impl<S0> ClusterNetworkTypesBuilder<(S0, crate::typed::builder::NotSet)> {
@@ -4880,6 +5738,30 @@ impl<S0> ClusterNetworkTypesBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.transport_types = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`transport_types`](Self::transport_types).
+    pub fn add_transport_types(
+        self,
+        key: impl Into<String>,
+        value: i32,
+    ) -> ClusterNetworkTypesBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .transport_types
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        builder
+    }
+}
+
+impl<S0> ClusterNetworkTypesBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an entry to [`transport_types`](Self::transport_types).
+    pub fn add_transport_types(mut self, key: impl Into<String>, value: i32) -> Self {
+        self.transport_types
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        self
     }
 }
 
@@ -5495,6 +6377,58 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
         builder.discovery_types = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`discovery_types`](Self::discovery_types).
+    pub fn add_discovery_types(
+        self,
+        key: impl Into<String>,
+        value: i32,
+    ) -> ClusterNodesBuilder<(
+        S0,
+        crate::typed::builder::Set,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .discovery_types
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        builder
+    }
+}
+
+impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
+    ClusterNodesBuilder<(
+        S0,
+        crate::typed::builder::Set,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+    )>
+{
+    /// Adds an entry to [`discovery_types`](Self::discovery_types).
+    pub fn add_discovery_types(mut self, key: impl Into<String>, value: i32) -> Self {
+        self.discovery_types
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        self
+    }
 }
 
 impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10, S11>
@@ -5924,6 +6858,98 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10, S11>
         builder.packaging_types = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`packaging_types`](Self::packaging_types).
+    pub fn add_packaging_types(
+        self,
+        value: impl Into<NodePackagingType>,
+    ) -> ClusterNodesBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        crate::typed::builder::Set,
+        S9,
+        S10,
+        S11,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .packaging_types
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`packaging_types`](Self::packaging_types), with a builder.
+    pub fn add_packaging_types_with(
+        self,
+        f: impl FnOnce(
+            NodePackagingTypeBuilder,
+        ) -> NodePackagingTypeBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterNodesBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        crate::typed::builder::Set,
+        S9,
+        S10,
+        S11,
+    )> {
+        self.add_packaging_types(f(NodePackagingTypeBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10, S11>
+    ClusterNodesBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        crate::typed::builder::Set,
+        S9,
+        S10,
+        S11,
+    )>
+{
+    /// Adds an element to [`packaging_types`](Self::packaging_types).
+    pub fn add_packaging_types(mut self, value: impl Into<NodePackagingType>) -> Self {
+        self.packaging_types
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`packaging_types`](Self::packaging_types), with a builder.
+    pub fn add_packaging_types_with(
+        self,
+        f: impl FnOnce(
+            NodePackagingTypeBuilder,
+        ) -> NodePackagingTypeBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_packaging_types(f(NodePackagingTypeBuilder::new()).build())
+    }
 }
 
 impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10, S11>
@@ -5964,6 +6990,110 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10, S11>
         let mut builder = self.with_state();
         builder.plugins = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`plugins`](Self::plugins).
+    pub fn add_plugins(
+        self,
+        value: impl Into<crate::typed::_types::PluginStats>,
+    ) -> ClusterNodesBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        crate::typed::builder::Set,
+        S10,
+        S11,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .plugins
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`plugins`](Self::plugins), with a builder.
+    pub fn add_plugins_with(
+        self,
+        f: impl FnOnce(
+            crate::typed::_types::PluginStatsBuilder,
+        ) -> crate::typed::_types::PluginStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterNodesBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        crate::typed::builder::Set,
+        S10,
+        S11,
+    )> {
+        self.add_plugins(f(crate::typed::_types::PluginStatsBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10, S11>
+    ClusterNodesBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        crate::typed::builder::Set,
+        S10,
+        S11,
+    )>
+{
+    /// Adds an element to [`plugins`](Self::plugins).
+    pub fn add_plugins(mut self, value: impl Into<crate::typed::_types::PluginStats>) -> Self {
+        self.plugins
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`plugins`](Self::plugins), with a builder.
+    pub fn add_plugins_with(
+        self,
+        f: impl FnOnce(
+            crate::typed::_types::PluginStatsBuilder,
+        ) -> crate::typed::_types::PluginStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_plugins(f(crate::typed::_types::PluginStatsBuilder::new()).build())
     }
 }
 
@@ -6070,6 +7200,57 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         let mut builder = self.with_state();
         builder.versions = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`versions`](Self::versions).
+    pub fn add_versions(
+        self,
+        value: impl Into<crate::typed::_types::VersionString>,
+    ) -> ClusterNodesBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        crate::typed::builder::Set,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .versions
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
+    ClusterNodesBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        crate::typed::builder::Set,
+    )>
+{
+    /// Adds an element to [`versions`](Self::versions).
+    pub fn add_versions(mut self, value: impl Into<crate::typed::_types::VersionString>) -> Self {
+        self.versions
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -6609,6 +7790,55 @@ impl<S0, S1, S2, S4>
         builder.names = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`names`](Self::names).
+    pub fn add_names(
+        self,
+        value: impl Into<ClusterOperatingSystemName>,
+    ) -> ClusterOperatingSystemBuilder<(S0, S1, S2, crate::typed::builder::Set, S4)> {
+        let mut builder = self.with_state();
+        builder
+            .names
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`names`](Self::names), with a builder.
+    pub fn add_names_with(
+        self,
+        f: impl FnOnce(
+            ClusterOperatingSystemNameBuilder,
+        ) -> ClusterOperatingSystemNameBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterOperatingSystemBuilder<(S0, S1, S2, crate::typed::builder::Set, S4)> {
+        self.add_names(f(ClusterOperatingSystemNameBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S4> ClusterOperatingSystemBuilder<(S0, S1, S2, crate::typed::builder::Set, S4)> {
+    /// Adds an element to [`names`](Self::names).
+    pub fn add_names(mut self, value: impl Into<ClusterOperatingSystemName>) -> Self {
+        self.names
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`names`](Self::names), with a builder.
+    pub fn add_names_with(
+        self,
+        f: impl FnOnce(
+            ClusterOperatingSystemNameBuilder,
+        ) -> ClusterOperatingSystemNameBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_names(f(ClusterOperatingSystemNameBuilder::new()).build())
+    }
 }
 
 impl<S0, S1, S2, S3>
@@ -6622,6 +7852,55 @@ impl<S0, S1, S2, S3>
         let mut builder = self.with_state();
         builder.pretty_names = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`pretty_names`](Self::pretty_names).
+    pub fn add_pretty_names(
+        self,
+        value: impl Into<ClusterOperatingSystemPrettyName>,
+    ) -> ClusterOperatingSystemBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .pretty_names
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`pretty_names`](Self::pretty_names), with a builder.
+    pub fn add_pretty_names_with(
+        self,
+        f: impl FnOnce(
+            ClusterOperatingSystemPrettyNameBuilder,
+        ) -> ClusterOperatingSystemPrettyNameBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterOperatingSystemBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)> {
+        self.add_pretty_names(f(ClusterOperatingSystemPrettyNameBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S3> ClusterOperatingSystemBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)> {
+    /// Adds an element to [`pretty_names`](Self::pretty_names).
+    pub fn add_pretty_names(mut self, value: impl Into<ClusterOperatingSystemPrettyName>) -> Self {
+        self.pretty_names
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`pretty_names`](Self::pretty_names), with a builder.
+    pub fn add_pretty_names_with(
+        self,
+        f: impl FnOnce(
+            ClusterOperatingSystemPrettyNameBuilder,
+        ) -> ClusterOperatingSystemPrettyNameBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_pretty_names(f(ClusterOperatingSystemPrettyNameBuilder::new()).build())
     }
 }
 
@@ -8019,6 +9298,64 @@ impl<S0> ClusterSnapshotStatsBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.repositories = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`repositories`](Self::repositories).
+    pub fn add_repositories(
+        self,
+        key: impl Into<crate::typed::_types::Name>,
+        value: impl Into<PerRepositoryStats>,
+    ) -> ClusterSnapshotStatsBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .repositories
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`repositories`](Self::repositories), with a builder.
+    pub fn add_repositories_with(
+        self,
+        key: impl Into<crate::typed::_types::Name>,
+        f: impl FnOnce(
+            PerRepositoryStatsBuilder,
+        ) -> PerRepositoryStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterSnapshotStatsBuilder<(S0, crate::typed::builder::Set)> {
+        self.add_repositories(key, f(PerRepositoryStatsBuilder::new()).build())
+    }
+}
+
+impl<S0> ClusterSnapshotStatsBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an entry to [`repositories`](Self::repositories).
+    pub fn add_repositories(
+        mut self,
+        key: impl Into<crate::typed::_types::Name>,
+        value: impl Into<PerRepositoryStats>,
+    ) -> Self {
+        self.repositories
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`repositories`](Self::repositories), with a builder.
+    pub fn add_repositories_with(
+        self,
+        key: impl Into<crate::typed::_types::Name>,
+        f: impl FnOnce(
+            PerRepositoryStatsBuilder,
+        ) -> PerRepositoryStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_repositories(key, f(PerRepositoryStatsBuilder::new()).build())
     }
 }
 
@@ -9493,6 +10830,57 @@ impl<S1, S2> FieldTypesMappingsBuilder<(crate::typed::builder::NotSet, S1, S2)> 
         builder.field_types = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`field_types`](Self::field_types).
+    pub fn add_field_types(
+        self,
+        value: impl Into<FieldTypes>,
+    ) -> FieldTypesMappingsBuilder<(crate::typed::builder::Set, S1, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .field_types
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`field_types`](Self::field_types), with a builder.
+    pub fn add_field_types_with(
+        self,
+        f: impl FnOnce(
+            FieldTypesBuilder,
+        ) -> FieldTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FieldTypesMappingsBuilder<(crate::typed::builder::Set, S1, S2)> {
+        self.add_field_types(f(FieldTypesBuilder::new()).build())
+    }
+}
+
+impl<S1, S2> FieldTypesMappingsBuilder<(crate::typed::builder::Set, S1, S2)> {
+    /// Adds an element to [`field_types`](Self::field_types).
+    pub fn add_field_types(mut self, value: impl Into<FieldTypes>) -> Self {
+        self.field_types
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`field_types`](Self::field_types), with a builder.
+    pub fn add_field_types_with(
+        self,
+        f: impl FnOnce(
+            FieldTypesBuilder,
+        ) -> FieldTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_field_types(f(FieldTypesBuilder::new()).build())
+    }
 }
 
 impl<S0, S2> FieldTypesMappingsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
@@ -9505,6 +10893,79 @@ impl<S0, S2> FieldTypesMappingsBuilder<(S0, crate::typed::builder::NotSet, S2)> 
         builder.runtime_field_types = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`runtime_field_types`](Self::runtime_field_types).
+    pub fn add_runtime_field_types(
+        self,
+        value: impl Into<RuntimeFieldTypes>,
+    ) -> FieldTypesMappingsBuilder<(S0, crate::typed::builder::Set, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .runtime_field_types
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`runtime_field_types`](Self::runtime_field_types), with a builder.
+    pub fn add_runtime_field_types_with(
+        self,
+        f: impl FnOnce(
+            RuntimeFieldTypesBuilder,
+        ) -> RuntimeFieldTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FieldTypesMappingsBuilder<(S0, crate::typed::builder::Set, S2)> {
+        self.add_runtime_field_types(f(RuntimeFieldTypesBuilder::new()).build())
+    }
+}
+
+impl<S0, S2> FieldTypesMappingsBuilder<(S0, crate::typed::builder::Set, S2)> {
+    /// Adds an element to [`runtime_field_types`](Self::runtime_field_types).
+    pub fn add_runtime_field_types(mut self, value: impl Into<RuntimeFieldTypes>) -> Self {
+        self.runtime_field_types
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`runtime_field_types`](Self::runtime_field_types), with a builder.
+    pub fn add_runtime_field_types_with(
+        self,
+        f: impl FnOnce(
+            RuntimeFieldTypesBuilder,
+        ) -> RuntimeFieldTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_runtime_field_types(f(RuntimeFieldTypesBuilder::new()).build())
+    }
 }
 
 impl<S0, S1> FieldTypesMappingsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
@@ -9516,6 +10977,34 @@ impl<S0, S1> FieldTypesMappingsBuilder<(S0, S1, crate::typed::builder::NotSet)> 
         let mut builder = self.with_state();
         builder.source_modes = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`source_modes`](Self::source_modes).
+    pub fn add_source_modes(
+        self,
+        key: impl Into<crate::typed::_types::Name>,
+        value: i32,
+    ) -> FieldTypesMappingsBuilder<(S0, S1, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .source_modes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        builder
+    }
+}
+
+impl<S0, S1> FieldTypesMappingsBuilder<(S0, S1, crate::typed::builder::Set)> {
+    /// Adds an entry to [`source_modes`](Self::source_modes).
+    pub fn add_source_modes(
+        mut self,
+        key: impl Into<crate::typed::_types::Name>,
+        value: i32,
+    ) -> Self {
+        self.source_modes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        self
     }
 }
 
@@ -11174,6 +12663,57 @@ impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10, S11>
         builder.version = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`version`](Self::version).
+    pub fn add_version(
+        self,
+        value: impl Into<crate::typed::_types::VersionString>,
+    ) -> RemoteClusterInfoBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        crate::typed::builder::Set,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .version
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10, S11>
+    RemoteClusterInfoBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        crate::typed::builder::Set,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+    )>
+{
+    /// Adds an element to [`version`](Self::version).
+    pub fn add_version(mut self, value: impl Into<crate::typed::_types::VersionString>) -> Self {
+        self.version
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10, S11>
@@ -12232,6 +13772,30 @@ impl<S0, S1, S2> RepositoryStatsShardsBuilder<(S0, S1, S2, crate::typed::builder
         builder.states = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`states`](Self::states).
+    pub fn add_states(
+        self,
+        key: impl Into<String>,
+        value: i32,
+    ) -> RepositoryStatsShardsBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .states
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        builder
+    }
+}
+
+impl<S0, S1, S2> RepositoryStatsShardsBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+    /// Adds an entry to [`states`](Self::states).
+    pub fn add_states(mut self, key: impl Into<String>, value: i32) -> Self {
+        self.states
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        self
+    }
 }
 
 impl
@@ -13083,6 +14647,61 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10, S11, S12, S13>
         builder.lang = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`lang`](Self::lang).
+    pub fn add_lang(
+        self,
+        value: impl Into<String>,
+    ) -> RuntimeFieldTypesBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        crate::typed::builder::Set,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+        S13,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .lang
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10, S11, S12, S13>
+    RuntimeFieldTypesBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        crate::typed::builder::Set,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+        S13,
+    )>
+{
+    /// Adds an element to [`lang`](Self::lang).
+    pub fn add_lang(mut self, value: impl Into<String>) -> Self {
+        self.lang
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10, S11, S12, S13>
@@ -13911,6 +15530,30 @@ impl<S0, S2, S3, S4, S5>
         builder.queries = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`queries`](Self::queries).
+    pub fn add_queries(
+        self,
+        key: impl Into<crate::typed::_types::Name>,
+        value: i64,
+    ) -> SearchUsageStatsBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5)> {
+        let mut builder = self.with_state();
+        builder
+            .queries
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        builder
+    }
+}
+
+impl<S0, S2, S3, S4, S5> SearchUsageStatsBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5)> {
+    /// Adds an entry to [`queries`](Self::queries).
+    pub fn add_queries(mut self, key: impl Into<crate::typed::_types::Name>, value: i64) -> Self {
+        self.queries
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        self
+    }
 }
 
 impl<S0, S1, S3, S4, S5>
@@ -13923,6 +15566,30 @@ impl<S0, S1, S3, S4, S5>
         let mut builder = self.with_state();
         builder.rescorers = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`rescorers`](Self::rescorers).
+    pub fn add_rescorers(
+        self,
+        key: impl Into<crate::typed::_types::Name>,
+        value: i64,
+    ) -> SearchUsageStatsBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5)> {
+        let mut builder = self.with_state();
+        builder
+            .rescorers
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        builder
+    }
+}
+
+impl<S0, S1, S3, S4, S5> SearchUsageStatsBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5)> {
+    /// Adds an entry to [`rescorers`](Self::rescorers).
+    pub fn add_rescorers(mut self, key: impl Into<crate::typed::_types::Name>, value: i64) -> Self {
+        self.rescorers
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        self
     }
 }
 
@@ -13937,6 +15604,30 @@ impl<S0, S1, S2, S4, S5>
         builder.sections = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`sections`](Self::sections).
+    pub fn add_sections(
+        self,
+        key: impl Into<crate::typed::_types::Name>,
+        value: i64,
+    ) -> SearchUsageStatsBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5)> {
+        let mut builder = self.with_state();
+        builder
+            .sections
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        builder
+    }
+}
+
+impl<S0, S1, S2, S4, S5> SearchUsageStatsBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5)> {
+    /// Adds an entry to [`sections`](Self::sections).
+    pub fn add_sections(mut self, key: impl Into<crate::typed::_types::Name>, value: i64) -> Self {
+        self.sections
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        self
+    }
 }
 
 impl<S0, S1, S2, S3, S5>
@@ -13949,6 +15640,34 @@ impl<S0, S1, S2, S3, S5>
         let mut builder = self.with_state();
         builder.retrievers = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`retrievers`](Self::retrievers).
+    pub fn add_retrievers(
+        self,
+        key: impl Into<crate::typed::_types::Name>,
+        value: i64,
+    ) -> SearchUsageStatsBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5)> {
+        let mut builder = self.with_state();
+        builder
+            .retrievers
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3, S5> SearchUsageStatsBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5)> {
+    /// Adds an entry to [`retrievers`](Self::retrievers).
+    pub fn add_retrievers(
+        mut self,
+        key: impl Into<crate::typed::_types::Name>,
+        value: i64,
+    ) -> Self {
+        self.retrievers
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        self
     }
 }
 
@@ -14761,6 +16480,36 @@ impl<S0, S1, S2, S3, S5, S6, S7>
         let mut builder = self.with_state();
         builder.repositories = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`repositories`](Self::repositories).
+    pub fn add_repositories(
+        self,
+        key: impl Into<crate::typed::_types::Name>,
+        value: impl Into<indexmap::IndexMap<crate::typed::_types::Name, i64>>,
+    ) -> StatsResponseBaseBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5, S6, S7)> {
+        let mut builder = self.with_state();
+        builder
+            .repositories
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3, S5, S6, S7>
+    StatsResponseBaseBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5, S6, S7)>
+{
+    /// Adds an entry to [`repositories`](Self::repositories).
+    pub fn add_repositories(
+        mut self,
+        key: impl Into<crate::typed::_types::Name>,
+        value: impl Into<indexmap::IndexMap<crate::typed::_types::Name, i64>>,
+    ) -> Self {
+        self.repositories
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 

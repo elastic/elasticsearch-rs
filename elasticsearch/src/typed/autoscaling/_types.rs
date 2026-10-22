@@ -66,6 +66,29 @@ impl<S1> AutoscalingPolicyBuilder<(crate::typed::builder::NotSet, S1)> {
         builder.roles = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(
+        self,
+        value: impl Into<String>,
+    ) -> AutoscalingPolicyBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1> AutoscalingPolicyBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(mut self, value: impl Into<String>) -> Self {
+        self.roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0> AutoscalingPolicyBuilder<(S0, crate::typed::builder::NotSet)> {
@@ -77,6 +100,34 @@ impl<S0> AutoscalingPolicyBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.deciders = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`deciders`](Self::deciders).
+    pub fn add_deciders(
+        self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> AutoscalingPolicyBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .deciders
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0> AutoscalingPolicyBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an entry to [`deciders`](Self::deciders).
+    pub fn add_deciders(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.deciders
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 

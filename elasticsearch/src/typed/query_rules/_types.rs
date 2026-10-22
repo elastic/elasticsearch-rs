@@ -666,6 +666,59 @@ impl<S0> QueryRulesetBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.rules = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`rules`](Self::rules).
+    pub fn add_rules(
+        self,
+        value: impl Into<QueryRule>,
+    ) -> QueryRulesetBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .rules
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`rules`](Self::rules), with a builder.
+    pub fn add_rules_with(
+        self,
+        f: impl FnOnce(
+            QueryRuleBuilder,
+        ) -> QueryRuleBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> QueryRulesetBuilder<(S0, crate::typed::builder::Set)> {
+        self.add_rules(f(QueryRuleBuilder::new()).build())
+    }
+}
+
+impl<S0> QueryRulesetBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`rules`](Self::rules).
+    pub fn add_rules(mut self, value: impl Into<QueryRule>) -> Self {
+        self.rules
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`rules`](Self::rules), with a builder.
+    pub fn add_rules_with(
+        self,
+        f: impl FnOnce(
+            QueryRuleBuilder,
+        ) -> QueryRuleBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_rules(f(QueryRuleBuilder::new()).build())
+    }
 }
 
 impl QueryRulesetBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {

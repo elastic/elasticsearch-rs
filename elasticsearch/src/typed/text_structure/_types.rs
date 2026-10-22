@@ -200,6 +200,51 @@ impl<S0, S1> FieldStatBuilder<(S0, S1, crate::typed::builder::NotSet)> {
         builder.top_hits = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`top_hits`](Self::top_hits).
+    pub fn add_top_hits(
+        self,
+        value: impl Into<TopHit>,
+    ) -> FieldStatBuilder<(S0, S1, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .top_hits
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`top_hits`](Self::top_hits), with a builder.
+    pub fn add_top_hits_with(
+        self,
+        f: impl FnOnce(
+            TopHitBuilder,
+        )
+            -> TopHitBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> FieldStatBuilder<(S0, S1, crate::typed::builder::Set)> {
+        self.add_top_hits(f(TopHitBuilder::new()).build())
+    }
+}
+
+impl<S0, S1> FieldStatBuilder<(S0, S1, crate::typed::builder::Set)> {
+    /// Adds an element to [`top_hits`](Self::top_hits).
+    pub fn add_top_hits(mut self, value: impl Into<TopHit>) -> Self {
+        self.top_hits
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`top_hits`](Self::top_hits), with a builder.
+    pub fn add_top_hits_with(
+        self,
+        f: impl FnOnce(
+            TopHitBuilder,
+        )
+            -> TopHitBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Self {
+        self.add_top_hits(f(TopHitBuilder::new()).build())
+    }
 }
 
 impl

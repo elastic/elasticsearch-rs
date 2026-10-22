@@ -216,6 +216,51 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
         builder.docs = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`docs`](Self::docs).
+    pub fn add_docs(
+        self,
+        value: impl Into<crate::typed::ingest::_types::Document>,
+    ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
+        let mut builder = self.with_state();
+        builder
+            .docs
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`docs`](Self::docs), with a builder.
+    pub fn add_docs_with(
+        self,
+        f: impl FnOnce(
+            crate::typed::ingest::_types::DocumentBuilder,
+        )
+            -> crate::typed::ingest::_types::DocumentBuilder<(crate::typed::builder::Set,)>,
+    ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
+        self.add_docs(f(crate::typed::ingest::_types::DocumentBuilder::new()).build())
+    }
+}
+
+impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+    /// Adds an element to [`docs`](Self::docs).
+    pub fn add_docs(mut self, value: impl Into<crate::typed::ingest::_types::Document>) -> Self {
+        self.docs
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`docs`](Self::docs), with a builder.
+    pub fn add_docs_with(
+        self,
+        f: impl FnOnce(
+            crate::typed::ingest::_types::DocumentBuilder,
+        )
+            -> crate::typed::ingest::_types::DocumentBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_docs(f(crate::typed::ingest::_types::DocumentBuilder::new()).build())
+    }
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {

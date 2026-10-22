@@ -687,6 +687,62 @@ impl<S0, S1, S2, S3, S5, S6, S7>
         builder.metrics = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`metrics`](Self::metrics).
+    pub fn add_metrics(
+        self,
+        value: impl Into<crate::typed::rollup::_types::FieldMetric>,
+    ) -> RollupJobConfigurationBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5, S6, S7)>
+    {
+        let mut builder = self.with_state();
+        builder
+            .metrics
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`metrics`](Self::metrics), with a builder.
+    pub fn add_metrics_with(
+        self,
+        f: impl FnOnce(
+            crate::typed::rollup::_types::FieldMetricBuilder,
+        ) -> crate::typed::rollup::_types::FieldMetricBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RollupJobConfigurationBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5, S6, S7)>
+    {
+        self.add_metrics(f(crate::typed::rollup::_types::FieldMetricBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S3, S5, S6, S7>
+    RollupJobConfigurationBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5, S6, S7)>
+{
+    /// Adds an element to [`metrics`](Self::metrics).
+    pub fn add_metrics(
+        mut self,
+        value: impl Into<crate::typed::rollup::_types::FieldMetric>,
+    ) -> Self {
+        self.metrics
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`metrics`](Self::metrics), with a builder.
+    pub fn add_metrics_with(
+        self,
+        f: impl FnOnce(
+            crate::typed::rollup::_types::FieldMetricBuilder,
+        ) -> crate::typed::rollup::_types::FieldMetricBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_metrics(f(crate::typed::rollup::_types::FieldMetricBuilder::new()).build())
+    }
 }
 
 impl<S0, S1, S2, S3, S4, S6, S7>

@@ -5322,6 +5322,32 @@ impl<S0> GeoLineBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.coordinates = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`coordinates`](Self::coordinates).
+    pub fn add_coordinates(
+        self,
+        value: impl Into<Vec<crate::typed::support::Float64>>,
+    ) -> GeoLineBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .coordinates
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> GeoLineBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`coordinates`](Self::coordinates).
+    pub fn add_coordinates(
+        mut self,
+        value: impl Into<Vec<crate::typed::support::Float64>>,
+    ) -> Self {
+        self.coordinates
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl GeoLineBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
@@ -10880,6 +10906,30 @@ impl<S1, S2, S3> NodeAttributesBuilder<(crate::typed::builder::NotSet, S1, S2, S
         builder.attributes = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`attributes`](Self::attributes).
+    pub fn add_attributes(
+        self,
+        key: impl Into<String>,
+        value: impl Into<String>,
+    ) -> NodeAttributesBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
+        let mut builder = self.with_state();
+        builder
+            .attributes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S1, S2, S3> NodeAttributesBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
+    /// Adds an entry to [`attributes`](Self::attributes).
+    pub fn add_attributes(mut self, key: impl Into<String>, value: impl Into<String>) -> Self {
+        self.attributes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl<S0, S2, S3> NodeAttributesBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
@@ -12152,6 +12202,31 @@ impl<S0, S1, S2, S4, S5, S6, S7, S8>
         builder.extended_plugins = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`extended_plugins`](Self::extended_plugins).
+    pub fn add_extended_plugins(
+        self,
+        value: impl Into<String>,
+    ) -> PluginStatsBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5, S6, S7, S8)> {
+        let mut builder = self.with_state();
+        builder
+            .extended_plugins
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S4, S5, S6, S7, S8>
+    PluginStatsBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5, S6, S7, S8)>
+{
+    /// Adds an element to [`extended_plugins`](Self::extended_plugins).
+    pub fn add_extended_plugins(mut self, value: impl Into<String>) -> Self {
+        self.extended_plugins
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0, S1, S2, S3, S5, S6, S7, S8>
@@ -13265,6 +13340,29 @@ impl RRFRetrieverBuilder<(crate::typed::builder::NotSet,)> {
         let mut builder = self.with_state();
         builder.retrievers = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`retrievers`](Self::retrievers).
+    pub fn add_retrievers(
+        self,
+        value: impl Into<RRFRetrieverEntry>,
+    ) -> RRFRetrieverBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .retrievers
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl RRFRetrieverBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`retrievers`](Self::retrievers).
+    pub fn add_retrievers(mut self, value: impl Into<RRFRetrieverEntry>) -> Self {
+        self.retrievers
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -19790,6 +19888,112 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
         let mut builder = self.with_state();
         builder.file_sizes = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`file_sizes`](Self::file_sizes).
+    pub fn add_file_sizes(
+        self,
+        key: impl Into<String>,
+        value: impl Into<crate::typed::indices::stats::ShardFileSizeInfo>,
+    ) -> SegmentsStatsBuilder<(
+        S0,
+        S1,
+        crate::typed::builder::Set,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .file_sizes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`file_sizes`](Self::file_sizes), with a builder.
+    pub fn add_file_sizes_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            crate::typed::indices::stats::ShardFileSizeInfoBuilder,
+        ) -> crate::typed::indices::stats::ShardFileSizeInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SegmentsStatsBuilder<(
+        S0,
+        S1,
+        crate::typed::builder::Set,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+    )> {
+        self.add_file_sizes(
+            key,
+            f(crate::typed::indices::stats::ShardFileSizeInfoBuilder::new()).build(),
+        )
+    }
+}
+
+impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
+    SegmentsStatsBuilder<(
+        S0,
+        S1,
+        crate::typed::builder::Set,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+    )>
+{
+    /// Adds an entry to [`file_sizes`](Self::file_sizes).
+    pub fn add_file_sizes(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<crate::typed::indices::stats::ShardFileSizeInfo>,
+    ) -> Self {
+        self.file_sizes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`file_sizes`](Self::file_sizes), with a builder.
+    pub fn add_file_sizes_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            crate::typed::indices::stats::ShardFileSizeInfoBuilder,
+        ) -> crate::typed::indices::stats::ShardFileSizeInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_file_sizes(
+            key,
+            f(crate::typed::indices::stats::ShardFileSizeInfoBuilder::new()).build(),
+        )
     }
 }
 

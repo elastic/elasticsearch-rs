@@ -759,6 +759,60 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
         builder.attributes = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`attributes`](Self::attributes).
+    pub fn add_attributes(
+        self,
+        key: impl Into<String>,
+        value: impl Into<String>,
+    ) -> NodeInfoBuilder<(
+        crate::typed::builder::Set,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .attributes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
+    NodeInfoBuilder<(
+        crate::typed::builder::Set,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+    )>
+{
+    /// Adds an entry to [`attributes`](Self::attributes).
+    pub fn add_attributes(mut self, key: impl Into<String>, value: impl Into<String>) -> Self {
+        self.attributes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12>
@@ -923,6 +977,64 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10, S11, S12>
         let mut builder = self.with_state();
         builder.component_versions = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`component_versions`](Self::component_versions).
+    pub fn add_component_versions(
+        self,
+        key: impl Into<crate::typed::_types::Name>,
+        value: i32,
+    ) -> NodeInfoBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        crate::typed::builder::Set,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .component_versions
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10, S11, S12>
+    NodeInfoBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        crate::typed::builder::Set,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+    )>
+{
+    /// Adds an entry to [`component_versions`](Self::component_versions).
+    pub fn add_component_versions(
+        mut self,
+        key: impl Into<crate::typed::_types::Name>,
+        value: i32,
+    ) -> Self {
+        self.component_versions
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        self
     }
 }
 
@@ -1131,6 +1243,59 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10, S11, S12>
         let mut builder = self.with_state();
         builder.roles = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(
+        self,
+        value: impl Into<crate::typed::_types::NodeRole>,
+    ) -> NodeInfoBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        crate::typed::builder::Set,
+        S10,
+        S11,
+        S12,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S10, S11, S12>
+    NodeInfoBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        crate::typed::builder::Set,
+        S10,
+        S11,
+        S12,
+    )>
+{
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(mut self, value: impl Into<crate::typed::_types::NodeRole>) -> Self {
+        self.roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -1767,6 +1932,29 @@ impl NodeInfoAggregationBuilder<(crate::typed::builder::NotSet,)> {
         builder.types = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`types`](Self::types).
+    pub fn add_types(
+        self,
+        value: impl Into<String>,
+    ) -> NodeInfoAggregationBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .types
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl NodeInfoAggregationBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`types`](Self::types).
+    pub fn add_types(mut self, value: impl Into<String>) -> Self {
+        self.types
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl NodeInfoAggregationBuilder<(crate::typed::builder::Set,)> {
@@ -2211,6 +2399,29 @@ impl<S1, S2> NodeInfoHttpBuilder<(crate::typed::builder::NotSet, S1, S2)> {
         builder.bound_address = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`bound_address`](Self::bound_address).
+    pub fn add_bound_address(
+        self,
+        value: impl Into<String>,
+    ) -> NodeInfoHttpBuilder<(crate::typed::builder::Set, S1, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .bound_address
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1, S2> NodeInfoHttpBuilder<(crate::typed::builder::Set, S1, S2)> {
+    /// Adds an element to [`bound_address`](Self::bound_address).
+    pub fn add_bound_address(mut self, value: impl Into<String>) -> Self {
+        self.bound_address
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0, S2> NodeInfoHttpBuilder<(S0, crate::typed::builder::NotSet, S2)> {
@@ -2355,6 +2566,49 @@ impl NodeInfoIngestBuilder<(crate::typed::builder::NotSet,)> {
         let mut builder = self.with_state();
         builder.processors = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`processors`](Self::processors).
+    pub fn add_processors(
+        self,
+        value: impl Into<NodeInfoIngestProcessor>,
+    ) -> NodeInfoIngestBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .processors
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`processors`](Self::processors), with a builder.
+    pub fn add_processors_with(
+        self,
+        f: impl FnOnce(
+            NodeInfoIngestProcessorBuilder,
+        ) -> NodeInfoIngestProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoIngestBuilder<(crate::typed::builder::Set,)> {
+        self.add_processors(f(NodeInfoIngestProcessorBuilder::new()).build())
+    }
+}
+
+impl NodeInfoIngestBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`processors`](Self::processors).
+    pub fn add_processors(mut self, value: impl Into<NodeInfoIngestProcessor>) -> Self {
+        self.processors
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`processors`](Self::processors), with a builder.
+    pub fn add_processors_with(
+        self,
+        f: impl FnOnce(
+            NodeInfoIngestProcessorBuilder,
+        ) -> NodeInfoIngestProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_processors(f(NodeInfoIngestProcessorBuilder::new()).build())
     }
 }
 
@@ -6245,6 +6499,30 @@ impl<S0> NodeInfoSettingsNodeBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.attr = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`attr`](Self::attr).
+    pub fn add_attr(
+        self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> NodeInfoSettingsNodeBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .attr
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0> NodeInfoSettingsNodeBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an entry to [`attr`](Self::attr).
+    pub fn add_attr(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.attr
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl NodeInfoSettingsNodeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
@@ -6690,6 +6968,29 @@ impl<S1, S2> NodeInfoTransportBuilder<(crate::typed::builder::NotSet, S1, S2)> {
         builder.bound_address = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`bound_address`](Self::bound_address).
+    pub fn add_bound_address(
+        self,
+        value: impl Into<String>,
+    ) -> NodeInfoTransportBuilder<(crate::typed::builder::Set, S1, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .bound_address
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1, S2> NodeInfoTransportBuilder<(crate::typed::builder::Set, S1, S2)> {
+    /// Adds an element to [`bound_address`](Self::bound_address).
+    pub fn add_bound_address(mut self, value: impl Into<String>) -> Self {
+        self.bound_address
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0, S2> NodeInfoTransportBuilder<(S0, crate::typed::builder::NotSet, S2)> {
@@ -6711,6 +7012,30 @@ impl<S0, S1> NodeInfoTransportBuilder<(S0, S1, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.profiles = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`profiles`](Self::profiles).
+    pub fn add_profiles(
+        self,
+        key: impl Into<String>,
+        value: impl Into<String>,
+    ) -> NodeInfoTransportBuilder<(S0, S1, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .profiles
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1> NodeInfoTransportBuilder<(S0, S1, crate::typed::builder::Set)> {
+    /// Adds an entry to [`profiles`](Self::profiles).
+    pub fn add_profiles(mut self, key: impl Into<String>, value: impl Into<String>) -> Self {
+        self.profiles
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 
@@ -7866,6 +8191,30 @@ impl NodeInfoXpackSecuritySslBuilder<(crate::typed::builder::NotSet,)> {
         builder.ssl = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`ssl`](Self::ssl).
+    pub fn add_ssl(
+        self,
+        key: impl Into<String>,
+        value: impl Into<String>,
+    ) -> NodeInfoXpackSecuritySslBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .ssl
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl NodeInfoXpackSecuritySslBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an entry to [`ssl`](Self::ssl).
+    pub fn add_ssl(mut self, key: impl Into<String>, value: impl Into<String>) -> Self {
+        self.ssl
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl NodeInfoXpackSecuritySslBuilder<(crate::typed::builder::Set,)> {
@@ -8104,6 +8453,55 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         builder.gc_collectors = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`gc_collectors`](Self::gc_collectors).
+    pub fn add_gc_collectors(
+        self,
+        value: impl Into<String>,
+    ) -> NodeJvmInfoBuilder<(
+        crate::typed::builder::Set,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .gc_collectors
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
+    NodeJvmInfoBuilder<(
+        crate::typed::builder::Set,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+    )>
+{
+    /// Adds an element to [`gc_collectors`](Self::gc_collectors).
+    pub fn add_gc_collectors(mut self, value: impl Into<String>) -> Self {
+        self.gc_collectors
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0, S2, S3, S4, S5, S6, S7, S8, S9, S10>
@@ -8205,6 +8603,55 @@ impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10>
         let mut builder = self.with_state();
         builder.memory_pools = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`memory_pools`](Self::memory_pools).
+    pub fn add_memory_pools(
+        self,
+        value: impl Into<String>,
+    ) -> NodeJvmInfoBuilder<(
+        S0,
+        S1,
+        crate::typed::builder::Set,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .memory_pools
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S3, S4, S5, S6, S7, S8, S9, S10>
+    NodeJvmInfoBuilder<(
+        S0,
+        S1,
+        crate::typed::builder::Set,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+    )>
+{
+    /// Adds an element to [`memory_pools`](Self::memory_pools).
+    pub fn add_memory_pools(mut self, value: impl Into<String>) -> Self {
+        self.memory_pools
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -8501,6 +8948,55 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
         let mut builder = self.with_state();
         builder.input_arguments = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`input_arguments`](Self::input_arguments).
+    pub fn add_input_arguments(
+        self,
+        value: impl Into<String>,
+    ) -> NodeJvmInfoBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        crate::typed::builder::Set,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .input_arguments
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9>
+    NodeJvmInfoBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        crate::typed::builder::Set,
+    )>
+{
+    /// Adds an element to [`input_arguments`](Self::input_arguments).
+    pub fn add_input_arguments(mut self, value: impl Into<String>) -> Self {
+        self.input_arguments
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -9689,6 +10185,32 @@ impl<S1> RemoveClusterServerBuilder<(crate::typed::builder::NotSet, S1)> {
         builder.bound_address = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`bound_address`](Self::bound_address).
+    pub fn add_bound_address(
+        self,
+        value: impl Into<crate::typed::_types::TransportAddress>,
+    ) -> RemoveClusterServerBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .bound_address
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1> RemoveClusterServerBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`bound_address`](Self::bound_address).
+    pub fn add_bound_address(
+        mut self,
+        value: impl Into<crate::typed::_types::TransportAddress>,
+    ) -> Self {
+        self.bound_address
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0> RemoveClusterServerBuilder<(S0, crate::typed::builder::NotSet)> {
@@ -10159,6 +10681,80 @@ impl<S0> ResponseBaseBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.nodes = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`nodes`](Self::nodes).
+    pub fn add_nodes(
+        self,
+        key: impl Into<String>,
+        value: impl Into<NodeInfo>,
+    ) -> ResponseBaseBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .nodes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`nodes`](Self::nodes), with a builder.
+    pub fn add_nodes_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            NodeInfoBuilder,
+        ) -> NodeInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ResponseBaseBuilder<(S0, crate::typed::builder::Set)> {
+        self.add_nodes(key, f(NodeInfoBuilder::new()).build())
+    }
+}
+
+impl<S0> ResponseBaseBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an entry to [`nodes`](Self::nodes).
+    pub fn add_nodes(mut self, key: impl Into<String>, value: impl Into<NodeInfo>) -> Self {
+        self.nodes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`nodes`](Self::nodes), with a builder.
+    pub fn add_nodes_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            NodeInfoBuilder,
+        ) -> NodeInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_nodes(key, f(NodeInfoBuilder::new()).build())
     }
 }
 

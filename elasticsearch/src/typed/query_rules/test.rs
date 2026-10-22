@@ -291,6 +291,34 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
         builder.match_criteria = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`match_criteria`](Self::match_criteria).
+    pub fn add_match_criteria(
+        self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> RequestBuilder<(S0, crate::typed::builder::Set), C> {
+        let mut builder = self.with_state();
+        builder
+            .match_criteria
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, C> RequestBuilder<(S0, crate::typed::builder::Set), C> {
+    /// Adds an entry to [`match_criteria`](Self::match_criteria).
+    pub fn add_match_criteria(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.match_criteria
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {

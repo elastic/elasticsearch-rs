@@ -433,6 +433,32 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
         builder.searches = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`searches`](Self::searches).
+    pub fn add_searches(
+        self,
+        value: impl Into<crate::typed::_global::msearch::RequestItem>,
+    ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
+        let mut builder = self.with_state();
+        builder
+            .searches
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+    /// Adds an element to [`searches`](Self::searches).
+    pub fn add_searches(
+        mut self,
+        value: impl Into<crate::typed::_global::msearch::RequestItem>,
+    ) -> Self {
+        self.searches
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {

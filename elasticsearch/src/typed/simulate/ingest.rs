@@ -263,6 +263,34 @@ impl<S0, S1, S3, S4>
         builder.source = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`source`](Self::source).
+    pub fn add_source(
+        self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> IngestDocumentSimulationBuilder<(S0, S1, crate::typed::builder::Set, S3, S4)> {
+        let mut builder = self.with_state();
+        builder
+            .source
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S3, S4> IngestDocumentSimulationBuilder<(S0, S1, crate::typed::builder::Set, S3, S4)> {
+    /// Adds an entry to [`source`](Self::source).
+    pub fn add_source(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.source
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl<S0, S1, S2, S4>
@@ -289,6 +317,29 @@ impl<S0, S1, S2, S3>
         let mut builder = self.with_state();
         builder.executed_pipelines = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`executed_pipelines`](Self::executed_pipelines).
+    pub fn add_executed_pipelines(
+        self,
+        value: impl Into<String>,
+    ) -> IngestDocumentSimulationBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .executed_pipelines
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3> IngestDocumentSimulationBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)> {
+    /// Adds an element to [`executed_pipelines`](Self::executed_pipelines).
+    pub fn add_executed_pipelines(mut self, value: impl Into<String>) -> Self {
+        self.executed_pipelines
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -834,6 +885,51 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
         let mut builder = self.with_state();
         builder.docs = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`docs`](Self::docs).
+    pub fn add_docs(
+        self,
+        value: impl Into<crate::typed::ingest::_types::Document>,
+    ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
+        let mut builder = self.with_state();
+        builder
+            .docs
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`docs`](Self::docs), with a builder.
+    pub fn add_docs_with(
+        self,
+        f: impl FnOnce(
+            crate::typed::ingest::_types::DocumentBuilder,
+        )
+            -> crate::typed::ingest::_types::DocumentBuilder<(crate::typed::builder::Set,)>,
+    ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
+        self.add_docs(f(crate::typed::ingest::_types::DocumentBuilder::new()).build())
+    }
+}
+
+impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+    /// Adds an element to [`docs`](Self::docs).
+    pub fn add_docs(mut self, value: impl Into<crate::typed::ingest::_types::Document>) -> Self {
+        self.docs
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`docs`](Self::docs), with a builder.
+    pub fn add_docs_with(
+        self,
+        f: impl FnOnce(
+            crate::typed::ingest::_types::DocumentBuilder,
+        )
+            -> crate::typed::ingest::_types::DocumentBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_docs(f(crate::typed::ingest::_types::DocumentBuilder::new()).build())
     }
 }
 

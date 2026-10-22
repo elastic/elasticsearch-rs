@@ -277,6 +277,32 @@ impl<S0, S1, S3, S4>
         builder.leader_index_patterns = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`leader_index_patterns`](Self::leader_index_patterns).
+    pub fn add_leader_index_patterns(
+        self,
+        value: impl Into<crate::typed::_types::IndexPattern>,
+    ) -> AutoFollowPatternSummaryBuilder<(S0, S1, crate::typed::builder::Set, S3, S4)> {
+        let mut builder = self.with_state();
+        builder
+            .leader_index_patterns
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S3, S4> AutoFollowPatternSummaryBuilder<(S0, S1, crate::typed::builder::Set, S3, S4)> {
+    /// Adds an element to [`leader_index_patterns`](Self::leader_index_patterns).
+    pub fn add_leader_index_patterns(
+        mut self,
+        value: impl Into<crate::typed::_types::IndexPattern>,
+    ) -> Self {
+        self.leader_index_patterns
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0, S1, S2, S4>
@@ -290,6 +316,32 @@ impl<S0, S1, S2, S4>
         let mut builder = self.with_state();
         builder.leader_index_exclusion_patterns = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`leader_index_exclusion_patterns`](Self::leader_index_exclusion_patterns).
+    pub fn add_leader_index_exclusion_patterns(
+        self,
+        value: impl Into<crate::typed::_types::IndexPattern>,
+    ) -> AutoFollowPatternSummaryBuilder<(S0, S1, S2, crate::typed::builder::Set, S4)> {
+        let mut builder = self.with_state();
+        builder
+            .leader_index_exclusion_patterns
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S4> AutoFollowPatternSummaryBuilder<(S0, S1, S2, crate::typed::builder::Set, S4)> {
+    /// Adds an element to [`leader_index_exclusion_patterns`](Self::leader_index_exclusion_patterns).
+    pub fn add_leader_index_exclusion_patterns(
+        mut self,
+        value: impl Into<crate::typed::_types::IndexPattern>,
+    ) -> Self {
+        self.leader_index_exclusion_patterns
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 

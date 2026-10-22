@@ -118,6 +118,30 @@ impl<S1, S2, S3, S4> BaseNodeBuilder<(crate::typed::builder::NotSet, S1, S2, S3,
         builder.attributes = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`attributes`](Self::attributes).
+    pub fn add_attributes(
+        self,
+        key: impl Into<String>,
+        value: impl Into<String>,
+    ) -> BaseNodeBuilder<(crate::typed::builder::Set, S1, S2, S3, S4)> {
+        let mut builder = self.with_state();
+        builder
+            .attributes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S1, S2, S3, S4> BaseNodeBuilder<(crate::typed::builder::Set, S1, S2, S3, S4)> {
+    /// Adds an entry to [`attributes`](Self::attributes).
+    pub fn add_attributes(mut self, key: impl Into<String>, value: impl Into<String>) -> Self {
+        self.attributes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl<S0, S2, S3, S4> BaseNodeBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {

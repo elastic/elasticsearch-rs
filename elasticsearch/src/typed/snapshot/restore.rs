@@ -809,6 +809,29 @@ impl<S1, S2> SnapshotRestoreBuilder<(crate::typed::builder::NotSet, S1, S2)> {
         builder.indices = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`indices`](Self::indices).
+    pub fn add_indices(
+        self,
+        value: impl Into<crate::typed::_types::IndexName>,
+    ) -> SnapshotRestoreBuilder<(crate::typed::builder::Set, S1, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .indices
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1, S2> SnapshotRestoreBuilder<(crate::typed::builder::Set, S1, S2)> {
+    /// Adds an element to [`indices`](Self::indices).
+    pub fn add_indices(mut self, value: impl Into<crate::typed::_types::IndexName>) -> Self {
+        self.indices
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0, S2> SnapshotRestoreBuilder<(S0, crate::typed::builder::NotSet, S2)> {

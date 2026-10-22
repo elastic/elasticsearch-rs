@@ -564,6 +564,76 @@ impl<S1, S2, S3, S4, S5, S6, S7>
         builder.configuration = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`configuration`](Self::configuration).
+    pub fn add_configuration(
+        self,
+        key: impl Into<String>,
+        value: impl Into<ConnectorConfigProperties>,
+    ) -> ConnectorBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5, S6, S7)> {
+        let mut builder = self.with_state();
+        builder
+            .configuration
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`configuration`](Self::configuration), with a builder.
+    pub fn add_configuration_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            ConnectorConfigPropertiesBuilder,
+        ) -> ConnectorConfigPropertiesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ConnectorBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5, S6, S7)> {
+        self.add_configuration(key, f(ConnectorConfigPropertiesBuilder::new()).build())
+    }
+}
+
+impl<S1, S2, S3, S4, S5, S6, S7>
+    ConnectorBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5, S6, S7)>
+{
+    /// Adds an entry to [`configuration`](Self::configuration).
+    pub fn add_configuration(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<ConnectorConfigProperties>,
+    ) -> Self {
+        self.configuration
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`configuration`](Self::configuration), with a builder.
+    pub fn add_configuration_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            ConnectorConfigPropertiesBuilder,
+        ) -> ConnectorConfigPropertiesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_configuration(key, f(ConnectorConfigPropertiesBuilder::new()).build())
+    }
 }
 
 impl<S0, S2, S3, S4, S5, S6, S7>
@@ -576,6 +646,68 @@ impl<S0, S2, S3, S4, S5, S6, S7>
         let mut builder = self.with_state();
         builder.custom_scheduling = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`custom_scheduling`](Self::custom_scheduling).
+    pub fn add_custom_scheduling(
+        self,
+        key: impl Into<String>,
+        value: impl Into<CustomScheduling>,
+    ) -> ConnectorBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5, S6, S7)> {
+        let mut builder = self.with_state();
+        builder
+            .custom_scheduling
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`custom_scheduling`](Self::custom_scheduling), with a builder.
+    pub fn add_custom_scheduling_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            CustomSchedulingBuilder,
+        ) -> CustomSchedulingBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ConnectorBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5, S6, S7)> {
+        self.add_custom_scheduling(key, f(CustomSchedulingBuilder::new()).build())
+    }
+}
+
+impl<S0, S2, S3, S4, S5, S6, S7>
+    ConnectorBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5, S6, S7)>
+{
+    /// Adds an entry to [`custom_scheduling`](Self::custom_scheduling).
+    pub fn add_custom_scheduling(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<CustomScheduling>,
+    ) -> Self {
+        self.custom_scheduling
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`custom_scheduling`](Self::custom_scheduling), with a builder.
+    pub fn add_custom_scheduling_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            CustomSchedulingBuilder,
+        ) -> CustomSchedulingBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_custom_scheduling(key, f(CustomSchedulingBuilder::new()).build())
     }
 }
 
@@ -602,6 +734,57 @@ impl<S0, S1, S2, S4, S5, S6, S7>
         let mut builder = self.with_state();
         builder.filtering = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`filtering`](Self::filtering).
+    pub fn add_filtering(
+        self,
+        value: impl Into<FilteringConfig>,
+    ) -> ConnectorBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5, S6, S7)> {
+        let mut builder = self.with_state();
+        builder
+            .filtering
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`filtering`](Self::filtering), with a builder.
+    pub fn add_filtering_with(
+        self,
+        f: impl FnOnce(
+            FilteringConfigBuilder,
+        ) -> FilteringConfigBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ConnectorBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5, S6, S7)> {
+        self.add_filtering(f(FilteringConfigBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S4, S5, S6, S7>
+    ConnectorBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5, S6, S7)>
+{
+    /// Adds an element to [`filtering`](Self::filtering).
+    pub fn add_filtering(mut self, value: impl Into<FilteringConfig>) -> Self {
+        self.filtering
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`filtering`](Self::filtering), with a builder.
+    pub fn add_filtering_with(
+        self,
+        f: impl FnOnce(
+            FilteringConfigBuilder,
+        ) -> FilteringConfigBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_filtering(f(FilteringConfigBuilder::new()).build())
     }
 }
 
@@ -1152,6 +1335,55 @@ impl<S0, S2, S3, S4, S5, S6, S7>
         builder.depends_on = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`depends_on`](Self::depends_on).
+    pub fn add_depends_on(
+        self,
+        value: impl Into<Dependency>,
+    ) -> ConnectorConfigPropertiesBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5, S6, S7)>
+    {
+        let mut builder = self.with_state();
+        builder
+            .depends_on
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`depends_on`](Self::depends_on), with a builder.
+    pub fn add_depends_on_with(
+        self,
+        f: impl FnOnce(
+            DependencyBuilder,
+        )
+            -> DependencyBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> ConnectorConfigPropertiesBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5, S6, S7)>
+    {
+        self.add_depends_on(f(DependencyBuilder::new()).build())
+    }
+}
+
+impl<S0, S2, S3, S4, S5, S6, S7>
+    ConnectorConfigPropertiesBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5, S6, S7)>
+{
+    /// Adds an element to [`depends_on`](Self::depends_on).
+    pub fn add_depends_on(mut self, value: impl Into<Dependency>) -> Self {
+        self.depends_on
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`depends_on`](Self::depends_on), with a builder.
+    pub fn add_depends_on_with(
+        self,
+        f: impl FnOnce(
+            DependencyBuilder,
+        )
+            -> DependencyBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Self {
+        self.add_depends_on(f(DependencyBuilder::new()).build())
+    }
 }
 
 impl<S0, S1, S3, S4, S5, S6, S7>
@@ -1193,6 +1425,55 @@ impl<S0, S1, S2, S3, S5, S6, S7>
         let mut builder = self.with_state();
         builder.options = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`options`](Self::options).
+    pub fn add_options(
+        self,
+        value: impl Into<SelectOption>,
+    ) -> ConnectorConfigPropertiesBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5, S6, S7)>
+    {
+        let mut builder = self.with_state();
+        builder
+            .options
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`options`](Self::options), with a builder.
+    pub fn add_options_with(
+        self,
+        f: impl FnOnce(
+            SelectOptionBuilder,
+        )
+            -> SelectOptionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> ConnectorConfigPropertiesBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5, S6, S7)>
+    {
+        self.add_options(f(SelectOptionBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S3, S5, S6, S7>
+    ConnectorConfigPropertiesBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5, S6, S7)>
+{
+    /// Adds an element to [`options`](Self::options).
+    pub fn add_options(mut self, value: impl Into<SelectOption>) -> Self {
+        self.options
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`options`](Self::options), with a builder.
+    pub fn add_options_with(
+        self,
+        f: impl FnOnce(
+            SelectOptionBuilder,
+        )
+            -> SelectOptionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Self {
+        self.add_options(f(SelectOptionBuilder::new()).build())
     }
 }
 
@@ -2288,6 +2569,60 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10>
         let mut builder = self.with_state();
         builder.metadata = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> ConnectorSyncJobBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        crate::typed::builder::Set,
+        S8,
+        S9,
+        S10,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10>
+    ConnectorSyncJobBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        crate::typed::builder::Set,
+        S8,
+        S9,
+        S10,
+    )>
+{
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 
@@ -3995,6 +4330,63 @@ impl<S0, S2> FilteringRulesBuilder<(S0, crate::typed::builder::NotSet, S2)> {
         builder.rules = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`rules`](Self::rules).
+    pub fn add_rules(
+        self,
+        value: impl Into<FilteringRule>,
+    ) -> FilteringRulesBuilder<(S0, crate::typed::builder::Set, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .rules
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`rules`](Self::rules), with a builder.
+    pub fn add_rules_with(
+        self,
+        f: impl FnOnce(
+            FilteringRuleBuilder,
+        ) -> FilteringRuleBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FilteringRulesBuilder<(S0, crate::typed::builder::Set, S2)> {
+        self.add_rules(f(FilteringRuleBuilder::new()).build())
+    }
+}
+
+impl<S0, S2> FilteringRulesBuilder<(S0, crate::typed::builder::Set, S2)> {
+    /// Adds an element to [`rules`](Self::rules).
+    pub fn add_rules(mut self, value: impl Into<FilteringRule>) -> Self {
+        self.rules
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`rules`](Self::rules), with a builder.
+    pub fn add_rules_with(
+        self,
+        f: impl FnOnce(
+            FilteringRuleBuilder,
+        ) -> FilteringRuleBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_rules(f(FilteringRuleBuilder::new()).build())
+    }
 }
 
 impl<S0, S1> FilteringRulesBuilder<(S0, S1, crate::typed::builder::NotSet)> {
@@ -4154,6 +4546,55 @@ impl<S1> FilteringRulesValidationBuilder<(crate::typed::builder::NotSet, S1)> {
         builder.errors = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`errors`](Self::errors).
+    pub fn add_errors(
+        self,
+        value: impl Into<FilteringValidation>,
+    ) -> FilteringRulesValidationBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .errors
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`errors`](Self::errors), with a builder.
+    pub fn add_errors_with(
+        self,
+        f: impl FnOnce(
+            FilteringValidationBuilder,
+        ) -> FilteringValidationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FilteringRulesValidationBuilder<(crate::typed::builder::Set, S1)> {
+        self.add_errors(f(FilteringValidationBuilder::new()).build())
+    }
+}
+
+impl<S1> FilteringRulesValidationBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`errors`](Self::errors).
+    pub fn add_errors(mut self, value: impl Into<FilteringValidation>) -> Self {
+        self.errors
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`errors`](Self::errors), with a builder.
+    pub fn add_errors_with(
+        self,
+        f: impl FnOnce(
+            FilteringValidationBuilder,
+        ) -> FilteringValidationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_errors(f(FilteringValidationBuilder::new()).build())
+    }
 }
 
 impl<S0> FilteringRulesValidationBuilder<(S0, crate::typed::builder::NotSet)> {
@@ -4266,6 +4707,29 @@ impl<S1> FilteringValidationBuilder<(crate::typed::builder::NotSet, S1)> {
         builder.ids = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`ids`](Self::ids).
+    pub fn add_ids(
+        self,
+        value: impl Into<crate::typed::_types::Id>,
+    ) -> FilteringValidationBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .ids
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1> FilteringValidationBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`ids`](Self::ids).
+    pub fn add_ids(mut self, value: impl Into<crate::typed::_types::Id>) -> Self {
+        self.ids
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0> FilteringValidationBuilder<(S0, crate::typed::builder::NotSet)> {
@@ -4276,6 +4740,29 @@ impl<S0> FilteringValidationBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.messages = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`messages`](Self::messages).
+    pub fn add_messages(
+        self,
+        value: impl Into<String>,
+    ) -> FilteringValidationBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .messages
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> FilteringValidationBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`messages`](Self::messages).
+    pub fn add_messages(mut self, value: impl Into<String>) -> Self {
+        self.messages
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -4510,6 +4997,29 @@ impl<S0> IncludedInValidationBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.constraint = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`constraint`](Self::constraint).
+    pub fn add_constraint(
+        self,
+        value: impl Into<crate::typed::_types::ScalarValue>,
+    ) -> IncludedInValidationBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .constraint
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> IncludedInValidationBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`constraint`](Self::constraint).
+    pub fn add_constraint(mut self, value: impl Into<crate::typed::_types::ScalarValue>) -> Self {
+        self.constraint
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -5483,6 +5993,76 @@ impl<S1, S2, S3, S4>
         let mut builder = self.with_state();
         builder.configuration = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`configuration`](Self::configuration).
+    pub fn add_configuration(
+        self,
+        key: impl Into<String>,
+        value: impl Into<ConnectorConfigProperties>,
+    ) -> SyncJobConnectorReferenceBuilder<(crate::typed::builder::Set, S1, S2, S3, S4)> {
+        let mut builder = self.with_state();
+        builder
+            .configuration
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`configuration`](Self::configuration), with a builder.
+    pub fn add_configuration_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            ConnectorConfigPropertiesBuilder,
+        ) -> ConnectorConfigPropertiesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SyncJobConnectorReferenceBuilder<(crate::typed::builder::Set, S1, S2, S3, S4)> {
+        self.add_configuration(key, f(ConnectorConfigPropertiesBuilder::new()).build())
+    }
+}
+
+impl<S1, S2, S3, S4>
+    SyncJobConnectorReferenceBuilder<(crate::typed::builder::Set, S1, S2, S3, S4)>
+{
+    /// Adds an entry to [`configuration`](Self::configuration).
+    pub fn add_configuration(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<ConnectorConfigProperties>,
+    ) -> Self {
+        self.configuration
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`configuration`](Self::configuration), with a builder.
+    pub fn add_configuration_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            ConnectorConfigPropertiesBuilder,
+        ) -> ConnectorConfigPropertiesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_configuration(key, f(ConnectorConfigPropertiesBuilder::new()).build())
     }
 }
 

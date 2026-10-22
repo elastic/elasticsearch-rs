@@ -3850,6 +3850,54 @@ impl HttpBuilder<(crate::typed::builder::NotSet,)> {
         builder.routes = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`routes`](Self::routes).
+    pub fn add_routes(
+        self,
+        key: impl Into<String>,
+        value: impl Into<HttpRoute>,
+    ) -> HttpBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .routes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`routes`](Self::routes), with a builder.
+    pub fn add_routes_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            HttpRouteBuilder,
+        )
+            -> HttpRouteBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> HttpBuilder<(crate::typed::builder::Set,)> {
+        self.add_routes(key, f(HttpRouteBuilder::new()).build())
+    }
+}
+
+impl HttpBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an entry to [`routes`](Self::routes).
+    pub fn add_routes(mut self, key: impl Into<String>, value: impl Into<HttpRoute>) -> Self {
+        self.routes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`routes`](Self::routes), with a builder.
+    pub fn add_routes_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            HttpRouteBuilder,
+        )
+            -> HttpRouteBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Self {
+        self.add_routes(key, f(HttpRouteBuilder::new()).build())
+    }
 }
 
 impl HttpBuilder<(crate::typed::builder::Set,)> {
@@ -4127,6 +4175,49 @@ impl<S0, S1> HttpRouteRequestsBuilder<(S0, S1, crate::typed::builder::NotSet)> {
         builder.size_histogram = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`size_histogram`](Self::size_histogram).
+    pub fn add_size_histogram(
+        self,
+        value: impl Into<SizeHttpHistogram>,
+    ) -> HttpRouteRequestsBuilder<(S0, S1, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .size_histogram
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`size_histogram`](Self::size_histogram), with a builder.
+    pub fn add_size_histogram_with(
+        self,
+        f: impl FnOnce(
+            SizeHttpHistogramBuilder,
+        ) -> SizeHttpHistogramBuilder<(crate::typed::builder::Set,)>,
+    ) -> HttpRouteRequestsBuilder<(S0, S1, crate::typed::builder::Set)> {
+        self.add_size_histogram(f(SizeHttpHistogramBuilder::new()).build())
+    }
+}
+
+impl<S0, S1> HttpRouteRequestsBuilder<(S0, S1, crate::typed::builder::Set)> {
+    /// Adds an element to [`size_histogram`](Self::size_histogram).
+    pub fn add_size_histogram(mut self, value: impl Into<SizeHttpHistogram>) -> Self {
+        self.size_histogram
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`size_histogram`](Self::size_histogram), with a builder.
+    pub fn add_size_histogram_with(
+        self,
+        f: impl FnOnce(
+            SizeHttpHistogramBuilder,
+        ) -> SizeHttpHistogramBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_size_histogram(f(SizeHttpHistogramBuilder::new()).build())
+    }
 }
 
 impl
@@ -4321,6 +4412,49 @@ impl<S0, S1, S3> HttpRouteResponsesBuilder<(S0, S1, crate::typed::builder::NotSe
         builder.handling_time_histogram = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`handling_time_histogram`](Self::handling_time_histogram).
+    pub fn add_handling_time_histogram(
+        self,
+        value: impl Into<TimeHttpHistogram>,
+    ) -> HttpRouteResponsesBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+        let mut builder = self.with_state();
+        builder
+            .handling_time_histogram
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`handling_time_histogram`](Self::handling_time_histogram), with a builder.
+    pub fn add_handling_time_histogram_with(
+        self,
+        f: impl FnOnce(
+            TimeHttpHistogramBuilder,
+        ) -> TimeHttpHistogramBuilder<(crate::typed::builder::Set,)>,
+    ) -> HttpRouteResponsesBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+        self.add_handling_time_histogram(f(TimeHttpHistogramBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S3> HttpRouteResponsesBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+    /// Adds an element to [`handling_time_histogram`](Self::handling_time_histogram).
+    pub fn add_handling_time_histogram(mut self, value: impl Into<TimeHttpHistogram>) -> Self {
+        self.handling_time_histogram
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`handling_time_histogram`](Self::handling_time_histogram), with a builder.
+    pub fn add_handling_time_histogram_with(
+        self,
+        f: impl FnOnce(
+            TimeHttpHistogramBuilder,
+        ) -> TimeHttpHistogramBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_handling_time_histogram(f(TimeHttpHistogramBuilder::new()).build())
+    }
 }
 
 impl<S0, S1, S2> HttpRouteResponsesBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
@@ -4331,6 +4465,49 @@ impl<S0, S1, S2> HttpRouteResponsesBuilder<(S0, S1, S2, crate::typed::builder::N
         let mut builder = self.with_state();
         builder.size_histogram = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`size_histogram`](Self::size_histogram).
+    pub fn add_size_histogram(
+        self,
+        value: impl Into<SizeHttpHistogram>,
+    ) -> HttpRouteResponsesBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .size_histogram
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`size_histogram`](Self::size_histogram), with a builder.
+    pub fn add_size_histogram_with(
+        self,
+        f: impl FnOnce(
+            SizeHttpHistogramBuilder,
+        ) -> SizeHttpHistogramBuilder<(crate::typed::builder::Set,)>,
+    ) -> HttpRouteResponsesBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        self.add_size_histogram(f(SizeHttpHistogramBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2> HttpRouteResponsesBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+    /// Adds an element to [`size_histogram`](Self::size_histogram).
+    pub fn add_size_histogram(mut self, value: impl Into<SizeHttpHistogram>) -> Self {
+        self.size_histogram
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`size_histogram`](Self::size_histogram), with a builder.
+    pub fn add_size_histogram_with(
+        self,
+        f: impl FnOnce(
+            SizeHttpHistogramBuilder,
+        ) -> SizeHttpHistogramBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_size_histogram(f(SizeHttpHistogramBuilder::new()).build())
     }
 }
 
@@ -4987,6 +5164,34 @@ impl<S0, S1, S2, S4, S5, S6>
         let mut builder = self.with_state();
         builder.processors = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`processors`](Self::processors).
+    pub fn add_processors(
+        self,
+        value: impl Into<indexmap::IndexMap<String, KeyedProcessor>>,
+    ) -> IngestStatsBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5, S6)> {
+        let mut builder = self.with_state();
+        builder
+            .processors
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S4, S5, S6>
+    IngestStatsBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5, S6)>
+{
+    /// Adds an element to [`processors`](Self::processors).
+    pub fn add_processors(
+        mut self,
+        value: impl Into<indexmap::IndexMap<String, KeyedProcessor>>,
+    ) -> Self {
+        self.processors
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -11971,6 +12176,51 @@ impl<S0, S1> TransportActionMessageStatsBuilder<(S0, S1, crate::typed::builder::
         let mut builder = self.with_state();
         builder.histogram = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`histogram`](Self::histogram).
+    pub fn add_histogram(
+        self,
+        value: impl Into<TransportMessageSizeHistogramBucket>,
+    ) -> TransportActionMessageStatsBuilder<(S0, S1, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .histogram
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`histogram`](Self::histogram), with a builder.
+    pub fn add_histogram_with(
+        self,
+        f: impl FnOnce(
+            TransportMessageSizeHistogramBucketBuilder,
+        )
+            -> TransportMessageSizeHistogramBucketBuilder<(crate::typed::builder::Set,)>,
+    ) -> TransportActionMessageStatsBuilder<(S0, S1, crate::typed::builder::Set)> {
+        self.add_histogram(f(TransportMessageSizeHistogramBucketBuilder::new()).build())
+    }
+}
+
+impl<S0, S1> TransportActionMessageStatsBuilder<(S0, S1, crate::typed::builder::Set)> {
+    /// Adds an element to [`histogram`](Self::histogram).
+    pub fn add_histogram(mut self, value: impl Into<TransportMessageSizeHistogramBucket>) -> Self {
+        self.histogram
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`histogram`](Self::histogram), with a builder.
+    pub fn add_histogram_with(
+        self,
+        f: impl FnOnce(
+            TransportMessageSizeHistogramBucketBuilder,
+        )
+            -> TransportMessageSizeHistogramBucketBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_histogram(f(TransportMessageSizeHistogramBucketBuilder::new()).build())
     }
 }
 

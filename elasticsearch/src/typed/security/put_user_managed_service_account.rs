@@ -277,6 +277,29 @@ impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::NotSet), C> {
         builder.roles = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(
+        self,
+        value: impl Into<String>,
+    ) -> RequestBuilder<(S0, S1, crate::typed::builder::Set), C> {
+        let mut builder = self.with_state();
+        builder
+            .roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, C> RequestBuilder<(S0, S1, crate::typed::builder::Set), C> {
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(mut self, value: impl Into<String>) -> Self {
+        self.roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<C>

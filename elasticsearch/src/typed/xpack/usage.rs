@@ -3757,6 +3757,48 @@ impl<S0, S1, S2> EqlBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
         builder.queries = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`queries`](Self::queries).
+    pub fn add_queries(
+        self,
+        key: impl Into<String>,
+        value: impl Into<Query>,
+    ) -> EqlBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .queries
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`queries`](Self::queries), with a builder.
+    pub fn add_queries_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(QueryBuilder) -> QueryBuilder,
+    ) -> EqlBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        self.add_queries(key, f(QueryBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2> EqlBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+    /// Adds an entry to [`queries`](Self::queries).
+    pub fn add_queries(mut self, key: impl Into<String>, value: impl Into<Query>) -> Self {
+        self.queries
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`queries`](Self::queries), with a builder.
+    pub fn add_queries_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(QueryBuilder) -> QueryBuilder,
+    ) -> Self {
+        self.add_queries(key, f(QueryBuilder::new()).build())
+    }
 }
 
 impl
@@ -5896,6 +5938,59 @@ impl<S0, S1, S2, S3> GpuVectorIndexingBuilder<(S0, S1, S2, S3, crate::typed::bui
         builder.nodes = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`nodes`](Self::nodes).
+    pub fn add_nodes(
+        self,
+        value: impl Into<GpuNodeStats>,
+    ) -> GpuVectorIndexingBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .nodes
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`nodes`](Self::nodes), with a builder.
+    pub fn add_nodes_with(
+        self,
+        f: impl FnOnce(
+            GpuNodeStatsBuilder,
+        ) -> GpuNodeStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> GpuVectorIndexingBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)> {
+        self.add_nodes(f(GpuNodeStatsBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S3> GpuVectorIndexingBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)> {
+    /// Adds an element to [`nodes`](Self::nodes).
+    pub fn add_nodes(mut self, value: impl Into<GpuNodeStats>) -> Self {
+        self.nodes
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`nodes`](Self::nodes), with a builder.
+    pub fn add_nodes_with(
+        self,
+        f: impl FnOnce(
+            GpuNodeStatsBuilder,
+        ) -> GpuNodeStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_nodes(f(GpuNodeStatsBuilder::new()).build())
+    }
 }
 
 impl
@@ -6249,6 +6344,55 @@ impl<S0> IlmBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.policy_stats = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`policy_stats`](Self::policy_stats).
+    pub fn add_policy_stats(
+        self,
+        value: impl Into<IlmPolicyStatistics>,
+    ) -> IlmBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .policy_stats
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`policy_stats`](Self::policy_stats), with a builder.
+    pub fn add_policy_stats_with(
+        self,
+        f: impl FnOnce(
+            IlmPolicyStatisticsBuilder,
+        ) -> IlmPolicyStatisticsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IlmBuilder<(S0, crate::typed::builder::Set)> {
+        self.add_policy_stats(f(IlmPolicyStatisticsBuilder::new()).build())
+    }
+}
+
+impl<S0> IlmBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`policy_stats`](Self::policy_stats).
+    pub fn add_policy_stats(mut self, value: impl Into<IlmPolicyStatistics>) -> Self {
+        self.policy_stats
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`policy_stats`](Self::policy_stats), with a builder.
+    pub fn add_policy_stats_with(
+        self,
+        f: impl FnOnce(
+            IlmPolicyStatisticsBuilder,
+        ) -> IlmPolicyStatisticsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_policy_stats(f(IlmPolicyStatisticsBuilder::new()).build())
     }
 }
 
@@ -6673,6 +6817,30 @@ impl<S0, S2, S3, S4> JobUsageBuilder<(S0, crate::typed::builder::NotSet, S2, S3,
         let mut builder = self.with_state();
         builder.created_by = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`created_by`](Self::created_by).
+    pub fn add_created_by(
+        self,
+        key: impl Into<String>,
+        value: i64,
+    ) -> JobUsageBuilder<(S0, crate::typed::builder::Set, S2, S3, S4)> {
+        let mut builder = self.with_state();
+        builder
+            .created_by
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        builder
+    }
+}
+
+impl<S0, S2, S3, S4> JobUsageBuilder<(S0, crate::typed::builder::Set, S2, S3, S4)> {
+    /// Adds an entry to [`created_by`](Self::created_by).
+    pub fn add_created_by(mut self, key: impl Into<String>, value: i64) -> Self {
+        self.created_by
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        self
     }
 }
 
@@ -7130,6 +7298,50 @@ impl<S0, S1, S3, S4, S5, S6>
         builder.datafeeds = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`datafeeds`](Self::datafeeds).
+    pub fn add_datafeeds(
+        self,
+        key: impl Into<String>,
+        value: impl Into<Datafeed>,
+    ) -> MachineLearningBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5, S6)> {
+        let mut builder = self.with_state();
+        builder
+            .datafeeds
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`datafeeds`](Self::datafeeds), with a builder.
+    pub fn add_datafeeds_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(DatafeedBuilder) -> DatafeedBuilder<(crate::typed::builder::Set,)>,
+    ) -> MachineLearningBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5, S6)> {
+        self.add_datafeeds(key, f(DatafeedBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S3, S4, S5, S6>
+    MachineLearningBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5, S6)>
+{
+    /// Adds an entry to [`datafeeds`](Self::datafeeds).
+    pub fn add_datafeeds(mut self, key: impl Into<String>, value: impl Into<Datafeed>) -> Self {
+        self.datafeeds
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`datafeeds`](Self::datafeeds), with a builder.
+    pub fn add_datafeeds_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(DatafeedBuilder) -> DatafeedBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_datafeeds(key, f(DatafeedBuilder::new()).build())
+    }
 }
 
 impl<S0, S1, S2, S4, S5, S6>
@@ -7143,6 +7355,66 @@ impl<S0, S1, S2, S4, S5, S6>
         let mut builder = self.with_state();
         builder.jobs = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`jobs`](Self::jobs).
+    pub fn add_jobs(
+        self,
+        key: impl Into<String>,
+        value: impl Into<JobUsage>,
+    ) -> MachineLearningBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5, S6)> {
+        let mut builder = self.with_state();
+        builder
+            .jobs
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`jobs`](Self::jobs), with a builder.
+    pub fn add_jobs_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            JobUsageBuilder,
+        ) -> JobUsageBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MachineLearningBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5, S6)> {
+        self.add_jobs(key, f(JobUsageBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S4, S5, S6>
+    MachineLearningBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5, S6)>
+{
+    /// Adds an entry to [`jobs`](Self::jobs).
+    pub fn add_jobs(mut self, key: impl Into<String>, value: impl Into<JobUsage>) -> Self {
+        self.jobs
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`jobs`](Self::jobs), with a builder.
+    pub fn add_jobs_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            JobUsageBuilder,
+        ) -> JobUsageBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_jobs(key, f(JobUsageBuilder::new()).build())
     }
 }
 
@@ -7972,6 +8244,66 @@ impl<S1> MlInferenceBuilder<(crate::typed::builder::NotSet, S1)> {
         let mut builder = self.with_state();
         builder.ingest_processors = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`ingest_processors`](Self::ingest_processors).
+    pub fn add_ingest_processors(
+        self,
+        key: impl Into<String>,
+        value: impl Into<MlInferenceIngestProcessor>,
+    ) -> MlInferenceBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .ingest_processors
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`ingest_processors`](Self::ingest_processors), with a builder.
+    pub fn add_ingest_processors_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            MlInferenceIngestProcessorBuilder,
+        ) -> MlInferenceIngestProcessorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MlInferenceBuilder<(crate::typed::builder::Set, S1)> {
+        self.add_ingest_processors(key, f(MlInferenceIngestProcessorBuilder::new()).build())
+    }
+}
+
+impl<S1> MlInferenceBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an entry to [`ingest_processors`](Self::ingest_processors).
+    pub fn add_ingest_processors(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<MlInferenceIngestProcessor>,
+    ) -> Self {
+        self.ingest_processors
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`ingest_processors`](Self::ingest_processors), with a builder.
+    pub fn add_ingest_processors_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            MlInferenceIngestProcessorBuilder,
+        ) -> MlInferenceIngestProcessorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_ingest_processors(key, f(MlInferenceIngestProcessorBuilder::new()).build())
     }
 }
 
@@ -9498,6 +9830,30 @@ impl<S0, S1, S2> MonitoringBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> 
         builder.enabled_exporters = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`enabled_exporters`](Self::enabled_exporters).
+    pub fn add_enabled_exporters(
+        self,
+        key: impl Into<String>,
+        value: i64,
+    ) -> MonitoringBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .enabled_exporters
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        builder
+    }
+}
+
+impl<S0, S1, S2> MonitoringBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+    /// Adds an entry to [`enabled_exporters`](Self::enabled_exporters).
+    pub fn add_enabled_exporters(mut self, key: impl Into<String>, value: i64) -> Self {
+        self.enabled_exporters
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        self
+    }
 }
 
 impl
@@ -9645,6 +10001,29 @@ impl<S1> PhaseBuilder<(crate::typed::builder::NotSet, S1)> {
         let mut builder = self.with_state();
         builder.actions = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`actions`](Self::actions).
+    pub fn add_actions(
+        self,
+        value: impl Into<String>,
+    ) -> PhaseBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .actions
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1> PhaseBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`actions`](Self::actions).
+    pub fn add_actions(mut self, value: impl Into<String>) -> Self {
+        self.actions
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -11040,6 +11419,79 @@ impl<S0, S1> RuntimeFieldTypesBuilder<(S0, S1, crate::typed::builder::NotSet)> {
         builder.field_types = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`field_types`](Self::field_types).
+    pub fn add_field_types(
+        self,
+        value: impl Into<RuntimeFieldsType>,
+    ) -> RuntimeFieldTypesBuilder<(S0, S1, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .field_types
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`field_types`](Self::field_types), with a builder.
+    pub fn add_field_types_with(
+        self,
+        f: impl FnOnce(
+            RuntimeFieldsTypeBuilder,
+        ) -> RuntimeFieldsTypeBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RuntimeFieldTypesBuilder<(S0, S1, crate::typed::builder::Set)> {
+        self.add_field_types(f(RuntimeFieldsTypeBuilder::new()).build())
+    }
+}
+
+impl<S0, S1> RuntimeFieldTypesBuilder<(S0, S1, crate::typed::builder::Set)> {
+    /// Adds an element to [`field_types`](Self::field_types).
+    pub fn add_field_types(mut self, value: impl Into<RuntimeFieldsType>) -> Self {
+        self.field_types
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`field_types`](Self::field_types), with a builder.
+    pub fn add_field_types_with(
+        self,
+        f: impl FnOnce(
+            RuntimeFieldsTypeBuilder,
+        ) -> RuntimeFieldsTypeBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_field_types(f(RuntimeFieldsTypeBuilder::new()).build())
+    }
 }
 
 impl
@@ -11556,6 +12008,61 @@ impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10, S11, S12, S13>
         let mut builder = self.with_state();
         builder.lang = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`lang`](Self::lang).
+    pub fn add_lang(
+        self,
+        value: impl Into<String>,
+    ) -> RuntimeFieldsTypeBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        crate::typed::builder::Set,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+        S13,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .lang
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S7, S8, S9, S10, S11, S12, S13>
+    RuntimeFieldsTypeBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        crate::typed::builder::Set,
+        S7,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+        S13,
+    )>
+{
+    /// Adds an element to [`lang`](Self::lang).
+    pub fn add_lang(mut self, value: impl Into<String>) -> Self {
+        self.lang
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -13072,6 +13579,98 @@ impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10, S11, S12>
         builder.realms = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`realms`](Self::realms).
+    pub fn add_realms(
+        self,
+        key: impl Into<String>,
+        value: impl Into<Realm>,
+    ) -> SecurityBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        crate::typed::builder::Set,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .realms
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`realms`](Self::realms), with a builder.
+    pub fn add_realms_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            RealmBuilder,
+        )
+            -> RealmBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> SecurityBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        crate::typed::builder::Set,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+    )> {
+        self.add_realms(key, f(RealmBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S6, S8, S9, S10, S11, S12>
+    SecurityBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        crate::typed::builder::Set,
+        S8,
+        S9,
+        S10,
+        S11,
+        S12,
+    )>
+{
+    /// Adds an entry to [`realms`](Self::realms).
+    pub fn add_realms(mut self, key: impl Into<String>, value: impl Into<Realm>) -> Self {
+        self.realms
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`realms`](Self::realms), with a builder.
+    pub fn add_realms_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            RealmBuilder,
+        )
+            -> RealmBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Self {
+        self.add_realms(key, f(RealmBuilder::new()).build())
+    }
 }
 
 impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10, S11, S12>
@@ -13112,6 +13711,102 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10, S11, S12>
         let mut builder = self.with_state();
         builder.role_mapping = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`role_mapping`](Self::role_mapping).
+    pub fn add_role_mapping(
+        self,
+        key: impl Into<String>,
+        value: impl Into<RoleMapping>,
+    ) -> SecurityBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        crate::typed::builder::Set,
+        S9,
+        S10,
+        S11,
+        S12,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .role_mapping
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`role_mapping`](Self::role_mapping), with a builder.
+    pub fn add_role_mapping_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            RoleMappingBuilder,
+        )
+            -> RoleMappingBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> SecurityBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        crate::typed::builder::Set,
+        S9,
+        S10,
+        S11,
+        S12,
+    )> {
+        self.add_role_mapping(key, f(RoleMappingBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S6, S7, S9, S10, S11, S12>
+    SecurityBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        S4,
+        S5,
+        S6,
+        S7,
+        crate::typed::builder::Set,
+        S9,
+        S10,
+        S11,
+        S12,
+    )>
+{
+    /// Adds an entry to [`role_mapping`](Self::role_mapping).
+    pub fn add_role_mapping(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<RoleMapping>,
+    ) -> Self {
+        self.role_mapping
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`role_mapping`](Self::role_mapping), with a builder.
+    pub fn add_role_mapping_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            RoleMappingBuilder,
+        )
+            -> RoleMappingBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Self {
+        self.add_role_mapping(key, f(RoleMappingBuilder::new()).build())
     }
 }
 
@@ -15014,6 +15709,30 @@ impl<S0, S1, S3> SqlBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
         builder.features = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`features`](Self::features).
+    pub fn add_features(
+        self,
+        key: impl Into<String>,
+        value: i32,
+    ) -> SqlBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+        let mut builder = self.with_state();
+        builder
+            .features
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        builder
+    }
+}
+
+impl<S0, S1, S3> SqlBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+    /// Adds an entry to [`features`](Self::features).
+    pub fn add_features(mut self, key: impl Into<String>, value: i32) -> Self {
+        self.features
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        self
+    }
 }
 
 impl<S0, S1, S2> SqlBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
@@ -15024,6 +15743,48 @@ impl<S0, S1, S2> SqlBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.queries = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`queries`](Self::queries).
+    pub fn add_queries(
+        self,
+        key: impl Into<String>,
+        value: impl Into<Query>,
+    ) -> SqlBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .queries
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`queries`](Self::queries), with a builder.
+    pub fn add_queries_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(QueryBuilder) -> QueryBuilder,
+    ) -> SqlBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        self.add_queries(key, f(QueryBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2> SqlBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+    /// Adds an entry to [`queries`](Self::queries).
+    pub fn add_queries(mut self, key: impl Into<String>, value: impl Into<Query>) -> Self {
+        self.queries
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`queries`](Self::queries), with a builder.
+    pub fn add_queries_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(QueryBuilder) -> QueryBuilder,
+    ) -> Self {
+        self.add_queries(key, f(QueryBuilder::new()).build())
     }
 }
 
@@ -16100,6 +16861,62 @@ impl WatcherActionsBuilder<(crate::typed::builder::NotSet,)> {
         builder.actions = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`actions`](Self::actions).
+    pub fn add_actions(
+        self,
+        key: impl Into<crate::typed::_types::Name>,
+        value: impl Into<WatcherActionTotals>,
+    ) -> WatcherActionsBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .actions
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`actions`](Self::actions), with a builder.
+    pub fn add_actions_with(
+        self,
+        key: impl Into<crate::typed::_types::Name>,
+        f: impl FnOnce(
+            WatcherActionTotalsBuilder,
+        ) -> WatcherActionTotalsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> WatcherActionsBuilder<(crate::typed::builder::Set,)> {
+        self.add_actions(key, f(WatcherActionTotalsBuilder::new()).build())
+    }
+}
+
+impl WatcherActionsBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an entry to [`actions`](Self::actions).
+    pub fn add_actions(
+        mut self,
+        key: impl Into<crate::typed::_types::Name>,
+        value: impl Into<WatcherActionTotals>,
+    ) -> Self {
+        self.actions
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`actions`](Self::actions), with a builder.
+    pub fn add_actions_with(
+        self,
+        key: impl Into<crate::typed::_types::Name>,
+        f: impl FnOnce(
+            WatcherActionTotalsBuilder,
+        ) -> WatcherActionTotalsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_actions(key, f(WatcherActionTotalsBuilder::new()).build())
+    }
 }
 
 impl WatcherActionsBuilder<(crate::typed::builder::Set,)> {
@@ -16274,6 +17091,58 @@ impl<S1> WatcherWatchBuilder<(crate::typed::builder::NotSet, S1)> {
         let mut builder = self.with_state();
         builder.input = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`input`](Self::input).
+    pub fn add_input(
+        self,
+        key: impl Into<crate::typed::_types::Name>,
+        value: impl Into<Counter>,
+    ) -> WatcherWatchBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .input
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`input`](Self::input), with a builder.
+    pub fn add_input_with(
+        self,
+        key: impl Into<crate::typed::_types::Name>,
+        f: impl FnOnce(
+            CounterBuilder,
+        )
+            -> CounterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> WatcherWatchBuilder<(crate::typed::builder::Set, S1)> {
+        self.add_input(key, f(CounterBuilder::new()).build())
+    }
+}
+
+impl<S1> WatcherWatchBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an entry to [`input`](Self::input).
+    pub fn add_input(
+        mut self,
+        key: impl Into<crate::typed::_types::Name>,
+        value: impl Into<Counter>,
+    ) -> Self {
+        self.input
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`input`](Self::input), with a builder.
+    pub fn add_input_with(
+        self,
+        key: impl Into<crate::typed::_types::Name>,
+        f: impl FnOnce(
+            CounterBuilder,
+        )
+            -> CounterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Self {
+        self.add_input(key, f(CounterBuilder::new()).build())
     }
 }
 

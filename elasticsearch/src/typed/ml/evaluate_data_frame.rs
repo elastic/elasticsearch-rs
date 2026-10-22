@@ -109,6 +109,55 @@ impl<S0, S1, S3> ConfusionMatrixItemBuilder<(S0, S1, crate::typed::builder::NotS
         builder.predicted_classes = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`predicted_classes`](Self::predicted_classes).
+    pub fn add_predicted_classes(
+        self,
+        value: impl Into<ConfusionMatrixPrediction>,
+    ) -> ConfusionMatrixItemBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+        let mut builder = self.with_state();
+        builder
+            .predicted_classes
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`predicted_classes`](Self::predicted_classes), with a builder.
+    pub fn add_predicted_classes_with(
+        self,
+        f: impl FnOnce(
+            ConfusionMatrixPredictionBuilder,
+        ) -> ConfusionMatrixPredictionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ConfusionMatrixItemBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+        self.add_predicted_classes(f(ConfusionMatrixPredictionBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S3> ConfusionMatrixItemBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+    /// Adds an element to [`predicted_classes`](Self::predicted_classes).
+    pub fn add_predicted_classes(mut self, value: impl Into<ConfusionMatrixPrediction>) -> Self {
+        self.predicted_classes
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`predicted_classes`](Self::predicted_classes), with a builder.
+    pub fn add_predicted_classes_with(
+        self,
+        f: impl FnOnce(
+            ConfusionMatrixPredictionBuilder,
+        ) -> ConfusionMatrixPredictionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_predicted_classes(f(ConfusionMatrixPredictionBuilder::new()).build())
+    }
 }
 
 impl<S0, S1, S2> ConfusionMatrixItemBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
@@ -824,6 +873,55 @@ impl<S1> DataframeClassificationSummaryAccuracyBuilder<(crate::typed::builder::N
         builder.classes = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`classes`](Self::classes).
+    pub fn add_classes(
+        self,
+        value: impl Into<DataframeEvaluationClass>,
+    ) -> DataframeClassificationSummaryAccuracyBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .classes
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`classes`](Self::classes), with a builder.
+    pub fn add_classes_with(
+        self,
+        f: impl FnOnce(
+            DataframeEvaluationClassBuilder,
+        ) -> DataframeEvaluationClassBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DataframeClassificationSummaryAccuracyBuilder<(crate::typed::builder::Set, S1)> {
+        self.add_classes(f(DataframeEvaluationClassBuilder::new()).build())
+    }
+}
+
+impl<S1> DataframeClassificationSummaryAccuracyBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`classes`](Self::classes).
+    pub fn add_classes(mut self, value: impl Into<DataframeEvaluationClass>) -> Self {
+        self.classes
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`classes`](Self::classes), with a builder.
+    pub fn add_classes_with(
+        self,
+        f: impl FnOnce(
+            DataframeEvaluationClassBuilder,
+        ) -> DataframeEvaluationClassBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_classes(f(DataframeEvaluationClassBuilder::new()).build())
+    }
 }
 
 impl<S0> DataframeClassificationSummaryAccuracyBuilder<(S0, crate::typed::builder::NotSet)> {
@@ -963,6 +1061,67 @@ impl<S1>
         let mut builder = self.with_state();
         builder.confusion_matrix = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`confusion_matrix`](Self::confusion_matrix).
+    pub fn add_confusion_matrix(
+        self,
+        value: impl Into<ConfusionMatrixItem>,
+    ) -> DataframeClassificationSummaryMulticlassConfusionMatrixBuilder<(
+        crate::typed::builder::Set,
+        S1,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .confusion_matrix
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`confusion_matrix`](Self::confusion_matrix), with a builder.
+    pub fn add_confusion_matrix_with(
+        self,
+        f: impl FnOnce(
+            ConfusionMatrixItemBuilder,
+        ) -> ConfusionMatrixItemBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DataframeClassificationSummaryMulticlassConfusionMatrixBuilder<(
+        crate::typed::builder::Set,
+        S1,
+    )> {
+        self.add_confusion_matrix(f(ConfusionMatrixItemBuilder::new()).build())
+    }
+}
+
+impl<S1>
+    DataframeClassificationSummaryMulticlassConfusionMatrixBuilder<(crate::typed::builder::Set, S1)>
+{
+    /// Adds an element to [`confusion_matrix`](Self::confusion_matrix).
+    pub fn add_confusion_matrix(mut self, value: impl Into<ConfusionMatrixItem>) -> Self {
+        self.confusion_matrix
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`confusion_matrix`](Self::confusion_matrix), with a builder.
+    pub fn add_confusion_matrix_with(
+        self,
+        f: impl FnOnce(
+            ConfusionMatrixItemBuilder,
+        ) -> ConfusionMatrixItemBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_confusion_matrix(f(ConfusionMatrixItemBuilder::new()).build())
     }
 }
 
@@ -1109,6 +1268,55 @@ impl<S1> DataframeClassificationSummaryPrecisionBuilder<(crate::typed::builder::
         builder.classes = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`classes`](Self::classes).
+    pub fn add_classes(
+        self,
+        value: impl Into<DataframeEvaluationClass>,
+    ) -> DataframeClassificationSummaryPrecisionBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .classes
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`classes`](Self::classes), with a builder.
+    pub fn add_classes_with(
+        self,
+        f: impl FnOnce(
+            DataframeEvaluationClassBuilder,
+        ) -> DataframeEvaluationClassBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DataframeClassificationSummaryPrecisionBuilder<(crate::typed::builder::Set, S1)> {
+        self.add_classes(f(DataframeEvaluationClassBuilder::new()).build())
+    }
+}
+
+impl<S1> DataframeClassificationSummaryPrecisionBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`classes`](Self::classes).
+    pub fn add_classes(mut self, value: impl Into<DataframeEvaluationClass>) -> Self {
+        self.classes
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`classes`](Self::classes), with a builder.
+    pub fn add_classes_with(
+        self,
+        f: impl FnOnce(
+            DataframeEvaluationClassBuilder,
+        ) -> DataframeEvaluationClassBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_classes(f(DataframeEvaluationClassBuilder::new()).build())
+    }
 }
 
 impl<S0> DataframeClassificationSummaryPrecisionBuilder<(S0, crate::typed::builder::NotSet)> {
@@ -1240,6 +1448,55 @@ impl<S1> DataframeClassificationSummaryRecallBuilder<(crate::typed::builder::Not
         let mut builder = self.with_state();
         builder.classes = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`classes`](Self::classes).
+    pub fn add_classes(
+        self,
+        value: impl Into<DataframeEvaluationClass>,
+    ) -> DataframeClassificationSummaryRecallBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .classes
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`classes`](Self::classes), with a builder.
+    pub fn add_classes_with(
+        self,
+        f: impl FnOnce(
+            DataframeEvaluationClassBuilder,
+        ) -> DataframeEvaluationClassBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DataframeClassificationSummaryRecallBuilder<(crate::typed::builder::Set, S1)> {
+        self.add_classes(f(DataframeEvaluationClassBuilder::new()).build())
+    }
+}
+
+impl<S1> DataframeClassificationSummaryRecallBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`classes`](Self::classes).
+    pub fn add_classes(mut self, value: impl Into<DataframeEvaluationClass>) -> Self {
+        self.classes
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`classes`](Self::classes), with a builder.
+    pub fn add_classes_with(
+        self,
+        f: impl FnOnce(
+            DataframeEvaluationClassBuilder,
+        ) -> DataframeEvaluationClassBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_classes(f(DataframeEvaluationClassBuilder::new()).build())
     }
 }
 

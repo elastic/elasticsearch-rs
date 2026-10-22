@@ -1770,6 +1770,30 @@ impl<S1, S2, S3, S4, S5> ReindexNodeBuilder<(crate::typed::builder::NotSet, S1, 
         builder.attributes = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`attributes`](Self::attributes).
+    pub fn add_attributes(
+        self,
+        key: impl Into<String>,
+        value: impl Into<String>,
+    ) -> ReindexNodeBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5)> {
+        let mut builder = self.with_state();
+        builder
+            .attributes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S1, S2, S3, S4, S5> ReindexNodeBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5)> {
+    /// Adds an entry to [`attributes`](Self::attributes).
+    pub fn add_attributes(mut self, key: impl Into<String>, value: impl Into<String>) -> Self {
+        self.attributes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl<S0, S2, S3, S4, S5> ReindexNodeBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4, S5)> {
@@ -1824,6 +1848,80 @@ impl<S0, S1, S2, S3, S4> ReindexNodeBuilder<(S0, S1, S2, S3, S4, crate::typed::b
         let mut builder = self.with_state();
         builder.tasks = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`tasks`](Self::tasks).
+    pub fn add_tasks(
+        self,
+        key: impl Into<crate::typed::_types::TaskId>,
+        value: impl Into<ReindexTask>,
+    ) -> ReindexNodeBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .tasks
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`tasks`](Self::tasks), with a builder.
+    pub fn add_tasks_with(
+        self,
+        key: impl Into<crate::typed::_types::TaskId>,
+        f: impl FnOnce(
+            ReindexTaskBuilder,
+        ) -> ReindexTaskBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ReindexNodeBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::Set)> {
+        self.add_tasks(key, f(ReindexTaskBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S3, S4> ReindexNodeBuilder<(S0, S1, S2, S3, S4, crate::typed::builder::Set)> {
+    /// Adds an entry to [`tasks`](Self::tasks).
+    pub fn add_tasks(
+        mut self,
+        key: impl Into<crate::typed::_types::TaskId>,
+        value: impl Into<ReindexTask>,
+    ) -> Self {
+        self.tasks
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`tasks`](Self::tasks), with a builder.
+    pub fn add_tasks_with(
+        self,
+        key: impl Into<crate::typed::_types::TaskId>,
+        f: impl FnOnce(
+            ReindexTaskBuilder,
+        ) -> ReindexTaskBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_tasks(key, f(ReindexTaskBuilder::new()).build())
     }
 }
 

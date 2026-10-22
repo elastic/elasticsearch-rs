@@ -146,6 +146,66 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
         builder.expressions = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`expressions`](Self::expressions).
+    pub fn add_expressions(
+        self,
+        key: impl Into<String>,
+        value: impl Into<crate::typed::project::_types::ProjectRoutingExpression>,
+    ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
+        let mut builder = self.with_state();
+        builder
+            .expressions
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`expressions`](Self::expressions), with a builder.
+    pub fn add_expressions_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            crate::typed::project::_types::ProjectRoutingExpressionBuilder,
+        ) -> crate::typed::project::_types::ProjectRoutingExpressionBuilder<(
+            crate::typed::builder::Set,
+        )>,
+    ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
+        self.add_expressions(
+            key,
+            f(crate::typed::project::_types::ProjectRoutingExpressionBuilder::new()).build(),
+        )
+    }
+}
+
+impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+    /// Adds an entry to [`expressions`](Self::expressions).
+    pub fn add_expressions(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<crate::typed::project::_types::ProjectRoutingExpression>,
+    ) -> Self {
+        self.expressions
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`expressions`](Self::expressions), with a builder.
+    pub fn add_expressions_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            crate::typed::project::_types::ProjectRoutingExpressionBuilder,
+        ) -> crate::typed::project::_types::ProjectRoutingExpressionBuilder<(
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_expressions(
+            key,
+            f(crate::typed::project::_types::ProjectRoutingExpressionBuilder::new()).build(),
+        )
+    }
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {

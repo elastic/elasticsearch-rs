@@ -680,6 +680,29 @@ impl<S0> MultiSearchResultBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.responses = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`responses`](Self::responses).
+    pub fn add_responses(
+        self,
+        value: impl Into<ResponseItem>,
+    ) -> MultiSearchResultBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .responses
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> MultiSearchResultBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`responses`](Self::responses).
+    pub fn add_responses(mut self, value: impl Into<ResponseItem>) -> Self {
+        self.responses
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl MultiSearchResultBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
@@ -1518,6 +1541,29 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
         let mut builder = self.with_state();
         builder.searches = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`searches`](Self::searches).
+    pub fn add_searches(
+        self,
+        value: impl Into<RequestItem>,
+    ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
+        let mut builder = self.with_state();
+        builder
+            .searches
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+    /// Adds an element to [`searches`](Self::searches).
+    pub fn add_searches(mut self, value: impl Into<RequestItem>) -> Self {
+        self.searches
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 

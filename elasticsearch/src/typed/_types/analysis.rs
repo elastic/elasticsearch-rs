@@ -1744,6 +1744,29 @@ impl<S0> CharGroupTokenizerBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.tokenize_on_chars = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`tokenize_on_chars`](Self::tokenize_on_chars).
+    pub fn add_tokenize_on_chars(
+        self,
+        value: impl Into<String>,
+    ) -> CharGroupTokenizerBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .tokenize_on_chars
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> CharGroupTokenizerBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`tokenize_on_chars`](Self::tokenize_on_chars).
+    pub fn add_tokenize_on_chars(mut self, value: impl Into<String>) -> Self {
+        self.tokenize_on_chars
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl CharGroupTokenizerBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
@@ -2941,6 +2964,29 @@ impl<S0, S2> ConditionTokenFilterBuilder<(S0, crate::typed::builder::NotSet, S2)
         let mut builder = self.with_state();
         builder.filter = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`filter`](Self::filter).
+    pub fn add_filter(
+        self,
+        value: impl Into<String>,
+    ) -> ConditionTokenFilterBuilder<(S0, crate::typed::builder::Set, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .filter
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S2> ConditionTokenFilterBuilder<(S0, crate::typed::builder::Set, S2)> {
+    /// Adds an element to [`filter`](Self::filter).
+    pub fn add_filter(mut self, value: impl Into<String>) -> Self {
+        self.filter
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -9611,6 +9657,29 @@ impl<S0> KeepTypesTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.types = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`types`](Self::types).
+    pub fn add_types(
+        self,
+        value: impl Into<String>,
+    ) -> KeepTypesTokenFilterBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .types
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> KeepTypesTokenFilterBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`types`](Self::types).
+    pub fn add_types(mut self, value: impl Into<String>) -> Self {
+        self.types
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl KeepTypesTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
@@ -10718,6 +10787,29 @@ impl<S0> KuromojiPartOfSpeechTokenFilterBuilder<(S0, crate::typed::builder::NotS
         let mut builder = self.with_state();
         builder.stoptags = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`stoptags`](Self::stoptags).
+    pub fn add_stoptags(
+        self,
+        value: impl Into<String>,
+    ) -> KuromojiPartOfSpeechTokenFilterBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .stoptags
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> KuromojiPartOfSpeechTokenFilterBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`stoptags`](Self::stoptags).
+    pub fn add_stoptags(mut self, value: impl Into<String>) -> Self {
+        self.stoptags
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -12662,6 +12754,29 @@ impl<S0> MultiplexerTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.filters = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`filters`](Self::filters).
+    pub fn add_filters(
+        self,
+        value: impl Into<String>,
+    ) -> MultiplexerTokenFilterBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .filters
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> MultiplexerTokenFilterBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`filters`](Self::filters).
+    pub fn add_filters(mut self, value: impl Into<String>) -> Self {
+        self.filters
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl MultiplexerTokenFilterBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
@@ -14138,6 +14253,29 @@ impl<S0> PatternCaptureTokenFilterBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.patterns = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`patterns`](Self::patterns).
+    pub fn add_patterns(
+        self,
+        value: impl Into<String>,
+    ) -> PatternCaptureTokenFilterBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .patterns
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> PatternCaptureTokenFilterBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`patterns`](Self::patterns).
+    pub fn add_patterns(mut self, value: impl Into<String>) -> Self {
+        self.patterns
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 

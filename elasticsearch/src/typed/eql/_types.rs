@@ -703,6 +703,57 @@ impl HitsSequenceBuilder<(crate::typed::builder::NotSet,)> {
         builder.events = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`events`](Self::events).
+    pub fn add_events(
+        self,
+        value: impl Into<HitsEvent>,
+    ) -> HitsSequenceBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .events
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`events`](Self::events), with a builder.
+    pub fn add_events_with(
+        self,
+        f: impl FnOnce(
+            HitsEventBuilder,
+        ) -> HitsEventBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> HitsSequenceBuilder<(crate::typed::builder::Set,)> {
+        self.add_events(f(HitsEventBuilder::new()).build())
+    }
+}
+
+impl HitsSequenceBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`events`](Self::events).
+    pub fn add_events(mut self, value: impl Into<HitsEvent>) -> Self {
+        self.events
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`events`](Self::events), with a builder.
+    pub fn add_events_with(
+        self,
+        f: impl FnOnce(
+            HitsEventBuilder,
+        ) -> HitsEventBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_events(f(HitsEventBuilder::new()).build())
+    }
 }
 
 impl HitsSequenceBuilder<(crate::typed::builder::Set,)> {

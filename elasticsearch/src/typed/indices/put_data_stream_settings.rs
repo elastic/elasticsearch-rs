@@ -225,6 +225,29 @@ impl<S1> IndexSettingResultsBuilder<(crate::typed::builder::NotSet, S1)> {
         builder.applied_to_data_stream_only = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`applied_to_data_stream_only`](Self::applied_to_data_stream_only).
+    pub fn add_applied_to_data_stream_only(
+        self,
+        value: impl Into<String>,
+    ) -> IndexSettingResultsBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .applied_to_data_stream_only
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1> IndexSettingResultsBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`applied_to_data_stream_only`](Self::applied_to_data_stream_only).
+    pub fn add_applied_to_data_stream_only(mut self, value: impl Into<String>) -> Self {
+        self.applied_to_data_stream_only
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0> IndexSettingResultsBuilder<(S0, crate::typed::builder::NotSet)> {
@@ -237,6 +260,32 @@ impl<S0> IndexSettingResultsBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.applied_to_data_stream_and_backing_indices = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`applied_to_data_stream_and_backing_indices`](Self::applied_to_data_stream_and_backing_indices).
+    pub fn add_applied_to_data_stream_and_backing_indices(
+        self,
+        value: impl Into<String>,
+    ) -> IndexSettingResultsBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .applied_to_data_stream_and_backing_indices
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> IndexSettingResultsBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`applied_to_data_stream_and_backing_indices`](Self::applied_to_data_stream_and_backing_indices).
+    pub fn add_applied_to_data_stream_and_backing_indices(
+        mut self,
+        value: impl Into<String>,
+    ) -> Self {
+        self.applied_to_data_stream_and_backing_indices
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 

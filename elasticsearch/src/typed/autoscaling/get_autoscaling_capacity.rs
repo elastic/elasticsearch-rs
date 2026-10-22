@@ -398,6 +398,45 @@ impl<S0, S1, S3> AutoscalingDecidersBuilder<(S0, S1, crate::typed::builder::NotS
         builder.current_nodes = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`current_nodes`](Self::current_nodes).
+    pub fn add_current_nodes(
+        self,
+        value: impl Into<AutoscalingNode>,
+    ) -> AutoscalingDecidersBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+        let mut builder = self.with_state();
+        builder
+            .current_nodes
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`current_nodes`](Self::current_nodes), with a builder.
+    pub fn add_current_nodes_with(
+        self,
+        f: impl FnOnce(AutoscalingNodeBuilder) -> AutoscalingNodeBuilder<(crate::typed::builder::Set,)>,
+    ) -> AutoscalingDecidersBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+        self.add_current_nodes(f(AutoscalingNodeBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S3> AutoscalingDecidersBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+    /// Adds an element to [`current_nodes`](Self::current_nodes).
+    pub fn add_current_nodes(mut self, value: impl Into<AutoscalingNode>) -> Self {
+        self.current_nodes
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`current_nodes`](Self::current_nodes), with a builder.
+    pub fn add_current_nodes_with(
+        self,
+        f: impl FnOnce(AutoscalingNodeBuilder) -> AutoscalingNodeBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_current_nodes(f(AutoscalingNodeBuilder::new()).build())
+    }
 }
 
 impl<S0, S1, S2> AutoscalingDecidersBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
@@ -408,6 +447,56 @@ impl<S0, S1, S2> AutoscalingDecidersBuilder<(S0, S1, S2, crate::typed::builder::
         let mut builder = self.with_state();
         builder.deciders = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`deciders`](Self::deciders).
+    pub fn add_deciders(
+        self,
+        key: impl Into<String>,
+        value: impl Into<AutoscalingDecider>,
+    ) -> AutoscalingDecidersBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .deciders
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`deciders`](Self::deciders), with a builder.
+    pub fn add_deciders_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            AutoscalingDeciderBuilder,
+        ) -> AutoscalingDeciderBuilder<(crate::typed::builder::Set,)>,
+    ) -> AutoscalingDecidersBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        self.add_deciders(key, f(AutoscalingDeciderBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2> AutoscalingDecidersBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+    /// Adds an entry to [`deciders`](Self::deciders).
+    pub fn add_deciders(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<AutoscalingDecider>,
+    ) -> Self {
+        self.deciders
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`deciders`](Self::deciders), with a builder.
+    pub fn add_deciders_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            AutoscalingDeciderBuilder,
+        ) -> AutoscalingDeciderBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_deciders(key, f(AutoscalingDeciderBuilder::new()).build())
     }
 }
 

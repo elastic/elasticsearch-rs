@@ -72,6 +72,29 @@ impl<S0> OverlappingBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.index_patterns = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`index_patterns`](Self::index_patterns).
+    pub fn add_index_patterns(
+        self,
+        value: impl Into<String>,
+    ) -> OverlappingBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .index_patterns
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> OverlappingBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`index_patterns`](Self::index_patterns).
+    pub fn add_index_patterns(mut self, value: impl Into<String>) -> Self {
+        self.index_patterns
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl OverlappingBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
@@ -836,6 +859,62 @@ impl<S1, S2> TemplateBuilder<(crate::typed::builder::NotSet, S1, S2)> {
         let mut builder = self.with_state();
         builder.aliases = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`aliases`](Self::aliases).
+    pub fn add_aliases(
+        self,
+        key: impl Into<crate::typed::_types::IndexName>,
+        value: impl Into<crate::typed::indices::_types::Alias>,
+    ) -> TemplateBuilder<(crate::typed::builder::Set, S1, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .aliases
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`aliases`](Self::aliases), with a builder.
+    pub fn add_aliases_with(
+        self,
+        key: impl Into<crate::typed::_types::IndexName>,
+        f: impl FnOnce(
+            crate::typed::indices::_types::AliasBuilder,
+        ) -> crate::typed::indices::_types::AliasBuilder,
+    ) -> TemplateBuilder<(crate::typed::builder::Set, S1, S2)> {
+        self.add_aliases(
+            key,
+            f(crate::typed::indices::_types::AliasBuilder::new()).build(),
+        )
+    }
+}
+
+impl<S1, S2> TemplateBuilder<(crate::typed::builder::Set, S1, S2)> {
+    /// Adds an entry to [`aliases`](Self::aliases).
+    pub fn add_aliases(
+        mut self,
+        key: impl Into<crate::typed::_types::IndexName>,
+        value: impl Into<crate::typed::indices::_types::Alias>,
+    ) -> Self {
+        self.aliases
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`aliases`](Self::aliases), with a builder.
+    pub fn add_aliases_with(
+        self,
+        key: impl Into<crate::typed::_types::IndexName>,
+        f: impl FnOnce(
+            crate::typed::indices::_types::AliasBuilder,
+        ) -> crate::typed::indices::_types::AliasBuilder,
+    ) -> Self {
+        self.add_aliases(
+            key,
+            f(crate::typed::indices::_types::AliasBuilder::new()).build(),
+        )
     }
 }
 

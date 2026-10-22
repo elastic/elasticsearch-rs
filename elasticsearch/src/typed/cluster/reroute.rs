@@ -1681,6 +1681,57 @@ impl<S0, S2> RerouteExplanationBuilder<(S0, crate::typed::builder::NotSet, S2)> 
         builder.decisions = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`decisions`](Self::decisions).
+    pub fn add_decisions(
+        self,
+        value: impl Into<RerouteDecision>,
+    ) -> RerouteExplanationBuilder<(S0, crate::typed::builder::Set, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .decisions
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`decisions`](Self::decisions), with a builder.
+    pub fn add_decisions_with(
+        self,
+        f: impl FnOnce(
+            RerouteDecisionBuilder,
+        ) -> RerouteDecisionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RerouteExplanationBuilder<(S0, crate::typed::builder::Set, S2)> {
+        self.add_decisions(f(RerouteDecisionBuilder::new()).build())
+    }
+}
+
+impl<S0, S2> RerouteExplanationBuilder<(S0, crate::typed::builder::Set, S2)> {
+    /// Adds an element to [`decisions`](Self::decisions).
+    pub fn add_decisions(mut self, value: impl Into<RerouteDecision>) -> Self {
+        self.decisions
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`decisions`](Self::decisions), with a builder.
+    pub fn add_decisions_with(
+        self,
+        f: impl FnOnce(
+            RerouteDecisionBuilder,
+        ) -> RerouteDecisionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_decisions(f(RerouteDecisionBuilder::new()).build())
+    }
 }
 
 impl<S0, S1> RerouteExplanationBuilder<(S0, S1, crate::typed::builder::NotSet)> {

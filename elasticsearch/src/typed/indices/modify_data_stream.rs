@@ -420,6 +420,45 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
         builder.actions = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`actions`](Self::actions).
+    pub fn add_actions(
+        self,
+        value: impl Into<Action>,
+    ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
+        let mut builder = self.with_state();
+        builder
+            .actions
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`actions`](Self::actions), with a builder.
+    pub fn add_actions_with(
+        self,
+        f: impl FnOnce(ActionBuilder) -> ActionBuilder<(crate::typed::builder::Set,)>,
+    ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
+        self.add_actions(f(ActionBuilder::new()).build())
+    }
+}
+
+impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+    /// Adds an element to [`actions`](Self::actions).
+    pub fn add_actions(mut self, value: impl Into<Action>) -> Self {
+        self.actions
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`actions`](Self::actions), with a builder.
+    pub fn add_actions_with(
+        self,
+        f: impl FnOnce(ActionBuilder) -> ActionBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_actions(f(ActionBuilder::new()).build())
+    }
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {

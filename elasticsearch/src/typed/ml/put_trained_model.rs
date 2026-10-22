@@ -403,6 +403,45 @@ impl EnsembleBuilder<(crate::typed::builder::NotSet,)> {
         builder.trained_models = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`trained_models`](Self::trained_models).
+    pub fn add_trained_models(
+        self,
+        value: impl Into<TrainedModel>,
+    ) -> EnsembleBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .trained_models
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`trained_models`](Self::trained_models), with a builder.
+    pub fn add_trained_models_with(
+        self,
+        f: impl FnOnce(TrainedModelBuilder) -> TrainedModelBuilder,
+    ) -> EnsembleBuilder<(crate::typed::builder::Set,)> {
+        self.add_trained_models(f(TrainedModelBuilder::new()).build())
+    }
+}
+
+impl EnsembleBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`trained_models`](Self::trained_models).
+    pub fn add_trained_models(mut self, value: impl Into<TrainedModel>) -> Self {
+        self.trained_models
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`trained_models`](Self::trained_models), with a builder.
+    pub fn add_trained_models_with(
+        self,
+        f: impl FnOnce(TrainedModelBuilder) -> TrainedModelBuilder,
+    ) -> Self {
+        self.add_trained_models(f(TrainedModelBuilder::new()).build())
+    }
 }
 
 impl EnsembleBuilder<(crate::typed::builder::Set,)> {
@@ -530,6 +569,34 @@ impl<S0, S1> FrequencyEncodingPreprocessorBuilder<(S0, S1, crate::typed::builder
         let mut builder = self.with_state();
         builder.frequency_map = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`frequency_map`](Self::frequency_map).
+    pub fn add_frequency_map(
+        self,
+        key: impl Into<String>,
+        value: impl Into<crate::typed::support::Float64>,
+    ) -> FrequencyEncodingPreprocessorBuilder<(S0, S1, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .frequency_map
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1> FrequencyEncodingPreprocessorBuilder<(S0, S1, crate::typed::builder::Set)> {
+    /// Adds an entry to [`frequency_map`](Self::frequency_map).
+    pub fn add_frequency_map(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<crate::typed::support::Float64>,
+    ) -> Self {
+        self.frequency_map
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 
@@ -755,6 +822,30 @@ impl<S0> OneHotEncodingPreprocessorBuilder<(S0, crate::typed::builder::NotSet)> 
         let mut builder = self.with_state();
         builder.hot_map = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`hot_map`](Self::hot_map).
+    pub fn add_hot_map(
+        self,
+        key: impl Into<String>,
+        value: impl Into<String>,
+    ) -> OneHotEncodingPreprocessorBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .hot_map
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0> OneHotEncodingPreprocessorBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an entry to [`hot_map`](Self::hot_map).
+    pub fn add_hot_map(mut self, key: impl Into<String>, value: impl Into<String>) -> Self {
+        self.hot_map
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 
@@ -1789,6 +1880,34 @@ impl<S0, S1, S3>
         builder.target_map = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`target_map`](Self::target_map).
+    pub fn add_target_map(
+        self,
+        key: impl Into<String>,
+        value: impl Into<crate::typed::support::Float64>,
+    ) -> TargetMeanEncodingPreprocessorBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+        let mut builder = self.with_state();
+        builder
+            .target_map
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S3> TargetMeanEncodingPreprocessorBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+    /// Adds an entry to [`target_map`](Self::target_map).
+    pub fn add_target_map(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<crate::typed::support::Float64>,
+    ) -> Self {
+        self.target_map
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl<S0, S1, S2>
@@ -2131,6 +2250,29 @@ impl<S1> TrainedModelTreeBuilder<(crate::typed::builder::NotSet, S1)> {
         builder.feature_names = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`feature_names`](Self::feature_names).
+    pub fn add_feature_names(
+        self,
+        value: impl Into<String>,
+    ) -> TrainedModelTreeBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .feature_names
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1> TrainedModelTreeBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`feature_names`](Self::feature_names).
+    pub fn add_feature_names(mut self, value: impl Into<String>) -> Self {
+        self.feature_names
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0> TrainedModelTreeBuilder<(S0, crate::typed::builder::NotSet)> {
@@ -2141,6 +2283,49 @@ impl<S0> TrainedModelTreeBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.tree_structure = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`tree_structure`](Self::tree_structure).
+    pub fn add_tree_structure(
+        self,
+        value: impl Into<TrainedModelTreeNode>,
+    ) -> TrainedModelTreeBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .tree_structure
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`tree_structure`](Self::tree_structure), with a builder.
+    pub fn add_tree_structure_with(
+        self,
+        f: impl FnOnce(
+            TrainedModelTreeNodeBuilder,
+        ) -> TrainedModelTreeNodeBuilder<(crate::typed::builder::Set,)>,
+    ) -> TrainedModelTreeBuilder<(S0, crate::typed::builder::Set)> {
+        self.add_tree_structure(f(TrainedModelTreeNodeBuilder::new()).build())
+    }
+}
+
+impl<S0> TrainedModelTreeBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`tree_structure`](Self::tree_structure).
+    pub fn add_tree_structure(mut self, value: impl Into<TrainedModelTreeNode>) -> Self {
+        self.tree_structure
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`tree_structure`](Self::tree_structure), with a builder.
+    pub fn add_tree_structure_with(
+        self,
+        f: impl FnOnce(
+            TrainedModelTreeNodeBuilder,
+        ) -> TrainedModelTreeNodeBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_tree_structure(f(TrainedModelTreeNodeBuilder::new()).build())
     }
 }
 

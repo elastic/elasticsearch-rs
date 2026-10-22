@@ -245,6 +245,31 @@ impl<S0, S2, S3, S4, S5, S6, S7, S8>
         builder.roles = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(
+        self,
+        value: impl Into<String>,
+    ) -> AuthenticationBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5, S6, S7, S8)> {
+        let mut builder = self.with_state();
+        builder
+            .roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S2, S3, S4, S5, S6, S7, S8>
+    AuthenticationBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5, S6, S7, S8)>
+{
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(mut self, value: impl Into<String>) -> Self {
+        self.roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0, S1, S3, S4, S5, S6, S7, S8>
@@ -313,6 +338,36 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8>
         let mut builder = self.with_state();
         builder.metadata = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> AuthenticationBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5, S6, S7, S8)> {
+        let mut builder = self.with_state();
+        builder
+            .metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3, S5, S6, S7, S8>
+    AuthenticationBuilder<(S0, S1, S2, S3, crate::typed::builder::Set, S5, S6, S7, S8)>
+{
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 
@@ -950,6 +1005,29 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
         let mut builder = self.with_state();
         builder.x509_certificate_chain = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`x509_certificate_chain`](Self::x509_certificate_chain).
+    pub fn add_x509_certificate_chain(
+        self,
+        value: impl Into<String>,
+    ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
+        let mut builder = self.with_state();
+        builder
+            .x509_certificate_chain
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+    /// Adds an element to [`x509_certificate_chain`](Self::x509_certificate_chain).
+    pub fn add_x509_certificate_chain(mut self, value: impl Into<String>) -> Self {
+        self.x509_certificate_chain
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 

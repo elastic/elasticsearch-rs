@@ -498,6 +498,68 @@ impl TypeFieldMappingsBuilder<(crate::typed::builder::NotSet,)> {
         builder.mappings = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`mappings`](Self::mappings).
+    pub fn add_mappings(
+        self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<crate::typed::_types::mapping::FieldMapping>,
+    ) -> TypeFieldMappingsBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .mappings
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`mappings`](Self::mappings), with a builder.
+    pub fn add_mappings_with(
+        self,
+        key: impl Into<crate::typed::_types::Field>,
+        f: impl FnOnce(
+            crate::typed::_types::mapping::FieldMappingBuilder,
+        ) -> crate::typed::_types::mapping::FieldMappingBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> TypeFieldMappingsBuilder<(crate::typed::builder::Set,)> {
+        self.add_mappings(
+            key,
+            f(crate::typed::_types::mapping::FieldMappingBuilder::new()).build(),
+        )
+    }
+}
+
+impl TypeFieldMappingsBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an entry to [`mappings`](Self::mappings).
+    pub fn add_mappings(
+        mut self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<crate::typed::_types::mapping::FieldMapping>,
+    ) -> Self {
+        self.mappings
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`mappings`](Self::mappings), with a builder.
+    pub fn add_mappings_with(
+        self,
+        key: impl Into<crate::typed::_types::Field>,
+        f: impl FnOnce(
+            crate::typed::_types::mapping::FieldMappingBuilder,
+        ) -> crate::typed::_types::mapping::FieldMappingBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_mappings(
+            key,
+            f(crate::typed::_types::mapping::FieldMappingBuilder::new()).build(),
+        )
+    }
 }
 
 impl TypeFieldMappingsBuilder<(crate::typed::builder::Set,)> {

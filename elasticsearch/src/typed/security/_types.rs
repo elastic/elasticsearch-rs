@@ -587,6 +587,36 @@ impl<S0, S1, S2, S3, S4, S5, S6>
         builder.metadata = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> ApiKeyBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3, S4, S5, S6>
+    ApiKeyBuilder<(S0, S1, S2, S3, S4, S5, S6, crate::typed::builder::Set)>
+{
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl
@@ -977,6 +1007,29 @@ impl<S0, S2> ApplicationPrivilegesBuilder<(S0, crate::typed::builder::NotSet, S2
         builder.privileges = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(
+        self,
+        value: impl Into<String>,
+    ) -> ApplicationPrivilegesBuilder<(S0, crate::typed::builder::Set, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S2> ApplicationPrivilegesBuilder<(S0, crate::typed::builder::Set, S2)> {
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(mut self, value: impl Into<String>) -> Self {
+        self.privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0, S1> ApplicationPrivilegesBuilder<(S0, S1, crate::typed::builder::NotSet)> {
@@ -988,6 +1041,29 @@ impl<S0, S1> ApplicationPrivilegesBuilder<(S0, S1, crate::typed::builder::NotSet
         let mut builder = self.with_state();
         builder.resources = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`resources`](Self::resources).
+    pub fn add_resources(
+        self,
+        value: impl Into<String>,
+    ) -> ApplicationPrivilegesBuilder<(S0, S1, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .resources
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1> ApplicationPrivilegesBuilder<(S0, S1, crate::typed::builder::Set)> {
+    /// Adds an element to [`resources`](Self::resources).
+    pub fn add_resources(mut self, value: impl Into<String>) -> Self {
+        self.resources
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -1129,6 +1205,64 @@ impl<S0> BulkErrorBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.details = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`details`](Self::details).
+    pub fn add_details(
+        self,
+        key: impl Into<String>,
+        value: impl Into<crate::typed::_types::ErrorCause>,
+    ) -> BulkErrorBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .details
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`details`](Self::details), with a builder.
+    pub fn add_details_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            crate::typed::_types::ErrorCauseBuilder,
+        )
+            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+    ) -> BulkErrorBuilder<(S0, crate::typed::builder::Set)> {
+        self.add_details(
+            key,
+            f(crate::typed::_types::ErrorCauseBuilder::new()).build(),
+        )
+    }
+}
+
+impl<S0> BulkErrorBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an entry to [`details`](Self::details).
+    pub fn add_details(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<crate::typed::_types::ErrorCause>,
+    ) -> Self {
+        self.details
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`details`](Self::details), with a builder.
+    pub fn add_details_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            crate::typed::_types::ErrorCauseBuilder,
+        )
+            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_details(
+            key,
+            f(crate::typed::_types::ErrorCauseBuilder::new()).build(),
+        )
     }
 }
 
@@ -1543,6 +1677,29 @@ impl<S1> DataSourcePrivilegesBuilder<(crate::typed::builder::NotSet, S1)> {
         builder.names = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`names`](Self::names).
+    pub fn add_names(
+        self,
+        value: impl Into<String>,
+    ) -> DataSourcePrivilegesBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .names
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1> DataSourcePrivilegesBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`names`](Self::names).
+    pub fn add_names(mut self, value: impl Into<String>) -> Self {
+        self.names
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0> DataSourcePrivilegesBuilder<(S0, crate::typed::builder::NotSet)> {
@@ -1554,6 +1711,29 @@ impl<S0> DataSourcePrivilegesBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.privileges = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(
+        self,
+        value: impl Into<DataSourcePrivilege>,
+    ) -> DataSourcePrivilegesBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> DataSourcePrivilegesBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(mut self, value: impl Into<DataSourcePrivilege>) -> Self {
+        self.privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -2064,6 +2244,29 @@ impl<S0> IndicesPrivilegesBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.privileges = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(
+        self,
+        value: impl Into<IndexPrivilege>,
+    ) -> IndicesPrivilegesBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> IndicesPrivilegesBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(mut self, value: impl Into<IndexPrivilege>) -> Self {
+        self.privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl IndicesPrivilegesBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
@@ -2266,6 +2469,29 @@ impl<S0> IndicesPrivilegesBaseBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.privileges = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(
+        self,
+        value: impl Into<IndexPrivilege>,
+    ) -> IndicesPrivilegesBaseBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> IndicesPrivilegesBaseBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(mut self, value: impl Into<IndexPrivilege>) -> Self {
+        self.privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -2489,6 +2715,29 @@ impl<S1> ManageRolesIndexPermissionsBuilder<(crate::typed::builder::NotSet, S1)>
         builder.names = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`names`](Self::names).
+    pub fn add_names(
+        self,
+        value: impl Into<String>,
+    ) -> ManageRolesIndexPermissionsBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .names
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1> ManageRolesIndexPermissionsBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`names`](Self::names).
+    pub fn add_names(mut self, value: impl Into<String>) -> Self {
+        self.names
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0> ManageRolesIndexPermissionsBuilder<(S0, crate::typed::builder::NotSet)> {
@@ -2500,6 +2749,29 @@ impl<S0> ManageRolesIndexPermissionsBuilder<(S0, crate::typed::builder::NotSet)>
         let mut builder = self.with_state();
         builder.privileges = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(
+        self,
+        value: impl Into<String>,
+    ) -> ManageRolesIndexPermissionsBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> ManageRolesIndexPermissionsBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(mut self, value: impl Into<String>) -> Self {
+        self.privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -2600,6 +2872,55 @@ impl ManageRolesPrivilegesBuilder<(crate::typed::builder::NotSet,)> {
         builder.indices = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`indices`](Self::indices).
+    pub fn add_indices(
+        self,
+        value: impl Into<ManageRolesIndexPermissions>,
+    ) -> ManageRolesPrivilegesBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .indices
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`indices`](Self::indices), with a builder.
+    pub fn add_indices_with(
+        self,
+        f: impl FnOnce(
+            ManageRolesIndexPermissionsBuilder,
+        ) -> ManageRolesIndexPermissionsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ManageRolesPrivilegesBuilder<(crate::typed::builder::Set,)> {
+        self.add_indices(f(ManageRolesIndexPermissionsBuilder::new()).build())
+    }
+}
+
+impl ManageRolesPrivilegesBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`indices`](Self::indices).
+    pub fn add_indices(mut self, value: impl Into<ManageRolesIndexPermissions>) -> Self {
+        self.indices
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`indices`](Self::indices), with a builder.
+    pub fn add_indices_with(
+        self,
+        f: impl FnOnce(
+            ManageRolesIndexPermissionsBuilder,
+        ) -> ManageRolesIndexPermissionsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_indices(f(ManageRolesIndexPermissionsBuilder::new()).build())
+    }
 }
 
 impl ManageRolesPrivilegesBuilder<(crate::typed::builder::Set,)> {
@@ -2677,6 +2998,29 @@ impl ManageUserPrivilegesBuilder<(crate::typed::builder::NotSet,)> {
         let mut builder = self.with_state();
         builder.applications = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`applications`](Self::applications).
+    pub fn add_applications(
+        self,
+        value: impl Into<String>,
+    ) -> ManageUserPrivilegesBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .applications
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl ManageUserPrivilegesBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`applications`](Self::applications).
+    pub fn add_applications(mut self, value: impl Into<String>) -> Self {
+        self.applications
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -2984,6 +3328,29 @@ impl<S0> RemoteClusterPrivilegesBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.privileges = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(
+        self,
+        value: impl Into<RemoteClusterPrivilege>,
+    ) -> RemoteClusterPrivilegesBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> RemoteClusterPrivilegesBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(mut self, value: impl Into<RemoteClusterPrivilege>) -> Self {
+        self.privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl RemoteClusterPrivilegesBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
@@ -3215,6 +3582,29 @@ impl<S0, S1> RemoteIndicesPrivilegesBuilder<(S0, S1, crate::typed::builder::NotS
         let mut builder = self.with_state();
         builder.privileges = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(
+        self,
+        value: impl Into<IndexPrivilege>,
+    ) -> RemoteIndicesPrivilegesBuilder<(S0, S1, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1> RemoteIndicesPrivilegesBuilder<(S0, S1, crate::typed::builder::Set)> {
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(mut self, value: impl Into<IndexPrivilege>) -> Self {
+        self.privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -3462,6 +3852,29 @@ impl<S1, S2, S3> RemoteUserIndicesPrivilegesBuilder<(crate::typed::builder::NotS
         builder.clusters = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`clusters`](Self::clusters).
+    pub fn add_clusters(
+        self,
+        value: impl Into<String>,
+    ) -> RemoteUserIndicesPrivilegesBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
+        let mut builder = self.with_state();
+        builder
+            .clusters
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1, S2, S3> RemoteUserIndicesPrivilegesBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
+    /// Adds an element to [`clusters`](Self::clusters).
+    pub fn add_clusters(mut self, value: impl Into<String>) -> Self {
+        self.clusters
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0, S2, S3> RemoteUserIndicesPrivilegesBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
@@ -3485,6 +3898,29 @@ impl<S0, S1, S3> RemoteUserIndicesPrivilegesBuilder<(S0, S1, crate::typed::build
         let mut builder = self.with_state();
         builder.privileges = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(
+        self,
+        value: impl Into<IndexPrivilege>,
+    ) -> RemoteUserIndicesPrivilegesBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+        let mut builder = self.with_state();
+        builder
+            .privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S3> RemoteUserIndicesPrivilegesBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(mut self, value: impl Into<IndexPrivilege>) -> Self {
+        self.privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -3768,6 +4204,29 @@ impl RestrictionBuilder<(crate::typed::builder::NotSet,)> {
         let mut builder = self.with_state();
         builder.workflows = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`workflows`](Self::workflows).
+    pub fn add_workflows(
+        self,
+        value: impl Into<RestrictionWorkflow>,
+    ) -> RestrictionBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .workflows
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl RestrictionBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`workflows`](Self::workflows).
+    pub fn add_workflows(mut self, value: impl Into<RestrictionWorkflow>) -> Self {
+        self.workflows
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -4544,6 +5003,29 @@ impl<S1> RoleDescriptorReadBuilder<(crate::typed::builder::NotSet, S1)> {
         builder.cluster = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`cluster`](Self::cluster).
+    pub fn add_cluster(
+        self,
+        value: impl Into<ClusterPrivilege>,
+    ) -> RoleDescriptorReadBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .cluster
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1> RoleDescriptorReadBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`cluster`](Self::cluster).
+    pub fn add_cluster(mut self, value: impl Into<ClusterPrivilege>) -> Self {
+        self.cluster
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0> RoleDescriptorReadBuilder<(S0, crate::typed::builder::NotSet)> {
@@ -4555,6 +5037,55 @@ impl<S0> RoleDescriptorReadBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.indices = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`indices`](Self::indices).
+    pub fn add_indices(
+        self,
+        value: impl Into<IndicesPrivileges>,
+    ) -> RoleDescriptorReadBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .indices
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`indices`](Self::indices), with a builder.
+    pub fn add_indices_with(
+        self,
+        f: impl FnOnce(
+            IndicesPrivilegesBuilder,
+        ) -> IndicesPrivilegesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RoleDescriptorReadBuilder<(S0, crate::typed::builder::Set)> {
+        self.add_indices(f(IndicesPrivilegesBuilder::new()).build())
+    }
+}
+
+impl<S0> RoleDescriptorReadBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`indices`](Self::indices).
+    pub fn add_indices(mut self, value: impl Into<IndicesPrivileges>) -> Self {
+        self.indices
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`indices`](Self::indices), with a builder.
+    pub fn add_indices_with(
+        self,
+        f: impl FnOnce(
+            IndicesPrivilegesBuilder,
+        ) -> IndicesPrivilegesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_indices(f(IndicesPrivilegesBuilder::new()).build())
     }
 }
 
@@ -4744,6 +5275,34 @@ impl<S0, S2> RoleMappingBuilder<(S0, crate::typed::builder::NotSet, S2)> {
         let mut builder = self.with_state();
         builder.metadata = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> RoleMappingBuilder<(S0, crate::typed::builder::Set, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S2> RoleMappingBuilder<(S0, crate::typed::builder::Set, S2)> {
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 
@@ -5845,6 +6404,34 @@ impl<S1, S2, S3> UserBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
         builder.metadata = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> UserBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
+        let mut builder = self.with_state();
+        builder
+            .metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S1, S2, S3> UserBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl<S0, S2, S3> UserBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
@@ -5855,6 +6442,29 @@ impl<S0, S2, S3> UserBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
         let mut builder = self.with_state();
         builder.roles = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(
+        self,
+        value: impl Into<String>,
+    ) -> UserBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
+        let mut builder = self.with_state();
+        builder
+            .roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S2, S3> UserBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(mut self, value: impl Into<String>) -> Self {
+        self.roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -6146,6 +6756,29 @@ impl<S0, S2> UserIndicesPrivilegesBuilder<(S0, crate::typed::builder::NotSet, S2
         builder.privileges = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(
+        self,
+        value: impl Into<IndexPrivilege>,
+    ) -> UserIndicesPrivilegesBuilder<(S0, crate::typed::builder::Set, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S2> UserIndicesPrivilegesBuilder<(S0, crate::typed::builder::Set, S2)> {
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(mut self, value: impl Into<IndexPrivilege>) -> Self {
+        self.privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0, S1> UserIndicesPrivilegesBuilder<(S0, S1, crate::typed::builder::NotSet)> {
@@ -6409,6 +7042,29 @@ impl<S0, S2> UserIndicesPrivilegesBaseBuilder<(S0, crate::typed::builder::NotSet
         builder.privileges = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(
+        self,
+        value: impl Into<IndexPrivilege>,
+    ) -> UserIndicesPrivilegesBaseBuilder<(S0, crate::typed::builder::Set, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S2> UserIndicesPrivilegesBaseBuilder<(S0, crate::typed::builder::Set, S2)> {
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(mut self, value: impl Into<IndexPrivilege>) -> Self {
+        self.privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0, S1> UserIndicesPrivilegesBaseBuilder<(S0, S1, crate::typed::builder::NotSet)> {
@@ -6630,6 +7286,30 @@ impl<S0, S1, S3> UserProfileBuilder<(S0, S1, crate::typed::builder::NotSet, S3)>
         builder.data = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`data`](Self::data).
+    pub fn add_data(
+        self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> UserProfileBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+        let mut builder = self.with_state();
+        builder
+            .data
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S3> UserProfileBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+    /// Adds an entry to [`data`](Self::data).
+    pub fn add_data(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.data
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl<S0, S1, S2> UserProfileBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
@@ -6640,6 +7320,34 @@ impl<S0, S1, S2> UserProfileBuilder<(S0, S1, S2, crate::typed::builder::NotSet)>
         let mut builder = self.with_state();
         builder.labels = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`labels`](Self::labels).
+    pub fn add_labels(
+        self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> UserProfileBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .labels
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2> UserProfileBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+    /// Adds an entry to [`labels`](Self::labels).
+    pub fn add_labels(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.labels
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 
@@ -7022,6 +7730,29 @@ impl<S0, S2> UserProfileUserBuilder<(S0, crate::typed::builder::NotSet, S2)> {
         builder.roles = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(
+        self,
+        value: impl Into<String>,
+    ) -> UserProfileUserBuilder<(S0, crate::typed::builder::Set, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S2> UserProfileUserBuilder<(S0, crate::typed::builder::Set, S2)> {
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(mut self, value: impl Into<String>) -> Self {
+        self.roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0, S1> UserProfileUserBuilder<(S0, S1, crate::typed::builder::NotSet)> {
@@ -7264,6 +7995,32 @@ impl<S0, S1, S3, S4, S5>
         builder.data = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`data`](Self::data).
+    pub fn add_data(
+        self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> UserProfileWithMetadataBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5)> {
+        let mut builder = self.with_state();
+        builder
+            .data
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S3, S4, S5>
+    UserProfileWithMetadataBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5)>
+{
+    /// Adds an entry to [`data`](Self::data).
+    pub fn add_data(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.data
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl<S0, S1, S2, S4, S5>
@@ -7276,6 +8033,36 @@ impl<S0, S1, S2, S4, S5>
         let mut builder = self.with_state();
         builder.labels = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`labels`](Self::labels).
+    pub fn add_labels(
+        self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> UserProfileWithMetadataBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5)> {
+        let mut builder = self.with_state();
+        builder
+            .labels
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S4, S5>
+    UserProfileWithMetadataBuilder<(S0, S1, S2, crate::typed::builder::Set, S4, S5)>
+{
+    /// Adds an entry to [`labels`](Self::labels).
+    pub fn add_labels(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.labels
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 

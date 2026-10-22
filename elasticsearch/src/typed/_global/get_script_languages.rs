@@ -65,6 +65,29 @@ impl<S1> LanguageContextBuilder<(crate::typed::builder::NotSet, S1)> {
         builder.contexts = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`contexts`](Self::contexts).
+    pub fn add_contexts(
+        self,
+        value: impl Into<String>,
+    ) -> LanguageContextBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .contexts
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1> LanguageContextBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`contexts`](Self::contexts).
+    pub fn add_contexts(mut self, value: impl Into<String>) -> Self {
+        self.contexts
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0> LanguageContextBuilder<(S0, crate::typed::builder::NotSet)> {

@@ -889,6 +889,52 @@ impl<S1, S2> ActivationStatusBuilder<(crate::typed::builder::NotSet, S1, S2)> {
         builder.actions = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`actions`](Self::actions).
+    pub fn add_actions(
+        self,
+        key: impl Into<crate::typed::_types::IndexName>,
+        value: impl Into<ActionStatus>,
+    ) -> ActivationStatusBuilder<(crate::typed::builder::Set, S1, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .actions
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`actions`](Self::actions), with a builder.
+    pub fn add_actions_with(
+        self,
+        key: impl Into<crate::typed::_types::IndexName>,
+        f: impl FnOnce(ActionStatusBuilder) -> ActionStatusBuilder<(crate::typed::builder::Set,)>,
+    ) -> ActivationStatusBuilder<(crate::typed::builder::Set, S1, S2)> {
+        self.add_actions(key, f(ActionStatusBuilder::new()).build())
+    }
+}
+
+impl<S1, S2> ActivationStatusBuilder<(crate::typed::builder::Set, S1, S2)> {
+    /// Adds an entry to [`actions`](Self::actions).
+    pub fn add_actions(
+        mut self,
+        key: impl Into<crate::typed::_types::IndexName>,
+        value: impl Into<ActionStatus>,
+    ) -> Self {
+        self.actions
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`actions`](Self::actions), with a builder.
+    pub fn add_actions_with(
+        self,
+        key: impl Into<crate::typed::_types::IndexName>,
+        f: impl FnOnce(ActionStatusBuilder) -> ActionStatusBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_actions(key, f(ActionStatusBuilder::new()).build())
+    }
 }
 
 impl<S0, S2> ActivationStatusBuilder<(S0, crate::typed::builder::NotSet, S2)> {
@@ -1302,6 +1348,32 @@ impl ChainInputBuilder<(crate::typed::builder::NotSet,)> {
         builder.inputs = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`inputs`](Self::inputs).
+    pub fn add_inputs(
+        self,
+        value: impl Into<indexmap::IndexMap<String, InputContainer>>,
+    ) -> ChainInputBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .inputs
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl ChainInputBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`inputs`](Self::inputs).
+    pub fn add_inputs(
+        mut self,
+        value: impl Into<indexmap::IndexMap<String, InputContainer>>,
+    ) -> Self {
+        self.inputs
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl ChainInputBuilder<(crate::typed::builder::Set,)> {
@@ -1618,6 +1690,29 @@ impl DailyScheduleBuilder<(crate::typed::builder::NotSet,)> {
         let mut builder = self.with_state();
         builder.at = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`at`](Self::at).
+    pub fn add_at(
+        self,
+        value: impl Into<ScheduleTimeOfDay>,
+    ) -> DailyScheduleBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .at
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl DailyScheduleBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`at`](Self::at).
+    pub fn add_at(mut self, value: impl Into<ScheduleTimeOfDay>) -> Self {
+        self.at
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -3069,6 +3164,57 @@ impl<S1, S2> ExecutionResultBuilder<(crate::typed::builder::NotSet, S1, S2)> {
         let mut builder = self.with_state();
         builder.actions = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`actions`](Self::actions).
+    pub fn add_actions(
+        self,
+        value: impl Into<ExecutionResultAction>,
+    ) -> ExecutionResultBuilder<(crate::typed::builder::Set, S1, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .actions
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`actions`](Self::actions), with a builder.
+    pub fn add_actions_with(
+        self,
+        f: impl FnOnce(
+            ExecutionResultActionBuilder,
+        ) -> ExecutionResultActionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ExecutionResultBuilder<(crate::typed::builder::Set, S1, S2)> {
+        self.add_actions(f(ExecutionResultActionBuilder::new()).build())
+    }
+}
+
+impl<S1, S2> ExecutionResultBuilder<(crate::typed::builder::Set, S1, S2)> {
+    /// Adds an element to [`actions`](Self::actions).
+    pub fn add_actions(mut self, value: impl Into<ExecutionResultAction>) -> Self {
+        self.actions
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`actions`](Self::actions), with a builder.
+    pub fn add_actions_with(
+        self,
+        f: impl FnOnce(
+            ExecutionResultActionBuilder,
+        ) -> ExecutionResultActionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_actions(f(ExecutionResultActionBuilder::new()).build())
     }
 }
 
@@ -5239,6 +5385,24 @@ impl<S1> HourAndMinuteBuilder<(crate::typed::builder::NotSet, S1)> {
         builder.hour = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`hour`](Self::hour).
+    pub fn add_hour(self, value: i32) -> HourAndMinuteBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .hour
+            .get_or_insert_with(Default::default)
+            .push(value);
+        builder
+    }
+}
+
+impl<S1> HourAndMinuteBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`hour`](Self::hour).
+    pub fn add_hour(mut self, value: i32) -> Self {
+        self.hour.get_or_insert_with(Default::default).push(value);
+        self
+    }
 }
 
 impl<S0> HourAndMinuteBuilder<(S0, crate::typed::builder::NotSet)> {
@@ -5249,6 +5413,24 @@ impl<S0> HourAndMinuteBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.minute = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`minute`](Self::minute).
+    pub fn add_minute(self, value: i32) -> HourAndMinuteBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .minute
+            .get_or_insert_with(Default::default)
+            .push(value);
+        builder
+    }
+}
+
+impl<S0> HourAndMinuteBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`minute`](Self::minute).
+    pub fn add_minute(mut self, value: i32) -> Self {
+        self.minute.get_or_insert_with(Default::default).push(value);
+        self
     }
 }
 
@@ -5336,6 +5518,24 @@ impl HourlyScheduleBuilder<(crate::typed::builder::NotSet,)> {
         let mut builder = self.with_state();
         builder.minute = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`minute`](Self::minute).
+    pub fn add_minute(self, value: i32) -> HourlyScheduleBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .minute
+            .get_or_insert_with(Default::default)
+            .push(value);
+        builder
+    }
+}
+
+impl HourlyScheduleBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`minute`](Self::minute).
+    pub fn add_minute(mut self, value: i32) -> Self {
+        self.minute.get_or_insert_with(Default::default).push(value);
+        self
     }
 }
 
@@ -10177,6 +10377,29 @@ impl<S1, S2> SimulatedActionsBuilder<(crate::typed::builder::NotSet, S1, S2)> {
         builder.actions = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`actions`](Self::actions).
+    pub fn add_actions(
+        self,
+        value: impl Into<String>,
+    ) -> SimulatedActionsBuilder<(crate::typed::builder::Set, S1, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .actions
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1, S2> SimulatedActionsBuilder<(crate::typed::builder::Set, S1, S2)> {
+    /// Adds an element to [`actions`](Self::actions).
+    pub fn add_actions(mut self, value: impl Into<String>) -> Self {
+        self.actions
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0, S2> SimulatedActionsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
@@ -11168,6 +11391,55 @@ impl<S1, S2, S3> SlackMessageBuilder<(crate::typed::builder::NotSet, S1, S2, S3)
         builder.attachments = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`attachments`](Self::attachments).
+    pub fn add_attachments(
+        self,
+        value: impl Into<SlackAttachment>,
+    ) -> SlackMessageBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
+        let mut builder = self.with_state();
+        builder
+            .attachments
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`attachments`](Self::attachments), with a builder.
+    pub fn add_attachments_with(
+        self,
+        f: impl FnOnce(
+            SlackAttachmentBuilder,
+        ) -> SlackAttachmentBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SlackMessageBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
+        self.add_attachments(f(SlackAttachmentBuilder::new()).build())
+    }
+}
+
+impl<S1, S2, S3> SlackMessageBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
+    /// Adds an element to [`attachments`](Self::attachments).
+    pub fn add_attachments(mut self, value: impl Into<SlackAttachment>) -> Self {
+        self.attachments
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`attachments`](Self::attachments), with a builder.
+    pub fn add_attachments_with(
+        self,
+        f: impl FnOnce(
+            SlackAttachmentBuilder,
+        ) -> SlackAttachmentBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_attachments(f(SlackAttachmentBuilder::new()).build())
+    }
 }
 
 impl<S0, S2, S3> SlackMessageBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
@@ -11200,6 +11472,29 @@ impl<S0, S1, S2> SlackMessageBuilder<(S0, S1, S2, crate::typed::builder::NotSet)
         let mut builder = self.with_state();
         builder.to = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`to`](Self::to).
+    pub fn add_to(
+        self,
+        value: impl Into<String>,
+    ) -> SlackMessageBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .to
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2> SlackMessageBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+    /// Adds an element to [`to`](Self::to).
+    pub fn add_to(mut self, value: impl Into<String>) -> Self {
+        self.to
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -11565,6 +11860,29 @@ impl<S1> TimeOfMonthBuilder<(crate::typed::builder::NotSet, S1)> {
         builder.at = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`at`](Self::at).
+    pub fn add_at(
+        self,
+        value: impl Into<String>,
+    ) -> TimeOfMonthBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .at
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1> TimeOfMonthBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`at`](Self::at).
+    pub fn add_at(mut self, value: impl Into<String>) -> Self {
+        self.at
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0> TimeOfMonthBuilder<(S0, crate::typed::builder::NotSet)> {
@@ -11575,6 +11893,21 @@ impl<S0> TimeOfMonthBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.on = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`on`](Self::on).
+    pub fn add_on(self, value: i32) -> TimeOfMonthBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder.on.get_or_insert_with(Default::default).push(value);
+        builder
+    }
+}
+
+impl<S0> TimeOfMonthBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`on`](Self::on).
+    pub fn add_on(mut self, value: i32) -> Self {
+        self.on.get_or_insert_with(Default::default).push(value);
+        self
     }
 }
 
@@ -11670,6 +12003,29 @@ impl<S1> TimeOfWeekBuilder<(crate::typed::builder::NotSet, S1)> {
         builder.at = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`at`](Self::at).
+    pub fn add_at(
+        self,
+        value: impl Into<String>,
+    ) -> TimeOfWeekBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .at
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1> TimeOfWeekBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`at`](Self::at).
+    pub fn add_at(mut self, value: impl Into<String>) -> Self {
+        self.at
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0> TimeOfWeekBuilder<(S0, crate::typed::builder::NotSet)> {
@@ -11680,6 +12036,29 @@ impl<S0> TimeOfWeekBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.on = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`on`](Self::on).
+    pub fn add_on(
+        self,
+        value: impl Into<Day>,
+    ) -> TimeOfWeekBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .on
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> TimeOfWeekBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`on`](Self::on).
+    pub fn add_on(mut self, value: impl Into<Day>) -> Self {
+        self.on
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -11794,6 +12173,29 @@ impl<S1, S2> TimeOfYearBuilder<(crate::typed::builder::NotSet, S1, S2)> {
         builder.at = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`at`](Self::at).
+    pub fn add_at(
+        self,
+        value: impl Into<String>,
+    ) -> TimeOfYearBuilder<(crate::typed::builder::Set, S1, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .at
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1, S2> TimeOfYearBuilder<(crate::typed::builder::Set, S1, S2)> {
+    /// Adds an element to [`at`](Self::at).
+    pub fn add_at(mut self, value: impl Into<String>) -> Self {
+        self.at
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0, S2> TimeOfYearBuilder<(S0, crate::typed::builder::NotSet, S2)> {
@@ -11805,6 +12207,29 @@ impl<S0, S2> TimeOfYearBuilder<(S0, crate::typed::builder::NotSet, S2)> {
         builder.int = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`int`](Self::int).
+    pub fn add_int(
+        self,
+        value: impl Into<Month>,
+    ) -> TimeOfYearBuilder<(S0, crate::typed::builder::Set, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .int
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S2> TimeOfYearBuilder<(S0, crate::typed::builder::Set, S2)> {
+    /// Adds an element to [`int`](Self::int).
+    pub fn add_int(mut self, value: impl Into<Month>) -> Self {
+        self.int
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0, S1> TimeOfYearBuilder<(S0, S1, crate::typed::builder::NotSet)> {
@@ -11815,6 +12240,21 @@ impl<S0, S1> TimeOfYearBuilder<(S0, S1, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.on = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`on`](Self::on).
+    pub fn add_on(self, value: i32) -> TimeOfYearBuilder<(S0, S1, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder.on.get_or_insert_with(Default::default).push(value);
+        builder
+    }
+}
+
+impl<S0, S1> TimeOfYearBuilder<(S0, S1, crate::typed::builder::Set)> {
+    /// Adds an element to [`on`](Self::on).
+    pub fn add_on(mut self, value: i32) -> Self {
+        self.on.get_or_insert_with(Default::default).push(value);
+        self
     }
 }
 
@@ -12494,6 +12934,52 @@ impl<S1, S2> WatchBuilder<(crate::typed::builder::NotSet, S1, S2)> {
         builder.actions = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`actions`](Self::actions).
+    pub fn add_actions(
+        self,
+        key: impl Into<crate::typed::_types::IndexName>,
+        value: impl Into<Action>,
+    ) -> WatchBuilder<(crate::typed::builder::Set, S1, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .actions
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`actions`](Self::actions), with a builder.
+    pub fn add_actions_with(
+        self,
+        key: impl Into<crate::typed::_types::IndexName>,
+        f: impl FnOnce(ActionBuilder) -> ActionBuilder,
+    ) -> WatchBuilder<(crate::typed::builder::Set, S1, S2)> {
+        self.add_actions(key, f(ActionBuilder::new()).build())
+    }
+}
+
+impl<S1, S2> WatchBuilder<(crate::typed::builder::Set, S1, S2)> {
+    /// Adds an entry to [`actions`](Self::actions).
+    pub fn add_actions(
+        mut self,
+        key: impl Into<crate::typed::_types::IndexName>,
+        value: impl Into<Action>,
+    ) -> Self {
+        self.actions
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`actions`](Self::actions), with a builder.
+    pub fn add_actions_with(
+        self,
+        key: impl Into<crate::typed::_types::IndexName>,
+        f: impl FnOnce(ActionBuilder) -> ActionBuilder,
+    ) -> Self {
+        self.add_actions(key, f(ActionBuilder::new()).build())
+    }
 }
 
 impl<S0, S2> WatchBuilder<(S0, crate::typed::builder::NotSet, S2)> {
@@ -12738,6 +13224,52 @@ impl<S1, S2> WatchStatusBuilder<(crate::typed::builder::NotSet, S1, S2)> {
         let mut builder = self.with_state();
         builder.actions = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`actions`](Self::actions).
+    pub fn add_actions(
+        self,
+        key: impl Into<crate::typed::_types::IndexName>,
+        value: impl Into<ActionStatus>,
+    ) -> WatchStatusBuilder<(crate::typed::builder::Set, S1, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .actions
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`actions`](Self::actions), with a builder.
+    pub fn add_actions_with(
+        self,
+        key: impl Into<crate::typed::_types::IndexName>,
+        f: impl FnOnce(ActionStatusBuilder) -> ActionStatusBuilder<(crate::typed::builder::Set,)>,
+    ) -> WatchStatusBuilder<(crate::typed::builder::Set, S1, S2)> {
+        self.add_actions(key, f(ActionStatusBuilder::new()).build())
+    }
+}
+
+impl<S1, S2> WatchStatusBuilder<(crate::typed::builder::Set, S1, S2)> {
+    /// Adds an entry to [`actions`](Self::actions).
+    pub fn add_actions(
+        mut self,
+        key: impl Into<crate::typed::_types::IndexName>,
+        value: impl Into<ActionStatus>,
+    ) -> Self {
+        self.actions
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`actions`](Self::actions), with a builder.
+    pub fn add_actions_with(
+        self,
+        key: impl Into<crate::typed::_types::IndexName>,
+        f: impl FnOnce(ActionStatusBuilder) -> ActionStatusBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_actions(key, f(ActionStatusBuilder::new()).build())
     }
 }
 

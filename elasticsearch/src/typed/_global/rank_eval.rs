@@ -842,6 +842,55 @@ impl<S0, S1, S3, S4> RankEvalMetricDetailBuilder<(S0, S1, crate::typed::builder:
         builder.unrated_docs = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`unrated_docs`](Self::unrated_docs).
+    pub fn add_unrated_docs(
+        self,
+        value: impl Into<UnratedDocument>,
+    ) -> RankEvalMetricDetailBuilder<(S0, S1, crate::typed::builder::Set, S3, S4)> {
+        let mut builder = self.with_state();
+        builder
+            .unrated_docs
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`unrated_docs`](Self::unrated_docs), with a builder.
+    pub fn add_unrated_docs_with(
+        self,
+        f: impl FnOnce(
+            UnratedDocumentBuilder,
+        ) -> UnratedDocumentBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RankEvalMetricDetailBuilder<(S0, S1, crate::typed::builder::Set, S3, S4)> {
+        self.add_unrated_docs(f(UnratedDocumentBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S3, S4> RankEvalMetricDetailBuilder<(S0, S1, crate::typed::builder::Set, S3, S4)> {
+    /// Adds an element to [`unrated_docs`](Self::unrated_docs).
+    pub fn add_unrated_docs(mut self, value: impl Into<UnratedDocument>) -> Self {
+        self.unrated_docs
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`unrated_docs`](Self::unrated_docs), with a builder.
+    pub fn add_unrated_docs_with(
+        self,
+        f: impl FnOnce(
+            UnratedDocumentBuilder,
+        ) -> UnratedDocumentBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_unrated_docs(f(UnratedDocumentBuilder::new()).build())
+    }
 }
 
 impl<S0, S1, S2, S4> RankEvalMetricDetailBuilder<(S0, S1, S2, crate::typed::builder::NotSet, S4)> {
@@ -854,6 +903,45 @@ impl<S0, S1, S2, S4> RankEvalMetricDetailBuilder<(S0, S1, S2, crate::typed::buil
         builder.hits = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`hits`](Self::hits).
+    pub fn add_hits(
+        self,
+        value: impl Into<RankEvalHitItem>,
+    ) -> RankEvalMetricDetailBuilder<(S0, S1, S2, crate::typed::builder::Set, S4)> {
+        let mut builder = self.with_state();
+        builder
+            .hits
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`hits`](Self::hits), with a builder.
+    pub fn add_hits_with(
+        self,
+        f: impl FnOnce(RankEvalHitItemBuilder) -> RankEvalHitItemBuilder<(crate::typed::builder::Set,)>,
+    ) -> RankEvalMetricDetailBuilder<(S0, S1, S2, crate::typed::builder::Set, S4)> {
+        self.add_hits(f(RankEvalHitItemBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S4> RankEvalMetricDetailBuilder<(S0, S1, S2, crate::typed::builder::Set, S4)> {
+    /// Adds an element to [`hits`](Self::hits).
+    pub fn add_hits(mut self, value: impl Into<RankEvalHitItem>) -> Self {
+        self.hits
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`hits`](Self::hits), with a builder.
+    pub fn add_hits_with(
+        self,
+        f: impl FnOnce(RankEvalHitItemBuilder) -> RankEvalHitItemBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_hits(f(RankEvalHitItemBuilder::new()).build())
+    }
 }
 
 impl<S0, S1, S2, S3> RankEvalMetricDetailBuilder<(S0, S1, S2, S3, crate::typed::builder::NotSet)> {
@@ -865,6 +953,34 @@ impl<S0, S1, S2, S3> RankEvalMetricDetailBuilder<(S0, S1, S2, S3, crate::typed::
         let mut builder = self.with_state();
         builder.metric_details = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`metric_details`](Self::metric_details).
+    pub fn add_metric_details(
+        self,
+        key: impl Into<String>,
+        value: impl Into<indexmap::IndexMap<String, serde_json::Value>>,
+    ) -> RankEvalMetricDetailBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .metric_details
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3> RankEvalMetricDetailBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)> {
+    /// Adds an entry to [`metric_details`](Self::metric_details).
+    pub fn add_metric_details(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<indexmap::IndexMap<String, serde_json::Value>>,
+    ) -> Self {
+        self.metric_details
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 
@@ -1782,6 +1898,57 @@ impl<S0> RankEvalRequestItemBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.ratings = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`ratings`](Self::ratings).
+    pub fn add_ratings(
+        self,
+        value: impl Into<DocumentRating>,
+    ) -> RankEvalRequestItemBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .ratings
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`ratings`](Self::ratings), with a builder.
+    pub fn add_ratings_with(
+        self,
+        f: impl FnOnce(
+            DocumentRatingBuilder,
+        ) -> DocumentRatingBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RankEvalRequestItemBuilder<(S0, crate::typed::builder::Set)> {
+        self.add_ratings(f(DocumentRatingBuilder::new()).build())
+    }
+}
+
+impl<S0> RankEvalRequestItemBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`ratings`](Self::ratings).
+    pub fn add_ratings(mut self, value: impl Into<DocumentRating>) -> Self {
+        self.ratings
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`ratings`](Self::ratings), with a builder.
+    pub fn add_ratings_with(
+        self,
+        f: impl FnOnce(
+            DocumentRatingBuilder,
+        ) -> DocumentRatingBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_ratings(f(DocumentRatingBuilder::new()).build())
+    }
 }
 
 impl RankEvalRequestItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
@@ -2102,6 +2269,55 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
         let mut builder = self.with_state();
         builder.requests = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`requests`](Self::requests).
+    pub fn add_requests(
+        self,
+        value: impl Into<RankEvalRequestItem>,
+    ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
+        let mut builder = self.with_state();
+        builder
+            .requests
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`requests`](Self::requests), with a builder.
+    pub fn add_requests_with(
+        self,
+        f: impl FnOnce(
+            RankEvalRequestItemBuilder,
+        ) -> RankEvalRequestItemBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
+        self.add_requests(f(RankEvalRequestItemBuilder::new()).build())
+    }
+}
+
+impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+    /// Adds an element to [`requests`](Self::requests).
+    pub fn add_requests(mut self, value: impl Into<RankEvalRequestItem>) -> Self {
+        self.requests
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`requests`](Self::requests), with a builder.
+    pub fn add_requests_with(
+        self,
+        f: impl FnOnce(
+            RankEvalRequestItemBuilder,
+        ) -> RankEvalRequestItemBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_requests(f(RankEvalRequestItemBuilder::new()).build())
     }
 }
 

@@ -4844,6 +4844,49 @@ impl CompletionInferenceResultBuilder<(crate::typed::builder::NotSet,)> {
         builder.completion = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`completion`](Self::completion).
+    pub fn add_completion(
+        self,
+        value: impl Into<CompletionResult>,
+    ) -> CompletionInferenceResultBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .completion
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`completion`](Self::completion), with a builder.
+    pub fn add_completion_with(
+        self,
+        f: impl FnOnce(
+            CompletionResultBuilder,
+        ) -> CompletionResultBuilder<(crate::typed::builder::Set,)>,
+    ) -> CompletionInferenceResultBuilder<(crate::typed::builder::Set,)> {
+        self.add_completion(f(CompletionResultBuilder::new()).build())
+    }
+}
+
+impl CompletionInferenceResultBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`completion`](Self::completion).
+    pub fn add_completion(mut self, value: impl Into<CompletionResult>) -> Self {
+        self.completion
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`completion`](Self::completion), with a builder.
+    pub fn add_completion_with(
+        self,
+        f: impl FnOnce(
+            CompletionResultBuilder,
+        ) -> CompletionResultBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_completion(f(CompletionResultBuilder::new()).build())
+    }
 }
 
 impl CompletionInferenceResultBuilder<(crate::typed::builder::Set,)> {
@@ -6511,6 +6554,30 @@ impl CustomResponseParamsBuilder<(crate::typed::builder::NotSet,)> {
         builder.json_parser = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`json_parser`](Self::json_parser).
+    pub fn add_json_parser(
+        self,
+        key: impl Into<String>,
+        value: impl Into<String>,
+    ) -> CustomResponseParamsBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .json_parser
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl CustomResponseParamsBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an entry to [`json_parser`](Self::json_parser).
+    pub fn add_json_parser(mut self, key: impl Into<String>, value: impl Into<String>) -> Self {
+        self.json_parser
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl CustomResponseParamsBuilder<(crate::typed::builder::Set,)> {
@@ -6873,6 +6940,34 @@ impl<S0, S1> CustomServiceSettingsBuilder<(S0, S1, crate::typed::builder::NotSet
         let mut builder = self.with_state();
         builder.secret_parameters = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`secret_parameters`](Self::secret_parameters).
+    pub fn add_secret_parameters(
+        self,
+        key: impl Into<String>,
+        value: impl Into<String>,
+    ) -> CustomServiceSettingsBuilder<(S0, S1, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .secret_parameters
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1> CustomServiceSettingsBuilder<(S0, S1, crate::typed::builder::Set)> {
+    /// Adds an entry to [`secret_parameters`](Self::secret_parameters).
+    pub fn add_secret_parameters(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<String>,
+    ) -> Self {
+        self.secret_parameters
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 
@@ -7360,6 +7455,29 @@ impl<S0> DeleteInferenceEndpointResultBuilder<(S0, crate::typed::builder::NotSet
         builder.pipelines = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`pipelines`](Self::pipelines).
+    pub fn add_pipelines(
+        self,
+        value: impl Into<String>,
+    ) -> DeleteInferenceEndpointResultBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .pipelines
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> DeleteInferenceEndpointResultBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`pipelines`](Self::pipelines).
+    pub fn add_pipelines(mut self, value: impl Into<String>) -> Self {
+        self.pipelines
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl
@@ -7469,6 +7587,29 @@ impl DenseEmbeddingByteResultBuilder<(crate::typed::builder::NotSet,)> {
         builder.embedding = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`embedding`](Self::embedding).
+    pub fn add_embedding(
+        self,
+        value: i8,
+    ) -> DenseEmbeddingByteResultBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .embedding
+            .get_or_insert_with(Default::default)
+            .push(value);
+        builder
+    }
+}
+
+impl DenseEmbeddingByteResultBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`embedding`](Self::embedding).
+    pub fn add_embedding(mut self, value: i8) -> Self {
+        self.embedding
+            .get_or_insert_with(Default::default)
+            .push(value);
+        self
+    }
 }
 
 impl DenseEmbeddingByteResultBuilder<(crate::typed::builder::Set,)> {
@@ -7549,6 +7690,29 @@ impl DenseEmbeddingResultBuilder<(crate::typed::builder::NotSet,)> {
         let mut builder = self.with_state();
         builder.embedding = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`embedding`](Self::embedding).
+    pub fn add_embedding(
+        self,
+        value: f32,
+    ) -> DenseEmbeddingResultBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .embedding
+            .get_or_insert_with(Default::default)
+            .push(value);
+        builder
+    }
+}
+
+impl DenseEmbeddingResultBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`embedding`](Self::embedding).
+    pub fn add_embedding(mut self, value: f32) -> Self {
+        self.embedding
+            .get_or_insert_with(Default::default)
+            .push(value);
+        self
     }
 }
 
@@ -21752,6 +21916,45 @@ impl RequestChatCompletionBuilder<(crate::typed::builder::NotSet,)> {
         builder.messages = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`messages`](Self::messages).
+    pub fn add_messages(
+        self,
+        value: impl Into<Message>,
+    ) -> RequestChatCompletionBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .messages
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`messages`](Self::messages), with a builder.
+    pub fn add_messages_with(
+        self,
+        f: impl FnOnce(MessageBuilder) -> MessageBuilder<(crate::typed::builder::Set,)>,
+    ) -> RequestChatCompletionBuilder<(crate::typed::builder::Set,)> {
+        self.add_messages(f(MessageBuilder::new()).build())
+    }
+}
+
+impl RequestChatCompletionBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`messages`](Self::messages).
+    pub fn add_messages(mut self, value: impl Into<Message>) -> Self {
+        self.messages
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`messages`](Self::messages), with a builder.
+    pub fn add_messages_with(
+        self,
+        f: impl FnOnce(MessageBuilder) -> MessageBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_messages(f(MessageBuilder::new()).build())
+    }
 }
 
 impl RequestChatCompletionBuilder<(crate::typed::builder::Set,)> {
@@ -22117,6 +22320,55 @@ impl RerankedInferenceResultBuilder<(crate::typed::builder::NotSet,)> {
         builder.rerank = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`rerank`](Self::rerank).
+    pub fn add_rerank(
+        self,
+        value: impl Into<RankedDocument>,
+    ) -> RerankedInferenceResultBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .rerank
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`rerank`](Self::rerank), with a builder.
+    pub fn add_rerank_with(
+        self,
+        f: impl FnOnce(
+            RankedDocumentBuilder,
+        ) -> RankedDocumentBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RerankedInferenceResultBuilder<(crate::typed::builder::Set,)> {
+        self.add_rerank(f(RankedDocumentBuilder::new()).build())
+    }
+}
+
+impl RerankedInferenceResultBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`rerank`](Self::rerank).
+    pub fn add_rerank(mut self, value: impl Into<RankedDocument>) -> Self {
+        self.rerank
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`rerank`](Self::rerank), with a builder.
+    pub fn add_rerank_with(
+        self,
+        f: impl FnOnce(
+            RankedDocumentBuilder,
+        ) -> RankedDocumentBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_rerank(f(RankedDocumentBuilder::new()).build())
+    }
 }
 
 impl RerankedInferenceResultBuilder<(crate::typed::builder::Set,)> {
@@ -22199,6 +22451,55 @@ impl SparseEmbeddingInferenceResultBuilder<(crate::typed::builder::NotSet,)> {
         let mut builder = self.with_state();
         builder.sparse_embedding = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`sparse_embedding`](Self::sparse_embedding).
+    pub fn add_sparse_embedding(
+        self,
+        value: impl Into<SparseEmbeddingResult>,
+    ) -> SparseEmbeddingInferenceResultBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .sparse_embedding
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`sparse_embedding`](Self::sparse_embedding), with a builder.
+    pub fn add_sparse_embedding_with(
+        self,
+        f: impl FnOnce(
+            SparseEmbeddingResultBuilder,
+        ) -> SparseEmbeddingResultBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SparseEmbeddingInferenceResultBuilder<(crate::typed::builder::Set,)> {
+        self.add_sparse_embedding(f(SparseEmbeddingResultBuilder::new()).build())
+    }
+}
+
+impl SparseEmbeddingInferenceResultBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`sparse_embedding`](Self::sparse_embedding).
+    pub fn add_sparse_embedding(mut self, value: impl Into<SparseEmbeddingResult>) -> Self {
+        self.sparse_embedding
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`sparse_embedding`](Self::sparse_embedding), with a builder.
+    pub fn add_sparse_embedding_with(
+        self,
+        f: impl FnOnce(
+            SparseEmbeddingResultBuilder,
+        ) -> SparseEmbeddingResultBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_sparse_embedding(f(SparseEmbeddingResultBuilder::new()).build())
     }
 }
 
@@ -22301,6 +22602,30 @@ impl<S0> SparseEmbeddingResultBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.embedding = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`embedding`](Self::embedding).
+    pub fn add_embedding(
+        self,
+        key: impl Into<String>,
+        value: f32,
+    ) -> SparseEmbeddingResultBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .embedding
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        builder
+    }
+}
+
+impl<S0> SparseEmbeddingResultBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an entry to [`embedding`](Self::embedding).
+    pub fn add_embedding(mut self, key: impl Into<String>, value: f32) -> Self {
+        self.embedding
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        self
     }
 }
 

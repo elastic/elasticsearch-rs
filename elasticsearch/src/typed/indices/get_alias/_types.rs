@@ -54,6 +54,62 @@ impl IndexAliasesBuilder<(crate::typed::builder::NotSet,)> {
         builder.aliases = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`aliases`](Self::aliases).
+    pub fn add_aliases(
+        self,
+        key: impl Into<String>,
+        value: impl Into<crate::typed::indices::_types::AliasDefinition>,
+    ) -> IndexAliasesBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .aliases
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`aliases`](Self::aliases), with a builder.
+    pub fn add_aliases_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            crate::typed::indices::_types::AliasDefinitionBuilder,
+        ) -> crate::typed::indices::_types::AliasDefinitionBuilder,
+    ) -> IndexAliasesBuilder<(crate::typed::builder::Set,)> {
+        self.add_aliases(
+            key,
+            f(crate::typed::indices::_types::AliasDefinitionBuilder::new()).build(),
+        )
+    }
+}
+
+impl IndexAliasesBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an entry to [`aliases`](Self::aliases).
+    pub fn add_aliases(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<crate::typed::indices::_types::AliasDefinition>,
+    ) -> Self {
+        self.aliases
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`aliases`](Self::aliases), with a builder.
+    pub fn add_aliases_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            crate::typed::indices::_types::AliasDefinitionBuilder,
+        ) -> crate::typed::indices::_types::AliasDefinitionBuilder,
+    ) -> Self {
+        self.add_aliases(
+            key,
+            f(crate::typed::indices::_types::AliasDefinitionBuilder::new()).build(),
+        )
+    }
 }
 
 impl IndexAliasesBuilder<(crate::typed::builder::Set,)> {

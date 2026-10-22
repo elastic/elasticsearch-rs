@@ -120,6 +120,30 @@ impl<S0, S1, S3> QueryRulesetListItemBuilder<(S0, S1, crate::typed::builder::Not
         builder.rule_criteria_types_counts = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`rule_criteria_types_counts`](Self::rule_criteria_types_counts).
+    pub fn add_rule_criteria_types_counts(
+        self,
+        key: impl Into<String>,
+        value: i32,
+    ) -> QueryRulesetListItemBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+        let mut builder = self.with_state();
+        builder
+            .rule_criteria_types_counts
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        builder
+    }
+}
+
+impl<S0, S1, S3> QueryRulesetListItemBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+    /// Adds an entry to [`rule_criteria_types_counts`](Self::rule_criteria_types_counts).
+    pub fn add_rule_criteria_types_counts(mut self, key: impl Into<String>, value: i32) -> Self {
+        self.rule_criteria_types_counts
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        self
+    }
 }
 
 impl<S0, S1, S2> QueryRulesetListItemBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
@@ -131,6 +155,30 @@ impl<S0, S1, S2> QueryRulesetListItemBuilder<(S0, S1, S2, crate::typed::builder:
         let mut builder = self.with_state();
         builder.rule_type_counts = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`rule_type_counts`](Self::rule_type_counts).
+    pub fn add_rule_type_counts(
+        self,
+        key: impl Into<String>,
+        value: i32,
+    ) -> QueryRulesetListItemBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .rule_type_counts
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        builder
+    }
+}
+
+impl<S0, S1, S2> QueryRulesetListItemBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+    /// Adds an entry to [`rule_type_counts`](Self::rule_type_counts).
+    pub fn add_rule_type_counts(mut self, key: impl Into<String>, value: i32) -> Self {
+        self.rule_type_counts
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value);
+        self
     }
 }
 

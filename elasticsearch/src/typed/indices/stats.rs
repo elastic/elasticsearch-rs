@@ -1781,6 +1781,30 @@ impl<S0, S1, S2> ShardCommitBuilder<(S0, S1, S2, crate::typed::builder::NotSet)>
         builder.user_data = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`user_data`](Self::user_data).
+    pub fn add_user_data(
+        self,
+        key: impl Into<String>,
+        value: impl Into<String>,
+    ) -> ShardCommitBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .user_data
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2> ShardCommitBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+    /// Adds an entry to [`user_data`](Self::user_data).
+    pub fn add_user_data(mut self, key: impl Into<String>, value: impl Into<String>) -> Self {
+        self.user_data
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl
@@ -2886,6 +2910,59 @@ impl<S0, S1> ShardRetentionLeasesBuilder<(S0, S1, crate::typed::builder::NotSet)
         let mut builder = self.with_state();
         builder.leases = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`leases`](Self::leases).
+    pub fn add_leases(
+        self,
+        value: impl Into<ShardLease>,
+    ) -> ShardRetentionLeasesBuilder<(S0, S1, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .leases
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`leases`](Self::leases), with a builder.
+    pub fn add_leases_with(
+        self,
+        f: impl FnOnce(
+            ShardLeaseBuilder,
+        ) -> ShardLeaseBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardRetentionLeasesBuilder<(S0, S1, crate::typed::builder::Set)> {
+        self.add_leases(f(ShardLeaseBuilder::new()).build())
+    }
+}
+
+impl<S0, S1> ShardRetentionLeasesBuilder<(S0, S1, crate::typed::builder::Set)> {
+    /// Adds an element to [`leases`](Self::leases).
+    pub fn add_leases(mut self, value: impl Into<ShardLease>) -> Self {
+        self.leases
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`leases`](Self::leases), with a builder.
+    pub fn add_leases_with(
+        self,
+        f: impl FnOnce(
+            ShardLeaseBuilder,
+        ) -> ShardLeaseBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_leases(f(ShardLeaseBuilder::new()).build())
     }
 }
 

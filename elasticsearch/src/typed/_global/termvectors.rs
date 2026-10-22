@@ -1615,6 +1615,48 @@ impl TermVectorBuilder<(crate::typed::builder::NotSet,)> {
         builder.terms = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`terms`](Self::terms).
+    pub fn add_terms(
+        self,
+        key: impl Into<String>,
+        value: impl Into<Term>,
+    ) -> TermVectorBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .terms
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`terms`](Self::terms), with a builder.
+    pub fn add_terms_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(TermBuilder) -> TermBuilder<(crate::typed::builder::Set,)>,
+    ) -> TermVectorBuilder<(crate::typed::builder::Set,)> {
+        self.add_terms(key, f(TermBuilder::new()).build())
+    }
+}
+
+impl TermVectorBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an entry to [`terms`](Self::terms).
+    pub fn add_terms(mut self, key: impl Into<String>, value: impl Into<Term>) -> Self {
+        self.terms
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`terms`](Self::terms), with a builder.
+    pub fn add_terms_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(TermBuilder) -> TermBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_terms(key, f(TermBuilder::new()).build())
+    }
 }
 
 impl TermVectorBuilder<(crate::typed::builder::Set,)> {

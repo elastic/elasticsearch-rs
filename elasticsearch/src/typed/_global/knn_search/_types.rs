@@ -104,6 +104,29 @@ impl<S0, S2, S3> KnnSearchQueryBuilder<(S0, crate::typed::builder::NotSet, S2, S
         builder.query_vector = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`query_vector`](Self::query_vector).
+    pub fn add_query_vector(
+        self,
+        value: f32,
+    ) -> KnnSearchQueryBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
+        let mut builder = self.with_state();
+        builder
+            .query_vector
+            .get_or_insert_with(Default::default)
+            .push(value);
+        builder
+    }
+}
+
+impl<S0, S2, S3> KnnSearchQueryBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
+    /// Adds an element to [`query_vector`](Self::query_vector).
+    pub fn add_query_vector(mut self, value: f32) -> Self {
+        self.query_vector
+            .get_or_insert_with(Default::default)
+            .push(value);
+        self
+    }
 }
 
 impl<S0, S1, S3> KnnSearchQueryBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {

@@ -166,6 +166,62 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
         builder.roles = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`roles`](Self::roles).
+    pub fn add_roles(
+        self,
+        key: impl Into<String>,
+        value: impl Into<crate::typed::security::_types::RoleDescriptor>,
+    ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
+        let mut builder = self.with_state();
+        builder
+            .roles
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`roles`](Self::roles), with a builder.
+    pub fn add_roles_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            crate::typed::security::_types::RoleDescriptorBuilder,
+        ) -> crate::typed::security::_types::RoleDescriptorBuilder,
+    ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
+        self.add_roles(
+            key,
+            f(crate::typed::security::_types::RoleDescriptorBuilder::new()).build(),
+        )
+    }
+}
+
+impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+    /// Adds an entry to [`roles`](Self::roles).
+    pub fn add_roles(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<crate::typed::security::_types::RoleDescriptor>,
+    ) -> Self {
+        self.roles
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`roles`](Self::roles), with a builder.
+    pub fn add_roles_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            crate::typed::security::_types::RoleDescriptorBuilder,
+        ) -> crate::typed::security::_types::RoleDescriptorBuilder,
+    ) -> Self {
+        self.add_roles(
+            key,
+            f(crate::typed::security::_types::RoleDescriptorBuilder::new()).build(),
+        )
+    }
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {

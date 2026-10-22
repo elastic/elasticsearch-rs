@@ -73,6 +73,34 @@ impl IndexSegmentBuilder<(crate::typed::builder::NotSet,)> {
         builder.shards = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`shards`](Self::shards).
+    pub fn add_shards(
+        self,
+        key: impl Into<String>,
+        value: impl Into<IndexSegmentShards>,
+    ) -> IndexSegmentBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .shards
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl IndexSegmentBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an entry to [`shards`](Self::shards).
+    pub fn add_shards(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<IndexSegmentShards>,
+    ) -> Self {
+        self.shards
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl IndexSegmentBuilder<(crate::typed::builder::Set,)> {
@@ -595,6 +623,32 @@ impl<S1, S2, S3, S4, S5, S6, S7, S8>
         let mut builder = self.with_state();
         builder.attributes = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`attributes`](Self::attributes).
+    pub fn add_attributes(
+        self,
+        key: impl Into<String>,
+        value: impl Into<String>,
+    ) -> SegmentBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5, S6, S7, S8)> {
+        let mut builder = self.with_state();
+        builder
+            .attributes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S1, S2, S3, S4, S5, S6, S7, S8>
+    SegmentBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5, S6, S7, S8)>
+{
+    /// Adds an entry to [`attributes`](Self::attributes).
+    pub fn add_attributes(mut self, key: impl Into<String>, value: impl Into<String>) -> Self {
+        self.attributes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 
@@ -1328,6 +1382,72 @@ impl<S0, S1, S2> ShardsSegmentBuilder<(S0, S1, S2, crate::typed::builder::NotSet
         let mut builder = self.with_state();
         builder.segments = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`segments`](Self::segments).
+    pub fn add_segments(
+        self,
+        key: impl Into<String>,
+        value: impl Into<Segment>,
+    ) -> ShardsSegmentBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .segments
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`segments`](Self::segments), with a builder.
+    pub fn add_segments_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            SegmentBuilder,
+        ) -> SegmentBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardsSegmentBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        self.add_segments(key, f(SegmentBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2> ShardsSegmentBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+    /// Adds an entry to [`segments`](Self::segments).
+    pub fn add_segments(mut self, key: impl Into<String>, value: impl Into<Segment>) -> Self {
+        self.segments
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`segments`](Self::segments), with a builder.
+    pub fn add_segments_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            SegmentBuilder,
+        ) -> SegmentBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_segments(key, f(SegmentBuilder::new()).build())
     }
 }
 

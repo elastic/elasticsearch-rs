@@ -89,6 +89,64 @@ impl<S0> GetUserProfileErrorsBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.details = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`details`](Self::details).
+    pub fn add_details(
+        self,
+        key: impl Into<crate::typed::security::_types::UserProfileId>,
+        value: impl Into<crate::typed::_types::ErrorCause>,
+    ) -> GetUserProfileErrorsBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .details
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`details`](Self::details), with a builder.
+    pub fn add_details_with(
+        self,
+        key: impl Into<crate::typed::security::_types::UserProfileId>,
+        f: impl FnOnce(
+            crate::typed::_types::ErrorCauseBuilder,
+        )
+            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+    ) -> GetUserProfileErrorsBuilder<(S0, crate::typed::builder::Set)> {
+        self.add_details(
+            key,
+            f(crate::typed::_types::ErrorCauseBuilder::new()).build(),
+        )
+    }
+}
+
+impl<S0> GetUserProfileErrorsBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an entry to [`details`](Self::details).
+    pub fn add_details(
+        mut self,
+        key: impl Into<crate::typed::security::_types::UserProfileId>,
+        value: impl Into<crate::typed::_types::ErrorCause>,
+    ) -> Self {
+        self.details
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`details`](Self::details), with a builder.
+    pub fn add_details_with(
+        self,
+        key: impl Into<crate::typed::security::_types::UserProfileId>,
+        f: impl FnOnce(
+            crate::typed::_types::ErrorCauseBuilder,
+        )
+            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_details(
+            key,
+            f(crate::typed::_types::ErrorCauseBuilder::new()).build(),
+        )
+    }
 }
 
 impl GetUserProfileErrorsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {

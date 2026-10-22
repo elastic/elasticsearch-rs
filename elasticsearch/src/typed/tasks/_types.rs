@@ -185,6 +185,74 @@ impl NodeTasksBuilder<(crate::typed::builder::NotSet,)> {
         builder.tasks = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`tasks`](Self::tasks).
+    pub fn add_tasks(
+        self,
+        key: impl Into<crate::typed::_types::TaskId>,
+        value: impl Into<TaskInfo>,
+    ) -> NodeTasksBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .tasks
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`tasks`](Self::tasks), with a builder.
+    pub fn add_tasks_with(
+        self,
+        key: impl Into<crate::typed::_types::TaskId>,
+        f: impl FnOnce(
+            TaskInfoBuilder,
+        ) -> TaskInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NodeTasksBuilder<(crate::typed::builder::Set,)> {
+        self.add_tasks(key, f(TaskInfoBuilder::new()).build())
+    }
+}
+
+impl NodeTasksBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an entry to [`tasks`](Self::tasks).
+    pub fn add_tasks(
+        mut self,
+        key: impl Into<crate::typed::_types::TaskId>,
+        value: impl Into<TaskInfo>,
+    ) -> Self {
+        self.tasks
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`tasks`](Self::tasks), with a builder.
+    pub fn add_tasks_with(
+        self,
+        key: impl Into<crate::typed::_types::TaskId>,
+        f: impl FnOnce(
+            TaskInfoBuilder,
+        ) -> TaskInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_tasks(key, f(TaskInfoBuilder::new()).build())
+    }
 }
 
 impl NodeTasksBuilder<(crate::typed::builder::Set,)> {
@@ -556,6 +624,32 @@ impl<S0, S1, S3, S4, S5, S6, S7>
         let mut builder = self.with_state();
         builder.headers = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`headers`](Self::headers).
+    pub fn add_headers(
+        self,
+        key: impl Into<String>,
+        value: impl Into<String>,
+    ) -> ParentTaskInfoBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5, S6, S7)> {
+        let mut builder = self.with_state();
+        builder
+            .headers
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S3, S4, S5, S6, S7>
+    ParentTaskInfoBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5, S6, S7)>
+{
+    /// Adds an entry to [`headers`](Self::headers).
+    pub fn add_headers(mut self, key: impl Into<String>, value: impl Into<String>) -> Self {
+        self.headers
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 
@@ -1116,6 +1210,32 @@ impl<S0, S1, S3, S4, S5, S6, S7>
         let mut builder = self.with_state();
         builder.headers = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`headers`](Self::headers).
+    pub fn add_headers(
+        self,
+        key: impl Into<String>,
+        value: impl Into<String>,
+    ) -> TaskInfoBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5, S6, S7)> {
+        let mut builder = self.with_state();
+        builder
+            .headers
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S3, S4, S5, S6, S7>
+    TaskInfoBuilder<(S0, S1, crate::typed::builder::Set, S3, S4, S5, S6, S7)>
+{
+    /// Adds an entry to [`headers`](Self::headers).
+    pub fn add_headers(mut self, key: impl Into<String>, value: impl Into<String>) -> Self {
+        self.headers
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 

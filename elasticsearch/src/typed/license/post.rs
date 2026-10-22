@@ -65,6 +65,29 @@ impl<S1> AcknowledgementBuilder<(crate::typed::builder::NotSet, S1)> {
         builder.license = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`license`](Self::license).
+    pub fn add_license(
+        self,
+        value: impl Into<String>,
+    ) -> AcknowledgementBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .license
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1> AcknowledgementBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`license`](Self::license).
+    pub fn add_license(mut self, value: impl Into<String>) -> Self {
+        self.license
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0> AcknowledgementBuilder<(S0, crate::typed::builder::NotSet)> {

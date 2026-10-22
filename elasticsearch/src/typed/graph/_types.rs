@@ -477,6 +477,49 @@ impl HopBuilder<(crate::typed::builder::NotSet,)> {
         builder.vertices = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`vertices`](Self::vertices).
+    pub fn add_vertices(
+        self,
+        value: impl Into<VertexDefinition>,
+    ) -> HopBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .vertices
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`vertices`](Self::vertices), with a builder.
+    pub fn add_vertices_with(
+        self,
+        f: impl FnOnce(
+            VertexDefinitionBuilder,
+        ) -> VertexDefinitionBuilder<(crate::typed::builder::Set,)>,
+    ) -> HopBuilder<(crate::typed::builder::Set,)> {
+        self.add_vertices(f(VertexDefinitionBuilder::new()).build())
+    }
+}
+
+impl HopBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`vertices`](Self::vertices).
+    pub fn add_vertices(mut self, value: impl Into<VertexDefinition>) -> Self {
+        self.vertices
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`vertices`](Self::vertices), with a builder.
+    pub fn add_vertices_with(
+        self,
+        f: impl FnOnce(
+            VertexDefinitionBuilder,
+        ) -> VertexDefinitionBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_vertices(f(VertexDefinitionBuilder::new()).build())
+    }
 }
 
 impl HopBuilder<(crate::typed::builder::Set,)> {

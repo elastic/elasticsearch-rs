@@ -166,6 +166,29 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
         builder.names = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`names`](Self::names).
+    pub fn add_names(
+        self,
+        value: impl Into<String>,
+    ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
+        let mut builder = self.with_state();
+        builder
+            .names
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+    /// Adds an element to [`names`](Self::names).
+    pub fn add_names(mut self, value: impl Into<String>) -> Self {
+        self.names
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {

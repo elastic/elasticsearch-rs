@@ -91,6 +91,55 @@ impl<S0, S2> ExplanationBuilder<(S0, crate::typed::builder::NotSet, S2)> {
         builder.details = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`details`](Self::details).
+    pub fn add_details(
+        self,
+        value: impl Into<ExplanationDetail>,
+    ) -> ExplanationBuilder<(S0, crate::typed::builder::Set, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .details
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`details`](Self::details), with a builder.
+    pub fn add_details_with(
+        self,
+        f: impl FnOnce(
+            ExplanationDetailBuilder,
+        ) -> ExplanationDetailBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ExplanationBuilder<(S0, crate::typed::builder::Set, S2)> {
+        self.add_details(f(ExplanationDetailBuilder::new()).build())
+    }
+}
+
+impl<S0, S2> ExplanationBuilder<(S0, crate::typed::builder::Set, S2)> {
+    /// Adds an element to [`details`](Self::details).
+    pub fn add_details(mut self, value: impl Into<ExplanationDetail>) -> Self {
+        self.details
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`details`](Self::details), with a builder.
+    pub fn add_details_with(
+        self,
+        f: impl FnOnce(
+            ExplanationDetailBuilder,
+        ) -> ExplanationDetailBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_details(f(ExplanationDetailBuilder::new()).build())
+    }
 }
 
 impl<S0, S1> ExplanationBuilder<(S0, S1, crate::typed::builder::NotSet)> {

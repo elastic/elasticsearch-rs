@@ -976,6 +976,93 @@ impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10>
         builder.indices = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`indices`](Self::indices).
+    pub fn add_indices(
+        self,
+        value: impl Into<DataStreamIndex>,
+    ) -> DataStreamBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        crate::typed::builder::Set,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+    )> {
+        let mut builder = self.with_state();
+        builder
+            .indices
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`indices`](Self::indices), with a builder.
+    pub fn add_indices_with(
+        self,
+        f: impl FnOnce(
+            DataStreamIndexBuilder,
+        ) -> DataStreamIndexBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DataStreamBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        crate::typed::builder::Set,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+    )> {
+        self.add_indices(f(DataStreamIndexBuilder::new()).build())
+    }
+}
+
+impl<S0, S1, S2, S3, S5, S6, S7, S8, S9, S10>
+    DataStreamBuilder<(
+        S0,
+        S1,
+        S2,
+        S3,
+        crate::typed::builder::Set,
+        S5,
+        S6,
+        S7,
+        S8,
+        S9,
+        S10,
+    )>
+{
+    /// Adds an element to [`indices`](Self::indices).
+    pub fn add_indices(mut self, value: impl Into<DataStreamIndex>) -> Self {
+        self.indices
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`indices`](Self::indices), with a builder.
+    pub fn add_indices_with(
+        self,
+        f: impl FnOnce(
+            DataStreamIndexBuilder,
+        ) -> DataStreamIndexBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_indices(f(DataStreamIndexBuilder::new()).build())
+    }
 }
 
 impl<S0, S1, S2, S3, S4, S6, S7, S8, S9, S10>
@@ -3246,6 +3333,55 @@ impl<S0, S2> FailureStoreBuilder<(S0, crate::typed::builder::NotSet, S2)> {
         let mut builder = self.with_state();
         builder.indices = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`indices`](Self::indices).
+    pub fn add_indices(
+        self,
+        value: impl Into<DataStreamIndex>,
+    ) -> FailureStoreBuilder<(S0, crate::typed::builder::Set, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .indices
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`indices`](Self::indices), with a builder.
+    pub fn add_indices_with(
+        self,
+        f: impl FnOnce(
+            DataStreamIndexBuilder,
+        ) -> DataStreamIndexBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FailureStoreBuilder<(S0, crate::typed::builder::Set, S2)> {
+        self.add_indices(f(DataStreamIndexBuilder::new()).build())
+    }
+}
+
+impl<S0, S2> FailureStoreBuilder<(S0, crate::typed::builder::Set, S2)> {
+    /// Adds an element to [`indices`](Self::indices).
+    pub fn add_indices(mut self, value: impl Into<DataStreamIndex>) -> Self {
+        self.indices
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`indices`](Self::indices), with a builder.
+    pub fn add_indices_with(
+        self,
+        f: impl FnOnce(
+            DataStreamIndexBuilder,
+        ) -> DataStreamIndexBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_indices(f(DataStreamIndexBuilder::new()).build())
     }
 }
 
@@ -7344,6 +7480,29 @@ impl<S0> IndexTemplateBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.composed_of = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`composed_of`](Self::composed_of).
+    pub fn add_composed_of(
+        self,
+        value: impl Into<crate::typed::_types::Name>,
+    ) -> IndexTemplateBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .composed_of
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> IndexTemplateBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`composed_of`](Self::composed_of).
+    pub fn add_composed_of(mut self, value: impl Into<crate::typed::_types::Name>) -> Self {
+        self.composed_of
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl IndexTemplateBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
@@ -8255,6 +8414,29 @@ impl<S0> IndexTemplateWithRolloverBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.composed_of = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`composed_of`](Self::composed_of).
+    pub fn add_composed_of(
+        self,
+        value: impl Into<crate::typed::_types::Name>,
+    ) -> IndexTemplateWithRolloverBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .composed_of
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> IndexTemplateWithRolloverBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`composed_of`](Self::composed_of).
+    pub fn add_composed_of(mut self, value: impl Into<crate::typed::_types::Name>) -> Self {
+        self.composed_of
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -12153,6 +12335,52 @@ impl<S1, S2, S3, S4> TemplateMappingBuilder<(crate::typed::builder::NotSet, S1, 
         builder.aliases = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`aliases`](Self::aliases).
+    pub fn add_aliases(
+        self,
+        key: impl Into<crate::typed::_types::IndexName>,
+        value: impl Into<Alias>,
+    ) -> TemplateMappingBuilder<(crate::typed::builder::Set, S1, S2, S3, S4)> {
+        let mut builder = self.with_state();
+        builder
+            .aliases
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`aliases`](Self::aliases), with a builder.
+    pub fn add_aliases_with(
+        self,
+        key: impl Into<crate::typed::_types::IndexName>,
+        f: impl FnOnce(AliasBuilder) -> AliasBuilder,
+    ) -> TemplateMappingBuilder<(crate::typed::builder::Set, S1, S2, S3, S4)> {
+        self.add_aliases(key, f(AliasBuilder::new()).build())
+    }
+}
+
+impl<S1, S2, S3, S4> TemplateMappingBuilder<(crate::typed::builder::Set, S1, S2, S3, S4)> {
+    /// Adds an entry to [`aliases`](Self::aliases).
+    pub fn add_aliases(
+        mut self,
+        key: impl Into<crate::typed::_types::IndexName>,
+        value: impl Into<Alias>,
+    ) -> Self {
+        self.aliases
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`aliases`](Self::aliases), with a builder.
+    pub fn add_aliases_with(
+        self,
+        key: impl Into<crate::typed::_types::IndexName>,
+        f: impl FnOnce(AliasBuilder) -> AliasBuilder,
+    ) -> Self {
+        self.add_aliases(key, f(AliasBuilder::new()).build())
+    }
 }
 
 impl<S0, S2, S3, S4> TemplateMappingBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
@@ -12163,6 +12391,29 @@ impl<S0, S2, S3, S4> TemplateMappingBuilder<(S0, crate::typed::builder::NotSet, 
         let mut builder = self.with_state();
         builder.index_patterns = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`index_patterns`](Self::index_patterns).
+    pub fn add_index_patterns(
+        self,
+        value: impl Into<crate::typed::_types::Name>,
+    ) -> TemplateMappingBuilder<(S0, crate::typed::builder::Set, S2, S3, S4)> {
+        let mut builder = self.with_state();
+        builder
+            .index_patterns
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S2, S3, S4> TemplateMappingBuilder<(S0, crate::typed::builder::Set, S2, S3, S4)> {
+    /// Adds an element to [`index_patterns`](Self::index_patterns).
+    pub fn add_index_patterns(mut self, value: impl Into<crate::typed::_types::Name>) -> Self {
+        self.index_patterns
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -12206,6 +12457,34 @@ impl<S0, S1, S2, S3> TemplateMappingBuilder<(S0, S1, S2, S3, crate::typed::build
         let mut builder = self.with_state();
         builder.settings = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`settings`](Self::settings).
+    pub fn add_settings(
+        self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> TemplateMappingBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .settings
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, S3> TemplateMappingBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)> {
+    /// Adds an entry to [`settings`](Self::settings).
+    pub fn add_settings(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.settings
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 

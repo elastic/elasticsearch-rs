@@ -3758,6 +3758,62 @@ impl<S1, S2> SnapshotIndexStatsBuilder<(crate::typed::builder::NotSet, S1, S2)> 
         builder.shards = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`shards`](Self::shards).
+    pub fn add_shards(
+        self,
+        key: impl Into<String>,
+        value: impl Into<SnapshotShardsStatus>,
+    ) -> SnapshotIndexStatsBuilder<(crate::typed::builder::Set, S1, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .shards
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`shards`](Self::shards), with a builder.
+    pub fn add_shards_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            SnapshotShardsStatusBuilder,
+        ) -> SnapshotShardsStatusBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SnapshotIndexStatsBuilder<(crate::typed::builder::Set, S1, S2)> {
+        self.add_shards(key, f(SnapshotShardsStatusBuilder::new()).build())
+    }
+}
+
+impl<S1, S2> SnapshotIndexStatsBuilder<(crate::typed::builder::Set, S1, S2)> {
+    /// Adds an entry to [`shards`](Self::shards).
+    pub fn add_shards(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<SnapshotShardsStatus>,
+    ) -> Self {
+        self.shards
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`shards`](Self::shards), with a builder.
+    pub fn add_shards_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            SnapshotShardsStatusBuilder,
+        ) -> SnapshotShardsStatusBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_shards(key, f(SnapshotShardsStatusBuilder::new()).build())
+    }
 }
 
 impl<S0, S2> SnapshotIndexStatsBuilder<(S0, crate::typed::builder::NotSet, S2)> {
@@ -4377,6 +4433,29 @@ impl<S1, S2> SnapshotInfoBuilder<(crate::typed::builder::NotSet, S1, S2)> {
         let mut builder = self.with_state();
         builder.data_streams = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`data_streams`](Self::data_streams).
+    pub fn add_data_streams(
+        self,
+        value: impl Into<String>,
+    ) -> SnapshotInfoBuilder<(crate::typed::builder::Set, S1, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .data_streams
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1, S2> SnapshotInfoBuilder<(crate::typed::builder::Set, S1, S2)> {
+    /// Adds an element to [`data_streams`](Self::data_streams).
+    pub fn add_data_streams(mut self, value: impl Into<String>) -> Self {
+        self.data_streams
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -6872,6 +6951,66 @@ impl<S0, S2, S3, S4, S5, S6, S7>
         let mut builder = self.with_state();
         builder.indices = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`indices`](Self::indices).
+    pub fn add_indices(
+        self,
+        key: impl Into<String>,
+        value: impl Into<SnapshotIndexStats>,
+    ) -> StatusBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5, S6, S7)> {
+        let mut builder = self.with_state();
+        builder
+            .indices
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`indices`](Self::indices), with a builder.
+    pub fn add_indices_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            SnapshotIndexStatsBuilder,
+        ) -> SnapshotIndexStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> StatusBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5, S6, S7)> {
+        self.add_indices(key, f(SnapshotIndexStatsBuilder::new()).build())
+    }
+}
+
+impl<S0, S2, S3, S4, S5, S6, S7>
+    StatusBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5, S6, S7)>
+{
+    /// Adds an entry to [`indices`](Self::indices).
+    pub fn add_indices(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<SnapshotIndexStats>,
+    ) -> Self {
+        self.indices
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`indices`](Self::indices), with a builder.
+    pub fn add_indices_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            SnapshotIndexStatsBuilder,
+        ) -> SnapshotIndexStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_indices(key, f(SnapshotIndexStatsBuilder::new()).build())
     }
 }
 

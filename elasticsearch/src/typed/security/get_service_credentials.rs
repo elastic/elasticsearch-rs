@@ -95,6 +95,56 @@ impl<S0> NodesCredentialsBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.file_tokens = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`file_tokens`](Self::file_tokens).
+    pub fn add_file_tokens(
+        self,
+        key: impl Into<String>,
+        value: impl Into<NodesCredentialsFileToken>,
+    ) -> NodesCredentialsBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .file_tokens
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`file_tokens`](Self::file_tokens), with a builder.
+    pub fn add_file_tokens_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            NodesCredentialsFileTokenBuilder,
+        ) -> NodesCredentialsFileTokenBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodesCredentialsBuilder<(S0, crate::typed::builder::Set)> {
+        self.add_file_tokens(key, f(NodesCredentialsFileTokenBuilder::new()).build())
+    }
+}
+
+impl<S0> NodesCredentialsBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an entry to [`file_tokens`](Self::file_tokens).
+    pub fn add_file_tokens(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<NodesCredentialsFileToken>,
+    ) -> Self {
+        self.file_tokens
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`file_tokens`](Self::file_tokens), with a builder.
+    pub fn add_file_tokens_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            NodesCredentialsFileTokenBuilder,
+        ) -> NodesCredentialsFileTokenBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_file_tokens(key, f(NodesCredentialsFileTokenBuilder::new()).build())
+    }
 }
 
 impl NodesCredentialsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
@@ -183,6 +233,29 @@ impl NodesCredentialsFileTokenBuilder<(crate::typed::builder::NotSet,)> {
         let mut builder = self.with_state();
         builder.nodes = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`nodes`](Self::nodes).
+    pub fn add_nodes(
+        self,
+        value: impl Into<String>,
+    ) -> NodesCredentialsFileTokenBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .nodes
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl NodesCredentialsFileTokenBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`nodes`](Self::nodes).
+    pub fn add_nodes(mut self, value: impl Into<String>) -> Self {
+        self.nodes
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 

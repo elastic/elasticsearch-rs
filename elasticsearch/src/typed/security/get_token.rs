@@ -263,6 +263,36 @@ impl<S1, S2, S3, S4, S5, S6>
         builder.metadata = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> AuthenticatedUserBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5, S6)> {
+        let mut builder = self.with_state();
+        builder
+            .metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S1, S2, S3, S4, S5, S6>
+    AuthenticatedUserBuilder<(crate::typed::builder::Set, S1, S2, S3, S4, S5, S6)>
+{
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl<S0, S2, S3, S4, S5, S6>
@@ -275,6 +305,31 @@ impl<S0, S2, S3, S4, S5, S6>
         let mut builder = self.with_state();
         builder.roles = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(
+        self,
+        value: impl Into<String>,
+    ) -> AuthenticatedUserBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5, S6)> {
+        let mut builder = self.with_state();
+        builder
+            .roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S2, S3, S4, S5, S6>
+    AuthenticatedUserBuilder<(S0, crate::typed::builder::Set, S2, S3, S4, S5, S6)>
+{
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(mut self, value: impl Into<String>) -> Self {
+        self.roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 

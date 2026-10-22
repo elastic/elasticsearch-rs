@@ -222,6 +222,29 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
         builder.vocabulary = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`vocabulary`](Self::vocabulary).
+    pub fn add_vocabulary(
+        self,
+        value: impl Into<String>,
+    ) -> RequestBuilder<(S0, crate::typed::builder::Set), C> {
+        let mut builder = self.with_state();
+        builder
+            .vocabulary
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, C> RequestBuilder<(S0, crate::typed::builder::Set), C> {
+    /// Adds an element to [`vocabulary`](Self::vocabulary).
+    pub fn add_vocabulary(mut self, value: impl Into<String>) -> Self {
+        self.vocabulary
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {

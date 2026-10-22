@@ -206,6 +206,29 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
         builder.data = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`data`](Self::data).
+    pub fn add_data(
+        self,
+        value: impl Into<serde_json::Value>,
+    ) -> RequestBuilder<(S0, crate::typed::builder::Set), C> {
+        let mut builder = self.with_state();
+        builder
+            .data
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, C> RequestBuilder<(S0, crate::typed::builder::Set), C> {
+    /// Adds an element to [`data`](Self::data).
+    pub fn add_data(mut self, value: impl Into<serde_json::Value>) -> Self {
+        self.data
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), C> {

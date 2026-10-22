@@ -100,6 +100,57 @@ impl<S1, S2, S3, S4> AutoFollowStatsBuilder<(crate::typed::builder::NotSet, S1, 
         builder.auto_followed_clusters = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`auto_followed_clusters`](Self::auto_followed_clusters).
+    pub fn add_auto_followed_clusters(
+        self,
+        value: impl Into<AutoFollowedCluster>,
+    ) -> AutoFollowStatsBuilder<(crate::typed::builder::Set, S1, S2, S3, S4)> {
+        let mut builder = self.with_state();
+        builder
+            .auto_followed_clusters
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`auto_followed_clusters`](Self::auto_followed_clusters), with a builder.
+    pub fn add_auto_followed_clusters_with(
+        self,
+        f: impl FnOnce(
+            AutoFollowedClusterBuilder,
+        ) -> AutoFollowedClusterBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AutoFollowStatsBuilder<(crate::typed::builder::Set, S1, S2, S3, S4)> {
+        self.add_auto_followed_clusters(f(AutoFollowedClusterBuilder::new()).build())
+    }
+}
+
+impl<S1, S2, S3, S4> AutoFollowStatsBuilder<(crate::typed::builder::Set, S1, S2, S3, S4)> {
+    /// Adds an element to [`auto_followed_clusters`](Self::auto_followed_clusters).
+    pub fn add_auto_followed_clusters(mut self, value: impl Into<AutoFollowedCluster>) -> Self {
+        self.auto_followed_clusters
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`auto_followed_clusters`](Self::auto_followed_clusters), with a builder.
+    pub fn add_auto_followed_clusters_with(
+        self,
+        f: impl FnOnce(
+            AutoFollowedClusterBuilder,
+        ) -> AutoFollowedClusterBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_auto_followed_clusters(f(AutoFollowedClusterBuilder::new()).build())
+    }
 }
 
 impl<S0, S2, S3, S4> AutoFollowStatsBuilder<(S0, crate::typed::builder::NotSet, S2, S3, S4)> {
@@ -148,6 +199,58 @@ impl<S0, S1, S2, S3> AutoFollowStatsBuilder<(S0, S1, S2, S3, crate::typed::build
         let mut builder = self.with_state();
         builder.recent_auto_follow_errors = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`recent_auto_follow_errors`](Self::recent_auto_follow_errors).
+    pub fn add_recent_auto_follow_errors(
+        self,
+        value: impl Into<crate::typed::_types::ErrorCause>,
+    ) -> AutoFollowStatsBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .recent_auto_follow_errors
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`recent_auto_follow_errors`](Self::recent_auto_follow_errors), with a builder.
+    pub fn add_recent_auto_follow_errors_with(
+        self,
+        f: impl FnOnce(
+            crate::typed::_types::ErrorCauseBuilder,
+        )
+            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+    ) -> AutoFollowStatsBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)> {
+        self.add_recent_auto_follow_errors(
+            f(crate::typed::_types::ErrorCauseBuilder::new()).build(),
+        )
+    }
+}
+
+impl<S0, S1, S2, S3> AutoFollowStatsBuilder<(S0, S1, S2, S3, crate::typed::builder::Set)> {
+    /// Adds an element to [`recent_auto_follow_errors`](Self::recent_auto_follow_errors).
+    pub fn add_recent_auto_follow_errors(
+        mut self,
+        value: impl Into<crate::typed::_types::ErrorCause>,
+    ) -> Self {
+        self.recent_auto_follow_errors
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`recent_auto_follow_errors`](Self::recent_auto_follow_errors), with a builder.
+    pub fn add_recent_auto_follow_errors_with(
+        self,
+        f: impl FnOnce(
+            crate::typed::_types::ErrorCauseBuilder,
+        )
+            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_recent_auto_follow_errors(
+            f(crate::typed::_types::ErrorCauseBuilder::new()).build(),
+        )
     }
 }
 
@@ -482,6 +585,58 @@ impl FollowStatsBuilder<(crate::typed::builder::NotSet,)> {
         let mut builder = self.with_state();
         builder.indices = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`indices`](Self::indices).
+    pub fn add_indices(
+        self,
+        value: impl Into<crate::typed::ccr::_types::FollowIndexStats>,
+    ) -> FollowStatsBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .indices
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`indices`](Self::indices), with a builder.
+    pub fn add_indices_with(
+        self,
+        f: impl FnOnce(
+            crate::typed::ccr::_types::FollowIndexStatsBuilder,
+        ) -> crate::typed::ccr::_types::FollowIndexStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FollowStatsBuilder<(crate::typed::builder::Set,)> {
+        self.add_indices(f(crate::typed::ccr::_types::FollowIndexStatsBuilder::new()).build())
+    }
+}
+
+impl FollowStatsBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`indices`](Self::indices).
+    pub fn add_indices(
+        mut self,
+        value: impl Into<crate::typed::ccr::_types::FollowIndexStats>,
+    ) -> Self {
+        self.indices
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`indices`](Self::indices), with a builder.
+    pub fn add_indices_with(
+        self,
+        f: impl FnOnce(
+            crate::typed::ccr::_types::FollowIndexStatsBuilder,
+        ) -> crate::typed::ccr::_types::FollowIndexStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_indices(f(crate::typed::ccr::_types::FollowIndexStatsBuilder::new()).build())
     }
 }
 

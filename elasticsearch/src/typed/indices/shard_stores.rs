@@ -56,6 +56,56 @@ impl IndicesShardStoresBuilder<(crate::typed::builder::NotSet,)> {
         builder.shards = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`shards`](Self::shards).
+    pub fn add_shards(
+        self,
+        key: impl Into<String>,
+        value: impl Into<ShardStoreWrapper>,
+    ) -> IndicesShardStoresBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .shards
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`shards`](Self::shards), with a builder.
+    pub fn add_shards_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            ShardStoreWrapperBuilder,
+        ) -> ShardStoreWrapperBuilder<(crate::typed::builder::Set,)>,
+    ) -> IndicesShardStoresBuilder<(crate::typed::builder::Set,)> {
+        self.add_shards(key, f(ShardStoreWrapperBuilder::new()).build())
+    }
+}
+
+impl IndicesShardStoresBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an entry to [`shards`](Self::shards).
+    pub fn add_shards(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<ShardStoreWrapper>,
+    ) -> Self {
+        self.shards
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`shards`](Self::shards), with a builder.
+    pub fn add_shards_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            ShardStoreWrapperBuilder,
+        ) -> ShardStoreWrapperBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_shards(key, f(ShardStoreWrapperBuilder::new()).build())
+    }
 }
 
 impl IndicesShardStoresBuilder<(crate::typed::builder::Set,)> {
@@ -867,6 +917,30 @@ impl<S1, S2, S3> ShardStoreNodeBuilder<(crate::typed::builder::NotSet, S1, S2, S
         builder.attributes = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`attributes`](Self::attributes).
+    pub fn add_attributes(
+        self,
+        key: impl Into<String>,
+        value: impl Into<String>,
+    ) -> ShardStoreNodeBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
+        let mut builder = self.with_state();
+        builder
+            .attributes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S1, S2, S3> ShardStoreNodeBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
+    /// Adds an entry to [`attributes`](Self::attributes).
+    pub fn add_attributes(mut self, key: impl Into<String>, value: impl Into<String>) -> Self {
+        self.attributes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl<S0, S2, S3> ShardStoreNodeBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
@@ -888,6 +962,29 @@ impl<S0, S1, S3> ShardStoreNodeBuilder<(S0, S1, crate::typed::builder::NotSet, S
         let mut builder = self.with_state();
         builder.roles = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(
+        self,
+        value: impl Into<String>,
+    ) -> ShardStoreNodeBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+        let mut builder = self.with_state();
+        builder
+            .roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S3> ShardStoreNodeBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(mut self, value: impl Into<String>) -> Self {
+        self.roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -1060,6 +1157,45 @@ impl ShardStoreWrapperBuilder<(crate::typed::builder::NotSet,)> {
         let mut builder = self.with_state();
         builder.stores = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`stores`](Self::stores).
+    pub fn add_stores(
+        self,
+        value: impl Into<ShardStore>,
+    ) -> ShardStoreWrapperBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .stores
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`stores`](Self::stores), with a builder.
+    pub fn add_stores_with(
+        self,
+        f: impl FnOnce(ShardStoreBuilder) -> ShardStoreBuilder<(crate::typed::builder::Set,)>,
+    ) -> ShardStoreWrapperBuilder<(crate::typed::builder::Set,)> {
+        self.add_stores(f(ShardStoreBuilder::new()).build())
+    }
+}
+
+impl ShardStoreWrapperBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`stores`](Self::stores).
+    pub fn add_stores(mut self, value: impl Into<ShardStore>) -> Self {
+        self.stores
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`stores`](Self::stores), with a builder.
+    pub fn add_stores_with(
+        self,
+        f: impl FnOnce(ShardStoreBuilder) -> ShardStoreBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_stores(f(ShardStoreBuilder::new()).build())
     }
 }
 

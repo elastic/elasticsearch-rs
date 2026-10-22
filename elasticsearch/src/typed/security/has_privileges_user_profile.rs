@@ -94,6 +94,64 @@ impl<S0> HasPrivilegesUserProfileErrorsBuilder<(S0, crate::typed::builder::NotSe
         builder.details = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`details`](Self::details).
+    pub fn add_details(
+        self,
+        key: impl Into<crate::typed::security::_types::UserProfileId>,
+        value: impl Into<crate::typed::_types::ErrorCause>,
+    ) -> HasPrivilegesUserProfileErrorsBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .details
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`details`](Self::details), with a builder.
+    pub fn add_details_with(
+        self,
+        key: impl Into<crate::typed::security::_types::UserProfileId>,
+        f: impl FnOnce(
+            crate::typed::_types::ErrorCauseBuilder,
+        )
+            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+    ) -> HasPrivilegesUserProfileErrorsBuilder<(S0, crate::typed::builder::Set)> {
+        self.add_details(
+            key,
+            f(crate::typed::_types::ErrorCauseBuilder::new()).build(),
+        )
+    }
+}
+
+impl<S0> HasPrivilegesUserProfileErrorsBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an entry to [`details`](Self::details).
+    pub fn add_details(
+        mut self,
+        key: impl Into<crate::typed::security::_types::UserProfileId>,
+        value: impl Into<crate::typed::_types::ErrorCause>,
+    ) -> Self {
+        self.details
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`details`](Self::details), with a builder.
+    pub fn add_details_with(
+        self,
+        key: impl Into<crate::typed::security::_types::UserProfileId>,
+        f: impl FnOnce(
+            crate::typed::_types::ErrorCauseBuilder,
+        )
+            -> crate::typed::_types::ErrorCauseBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_details(
+            key,
+            f(crate::typed::_types::ErrorCauseBuilder::new()).build(),
+        )
+    }
 }
 
 impl
@@ -482,6 +540,32 @@ impl<S1, C> RequestBuilder<(crate::typed::builder::NotSet, S1), C> {
         let mut builder = self.with_state();
         builder.uids = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`uids`](Self::uids).
+    pub fn add_uids(
+        self,
+        value: impl Into<crate::typed::security::_types::UserProfileId>,
+    ) -> RequestBuilder<(crate::typed::builder::Set, S1), C> {
+        let mut builder = self.with_state();
+        builder
+            .uids
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S1, C> RequestBuilder<(crate::typed::builder::Set, S1), C> {
+    /// Adds an element to [`uids`](Self::uids).
+    pub fn add_uids(
+        mut self,
+        value: impl Into<crate::typed::security::_types::UserProfileId>,
+    ) -> Self {
+        self.uids
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 

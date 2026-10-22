@@ -225,6 +225,29 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2, crate::typed::builder::NotSet), 
         builder.operations = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`operations`](Self::operations).
+    pub fn add_operations(
+        self,
+        value: impl Into<RequestOperations>,
+    ) -> RequestBuilder<(S0, S1, S2, crate::typed::builder::Set), C> {
+        let mut builder = self.with_state();
+        builder
+            .operations
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2, crate::typed::builder::Set), C> {
+    /// Adds an element to [`operations`](Self::operations).
+    pub fn add_operations(mut self, value: impl Into<RequestOperations>) -> Self {
+        self.operations
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<C>

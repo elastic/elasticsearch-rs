@@ -3583,6 +3583,29 @@ impl<S0> DateProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.formats = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`formats`](Self::formats).
+    pub fn add_formats(
+        self,
+        value: impl Into<String>,
+    ) -> DateProcessorBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .formats
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> DateProcessorBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`formats`](Self::formats).
+    pub fn add_formats(mut self, value: impl Into<String>) -> Self {
+        self.formats
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl DateProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
@@ -4240,6 +4263,34 @@ impl<S0, S1, S2> DocumentSimulationBuilder<(S0, S1, S2, crate::typed::builder::N
         let mut builder = self.with_state();
         builder.source = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`source`](Self::source).
+    pub fn add_source(
+        self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> DocumentSimulationBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .source
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S2> DocumentSimulationBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+    /// Adds an entry to [`source`](Self::source).
+    pub fn add_source(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.source
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 
@@ -6952,6 +7003,29 @@ impl<S0> GrokProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.patterns = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`patterns`](Self::patterns).
+    pub fn add_patterns(
+        self,
+        value: impl Into<crate::typed::_types::GrokPattern>,
+    ) -> GrokProcessorBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .patterns
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> GrokProcessorBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`patterns`](Self::patterns).
+    pub fn add_patterns(mut self, value: impl Into<crate::typed::_types::GrokPattern>) -> Self {
+        self.patterns
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -11009,6 +11083,49 @@ impl PipelineConfigBuilder<(crate::typed::builder::NotSet,)> {
         builder.processors = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`processors`](Self::processors).
+    pub fn add_processors(
+        self,
+        value: impl Into<ProcessorContainer>,
+    ) -> PipelineConfigBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .processors
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`processors`](Self::processors), with a builder.
+    pub fn add_processors_with(
+        self,
+        f: impl FnOnce(
+            ProcessorContainerBuilder,
+        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> PipelineConfigBuilder<(crate::typed::builder::Set,)> {
+        self.add_processors(f(ProcessorContainerBuilder::new()).build())
+    }
+}
+
+impl PipelineConfigBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`processors`](Self::processors).
+    pub fn add_processors(mut self, value: impl Into<ProcessorContainer>) -> Self {
+        self.processors
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`processors`](Self::processors), with a builder.
+    pub fn add_processors_with(
+        self,
+        f: impl FnOnce(
+            ProcessorContainerBuilder,
+        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        self.add_processors(f(ProcessorContainerBuilder::new()).build())
+    }
 }
 
 impl PipelineConfigBuilder<(crate::typed::builder::Set,)> {
@@ -13916,6 +14033,29 @@ impl<S0> RedactProcessorBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.patterns = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`patterns`](Self::patterns).
+    pub fn add_patterns(
+        self,
+        value: impl Into<crate::typed::_types::GrokPattern>,
+    ) -> RedactProcessorBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .patterns
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> RedactProcessorBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`patterns`](Self::patterns).
+    pub fn add_patterns(mut self, value: impl Into<crate::typed::_types::GrokPattern>) -> Self {
+        self.patterns
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 

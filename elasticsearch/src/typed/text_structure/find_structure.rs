@@ -527,6 +527,29 @@ impl<C> RequestBuilder<(crate::typed::builder::NotSet,), C> {
         builder.text_files = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`text_files`](Self::text_files).
+    pub fn add_text_files(
+        self,
+        value: impl Into<serde_json::Value>,
+    ) -> RequestBuilder<(crate::typed::builder::Set,), C> {
+        let mut builder = self.with_state();
+        builder
+            .text_files
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {
+    /// Adds an element to [`text_files`](Self::text_files).
+    pub fn add_text_files(mut self, value: impl Into<serde_json::Value>) -> Self {
+        self.text_files
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<C> RequestBuilder<(crate::typed::builder::Set,), C> {

@@ -98,6 +98,29 @@ impl<S0, S2> ApplicationPrivilegesCheckBuilder<(S0, crate::typed::builder::NotSe
         builder.privileges = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(
+        self,
+        value: impl Into<String>,
+    ) -> ApplicationPrivilegesCheckBuilder<(S0, crate::typed::builder::Set, S2)> {
+        let mut builder = self.with_state();
+        builder
+            .privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S2> ApplicationPrivilegesCheckBuilder<(S0, crate::typed::builder::Set, S2)> {
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(mut self, value: impl Into<String>) -> Self {
+        self.privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0, S1> ApplicationPrivilegesCheckBuilder<(S0, S1, crate::typed::builder::NotSet)> {
@@ -109,6 +132,29 @@ impl<S0, S1> ApplicationPrivilegesCheckBuilder<(S0, S1, crate::typed::builder::N
         let mut builder = self.with_state();
         builder.resources = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`resources`](Self::resources).
+    pub fn add_resources(
+        self,
+        value: impl Into<String>,
+    ) -> ApplicationPrivilegesCheckBuilder<(S0, S1, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .resources
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1> ApplicationPrivilegesCheckBuilder<(S0, S1, crate::typed::builder::Set)> {
+    /// Adds an element to [`resources`](Self::resources).
+    pub fn add_resources(mut self, value: impl Into<String>) -> Self {
+        self.resources
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 
@@ -282,6 +328,32 @@ impl<S0> IndexPrivilegesCheckBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.privileges = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(
+        self,
+        value: impl Into<crate::typed::security::_types::IndexPrivilege>,
+    ) -> IndexPrivilegesCheckBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0> IndexPrivilegesCheckBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`privileges`](Self::privileges).
+    pub fn add_privileges(
+        mut self,
+        value: impl Into<crate::typed::security::_types::IndexPrivilege>,
+    ) -> Self {
+        self.privileges
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
     }
 }
 

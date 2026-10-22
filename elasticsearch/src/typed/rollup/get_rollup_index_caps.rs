@@ -56,6 +56,59 @@ impl IndexCapabilitiesBuilder<(crate::typed::builder::NotSet,)> {
         builder.rollup_jobs = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`rollup_jobs`](Self::rollup_jobs).
+    pub fn add_rollup_jobs(
+        self,
+        value: impl Into<RollupJobSummary>,
+    ) -> IndexCapabilitiesBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder
+            .rollup_jobs
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`rollup_jobs`](Self::rollup_jobs), with a builder.
+    pub fn add_rollup_jobs_with(
+        self,
+        f: impl FnOnce(
+            RollupJobSummaryBuilder,
+        ) -> RollupJobSummaryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IndexCapabilitiesBuilder<(crate::typed::builder::Set,)> {
+        self.add_rollup_jobs(f(RollupJobSummaryBuilder::new()).build())
+    }
+}
+
+impl IndexCapabilitiesBuilder<(crate::typed::builder::Set,)> {
+    /// Adds an element to [`rollup_jobs`](Self::rollup_jobs).
+    pub fn add_rollup_jobs(mut self, value: impl Into<RollupJobSummary>) -> Self {
+        self.rollup_jobs
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`rollup_jobs`](Self::rollup_jobs), with a builder.
+    pub fn add_rollup_jobs_with(
+        self,
+        f: impl FnOnce(
+            RollupJobSummaryBuilder,
+        ) -> RollupJobSummaryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_rollup_jobs(f(RollupJobSummaryBuilder::new()).build())
+    }
 }
 
 impl IndexCapabilitiesBuilder<(crate::typed::builder::Set,)> {
@@ -442,6 +495,34 @@ impl<S1, S2, S3> RollupJobSummaryBuilder<(crate::typed::builder::NotSet, S1, S2,
         let mut builder = self.with_state();
         builder.fields = Some(value.into());
         builder
+    }
+
+    /// Adds an entry to [`fields`](Self::fields).
+    pub fn add_fields(
+        self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<Vec<RollupJobSummaryField>>,
+    ) -> RollupJobSummaryBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
+        let mut builder = self.with_state();
+        builder
+            .fields
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+}
+
+impl<S1, S2, S3> RollupJobSummaryBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
+    /// Adds an entry to [`fields`](Self::fields).
+    pub fn add_fields(
+        mut self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<Vec<RollupJobSummaryField>>,
+    ) -> Self {
+        self.fields
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
     }
 }
 

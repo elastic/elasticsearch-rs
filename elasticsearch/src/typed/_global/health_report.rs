@@ -2946,6 +2946,29 @@ impl<S0, S1, S3> ImpactBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
         builder.impact_areas = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`impact_areas`](Self::impact_areas).
+    pub fn add_impact_areas(
+        self,
+        value: impl Into<ImpactArea>,
+    ) -> ImpactBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+        let mut builder = self.with_state();
+        builder
+            .impact_areas
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+}
+
+impl<S0, S1, S3> ImpactBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+    /// Adds an element to [`impact_areas`](Self::impact_areas).
+    pub fn add_impact_areas(mut self, value: impl Into<ImpactArea>) -> Self {
+        self.impact_areas
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S0, S1, S2> ImpactBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
@@ -4139,6 +4162,51 @@ impl<S0> MasterIsStableIndicatorDetailsBuilder<(S0, crate::typed::builder::NotSe
         let mut builder = self.with_state();
         builder.recent_masters = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`recent_masters`](Self::recent_masters).
+    pub fn add_recent_masters(
+        self,
+        value: impl Into<IndicatorNode>,
+    ) -> MasterIsStableIndicatorDetailsBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .recent_masters
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`recent_masters`](Self::recent_masters), with a builder.
+    pub fn add_recent_masters_with(
+        self,
+        f: impl FnOnce(
+            IndicatorNodeBuilder,
+        )
+            -> IndicatorNodeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> MasterIsStableIndicatorDetailsBuilder<(S0, crate::typed::builder::Set)> {
+        self.add_recent_masters(f(IndicatorNodeBuilder::new()).build())
+    }
+}
+
+impl<S0> MasterIsStableIndicatorDetailsBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an element to [`recent_masters`](Self::recent_masters).
+    pub fn add_recent_masters(mut self, value: impl Into<IndicatorNode>) -> Self {
+        self.recent_masters
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`recent_masters`](Self::recent_masters), with a builder.
+    pub fn add_recent_masters_with(
+        self,
+        f: impl FnOnce(
+            IndicatorNodeBuilder,
+        )
+            -> IndicatorNodeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Self {
+        self.add_recent_masters(f(IndicatorNodeBuilder::new()).build())
     }
 }
 

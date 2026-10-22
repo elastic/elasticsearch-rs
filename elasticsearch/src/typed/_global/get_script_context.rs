@@ -61,6 +61,57 @@ impl<S1> ContextBuilder<(crate::typed::builder::NotSet, S1)> {
         builder.methods = Some(value.into());
         builder
     }
+
+    /// Adds an element to [`methods`](Self::methods).
+    pub fn add_methods(
+        self,
+        value: impl Into<ContextMethod>,
+    ) -> ContextBuilder<(crate::typed::builder::Set, S1)> {
+        let mut builder = self.with_state();
+        builder
+            .methods
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`methods`](Self::methods), with a builder.
+    pub fn add_methods_with(
+        self,
+        f: impl FnOnce(
+            ContextMethodBuilder,
+        ) -> ContextMethodBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ContextBuilder<(crate::typed::builder::Set, S1)> {
+        self.add_methods(f(ContextMethodBuilder::new()).build())
+    }
+}
+
+impl<S1> ContextBuilder<(crate::typed::builder::Set, S1)> {
+    /// Adds an element to [`methods`](Self::methods).
+    pub fn add_methods(mut self, value: impl Into<ContextMethod>) -> Self {
+        self.methods
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`methods`](Self::methods), with a builder.
+    pub fn add_methods_with(
+        self,
+        f: impl FnOnce(
+            ContextMethodBuilder,
+        ) -> ContextMethodBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_methods(f(ContextMethodBuilder::new()).build())
+    }
 }
 
 impl<S0> ContextBuilder<(S0, crate::typed::builder::NotSet)> {
@@ -204,6 +255,55 @@ impl<S0, S1> ContextMethodBuilder<(S0, S1, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.params = Some(value.into());
         builder
+    }
+
+    /// Adds an element to [`params`](Self::params).
+    pub fn add_params(
+        self,
+        value: impl Into<ContextMethodParam>,
+    ) -> ContextMethodBuilder<(S0, S1, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .params
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        builder
+    }
+
+    /// Adds an element to [`params`](Self::params), with a builder.
+    pub fn add_params_with(
+        self,
+        f: impl FnOnce(
+            ContextMethodParamBuilder,
+        ) -> ContextMethodParamBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ContextMethodBuilder<(S0, S1, crate::typed::builder::Set)> {
+        self.add_params(f(ContextMethodParamBuilder::new()).build())
+    }
+}
+
+impl<S0, S1> ContextMethodBuilder<(S0, S1, crate::typed::builder::Set)> {
+    /// Adds an element to [`params`](Self::params).
+    pub fn add_params(mut self, value: impl Into<ContextMethodParam>) -> Self {
+        self.params
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
+    /// Adds an element to [`params`](Self::params), with a builder.
+    pub fn add_params_with(
+        self,
+        f: impl FnOnce(
+            ContextMethodParamBuilder,
+        ) -> ContextMethodParamBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_params(f(ContextMethodParamBuilder::new()).build())
     }
 }
 

@@ -428,6 +428,78 @@ impl<S0> ResponseBaseBuilder<(S0, crate::typed::builder::NotSet)> {
         builder.nodes = Some(value.into());
         builder
     }
+
+    /// Adds an entry to [`nodes`](Self::nodes).
+    pub fn add_nodes(
+        self,
+        key: impl Into<String>,
+        value: impl Into<crate::typed::nodes::_types::RepositoryMeteringInformation>,
+    ) -> ResponseBaseBuilder<(S0, crate::typed::builder::Set)> {
+        let mut builder = self.with_state();
+        builder
+            .nodes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        builder
+    }
+
+    /// Adds an entry to [`nodes`](Self::nodes), with a builder.
+    pub fn add_nodes_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            crate::typed::nodes::_types::RepositoryMeteringInformationBuilder,
+        ) -> crate::typed::nodes::_types::RepositoryMeteringInformationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ResponseBaseBuilder<(S0, crate::typed::builder::Set)> {
+        self.add_nodes(
+            key,
+            f(crate::typed::nodes::_types::RepositoryMeteringInformationBuilder::new()).build(),
+        )
+    }
+}
+
+impl<S0> ResponseBaseBuilder<(S0, crate::typed::builder::Set)> {
+    /// Adds an entry to [`nodes`](Self::nodes).
+    pub fn add_nodes(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<crate::typed::nodes::_types::RepositoryMeteringInformation>,
+    ) -> Self {
+        self.nodes
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`nodes`](Self::nodes), with a builder.
+    pub fn add_nodes_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            crate::typed::nodes::_types::RepositoryMeteringInformationBuilder,
+        ) -> crate::typed::nodes::_types::RepositoryMeteringInformationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_nodes(
+            key,
+            f(crate::typed::nodes::_types::RepositoryMeteringInformationBuilder::new()).build(),
+        )
+    }
 }
 
 impl ResponseBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)> {
