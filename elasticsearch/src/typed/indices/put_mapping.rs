@@ -556,6 +556,20 @@ impl<S0, C> RequestBuilder<(S0,), C> {
         self
     }
 
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::mapping::Property>,
+    >(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(crate::typed::_types::mapping::PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(
+            key,
+            f(crate::typed::_types::mapping::PropertyBuilder::new()).build(),
+        )
+    }
+
     /// Enable making a routing value required on indexed documents.
     pub fn routing(
         mut self,

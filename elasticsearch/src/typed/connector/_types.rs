@@ -1162,6 +1162,14 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7>
             .push(value.into());
         self
     }
+
+    /// Adds an element to [`validations`](Self::validations), with a builder.
+    pub fn add_validations_with<B: crate::typed::builder::Build<Output = Validation>>(
+        self,
+        f: impl FnOnce(ValidationBuilder) -> B,
+    ) -> Self {
+        self.add_validations(f(ValidationBuilder::new()).build())
+    }
 }
 
 impl<S1, S2, S3, S4, S5, S6, S7>
@@ -4305,21 +4313,20 @@ pub enum FilteringValidationState {
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct GreaterThanValidation {
-    pub r#type: String,
     pub constraint: crate::typed::support::Float64,
 }
 
 impl GreaterThanValidation {
     /// Creates a builder for [`GreaterThanValidation`].
     ///
-    /// Required: `type`, `constraint`.
+    /// Required: `constraint`.
     pub fn builder() -> GreaterThanValidationBuilder {
         GreaterThanValidationBuilder::new()
     }
 
     /// Creates a [`GreaterThanValidation`] from a function that sets the members of its builder.
     ///
-    /// Required: `type`, `constraint`.
+    /// Required: `constraint`.
     pub fn of<B: crate::typed::builder::Build<Output = GreaterThanValidation>>(
         f: impl FnOnce(GreaterThanValidationBuilder) -> B,
     ) -> GreaterThanValidation {
@@ -4331,82 +4338,61 @@ impl GreaterThanValidation {
 #[doc(hidden)]
 #[allow(non_camel_case_types)]
 pub mod greater_than_validation_members {
-    pub struct r#type;
     pub struct constraint;
 }
 
 /// Builder for [`GreaterThanValidation`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct GreaterThanValidationBuilder<
-    S = (crate::typed::builder::NotSet, crate::typed::builder::NotSet),
-> {
-    r#type: Option<String>,
+pub struct GreaterThanValidationBuilder<S = (crate::typed::builder::NotSet,)> {
     constraint: Option<crate::typed::support::Float64>,
     _state: std::marker::PhantomData<S>,
 }
 
-impl GreaterThanValidationBuilder<(crate::typed::builder::NotSet, crate::typed::builder::NotSet)> {
+impl GreaterThanValidationBuilder<(crate::typed::builder::NotSet,)> {
     pub(crate) fn new() -> Self {
         GreaterThanValidationBuilder {
-            r#type: None,
             constraint: None,
             _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0, S1> GreaterThanValidationBuilder<(S0, S1)> {
+impl<S0> GreaterThanValidationBuilder<(S0,)> {
     fn with_state<N>(self) -> GreaterThanValidationBuilder<N> {
         GreaterThanValidationBuilder {
-            r#type: self.r#type,
             constraint: self.constraint,
             _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S1> GreaterThanValidationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> GreaterThanValidationBuilder<(crate::typed::builder::Set, S1)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> GreaterThanValidationBuilder<(S0, crate::typed::builder::NotSet)> {
+impl GreaterThanValidationBuilder<(crate::typed::builder::NotSet,)> {
     /// **Required.**
     pub fn constraint(
         self,
         value: impl Into<crate::typed::support::Float64>,
-    ) -> GreaterThanValidationBuilder<(S0, crate::typed::builder::Set)> {
+    ) -> GreaterThanValidationBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.constraint = Some(value.into());
         builder
     }
 }
 
-impl<S0, S1> GreaterThanValidationBuilder<(S0, S1)> {
+impl<S0> GreaterThanValidationBuilder<(S0,)> {
     /// Builds a [`GreaterThanValidation`].
     pub fn build(self) -> GreaterThanValidation
     where
-        S0: crate::typed::builder::IsSet<greater_than_validation_members::r#type>,
-        S1: crate::typed::builder::IsSet<greater_than_validation_members::constraint>,
+        S0: crate::typed::builder::IsSet<greater_than_validation_members::constraint>,
     {
         GreaterThanValidation {
-            r#type: self.r#type.unwrap(),
             constraint: self.constraint.unwrap(),
         }
     }
 }
 
-impl<S0, S1> crate::typed::builder::Build for GreaterThanValidationBuilder<(S0, S1)>
+impl<S0> crate::typed::builder::Build for GreaterThanValidationBuilder<(S0,)>
 where
-    S0: crate::typed::builder::IsSet<greater_than_validation_members::r#type>,
-    S1: crate::typed::builder::IsSet<greater_than_validation_members::constraint>,
+    S0: crate::typed::builder::IsSet<greater_than_validation_members::constraint>,
 {
     type Output = GreaterThanValidation;
 
@@ -4415,33 +4401,31 @@ where
     }
 }
 
-impl<S0, S1> From<GreaterThanValidationBuilder<(S0, S1)>> for GreaterThanValidation
+impl<S0> From<GreaterThanValidationBuilder<(S0,)>> for GreaterThanValidation
 where
-    S0: crate::typed::builder::IsSet<greater_than_validation_members::r#type>,
-    S1: crate::typed::builder::IsSet<greater_than_validation_members::constraint>,
+    S0: crate::typed::builder::IsSet<greater_than_validation_members::constraint>,
 {
-    fn from(builder: GreaterThanValidationBuilder<(S0, S1)>) -> Self {
+    fn from(builder: GreaterThanValidationBuilder<(S0,)>) -> Self {
         builder.build()
     }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct IncludedInValidation {
-    pub r#type: String,
     pub constraint: Vec<crate::typed::_types::ScalarValue>,
 }
 
 impl IncludedInValidation {
     /// Creates a builder for [`IncludedInValidation`].
     ///
-    /// Required: `type`, `constraint`.
+    /// Required: `constraint`.
     pub fn builder() -> IncludedInValidationBuilder {
         IncludedInValidationBuilder::new()
     }
 
     /// Creates a [`IncludedInValidation`] from a function that sets the members of its builder.
     ///
-    /// Required: `type`, `constraint`.
+    /// Required: `constraint`.
     pub fn of<B: crate::typed::builder::Build<Output = IncludedInValidation>>(
         f: impl FnOnce(IncludedInValidationBuilder) -> B,
     ) -> IncludedInValidation {
@@ -4453,58 +4437,40 @@ impl IncludedInValidation {
 #[doc(hidden)]
 #[allow(non_camel_case_types)]
 pub mod included_in_validation_members {
-    pub struct r#type;
     pub struct constraint;
 }
 
 /// Builder for [`IncludedInValidation`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct IncludedInValidationBuilder<
-    S = (crate::typed::builder::NotSet, crate::typed::builder::NotSet),
-> {
-    r#type: Option<String>,
+pub struct IncludedInValidationBuilder<S = (crate::typed::builder::NotSet,)> {
     constraint: Option<Vec<crate::typed::_types::ScalarValue>>,
     _state: std::marker::PhantomData<S>,
 }
 
-impl IncludedInValidationBuilder<(crate::typed::builder::NotSet, crate::typed::builder::NotSet)> {
+impl IncludedInValidationBuilder<(crate::typed::builder::NotSet,)> {
     pub(crate) fn new() -> Self {
         IncludedInValidationBuilder {
-            r#type: None,
             constraint: None,
             _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0, S1> IncludedInValidationBuilder<(S0, S1)> {
+impl<S0> IncludedInValidationBuilder<(S0,)> {
     fn with_state<N>(self) -> IncludedInValidationBuilder<N> {
         IncludedInValidationBuilder {
-            r#type: self.r#type,
             constraint: self.constraint,
             _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S1> IncludedInValidationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> IncludedInValidationBuilder<(crate::typed::builder::Set, S1)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> IncludedInValidationBuilder<(S0, crate::typed::builder::NotSet)> {
+impl IncludedInValidationBuilder<(crate::typed::builder::NotSet,)> {
     /// **Required.**
     pub fn constraint(
         self,
         value: impl Into<Vec<crate::typed::_types::ScalarValue>>,
-    ) -> IncludedInValidationBuilder<(S0, crate::typed::builder::Set)> {
+    ) -> IncludedInValidationBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.constraint = Some(value.into());
         builder
@@ -4514,7 +4480,7 @@ impl<S0> IncludedInValidationBuilder<(S0, crate::typed::builder::NotSet)> {
     pub fn add_constraint(
         self,
         value: impl Into<crate::typed::_types::ScalarValue>,
-    ) -> IncludedInValidationBuilder<(S0, crate::typed::builder::Set)> {
+    ) -> IncludedInValidationBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder
             .constraint
@@ -4524,7 +4490,7 @@ impl<S0> IncludedInValidationBuilder<(S0, crate::typed::builder::NotSet)> {
     }
 }
 
-impl<S0> IncludedInValidationBuilder<(S0, crate::typed::builder::Set)> {
+impl IncludedInValidationBuilder<(crate::typed::builder::Set,)> {
     /// Adds an element to [`constraint`](Self::constraint).
     pub fn add_constraint(mut self, value: impl Into<crate::typed::_types::ScalarValue>) -> Self {
         self.constraint
@@ -4534,24 +4500,21 @@ impl<S0> IncludedInValidationBuilder<(S0, crate::typed::builder::Set)> {
     }
 }
 
-impl<S0, S1> IncludedInValidationBuilder<(S0, S1)> {
+impl<S0> IncludedInValidationBuilder<(S0,)> {
     /// Builds a [`IncludedInValidation`].
     pub fn build(self) -> IncludedInValidation
     where
-        S0: crate::typed::builder::IsSet<included_in_validation_members::r#type>,
-        S1: crate::typed::builder::IsSet<included_in_validation_members::constraint>,
+        S0: crate::typed::builder::IsSet<included_in_validation_members::constraint>,
     {
         IncludedInValidation {
-            r#type: self.r#type.unwrap(),
             constraint: self.constraint.unwrap(),
         }
     }
 }
 
-impl<S0, S1> crate::typed::builder::Build for IncludedInValidationBuilder<(S0, S1)>
+impl<S0> crate::typed::builder::Build for IncludedInValidationBuilder<(S0,)>
 where
-    S0: crate::typed::builder::IsSet<included_in_validation_members::r#type>,
-    S1: crate::typed::builder::IsSet<included_in_validation_members::constraint>,
+    S0: crate::typed::builder::IsSet<included_in_validation_members::constraint>,
 {
     type Output = IncludedInValidation;
 
@@ -4560,12 +4523,11 @@ where
     }
 }
 
-impl<S0, S1> From<IncludedInValidationBuilder<(S0, S1)>> for IncludedInValidation
+impl<S0> From<IncludedInValidationBuilder<(S0,)>> for IncludedInValidation
 where
-    S0: crate::typed::builder::IsSet<included_in_validation_members::r#type>,
-    S1: crate::typed::builder::IsSet<included_in_validation_members::constraint>,
+    S0: crate::typed::builder::IsSet<included_in_validation_members::constraint>,
 {
-    fn from(builder: IncludedInValidationBuilder<(S0, S1)>) -> Self {
+    fn from(builder: IncludedInValidationBuilder<(S0,)>) -> Self {
         builder.build()
     }
 }
@@ -4748,21 +4710,20 @@ where
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct LessThanValidation {
-    pub r#type: String,
     pub constraint: crate::typed::support::Float64,
 }
 
 impl LessThanValidation {
     /// Creates a builder for [`LessThanValidation`].
     ///
-    /// Required: `type`, `constraint`.
+    /// Required: `constraint`.
     pub fn builder() -> LessThanValidationBuilder {
         LessThanValidationBuilder::new()
     }
 
     /// Creates a [`LessThanValidation`] from a function that sets the members of its builder.
     ///
-    /// Required: `type`, `constraint`.
+    /// Required: `constraint`.
     pub fn of<B: crate::typed::builder::Build<Output = LessThanValidation>>(
         f: impl FnOnce(LessThanValidationBuilder) -> B,
     ) -> LessThanValidation {
@@ -4774,82 +4735,61 @@ impl LessThanValidation {
 #[doc(hidden)]
 #[allow(non_camel_case_types)]
 pub mod less_than_validation_members {
-    pub struct r#type;
     pub struct constraint;
 }
 
 /// Builder for [`LessThanValidation`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct LessThanValidationBuilder<
-    S = (crate::typed::builder::NotSet, crate::typed::builder::NotSet),
-> {
-    r#type: Option<String>,
+pub struct LessThanValidationBuilder<S = (crate::typed::builder::NotSet,)> {
     constraint: Option<crate::typed::support::Float64>,
     _state: std::marker::PhantomData<S>,
 }
 
-impl LessThanValidationBuilder<(crate::typed::builder::NotSet, crate::typed::builder::NotSet)> {
+impl LessThanValidationBuilder<(crate::typed::builder::NotSet,)> {
     pub(crate) fn new() -> Self {
         LessThanValidationBuilder {
-            r#type: None,
             constraint: None,
             _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0, S1> LessThanValidationBuilder<(S0, S1)> {
+impl<S0> LessThanValidationBuilder<(S0,)> {
     fn with_state<N>(self) -> LessThanValidationBuilder<N> {
         LessThanValidationBuilder {
-            r#type: self.r#type,
             constraint: self.constraint,
             _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S1> LessThanValidationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> LessThanValidationBuilder<(crate::typed::builder::Set, S1)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> LessThanValidationBuilder<(S0, crate::typed::builder::NotSet)> {
+impl LessThanValidationBuilder<(crate::typed::builder::NotSet,)> {
     /// **Required.**
     pub fn constraint(
         self,
         value: impl Into<crate::typed::support::Float64>,
-    ) -> LessThanValidationBuilder<(S0, crate::typed::builder::Set)> {
+    ) -> LessThanValidationBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.constraint = Some(value.into());
         builder
     }
 }
 
-impl<S0, S1> LessThanValidationBuilder<(S0, S1)> {
+impl<S0> LessThanValidationBuilder<(S0,)> {
     /// Builds a [`LessThanValidation`].
     pub fn build(self) -> LessThanValidation
     where
-        S0: crate::typed::builder::IsSet<less_than_validation_members::r#type>,
-        S1: crate::typed::builder::IsSet<less_than_validation_members::constraint>,
+        S0: crate::typed::builder::IsSet<less_than_validation_members::constraint>,
     {
         LessThanValidation {
-            r#type: self.r#type.unwrap(),
             constraint: self.constraint.unwrap(),
         }
     }
 }
 
-impl<S0, S1> crate::typed::builder::Build for LessThanValidationBuilder<(S0, S1)>
+impl<S0> crate::typed::builder::Build for LessThanValidationBuilder<(S0,)>
 where
-    S0: crate::typed::builder::IsSet<less_than_validation_members::r#type>,
-    S1: crate::typed::builder::IsSet<less_than_validation_members::constraint>,
+    S0: crate::typed::builder::IsSet<less_than_validation_members::constraint>,
 {
     type Output = LessThanValidation;
 
@@ -4858,33 +4798,31 @@ where
     }
 }
 
-impl<S0, S1> From<LessThanValidationBuilder<(S0, S1)>> for LessThanValidation
+impl<S0> From<LessThanValidationBuilder<(S0,)>> for LessThanValidation
 where
-    S0: crate::typed::builder::IsSet<less_than_validation_members::r#type>,
-    S1: crate::typed::builder::IsSet<less_than_validation_members::constraint>,
+    S0: crate::typed::builder::IsSet<less_than_validation_members::constraint>,
 {
-    fn from(builder: LessThanValidationBuilder<(S0, S1)>) -> Self {
+    fn from(builder: LessThanValidationBuilder<(S0,)>) -> Self {
         builder.build()
     }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct ListTypeValidation {
-    pub r#type: String,
     pub constraint: String,
 }
 
 impl ListTypeValidation {
     /// Creates a builder for [`ListTypeValidation`].
     ///
-    /// Required: `type`, `constraint`.
+    /// Required: `constraint`.
     pub fn builder() -> ListTypeValidationBuilder {
         ListTypeValidationBuilder::new()
     }
 
     /// Creates a [`ListTypeValidation`] from a function that sets the members of its builder.
     ///
-    /// Required: `type`, `constraint`.
+    /// Required: `constraint`.
     pub fn of<B: crate::typed::builder::Build<Output = ListTypeValidation>>(
         f: impl FnOnce(ListTypeValidationBuilder) -> B,
     ) -> ListTypeValidation {
@@ -4896,82 +4834,61 @@ impl ListTypeValidation {
 #[doc(hidden)]
 #[allow(non_camel_case_types)]
 pub mod list_type_validation_members {
-    pub struct r#type;
     pub struct constraint;
 }
 
 /// Builder for [`ListTypeValidation`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct ListTypeValidationBuilder<
-    S = (crate::typed::builder::NotSet, crate::typed::builder::NotSet),
-> {
-    r#type: Option<String>,
+pub struct ListTypeValidationBuilder<S = (crate::typed::builder::NotSet,)> {
     constraint: Option<String>,
     _state: std::marker::PhantomData<S>,
 }
 
-impl ListTypeValidationBuilder<(crate::typed::builder::NotSet, crate::typed::builder::NotSet)> {
+impl ListTypeValidationBuilder<(crate::typed::builder::NotSet,)> {
     pub(crate) fn new() -> Self {
         ListTypeValidationBuilder {
-            r#type: None,
             constraint: None,
             _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0, S1> ListTypeValidationBuilder<(S0, S1)> {
+impl<S0> ListTypeValidationBuilder<(S0,)> {
     fn with_state<N>(self) -> ListTypeValidationBuilder<N> {
         ListTypeValidationBuilder {
-            r#type: self.r#type,
             constraint: self.constraint,
             _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S1> ListTypeValidationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> ListTypeValidationBuilder<(crate::typed::builder::Set, S1)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> ListTypeValidationBuilder<(S0, crate::typed::builder::NotSet)> {
+impl ListTypeValidationBuilder<(crate::typed::builder::NotSet,)> {
     /// **Required.**
     pub fn constraint(
         self,
         value: impl Into<String>,
-    ) -> ListTypeValidationBuilder<(S0, crate::typed::builder::Set)> {
+    ) -> ListTypeValidationBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.constraint = Some(value.into());
         builder
     }
 }
 
-impl<S0, S1> ListTypeValidationBuilder<(S0, S1)> {
+impl<S0> ListTypeValidationBuilder<(S0,)> {
     /// Builds a [`ListTypeValidation`].
     pub fn build(self) -> ListTypeValidation
     where
-        S0: crate::typed::builder::IsSet<list_type_validation_members::r#type>,
-        S1: crate::typed::builder::IsSet<list_type_validation_members::constraint>,
+        S0: crate::typed::builder::IsSet<list_type_validation_members::constraint>,
     {
         ListTypeValidation {
-            r#type: self.r#type.unwrap(),
             constraint: self.constraint.unwrap(),
         }
     }
 }
 
-impl<S0, S1> crate::typed::builder::Build for ListTypeValidationBuilder<(S0, S1)>
+impl<S0> crate::typed::builder::Build for ListTypeValidationBuilder<(S0,)>
 where
-    S0: crate::typed::builder::IsSet<list_type_validation_members::r#type>,
-    S1: crate::typed::builder::IsSet<list_type_validation_members::constraint>,
+    S0: crate::typed::builder::IsSet<list_type_validation_members::constraint>,
 {
     type Output = ListTypeValidation;
 
@@ -4980,33 +4897,31 @@ where
     }
 }
 
-impl<S0, S1> From<ListTypeValidationBuilder<(S0, S1)>> for ListTypeValidation
+impl<S0> From<ListTypeValidationBuilder<(S0,)>> for ListTypeValidation
 where
-    S0: crate::typed::builder::IsSet<list_type_validation_members::r#type>,
-    S1: crate::typed::builder::IsSet<list_type_validation_members::constraint>,
+    S0: crate::typed::builder::IsSet<list_type_validation_members::constraint>,
 {
-    fn from(builder: ListTypeValidationBuilder<(S0, S1)>) -> Self {
+    fn from(builder: ListTypeValidationBuilder<(S0,)>) -> Self {
         builder.build()
     }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct RegexValidation {
-    pub r#type: String,
     pub constraint: String,
 }
 
 impl RegexValidation {
     /// Creates a builder for [`RegexValidation`].
     ///
-    /// Required: `type`, `constraint`.
+    /// Required: `constraint`.
     pub fn builder() -> RegexValidationBuilder {
         RegexValidationBuilder::new()
     }
 
     /// Creates a [`RegexValidation`] from a function that sets the members of its builder.
     ///
-    /// Required: `type`, `constraint`.
+    /// Required: `constraint`.
     pub fn of<B: crate::typed::builder::Build<Output = RegexValidation>>(
         f: impl FnOnce(RegexValidationBuilder) -> B,
     ) -> RegexValidation {
@@ -5018,82 +4933,61 @@ impl RegexValidation {
 #[doc(hidden)]
 #[allow(non_camel_case_types)]
 pub mod regex_validation_members {
-    pub struct r#type;
     pub struct constraint;
 }
 
 /// Builder for [`RegexValidation`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct RegexValidationBuilder<
-    S = (crate::typed::builder::NotSet, crate::typed::builder::NotSet),
-> {
-    r#type: Option<String>,
+pub struct RegexValidationBuilder<S = (crate::typed::builder::NotSet,)> {
     constraint: Option<String>,
     _state: std::marker::PhantomData<S>,
 }
 
-impl RegexValidationBuilder<(crate::typed::builder::NotSet, crate::typed::builder::NotSet)> {
+impl RegexValidationBuilder<(crate::typed::builder::NotSet,)> {
     pub(crate) fn new() -> Self {
         RegexValidationBuilder {
-            r#type: None,
             constraint: None,
             _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0, S1> RegexValidationBuilder<(S0, S1)> {
+impl<S0> RegexValidationBuilder<(S0,)> {
     fn with_state<N>(self) -> RegexValidationBuilder<N> {
         RegexValidationBuilder {
-            r#type: self.r#type,
             constraint: self.constraint,
             _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S1> RegexValidationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> RegexValidationBuilder<(crate::typed::builder::Set, S1)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> RegexValidationBuilder<(S0, crate::typed::builder::NotSet)> {
+impl RegexValidationBuilder<(crate::typed::builder::NotSet,)> {
     /// **Required.**
     pub fn constraint(
         self,
         value: impl Into<String>,
-    ) -> RegexValidationBuilder<(S0, crate::typed::builder::Set)> {
+    ) -> RegexValidationBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.constraint = Some(value.into());
         builder
     }
 }
 
-impl<S0, S1> RegexValidationBuilder<(S0, S1)> {
+impl<S0> RegexValidationBuilder<(S0,)> {
     /// Builds a [`RegexValidation`].
     pub fn build(self) -> RegexValidation
     where
-        S0: crate::typed::builder::IsSet<regex_validation_members::r#type>,
-        S1: crate::typed::builder::IsSet<regex_validation_members::constraint>,
+        S0: crate::typed::builder::IsSet<regex_validation_members::constraint>,
     {
         RegexValidation {
-            r#type: self.r#type.unwrap(),
             constraint: self.constraint.unwrap(),
         }
     }
 }
 
-impl<S0, S1> crate::typed::builder::Build for RegexValidationBuilder<(S0, S1)>
+impl<S0> crate::typed::builder::Build for RegexValidationBuilder<(S0,)>
 where
-    S0: crate::typed::builder::IsSet<regex_validation_members::r#type>,
-    S1: crate::typed::builder::IsSet<regex_validation_members::constraint>,
+    S0: crate::typed::builder::IsSet<regex_validation_members::constraint>,
 {
     type Output = RegexValidation;
 
@@ -5102,12 +4996,11 @@ where
     }
 }
 
-impl<S0, S1> From<RegexValidationBuilder<(S0, S1)>> for RegexValidation
+impl<S0> From<RegexValidationBuilder<(S0,)>> for RegexValidation
 where
-    S0: crate::typed::builder::IsSet<regex_validation_members::r#type>,
-    S1: crate::typed::builder::IsSet<regex_validation_members::constraint>,
+    S0: crate::typed::builder::IsSet<regex_validation_members::constraint>,
 {
-    fn from(builder: RegexValidationBuilder<(S0, S1)>) -> Self {
+    fn from(builder: RegexValidationBuilder<(S0,)>) -> Self {
         builder.build()
     }
 }
@@ -5830,13 +5723,289 @@ pub enum SyncStatus {
     Suspended,
 }
 
-/// This union of types isn't supported by the code generator yet, and is represented as a JSON value.
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
-#[serde(transparent)]
-pub struct Validation(pub serde_json::Value);
+/// Variants are identified by the `type` property.
+#[derive(Debug, Clone, PartialEq)]
+pub enum Validation {
+    LessThan(LessThanValidation),
+    GreaterThan(GreaterThanValidation),
+    ListType(ListTypeValidation),
+    IncludedIn(IncludedInValidation),
+    Regex(RegexValidation),
+}
 
-impl From<serde_json::Value> for Validation {
-    fn from(value: serde_json::Value) -> Self {
-        Validation(value)
+impl serde::Serialize for Validation {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        use serde::ser::Error;
+        let (tag, value) = match self {
+            Validation::LessThan(value) => (
+                serde_json::Value::from("less_than"),
+                serde_json::to_value(value),
+            ),
+            Validation::GreaterThan(value) => (
+                serde_json::Value::from("greater_than"),
+                serde_json::to_value(value),
+            ),
+            Validation::ListType(value) => (
+                serde_json::Value::from("list_type"),
+                serde_json::to_value(value),
+            ),
+            Validation::IncludedIn(value) => (
+                serde_json::Value::from("included_in"),
+                serde_json::to_value(value),
+            ),
+            Validation::Regex(value) => (
+                serde_json::Value::from("regex"),
+                serde_json::to_value(value),
+            ),
+        };
+        let mut object = serde_json::Map::new();
+        object.insert("type".to_string(), tag);
+        if let serde_json::Value::Object(fields) = value.map_err(S::Error::custom)? {
+            object.extend(fields);
+        }
+        object.serialize(serializer)
+    }
+}
+
+impl<'de> serde::Deserialize<'de> for Validation {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        use serde::de::Error;
+        let mut object = serde_json::Map::deserialize(deserializer)?;
+        let tag = object
+            .remove("type")
+            .ok_or_else(|| D::Error::missing_field("type"))?;
+        let result = match tag.as_str() {
+            Some("less_than") => serde_json::from_value(object.into()).map(Validation::LessThan),
+            Some("greater_than") => {
+                serde_json::from_value(object.into()).map(Validation::GreaterThan)
+            }
+            Some("list_type") => serde_json::from_value(object.into()).map(Validation::ListType),
+            Some("included_in") => {
+                serde_json::from_value(object.into()).map(Validation::IncludedIn)
+            }
+            Some("regex") => serde_json::from_value(object.into()).map(Validation::Regex),
+            _ => return Err(D::Error::custom(format!("unknown Validation type {tag}"))),
+        };
+        result.map_err(D::Error::custom)
+    }
+}
+
+impl From<LessThanValidation> for Validation {
+    fn from(value: LessThanValidation) -> Self {
+        Validation::LessThan(value)
+    }
+}
+
+impl From<GreaterThanValidation> for Validation {
+    fn from(value: GreaterThanValidation) -> Self {
+        Validation::GreaterThan(value)
+    }
+}
+
+impl From<ListTypeValidation> for Validation {
+    fn from(value: ListTypeValidation) -> Self {
+        Validation::ListType(value)
+    }
+}
+
+impl From<IncludedInValidation> for Validation {
+    fn from(value: IncludedInValidation) -> Self {
+        Validation::IncludedIn(value)
+    }
+}
+
+impl From<RegexValidation> for Validation {
+    fn from(value: RegexValidation) -> Self {
+        Validation::Regex(value)
+    }
+}
+
+impl From<LessThanValidationBuilder<(crate::typed::builder::Set,)>> for Validation {
+    fn from(builder: LessThanValidationBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<GreaterThanValidationBuilder<(crate::typed::builder::Set,)>> for Validation {
+    fn from(builder: GreaterThanValidationBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<ListTypeValidationBuilder<(crate::typed::builder::Set,)>> for Validation {
+    fn from(builder: ListTypeValidationBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<IncludedInValidationBuilder<(crate::typed::builder::Set,)>> for Validation {
+    fn from(builder: IncludedInValidationBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<RegexValidationBuilder<(crate::typed::builder::Set,)>> for Validation {
+    fn from(builder: RegexValidationBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl Validation {
+    /// Creates a builder for [`Validation`].
+    ///
+    /// Required: a variant.
+    pub fn builder() -> ValidationBuilder {
+        ValidationBuilder::new()
+    }
+
+    /// Creates a [`Validation`] from a function that sets the members of its builder.
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = Validation>>(
+        f: impl FnOnce(ValidationBuilder) -> B,
+    ) -> Validation {
+        f(Self::builder()).build()
+    }
+}
+
+/// Builder for [`Validation`].
+#[must_use = "the builder does nothing until `build()` is called"]
+pub struct ValidationBuilder<S = (crate::typed::builder::NotSet,)> {
+    variant: Option<Validation>,
+    _state: std::marker::PhantomData<S>,
+}
+
+impl ValidationBuilder<(crate::typed::builder::NotSet,)> {
+    pub(crate) fn new() -> Self {
+        ValidationBuilder {
+            variant: None,
+            _state: std::marker::PhantomData,
+        }
+    }
+}
+
+impl<S0> ValidationBuilder<(S0,)> {
+    fn with_state<N>(self) -> ValidationBuilder<N> {
+        ValidationBuilder {
+            variant: self.variant,
+            _state: std::marker::PhantomData,
+        }
+    }
+}
+
+impl ValidationBuilder<(crate::typed::builder::NotSet,)> {
+    pub fn less_than(
+        self,
+        value: impl Into<LessThanValidation>,
+    ) -> ValidationBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Validation::LessThan(value.into()));
+        builder
+    }
+
+    /// Sets [`less_than`](Self::less_than) with a builder.
+    pub fn less_than_with<B: crate::typed::builder::Build<Output = LessThanValidation>>(
+        self,
+        f: impl FnOnce(LessThanValidationBuilder) -> B,
+    ) -> ValidationBuilder<(crate::typed::builder::Set,)> {
+        self.less_than(f(LessThanValidationBuilder::new()).build())
+    }
+
+    pub fn greater_than(
+        self,
+        value: impl Into<GreaterThanValidation>,
+    ) -> ValidationBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Validation::GreaterThan(value.into()));
+        builder
+    }
+
+    /// Sets [`greater_than`](Self::greater_than) with a builder.
+    pub fn greater_than_with<B: crate::typed::builder::Build<Output = GreaterThanValidation>>(
+        self,
+        f: impl FnOnce(GreaterThanValidationBuilder) -> B,
+    ) -> ValidationBuilder<(crate::typed::builder::Set,)> {
+        self.greater_than(f(GreaterThanValidationBuilder::new()).build())
+    }
+
+    pub fn list_type(
+        self,
+        value: impl Into<ListTypeValidation>,
+    ) -> ValidationBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Validation::ListType(value.into()));
+        builder
+    }
+
+    /// Sets [`list_type`](Self::list_type) with a builder.
+    pub fn list_type_with<B: crate::typed::builder::Build<Output = ListTypeValidation>>(
+        self,
+        f: impl FnOnce(ListTypeValidationBuilder) -> B,
+    ) -> ValidationBuilder<(crate::typed::builder::Set,)> {
+        self.list_type(f(ListTypeValidationBuilder::new()).build())
+    }
+
+    pub fn included_in(
+        self,
+        value: impl Into<IncludedInValidation>,
+    ) -> ValidationBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Validation::IncludedIn(value.into()));
+        builder
+    }
+
+    /// Sets [`included_in`](Self::included_in) with a builder.
+    pub fn included_in_with<B: crate::typed::builder::Build<Output = IncludedInValidation>>(
+        self,
+        f: impl FnOnce(IncludedInValidationBuilder) -> B,
+    ) -> ValidationBuilder<(crate::typed::builder::Set,)> {
+        self.included_in(f(IncludedInValidationBuilder::new()).build())
+    }
+
+    pub fn regex(
+        self,
+        value: impl Into<RegexValidation>,
+    ) -> ValidationBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Validation::Regex(value.into()));
+        builder
+    }
+
+    /// Sets [`regex`](Self::regex) with a builder.
+    pub fn regex_with<B: crate::typed::builder::Build<Output = RegexValidation>>(
+        self,
+        f: impl FnOnce(RegexValidationBuilder) -> B,
+    ) -> ValidationBuilder<(crate::typed::builder::Set,)> {
+        self.regex(f(RegexValidationBuilder::new()).build())
+    }
+}
+
+impl<S0> ValidationBuilder<(S0,)> {
+    /// Builds a [`Validation`].
+    pub fn build(self) -> Validation
+    where
+        S0: crate::typed::builder::IsVariantSet<Validation>,
+    {
+        self.variant.unwrap()
+    }
+}
+
+impl<S0> crate::typed::builder::Build for ValidationBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<Validation>,
+{
+    type Output = Validation;
+
+    fn build(self) -> Validation {
+        Self::build(self)
+    }
+}
+
+impl<S0> From<ValidationBuilder<(S0,)>> for Validation
+where
+    S0: crate::typed::builder::IsVariantSet<Validation>,
+{
+    fn from(builder: ValidationBuilder<(S0,)>) -> Self {
+        builder.build()
     }
 }

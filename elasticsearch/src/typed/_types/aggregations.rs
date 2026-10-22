@@ -2522,6 +2522,12 @@ impl From<MissingAggregationBuilder> for AggregationContainer {
     }
 }
 
+impl From<MovingAverageAggregationBuilder<(crate::typed::builder::Set,)>> for AggregationContainer {
+    fn from(builder: MovingAverageAggregationBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
 impl From<MovingPercentilesAggregationBuilder> for AggregationContainer {
     fn from(builder: MovingPercentilesAggregationBuilder) -> Self {
         builder.build().into()
@@ -3747,6 +3753,14 @@ impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
         let mut builder = self.with_state();
         builder.variant = Some(AggregationContainerKind::MovingAvg(value.into()));
         builder
+    }
+
+    /// Sets [`moving_avg`](Self::moving_avg) with a builder.
+    pub fn moving_avg_with<B: crate::typed::builder::Build<Output = MovingAverageAggregation>>(
+        self,
+        f: impl FnOnce(MovingAverageAggregationBuilder) -> B,
+    ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)> {
+        self.moving_avg(f(MovingAverageAggregationBuilder::new()).build())
     }
 
     /// Given an ordered series of percentiles, "slides" a window across those percentiles and computes cumulative percentiles.
@@ -14757,21 +14771,20 @@ pub struct EwmaMovingAverageAggregation {
     pub predict: Option<i32>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub window: Option<i32>,
-    pub model: String,
     pub settings: EwmaModelSettings,
 }
 
 impl EwmaMovingAverageAggregation {
     /// Creates a builder for [`EwmaMovingAverageAggregation`].
     ///
-    /// Required: `model`, `settings`.
+    /// Required: `settings`.
     pub fn builder() -> EwmaMovingAverageAggregationBuilder {
         EwmaMovingAverageAggregationBuilder::new()
     }
 
     /// Creates a [`EwmaMovingAverageAggregation`] from a function that sets the members of its builder.
     ///
-    /// Required: `model`, `settings`.
+    /// Required: `settings`.
     pub fn of<B: crate::typed::builder::Build<Output = EwmaMovingAverageAggregation>>(
         f: impl FnOnce(EwmaMovingAverageAggregationBuilder) -> B,
     ) -> EwmaMovingAverageAggregation {
@@ -14783,32 +14796,23 @@ impl EwmaMovingAverageAggregation {
 #[doc(hidden)]
 #[allow(non_camel_case_types)]
 pub mod ewma_moving_average_aggregation_members {
-    pub struct model;
     pub struct settings;
 }
 
 /// Builder for [`EwmaMovingAverageAggregation`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct EwmaMovingAverageAggregationBuilder<
-    S = (crate::typed::builder::NotSet, crate::typed::builder::NotSet),
-> {
+pub struct EwmaMovingAverageAggregationBuilder<S = (crate::typed::builder::NotSet,)> {
     buckets_path: Option<BucketsPath>,
     format: Option<String>,
     gap_policy: Option<GapPolicy>,
     minimize: Option<bool>,
     predict: Option<i32>,
     window: Option<i32>,
-    model: Option<String>,
     settings: Option<EwmaModelSettings>,
     _state: std::marker::PhantomData<S>,
 }
 
-impl
-    EwmaMovingAverageAggregationBuilder<(
-        crate::typed::builder::NotSet,
-        crate::typed::builder::NotSet,
-    )>
-{
+impl EwmaMovingAverageAggregationBuilder<(crate::typed::builder::NotSet,)> {
     pub(crate) fn new() -> Self {
         EwmaMovingAverageAggregationBuilder {
             buckets_path: None,
@@ -14817,14 +14821,13 @@ impl
             minimize: None,
             predict: None,
             window: None,
-            model: None,
             settings: None,
             _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0, S1> EwmaMovingAverageAggregationBuilder<(S0, S1)> {
+impl<S0> EwmaMovingAverageAggregationBuilder<(S0,)> {
     fn with_state<N>(self) -> EwmaMovingAverageAggregationBuilder<N> {
         EwmaMovingAverageAggregationBuilder {
             buckets_path: self.buckets_path,
@@ -14833,7 +14836,6 @@ impl<S0, S1> EwmaMovingAverageAggregationBuilder<(S0, S1)> {
             minimize: self.minimize,
             predict: self.predict,
             window: self.window,
-            model: self.model,
             settings: self.settings,
             _state: std::marker::PhantomData,
         }
@@ -14910,24 +14912,12 @@ impl<S0, S1> EwmaMovingAverageAggregationBuilder<(S0, S1)> {
     }
 }
 
-impl<S1> EwmaMovingAverageAggregationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// **Required.**
-    pub fn model(
-        self,
-        value: impl Into<String>,
-    ) -> EwmaMovingAverageAggregationBuilder<(crate::typed::builder::Set, S1)> {
-        let mut builder = self.with_state();
-        builder.model = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> EwmaMovingAverageAggregationBuilder<(S0, crate::typed::builder::NotSet)> {
+impl EwmaMovingAverageAggregationBuilder<(crate::typed::builder::NotSet,)> {
     /// **Required.**
     pub fn settings(
         self,
         value: impl Into<EwmaModelSettings>,
-    ) -> EwmaMovingAverageAggregationBuilder<(S0, crate::typed::builder::Set)> {
+    ) -> EwmaMovingAverageAggregationBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.settings = Some(value.into());
         builder
@@ -14937,17 +14927,16 @@ impl<S0> EwmaMovingAverageAggregationBuilder<(S0, crate::typed::builder::NotSet)
     pub fn settings_with<B: crate::typed::builder::Build<Output = EwmaModelSettings>>(
         self,
         f: impl FnOnce(EwmaModelSettingsBuilder) -> B,
-    ) -> EwmaMovingAverageAggregationBuilder<(S0, crate::typed::builder::Set)> {
+    ) -> EwmaMovingAverageAggregationBuilder<(crate::typed::builder::Set,)> {
         self.settings(f(EwmaModelSettingsBuilder::new()).build())
     }
 }
 
-impl<S0, S1> EwmaMovingAverageAggregationBuilder<(S0, S1)> {
+impl<S0> EwmaMovingAverageAggregationBuilder<(S0,)> {
     /// Builds a [`EwmaMovingAverageAggregation`].
     pub fn build(self) -> EwmaMovingAverageAggregation
     where
-        S0: crate::typed::builder::IsSet<ewma_moving_average_aggregation_members::model>,
-        S1: crate::typed::builder::IsSet<ewma_moving_average_aggregation_members::settings>,
+        S0: crate::typed::builder::IsSet<ewma_moving_average_aggregation_members::settings>,
     {
         EwmaMovingAverageAggregation {
             buckets_path: self.buckets_path,
@@ -14956,16 +14945,14 @@ impl<S0, S1> EwmaMovingAverageAggregationBuilder<(S0, S1)> {
             minimize: self.minimize,
             predict: self.predict,
             window: self.window,
-            model: self.model.unwrap(),
             settings: self.settings.unwrap(),
         }
     }
 }
 
-impl<S0, S1> crate::typed::builder::Build for EwmaMovingAverageAggregationBuilder<(S0, S1)>
+impl<S0> crate::typed::builder::Build for EwmaMovingAverageAggregationBuilder<(S0,)>
 where
-    S0: crate::typed::builder::IsSet<ewma_moving_average_aggregation_members::model>,
-    S1: crate::typed::builder::IsSet<ewma_moving_average_aggregation_members::settings>,
+    S0: crate::typed::builder::IsSet<ewma_moving_average_aggregation_members::settings>,
 {
     type Output = EwmaMovingAverageAggregation;
 
@@ -14974,12 +14961,11 @@ where
     }
 }
 
-impl<S0, S1> From<EwmaMovingAverageAggregationBuilder<(S0, S1)>> for EwmaMovingAverageAggregation
+impl<S0> From<EwmaMovingAverageAggregationBuilder<(S0,)>> for EwmaMovingAverageAggregation
 where
-    S0: crate::typed::builder::IsSet<ewma_moving_average_aggregation_members::model>,
-    S1: crate::typed::builder::IsSet<ewma_moving_average_aggregation_members::settings>,
+    S0: crate::typed::builder::IsSet<ewma_moving_average_aggregation_members::settings>,
 {
-    fn from(builder: EwmaMovingAverageAggregationBuilder<(S0, S1)>) -> Self {
+    fn from(builder: EwmaMovingAverageAggregationBuilder<(S0,)>) -> Self {
         builder.build()
     }
 }
@@ -23242,21 +23228,20 @@ pub struct HoltMovingAverageAggregation {
     pub predict: Option<i32>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub window: Option<i32>,
-    pub model: String,
     pub settings: HoltLinearModelSettings,
 }
 
 impl HoltMovingAverageAggregation {
     /// Creates a builder for [`HoltMovingAverageAggregation`].
     ///
-    /// Required: `model`, `settings`.
+    /// Required: `settings`.
     pub fn builder() -> HoltMovingAverageAggregationBuilder {
         HoltMovingAverageAggregationBuilder::new()
     }
 
     /// Creates a [`HoltMovingAverageAggregation`] from a function that sets the members of its builder.
     ///
-    /// Required: `model`, `settings`.
+    /// Required: `settings`.
     pub fn of<B: crate::typed::builder::Build<Output = HoltMovingAverageAggregation>>(
         f: impl FnOnce(HoltMovingAverageAggregationBuilder) -> B,
     ) -> HoltMovingAverageAggregation {
@@ -23268,32 +23253,23 @@ impl HoltMovingAverageAggregation {
 #[doc(hidden)]
 #[allow(non_camel_case_types)]
 pub mod holt_moving_average_aggregation_members {
-    pub struct model;
     pub struct settings;
 }
 
 /// Builder for [`HoltMovingAverageAggregation`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct HoltMovingAverageAggregationBuilder<
-    S = (crate::typed::builder::NotSet, crate::typed::builder::NotSet),
-> {
+pub struct HoltMovingAverageAggregationBuilder<S = (crate::typed::builder::NotSet,)> {
     buckets_path: Option<BucketsPath>,
     format: Option<String>,
     gap_policy: Option<GapPolicy>,
     minimize: Option<bool>,
     predict: Option<i32>,
     window: Option<i32>,
-    model: Option<String>,
     settings: Option<HoltLinearModelSettings>,
     _state: std::marker::PhantomData<S>,
 }
 
-impl
-    HoltMovingAverageAggregationBuilder<(
-        crate::typed::builder::NotSet,
-        crate::typed::builder::NotSet,
-    )>
-{
+impl HoltMovingAverageAggregationBuilder<(crate::typed::builder::NotSet,)> {
     pub(crate) fn new() -> Self {
         HoltMovingAverageAggregationBuilder {
             buckets_path: None,
@@ -23302,14 +23278,13 @@ impl
             minimize: None,
             predict: None,
             window: None,
-            model: None,
             settings: None,
             _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0, S1> HoltMovingAverageAggregationBuilder<(S0, S1)> {
+impl<S0> HoltMovingAverageAggregationBuilder<(S0,)> {
     fn with_state<N>(self) -> HoltMovingAverageAggregationBuilder<N> {
         HoltMovingAverageAggregationBuilder {
             buckets_path: self.buckets_path,
@@ -23318,7 +23293,6 @@ impl<S0, S1> HoltMovingAverageAggregationBuilder<(S0, S1)> {
             minimize: self.minimize,
             predict: self.predict,
             window: self.window,
-            model: self.model,
             settings: self.settings,
             _state: std::marker::PhantomData,
         }
@@ -23395,24 +23369,12 @@ impl<S0, S1> HoltMovingAverageAggregationBuilder<(S0, S1)> {
     }
 }
 
-impl<S1> HoltMovingAverageAggregationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// **Required.**
-    pub fn model(
-        self,
-        value: impl Into<String>,
-    ) -> HoltMovingAverageAggregationBuilder<(crate::typed::builder::Set, S1)> {
-        let mut builder = self.with_state();
-        builder.model = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> HoltMovingAverageAggregationBuilder<(S0, crate::typed::builder::NotSet)> {
+impl HoltMovingAverageAggregationBuilder<(crate::typed::builder::NotSet,)> {
     /// **Required.**
     pub fn settings(
         self,
         value: impl Into<HoltLinearModelSettings>,
-    ) -> HoltMovingAverageAggregationBuilder<(S0, crate::typed::builder::Set)> {
+    ) -> HoltMovingAverageAggregationBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.settings = Some(value.into());
         builder
@@ -23422,17 +23384,16 @@ impl<S0> HoltMovingAverageAggregationBuilder<(S0, crate::typed::builder::NotSet)
     pub fn settings_with<B: crate::typed::builder::Build<Output = HoltLinearModelSettings>>(
         self,
         f: impl FnOnce(HoltLinearModelSettingsBuilder) -> B,
-    ) -> HoltMovingAverageAggregationBuilder<(S0, crate::typed::builder::Set)> {
+    ) -> HoltMovingAverageAggregationBuilder<(crate::typed::builder::Set,)> {
         self.settings(f(HoltLinearModelSettingsBuilder::new()).build())
     }
 }
 
-impl<S0, S1> HoltMovingAverageAggregationBuilder<(S0, S1)> {
+impl<S0> HoltMovingAverageAggregationBuilder<(S0,)> {
     /// Builds a [`HoltMovingAverageAggregation`].
     pub fn build(self) -> HoltMovingAverageAggregation
     where
-        S0: crate::typed::builder::IsSet<holt_moving_average_aggregation_members::model>,
-        S1: crate::typed::builder::IsSet<holt_moving_average_aggregation_members::settings>,
+        S0: crate::typed::builder::IsSet<holt_moving_average_aggregation_members::settings>,
     {
         HoltMovingAverageAggregation {
             buckets_path: self.buckets_path,
@@ -23441,16 +23402,14 @@ impl<S0, S1> HoltMovingAverageAggregationBuilder<(S0, S1)> {
             minimize: self.minimize,
             predict: self.predict,
             window: self.window,
-            model: self.model.unwrap(),
             settings: self.settings.unwrap(),
         }
     }
 }
 
-impl<S0, S1> crate::typed::builder::Build for HoltMovingAverageAggregationBuilder<(S0, S1)>
+impl<S0> crate::typed::builder::Build for HoltMovingAverageAggregationBuilder<(S0,)>
 where
-    S0: crate::typed::builder::IsSet<holt_moving_average_aggregation_members::model>,
-    S1: crate::typed::builder::IsSet<holt_moving_average_aggregation_members::settings>,
+    S0: crate::typed::builder::IsSet<holt_moving_average_aggregation_members::settings>,
 {
     type Output = HoltMovingAverageAggregation;
 
@@ -23459,12 +23418,11 @@ where
     }
 }
 
-impl<S0, S1> From<HoltMovingAverageAggregationBuilder<(S0, S1)>> for HoltMovingAverageAggregation
+impl<S0> From<HoltMovingAverageAggregationBuilder<(S0,)>> for HoltMovingAverageAggregation
 where
-    S0: crate::typed::builder::IsSet<holt_moving_average_aggregation_members::model>,
-    S1: crate::typed::builder::IsSet<holt_moving_average_aggregation_members::settings>,
+    S0: crate::typed::builder::IsSet<holt_moving_average_aggregation_members::settings>,
 {
-    fn from(builder: HoltMovingAverageAggregationBuilder<(S0, S1)>) -> Self {
+    fn from(builder: HoltMovingAverageAggregationBuilder<(S0,)>) -> Self {
         builder.build()
     }
 }
@@ -23637,21 +23595,20 @@ pub struct HoltWintersMovingAverageAggregation {
     pub predict: Option<i32>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub window: Option<i32>,
-    pub model: String,
     pub settings: HoltWintersModelSettings,
 }
 
 impl HoltWintersMovingAverageAggregation {
     /// Creates a builder for [`HoltWintersMovingAverageAggregation`].
     ///
-    /// Required: `model`, `settings`.
+    /// Required: `settings`.
     pub fn builder() -> HoltWintersMovingAverageAggregationBuilder {
         HoltWintersMovingAverageAggregationBuilder::new()
     }
 
     /// Creates a [`HoltWintersMovingAverageAggregation`] from a function that sets the members of its builder.
     ///
-    /// Required: `model`, `settings`.
+    /// Required: `settings`.
     pub fn of<B: crate::typed::builder::Build<Output = HoltWintersMovingAverageAggregation>>(
         f: impl FnOnce(HoltWintersMovingAverageAggregationBuilder) -> B,
     ) -> HoltWintersMovingAverageAggregation {
@@ -23663,32 +23620,23 @@ impl HoltWintersMovingAverageAggregation {
 #[doc(hidden)]
 #[allow(non_camel_case_types)]
 pub mod holt_winters_moving_average_aggregation_members {
-    pub struct model;
     pub struct settings;
 }
 
 /// Builder for [`HoltWintersMovingAverageAggregation`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct HoltWintersMovingAverageAggregationBuilder<
-    S = (crate::typed::builder::NotSet, crate::typed::builder::NotSet),
-> {
+pub struct HoltWintersMovingAverageAggregationBuilder<S = (crate::typed::builder::NotSet,)> {
     buckets_path: Option<BucketsPath>,
     format: Option<String>,
     gap_policy: Option<GapPolicy>,
     minimize: Option<bool>,
     predict: Option<i32>,
     window: Option<i32>,
-    model: Option<String>,
     settings: Option<HoltWintersModelSettings>,
     _state: std::marker::PhantomData<S>,
 }
 
-impl
-    HoltWintersMovingAverageAggregationBuilder<(
-        crate::typed::builder::NotSet,
-        crate::typed::builder::NotSet,
-    )>
-{
+impl HoltWintersMovingAverageAggregationBuilder<(crate::typed::builder::NotSet,)> {
     pub(crate) fn new() -> Self {
         HoltWintersMovingAverageAggregationBuilder {
             buckets_path: None,
@@ -23697,14 +23645,13 @@ impl
             minimize: None,
             predict: None,
             window: None,
-            model: None,
             settings: None,
             _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0, S1> HoltWintersMovingAverageAggregationBuilder<(S0, S1)> {
+impl<S0> HoltWintersMovingAverageAggregationBuilder<(S0,)> {
     fn with_state<N>(self) -> HoltWintersMovingAverageAggregationBuilder<N> {
         HoltWintersMovingAverageAggregationBuilder {
             buckets_path: self.buckets_path,
@@ -23713,7 +23660,6 @@ impl<S0, S1> HoltWintersMovingAverageAggregationBuilder<(S0, S1)> {
             minimize: self.minimize,
             predict: self.predict,
             window: self.window,
-            model: self.model,
             settings: self.settings,
             _state: std::marker::PhantomData,
         }
@@ -23790,24 +23736,12 @@ impl<S0, S1> HoltWintersMovingAverageAggregationBuilder<(S0, S1)> {
     }
 }
 
-impl<S1> HoltWintersMovingAverageAggregationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// **Required.**
-    pub fn model(
-        self,
-        value: impl Into<String>,
-    ) -> HoltWintersMovingAverageAggregationBuilder<(crate::typed::builder::Set, S1)> {
-        let mut builder = self.with_state();
-        builder.model = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> HoltWintersMovingAverageAggregationBuilder<(S0, crate::typed::builder::NotSet)> {
+impl HoltWintersMovingAverageAggregationBuilder<(crate::typed::builder::NotSet,)> {
     /// **Required.**
     pub fn settings(
         self,
         value: impl Into<HoltWintersModelSettings>,
-    ) -> HoltWintersMovingAverageAggregationBuilder<(S0, crate::typed::builder::Set)> {
+    ) -> HoltWintersMovingAverageAggregationBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.settings = Some(value.into());
         builder
@@ -23817,17 +23751,16 @@ impl<S0> HoltWintersMovingAverageAggregationBuilder<(S0, crate::typed::builder::
     pub fn settings_with<B: crate::typed::builder::Build<Output = HoltWintersModelSettings>>(
         self,
         f: impl FnOnce(HoltWintersModelSettingsBuilder) -> B,
-    ) -> HoltWintersMovingAverageAggregationBuilder<(S0, crate::typed::builder::Set)> {
+    ) -> HoltWintersMovingAverageAggregationBuilder<(crate::typed::builder::Set,)> {
         self.settings(f(HoltWintersModelSettingsBuilder::new()).build())
     }
 }
 
-impl<S0, S1> HoltWintersMovingAverageAggregationBuilder<(S0, S1)> {
+impl<S0> HoltWintersMovingAverageAggregationBuilder<(S0,)> {
     /// Builds a [`HoltWintersMovingAverageAggregation`].
     pub fn build(self) -> HoltWintersMovingAverageAggregation
     where
-        S0: crate::typed::builder::IsSet<holt_winters_moving_average_aggregation_members::model>,
-        S1: crate::typed::builder::IsSet<holt_winters_moving_average_aggregation_members::settings>,
+        S0: crate::typed::builder::IsSet<holt_winters_moving_average_aggregation_members::settings>,
     {
         HoltWintersMovingAverageAggregation {
             buckets_path: self.buckets_path,
@@ -23836,16 +23769,14 @@ impl<S0, S1> HoltWintersMovingAverageAggregationBuilder<(S0, S1)> {
             minimize: self.minimize,
             predict: self.predict,
             window: self.window,
-            model: self.model.unwrap(),
             settings: self.settings.unwrap(),
         }
     }
 }
 
-impl<S0, S1> crate::typed::builder::Build for HoltWintersMovingAverageAggregationBuilder<(S0, S1)>
+impl<S0> crate::typed::builder::Build for HoltWintersMovingAverageAggregationBuilder<(S0,)>
 where
-    S0: crate::typed::builder::IsSet<holt_winters_moving_average_aggregation_members::model>,
-    S1: crate::typed::builder::IsSet<holt_winters_moving_average_aggregation_members::settings>,
+    S0: crate::typed::builder::IsSet<holt_winters_moving_average_aggregation_members::settings>,
 {
     type Output = HoltWintersMovingAverageAggregation;
 
@@ -23854,13 +23785,12 @@ where
     }
 }
 
-impl<S0, S1> From<HoltWintersMovingAverageAggregationBuilder<(S0, S1)>>
+impl<S0> From<HoltWintersMovingAverageAggregationBuilder<(S0,)>>
     for HoltWintersMovingAverageAggregation
 where
-    S0: crate::typed::builder::IsSet<holt_winters_moving_average_aggregation_members::model>,
-    S1: crate::typed::builder::IsSet<holt_winters_moving_average_aggregation_members::settings>,
+    S0: crate::typed::builder::IsSet<holt_winters_moving_average_aggregation_members::settings>,
 {
-    fn from(builder: HoltWintersMovingAverageAggregationBuilder<(S0, S1)>) -> Self {
+    fn from(builder: HoltWintersMovingAverageAggregationBuilder<(S0,)>) -> Self {
         builder.build()
     }
 }
@@ -26097,21 +26027,20 @@ pub struct LinearMovingAverageAggregation {
     pub predict: Option<i32>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub window: Option<i32>,
-    pub model: String,
     pub settings: crate::typed::_types::EmptyObject,
 }
 
 impl LinearMovingAverageAggregation {
     /// Creates a builder for [`LinearMovingAverageAggregation`].
     ///
-    /// Required: `model`, `settings`.
+    /// Required: `settings`.
     pub fn builder() -> LinearMovingAverageAggregationBuilder {
         LinearMovingAverageAggregationBuilder::new()
     }
 
     /// Creates a [`LinearMovingAverageAggregation`] from a function that sets the members of its builder.
     ///
-    /// Required: `model`, `settings`.
+    /// Required: `settings`.
     pub fn of<B: crate::typed::builder::Build<Output = LinearMovingAverageAggregation>>(
         f: impl FnOnce(LinearMovingAverageAggregationBuilder) -> B,
     ) -> LinearMovingAverageAggregation {
@@ -26123,32 +26052,23 @@ impl LinearMovingAverageAggregation {
 #[doc(hidden)]
 #[allow(non_camel_case_types)]
 pub mod linear_moving_average_aggregation_members {
-    pub struct model;
     pub struct settings;
 }
 
 /// Builder for [`LinearMovingAverageAggregation`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct LinearMovingAverageAggregationBuilder<
-    S = (crate::typed::builder::NotSet, crate::typed::builder::NotSet),
-> {
+pub struct LinearMovingAverageAggregationBuilder<S = (crate::typed::builder::NotSet,)> {
     buckets_path: Option<BucketsPath>,
     format: Option<String>,
     gap_policy: Option<GapPolicy>,
     minimize: Option<bool>,
     predict: Option<i32>,
     window: Option<i32>,
-    model: Option<String>,
     settings: Option<crate::typed::_types::EmptyObject>,
     _state: std::marker::PhantomData<S>,
 }
 
-impl
-    LinearMovingAverageAggregationBuilder<(
-        crate::typed::builder::NotSet,
-        crate::typed::builder::NotSet,
-    )>
-{
+impl LinearMovingAverageAggregationBuilder<(crate::typed::builder::NotSet,)> {
     pub(crate) fn new() -> Self {
         LinearMovingAverageAggregationBuilder {
             buckets_path: None,
@@ -26157,14 +26077,13 @@ impl
             minimize: None,
             predict: None,
             window: None,
-            model: None,
             settings: None,
             _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0, S1> LinearMovingAverageAggregationBuilder<(S0, S1)> {
+impl<S0> LinearMovingAverageAggregationBuilder<(S0,)> {
     fn with_state<N>(self) -> LinearMovingAverageAggregationBuilder<N> {
         LinearMovingAverageAggregationBuilder {
             buckets_path: self.buckets_path,
@@ -26173,7 +26092,6 @@ impl<S0, S1> LinearMovingAverageAggregationBuilder<(S0, S1)> {
             minimize: self.minimize,
             predict: self.predict,
             window: self.window,
-            model: self.model,
             settings: self.settings,
             _state: std::marker::PhantomData,
         }
@@ -26250,24 +26168,12 @@ impl<S0, S1> LinearMovingAverageAggregationBuilder<(S0, S1)> {
     }
 }
 
-impl<S1> LinearMovingAverageAggregationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// **Required.**
-    pub fn model(
-        self,
-        value: impl Into<String>,
-    ) -> LinearMovingAverageAggregationBuilder<(crate::typed::builder::Set, S1)> {
-        let mut builder = self.with_state();
-        builder.model = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> LinearMovingAverageAggregationBuilder<(S0, crate::typed::builder::NotSet)> {
+impl LinearMovingAverageAggregationBuilder<(crate::typed::builder::NotSet,)> {
     /// **Required.**
     pub fn settings(
         self,
         value: impl Into<crate::typed::_types::EmptyObject>,
-    ) -> LinearMovingAverageAggregationBuilder<(S0, crate::typed::builder::Set)> {
+    ) -> LinearMovingAverageAggregationBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.settings = Some(value.into());
         builder
@@ -26279,17 +26185,16 @@ impl<S0> LinearMovingAverageAggregationBuilder<(S0, crate::typed::builder::NotSe
     >(
         self,
         f: impl FnOnce(crate::typed::_types::EmptyObjectBuilder) -> B,
-    ) -> LinearMovingAverageAggregationBuilder<(S0, crate::typed::builder::Set)> {
+    ) -> LinearMovingAverageAggregationBuilder<(crate::typed::builder::Set,)> {
         self.settings(f(crate::typed::_types::EmptyObjectBuilder::new()).build())
     }
 }
 
-impl<S0, S1> LinearMovingAverageAggregationBuilder<(S0, S1)> {
+impl<S0> LinearMovingAverageAggregationBuilder<(S0,)> {
     /// Builds a [`LinearMovingAverageAggregation`].
     pub fn build(self) -> LinearMovingAverageAggregation
     where
-        S0: crate::typed::builder::IsSet<linear_moving_average_aggregation_members::model>,
-        S1: crate::typed::builder::IsSet<linear_moving_average_aggregation_members::settings>,
+        S0: crate::typed::builder::IsSet<linear_moving_average_aggregation_members::settings>,
     {
         LinearMovingAverageAggregation {
             buckets_path: self.buckets_path,
@@ -26298,16 +26203,14 @@ impl<S0, S1> LinearMovingAverageAggregationBuilder<(S0, S1)> {
             minimize: self.minimize,
             predict: self.predict,
             window: self.window,
-            model: self.model.unwrap(),
             settings: self.settings.unwrap(),
         }
     }
 }
 
-impl<S0, S1> crate::typed::builder::Build for LinearMovingAverageAggregationBuilder<(S0, S1)>
+impl<S0> crate::typed::builder::Build for LinearMovingAverageAggregationBuilder<(S0,)>
 where
-    S0: crate::typed::builder::IsSet<linear_moving_average_aggregation_members::model>,
-    S1: crate::typed::builder::IsSet<linear_moving_average_aggregation_members::settings>,
+    S0: crate::typed::builder::IsSet<linear_moving_average_aggregation_members::settings>,
 {
     type Output = LinearMovingAverageAggregation;
 
@@ -26316,13 +26219,11 @@ where
     }
 }
 
-impl<S0, S1> From<LinearMovingAverageAggregationBuilder<(S0, S1)>>
-    for LinearMovingAverageAggregation
+impl<S0> From<LinearMovingAverageAggregationBuilder<(S0,)>> for LinearMovingAverageAggregation
 where
-    S0: crate::typed::builder::IsSet<linear_moving_average_aggregation_members::model>,
-    S1: crate::typed::builder::IsSet<linear_moving_average_aggregation_members::settings>,
+    S0: crate::typed::builder::IsSet<linear_moving_average_aggregation_members::settings>,
 {
-    fn from(builder: LinearMovingAverageAggregationBuilder<(S0, S1)>) -> Self {
+    fn from(builder: LinearMovingAverageAggregationBuilder<(S0,)>) -> Self {
         builder.build()
     }
 }
@@ -29274,14 +29175,312 @@ pub enum MissingOrder {
     Default,
 }
 
-/// This union of types isn't supported by the code generator yet, and is represented as a JSON value.
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
-#[serde(transparent)]
-pub struct MovingAverageAggregation(pub serde_json::Value);
+/// Variants are identified by the `model` property.
+#[derive(Debug, Clone, PartialEq)]
+pub enum MovingAverageAggregation {
+    Linear(LinearMovingAverageAggregation),
+    Simple(SimpleMovingAverageAggregation),
+    Ewma(EwmaMovingAverageAggregation),
+    Holt(HoltMovingAverageAggregation),
+    HoltWinters(HoltWintersMovingAverageAggregation),
+}
 
-impl From<serde_json::Value> for MovingAverageAggregation {
-    fn from(value: serde_json::Value) -> Self {
-        MovingAverageAggregation(value)
+impl serde::Serialize for MovingAverageAggregation {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        use serde::ser::Error;
+        let (tag, value) = match self {
+            MovingAverageAggregation::Linear(value) => (
+                serde_json::Value::from("linear"),
+                serde_json::to_value(value),
+            ),
+            MovingAverageAggregation::Simple(value) => (
+                serde_json::Value::from("simple"),
+                serde_json::to_value(value),
+            ),
+            MovingAverageAggregation::Ewma(value) => {
+                (serde_json::Value::from("ewma"), serde_json::to_value(value))
+            }
+            MovingAverageAggregation::Holt(value) => {
+                (serde_json::Value::from("holt"), serde_json::to_value(value))
+            }
+            MovingAverageAggregation::HoltWinters(value) => (
+                serde_json::Value::from("holt_winters"),
+                serde_json::to_value(value),
+            ),
+        };
+        let mut object = serde_json::Map::new();
+        object.insert("model".to_string(), tag);
+        if let serde_json::Value::Object(fields) = value.map_err(S::Error::custom)? {
+            object.extend(fields);
+        }
+        object.serialize(serializer)
+    }
+}
+
+impl<'de> serde::Deserialize<'de> for MovingAverageAggregation {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        use serde::de::Error;
+        let mut object = serde_json::Map::deserialize(deserializer)?;
+        let tag = object
+            .remove("model")
+            .ok_or_else(|| D::Error::missing_field("model"))?;
+        let result = match tag.as_str() {
+            Some("linear") => {
+                serde_json::from_value(object.into()).map(MovingAverageAggregation::Linear)
+            }
+            Some("simple") => {
+                serde_json::from_value(object.into()).map(MovingAverageAggregation::Simple)
+            }
+            Some("ewma") => {
+                serde_json::from_value(object.into()).map(MovingAverageAggregation::Ewma)
+            }
+            Some("holt") => {
+                serde_json::from_value(object.into()).map(MovingAverageAggregation::Holt)
+            }
+            Some("holt_winters") => {
+                serde_json::from_value(object.into()).map(MovingAverageAggregation::HoltWinters)
+            }
+            _ => {
+                return Err(D::Error::custom(format!(
+                    "unknown MovingAverageAggregation model {tag}"
+                )))
+            }
+        };
+        result.map_err(D::Error::custom)
+    }
+}
+
+impl From<LinearMovingAverageAggregation> for MovingAverageAggregation {
+    fn from(value: LinearMovingAverageAggregation) -> Self {
+        MovingAverageAggregation::Linear(value)
+    }
+}
+
+impl From<SimpleMovingAverageAggregation> for MovingAverageAggregation {
+    fn from(value: SimpleMovingAverageAggregation) -> Self {
+        MovingAverageAggregation::Simple(value)
+    }
+}
+
+impl From<EwmaMovingAverageAggregation> for MovingAverageAggregation {
+    fn from(value: EwmaMovingAverageAggregation) -> Self {
+        MovingAverageAggregation::Ewma(value)
+    }
+}
+
+impl From<HoltMovingAverageAggregation> for MovingAverageAggregation {
+    fn from(value: HoltMovingAverageAggregation) -> Self {
+        MovingAverageAggregation::Holt(value)
+    }
+}
+
+impl From<HoltWintersMovingAverageAggregation> for MovingAverageAggregation {
+    fn from(value: HoltWintersMovingAverageAggregation) -> Self {
+        MovingAverageAggregation::HoltWinters(value)
+    }
+}
+
+impl From<LinearMovingAverageAggregationBuilder<(crate::typed::builder::Set,)>>
+    for MovingAverageAggregation
+{
+    fn from(builder: LinearMovingAverageAggregationBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<SimpleMovingAverageAggregationBuilder<(crate::typed::builder::Set,)>>
+    for MovingAverageAggregation
+{
+    fn from(builder: SimpleMovingAverageAggregationBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<EwmaMovingAverageAggregationBuilder<(crate::typed::builder::Set,)>>
+    for MovingAverageAggregation
+{
+    fn from(builder: EwmaMovingAverageAggregationBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<HoltMovingAverageAggregationBuilder<(crate::typed::builder::Set,)>>
+    for MovingAverageAggregation
+{
+    fn from(builder: HoltMovingAverageAggregationBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<HoltWintersMovingAverageAggregationBuilder<(crate::typed::builder::Set,)>>
+    for MovingAverageAggregation
+{
+    fn from(
+        builder: HoltWintersMovingAverageAggregationBuilder<(crate::typed::builder::Set,)>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl MovingAverageAggregation {
+    /// Creates a builder for [`MovingAverageAggregation`].
+    ///
+    /// Required: a variant.
+    pub fn builder() -> MovingAverageAggregationBuilder {
+        MovingAverageAggregationBuilder::new()
+    }
+
+    /// Creates a [`MovingAverageAggregation`] from a function that sets the members of its builder.
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = MovingAverageAggregation>>(
+        f: impl FnOnce(MovingAverageAggregationBuilder) -> B,
+    ) -> MovingAverageAggregation {
+        f(Self::builder()).build()
+    }
+}
+
+/// Builder for [`MovingAverageAggregation`].
+#[must_use = "the builder does nothing until `build()` is called"]
+pub struct MovingAverageAggregationBuilder<S = (crate::typed::builder::NotSet,)> {
+    variant: Option<MovingAverageAggregation>,
+    _state: std::marker::PhantomData<S>,
+}
+
+impl MovingAverageAggregationBuilder<(crate::typed::builder::NotSet,)> {
+    pub(crate) fn new() -> Self {
+        MovingAverageAggregationBuilder {
+            variant: None,
+            _state: std::marker::PhantomData,
+        }
+    }
+}
+
+impl<S0> MovingAverageAggregationBuilder<(S0,)> {
+    fn with_state<N>(self) -> MovingAverageAggregationBuilder<N> {
+        MovingAverageAggregationBuilder {
+            variant: self.variant,
+            _state: std::marker::PhantomData,
+        }
+    }
+}
+
+impl MovingAverageAggregationBuilder<(crate::typed::builder::NotSet,)> {
+    pub fn linear(
+        self,
+        value: impl Into<LinearMovingAverageAggregation>,
+    ) -> MovingAverageAggregationBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(MovingAverageAggregation::Linear(value.into()));
+        builder
+    }
+
+    /// Sets [`linear`](Self::linear) with a builder.
+    pub fn linear_with<B: crate::typed::builder::Build<Output = LinearMovingAverageAggregation>>(
+        self,
+        f: impl FnOnce(LinearMovingAverageAggregationBuilder) -> B,
+    ) -> MovingAverageAggregationBuilder<(crate::typed::builder::Set,)> {
+        self.linear(f(LinearMovingAverageAggregationBuilder::new()).build())
+    }
+
+    pub fn simple(
+        self,
+        value: impl Into<SimpleMovingAverageAggregation>,
+    ) -> MovingAverageAggregationBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(MovingAverageAggregation::Simple(value.into()));
+        builder
+    }
+
+    /// Sets [`simple`](Self::simple) with a builder.
+    pub fn simple_with<B: crate::typed::builder::Build<Output = SimpleMovingAverageAggregation>>(
+        self,
+        f: impl FnOnce(SimpleMovingAverageAggregationBuilder) -> B,
+    ) -> MovingAverageAggregationBuilder<(crate::typed::builder::Set,)> {
+        self.simple(f(SimpleMovingAverageAggregationBuilder::new()).build())
+    }
+
+    pub fn ewma(
+        self,
+        value: impl Into<EwmaMovingAverageAggregation>,
+    ) -> MovingAverageAggregationBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(MovingAverageAggregation::Ewma(value.into()));
+        builder
+    }
+
+    /// Sets [`ewma`](Self::ewma) with a builder.
+    pub fn ewma_with<B: crate::typed::builder::Build<Output = EwmaMovingAverageAggregation>>(
+        self,
+        f: impl FnOnce(EwmaMovingAverageAggregationBuilder) -> B,
+    ) -> MovingAverageAggregationBuilder<(crate::typed::builder::Set,)> {
+        self.ewma(f(EwmaMovingAverageAggregationBuilder::new()).build())
+    }
+
+    pub fn holt(
+        self,
+        value: impl Into<HoltMovingAverageAggregation>,
+    ) -> MovingAverageAggregationBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(MovingAverageAggregation::Holt(value.into()));
+        builder
+    }
+
+    /// Sets [`holt`](Self::holt) with a builder.
+    pub fn holt_with<B: crate::typed::builder::Build<Output = HoltMovingAverageAggregation>>(
+        self,
+        f: impl FnOnce(HoltMovingAverageAggregationBuilder) -> B,
+    ) -> MovingAverageAggregationBuilder<(crate::typed::builder::Set,)> {
+        self.holt(f(HoltMovingAverageAggregationBuilder::new()).build())
+    }
+
+    pub fn holt_winters(
+        self,
+        value: impl Into<HoltWintersMovingAverageAggregation>,
+    ) -> MovingAverageAggregationBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(MovingAverageAggregation::HoltWinters(value.into()));
+        builder
+    }
+
+    /// Sets [`holt_winters`](Self::holt_winters) with a builder.
+    pub fn holt_winters_with<
+        B: crate::typed::builder::Build<Output = HoltWintersMovingAverageAggregation>,
+    >(
+        self,
+        f: impl FnOnce(HoltWintersMovingAverageAggregationBuilder) -> B,
+    ) -> MovingAverageAggregationBuilder<(crate::typed::builder::Set,)> {
+        self.holt_winters(f(HoltWintersMovingAverageAggregationBuilder::new()).build())
+    }
+}
+
+impl<S0> MovingAverageAggregationBuilder<(S0,)> {
+    /// Builds a [`MovingAverageAggregation`].
+    pub fn build(self) -> MovingAverageAggregation
+    where
+        S0: crate::typed::builder::IsVariantSet<MovingAverageAggregation>,
+    {
+        self.variant.unwrap()
+    }
+}
+
+impl<S0> crate::typed::builder::Build for MovingAverageAggregationBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<MovingAverageAggregation>,
+{
+    type Output = MovingAverageAggregation;
+
+    fn build(self) -> MovingAverageAggregation {
+        Self::build(self)
+    }
+}
+
+impl<S0> From<MovingAverageAggregationBuilder<(S0,)>> for MovingAverageAggregation
+where
+    S0: crate::typed::builder::IsVariantSet<MovingAverageAggregation>,
+{
+    fn from(builder: MovingAverageAggregationBuilder<(S0,)>) -> Self {
+        builder.build()
     }
 }
 
@@ -40273,21 +40472,20 @@ pub struct SimpleMovingAverageAggregation {
     pub predict: Option<i32>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub window: Option<i32>,
-    pub model: String,
     pub settings: crate::typed::_types::EmptyObject,
 }
 
 impl SimpleMovingAverageAggregation {
     /// Creates a builder for [`SimpleMovingAverageAggregation`].
     ///
-    /// Required: `model`, `settings`.
+    /// Required: `settings`.
     pub fn builder() -> SimpleMovingAverageAggregationBuilder {
         SimpleMovingAverageAggregationBuilder::new()
     }
 
     /// Creates a [`SimpleMovingAverageAggregation`] from a function that sets the members of its builder.
     ///
-    /// Required: `model`, `settings`.
+    /// Required: `settings`.
     pub fn of<B: crate::typed::builder::Build<Output = SimpleMovingAverageAggregation>>(
         f: impl FnOnce(SimpleMovingAverageAggregationBuilder) -> B,
     ) -> SimpleMovingAverageAggregation {
@@ -40299,32 +40497,23 @@ impl SimpleMovingAverageAggregation {
 #[doc(hidden)]
 #[allow(non_camel_case_types)]
 pub mod simple_moving_average_aggregation_members {
-    pub struct model;
     pub struct settings;
 }
 
 /// Builder for [`SimpleMovingAverageAggregation`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct SimpleMovingAverageAggregationBuilder<
-    S = (crate::typed::builder::NotSet, crate::typed::builder::NotSet),
-> {
+pub struct SimpleMovingAverageAggregationBuilder<S = (crate::typed::builder::NotSet,)> {
     buckets_path: Option<BucketsPath>,
     format: Option<String>,
     gap_policy: Option<GapPolicy>,
     minimize: Option<bool>,
     predict: Option<i32>,
     window: Option<i32>,
-    model: Option<String>,
     settings: Option<crate::typed::_types::EmptyObject>,
     _state: std::marker::PhantomData<S>,
 }
 
-impl
-    SimpleMovingAverageAggregationBuilder<(
-        crate::typed::builder::NotSet,
-        crate::typed::builder::NotSet,
-    )>
-{
+impl SimpleMovingAverageAggregationBuilder<(crate::typed::builder::NotSet,)> {
     pub(crate) fn new() -> Self {
         SimpleMovingAverageAggregationBuilder {
             buckets_path: None,
@@ -40333,14 +40522,13 @@ impl
             minimize: None,
             predict: None,
             window: None,
-            model: None,
             settings: None,
             _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0, S1> SimpleMovingAverageAggregationBuilder<(S0, S1)> {
+impl<S0> SimpleMovingAverageAggregationBuilder<(S0,)> {
     fn with_state<N>(self) -> SimpleMovingAverageAggregationBuilder<N> {
         SimpleMovingAverageAggregationBuilder {
             buckets_path: self.buckets_path,
@@ -40349,7 +40537,6 @@ impl<S0, S1> SimpleMovingAverageAggregationBuilder<(S0, S1)> {
             minimize: self.minimize,
             predict: self.predict,
             window: self.window,
-            model: self.model,
             settings: self.settings,
             _state: std::marker::PhantomData,
         }
@@ -40426,24 +40613,12 @@ impl<S0, S1> SimpleMovingAverageAggregationBuilder<(S0, S1)> {
     }
 }
 
-impl<S1> SimpleMovingAverageAggregationBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// **Required.**
-    pub fn model(
-        self,
-        value: impl Into<String>,
-    ) -> SimpleMovingAverageAggregationBuilder<(crate::typed::builder::Set, S1)> {
-        let mut builder = self.with_state();
-        builder.model = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> SimpleMovingAverageAggregationBuilder<(S0, crate::typed::builder::NotSet)> {
+impl SimpleMovingAverageAggregationBuilder<(crate::typed::builder::NotSet,)> {
     /// **Required.**
     pub fn settings(
         self,
         value: impl Into<crate::typed::_types::EmptyObject>,
-    ) -> SimpleMovingAverageAggregationBuilder<(S0, crate::typed::builder::Set)> {
+    ) -> SimpleMovingAverageAggregationBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.settings = Some(value.into());
         builder
@@ -40455,17 +40630,16 @@ impl<S0> SimpleMovingAverageAggregationBuilder<(S0, crate::typed::builder::NotSe
     >(
         self,
         f: impl FnOnce(crate::typed::_types::EmptyObjectBuilder) -> B,
-    ) -> SimpleMovingAverageAggregationBuilder<(S0, crate::typed::builder::Set)> {
+    ) -> SimpleMovingAverageAggregationBuilder<(crate::typed::builder::Set,)> {
         self.settings(f(crate::typed::_types::EmptyObjectBuilder::new()).build())
     }
 }
 
-impl<S0, S1> SimpleMovingAverageAggregationBuilder<(S0, S1)> {
+impl<S0> SimpleMovingAverageAggregationBuilder<(S0,)> {
     /// Builds a [`SimpleMovingAverageAggregation`].
     pub fn build(self) -> SimpleMovingAverageAggregation
     where
-        S0: crate::typed::builder::IsSet<simple_moving_average_aggregation_members::model>,
-        S1: crate::typed::builder::IsSet<simple_moving_average_aggregation_members::settings>,
+        S0: crate::typed::builder::IsSet<simple_moving_average_aggregation_members::settings>,
     {
         SimpleMovingAverageAggregation {
             buckets_path: self.buckets_path,
@@ -40474,16 +40648,14 @@ impl<S0, S1> SimpleMovingAverageAggregationBuilder<(S0, S1)> {
             minimize: self.minimize,
             predict: self.predict,
             window: self.window,
-            model: self.model.unwrap(),
             settings: self.settings.unwrap(),
         }
     }
 }
 
-impl<S0, S1> crate::typed::builder::Build for SimpleMovingAverageAggregationBuilder<(S0, S1)>
+impl<S0> crate::typed::builder::Build for SimpleMovingAverageAggregationBuilder<(S0,)>
 where
-    S0: crate::typed::builder::IsSet<simple_moving_average_aggregation_members::model>,
-    S1: crate::typed::builder::IsSet<simple_moving_average_aggregation_members::settings>,
+    S0: crate::typed::builder::IsSet<simple_moving_average_aggregation_members::settings>,
 {
     type Output = SimpleMovingAverageAggregation;
 
@@ -40492,13 +40664,11 @@ where
     }
 }
 
-impl<S0, S1> From<SimpleMovingAverageAggregationBuilder<(S0, S1)>>
-    for SimpleMovingAverageAggregation
+impl<S0> From<SimpleMovingAverageAggregationBuilder<(S0,)>> for SimpleMovingAverageAggregation
 where
-    S0: crate::typed::builder::IsSet<simple_moving_average_aggregation_members::model>,
-    S1: crate::typed::builder::IsSet<simple_moving_average_aggregation_members::settings>,
+    S0: crate::typed::builder::IsSet<simple_moving_average_aggregation_members::settings>,
 {
-    fn from(builder: SimpleMovingAverageAggregationBuilder<(S0, S1)>) -> Self {
+    fn from(builder: SimpleMovingAverageAggregationBuilder<(S0,)>) -> Self {
         builder.build()
     }
 }

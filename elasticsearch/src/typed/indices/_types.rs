@@ -5981,6 +5981,15 @@ impl IndexSettingsBuilder {
         self
     }
 
+    /// Adds an entry to [`similarity`](Self::similarity), with a builder.
+    pub fn add_similarity_with<B: crate::typed::builder::Build<Output = SettingsSimilarity>>(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(SettingsSimilarityBuilder) -> B,
+    ) -> Self {
+        self.add_similarity(key, f(SettingsSimilarityBuilder::new()).build())
+    }
+
     /// Enable or disable dynamic mapping for an index.
     pub fn mapping(mut self, value: impl Into<MappingLimitSettings>) -> Self {
         self.mapping = Some(value.into());
@@ -6242,6 +6251,20 @@ impl IndexSettingsAnalysisBuilder {
         self
     }
 
+    /// Adds an entry to [`analyzer`](Self::analyzer), with a builder.
+    pub fn add_analyzer_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::analysis::Analyzer>,
+    >(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(crate::typed::_types::analysis::AnalyzerBuilder) -> B,
+    ) -> Self {
+        self.add_analyzer(
+            key,
+            f(crate::typed::_types::analysis::AnalyzerBuilder::new()).build(),
+        )
+    }
+
     pub fn char_filter(
         mut self,
         value: impl Into<indexmap::IndexMap<String, crate::typed::_types::analysis::CharFilter>>,
@@ -6327,6 +6350,20 @@ impl IndexSettingsAnalysisBuilder {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`normalizer`](Self::normalizer), with a builder.
+    pub fn add_normalizer_with<
+        B: crate::typed::builder::Build<Output = crate::typed::_types::analysis::Normalizer>,
+    >(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(crate::typed::_types::analysis::NormalizerBuilder) -> B,
+    ) -> Self {
+        self.add_normalizer(
+            key,
+            f(crate::typed::_types::analysis::NormalizerBuilder::new()).build(),
+        )
     }
 
     pub fn tokenizer(
@@ -10921,20 +10958,436 @@ impl From<SettingsSearchBuilder> for SettingsSearch {
     }
 }
 
-/// This union of types isn't supported by the code generator yet, and is represented as a JSON value.
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
-#[serde(transparent)]
-pub struct SettingsSimilarity(pub serde_json::Value);
+/// Variants are identified by the `type` property. Variants unknown to this client are kept as JSON values in `Unknown`.
+#[derive(Debug, Clone, PartialEq)]
+pub enum SettingsSimilarity {
+    Bm25(SettingsSimilarityBm25),
+    Boolean(SettingsSimilarityBoolean),
+    Dfi(SettingsSimilarityDfi),
+    Dfr(SettingsSimilarityDfr),
+    Ib(SettingsSimilarityIb),
+    LmDirichlet(SettingsSimilarityLmd),
+    LmJelinekMercer(SettingsSimilarityLmj),
+    Scripted(SettingsSimilarityScripted),
+    /// A variant unknown to this client.
+    Unknown(serde_json::Value),
+}
 
-impl From<serde_json::Value> for SettingsSimilarity {
-    fn from(value: serde_json::Value) -> Self {
-        SettingsSimilarity(value)
+impl serde::Serialize for SettingsSimilarity {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        use serde::ser::Error;
+        let (tag, value) = match self {
+            SettingsSimilarity::Bm25(value) => {
+                (serde_json::Value::from("BM25"), serde_json::to_value(value))
+            }
+            SettingsSimilarity::Boolean(value) => (
+                serde_json::Value::from("boolean"),
+                serde_json::to_value(value),
+            ),
+            SettingsSimilarity::Dfi(value) => {
+                (serde_json::Value::from("DFI"), serde_json::to_value(value))
+            }
+            SettingsSimilarity::Dfr(value) => {
+                (serde_json::Value::from("DFR"), serde_json::to_value(value))
+            }
+            SettingsSimilarity::Ib(value) => {
+                (serde_json::Value::from("IB"), serde_json::to_value(value))
+            }
+            SettingsSimilarity::LmDirichlet(value) => (
+                serde_json::Value::from("LMDirichlet"),
+                serde_json::to_value(value),
+            ),
+            SettingsSimilarity::LmJelinekMercer(value) => (
+                serde_json::Value::from("LMJelinekMercer"),
+                serde_json::to_value(value),
+            ),
+            SettingsSimilarity::Scripted(value) => (
+                serde_json::Value::from("scripted"),
+                serde_json::to_value(value),
+            ),
+            SettingsSimilarity::Unknown(value) => return value.serialize(serializer),
+        };
+        let mut object = serde_json::Map::new();
+        object.insert("type".to_string(), tag);
+        if let serde_json::Value::Object(fields) = value.map_err(S::Error::custom)? {
+            object.extend(fields);
+        }
+        object.serialize(serializer)
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+impl<'de> serde::Deserialize<'de> for SettingsSimilarity {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        use serde::de::Error;
+        let mut object = serde_json::Map::deserialize(deserializer)?;
+        let tag = object
+            .remove("type")
+            .ok_or_else(|| D::Error::missing_field("type"))?;
+        let result = match tag.as_str() {
+            Some("BM25") => serde_json::from_value(object.into()).map(SettingsSimilarity::Bm25),
+            Some("boolean") => {
+                serde_json::from_value(object.into()).map(SettingsSimilarity::Boolean)
+            }
+            Some("DFI") => serde_json::from_value(object.into()).map(SettingsSimilarity::Dfi),
+            Some("DFR") => serde_json::from_value(object.into()).map(SettingsSimilarity::Dfr),
+            Some("IB") => serde_json::from_value(object.into()).map(SettingsSimilarity::Ib),
+            Some("LMDirichlet") => {
+                serde_json::from_value(object.into()).map(SettingsSimilarity::LmDirichlet)
+            }
+            Some("LMJelinekMercer") => {
+                serde_json::from_value(object.into()).map(SettingsSimilarity::LmJelinekMercer)
+            }
+            Some("scripted") => {
+                serde_json::from_value(object.into()).map(SettingsSimilarity::Scripted)
+            }
+            _ => {
+                object.insert("type".to_string(), tag);
+                return Ok(SettingsSimilarity::Unknown(object.into()));
+            }
+        };
+        result.map_err(D::Error::custom)
+    }
+}
+
+impl From<SettingsSimilarityBm25> for SettingsSimilarity {
+    fn from(value: SettingsSimilarityBm25) -> Self {
+        SettingsSimilarity::Bm25(value)
+    }
+}
+
+impl From<SettingsSimilarityBoolean> for SettingsSimilarity {
+    fn from(value: SettingsSimilarityBoolean) -> Self {
+        SettingsSimilarity::Boolean(value)
+    }
+}
+
+impl From<SettingsSimilarityDfi> for SettingsSimilarity {
+    fn from(value: SettingsSimilarityDfi) -> Self {
+        SettingsSimilarity::Dfi(value)
+    }
+}
+
+impl From<SettingsSimilarityDfr> for SettingsSimilarity {
+    fn from(value: SettingsSimilarityDfr) -> Self {
+        SettingsSimilarity::Dfr(value)
+    }
+}
+
+impl From<SettingsSimilarityIb> for SettingsSimilarity {
+    fn from(value: SettingsSimilarityIb) -> Self {
+        SettingsSimilarity::Ib(value)
+    }
+}
+
+impl From<SettingsSimilarityLmd> for SettingsSimilarity {
+    fn from(value: SettingsSimilarityLmd) -> Self {
+        SettingsSimilarity::LmDirichlet(value)
+    }
+}
+
+impl From<SettingsSimilarityLmj> for SettingsSimilarity {
+    fn from(value: SettingsSimilarityLmj) -> Self {
+        SettingsSimilarity::LmJelinekMercer(value)
+    }
+}
+
+impl From<SettingsSimilarityScripted> for SettingsSimilarity {
+    fn from(value: SettingsSimilarityScripted) -> Self {
+        SettingsSimilarity::Scripted(value)
+    }
+}
+
+impl From<SettingsSimilarityBm25Builder> for SettingsSimilarity {
+    fn from(builder: SettingsSimilarityBm25Builder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<SettingsSimilarityBooleanBuilder> for SettingsSimilarity {
+    fn from(builder: SettingsSimilarityBooleanBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<SettingsSimilarityDfiBuilder<(crate::typed::builder::Set,)>> for SettingsSimilarity {
+    fn from(builder: SettingsSimilarityDfiBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl
+    From<
+        SettingsSimilarityDfrBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    > for SettingsSimilarity
+{
+    fn from(
+        builder: SettingsSimilarityDfrBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl
+    From<
+        SettingsSimilarityIbBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    > for SettingsSimilarity
+{
+    fn from(
+        builder: SettingsSimilarityIbBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<SettingsSimilarityLmdBuilder> for SettingsSimilarity {
+    fn from(builder: SettingsSimilarityLmdBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<SettingsSimilarityLmjBuilder> for SettingsSimilarity {
+    fn from(builder: SettingsSimilarityLmjBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<SettingsSimilarityScriptedBuilder<(crate::typed::builder::Set,)>> for SettingsSimilarity {
+    fn from(builder: SettingsSimilarityScriptedBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl SettingsSimilarity {
+    /// Creates a builder for [`SettingsSimilarity`].
+    ///
+    /// Required: a variant.
+    pub fn builder() -> SettingsSimilarityBuilder {
+        SettingsSimilarityBuilder::new()
+    }
+
+    /// Creates a [`SettingsSimilarity`] from a function that sets the members of its builder.
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = SettingsSimilarity>>(
+        f: impl FnOnce(SettingsSimilarityBuilder) -> B,
+    ) -> SettingsSimilarity {
+        f(Self::builder()).build()
+    }
+}
+
+/// Builder for [`SettingsSimilarity`].
+#[must_use = "the builder does nothing until `build()` is called"]
+pub struct SettingsSimilarityBuilder<S = (crate::typed::builder::NotSet,)> {
+    variant: Option<SettingsSimilarity>,
+    _state: std::marker::PhantomData<S>,
+}
+
+impl SettingsSimilarityBuilder<(crate::typed::builder::NotSet,)> {
+    pub(crate) fn new() -> Self {
+        SettingsSimilarityBuilder {
+            variant: None,
+            _state: std::marker::PhantomData,
+        }
+    }
+}
+
+impl<S0> SettingsSimilarityBuilder<(S0,)> {
+    fn with_state<N>(self) -> SettingsSimilarityBuilder<N> {
+        SettingsSimilarityBuilder {
+            variant: self.variant,
+            _state: std::marker::PhantomData,
+        }
+    }
+}
+
+impl SettingsSimilarityBuilder<(crate::typed::builder::NotSet,)> {
+    pub fn bm25(
+        self,
+        value: impl Into<SettingsSimilarityBm25>,
+    ) -> SettingsSimilarityBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(SettingsSimilarity::Bm25(value.into()));
+        builder
+    }
+
+    /// Sets [`bm25`](Self::bm25) with a builder.
+    pub fn bm25_with<B: crate::typed::builder::Build<Output = SettingsSimilarityBm25>>(
+        self,
+        f: impl FnOnce(SettingsSimilarityBm25Builder) -> B,
+    ) -> SettingsSimilarityBuilder<(crate::typed::builder::Set,)> {
+        self.bm25(f(SettingsSimilarityBm25Builder::new()).build())
+    }
+
+    pub fn boolean(
+        self,
+        value: impl Into<SettingsSimilarityBoolean>,
+    ) -> SettingsSimilarityBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(SettingsSimilarity::Boolean(value.into()));
+        builder
+    }
+
+    /// Sets [`boolean`](Self::boolean) with a builder.
+    pub fn boolean_with<B: crate::typed::builder::Build<Output = SettingsSimilarityBoolean>>(
+        self,
+        f: impl FnOnce(SettingsSimilarityBooleanBuilder) -> B,
+    ) -> SettingsSimilarityBuilder<(crate::typed::builder::Set,)> {
+        self.boolean(f(SettingsSimilarityBooleanBuilder::new()).build())
+    }
+
+    pub fn dfi(
+        self,
+        value: impl Into<SettingsSimilarityDfi>,
+    ) -> SettingsSimilarityBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(SettingsSimilarity::Dfi(value.into()));
+        builder
+    }
+
+    /// Sets [`dfi`](Self::dfi) with a builder.
+    pub fn dfi_with<B: crate::typed::builder::Build<Output = SettingsSimilarityDfi>>(
+        self,
+        f: impl FnOnce(SettingsSimilarityDfiBuilder) -> B,
+    ) -> SettingsSimilarityBuilder<(crate::typed::builder::Set,)> {
+        self.dfi(f(SettingsSimilarityDfiBuilder::new()).build())
+    }
+
+    pub fn dfr(
+        self,
+        value: impl Into<SettingsSimilarityDfr>,
+    ) -> SettingsSimilarityBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(SettingsSimilarity::Dfr(value.into()));
+        builder
+    }
+
+    /// Sets [`dfr`](Self::dfr) with a builder.
+    pub fn dfr_with<B: crate::typed::builder::Build<Output = SettingsSimilarityDfr>>(
+        self,
+        f: impl FnOnce(SettingsSimilarityDfrBuilder) -> B,
+    ) -> SettingsSimilarityBuilder<(crate::typed::builder::Set,)> {
+        self.dfr(f(SettingsSimilarityDfrBuilder::new()).build())
+    }
+
+    pub fn ib(
+        self,
+        value: impl Into<SettingsSimilarityIb>,
+    ) -> SettingsSimilarityBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(SettingsSimilarity::Ib(value.into()));
+        builder
+    }
+
+    /// Sets [`ib`](Self::ib) with a builder.
+    pub fn ib_with<B: crate::typed::builder::Build<Output = SettingsSimilarityIb>>(
+        self,
+        f: impl FnOnce(SettingsSimilarityIbBuilder) -> B,
+    ) -> SettingsSimilarityBuilder<(crate::typed::builder::Set,)> {
+        self.ib(f(SettingsSimilarityIbBuilder::new()).build())
+    }
+
+    pub fn lm_dirichlet(
+        self,
+        value: impl Into<SettingsSimilarityLmd>,
+    ) -> SettingsSimilarityBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(SettingsSimilarity::LmDirichlet(value.into()));
+        builder
+    }
+
+    /// Sets [`lm_dirichlet`](Self::lm_dirichlet) with a builder.
+    pub fn lm_dirichlet_with<B: crate::typed::builder::Build<Output = SettingsSimilarityLmd>>(
+        self,
+        f: impl FnOnce(SettingsSimilarityLmdBuilder) -> B,
+    ) -> SettingsSimilarityBuilder<(crate::typed::builder::Set,)> {
+        self.lm_dirichlet(f(SettingsSimilarityLmdBuilder::new()).build())
+    }
+
+    pub fn lm_jelinek_mercer(
+        self,
+        value: impl Into<SettingsSimilarityLmj>,
+    ) -> SettingsSimilarityBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(SettingsSimilarity::LmJelinekMercer(value.into()));
+        builder
+    }
+
+    /// Sets [`lm_jelinek_mercer`](Self::lm_jelinek_mercer) with a builder.
+    pub fn lm_jelinek_mercer_with<
+        B: crate::typed::builder::Build<Output = SettingsSimilarityLmj>,
+    >(
+        self,
+        f: impl FnOnce(SettingsSimilarityLmjBuilder) -> B,
+    ) -> SettingsSimilarityBuilder<(crate::typed::builder::Set,)> {
+        self.lm_jelinek_mercer(f(SettingsSimilarityLmjBuilder::new()).build())
+    }
+
+    pub fn scripted(
+        self,
+        value: impl Into<SettingsSimilarityScripted>,
+    ) -> SettingsSimilarityBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(SettingsSimilarity::Scripted(value.into()));
+        builder
+    }
+
+    /// Sets [`scripted`](Self::scripted) with a builder.
+    pub fn scripted_with<B: crate::typed::builder::Build<Output = SettingsSimilarityScripted>>(
+        self,
+        f: impl FnOnce(SettingsSimilarityScriptedBuilder) -> B,
+    ) -> SettingsSimilarityBuilder<(crate::typed::builder::Set,)> {
+        self.scripted(f(SettingsSimilarityScriptedBuilder::new()).build())
+    }
+}
+
+impl<S0> SettingsSimilarityBuilder<(S0,)> {
+    /// Builds a [`SettingsSimilarity`].
+    pub fn build(self) -> SettingsSimilarity
+    where
+        S0: crate::typed::builder::IsVariantSet<SettingsSimilarity>,
+    {
+        self.variant.unwrap()
+    }
+}
+
+impl<S0> crate::typed::builder::Build for SettingsSimilarityBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<SettingsSimilarity>,
+{
+    type Output = SettingsSimilarity;
+
+    fn build(self) -> SettingsSimilarity {
+        Self::build(self)
+    }
+}
+
+impl<S0> From<SettingsSimilarityBuilder<(S0,)>> for SettingsSimilarity
+where
+    S0: crate::typed::builder::IsVariantSet<SettingsSimilarity>,
+{
+    fn from(builder: SettingsSimilarityBuilder<(S0,)>) -> Self {
+        builder.build()
+    }
+}
+
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct SettingsSimilarityBm25 {
-    pub r#type: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub b: Option<crate::typed::support::Float64>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -10945,15 +11398,11 @@ pub struct SettingsSimilarityBm25 {
 
 impl SettingsSimilarityBm25 {
     /// Creates a builder for [`SettingsSimilarityBm25`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> SettingsSimilarityBm25Builder {
         SettingsSimilarityBm25Builder::new()
     }
 
     /// Creates a [`SettingsSimilarityBm25`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = SettingsSimilarityBm25>>(
         f: impl FnOnce(SettingsSimilarityBm25Builder) -> B,
     ) -> SettingsSimilarityBm25 {
@@ -10961,46 +11410,25 @@ impl SettingsSimilarityBm25 {
     }
 }
 
-/// Markers of the required members of [`SettingsSimilarityBm25Builder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod settings_similarity_bm25_members {
-    pub struct r#type;
-}
-
 /// Builder for [`SettingsSimilarityBm25`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct SettingsSimilarityBm25Builder<S = (crate::typed::builder::NotSet,)> {
-    r#type: Option<String>,
+pub struct SettingsSimilarityBm25Builder {
     b: Option<crate::typed::support::Float64>,
     discount_overlaps: Option<bool>,
     k1: Option<crate::typed::support::Float64>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl SettingsSimilarityBm25Builder<(crate::typed::builder::NotSet,)> {
+impl SettingsSimilarityBm25Builder {
     pub(crate) fn new() -> Self {
         SettingsSimilarityBm25Builder {
-            r#type: None,
             b: None,
             discount_overlaps: None,
             k1: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> SettingsSimilarityBm25Builder<(S0,)> {
-    fn with_state<N>(self) -> SettingsSimilarityBm25Builder<N> {
-        SettingsSimilarityBm25Builder {
-            r#type: self.r#type,
-            b: self.b,
-            discount_overlaps: self.discount_overlaps,
-            k1: self.k1,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl SettingsSimilarityBm25Builder {
     pub fn b(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
         self.b = Some(value.into());
         self
@@ -11035,26 +11463,10 @@ impl<S0> SettingsSimilarityBm25Builder<(S0,)> {
     }
 }
 
-impl SettingsSimilarityBm25Builder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> SettingsSimilarityBm25Builder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> SettingsSimilarityBm25Builder<(S0,)> {
+impl SettingsSimilarityBm25Builder {
     /// Builds a [`SettingsSimilarityBm25`].
-    pub fn build(self) -> SettingsSimilarityBm25
-    where
-        S0: crate::typed::builder::IsSet<settings_similarity_bm25_members::r#type>,
-    {
+    pub fn build(self) -> SettingsSimilarityBm25 {
         SettingsSimilarityBm25 {
-            r#type: self.r#type.unwrap(),
             b: self.b,
             discount_overlaps: self.discount_overlaps,
             k1: self.k1,
@@ -11062,10 +11474,7 @@ impl<S0> SettingsSimilarityBm25Builder<(S0,)> {
     }
 }
 
-impl<S0> crate::typed::builder::Build for SettingsSimilarityBm25Builder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<settings_similarity_bm25_members::r#type>,
-{
+impl crate::typed::builder::Build for SettingsSimilarityBm25Builder {
     type Output = SettingsSimilarityBm25;
 
     fn build(self) -> SettingsSimilarityBm25 {
@@ -11073,31 +11482,22 @@ where
     }
 }
 
-impl<S0> From<SettingsSimilarityBm25Builder<(S0,)>> for SettingsSimilarityBm25
-where
-    S0: crate::typed::builder::IsSet<settings_similarity_bm25_members::r#type>,
-{
-    fn from(builder: SettingsSimilarityBm25Builder<(S0,)>) -> Self {
+impl From<SettingsSimilarityBm25Builder> for SettingsSimilarityBm25 {
+    fn from(builder: SettingsSimilarityBm25Builder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
-pub struct SettingsSimilarityBoolean {
-    pub r#type: String,
-}
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
+pub struct SettingsSimilarityBoolean {}
 
 impl SettingsSimilarityBoolean {
     /// Creates a builder for [`SettingsSimilarityBoolean`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> SettingsSimilarityBooleanBuilder {
         SettingsSimilarityBooleanBuilder::new()
     }
 
     /// Creates a [`SettingsSimilarityBoolean`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = SettingsSimilarityBoolean>>(
         f: impl FnOnce(SettingsSimilarityBooleanBuilder) -> B,
     ) -> SettingsSimilarityBoolean {
@@ -11105,66 +11505,26 @@ impl SettingsSimilarityBoolean {
     }
 }
 
-/// Markers of the required members of [`SettingsSimilarityBooleanBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod settings_similarity_boolean_members {
-    pub struct r#type;
-}
-
 /// Builder for [`SettingsSimilarityBoolean`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct SettingsSimilarityBooleanBuilder<S = (crate::typed::builder::NotSet,)> {
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
-}
+pub struct SettingsSimilarityBooleanBuilder {}
 
-impl SettingsSimilarityBooleanBuilder<(crate::typed::builder::NotSet,)> {
+impl SettingsSimilarityBooleanBuilder {
     pub(crate) fn new() -> Self {
-        SettingsSimilarityBooleanBuilder {
-            r#type: None,
-            _state: std::marker::PhantomData,
-        }
+        SettingsSimilarityBooleanBuilder {}
     }
 }
 
-impl<S0> SettingsSimilarityBooleanBuilder<(S0,)> {
-    fn with_state<N>(self) -> SettingsSimilarityBooleanBuilder<N> {
-        SettingsSimilarityBooleanBuilder {
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-}
+impl SettingsSimilarityBooleanBuilder {}
 
-impl SettingsSimilarityBooleanBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> SettingsSimilarityBooleanBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> SettingsSimilarityBooleanBuilder<(S0,)> {
+impl SettingsSimilarityBooleanBuilder {
     /// Builds a [`SettingsSimilarityBoolean`].
-    pub fn build(self) -> SettingsSimilarityBoolean
-    where
-        S0: crate::typed::builder::IsSet<settings_similarity_boolean_members::r#type>,
-    {
-        SettingsSimilarityBoolean {
-            r#type: self.r#type.unwrap(),
-        }
+    pub fn build(self) -> SettingsSimilarityBoolean {
+        SettingsSimilarityBoolean {}
     }
 }
 
-impl<S0> crate::typed::builder::Build for SettingsSimilarityBooleanBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<settings_similarity_boolean_members::r#type>,
-{
+impl crate::typed::builder::Build for SettingsSimilarityBooleanBuilder {
     type Output = SettingsSimilarityBoolean;
 
     fn build(self) -> SettingsSimilarityBoolean {
@@ -11172,32 +11532,28 @@ where
     }
 }
 
-impl<S0> From<SettingsSimilarityBooleanBuilder<(S0,)>> for SettingsSimilarityBoolean
-where
-    S0: crate::typed::builder::IsSet<settings_similarity_boolean_members::r#type>,
-{
-    fn from(builder: SettingsSimilarityBooleanBuilder<(S0,)>) -> Self {
+impl From<SettingsSimilarityBooleanBuilder> for SettingsSimilarityBoolean {
+    fn from(builder: SettingsSimilarityBooleanBuilder) -> Self {
         builder.build()
     }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct SettingsSimilarityDfi {
-    pub r#type: String,
     pub independence_measure: crate::typed::_types::DFIIndependenceMeasure,
 }
 
 impl SettingsSimilarityDfi {
     /// Creates a builder for [`SettingsSimilarityDfi`].
     ///
-    /// Required: `type`, `independence_measure`.
+    /// Required: `independence_measure`.
     pub fn builder() -> SettingsSimilarityDfiBuilder {
         SettingsSimilarityDfiBuilder::new()
     }
 
     /// Creates a [`SettingsSimilarityDfi`] from a function that sets the members of its builder.
     ///
-    /// Required: `type`, `independence_measure`.
+    /// Required: `independence_measure`.
     pub fn of<B: crate::typed::builder::Build<Output = SettingsSimilarityDfi>>(
         f: impl FnOnce(SettingsSimilarityDfiBuilder) -> B,
     ) -> SettingsSimilarityDfi {
@@ -11209,82 +11565,61 @@ impl SettingsSimilarityDfi {
 #[doc(hidden)]
 #[allow(non_camel_case_types)]
 pub mod settings_similarity_dfi_members {
-    pub struct r#type;
     pub struct independence_measure;
 }
 
 /// Builder for [`SettingsSimilarityDfi`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct SettingsSimilarityDfiBuilder<
-    S = (crate::typed::builder::NotSet, crate::typed::builder::NotSet),
-> {
-    r#type: Option<String>,
+pub struct SettingsSimilarityDfiBuilder<S = (crate::typed::builder::NotSet,)> {
     independence_measure: Option<crate::typed::_types::DFIIndependenceMeasure>,
     _state: std::marker::PhantomData<S>,
 }
 
-impl SettingsSimilarityDfiBuilder<(crate::typed::builder::NotSet, crate::typed::builder::NotSet)> {
+impl SettingsSimilarityDfiBuilder<(crate::typed::builder::NotSet,)> {
     pub(crate) fn new() -> Self {
         SettingsSimilarityDfiBuilder {
-            r#type: None,
             independence_measure: None,
             _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0, S1> SettingsSimilarityDfiBuilder<(S0, S1)> {
+impl<S0> SettingsSimilarityDfiBuilder<(S0,)> {
     fn with_state<N>(self) -> SettingsSimilarityDfiBuilder<N> {
         SettingsSimilarityDfiBuilder {
-            r#type: self.r#type,
             independence_measure: self.independence_measure,
             _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S1> SettingsSimilarityDfiBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> SettingsSimilarityDfiBuilder<(crate::typed::builder::Set, S1)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> SettingsSimilarityDfiBuilder<(S0, crate::typed::builder::NotSet)> {
+impl SettingsSimilarityDfiBuilder<(crate::typed::builder::NotSet,)> {
     /// **Required.**
     pub fn independence_measure(
         self,
         value: impl Into<crate::typed::_types::DFIIndependenceMeasure>,
-    ) -> SettingsSimilarityDfiBuilder<(S0, crate::typed::builder::Set)> {
+    ) -> SettingsSimilarityDfiBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.independence_measure = Some(value.into());
         builder
     }
 }
 
-impl<S0, S1> SettingsSimilarityDfiBuilder<(S0, S1)> {
+impl<S0> SettingsSimilarityDfiBuilder<(S0,)> {
     /// Builds a [`SettingsSimilarityDfi`].
     pub fn build(self) -> SettingsSimilarityDfi
     where
-        S0: crate::typed::builder::IsSet<settings_similarity_dfi_members::r#type>,
-        S1: crate::typed::builder::IsSet<settings_similarity_dfi_members::independence_measure>,
+        S0: crate::typed::builder::IsSet<settings_similarity_dfi_members::independence_measure>,
     {
         SettingsSimilarityDfi {
-            r#type: self.r#type.unwrap(),
             independence_measure: self.independence_measure.unwrap(),
         }
     }
 }
 
-impl<S0, S1> crate::typed::builder::Build for SettingsSimilarityDfiBuilder<(S0, S1)>
+impl<S0> crate::typed::builder::Build for SettingsSimilarityDfiBuilder<(S0,)>
 where
-    S0: crate::typed::builder::IsSet<settings_similarity_dfi_members::r#type>,
-    S1: crate::typed::builder::IsSet<settings_similarity_dfi_members::independence_measure>,
+    S0: crate::typed::builder::IsSet<settings_similarity_dfi_members::independence_measure>,
 {
     type Output = SettingsSimilarityDfi;
 
@@ -11293,19 +11628,17 @@ where
     }
 }
 
-impl<S0, S1> From<SettingsSimilarityDfiBuilder<(S0, S1)>> for SettingsSimilarityDfi
+impl<S0> From<SettingsSimilarityDfiBuilder<(S0,)>> for SettingsSimilarityDfi
 where
-    S0: crate::typed::builder::IsSet<settings_similarity_dfi_members::r#type>,
-    S1: crate::typed::builder::IsSet<settings_similarity_dfi_members::independence_measure>,
+    S0: crate::typed::builder::IsSet<settings_similarity_dfi_members::independence_measure>,
 {
-    fn from(builder: SettingsSimilarityDfiBuilder<(S0, S1)>) -> Self {
+    fn from(builder: SettingsSimilarityDfiBuilder<(S0,)>) -> Self {
         builder.build()
     }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct SettingsSimilarityDfr {
-    pub r#type: String,
     pub after_effect: crate::typed::_types::DFRAfterEffect,
     pub basic_model: crate::typed::_types::DFRBasicModel,
     pub normalization: crate::typed::_types::Normalization,
@@ -11314,14 +11647,14 @@ pub struct SettingsSimilarityDfr {
 impl SettingsSimilarityDfr {
     /// Creates a builder for [`SettingsSimilarityDfr`].
     ///
-    /// Required: `type`, `after_effect`, `basic_model`, `normalization`.
+    /// Required: `after_effect`, `basic_model`, `normalization`.
     pub fn builder() -> SettingsSimilarityDfrBuilder {
         SettingsSimilarityDfrBuilder::new()
     }
 
     /// Creates a [`SettingsSimilarityDfr`] from a function that sets the members of its builder.
     ///
-    /// Required: `type`, `after_effect`, `basic_model`, `normalization`.
+    /// Required: `after_effect`, `basic_model`, `normalization`.
     pub fn of<B: crate::typed::builder::Build<Output = SettingsSimilarityDfr>>(
         f: impl FnOnce(SettingsSimilarityDfrBuilder) -> B,
     ) -> SettingsSimilarityDfr {
@@ -11333,7 +11666,6 @@ impl SettingsSimilarityDfr {
 #[doc(hidden)]
 #[allow(non_camel_case_types)]
 pub mod settings_similarity_dfr_members {
-    pub struct r#type;
     pub struct after_effect;
     pub struct basic_model;
     pub struct normalization;
@@ -11346,10 +11678,8 @@ pub struct SettingsSimilarityDfrBuilder<
         crate::typed::builder::NotSet,
         crate::typed::builder::NotSet,
         crate::typed::builder::NotSet,
-        crate::typed::builder::NotSet,
     ),
 > {
-    r#type: Option<String>,
     after_effect: Option<crate::typed::_types::DFRAfterEffect>,
     basic_model: Option<crate::typed::_types::DFRBasicModel>,
     normalization: Option<crate::typed::_types::Normalization>,
@@ -11361,12 +11691,10 @@ impl
         crate::typed::builder::NotSet,
         crate::typed::builder::NotSet,
         crate::typed::builder::NotSet,
-        crate::typed::builder::NotSet,
     )>
 {
     pub(crate) fn new() -> Self {
         SettingsSimilarityDfrBuilder {
-            r#type: None,
             after_effect: None,
             basic_model: None,
             normalization: None,
@@ -11375,10 +11703,9 @@ impl
     }
 }
 
-impl<S0, S1, S2, S3> SettingsSimilarityDfrBuilder<(S0, S1, S2, S3)> {
+impl<S0, S1, S2> SettingsSimilarityDfrBuilder<(S0, S1, S2)> {
     fn with_state<N>(self) -> SettingsSimilarityDfrBuilder<N> {
         SettingsSimilarityDfrBuilder {
-            r#type: self.r#type,
             after_effect: self.after_effect,
             basic_model: self.basic_model,
             normalization: self.normalization,
@@ -11387,65 +11714,51 @@ impl<S0, S1, S2, S3> SettingsSimilarityDfrBuilder<(S0, S1, S2, S3)> {
     }
 }
 
-impl<S1, S2, S3> SettingsSimilarityDfrBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> SettingsSimilarityDfrBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0, S2, S3> SettingsSimilarityDfrBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+impl<S1, S2> SettingsSimilarityDfrBuilder<(crate::typed::builder::NotSet, S1, S2)> {
     /// **Required.**
     pub fn after_effect(
         self,
         value: impl Into<crate::typed::_types::DFRAfterEffect>,
-    ) -> SettingsSimilarityDfrBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
+    ) -> SettingsSimilarityDfrBuilder<(crate::typed::builder::Set, S1, S2)> {
         let mut builder = self.with_state();
         builder.after_effect = Some(value.into());
         builder
     }
 }
 
-impl<S0, S1, S3> SettingsSimilarityDfrBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+impl<S0, S2> SettingsSimilarityDfrBuilder<(S0, crate::typed::builder::NotSet, S2)> {
     /// **Required.**
     pub fn basic_model(
         self,
         value: impl Into<crate::typed::_types::DFRBasicModel>,
-    ) -> SettingsSimilarityDfrBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+    ) -> SettingsSimilarityDfrBuilder<(S0, crate::typed::builder::Set, S2)> {
         let mut builder = self.with_state();
         builder.basic_model = Some(value.into());
         builder
     }
 }
 
-impl<S0, S1, S2> SettingsSimilarityDfrBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+impl<S0, S1> SettingsSimilarityDfrBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     /// **Required.**
     pub fn normalization(
         self,
         value: impl Into<crate::typed::_types::Normalization>,
-    ) -> SettingsSimilarityDfrBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+    ) -> SettingsSimilarityDfrBuilder<(S0, S1, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.normalization = Some(value.into());
         builder
     }
 }
 
-impl<S0, S1, S2, S3> SettingsSimilarityDfrBuilder<(S0, S1, S2, S3)> {
+impl<S0, S1, S2> SettingsSimilarityDfrBuilder<(S0, S1, S2)> {
     /// Builds a [`SettingsSimilarityDfr`].
     pub fn build(self) -> SettingsSimilarityDfr
     where
-        S0: crate::typed::builder::IsSet<settings_similarity_dfr_members::r#type>,
-        S1: crate::typed::builder::IsSet<settings_similarity_dfr_members::after_effect>,
-        S2: crate::typed::builder::IsSet<settings_similarity_dfr_members::basic_model>,
-        S3: crate::typed::builder::IsSet<settings_similarity_dfr_members::normalization>,
+        S0: crate::typed::builder::IsSet<settings_similarity_dfr_members::after_effect>,
+        S1: crate::typed::builder::IsSet<settings_similarity_dfr_members::basic_model>,
+        S2: crate::typed::builder::IsSet<settings_similarity_dfr_members::normalization>,
     {
         SettingsSimilarityDfr {
-            r#type: self.r#type.unwrap(),
             after_effect: self.after_effect.unwrap(),
             basic_model: self.basic_model.unwrap(),
             normalization: self.normalization.unwrap(),
@@ -11453,12 +11766,11 @@ impl<S0, S1, S2, S3> SettingsSimilarityDfrBuilder<(S0, S1, S2, S3)> {
     }
 }
 
-impl<S0, S1, S2, S3> crate::typed::builder::Build for SettingsSimilarityDfrBuilder<(S0, S1, S2, S3)>
+impl<S0, S1, S2> crate::typed::builder::Build for SettingsSimilarityDfrBuilder<(S0, S1, S2)>
 where
-    S0: crate::typed::builder::IsSet<settings_similarity_dfr_members::r#type>,
-    S1: crate::typed::builder::IsSet<settings_similarity_dfr_members::after_effect>,
-    S2: crate::typed::builder::IsSet<settings_similarity_dfr_members::basic_model>,
-    S3: crate::typed::builder::IsSet<settings_similarity_dfr_members::normalization>,
+    S0: crate::typed::builder::IsSet<settings_similarity_dfr_members::after_effect>,
+    S1: crate::typed::builder::IsSet<settings_similarity_dfr_members::basic_model>,
+    S2: crate::typed::builder::IsSet<settings_similarity_dfr_members::normalization>,
 {
     type Output = SettingsSimilarityDfr;
 
@@ -11467,21 +11779,19 @@ where
     }
 }
 
-impl<S0, S1, S2, S3> From<SettingsSimilarityDfrBuilder<(S0, S1, S2, S3)>> for SettingsSimilarityDfr
+impl<S0, S1, S2> From<SettingsSimilarityDfrBuilder<(S0, S1, S2)>> for SettingsSimilarityDfr
 where
-    S0: crate::typed::builder::IsSet<settings_similarity_dfr_members::r#type>,
-    S1: crate::typed::builder::IsSet<settings_similarity_dfr_members::after_effect>,
-    S2: crate::typed::builder::IsSet<settings_similarity_dfr_members::basic_model>,
-    S3: crate::typed::builder::IsSet<settings_similarity_dfr_members::normalization>,
+    S0: crate::typed::builder::IsSet<settings_similarity_dfr_members::after_effect>,
+    S1: crate::typed::builder::IsSet<settings_similarity_dfr_members::basic_model>,
+    S2: crate::typed::builder::IsSet<settings_similarity_dfr_members::normalization>,
 {
-    fn from(builder: SettingsSimilarityDfrBuilder<(S0, S1, S2, S3)>) -> Self {
+    fn from(builder: SettingsSimilarityDfrBuilder<(S0, S1, S2)>) -> Self {
         builder.build()
     }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct SettingsSimilarityIb {
-    pub r#type: String,
     pub distribution: crate::typed::_types::IBDistribution,
     pub lambda: crate::typed::_types::IBLambda,
     pub normalization: crate::typed::_types::Normalization,
@@ -11490,14 +11800,14 @@ pub struct SettingsSimilarityIb {
 impl SettingsSimilarityIb {
     /// Creates a builder for [`SettingsSimilarityIb`].
     ///
-    /// Required: `type`, `distribution`, `lambda`, `normalization`.
+    /// Required: `distribution`, `lambda`, `normalization`.
     pub fn builder() -> SettingsSimilarityIbBuilder {
         SettingsSimilarityIbBuilder::new()
     }
 
     /// Creates a [`SettingsSimilarityIb`] from a function that sets the members of its builder.
     ///
-    /// Required: `type`, `distribution`, `lambda`, `normalization`.
+    /// Required: `distribution`, `lambda`, `normalization`.
     pub fn of<B: crate::typed::builder::Build<Output = SettingsSimilarityIb>>(
         f: impl FnOnce(SettingsSimilarityIbBuilder) -> B,
     ) -> SettingsSimilarityIb {
@@ -11509,7 +11819,6 @@ impl SettingsSimilarityIb {
 #[doc(hidden)]
 #[allow(non_camel_case_types)]
 pub mod settings_similarity_ib_members {
-    pub struct r#type;
     pub struct distribution;
     pub struct lambda;
     pub struct normalization;
@@ -11522,10 +11831,8 @@ pub struct SettingsSimilarityIbBuilder<
         crate::typed::builder::NotSet,
         crate::typed::builder::NotSet,
         crate::typed::builder::NotSet,
-        crate::typed::builder::NotSet,
     ),
 > {
-    r#type: Option<String>,
     distribution: Option<crate::typed::_types::IBDistribution>,
     lambda: Option<crate::typed::_types::IBLambda>,
     normalization: Option<crate::typed::_types::Normalization>,
@@ -11537,12 +11844,10 @@ impl
         crate::typed::builder::NotSet,
         crate::typed::builder::NotSet,
         crate::typed::builder::NotSet,
-        crate::typed::builder::NotSet,
     )>
 {
     pub(crate) fn new() -> Self {
         SettingsSimilarityIbBuilder {
-            r#type: None,
             distribution: None,
             lambda: None,
             normalization: None,
@@ -11551,10 +11856,9 @@ impl
     }
 }
 
-impl<S0, S1, S2, S3> SettingsSimilarityIbBuilder<(S0, S1, S2, S3)> {
+impl<S0, S1, S2> SettingsSimilarityIbBuilder<(S0, S1, S2)> {
     fn with_state<N>(self) -> SettingsSimilarityIbBuilder<N> {
         SettingsSimilarityIbBuilder {
-            r#type: self.r#type,
             distribution: self.distribution,
             lambda: self.lambda,
             normalization: self.normalization,
@@ -11563,65 +11867,51 @@ impl<S0, S1, S2, S3> SettingsSimilarityIbBuilder<(S0, S1, S2, S3)> {
     }
 }
 
-impl<S1, S2, S3> SettingsSimilarityIbBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> SettingsSimilarityIbBuilder<(crate::typed::builder::Set, S1, S2, S3)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0, S2, S3> SettingsSimilarityIbBuilder<(S0, crate::typed::builder::NotSet, S2, S3)> {
+impl<S1, S2> SettingsSimilarityIbBuilder<(crate::typed::builder::NotSet, S1, S2)> {
     /// **Required.**
     pub fn distribution(
         self,
         value: impl Into<crate::typed::_types::IBDistribution>,
-    ) -> SettingsSimilarityIbBuilder<(S0, crate::typed::builder::Set, S2, S3)> {
+    ) -> SettingsSimilarityIbBuilder<(crate::typed::builder::Set, S1, S2)> {
         let mut builder = self.with_state();
         builder.distribution = Some(value.into());
         builder
     }
 }
 
-impl<S0, S1, S3> SettingsSimilarityIbBuilder<(S0, S1, crate::typed::builder::NotSet, S3)> {
+impl<S0, S2> SettingsSimilarityIbBuilder<(S0, crate::typed::builder::NotSet, S2)> {
     /// **Required.**
     pub fn lambda(
         self,
         value: impl Into<crate::typed::_types::IBLambda>,
-    ) -> SettingsSimilarityIbBuilder<(S0, S1, crate::typed::builder::Set, S3)> {
+    ) -> SettingsSimilarityIbBuilder<(S0, crate::typed::builder::Set, S2)> {
         let mut builder = self.with_state();
         builder.lambda = Some(value.into());
         builder
     }
 }
 
-impl<S0, S1, S2> SettingsSimilarityIbBuilder<(S0, S1, S2, crate::typed::builder::NotSet)> {
+impl<S0, S1> SettingsSimilarityIbBuilder<(S0, S1, crate::typed::builder::NotSet)> {
     /// **Required.**
     pub fn normalization(
         self,
         value: impl Into<crate::typed::_types::Normalization>,
-    ) -> SettingsSimilarityIbBuilder<(S0, S1, S2, crate::typed::builder::Set)> {
+    ) -> SettingsSimilarityIbBuilder<(S0, S1, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.normalization = Some(value.into());
         builder
     }
 }
 
-impl<S0, S1, S2, S3> SettingsSimilarityIbBuilder<(S0, S1, S2, S3)> {
+impl<S0, S1, S2> SettingsSimilarityIbBuilder<(S0, S1, S2)> {
     /// Builds a [`SettingsSimilarityIb`].
     pub fn build(self) -> SettingsSimilarityIb
     where
-        S0: crate::typed::builder::IsSet<settings_similarity_ib_members::r#type>,
-        S1: crate::typed::builder::IsSet<settings_similarity_ib_members::distribution>,
-        S2: crate::typed::builder::IsSet<settings_similarity_ib_members::lambda>,
-        S3: crate::typed::builder::IsSet<settings_similarity_ib_members::normalization>,
+        S0: crate::typed::builder::IsSet<settings_similarity_ib_members::distribution>,
+        S1: crate::typed::builder::IsSet<settings_similarity_ib_members::lambda>,
+        S2: crate::typed::builder::IsSet<settings_similarity_ib_members::normalization>,
     {
         SettingsSimilarityIb {
-            r#type: self.r#type.unwrap(),
             distribution: self.distribution.unwrap(),
             lambda: self.lambda.unwrap(),
             normalization: self.normalization.unwrap(),
@@ -11629,12 +11919,11 @@ impl<S0, S1, S2, S3> SettingsSimilarityIbBuilder<(S0, S1, S2, S3)> {
     }
 }
 
-impl<S0, S1, S2, S3> crate::typed::builder::Build for SettingsSimilarityIbBuilder<(S0, S1, S2, S3)>
+impl<S0, S1, S2> crate::typed::builder::Build for SettingsSimilarityIbBuilder<(S0, S1, S2)>
 where
-    S0: crate::typed::builder::IsSet<settings_similarity_ib_members::r#type>,
-    S1: crate::typed::builder::IsSet<settings_similarity_ib_members::distribution>,
-    S2: crate::typed::builder::IsSet<settings_similarity_ib_members::lambda>,
-    S3: crate::typed::builder::IsSet<settings_similarity_ib_members::normalization>,
+    S0: crate::typed::builder::IsSet<settings_similarity_ib_members::distribution>,
+    S1: crate::typed::builder::IsSet<settings_similarity_ib_members::lambda>,
+    S2: crate::typed::builder::IsSet<settings_similarity_ib_members::normalization>,
 {
     type Output = SettingsSimilarityIb;
 
@@ -11643,36 +11932,30 @@ where
     }
 }
 
-impl<S0, S1, S2, S3> From<SettingsSimilarityIbBuilder<(S0, S1, S2, S3)>> for SettingsSimilarityIb
+impl<S0, S1, S2> From<SettingsSimilarityIbBuilder<(S0, S1, S2)>> for SettingsSimilarityIb
 where
-    S0: crate::typed::builder::IsSet<settings_similarity_ib_members::r#type>,
-    S1: crate::typed::builder::IsSet<settings_similarity_ib_members::distribution>,
-    S2: crate::typed::builder::IsSet<settings_similarity_ib_members::lambda>,
-    S3: crate::typed::builder::IsSet<settings_similarity_ib_members::normalization>,
+    S0: crate::typed::builder::IsSet<settings_similarity_ib_members::distribution>,
+    S1: crate::typed::builder::IsSet<settings_similarity_ib_members::lambda>,
+    S2: crate::typed::builder::IsSet<settings_similarity_ib_members::normalization>,
 {
-    fn from(builder: SettingsSimilarityIbBuilder<(S0, S1, S2, S3)>) -> Self {
+    fn from(builder: SettingsSimilarityIbBuilder<(S0, S1, S2)>) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct SettingsSimilarityLmd {
-    pub r#type: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub mu: Option<crate::typed::support::Float64>,
 }
 
 impl SettingsSimilarityLmd {
     /// Creates a builder for [`SettingsSimilarityLmd`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> SettingsSimilarityLmdBuilder {
         SettingsSimilarityLmdBuilder::new()
     }
 
     /// Creates a [`SettingsSimilarityLmd`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = SettingsSimilarityLmd>>(
         f: impl FnOnce(SettingsSimilarityLmdBuilder) -> B,
     ) -> SettingsSimilarityLmd {
@@ -11680,40 +11963,19 @@ impl SettingsSimilarityLmd {
     }
 }
 
-/// Markers of the required members of [`SettingsSimilarityLmdBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod settings_similarity_lmd_members {
-    pub struct r#type;
-}
-
 /// Builder for [`SettingsSimilarityLmd`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct SettingsSimilarityLmdBuilder<S = (crate::typed::builder::NotSet,)> {
-    r#type: Option<String>,
+pub struct SettingsSimilarityLmdBuilder {
     mu: Option<crate::typed::support::Float64>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl SettingsSimilarityLmdBuilder<(crate::typed::builder::NotSet,)> {
+impl SettingsSimilarityLmdBuilder {
     pub(crate) fn new() -> Self {
-        SettingsSimilarityLmdBuilder {
-            r#type: None,
-            mu: None,
-            _state: std::marker::PhantomData,
-        }
+        SettingsSimilarityLmdBuilder { mu: None }
     }
 }
 
-impl<S0> SettingsSimilarityLmdBuilder<(S0,)> {
-    fn with_state<N>(self) -> SettingsSimilarityLmdBuilder<N> {
-        SettingsSimilarityLmdBuilder {
-            r#type: self.r#type,
-            mu: self.mu,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl SettingsSimilarityLmdBuilder {
     pub fn mu(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
         self.mu = Some(value.into());
         self
@@ -11726,35 +11988,14 @@ impl<S0> SettingsSimilarityLmdBuilder<(S0,)> {
     }
 }
 
-impl SettingsSimilarityLmdBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> SettingsSimilarityLmdBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> SettingsSimilarityLmdBuilder<(S0,)> {
+impl SettingsSimilarityLmdBuilder {
     /// Builds a [`SettingsSimilarityLmd`].
-    pub fn build(self) -> SettingsSimilarityLmd
-    where
-        S0: crate::typed::builder::IsSet<settings_similarity_lmd_members::r#type>,
-    {
-        SettingsSimilarityLmd {
-            r#type: self.r#type.unwrap(),
-            mu: self.mu,
-        }
+    pub fn build(self) -> SettingsSimilarityLmd {
+        SettingsSimilarityLmd { mu: self.mu }
     }
 }
 
-impl<S0> crate::typed::builder::Build for SettingsSimilarityLmdBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<settings_similarity_lmd_members::r#type>,
-{
+impl crate::typed::builder::Build for SettingsSimilarityLmdBuilder {
     type Output = SettingsSimilarityLmd;
 
     fn build(self) -> SettingsSimilarityLmd {
@@ -11762,33 +12003,25 @@ where
     }
 }
 
-impl<S0> From<SettingsSimilarityLmdBuilder<(S0,)>> for SettingsSimilarityLmd
-where
-    S0: crate::typed::builder::IsSet<settings_similarity_lmd_members::r#type>,
-{
-    fn from(builder: SettingsSimilarityLmdBuilder<(S0,)>) -> Self {
+impl From<SettingsSimilarityLmdBuilder> for SettingsSimilarityLmd {
+    fn from(builder: SettingsSimilarityLmdBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct SettingsSimilarityLmj {
-    pub r#type: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub lambda: Option<crate::typed::support::Float64>,
 }
 
 impl SettingsSimilarityLmj {
     /// Creates a builder for [`SettingsSimilarityLmj`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> SettingsSimilarityLmjBuilder {
         SettingsSimilarityLmjBuilder::new()
     }
 
     /// Creates a [`SettingsSimilarityLmj`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = SettingsSimilarityLmj>>(
         f: impl FnOnce(SettingsSimilarityLmjBuilder) -> B,
     ) -> SettingsSimilarityLmj {
@@ -11796,40 +12029,19 @@ impl SettingsSimilarityLmj {
     }
 }
 
-/// Markers of the required members of [`SettingsSimilarityLmjBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod settings_similarity_lmj_members {
-    pub struct r#type;
-}
-
 /// Builder for [`SettingsSimilarityLmj`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct SettingsSimilarityLmjBuilder<S = (crate::typed::builder::NotSet,)> {
-    r#type: Option<String>,
+pub struct SettingsSimilarityLmjBuilder {
     lambda: Option<crate::typed::support::Float64>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl SettingsSimilarityLmjBuilder<(crate::typed::builder::NotSet,)> {
+impl SettingsSimilarityLmjBuilder {
     pub(crate) fn new() -> Self {
-        SettingsSimilarityLmjBuilder {
-            r#type: None,
-            lambda: None,
-            _state: std::marker::PhantomData,
-        }
+        SettingsSimilarityLmjBuilder { lambda: None }
     }
 }
 
-impl<S0> SettingsSimilarityLmjBuilder<(S0,)> {
-    fn with_state<N>(self) -> SettingsSimilarityLmjBuilder<N> {
-        SettingsSimilarityLmjBuilder {
-            r#type: self.r#type,
-            lambda: self.lambda,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl SettingsSimilarityLmjBuilder {
     pub fn lambda(mut self, value: impl Into<crate::typed::support::Float64>) -> Self {
         self.lambda = Some(value.into());
         self
@@ -11842,35 +12054,16 @@ impl<S0> SettingsSimilarityLmjBuilder<(S0,)> {
     }
 }
 
-impl SettingsSimilarityLmjBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> SettingsSimilarityLmjBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> SettingsSimilarityLmjBuilder<(S0,)> {
+impl SettingsSimilarityLmjBuilder {
     /// Builds a [`SettingsSimilarityLmj`].
-    pub fn build(self) -> SettingsSimilarityLmj
-    where
-        S0: crate::typed::builder::IsSet<settings_similarity_lmj_members::r#type>,
-    {
+    pub fn build(self) -> SettingsSimilarityLmj {
         SettingsSimilarityLmj {
-            r#type: self.r#type.unwrap(),
             lambda: self.lambda,
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for SettingsSimilarityLmjBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<settings_similarity_lmj_members::r#type>,
-{
+impl crate::typed::builder::Build for SettingsSimilarityLmjBuilder {
     type Output = SettingsSimilarityLmj;
 
     fn build(self) -> SettingsSimilarityLmj {
@@ -11878,18 +12071,14 @@ where
     }
 }
 
-impl<S0> From<SettingsSimilarityLmjBuilder<(S0,)>> for SettingsSimilarityLmj
-where
-    S0: crate::typed::builder::IsSet<settings_similarity_lmj_members::r#type>,
-{
-    fn from(builder: SettingsSimilarityLmjBuilder<(S0,)>) -> Self {
+impl From<SettingsSimilarityLmjBuilder> for SettingsSimilarityLmj {
+    fn from(builder: SettingsSimilarityLmjBuilder) -> Self {
         builder.build()
     }
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct SettingsSimilarityScripted {
-    pub r#type: String,
     pub script: crate::typed::_types::Script,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub weight_script: Option<crate::typed::_types::Script>,
@@ -11898,14 +12087,14 @@ pub struct SettingsSimilarityScripted {
 impl SettingsSimilarityScripted {
     /// Creates a builder for [`SettingsSimilarityScripted`].
     ///
-    /// Required: `type`, `script`.
+    /// Required: `script`.
     pub fn builder() -> SettingsSimilarityScriptedBuilder {
         SettingsSimilarityScriptedBuilder::new()
     }
 
     /// Creates a [`SettingsSimilarityScripted`] from a function that sets the members of its builder.
     ///
-    /// Required: `type`, `script`.
+    /// Required: `script`.
     pub fn of<B: crate::typed::builder::Build<Output = SettingsSimilarityScripted>>(
         f: impl FnOnce(SettingsSimilarityScriptedBuilder) -> B,
     ) -> SettingsSimilarityScripted {
@@ -11917,30 +12106,20 @@ impl SettingsSimilarityScripted {
 #[doc(hidden)]
 #[allow(non_camel_case_types)]
 pub mod settings_similarity_scripted_members {
-    pub struct r#type;
     pub struct script;
 }
 
 /// Builder for [`SettingsSimilarityScripted`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct SettingsSimilarityScriptedBuilder<
-    S = (crate::typed::builder::NotSet, crate::typed::builder::NotSet),
-> {
-    r#type: Option<String>,
+pub struct SettingsSimilarityScriptedBuilder<S = (crate::typed::builder::NotSet,)> {
     script: Option<crate::typed::_types::Script>,
     weight_script: Option<crate::typed::_types::Script>,
     _state: std::marker::PhantomData<S>,
 }
 
-impl
-    SettingsSimilarityScriptedBuilder<(
-        crate::typed::builder::NotSet,
-        crate::typed::builder::NotSet,
-    )>
-{
+impl SettingsSimilarityScriptedBuilder<(crate::typed::builder::NotSet,)> {
     pub(crate) fn new() -> Self {
         SettingsSimilarityScriptedBuilder {
-            r#type: None,
             script: None,
             weight_script: None,
             _state: std::marker::PhantomData,
@@ -11948,10 +12127,9 @@ impl
     }
 }
 
-impl<S0, S1> SettingsSimilarityScriptedBuilder<(S0, S1)> {
+impl<S0> SettingsSimilarityScriptedBuilder<(S0,)> {
     fn with_state<N>(self) -> SettingsSimilarityScriptedBuilder<N> {
         SettingsSimilarityScriptedBuilder {
-            r#type: self.r#type,
             script: self.script,
             weight_script: self.weight_script,
             _state: std::marker::PhantomData,
@@ -11980,24 +12158,12 @@ impl<S0, S1> SettingsSimilarityScriptedBuilder<(S0, S1)> {
     }
 }
 
-impl<S1> SettingsSimilarityScriptedBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> SettingsSimilarityScriptedBuilder<(crate::typed::builder::Set, S1)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> SettingsSimilarityScriptedBuilder<(S0, crate::typed::builder::NotSet)> {
+impl SettingsSimilarityScriptedBuilder<(crate::typed::builder::NotSet,)> {
     /// **Required.**
     pub fn script(
         self,
         value: impl Into<crate::typed::_types::Script>,
-    ) -> SettingsSimilarityScriptedBuilder<(S0, crate::typed::builder::Set)> {
+    ) -> SettingsSimilarityScriptedBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.script = Some(value.into());
         builder
@@ -12007,30 +12173,27 @@ impl<S0> SettingsSimilarityScriptedBuilder<(S0, crate::typed::builder::NotSet)> 
     pub fn script_with<B: crate::typed::builder::Build<Output = crate::typed::_types::Script>>(
         self,
         f: impl FnOnce(crate::typed::_types::ScriptBuilder) -> B,
-    ) -> SettingsSimilarityScriptedBuilder<(S0, crate::typed::builder::Set)> {
+    ) -> SettingsSimilarityScriptedBuilder<(crate::typed::builder::Set,)> {
         self.script(f(crate::typed::_types::ScriptBuilder::new()).build())
     }
 }
 
-impl<S0, S1> SettingsSimilarityScriptedBuilder<(S0, S1)> {
+impl<S0> SettingsSimilarityScriptedBuilder<(S0,)> {
     /// Builds a [`SettingsSimilarityScripted`].
     pub fn build(self) -> SettingsSimilarityScripted
     where
-        S0: crate::typed::builder::IsSet<settings_similarity_scripted_members::r#type>,
-        S1: crate::typed::builder::IsSet<settings_similarity_scripted_members::script>,
+        S0: crate::typed::builder::IsSet<settings_similarity_scripted_members::script>,
     {
         SettingsSimilarityScripted {
-            r#type: self.r#type.unwrap(),
             script: self.script.unwrap(),
             weight_script: self.weight_script,
         }
     }
 }
 
-impl<S0, S1> crate::typed::builder::Build for SettingsSimilarityScriptedBuilder<(S0, S1)>
+impl<S0> crate::typed::builder::Build for SettingsSimilarityScriptedBuilder<(S0,)>
 where
-    S0: crate::typed::builder::IsSet<settings_similarity_scripted_members::r#type>,
-    S1: crate::typed::builder::IsSet<settings_similarity_scripted_members::script>,
+    S0: crate::typed::builder::IsSet<settings_similarity_scripted_members::script>,
 {
     type Output = SettingsSimilarityScripted;
 
@@ -12039,12 +12202,11 @@ where
     }
 }
 
-impl<S0, S1> From<SettingsSimilarityScriptedBuilder<(S0, S1)>> for SettingsSimilarityScripted
+impl<S0> From<SettingsSimilarityScriptedBuilder<(S0,)>> for SettingsSimilarityScripted
 where
-    S0: crate::typed::builder::IsSet<settings_similarity_scripted_members::r#type>,
-    S1: crate::typed::builder::IsSet<settings_similarity_scripted_members::script>,
+    S0: crate::typed::builder::IsSet<settings_similarity_scripted_members::script>,
 {
-    fn from(builder: SettingsSimilarityScriptedBuilder<(S0, S1)>) -> Self {
+    fn from(builder: SettingsSimilarityScriptedBuilder<(S0,)>) -> Self {
         builder.build()
     }
 }

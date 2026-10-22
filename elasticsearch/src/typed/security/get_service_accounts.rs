@@ -3,8 +3,6 @@
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct BuiltInServiceAccount {
-    /// The account ships with Elasticsearch.
-    pub r#type: String,
     /// The role descriptor declared for the account in the Elasticsearch distribution.
     pub role_descriptor: crate::typed::security::_types::RoleDescriptorRead,
 }
@@ -12,14 +10,14 @@ pub struct BuiltInServiceAccount {
 impl BuiltInServiceAccount {
     /// Creates a builder for [`BuiltInServiceAccount`].
     ///
-    /// Required: `type`, `role_descriptor`.
+    /// Required: `role_descriptor`.
     pub fn builder() -> BuiltInServiceAccountBuilder {
         BuiltInServiceAccountBuilder::new()
     }
 
     /// Creates a [`BuiltInServiceAccount`] from a function that sets the members of its builder.
     ///
-    /// Required: `type`, `role_descriptor`.
+    /// Required: `role_descriptor`.
     pub fn of<B: crate::typed::builder::Build<Output = BuiltInServiceAccount>>(
         f: impl FnOnce(BuiltInServiceAccountBuilder) -> B,
     ) -> BuiltInServiceAccount {
@@ -31,58 +29,40 @@ impl BuiltInServiceAccount {
 #[doc(hidden)]
 #[allow(non_camel_case_types)]
 pub mod built_in_service_account_members {
-    pub struct r#type;
     pub struct role_descriptor;
 }
 
 /// Builder for [`BuiltInServiceAccount`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct BuiltInServiceAccountBuilder<
-    S = (crate::typed::builder::NotSet, crate::typed::builder::NotSet),
-> {
-    r#type: Option<String>,
+pub struct BuiltInServiceAccountBuilder<S = (crate::typed::builder::NotSet,)> {
     role_descriptor: Option<crate::typed::security::_types::RoleDescriptorRead>,
     _state: std::marker::PhantomData<S>,
 }
 
-impl BuiltInServiceAccountBuilder<(crate::typed::builder::NotSet, crate::typed::builder::NotSet)> {
+impl BuiltInServiceAccountBuilder<(crate::typed::builder::NotSet,)> {
     pub(crate) fn new() -> Self {
         BuiltInServiceAccountBuilder {
-            r#type: None,
             role_descriptor: None,
             _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0, S1> BuiltInServiceAccountBuilder<(S0, S1)> {
+impl<S0> BuiltInServiceAccountBuilder<(S0,)> {
     fn with_state<N>(self) -> BuiltInServiceAccountBuilder<N> {
         BuiltInServiceAccountBuilder {
-            r#type: self.r#type,
             role_descriptor: self.role_descriptor,
             _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S1> BuiltInServiceAccountBuilder<(crate::typed::builder::NotSet, S1)> {
-    /// **Required.** The account ships with Elasticsearch.
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> BuiltInServiceAccountBuilder<(crate::typed::builder::Set, S1)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> BuiltInServiceAccountBuilder<(S0, crate::typed::builder::NotSet)> {
+impl BuiltInServiceAccountBuilder<(crate::typed::builder::NotSet,)> {
     /// **Required.** The role descriptor declared for the account in the Elasticsearch distribution.
     pub fn role_descriptor(
         self,
         value: impl Into<crate::typed::security::_types::RoleDescriptorRead>,
-    ) -> BuiltInServiceAccountBuilder<(S0, crate::typed::builder::Set)> {
+    ) -> BuiltInServiceAccountBuilder<(crate::typed::builder::Set,)> {
         let mut builder = self.with_state();
         builder.role_descriptor = Some(value.into());
         builder
@@ -94,31 +74,28 @@ impl<S0> BuiltInServiceAccountBuilder<(S0, crate::typed::builder::NotSet)> {
     >(
         self,
         f: impl FnOnce(crate::typed::security::_types::RoleDescriptorReadBuilder) -> B,
-    ) -> BuiltInServiceAccountBuilder<(S0, crate::typed::builder::Set)> {
+    ) -> BuiltInServiceAccountBuilder<(crate::typed::builder::Set,)> {
         self.role_descriptor(
             f(crate::typed::security::_types::RoleDescriptorReadBuilder::new()).build(),
         )
     }
 }
 
-impl<S0, S1> BuiltInServiceAccountBuilder<(S0, S1)> {
+impl<S0> BuiltInServiceAccountBuilder<(S0,)> {
     /// Builds a [`BuiltInServiceAccount`].
     pub fn build(self) -> BuiltInServiceAccount
     where
-        S0: crate::typed::builder::IsSet<built_in_service_account_members::r#type>,
-        S1: crate::typed::builder::IsSet<built_in_service_account_members::role_descriptor>,
+        S0: crate::typed::builder::IsSet<built_in_service_account_members::role_descriptor>,
     {
         BuiltInServiceAccount {
-            r#type: self.r#type.unwrap(),
             role_descriptor: self.role_descriptor.unwrap(),
         }
     }
 }
 
-impl<S0, S1> crate::typed::builder::Build for BuiltInServiceAccountBuilder<(S0, S1)>
+impl<S0> crate::typed::builder::Build for BuiltInServiceAccountBuilder<(S0,)>
 where
-    S0: crate::typed::builder::IsSet<built_in_service_account_members::r#type>,
-    S1: crate::typed::builder::IsSet<built_in_service_account_members::role_descriptor>,
+    S0: crate::typed::builder::IsSet<built_in_service_account_members::role_descriptor>,
 {
     type Output = BuiltInServiceAccount;
 
@@ -127,12 +104,11 @@ where
     }
 }
 
-impl<S0, S1> From<BuiltInServiceAccountBuilder<(S0, S1)>> for BuiltInServiceAccount
+impl<S0> From<BuiltInServiceAccountBuilder<(S0,)>> for BuiltInServiceAccount
 where
-    S0: crate::typed::builder::IsSet<built_in_service_account_members::r#type>,
-    S1: crate::typed::builder::IsSet<built_in_service_account_members::role_descriptor>,
+    S0: crate::typed::builder::IsSet<built_in_service_account_members::role_descriptor>,
 {
-    fn from(builder: BuiltInServiceAccountBuilder<(S0, S1)>) -> Self {
+    fn from(builder: BuiltInServiceAccountBuilder<(S0,)>) -> Self {
         builder.build()
     }
 }
@@ -478,14 +454,199 @@ pub type Response = indexmap::IndexMap<String, ServiceAccountInfo>;
 /// The two kinds of service account describe their privileges differently.
 /// A built-in account includes its role descriptor. A user-managed account includes its role names and whether it is enabled.
 ///
-/// This union of types isn't supported by the code generator yet, and is represented as a JSON value.
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
-#[serde(transparent)]
-pub struct ServiceAccountInfo(pub serde_json::Value);
+/// Variants are identified by the `type` property.
+#[derive(Debug, Clone, PartialEq)]
+pub enum ServiceAccountInfo {
+    BuiltIn(BuiltInServiceAccount),
+    UserManaged(UserManagedServiceAccount),
+}
 
-impl From<serde_json::Value> for ServiceAccountInfo {
-    fn from(value: serde_json::Value) -> Self {
-        ServiceAccountInfo(value)
+impl serde::Serialize for ServiceAccountInfo {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        use serde::ser::Error;
+        let (tag, value) = match self {
+            ServiceAccountInfo::BuiltIn(value) => (
+                serde_json::Value::from("built_in"),
+                serde_json::to_value(value),
+            ),
+            ServiceAccountInfo::UserManaged(value) => (
+                serde_json::Value::from("user_managed"),
+                serde_json::to_value(value),
+            ),
+        };
+        let mut object = serde_json::Map::new();
+        object.insert("type".to_string(), tag);
+        if let serde_json::Value::Object(fields) = value.map_err(S::Error::custom)? {
+            object.extend(fields);
+        }
+        object.serialize(serializer)
+    }
+}
+
+impl<'de> serde::Deserialize<'de> for ServiceAccountInfo {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        use serde::de::Error;
+        let mut object = serde_json::Map::deserialize(deserializer)?;
+        let tag = object
+            .remove("type")
+            .ok_or_else(|| D::Error::missing_field("type"))?;
+        let result = match tag.as_str() {
+            Some("built_in") => {
+                serde_json::from_value(object.into()).map(ServiceAccountInfo::BuiltIn)
+            }
+            Some("user_managed") => {
+                serde_json::from_value(object.into()).map(ServiceAccountInfo::UserManaged)
+            }
+            _ => {
+                return Err(D::Error::custom(format!(
+                    "unknown ServiceAccountInfo type {tag}"
+                )))
+            }
+        };
+        result.map_err(D::Error::custom)
+    }
+}
+
+impl From<BuiltInServiceAccount> for ServiceAccountInfo {
+    fn from(value: BuiltInServiceAccount) -> Self {
+        ServiceAccountInfo::BuiltIn(value)
+    }
+}
+
+impl From<UserManagedServiceAccount> for ServiceAccountInfo {
+    fn from(value: UserManagedServiceAccount) -> Self {
+        ServiceAccountInfo::UserManaged(value)
+    }
+}
+
+impl From<BuiltInServiceAccountBuilder<(crate::typed::builder::Set,)>> for ServiceAccountInfo {
+    fn from(builder: BuiltInServiceAccountBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
+impl
+    From<UserManagedServiceAccountBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>>
+    for ServiceAccountInfo
+{
+    fn from(
+        builder: UserManagedServiceAccountBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl ServiceAccountInfo {
+    /// Creates a builder for [`ServiceAccountInfo`].
+    ///
+    /// Required: a variant.
+    pub fn builder() -> ServiceAccountInfoBuilder {
+        ServiceAccountInfoBuilder::new()
+    }
+
+    /// Creates a [`ServiceAccountInfo`] from a function that sets the members of its builder.
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = ServiceAccountInfo>>(
+        f: impl FnOnce(ServiceAccountInfoBuilder) -> B,
+    ) -> ServiceAccountInfo {
+        f(Self::builder()).build()
+    }
+}
+
+/// Builder for [`ServiceAccountInfo`].
+#[must_use = "the builder does nothing until `build()` is called"]
+pub struct ServiceAccountInfoBuilder<S = (crate::typed::builder::NotSet,)> {
+    variant: Option<ServiceAccountInfo>,
+    _state: std::marker::PhantomData<S>,
+}
+
+impl ServiceAccountInfoBuilder<(crate::typed::builder::NotSet,)> {
+    pub(crate) fn new() -> Self {
+        ServiceAccountInfoBuilder {
+            variant: None,
+            _state: std::marker::PhantomData,
+        }
+    }
+}
+
+impl<S0> ServiceAccountInfoBuilder<(S0,)> {
+    fn with_state<N>(self) -> ServiceAccountInfoBuilder<N> {
+        ServiceAccountInfoBuilder {
+            variant: self.variant,
+            _state: std::marker::PhantomData,
+        }
+    }
+}
+
+impl ServiceAccountInfoBuilder<(crate::typed::builder::NotSet,)> {
+    pub fn built_in(
+        self,
+        value: impl Into<BuiltInServiceAccount>,
+    ) -> ServiceAccountInfoBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(ServiceAccountInfo::BuiltIn(value.into()));
+        builder
+    }
+
+    /// Sets [`built_in`](Self::built_in) with a builder.
+    pub fn built_in_with<B: crate::typed::builder::Build<Output = BuiltInServiceAccount>>(
+        self,
+        f: impl FnOnce(BuiltInServiceAccountBuilder) -> B,
+    ) -> ServiceAccountInfoBuilder<(crate::typed::builder::Set,)> {
+        self.built_in(f(BuiltInServiceAccountBuilder::new()).build())
+    }
+
+    pub fn user_managed(
+        self,
+        value: impl Into<UserManagedServiceAccount>,
+    ) -> ServiceAccountInfoBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(ServiceAccountInfo::UserManaged(value.into()));
+        builder
+    }
+
+    /// Sets [`user_managed`](Self::user_managed) with a builder.
+    pub fn user_managed_with<
+        B: crate::typed::builder::Build<Output = UserManagedServiceAccount>,
+    >(
+        self,
+        f: impl FnOnce(UserManagedServiceAccountBuilder) -> B,
+    ) -> ServiceAccountInfoBuilder<(crate::typed::builder::Set,)> {
+        self.user_managed(f(UserManagedServiceAccountBuilder::new()).build())
+    }
+}
+
+impl<S0> ServiceAccountInfoBuilder<(S0,)> {
+    /// Builds a [`ServiceAccountInfo`].
+    pub fn build(self) -> ServiceAccountInfo
+    where
+        S0: crate::typed::builder::IsVariantSet<ServiceAccountInfo>,
+    {
+        self.variant.unwrap()
+    }
+}
+
+impl<S0> crate::typed::builder::Build for ServiceAccountInfoBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<ServiceAccountInfo>,
+{
+    type Output = ServiceAccountInfo;
+
+    fn build(self) -> ServiceAccountInfo {
+        Self::build(self)
+    }
+}
+
+impl<S0> From<ServiceAccountInfoBuilder<(S0,)>> for ServiceAccountInfo
+where
+    S0: crate::typed::builder::IsVariantSet<ServiceAccountInfo>,
+{
+    fn from(builder: ServiceAccountInfoBuilder<(S0,)>) -> Self {
+        builder.build()
     }
 }
 
@@ -501,8 +662,6 @@ pub enum ServiceAccountType {
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct UserManagedServiceAccount {
-    /// The account was created with the put user-managed service account API.
-    pub r#type: String,
     /// The names of the roles granted to the account, as sent on the last PUT of the account.
     /// They are resolved when the account authenticates.
     pub roles: Vec<String>,
@@ -517,14 +676,14 @@ pub struct UserManagedServiceAccount {
 impl UserManagedServiceAccount {
     /// Creates a builder for [`UserManagedServiceAccount`].
     ///
-    /// Required: `type`, `roles`, `enabled`.
+    /// Required: `roles`, `enabled`.
     pub fn builder() -> UserManagedServiceAccountBuilder {
         UserManagedServiceAccountBuilder::new()
     }
 
     /// Creates a [`UserManagedServiceAccount`] from a function that sets the members of its builder.
     ///
-    /// Required: `type`, `roles`, `enabled`.
+    /// Required: `roles`, `enabled`.
     pub fn of<B: crate::typed::builder::Build<Output = UserManagedServiceAccount>>(
         f: impl FnOnce(UserManagedServiceAccountBuilder) -> B,
     ) -> UserManagedServiceAccount {
@@ -536,7 +695,6 @@ impl UserManagedServiceAccount {
 #[doc(hidden)]
 #[allow(non_camel_case_types)]
 pub mod user_managed_service_account_members {
-    pub struct r#type;
     pub struct roles;
     pub struct enabled;
 }
@@ -544,13 +702,8 @@ pub mod user_managed_service_account_members {
 /// Builder for [`UserManagedServiceAccount`].
 #[must_use = "the builder does nothing until `build()` is called"]
 pub struct UserManagedServiceAccountBuilder<
-    S = (
-        crate::typed::builder::NotSet,
-        crate::typed::builder::NotSet,
-        crate::typed::builder::NotSet,
-    ),
+    S = (crate::typed::builder::NotSet, crate::typed::builder::NotSet),
 > {
-    r#type: Option<String>,
     roles: Option<Vec<String>>,
     enabled: Option<bool>,
     description: Option<String>,
@@ -558,15 +711,10 @@ pub struct UserManagedServiceAccountBuilder<
 }
 
 impl
-    UserManagedServiceAccountBuilder<(
-        crate::typed::builder::NotSet,
-        crate::typed::builder::NotSet,
-        crate::typed::builder::NotSet,
-    )>
+    UserManagedServiceAccountBuilder<(crate::typed::builder::NotSet, crate::typed::builder::NotSet)>
 {
     pub(crate) fn new() -> Self {
         UserManagedServiceAccountBuilder {
-            r#type: None,
             roles: None,
             enabled: None,
             description: None,
@@ -575,10 +723,9 @@ impl
     }
 }
 
-impl<S0, S1, S2> UserManagedServiceAccountBuilder<(S0, S1, S2)> {
+impl<S0, S1> UserManagedServiceAccountBuilder<(S0, S1)> {
     fn with_state<N>(self) -> UserManagedServiceAccountBuilder<N> {
         UserManagedServiceAccountBuilder {
-            r#type: self.r#type,
             roles: self.roles,
             enabled: self.enabled,
             description: self.description,
@@ -600,25 +747,13 @@ impl<S0, S1, S2> UserManagedServiceAccountBuilder<(S0, S1, S2)> {
     }
 }
 
-impl<S1, S2> UserManagedServiceAccountBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// **Required.** The account was created with the put user-managed service account API.
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> UserManagedServiceAccountBuilder<(crate::typed::builder::Set, S1, S2)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0, S2> UserManagedServiceAccountBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+impl<S1> UserManagedServiceAccountBuilder<(crate::typed::builder::NotSet, S1)> {
     /// **Required.** The names of the roles granted to the account, as sent on the last PUT of the account.
     /// They are resolved when the account authenticates.
     pub fn roles(
         self,
         value: impl Into<Vec<String>>,
-    ) -> UserManagedServiceAccountBuilder<(S0, crate::typed::builder::Set, S2)> {
+    ) -> UserManagedServiceAccountBuilder<(crate::typed::builder::Set, S1)> {
         let mut builder = self.with_state();
         builder.roles = Some(value.into());
         builder
@@ -628,7 +763,7 @@ impl<S0, S2> UserManagedServiceAccountBuilder<(S0, crate::typed::builder::NotSet
     pub fn add_roles(
         self,
         value: impl Into<String>,
-    ) -> UserManagedServiceAccountBuilder<(S0, crate::typed::builder::Set, S2)> {
+    ) -> UserManagedServiceAccountBuilder<(crate::typed::builder::Set, S1)> {
         let mut builder = self.with_state();
         builder
             .roles
@@ -638,7 +773,7 @@ impl<S0, S2> UserManagedServiceAccountBuilder<(S0, crate::typed::builder::NotSet
     }
 }
 
-impl<S0, S2> UserManagedServiceAccountBuilder<(S0, crate::typed::builder::Set, S2)> {
+impl<S1> UserManagedServiceAccountBuilder<(crate::typed::builder::Set, S1)> {
     /// Adds an element to [`roles`](Self::roles).
     pub fn add_roles(mut self, value: impl Into<String>) -> Self {
         self.roles
@@ -648,28 +783,26 @@ impl<S0, S2> UserManagedServiceAccountBuilder<(S0, crate::typed::builder::Set, S
     }
 }
 
-impl<S0, S1> UserManagedServiceAccountBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+impl<S0> UserManagedServiceAccountBuilder<(S0, crate::typed::builder::NotSet)> {
     /// **Required.** Whether the account can authenticate.
     pub fn enabled(
         self,
         value: bool,
-    ) -> UserManagedServiceAccountBuilder<(S0, S1, crate::typed::builder::Set)> {
+    ) -> UserManagedServiceAccountBuilder<(S0, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.enabled = Some(value);
         builder
     }
 }
 
-impl<S0, S1, S2> UserManagedServiceAccountBuilder<(S0, S1, S2)> {
+impl<S0, S1> UserManagedServiceAccountBuilder<(S0, S1)> {
     /// Builds a [`UserManagedServiceAccount`].
     pub fn build(self) -> UserManagedServiceAccount
     where
-        S0: crate::typed::builder::IsSet<user_managed_service_account_members::r#type>,
-        S1: crate::typed::builder::IsSet<user_managed_service_account_members::roles>,
-        S2: crate::typed::builder::IsSet<user_managed_service_account_members::enabled>,
+        S0: crate::typed::builder::IsSet<user_managed_service_account_members::roles>,
+        S1: crate::typed::builder::IsSet<user_managed_service_account_members::enabled>,
     {
         UserManagedServiceAccount {
-            r#type: self.r#type.unwrap(),
             roles: self.roles.unwrap(),
             enabled: self.enabled.unwrap(),
             description: self.description,
@@ -677,11 +810,10 @@ impl<S0, S1, S2> UserManagedServiceAccountBuilder<(S0, S1, S2)> {
     }
 }
 
-impl<S0, S1, S2> crate::typed::builder::Build for UserManagedServiceAccountBuilder<(S0, S1, S2)>
+impl<S0, S1> crate::typed::builder::Build for UserManagedServiceAccountBuilder<(S0, S1)>
 where
-    S0: crate::typed::builder::IsSet<user_managed_service_account_members::r#type>,
-    S1: crate::typed::builder::IsSet<user_managed_service_account_members::roles>,
-    S2: crate::typed::builder::IsSet<user_managed_service_account_members::enabled>,
+    S0: crate::typed::builder::IsSet<user_managed_service_account_members::roles>,
+    S1: crate::typed::builder::IsSet<user_managed_service_account_members::enabled>,
 {
     type Output = UserManagedServiceAccount;
 
@@ -690,13 +822,12 @@ where
     }
 }
 
-impl<S0, S1, S2> From<UserManagedServiceAccountBuilder<(S0, S1, S2)>> for UserManagedServiceAccount
+impl<S0, S1> From<UserManagedServiceAccountBuilder<(S0, S1)>> for UserManagedServiceAccount
 where
-    S0: crate::typed::builder::IsSet<user_managed_service_account_members::r#type>,
-    S1: crate::typed::builder::IsSet<user_managed_service_account_members::roles>,
-    S2: crate::typed::builder::IsSet<user_managed_service_account_members::enabled>,
+    S0: crate::typed::builder::IsSet<user_managed_service_account_members::roles>,
+    S1: crate::typed::builder::IsSet<user_managed_service_account_members::enabled>,
 {
-    fn from(builder: UserManagedServiceAccountBuilder<(S0, S1, S2)>) -> Self {
+    fn from(builder: UserManagedServiceAccountBuilder<(S0, S1)>) -> Self {
         builder.build()
     }
 }

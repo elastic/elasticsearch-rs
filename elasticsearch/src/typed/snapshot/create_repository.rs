@@ -248,6 +248,16 @@ impl<S0, C> RequestBuilder<(S0, crate::typed::builder::NotSet), C> {
         builder.repository = Some(value.into());
         builder
     }
+
+    /// Sets [`repository`](Self::repository) with a builder.
+    pub fn repository_with<
+        B: crate::typed::builder::Build<Output = crate::typed::snapshot::_types::Repository>,
+    >(
+        self,
+        f: impl FnOnce(crate::typed::snapshot::_types::RepositoryBuilder) -> B,
+    ) -> RequestBuilder<(S0, crate::typed::builder::Set), C> {
+        self.repository(f(crate::typed::snapshot::_types::RepositoryBuilder::new()).build())
+    }
 }
 
 impl<S0, S1, C> RequestBuilder<(S0, S1), C> {

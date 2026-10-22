@@ -16,7 +16,6 @@ pub struct AggregateMetricDoubleProperty {
     pub fields: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
-    pub r#type: String,
     pub default_metric: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub ignore_malformed: Option<bool>,
@@ -28,14 +27,14 @@ pub struct AggregateMetricDoubleProperty {
 impl AggregateMetricDoubleProperty {
     /// Creates a builder for [`AggregateMetricDoubleProperty`].
     ///
-    /// Required: `type`, `default_metric`, `metrics`.
+    /// Required: `default_metric`, `metrics`.
     pub fn builder() -> AggregateMetricDoublePropertyBuilder {
         AggregateMetricDoublePropertyBuilder::new()
     }
 
     /// Creates a [`AggregateMetricDoubleProperty`] from a function that sets the members of its builder.
     ///
-    /// Required: `type`, `default_metric`, `metrics`.
+    /// Required: `default_metric`, `metrics`.
     pub fn of<B: crate::typed::builder::Build<Output = AggregateMetricDoubleProperty>>(
         f: impl FnOnce(AggregateMetricDoublePropertyBuilder) -> B,
     ) -> AggregateMetricDoubleProperty {
@@ -47,7 +46,6 @@ impl AggregateMetricDoubleProperty {
 #[doc(hidden)]
 #[allow(non_camel_case_types)]
 pub mod aggregate_metric_double_property_members {
-    pub struct r#type;
     pub struct default_metric;
     pub struct metrics;
 }
@@ -55,11 +53,7 @@ pub mod aggregate_metric_double_property_members {
 /// Builder for [`AggregateMetricDoubleProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
 pub struct AggregateMetricDoublePropertyBuilder<
-    S = (
-        crate::typed::builder::NotSet,
-        crate::typed::builder::NotSet,
-        crate::typed::builder::NotSet,
-    ),
+    S = (crate::typed::builder::NotSet, crate::typed::builder::NotSet),
 > {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
@@ -67,7 +61,6 @@ pub struct AggregateMetricDoublePropertyBuilder<
     dynamic: Option<DynamicMapping>,
     fields: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
-    r#type: Option<String>,
     default_metric: Option<String>,
     ignore_malformed: Option<bool>,
     metrics: Option<Vec<String>>,
@@ -77,7 +70,6 @@ pub struct AggregateMetricDoublePropertyBuilder<
 
 impl
     AggregateMetricDoublePropertyBuilder<(
-        crate::typed::builder::NotSet,
         crate::typed::builder::NotSet,
         crate::typed::builder::NotSet,
     )>
@@ -90,7 +82,6 @@ impl
             dynamic: None,
             fields: None,
             synthetic_source_keep: None,
-            r#type: None,
             default_metric: None,
             ignore_malformed: None,
             metrics: None,
@@ -100,7 +91,7 @@ impl
     }
 }
 
-impl<S0, S1, S2> AggregateMetricDoublePropertyBuilder<(S0, S1, S2)> {
+impl<S0, S1> AggregateMetricDoublePropertyBuilder<(S0, S1)> {
     fn with_state<N>(self) -> AggregateMetricDoublePropertyBuilder<N> {
         AggregateMetricDoublePropertyBuilder {
             meta: self.meta,
@@ -109,7 +100,6 @@ impl<S0, S1, S2> AggregateMetricDoublePropertyBuilder<(S0, S1, S2)> {
             dynamic: self.dynamic,
             fields: self.fields,
             synthetic_source_keep: self.synthetic_source_keep,
-            r#type: self.r#type,
             default_metric: self.default_metric,
             ignore_malformed: self.ignore_malformed,
             metrics: self.metrics,
@@ -167,6 +157,15 @@ impl<S0, S1, S2> AggregateMetricDoublePropertyBuilder<(S0, S1, S2)> {
         self
     }
 
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
+    }
+
     pub fn ignore_above(mut self, value: i32) -> Self {
         self.ignore_above = Some(value);
         self
@@ -218,6 +217,15 @@ impl<S0, S1, S2> AggregateMetricDoublePropertyBuilder<(S0, S1, S2)> {
         self
     }
 
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
+    }
+
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
         self.synthetic_source_keep = Some(value.into());
         self
@@ -252,36 +260,24 @@ impl<S0, S1, S2> AggregateMetricDoublePropertyBuilder<(S0, S1, S2)> {
     }
 }
 
-impl<S1, S2> AggregateMetricDoublePropertyBuilder<(crate::typed::builder::NotSet, S1, S2)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> AggregateMetricDoublePropertyBuilder<(crate::typed::builder::Set, S1, S2)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0, S2> AggregateMetricDoublePropertyBuilder<(S0, crate::typed::builder::NotSet, S2)> {
+impl<S1> AggregateMetricDoublePropertyBuilder<(crate::typed::builder::NotSet, S1)> {
     /// **Required.**
     pub fn default_metric(
         self,
         value: impl Into<String>,
-    ) -> AggregateMetricDoublePropertyBuilder<(S0, crate::typed::builder::Set, S2)> {
+    ) -> AggregateMetricDoublePropertyBuilder<(crate::typed::builder::Set, S1)> {
         let mut builder = self.with_state();
         builder.default_metric = Some(value.into());
         builder
     }
 }
 
-impl<S0, S1> AggregateMetricDoublePropertyBuilder<(S0, S1, crate::typed::builder::NotSet)> {
+impl<S0> AggregateMetricDoublePropertyBuilder<(S0, crate::typed::builder::NotSet)> {
     /// **Required.**
     pub fn metrics(
         self,
         value: impl Into<Vec<String>>,
-    ) -> AggregateMetricDoublePropertyBuilder<(S0, S1, crate::typed::builder::Set)> {
+    ) -> AggregateMetricDoublePropertyBuilder<(S0, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder.metrics = Some(value.into());
         builder
@@ -291,7 +287,7 @@ impl<S0, S1> AggregateMetricDoublePropertyBuilder<(S0, S1, crate::typed::builder
     pub fn add_metrics(
         self,
         value: impl Into<String>,
-    ) -> AggregateMetricDoublePropertyBuilder<(S0, S1, crate::typed::builder::Set)> {
+    ) -> AggregateMetricDoublePropertyBuilder<(S0, crate::typed::builder::Set)> {
         let mut builder = self.with_state();
         builder
             .metrics
@@ -301,7 +297,7 @@ impl<S0, S1> AggregateMetricDoublePropertyBuilder<(S0, S1, crate::typed::builder
     }
 }
 
-impl<S0, S1> AggregateMetricDoublePropertyBuilder<(S0, S1, crate::typed::builder::Set)> {
+impl<S0> AggregateMetricDoublePropertyBuilder<(S0, crate::typed::builder::Set)> {
     /// Adds an element to [`metrics`](Self::metrics).
     pub fn add_metrics(mut self, value: impl Into<String>) -> Self {
         self.metrics
@@ -311,13 +307,12 @@ impl<S0, S1> AggregateMetricDoublePropertyBuilder<(S0, S1, crate::typed::builder
     }
 }
 
-impl<S0, S1, S2> AggregateMetricDoublePropertyBuilder<(S0, S1, S2)> {
+impl<S0, S1> AggregateMetricDoublePropertyBuilder<(S0, S1)> {
     /// Builds a [`AggregateMetricDoubleProperty`].
     pub fn build(self) -> AggregateMetricDoubleProperty
     where
-        S0: crate::typed::builder::IsSet<aggregate_metric_double_property_members::r#type>,
-        S1: crate::typed::builder::IsSet<aggregate_metric_double_property_members::default_metric>,
-        S2: crate::typed::builder::IsSet<aggregate_metric_double_property_members::metrics>,
+        S0: crate::typed::builder::IsSet<aggregate_metric_double_property_members::default_metric>,
+        S1: crate::typed::builder::IsSet<aggregate_metric_double_property_members::metrics>,
     {
         AggregateMetricDoubleProperty {
             meta: self.meta,
@@ -326,7 +321,6 @@ impl<S0, S1, S2> AggregateMetricDoublePropertyBuilder<(S0, S1, S2)> {
             dynamic: self.dynamic,
             fields: self.fields,
             synthetic_source_keep: self.synthetic_source_keep,
-            r#type: self.r#type.unwrap(),
             default_metric: self.default_metric.unwrap(),
             ignore_malformed: self.ignore_malformed,
             metrics: self.metrics.unwrap(),
@@ -335,11 +329,10 @@ impl<S0, S1, S2> AggregateMetricDoublePropertyBuilder<(S0, S1, S2)> {
     }
 }
 
-impl<S0, S1, S2> crate::typed::builder::Build for AggregateMetricDoublePropertyBuilder<(S0, S1, S2)>
+impl<S0, S1> crate::typed::builder::Build for AggregateMetricDoublePropertyBuilder<(S0, S1)>
 where
-    S0: crate::typed::builder::IsSet<aggregate_metric_double_property_members::r#type>,
-    S1: crate::typed::builder::IsSet<aggregate_metric_double_property_members::default_metric>,
-    S2: crate::typed::builder::IsSet<aggregate_metric_double_property_members::metrics>,
+    S0: crate::typed::builder::IsSet<aggregate_metric_double_property_members::default_metric>,
+    S1: crate::typed::builder::IsSet<aggregate_metric_double_property_members::metrics>,
 {
     type Output = AggregateMetricDoubleProperty;
 
@@ -348,14 +341,12 @@ where
     }
 }
 
-impl<S0, S1, S2> From<AggregateMetricDoublePropertyBuilder<(S0, S1, S2)>>
-    for AggregateMetricDoubleProperty
+impl<S0, S1> From<AggregateMetricDoublePropertyBuilder<(S0, S1)>> for AggregateMetricDoubleProperty
 where
-    S0: crate::typed::builder::IsSet<aggregate_metric_double_property_members::r#type>,
-    S1: crate::typed::builder::IsSet<aggregate_metric_double_property_members::default_metric>,
-    S2: crate::typed::builder::IsSet<aggregate_metric_double_property_members::metrics>,
+    S0: crate::typed::builder::IsSet<aggregate_metric_double_property_members::default_metric>,
+    S1: crate::typed::builder::IsSet<aggregate_metric_double_property_members::metrics>,
 {
-    fn from(builder: AggregateMetricDoublePropertyBuilder<(S0, S1, S2)>) -> Self {
+    fn from(builder: AggregateMetricDoublePropertyBuilder<(S0, S1)>) -> Self {
         builder.build()
     }
 }
@@ -920,7 +911,7 @@ where
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct BinaryProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -941,20 +932,15 @@ pub struct BinaryProperty {
     pub store: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub doc_values: Option<DocValues>,
-    pub r#type: String,
 }
 
 impl BinaryProperty {
     /// Creates a builder for [`BinaryProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> BinaryPropertyBuilder {
         BinaryPropertyBuilder::new()
     }
 
     /// Creates a [`BinaryProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = BinaryProperty>>(
         f: impl FnOnce(BinaryPropertyBuilder) -> B,
     ) -> BinaryProperty {
@@ -962,16 +948,9 @@ impl BinaryProperty {
     }
 }
 
-/// Markers of the required members of [`BinaryPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod binary_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`BinaryProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct BinaryPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct BinaryPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -981,11 +960,9 @@ pub struct BinaryPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     copy_to: Option<crate::typed::_types::Fields>,
     store: Option<bool>,
     doc_values: Option<DocValues>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl BinaryPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl BinaryPropertyBuilder {
     pub(crate) fn new() -> Self {
         BinaryPropertyBuilder {
             meta: None,
@@ -997,29 +974,11 @@ impl BinaryPropertyBuilder<(crate::typed::builder::NotSet,)> {
             copy_to: None,
             store: None,
             doc_values: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> BinaryPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> BinaryPropertyBuilder<N> {
-        BinaryPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl BinaryPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -1067,6 +1026,15 @@ impl<S0> BinaryPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -1118,6 +1086,15 @@ impl<S0> BinaryPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -1165,24 +1142,9 @@ impl<S0> BinaryPropertyBuilder<(S0,)> {
     }
 }
 
-impl BinaryPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> BinaryPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> BinaryPropertyBuilder<(S0,)> {
+impl BinaryPropertyBuilder {
     /// Builds a [`BinaryProperty`].
-    pub fn build(self) -> BinaryProperty
-    where
-        S0: crate::typed::builder::IsSet<binary_property_members::r#type>,
-    {
+    pub fn build(self) -> BinaryProperty {
         BinaryProperty {
             meta: self.meta,
             properties: self.properties,
@@ -1193,15 +1155,11 @@ impl<S0> BinaryPropertyBuilder<(S0,)> {
             copy_to: self.copy_to,
             store: self.store,
             doc_values: self.doc_values,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for BinaryPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<binary_property_members::r#type>,
-{
+impl crate::typed::builder::Build for BinaryPropertyBuilder {
     type Output = BinaryProperty;
 
     fn build(self) -> BinaryProperty {
@@ -1209,16 +1167,13 @@ where
     }
 }
 
-impl<S0> From<BinaryPropertyBuilder<(S0,)>> for BinaryProperty
-where
-    S0: crate::typed::builder::IsSet<binary_property_members::r#type>,
-{
-    fn from(builder: BinaryPropertyBuilder<(S0,)>) -> Self {
+impl From<BinaryPropertyBuilder> for BinaryProperty {
+    fn from(builder: BinaryPropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct BooleanProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -1256,20 +1211,15 @@ pub struct BooleanProperty {
     /// For internal use by Elastic only. Marks the field as a time series dimension. Defaults to false.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_series_dimension: Option<bool>,
-    pub r#type: String,
 }
 
 impl BooleanProperty {
     /// Creates a builder for [`BooleanProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> BooleanPropertyBuilder {
         BooleanPropertyBuilder::new()
     }
 
     /// Creates a [`BooleanProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = BooleanProperty>>(
         f: impl FnOnce(BooleanPropertyBuilder) -> B,
     ) -> BooleanProperty {
@@ -1277,16 +1227,9 @@ impl BooleanProperty {
     }
 }
 
-/// Markers of the required members of [`BooleanPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod boolean_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`BooleanProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct BooleanPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct BooleanPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -1304,11 +1247,9 @@ pub struct BooleanPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     script: Option<crate::typed::_types::Script>,
     on_script_error: Option<OnScriptError>,
     time_series_dimension: Option<bool>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl BooleanPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl BooleanPropertyBuilder {
     pub(crate) fn new() -> Self {
         BooleanPropertyBuilder {
             meta: None,
@@ -1328,37 +1269,11 @@ impl BooleanPropertyBuilder<(crate::typed::builder::NotSet,)> {
             script: None,
             on_script_error: None,
             time_series_dimension: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> BooleanPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> BooleanPropertyBuilder<N> {
-        BooleanPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            boost: self.boost,
-            fielddata: self.fielddata,
-            index: self.index,
-            null_value: self.null_value,
-            ignore_malformed: self.ignore_malformed,
-            script: self.script,
-            on_script_error: self.on_script_error,
-            time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl BooleanPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -1406,6 +1321,15 @@ impl<S0> BooleanPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -1457,6 +1381,15 @@ impl<S0> BooleanPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -1617,24 +1550,9 @@ impl<S0> BooleanPropertyBuilder<(S0,)> {
     }
 }
 
-impl BooleanPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> BooleanPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> BooleanPropertyBuilder<(S0,)> {
+impl BooleanPropertyBuilder {
     /// Builds a [`BooleanProperty`].
-    pub fn build(self) -> BooleanProperty
-    where
-        S0: crate::typed::builder::IsSet<boolean_property_members::r#type>,
-    {
+    pub fn build(self) -> BooleanProperty {
         BooleanProperty {
             meta: self.meta,
             properties: self.properties,
@@ -1653,15 +1571,11 @@ impl<S0> BooleanPropertyBuilder<(S0,)> {
             script: self.script,
             on_script_error: self.on_script_error,
             time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for BooleanPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<boolean_property_members::r#type>,
-{
+impl crate::typed::builder::Build for BooleanPropertyBuilder {
     type Output = BooleanProperty;
 
     fn build(self) -> BooleanProperty {
@@ -1669,16 +1583,13 @@ where
     }
 }
 
-impl<S0> From<BooleanPropertyBuilder<(S0,)>> for BooleanProperty
-where
-    S0: crate::typed::builder::IsSet<boolean_property_members::r#type>,
-{
-    fn from(builder: BooleanPropertyBuilder<(S0,)>) -> Self {
+impl From<BooleanPropertyBuilder> for BooleanProperty {
+    fn from(builder: BooleanPropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct ByteNumberProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -1717,22 +1628,17 @@ pub struct ByteNumberProperty {
     /// For internal use by Elastic only. Marks the field as a time series dimension. Defaults to false.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_series_dimension: Option<bool>,
-    pub r#type: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub null_value: Option<i8>,
 }
 
 impl ByteNumberProperty {
     /// Creates a builder for [`ByteNumberProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> ByteNumberPropertyBuilder {
         ByteNumberPropertyBuilder::new()
     }
 
     /// Creates a [`ByteNumberProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = ByteNumberProperty>>(
         f: impl FnOnce(ByteNumberPropertyBuilder) -> B,
     ) -> ByteNumberProperty {
@@ -1740,16 +1646,9 @@ impl ByteNumberProperty {
     }
 }
 
-/// Markers of the required members of [`ByteNumberPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod byte_number_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`ByteNumberProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct ByteNumberPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct ByteNumberPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -1767,12 +1666,10 @@ pub struct ByteNumberPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     script: Option<crate::typed::_types::Script>,
     time_series_metric: Option<TimeSeriesMetricType>,
     time_series_dimension: Option<bool>,
-    r#type: Option<String>,
     null_value: Option<i8>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl ByteNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl ByteNumberPropertyBuilder {
     pub(crate) fn new() -> Self {
         ByteNumberPropertyBuilder {
             meta: None,
@@ -1792,39 +1689,12 @@ impl ByteNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
             script: None,
             time_series_metric: None,
             time_series_dimension: None,
-            r#type: None,
             null_value: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> ByteNumberPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> ByteNumberPropertyBuilder<N> {
-        ByteNumberPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            boost: self.boost,
-            coerce: self.coerce,
-            ignore_malformed: self.ignore_malformed,
-            index: self.index,
-            on_script_error: self.on_script_error,
-            script: self.script,
-            time_series_metric: self.time_series_metric,
-            time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type,
-            null_value: self.null_value,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl ByteNumberPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -1872,6 +1742,15 @@ impl<S0> ByteNumberPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -1923,6 +1802,15 @@ impl<S0> ByteNumberPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -2079,24 +1967,9 @@ impl<S0> ByteNumberPropertyBuilder<(S0,)> {
     }
 }
 
-impl ByteNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> ByteNumberPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> ByteNumberPropertyBuilder<(S0,)> {
+impl ByteNumberPropertyBuilder {
     /// Builds a [`ByteNumberProperty`].
-    pub fn build(self) -> ByteNumberProperty
-    where
-        S0: crate::typed::builder::IsSet<byte_number_property_members::r#type>,
-    {
+    pub fn build(self) -> ByteNumberProperty {
         ByteNumberProperty {
             meta: self.meta,
             properties: self.properties,
@@ -2115,16 +1988,12 @@ impl<S0> ByteNumberPropertyBuilder<(S0,)> {
             script: self.script,
             time_series_metric: self.time_series_metric,
             time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type.unwrap(),
             null_value: self.null_value,
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for ByteNumberPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<byte_number_property_members::r#type>,
-{
+impl crate::typed::builder::Build for ByteNumberPropertyBuilder {
     type Output = ByteNumberProperty;
 
     fn build(self) -> ByteNumberProperty {
@@ -2132,11 +2001,8 @@ where
     }
 }
 
-impl<S0> From<ByteNumberPropertyBuilder<(S0,)>> for ByteNumberProperty
-where
-    S0: crate::typed::builder::IsSet<byte_number_property_members::r#type>,
-{
-    fn from(builder: ByteNumberPropertyBuilder<(S0,)>) -> Self {
+impl From<ByteNumberPropertyBuilder> for ByteNumberProperty {
+    fn from(builder: ByteNumberPropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -2656,7 +2522,7 @@ where
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct CompletionProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -2689,20 +2555,15 @@ pub struct CompletionProperty {
     pub preserve_separators: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub search_analyzer: Option<String>,
-    pub r#type: String,
 }
 
 impl CompletionProperty {
     /// Creates a builder for [`CompletionProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> CompletionPropertyBuilder {
         CompletionPropertyBuilder::new()
     }
 
     /// Creates a [`CompletionProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = CompletionProperty>>(
         f: impl FnOnce(CompletionPropertyBuilder) -> B,
     ) -> CompletionProperty {
@@ -2710,16 +2571,9 @@ impl CompletionProperty {
     }
 }
 
-/// Markers of the required members of [`CompletionPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod completion_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`CompletionProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct CompletionPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct CompletionPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -2735,11 +2589,9 @@ pub struct CompletionPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     preserve_position_increments: Option<bool>,
     preserve_separators: Option<bool>,
     search_analyzer: Option<String>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl CompletionPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl CompletionPropertyBuilder {
     pub(crate) fn new() -> Self {
         CompletionPropertyBuilder {
             meta: None,
@@ -2757,35 +2609,11 @@ impl CompletionPropertyBuilder<(crate::typed::builder::NotSet,)> {
             preserve_position_increments: None,
             preserve_separators: None,
             search_analyzer: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> CompletionPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> CompletionPropertyBuilder<N> {
-        CompletionPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            analyzer: self.analyzer,
-            contexts: self.contexts,
-            max_input_length: self.max_input_length,
-            preserve_position_increments: self.preserve_position_increments,
-            preserve_separators: self.preserve_separators,
-            search_analyzer: self.search_analyzer,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl CompletionPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -2833,6 +2661,15 @@ impl<S0> CompletionPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -2884,6 +2721,15 @@ impl<S0> CompletionPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -3013,24 +2859,9 @@ impl<S0> CompletionPropertyBuilder<(S0,)> {
     }
 }
 
-impl CompletionPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> CompletionPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> CompletionPropertyBuilder<(S0,)> {
+impl CompletionPropertyBuilder {
     /// Builds a [`CompletionProperty`].
-    pub fn build(self) -> CompletionProperty
-    where
-        S0: crate::typed::builder::IsSet<completion_property_members::r#type>,
-    {
+    pub fn build(self) -> CompletionProperty {
         CompletionProperty {
             meta: self.meta,
             properties: self.properties,
@@ -3047,15 +2878,11 @@ impl<S0> CompletionPropertyBuilder<(S0,)> {
             preserve_position_increments: self.preserve_position_increments,
             preserve_separators: self.preserve_separators,
             search_analyzer: self.search_analyzer,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for CompletionPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<completion_property_members::r#type>,
-{
+impl crate::typed::builder::Build for CompletionPropertyBuilder {
     type Output = CompletionProperty;
 
     fn build(self) -> CompletionProperty {
@@ -3063,11 +2890,8 @@ where
     }
 }
 
-impl<S0> From<CompletionPropertyBuilder<(S0,)>> for CompletionProperty
-where
-    S0: crate::typed::builder::IsSet<completion_property_members::r#type>,
-{
-    fn from(builder: CompletionPropertyBuilder<(S0,)>) -> Self {
+impl From<CompletionPropertyBuilder> for CompletionProperty {
+    fn from(builder: CompletionPropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -3171,7 +2995,7 @@ where
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct ConstantKeywordProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -3188,20 +3012,15 @@ pub struct ConstantKeywordProperty {
     pub synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub value: Option<serde_json::Value>,
-    pub r#type: String,
 }
 
 impl ConstantKeywordProperty {
     /// Creates a builder for [`ConstantKeywordProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> ConstantKeywordPropertyBuilder {
         ConstantKeywordPropertyBuilder::new()
     }
 
     /// Creates a [`ConstantKeywordProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = ConstantKeywordProperty>>(
         f: impl FnOnce(ConstantKeywordPropertyBuilder) -> B,
     ) -> ConstantKeywordProperty {
@@ -3209,16 +3028,9 @@ impl ConstantKeywordProperty {
     }
 }
 
-/// Markers of the required members of [`ConstantKeywordPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod constant_keyword_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`ConstantKeywordProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct ConstantKeywordPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct ConstantKeywordPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -3226,11 +3038,9 @@ pub struct ConstantKeywordPropertyBuilder<S = (crate::typed::builder::NotSet,)> 
     fields: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
     value: Option<serde_json::Value>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl ConstantKeywordPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl ConstantKeywordPropertyBuilder {
     pub(crate) fn new() -> Self {
         ConstantKeywordPropertyBuilder {
             meta: None,
@@ -3240,27 +3050,11 @@ impl ConstantKeywordPropertyBuilder<(crate::typed::builder::NotSet,)> {
             fields: None,
             synthetic_source_keep: None,
             value: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> ConstantKeywordPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> ConstantKeywordPropertyBuilder<N> {
-        ConstantKeywordPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            value: self.value,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl ConstantKeywordPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -3308,6 +3102,15 @@ impl<S0> ConstantKeywordPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -3361,6 +3164,15 @@ impl<S0> ConstantKeywordPropertyBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
+    }
+
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
         self.synthetic_source_keep = Some(value.into());
         self
@@ -3384,24 +3196,9 @@ impl<S0> ConstantKeywordPropertyBuilder<(S0,)> {
     }
 }
 
-impl ConstantKeywordPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> ConstantKeywordPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> ConstantKeywordPropertyBuilder<(S0,)> {
+impl ConstantKeywordPropertyBuilder {
     /// Builds a [`ConstantKeywordProperty`].
-    pub fn build(self) -> ConstantKeywordProperty
-    where
-        S0: crate::typed::builder::IsSet<constant_keyword_property_members::r#type>,
-    {
+    pub fn build(self) -> ConstantKeywordProperty {
         ConstantKeywordProperty {
             meta: self.meta,
             properties: self.properties,
@@ -3410,15 +3207,11 @@ impl<S0> ConstantKeywordPropertyBuilder<(S0,)> {
             fields: self.fields,
             synthetic_source_keep: self.synthetic_source_keep,
             value: self.value,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for ConstantKeywordPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<constant_keyword_property_members::r#type>,
-{
+impl crate::typed::builder::Build for ConstantKeywordPropertyBuilder {
     type Output = ConstantKeywordProperty;
 
     fn build(self) -> ConstantKeywordProperty {
@@ -3426,11 +3219,8 @@ where
     }
 }
 
-impl<S0> From<ConstantKeywordPropertyBuilder<(S0,)>> for ConstantKeywordProperty
-where
-    S0: crate::typed::builder::IsSet<constant_keyword_property_members::r#type>,
-{
-    fn from(builder: ConstantKeywordPropertyBuilder<(S0,)>) -> Self {
+impl From<ConstantKeywordPropertyBuilder> for ConstantKeywordProperty {
+    fn from(builder: ConstantKeywordPropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -3548,6 +3338,15 @@ impl CorePropertyBaseBuilder {
         self
     }
 
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
+    }
+
     pub fn ignore_above(mut self, value: i32) -> Self {
         self.ignore_above = Some(value);
         self
@@ -3597,6 +3396,15 @@ impl CorePropertyBaseBuilder {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -3663,7 +3471,7 @@ impl From<CorePropertyBaseBuilder> for CorePropertyBase {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct CountedKeywordProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -3678,22 +3486,17 @@ pub struct CountedKeywordProperty {
     pub fields: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
-    pub r#type: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub index: Option<bool>,
 }
 
 impl CountedKeywordProperty {
     /// Creates a builder for [`CountedKeywordProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> CountedKeywordPropertyBuilder {
         CountedKeywordPropertyBuilder::new()
     }
 
     /// Creates a [`CountedKeywordProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = CountedKeywordProperty>>(
         f: impl FnOnce(CountedKeywordPropertyBuilder) -> B,
     ) -> CountedKeywordProperty {
@@ -3701,28 +3504,19 @@ impl CountedKeywordProperty {
     }
 }
 
-/// Markers of the required members of [`CountedKeywordPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod counted_keyword_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`CountedKeywordProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct CountedKeywordPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct CountedKeywordPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
     dynamic: Option<DynamicMapping>,
     fields: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
-    r#type: Option<String>,
     index: Option<bool>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl CountedKeywordPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl CountedKeywordPropertyBuilder {
     pub(crate) fn new() -> Self {
         CountedKeywordPropertyBuilder {
             meta: None,
@@ -3731,28 +3525,12 @@ impl CountedKeywordPropertyBuilder<(crate::typed::builder::NotSet,)> {
             dynamic: None,
             fields: None,
             synthetic_source_keep: None,
-            r#type: None,
             index: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> CountedKeywordPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> CountedKeywordPropertyBuilder<N> {
-        CountedKeywordPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            r#type: self.r#type,
-            index: self.index,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl CountedKeywordPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -3800,6 +3578,15 @@ impl<S0> CountedKeywordPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -3853,6 +3640,15 @@ impl<S0> CountedKeywordPropertyBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
+    }
+
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
         self.synthetic_source_keep = Some(value.into());
         self
@@ -3876,24 +3672,9 @@ impl<S0> CountedKeywordPropertyBuilder<(S0,)> {
     }
 }
 
-impl CountedKeywordPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> CountedKeywordPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> CountedKeywordPropertyBuilder<(S0,)> {
+impl CountedKeywordPropertyBuilder {
     /// Builds a [`CountedKeywordProperty`].
-    pub fn build(self) -> CountedKeywordProperty
-    where
-        S0: crate::typed::builder::IsSet<counted_keyword_property_members::r#type>,
-    {
+    pub fn build(self) -> CountedKeywordProperty {
         CountedKeywordProperty {
             meta: self.meta,
             properties: self.properties,
@@ -3901,16 +3682,12 @@ impl<S0> CountedKeywordPropertyBuilder<(S0,)> {
             dynamic: self.dynamic,
             fields: self.fields,
             synthetic_source_keep: self.synthetic_source_keep,
-            r#type: self.r#type.unwrap(),
             index: self.index,
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for CountedKeywordPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<counted_keyword_property_members::r#type>,
-{
+impl crate::typed::builder::Build for CountedKeywordPropertyBuilder {
     type Output = CountedKeywordProperty;
 
     fn build(self) -> CountedKeywordProperty {
@@ -3918,11 +3695,8 @@ where
     }
 }
 
-impl<S0> From<CountedKeywordPropertyBuilder<(S0,)>> for CountedKeywordProperty
-where
-    S0: crate::typed::builder::IsSet<counted_keyword_property_members::r#type>,
-{
-    fn from(builder: CountedKeywordPropertyBuilder<(S0,)>) -> Self {
+impl From<CountedKeywordPropertyBuilder> for CountedKeywordProperty {
+    fn from(builder: CountedKeywordPropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -4023,7 +3797,7 @@ where
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct DateNanosProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -4060,20 +3834,15 @@ pub struct DateNanosProperty {
     pub null_value: Option<crate::typed::_types::DateTime>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub precision_step: Option<i32>,
-    pub r#type: String,
 }
 
 impl DateNanosProperty {
     /// Creates a builder for [`DateNanosProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> DateNanosPropertyBuilder {
         DateNanosPropertyBuilder::new()
     }
 
     /// Creates a [`DateNanosProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = DateNanosProperty>>(
         f: impl FnOnce(DateNanosPropertyBuilder) -> B,
     ) -> DateNanosProperty {
@@ -4081,16 +3850,9 @@ impl DateNanosProperty {
     }
 }
 
-/// Markers of the required members of [`DateNanosPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod date_nanos_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`DateNanosProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct DateNanosPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct DateNanosPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -4108,11 +3870,9 @@ pub struct DateNanosPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     on_script_error: Option<OnScriptError>,
     null_value: Option<crate::typed::_types::DateTime>,
     precision_step: Option<i32>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl DateNanosPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl DateNanosPropertyBuilder {
     pub(crate) fn new() -> Self {
         DateNanosPropertyBuilder {
             meta: None,
@@ -4132,37 +3892,11 @@ impl DateNanosPropertyBuilder<(crate::typed::builder::NotSet,)> {
             on_script_error: None,
             null_value: None,
             precision_step: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> DateNanosPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> DateNanosPropertyBuilder<N> {
-        DateNanosPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            boost: self.boost,
-            format: self.format,
-            ignore_malformed: self.ignore_malformed,
-            index: self.index,
-            script: self.script,
-            on_script_error: self.on_script_error,
-            null_value: self.null_value,
-            precision_step: self.precision_step,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl DateNanosPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -4210,6 +3944,15 @@ impl<S0> DateNanosPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -4261,6 +4004,15 @@ impl<S0> DateNanosPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -4404,24 +4156,9 @@ impl<S0> DateNanosPropertyBuilder<(S0,)> {
     }
 }
 
-impl DateNanosPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> DateNanosPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> DateNanosPropertyBuilder<(S0,)> {
+impl DateNanosPropertyBuilder {
     /// Builds a [`DateNanosProperty`].
-    pub fn build(self) -> DateNanosProperty
-    where
-        S0: crate::typed::builder::IsSet<date_nanos_property_members::r#type>,
-    {
+    pub fn build(self) -> DateNanosProperty {
         DateNanosProperty {
             meta: self.meta,
             properties: self.properties,
@@ -4440,15 +4177,11 @@ impl<S0> DateNanosPropertyBuilder<(S0,)> {
             on_script_error: self.on_script_error,
             null_value: self.null_value,
             precision_step: self.precision_step,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for DateNanosPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<date_nanos_property_members::r#type>,
-{
+impl crate::typed::builder::Build for DateNanosPropertyBuilder {
     type Output = DateNanosProperty;
 
     fn build(self) -> DateNanosProperty {
@@ -4456,16 +4189,13 @@ where
     }
 }
 
-impl<S0> From<DateNanosPropertyBuilder<(S0,)>> for DateNanosProperty
-where
-    S0: crate::typed::builder::IsSet<date_nanos_property_members::r#type>,
-{
-    fn from(builder: DateNanosPropertyBuilder<(S0,)>) -> Self {
+impl From<DateNanosPropertyBuilder> for DateNanosProperty {
+    fn from(builder: DateNanosPropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct DateProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -4506,20 +4236,15 @@ pub struct DateProperty {
     pub precision_step: Option<i32>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub locale: Option<String>,
-    pub r#type: String,
 }
 
 impl DateProperty {
     /// Creates a builder for [`DateProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> DatePropertyBuilder {
         DatePropertyBuilder::new()
     }
 
     /// Creates a [`DateProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = DateProperty>>(
         f: impl FnOnce(DatePropertyBuilder) -> B,
     ) -> DateProperty {
@@ -4527,16 +4252,9 @@ impl DateProperty {
     }
 }
 
-/// Markers of the required members of [`DatePropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod date_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`DateProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct DatePropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct DatePropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -4556,11 +4274,9 @@ pub struct DatePropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     null_value: Option<crate::typed::_types::DateTime>,
     precision_step: Option<i32>,
     locale: Option<String>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl DatePropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl DatePropertyBuilder {
     pub(crate) fn new() -> Self {
         DatePropertyBuilder {
             meta: None,
@@ -4582,39 +4298,11 @@ impl DatePropertyBuilder<(crate::typed::builder::NotSet,)> {
             null_value: None,
             precision_step: None,
             locale: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> DatePropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> DatePropertyBuilder<N> {
-        DatePropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            boost: self.boost,
-            fielddata: self.fielddata,
-            format: self.format,
-            ignore_malformed: self.ignore_malformed,
-            index: self.index,
-            script: self.script,
-            on_script_error: self.on_script_error,
-            null_value: self.null_value,
-            precision_step: self.precision_step,
-            locale: self.locale,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl DatePropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -4662,6 +4350,15 @@ impl<S0> DatePropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -4713,6 +4410,15 @@ impl<S0> DatePropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -4894,24 +4600,9 @@ impl<S0> DatePropertyBuilder<(S0,)> {
     }
 }
 
-impl DatePropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> DatePropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> DatePropertyBuilder<(S0,)> {
+impl DatePropertyBuilder {
     /// Builds a [`DateProperty`].
-    pub fn build(self) -> DateProperty
-    where
-        S0: crate::typed::builder::IsSet<date_property_members::r#type>,
-    {
+    pub fn build(self) -> DateProperty {
         DateProperty {
             meta: self.meta,
             properties: self.properties,
@@ -4932,15 +4623,11 @@ impl<S0> DatePropertyBuilder<(S0,)> {
             null_value: self.null_value,
             precision_step: self.precision_step,
             locale: self.locale,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for DatePropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<date_property_members::r#type>,
-{
+impl crate::typed::builder::Build for DatePropertyBuilder {
     type Output = DateProperty;
 
     fn build(self) -> DateProperty {
@@ -4948,16 +4635,13 @@ where
     }
 }
 
-impl<S0> From<DatePropertyBuilder<(S0,)>> for DateProperty
-where
-    S0: crate::typed::builder::IsSet<date_property_members::r#type>,
-{
-    fn from(builder: DatePropertyBuilder<(S0,)>) -> Self {
+impl From<DatePropertyBuilder> for DateProperty {
+    fn from(builder: DatePropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct DateRangeProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -4986,20 +4670,15 @@ pub struct DateRangeProperty {
     pub index: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub format: Option<String>,
-    pub r#type: String,
 }
 
 impl DateRangeProperty {
     /// Creates a builder for [`DateRangeProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> DateRangePropertyBuilder {
         DateRangePropertyBuilder::new()
     }
 
     /// Creates a [`DateRangeProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = DateRangeProperty>>(
         f: impl FnOnce(DateRangePropertyBuilder) -> B,
     ) -> DateRangeProperty {
@@ -5007,16 +4686,9 @@ impl DateRangeProperty {
     }
 }
 
-/// Markers of the required members of [`DateRangePropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod date_range_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`DateRangeProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct DateRangePropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct DateRangePropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -5030,11 +4702,9 @@ pub struct DateRangePropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     coerce: Option<bool>,
     index: Option<bool>,
     format: Option<String>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl DateRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl DateRangePropertyBuilder {
     pub(crate) fn new() -> Self {
         DateRangePropertyBuilder {
             meta: None,
@@ -5050,33 +4720,11 @@ impl DateRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
             coerce: None,
             index: None,
             format: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> DateRangePropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> DateRangePropertyBuilder<N> {
-        DateRangePropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            boost: self.boost,
-            coerce: self.coerce,
-            index: self.index,
-            format: self.format,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl DateRangePropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -5124,6 +4772,15 @@ impl<S0> DateRangePropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -5175,6 +4832,15 @@ impl<S0> DateRangePropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -5266,24 +4932,9 @@ impl<S0> DateRangePropertyBuilder<(S0,)> {
     }
 }
 
-impl DateRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> DateRangePropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> DateRangePropertyBuilder<(S0,)> {
+impl DateRangePropertyBuilder {
     /// Builds a [`DateRangeProperty`].
-    pub fn build(self) -> DateRangeProperty
-    where
-        S0: crate::typed::builder::IsSet<date_range_property_members::r#type>,
-    {
+    pub fn build(self) -> DateRangeProperty {
         DateRangeProperty {
             meta: self.meta,
             properties: self.properties,
@@ -5298,15 +4949,11 @@ impl<S0> DateRangePropertyBuilder<(S0,)> {
             coerce: self.coerce,
             index: self.index,
             format: self.format,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for DateRangePropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<date_range_property_members::r#type>,
-{
+impl crate::typed::builder::Build for DateRangePropertyBuilder {
     type Output = DateRangeProperty;
 
     fn build(self) -> DateRangeProperty {
@@ -5314,11 +4961,8 @@ where
     }
 }
 
-impl<S0> From<DateRangePropertyBuilder<(S0,)>> for DateRangeProperty
-where
-    S0: crate::typed::builder::IsSet<date_range_property_members::r#type>,
-{
-    fn from(builder: DateRangePropertyBuilder<(S0,)>) -> Self {
+impl From<DateRangePropertyBuilder> for DateRangeProperty {
+    fn from(builder: DateRangePropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -5879,7 +5523,7 @@ pub enum DenseVectorIndexOptionsType {
     Int8Hnsw,
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct DenseVectorProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -5894,7 +5538,6 @@ pub struct DenseVectorProperty {
     pub fields: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
-    pub r#type: String,
     /// Number of vector dimensions. Can't exceed `4096`. If `dims` is not specified, it will be set to the length of
     /// the first vector added to the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -5929,15 +5572,11 @@ pub struct DenseVectorProperty {
 
 impl DenseVectorProperty {
     /// Creates a builder for [`DenseVectorProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> DenseVectorPropertyBuilder {
         DenseVectorPropertyBuilder::new()
     }
 
     /// Creates a [`DenseVectorProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = DenseVectorProperty>>(
         f: impl FnOnce(DenseVectorPropertyBuilder) -> B,
     ) -> DenseVectorProperty {
@@ -5945,32 +5584,23 @@ impl DenseVectorProperty {
     }
 }
 
-/// Markers of the required members of [`DenseVectorPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod dense_vector_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`DenseVectorProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct DenseVectorPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct DenseVectorPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
     dynamic: Option<DynamicMapping>,
     fields: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
-    r#type: Option<String>,
     dims: Option<i32>,
     element_type: Option<DenseVectorElementType>,
     index: Option<bool>,
     index_options: Option<DenseVectorIndexOptions>,
     similarity: Option<DenseVectorSimilarity>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl DenseVectorPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl DenseVectorPropertyBuilder {
     pub(crate) fn new() -> Self {
         DenseVectorPropertyBuilder {
             meta: None,
@@ -5979,36 +5609,16 @@ impl DenseVectorPropertyBuilder<(crate::typed::builder::NotSet,)> {
             dynamic: None,
             fields: None,
             synthetic_source_keep: None,
-            r#type: None,
             dims: None,
             element_type: None,
             index: None,
             index_options: None,
             similarity: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> DenseVectorPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> DenseVectorPropertyBuilder<N> {
-        DenseVectorPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            r#type: self.r#type,
-            dims: self.dims,
-            element_type: self.element_type,
-            index: self.index,
-            index_options: self.index_options,
-            similarity: self.similarity,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl DenseVectorPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -6056,6 +5666,15 @@ impl<S0> DenseVectorPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -6107,6 +5726,15 @@ impl<S0> DenseVectorPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -6204,24 +5832,9 @@ impl<S0> DenseVectorPropertyBuilder<(S0,)> {
     }
 }
 
-impl DenseVectorPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> DenseVectorPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> DenseVectorPropertyBuilder<(S0,)> {
+impl DenseVectorPropertyBuilder {
     /// Builds a [`DenseVectorProperty`].
-    pub fn build(self) -> DenseVectorProperty
-    where
-        S0: crate::typed::builder::IsSet<dense_vector_property_members::r#type>,
-    {
+    pub fn build(self) -> DenseVectorProperty {
         DenseVectorProperty {
             meta: self.meta,
             properties: self.properties,
@@ -6229,7 +5842,6 @@ impl<S0> DenseVectorPropertyBuilder<(S0,)> {
             dynamic: self.dynamic,
             fields: self.fields,
             synthetic_source_keep: self.synthetic_source_keep,
-            r#type: self.r#type.unwrap(),
             dims: self.dims,
             element_type: self.element_type,
             index: self.index,
@@ -6239,10 +5851,7 @@ impl<S0> DenseVectorPropertyBuilder<(S0,)> {
     }
 }
 
-impl<S0> crate::typed::builder::Build for DenseVectorPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<dense_vector_property_members::r#type>,
-{
+impl crate::typed::builder::Build for DenseVectorPropertyBuilder {
     type Output = DenseVectorProperty;
 
     fn build(self) -> DenseVectorProperty {
@@ -6250,11 +5859,8 @@ where
     }
 }
 
-impl<S0> From<DenseVectorPropertyBuilder<(S0,)>> for DenseVectorProperty
-where
-    S0: crate::typed::builder::IsSet<dense_vector_property_members::r#type>,
-{
-    fn from(builder: DenseVectorPropertyBuilder<(S0,)>) -> Self {
+impl From<DenseVectorPropertyBuilder> for DenseVectorProperty {
+    fn from(builder: DenseVectorPropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -6543,6 +6149,15 @@ impl DocValuesPropertyBaseBuilder {
         self
     }
 
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
+    }
+
     pub fn ignore_above(mut self, value: i32) -> Self {
         self.ignore_above = Some(value);
         self
@@ -6592,6 +6207,15 @@ impl DocValuesPropertyBaseBuilder {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -6670,7 +6294,7 @@ impl From<DocValuesPropertyBaseBuilder> for DocValuesPropertyBase {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct DoubleNumberProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -6709,22 +6333,17 @@ pub struct DoubleNumberProperty {
     /// For internal use by Elastic only. Marks the field as a time series dimension. Defaults to false.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_series_dimension: Option<bool>,
-    pub r#type: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub null_value: Option<crate::typed::support::Float64>,
 }
 
 impl DoubleNumberProperty {
     /// Creates a builder for [`DoubleNumberProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> DoubleNumberPropertyBuilder {
         DoubleNumberPropertyBuilder::new()
     }
 
     /// Creates a [`DoubleNumberProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = DoubleNumberProperty>>(
         f: impl FnOnce(DoubleNumberPropertyBuilder) -> B,
     ) -> DoubleNumberProperty {
@@ -6732,16 +6351,9 @@ impl DoubleNumberProperty {
     }
 }
 
-/// Markers of the required members of [`DoubleNumberPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod double_number_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`DoubleNumberProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct DoubleNumberPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct DoubleNumberPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -6759,12 +6371,10 @@ pub struct DoubleNumberPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     script: Option<crate::typed::_types::Script>,
     time_series_metric: Option<TimeSeriesMetricType>,
     time_series_dimension: Option<bool>,
-    r#type: Option<String>,
     null_value: Option<crate::typed::support::Float64>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl DoubleNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl DoubleNumberPropertyBuilder {
     pub(crate) fn new() -> Self {
         DoubleNumberPropertyBuilder {
             meta: None,
@@ -6784,39 +6394,12 @@ impl DoubleNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
             script: None,
             time_series_metric: None,
             time_series_dimension: None,
-            r#type: None,
             null_value: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> DoubleNumberPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> DoubleNumberPropertyBuilder<N> {
-        DoubleNumberPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            boost: self.boost,
-            coerce: self.coerce,
-            ignore_malformed: self.ignore_malformed,
-            index: self.index,
-            on_script_error: self.on_script_error,
-            script: self.script,
-            time_series_metric: self.time_series_metric,
-            time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type,
-            null_value: self.null_value,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl DoubleNumberPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -6864,6 +6447,15 @@ impl<S0> DoubleNumberPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -6915,6 +6507,15 @@ impl<S0> DoubleNumberPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -7071,24 +6672,9 @@ impl<S0> DoubleNumberPropertyBuilder<(S0,)> {
     }
 }
 
-impl DoubleNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> DoubleNumberPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> DoubleNumberPropertyBuilder<(S0,)> {
+impl DoubleNumberPropertyBuilder {
     /// Builds a [`DoubleNumberProperty`].
-    pub fn build(self) -> DoubleNumberProperty
-    where
-        S0: crate::typed::builder::IsSet<double_number_property_members::r#type>,
-    {
+    pub fn build(self) -> DoubleNumberProperty {
         DoubleNumberProperty {
             meta: self.meta,
             properties: self.properties,
@@ -7107,16 +6693,12 @@ impl<S0> DoubleNumberPropertyBuilder<(S0,)> {
             script: self.script,
             time_series_metric: self.time_series_metric,
             time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type.unwrap(),
             null_value: self.null_value,
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for DoubleNumberPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<double_number_property_members::r#type>,
-{
+impl crate::typed::builder::Build for DoubleNumberPropertyBuilder {
     type Output = DoubleNumberProperty;
 
     fn build(self) -> DoubleNumberProperty {
@@ -7124,16 +6706,13 @@ where
     }
 }
 
-impl<S0> From<DoubleNumberPropertyBuilder<(S0,)>> for DoubleNumberProperty
-where
-    S0: crate::typed::builder::IsSet<double_number_property_members::r#type>,
-{
-    fn from(builder: DoubleNumberPropertyBuilder<(S0,)>) -> Self {
+impl From<DoubleNumberPropertyBuilder> for DoubleNumberProperty {
+    fn from(builder: DoubleNumberPropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct DoubleRangeProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -7160,20 +6739,15 @@ pub struct DoubleRangeProperty {
     pub coerce: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub index: Option<bool>,
-    pub r#type: String,
 }
 
 impl DoubleRangeProperty {
     /// Creates a builder for [`DoubleRangeProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> DoubleRangePropertyBuilder {
         DoubleRangePropertyBuilder::new()
     }
 
     /// Creates a [`DoubleRangeProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = DoubleRangeProperty>>(
         f: impl FnOnce(DoubleRangePropertyBuilder) -> B,
     ) -> DoubleRangeProperty {
@@ -7181,16 +6755,9 @@ impl DoubleRangeProperty {
     }
 }
 
-/// Markers of the required members of [`DoubleRangePropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod double_range_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`DoubleRangeProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct DoubleRangePropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct DoubleRangePropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -7203,11 +6770,9 @@ pub struct DoubleRangePropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     boost: Option<crate::typed::support::Float64>,
     coerce: Option<bool>,
     index: Option<bool>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl DoubleRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl DoubleRangePropertyBuilder {
     pub(crate) fn new() -> Self {
         DoubleRangePropertyBuilder {
             meta: None,
@@ -7222,32 +6787,11 @@ impl DoubleRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
             boost: None,
             coerce: None,
             index: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> DoubleRangePropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> DoubleRangePropertyBuilder<N> {
-        DoubleRangePropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            boost: self.boost,
-            coerce: self.coerce,
-            index: self.index,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl DoubleRangePropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -7295,6 +6839,15 @@ impl<S0> DoubleRangePropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -7346,6 +6899,15 @@ impl<S0> DoubleRangePropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -7426,24 +6988,9 @@ impl<S0> DoubleRangePropertyBuilder<(S0,)> {
     }
 }
 
-impl DoubleRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> DoubleRangePropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> DoubleRangePropertyBuilder<(S0,)> {
+impl DoubleRangePropertyBuilder {
     /// Builds a [`DoubleRangeProperty`].
-    pub fn build(self) -> DoubleRangeProperty
-    where
-        S0: crate::typed::builder::IsSet<double_range_property_members::r#type>,
-    {
+    pub fn build(self) -> DoubleRangeProperty {
         DoubleRangeProperty {
             meta: self.meta,
             properties: self.properties,
@@ -7457,15 +7004,11 @@ impl<S0> DoubleRangePropertyBuilder<(S0,)> {
             boost: self.boost,
             coerce: self.coerce,
             index: self.index,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for DoubleRangePropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<double_range_property_members::r#type>,
-{
+impl crate::typed::builder::Build for DoubleRangePropertyBuilder {
     type Output = DoubleRangeProperty;
 
     fn build(self) -> DoubleRangeProperty {
@@ -7473,11 +7016,8 @@ where
     }
 }
 
-impl<S0> From<DoubleRangePropertyBuilder<(S0,)>> for DoubleRangeProperty
-where
-    S0: crate::typed::builder::IsSet<double_range_property_members::r#type>,
-{
-    fn from(builder: DoubleRangePropertyBuilder<(S0,)>) -> Self {
+impl From<DoubleRangePropertyBuilder> for DoubleRangeProperty {
+    fn from(builder: DoubleRangePropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -7494,7 +7034,7 @@ pub enum DynamicMapping {
     False,
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct DynamicProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -7515,7 +7055,6 @@ pub struct DynamicProperty {
     pub store: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub doc_values: Option<DocValues>,
-    pub r#type: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub enabled: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -7577,15 +7116,11 @@ impl From<TextIndexPrefixes> for DynamicPropertyIndexPrefixes {
 
 impl DynamicProperty {
     /// Creates a builder for [`DynamicProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> DynamicPropertyBuilder {
         DynamicPropertyBuilder::new()
     }
 
     /// Creates a [`DynamicProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = DynamicProperty>>(
         f: impl FnOnce(DynamicPropertyBuilder) -> B,
     ) -> DynamicProperty {
@@ -7593,16 +7128,9 @@ impl DynamicProperty {
     }
 }
 
-/// Markers of the required members of [`DynamicPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod dynamic_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`DynamicProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct DynamicPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct DynamicPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -7612,7 +7140,6 @@ pub struct DynamicPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     copy_to: Option<crate::typed::_types::Fields>,
     store: Option<bool>,
     doc_values: Option<DocValues>,
-    r#type: Option<String>,
     enabled: Option<bool>,
     null_value: Option<crate::typed::_types::FieldValue>,
     boost: Option<crate::typed::support::Float64>,
@@ -7635,10 +7162,9 @@ pub struct DynamicPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     format: Option<String>,
     precision_step: Option<i32>,
     locale: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl DynamicPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl DynamicPropertyBuilder {
     pub(crate) fn new() -> Self {
         DynamicPropertyBuilder {
             meta: None,
@@ -7650,7 +7176,6 @@ impl DynamicPropertyBuilder<(crate::typed::builder::NotSet,)> {
             copy_to: None,
             store: None,
             doc_values: None,
-            r#type: None,
             enabled: None,
             null_value: None,
             boost: None,
@@ -7673,50 +7198,11 @@ impl DynamicPropertyBuilder<(crate::typed::builder::NotSet,)> {
             format: None,
             precision_step: None,
             locale: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> DynamicPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> DynamicPropertyBuilder<N> {
-        DynamicPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            r#type: self.r#type,
-            enabled: self.enabled,
-            null_value: self.null_value,
-            boost: self.boost,
-            coerce: self.coerce,
-            script: self.script,
-            on_script_error: self.on_script_error,
-            ignore_malformed: self.ignore_malformed,
-            time_series_metric: self.time_series_metric,
-            analyzer: self.analyzer,
-            eager_global_ordinals: self.eager_global_ordinals,
-            index: self.index,
-            index_options: self.index_options,
-            index_phrases: self.index_phrases,
-            index_prefixes: self.index_prefixes,
-            norms: self.norms,
-            position_increment_gap: self.position_increment_gap,
-            search_analyzer: self.search_analyzer,
-            search_quote_analyzer: self.search_quote_analyzer,
-            term_vector: self.term_vector,
-            format: self.format,
-            precision_step: self.precision_step,
-            locale: self.locale,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl DynamicPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -7764,6 +7250,15 @@ impl<S0> DynamicPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -7815,6 +7310,15 @@ impl<S0> DynamicPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -8112,24 +7616,9 @@ impl<S0> DynamicPropertyBuilder<(S0,)> {
     }
 }
 
-impl DynamicPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> DynamicPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> DynamicPropertyBuilder<(S0,)> {
+impl DynamicPropertyBuilder {
     /// Builds a [`DynamicProperty`].
-    pub fn build(self) -> DynamicProperty
-    where
-        S0: crate::typed::builder::IsSet<dynamic_property_members::r#type>,
-    {
+    pub fn build(self) -> DynamicProperty {
         DynamicProperty {
             meta: self.meta,
             properties: self.properties,
@@ -8140,7 +7629,6 @@ impl<S0> DynamicPropertyBuilder<(S0,)> {
             copy_to: self.copy_to,
             store: self.store,
             doc_values: self.doc_values,
-            r#type: self.r#type.unwrap(),
             enabled: self.enabled,
             null_value: self.null_value,
             boost: self.boost,
@@ -8167,10 +7655,7 @@ impl<S0> DynamicPropertyBuilder<(S0,)> {
     }
 }
 
-impl<S0> crate::typed::builder::Build for DynamicPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<dynamic_property_members::r#type>,
-{
+impl crate::typed::builder::Build for DynamicPropertyBuilder {
     type Output = DynamicProperty;
 
     fn build(self) -> DynamicProperty {
@@ -8178,11 +7663,8 @@ where
     }
 }
 
-impl<S0> From<DynamicPropertyBuilder<(S0,)>> for DynamicProperty
-where
-    S0: crate::typed::builder::IsSet<dynamic_property_members::r#type>,
-{
-    fn from(builder: DynamicPropertyBuilder<(S0,)>) -> Self {
+impl From<DynamicPropertyBuilder> for DynamicProperty {
+    fn from(builder: DynamicPropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -8408,6 +7890,12 @@ impl From<RuntimeField> for DynamicTemplate {
     }
 }
 
+impl From<PropertyBuilder<(crate::typed::builder::Set,)>> for DynamicTemplate {
+    fn from(builder: PropertyBuilder<(crate::typed::builder::Set,)>) -> Self {
+        builder.build().into()
+    }
+}
+
 impl From<RuntimeFieldBuilder<(crate::typed::builder::Set,)>> for DynamicTemplate {
     fn from(builder: RuntimeFieldBuilder<(crate::typed::builder::Set,)>) -> Self {
         builder.build().into()
@@ -8574,6 +8062,14 @@ impl DynamicTemplateBuilder<(crate::typed::builder::NotSet,)> {
         builder
     }
 
+    /// Sets [`mapping`](Self::mapping) with a builder.
+    pub fn mapping_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> DynamicTemplateBuilder<(crate::typed::builder::Set,)> {
+        self.mapping(f(PropertyBuilder::new()).build())
+    }
+
     pub fn runtime(
         self,
         value: impl Into<RuntimeField>,
@@ -8631,7 +8127,7 @@ where
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct ExponentialHistogramProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -8648,20 +8144,15 @@ pub struct ExponentialHistogramProperty {
     pub synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_series_metric: Option<TimeSeriesMetricType>,
-    pub r#type: String,
 }
 
 impl ExponentialHistogramProperty {
     /// Creates a builder for [`ExponentialHistogramProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> ExponentialHistogramPropertyBuilder {
         ExponentialHistogramPropertyBuilder::new()
     }
 
     /// Creates a [`ExponentialHistogramProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = ExponentialHistogramProperty>>(
         f: impl FnOnce(ExponentialHistogramPropertyBuilder) -> B,
     ) -> ExponentialHistogramProperty {
@@ -8669,16 +8160,9 @@ impl ExponentialHistogramProperty {
     }
 }
 
-/// Markers of the required members of [`ExponentialHistogramPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod exponential_histogram_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`ExponentialHistogramProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct ExponentialHistogramPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct ExponentialHistogramPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -8686,11 +8170,9 @@ pub struct ExponentialHistogramPropertyBuilder<S = (crate::typed::builder::NotSe
     fields: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
     time_series_metric: Option<TimeSeriesMetricType>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl ExponentialHistogramPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl ExponentialHistogramPropertyBuilder {
     pub(crate) fn new() -> Self {
         ExponentialHistogramPropertyBuilder {
             meta: None,
@@ -8700,27 +8182,11 @@ impl ExponentialHistogramPropertyBuilder<(crate::typed::builder::NotSet,)> {
             fields: None,
             synthetic_source_keep: None,
             time_series_metric: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> ExponentialHistogramPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> ExponentialHistogramPropertyBuilder<N> {
-        ExponentialHistogramPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            time_series_metric: self.time_series_metric,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl ExponentialHistogramPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -8768,6 +8234,15 @@ impl<S0> ExponentialHistogramPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -8819,6 +8294,15 @@ impl<S0> ExponentialHistogramPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -8844,24 +8328,9 @@ impl<S0> ExponentialHistogramPropertyBuilder<(S0,)> {
     }
 }
 
-impl ExponentialHistogramPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> ExponentialHistogramPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> ExponentialHistogramPropertyBuilder<(S0,)> {
+impl ExponentialHistogramPropertyBuilder {
     /// Builds a [`ExponentialHistogramProperty`].
-    pub fn build(self) -> ExponentialHistogramProperty
-    where
-        S0: crate::typed::builder::IsSet<exponential_histogram_property_members::r#type>,
-    {
+    pub fn build(self) -> ExponentialHistogramProperty {
         ExponentialHistogramProperty {
             meta: self.meta,
             properties: self.properties,
@@ -8870,15 +8339,11 @@ impl<S0> ExponentialHistogramPropertyBuilder<(S0,)> {
             fields: self.fields,
             synthetic_source_keep: self.synthetic_source_keep,
             time_series_metric: self.time_series_metric,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for ExponentialHistogramPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<exponential_histogram_property_members::r#type>,
-{
+impl crate::typed::builder::Build for ExponentialHistogramPropertyBuilder {
     type Output = ExponentialHistogramProperty;
 
     fn build(self) -> ExponentialHistogramProperty {
@@ -8886,16 +8351,13 @@ where
     }
 }
 
-impl<S0> From<ExponentialHistogramPropertyBuilder<(S0,)>> for ExponentialHistogramProperty
-where
-    S0: crate::typed::builder::IsSet<exponential_histogram_property_members::r#type>,
-{
-    fn from(builder: ExponentialHistogramPropertyBuilder<(S0,)>) -> Self {
+impl From<ExponentialHistogramPropertyBuilder> for ExponentialHistogramProperty {
+    fn from(builder: ExponentialHistogramPropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct FieldAliasProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -8912,20 +8374,15 @@ pub struct FieldAliasProperty {
     pub synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub path: Option<crate::typed::_types::Field>,
-    pub r#type: String,
 }
 
 impl FieldAliasProperty {
     /// Creates a builder for [`FieldAliasProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> FieldAliasPropertyBuilder {
         FieldAliasPropertyBuilder::new()
     }
 
     /// Creates a [`FieldAliasProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = FieldAliasProperty>>(
         f: impl FnOnce(FieldAliasPropertyBuilder) -> B,
     ) -> FieldAliasProperty {
@@ -8933,16 +8390,9 @@ impl FieldAliasProperty {
     }
 }
 
-/// Markers of the required members of [`FieldAliasPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod field_alias_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`FieldAliasProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct FieldAliasPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct FieldAliasPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -8950,11 +8400,9 @@ pub struct FieldAliasPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     fields: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
     path: Option<crate::typed::_types::Field>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl FieldAliasPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl FieldAliasPropertyBuilder {
     pub(crate) fn new() -> Self {
         FieldAliasPropertyBuilder {
             meta: None,
@@ -8964,27 +8412,11 @@ impl FieldAliasPropertyBuilder<(crate::typed::builder::NotSet,)> {
             fields: None,
             synthetic_source_keep: None,
             path: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> FieldAliasPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> FieldAliasPropertyBuilder<N> {
-        FieldAliasPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            path: self.path,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl FieldAliasPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -9032,6 +8464,15 @@ impl<S0> FieldAliasPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -9085,6 +8526,15 @@ impl<S0> FieldAliasPropertyBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
+    }
+
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
         self.synthetic_source_keep = Some(value.into());
         self
@@ -9108,24 +8558,9 @@ impl<S0> FieldAliasPropertyBuilder<(S0,)> {
     }
 }
 
-impl FieldAliasPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> FieldAliasPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> FieldAliasPropertyBuilder<(S0,)> {
+impl FieldAliasPropertyBuilder {
     /// Builds a [`FieldAliasProperty`].
-    pub fn build(self) -> FieldAliasProperty
-    where
-        S0: crate::typed::builder::IsSet<field_alias_property_members::r#type>,
-    {
+    pub fn build(self) -> FieldAliasProperty {
         FieldAliasProperty {
             meta: self.meta,
             properties: self.properties,
@@ -9134,15 +8569,11 @@ impl<S0> FieldAliasPropertyBuilder<(S0,)> {
             fields: self.fields,
             synthetic_source_keep: self.synthetic_source_keep,
             path: self.path,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for FieldAliasPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<field_alias_property_members::r#type>,
-{
+impl crate::typed::builder::Build for FieldAliasPropertyBuilder {
     type Output = FieldAliasProperty;
 
     fn build(self) -> FieldAliasProperty {
@@ -9150,11 +8581,8 @@ where
     }
 }
 
-impl<S0> From<FieldAliasPropertyBuilder<(S0,)>> for FieldAliasProperty
-where
-    S0: crate::typed::builder::IsSet<field_alias_property_members::r#type>,
-{
-    fn from(builder: FieldAliasPropertyBuilder<(S0,)>) -> Self {
+impl From<FieldAliasPropertyBuilder> for FieldAliasProperty {
+    fn from(builder: FieldAliasPropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -9241,6 +8669,15 @@ impl<S0> FieldMappingBuilder<(S0, crate::typed::builder::NotSet)> {
         let mut builder = self.with_state();
         builder.mapping = Some(indexmap::IndexMap::from([(key.into(), value.into())]));
         builder
+    }
+
+    /// Sets [`mapping`](Self::mapping) with a builder.
+    pub fn mapping_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::Field>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> FieldMappingBuilder<(S0, crate::typed::builder::Set)> {
+        self.mapping(key, f(PropertyBuilder::new()).build())
     }
 }
 
@@ -9478,7 +8915,7 @@ pub enum FieldType {
     IcuCollationKeyword,
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct FlattenedProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -9518,20 +8955,15 @@ pub struct FlattenedProperty {
     pub split_queries_on_whitespace: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_series_dimensions: Option<Vec<String>>,
-    pub r#type: String,
 }
 
 impl FlattenedProperty {
     /// Creates a builder for [`FlattenedProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> FlattenedPropertyBuilder {
         FlattenedPropertyBuilder::new()
     }
 
     /// Creates a [`FlattenedProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = FlattenedProperty>>(
         f: impl FnOnce(FlattenedPropertyBuilder) -> B,
     ) -> FlattenedProperty {
@@ -9539,16 +8971,9 @@ impl FlattenedProperty {
     }
 }
 
-/// Markers of the required members of [`FlattenedPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod flattened_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`FlattenedProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct FlattenedPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct FlattenedPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -9566,11 +8991,9 @@ pub struct FlattenedPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     similarity: Option<String>,
     split_queries_on_whitespace: Option<bool>,
     time_series_dimensions: Option<Vec<String>>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl FlattenedPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl FlattenedPropertyBuilder {
     pub(crate) fn new() -> Self {
         FlattenedPropertyBuilder {
             meta: None,
@@ -9590,37 +9013,11 @@ impl FlattenedPropertyBuilder<(crate::typed::builder::NotSet,)> {
             similarity: None,
             split_queries_on_whitespace: None,
             time_series_dimensions: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> FlattenedPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> FlattenedPropertyBuilder<N> {
-        FlattenedPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            boost: self.boost,
-            depth_limit: self.depth_limit,
-            doc_values: self.doc_values,
-            eager_global_ordinals: self.eager_global_ordinals,
-            index: self.index,
-            index_options: self.index_options,
-            null_value: self.null_value,
-            preserve_leaf_arrays: self.preserve_leaf_arrays,
-            similarity: self.similarity,
-            split_queries_on_whitespace: self.split_queries_on_whitespace,
-            time_series_dimensions: self.time_series_dimensions,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl FlattenedPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -9668,6 +9065,15 @@ impl<S0> FlattenedPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -9719,6 +9125,15 @@ impl<S0> FlattenedPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -9865,24 +9280,9 @@ impl<S0> FlattenedPropertyBuilder<(S0,)> {
     }
 }
 
-impl FlattenedPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> FlattenedPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> FlattenedPropertyBuilder<(S0,)> {
+impl FlattenedPropertyBuilder {
     /// Builds a [`FlattenedProperty`].
-    pub fn build(self) -> FlattenedProperty
-    where
-        S0: crate::typed::builder::IsSet<flattened_property_members::r#type>,
-    {
+    pub fn build(self) -> FlattenedProperty {
         FlattenedProperty {
             meta: self.meta,
             properties: self.properties,
@@ -9901,15 +9301,11 @@ impl<S0> FlattenedPropertyBuilder<(S0,)> {
             similarity: self.similarity,
             split_queries_on_whitespace: self.split_queries_on_whitespace,
             time_series_dimensions: self.time_series_dimensions,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for FlattenedPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<flattened_property_members::r#type>,
-{
+impl crate::typed::builder::Build for FlattenedPropertyBuilder {
     type Output = FlattenedProperty;
 
     fn build(self) -> FlattenedProperty {
@@ -9917,16 +9313,13 @@ where
     }
 }
 
-impl<S0> From<FlattenedPropertyBuilder<(S0,)>> for FlattenedProperty
-where
-    S0: crate::typed::builder::IsSet<flattened_property_members::r#type>,
-{
-    fn from(builder: FlattenedPropertyBuilder<(S0,)>) -> Self {
+impl From<FlattenedPropertyBuilder> for FlattenedProperty {
+    fn from(builder: FlattenedPropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct FloatNumberProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -9965,22 +9358,17 @@ pub struct FloatNumberProperty {
     /// For internal use by Elastic only. Marks the field as a time series dimension. Defaults to false.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_series_dimension: Option<bool>,
-    pub r#type: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub null_value: Option<f32>,
 }
 
 impl FloatNumberProperty {
     /// Creates a builder for [`FloatNumberProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> FloatNumberPropertyBuilder {
         FloatNumberPropertyBuilder::new()
     }
 
     /// Creates a [`FloatNumberProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = FloatNumberProperty>>(
         f: impl FnOnce(FloatNumberPropertyBuilder) -> B,
     ) -> FloatNumberProperty {
@@ -9988,16 +9376,9 @@ impl FloatNumberProperty {
     }
 }
 
-/// Markers of the required members of [`FloatNumberPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod float_number_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`FloatNumberProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct FloatNumberPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct FloatNumberPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -10015,12 +9396,10 @@ pub struct FloatNumberPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     script: Option<crate::typed::_types::Script>,
     time_series_metric: Option<TimeSeriesMetricType>,
     time_series_dimension: Option<bool>,
-    r#type: Option<String>,
     null_value: Option<f32>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl FloatNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl FloatNumberPropertyBuilder {
     pub(crate) fn new() -> Self {
         FloatNumberPropertyBuilder {
             meta: None,
@@ -10040,39 +9419,12 @@ impl FloatNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
             script: None,
             time_series_metric: None,
             time_series_dimension: None,
-            r#type: None,
             null_value: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> FloatNumberPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> FloatNumberPropertyBuilder<N> {
-        FloatNumberPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            boost: self.boost,
-            coerce: self.coerce,
-            ignore_malformed: self.ignore_malformed,
-            index: self.index,
-            on_script_error: self.on_script_error,
-            script: self.script,
-            time_series_metric: self.time_series_metric,
-            time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type,
-            null_value: self.null_value,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl FloatNumberPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -10120,6 +9472,15 @@ impl<S0> FloatNumberPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -10171,6 +9532,15 @@ impl<S0> FloatNumberPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -10327,24 +9697,9 @@ impl<S0> FloatNumberPropertyBuilder<(S0,)> {
     }
 }
 
-impl FloatNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> FloatNumberPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> FloatNumberPropertyBuilder<(S0,)> {
+impl FloatNumberPropertyBuilder {
     /// Builds a [`FloatNumberProperty`].
-    pub fn build(self) -> FloatNumberProperty
-    where
-        S0: crate::typed::builder::IsSet<float_number_property_members::r#type>,
-    {
+    pub fn build(self) -> FloatNumberProperty {
         FloatNumberProperty {
             meta: self.meta,
             properties: self.properties,
@@ -10363,16 +9718,12 @@ impl<S0> FloatNumberPropertyBuilder<(S0,)> {
             script: self.script,
             time_series_metric: self.time_series_metric,
             time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type.unwrap(),
             null_value: self.null_value,
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for FloatNumberPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<float_number_property_members::r#type>,
-{
+impl crate::typed::builder::Build for FloatNumberPropertyBuilder {
     type Output = FloatNumberProperty;
 
     fn build(self) -> FloatNumberProperty {
@@ -10380,16 +9731,13 @@ where
     }
 }
 
-impl<S0> From<FloatNumberPropertyBuilder<(S0,)>> for FloatNumberProperty
-where
-    S0: crate::typed::builder::IsSet<float_number_property_members::r#type>,
-{
-    fn from(builder: FloatNumberPropertyBuilder<(S0,)>) -> Self {
+impl From<FloatNumberPropertyBuilder> for FloatNumberProperty {
+    fn from(builder: FloatNumberPropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct FloatRangeProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -10416,20 +9764,15 @@ pub struct FloatRangeProperty {
     pub coerce: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub index: Option<bool>,
-    pub r#type: String,
 }
 
 impl FloatRangeProperty {
     /// Creates a builder for [`FloatRangeProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> FloatRangePropertyBuilder {
         FloatRangePropertyBuilder::new()
     }
 
     /// Creates a [`FloatRangeProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = FloatRangeProperty>>(
         f: impl FnOnce(FloatRangePropertyBuilder) -> B,
     ) -> FloatRangeProperty {
@@ -10437,16 +9780,9 @@ impl FloatRangeProperty {
     }
 }
 
-/// Markers of the required members of [`FloatRangePropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod float_range_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`FloatRangeProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct FloatRangePropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct FloatRangePropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -10459,11 +9795,9 @@ pub struct FloatRangePropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     boost: Option<crate::typed::support::Float64>,
     coerce: Option<bool>,
     index: Option<bool>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl FloatRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl FloatRangePropertyBuilder {
     pub(crate) fn new() -> Self {
         FloatRangePropertyBuilder {
             meta: None,
@@ -10478,32 +9812,11 @@ impl FloatRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
             boost: None,
             coerce: None,
             index: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> FloatRangePropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> FloatRangePropertyBuilder<N> {
-        FloatRangePropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            boost: self.boost,
-            coerce: self.coerce,
-            index: self.index,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl FloatRangePropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -10551,6 +9864,15 @@ impl<S0> FloatRangePropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -10602,6 +9924,15 @@ impl<S0> FloatRangePropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -10682,24 +10013,9 @@ impl<S0> FloatRangePropertyBuilder<(S0,)> {
     }
 }
 
-impl FloatRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> FloatRangePropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> FloatRangePropertyBuilder<(S0,)> {
+impl FloatRangePropertyBuilder {
     /// Builds a [`FloatRangeProperty`].
-    pub fn build(self) -> FloatRangeProperty
-    where
-        S0: crate::typed::builder::IsSet<float_range_property_members::r#type>,
-    {
+    pub fn build(self) -> FloatRangeProperty {
         FloatRangeProperty {
             meta: self.meta,
             properties: self.properties,
@@ -10713,15 +10029,11 @@ impl<S0> FloatRangePropertyBuilder<(S0,)> {
             boost: self.boost,
             coerce: self.coerce,
             index: self.index,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for FloatRangePropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<float_range_property_members::r#type>,
-{
+impl crate::typed::builder::Build for FloatRangePropertyBuilder {
     type Output = FloatRangeProperty;
 
     fn build(self) -> FloatRangeProperty {
@@ -10729,11 +10041,8 @@ where
     }
 }
 
-impl<S0> From<FloatRangePropertyBuilder<(S0,)>> for FloatRangeProperty
-where
-    S0: crate::typed::builder::IsSet<float_range_property_members::r#type>,
-{
-    fn from(builder: FloatRangePropertyBuilder<(S0,)>) -> Self {
+impl From<FloatRangePropertyBuilder> for FloatRangeProperty {
+    fn from(builder: FloatRangePropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -10761,7 +10070,7 @@ pub enum GeoPointMetricType {
     Position,
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct GeoPointProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -10794,22 +10103,17 @@ pub struct GeoPointProperty {
     pub on_script_error: Option<OnScriptError>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub script: Option<crate::typed::_types::Script>,
-    pub r#type: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_series_metric: Option<GeoPointMetricType>,
 }
 
 impl GeoPointProperty {
     /// Creates a builder for [`GeoPointProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> GeoPointPropertyBuilder {
         GeoPointPropertyBuilder::new()
     }
 
     /// Creates a [`GeoPointProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = GeoPointProperty>>(
         f: impl FnOnce(GeoPointPropertyBuilder) -> B,
     ) -> GeoPointProperty {
@@ -10817,16 +10121,9 @@ impl GeoPointProperty {
     }
 }
 
-/// Markers of the required members of [`GeoPointPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod geo_point_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`GeoPointProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct GeoPointPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct GeoPointPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -10842,12 +10139,10 @@ pub struct GeoPointPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     index: Option<bool>,
     on_script_error: Option<OnScriptError>,
     script: Option<crate::typed::_types::Script>,
-    r#type: Option<String>,
     time_series_metric: Option<GeoPointMetricType>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl GeoPointPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl GeoPointPropertyBuilder {
     pub(crate) fn new() -> Self {
         GeoPointPropertyBuilder {
             meta: None,
@@ -10865,37 +10160,12 @@ impl GeoPointPropertyBuilder<(crate::typed::builder::NotSet,)> {
             index: None,
             on_script_error: None,
             script: None,
-            r#type: None,
             time_series_metric: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> GeoPointPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> GeoPointPropertyBuilder<N> {
-        GeoPointPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            ignore_malformed: self.ignore_malformed,
-            ignore_z_value: self.ignore_z_value,
-            null_value: self.null_value,
-            index: self.index,
-            on_script_error: self.on_script_error,
-            script: self.script,
-            r#type: self.r#type,
-            time_series_metric: self.time_series_metric,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl GeoPointPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -10943,6 +10213,15 @@ impl<S0> GeoPointPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -10994,6 +10273,15 @@ impl<S0> GeoPointPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -11126,24 +10414,9 @@ impl<S0> GeoPointPropertyBuilder<(S0,)> {
     }
 }
 
-impl GeoPointPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> GeoPointPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> GeoPointPropertyBuilder<(S0,)> {
+impl GeoPointPropertyBuilder {
     /// Builds a [`GeoPointProperty`].
-    pub fn build(self) -> GeoPointProperty
-    where
-        S0: crate::typed::builder::IsSet<geo_point_property_members::r#type>,
-    {
+    pub fn build(self) -> GeoPointProperty {
         GeoPointProperty {
             meta: self.meta,
             properties: self.properties,
@@ -11160,16 +10433,12 @@ impl<S0> GeoPointPropertyBuilder<(S0,)> {
             index: self.index,
             on_script_error: self.on_script_error,
             script: self.script,
-            r#type: self.r#type.unwrap(),
             time_series_metric: self.time_series_metric,
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for GeoPointPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<geo_point_property_members::r#type>,
-{
+impl crate::typed::builder::Build for GeoPointPropertyBuilder {
     type Output = GeoPointProperty;
 
     fn build(self) -> GeoPointProperty {
@@ -11177,18 +10446,15 @@ where
     }
 }
 
-impl<S0> From<GeoPointPropertyBuilder<(S0,)>> for GeoPointProperty
-where
-    S0: crate::typed::builder::IsSet<geo_point_property_members::r#type>,
-{
-    fn from(builder: GeoPointPropertyBuilder<(S0,)>) -> Self {
+impl From<GeoPointPropertyBuilder> for GeoPointProperty {
+    fn from(builder: GeoPointPropertyBuilder) -> Self {
         builder.build()
     }
 }
 
 /// The `geo_shape` data type facilitates the indexing of and searching with arbitrary geo shapes such as rectangles
 /// and polygons.
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct GeoShapeProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -11221,20 +10487,15 @@ pub struct GeoShapeProperty {
     pub orientation: Option<GeoOrientation>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub strategy: Option<GeoStrategy>,
-    pub r#type: String,
 }
 
 impl GeoShapeProperty {
     /// Creates a builder for [`GeoShapeProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> GeoShapePropertyBuilder {
         GeoShapePropertyBuilder::new()
     }
 
     /// Creates a [`GeoShapeProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = GeoShapeProperty>>(
         f: impl FnOnce(GeoShapePropertyBuilder) -> B,
     ) -> GeoShapeProperty {
@@ -11242,16 +10503,9 @@ impl GeoShapeProperty {
     }
 }
 
-/// Markers of the required members of [`GeoShapePropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod geo_shape_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`GeoShapeProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct GeoShapePropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct GeoShapePropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -11267,11 +10521,9 @@ pub struct GeoShapePropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     index: Option<bool>,
     orientation: Option<GeoOrientation>,
     strategy: Option<GeoStrategy>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl GeoShapePropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl GeoShapePropertyBuilder {
     pub(crate) fn new() -> Self {
         GeoShapePropertyBuilder {
             meta: None,
@@ -11289,35 +10541,11 @@ impl GeoShapePropertyBuilder<(crate::typed::builder::NotSet,)> {
             index: None,
             orientation: None,
             strategy: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> GeoShapePropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> GeoShapePropertyBuilder<N> {
-        GeoShapePropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            coerce: self.coerce,
-            ignore_malformed: self.ignore_malformed,
-            ignore_z_value: self.ignore_z_value,
-            index: self.index,
-            orientation: self.orientation,
-            strategy: self.strategy,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl GeoShapePropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -11365,6 +10593,15 @@ impl<S0> GeoShapePropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -11416,6 +10653,15 @@ impl<S0> GeoShapePropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -11529,24 +10775,9 @@ impl<S0> GeoShapePropertyBuilder<(S0,)> {
     }
 }
 
-impl GeoShapePropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> GeoShapePropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> GeoShapePropertyBuilder<(S0,)> {
+impl GeoShapePropertyBuilder {
     /// Builds a [`GeoShapeProperty`].
-    pub fn build(self) -> GeoShapeProperty
-    where
-        S0: crate::typed::builder::IsSet<geo_shape_property_members::r#type>,
-    {
+    pub fn build(self) -> GeoShapeProperty {
         GeoShapeProperty {
             meta: self.meta,
             properties: self.properties,
@@ -11563,15 +10794,11 @@ impl<S0> GeoShapePropertyBuilder<(S0,)> {
             index: self.index,
             orientation: self.orientation,
             strategy: self.strategy,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for GeoShapePropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<geo_shape_property_members::r#type>,
-{
+impl crate::typed::builder::Build for GeoShapePropertyBuilder {
     type Output = GeoShapeProperty;
 
     fn build(self) -> GeoShapeProperty {
@@ -11579,11 +10806,8 @@ where
     }
 }
 
-impl<S0> From<GeoShapePropertyBuilder<(S0,)>> for GeoShapeProperty
-where
-    S0: crate::typed::builder::IsSet<geo_shape_property_members::r#type>,
-{
-    fn from(builder: GeoShapePropertyBuilder<(S0,)>) -> Self {
+impl From<GeoShapePropertyBuilder> for GeoShapeProperty {
+    fn from(builder: GeoShapePropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -11596,7 +10820,7 @@ pub enum GeoStrategy {
     Term,
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct HalfFloatNumberProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -11635,22 +10859,17 @@ pub struct HalfFloatNumberProperty {
     /// For internal use by Elastic only. Marks the field as a time series dimension. Defaults to false.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_series_dimension: Option<bool>,
-    pub r#type: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub null_value: Option<f32>,
 }
 
 impl HalfFloatNumberProperty {
     /// Creates a builder for [`HalfFloatNumberProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> HalfFloatNumberPropertyBuilder {
         HalfFloatNumberPropertyBuilder::new()
     }
 
     /// Creates a [`HalfFloatNumberProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = HalfFloatNumberProperty>>(
         f: impl FnOnce(HalfFloatNumberPropertyBuilder) -> B,
     ) -> HalfFloatNumberProperty {
@@ -11658,16 +10877,9 @@ impl HalfFloatNumberProperty {
     }
 }
 
-/// Markers of the required members of [`HalfFloatNumberPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod half_float_number_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`HalfFloatNumberProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct HalfFloatNumberPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct HalfFloatNumberPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -11685,12 +10897,10 @@ pub struct HalfFloatNumberPropertyBuilder<S = (crate::typed::builder::NotSet,)> 
     script: Option<crate::typed::_types::Script>,
     time_series_metric: Option<TimeSeriesMetricType>,
     time_series_dimension: Option<bool>,
-    r#type: Option<String>,
     null_value: Option<f32>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl HalfFloatNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl HalfFloatNumberPropertyBuilder {
     pub(crate) fn new() -> Self {
         HalfFloatNumberPropertyBuilder {
             meta: None,
@@ -11710,39 +10920,12 @@ impl HalfFloatNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
             script: None,
             time_series_metric: None,
             time_series_dimension: None,
-            r#type: None,
             null_value: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> HalfFloatNumberPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> HalfFloatNumberPropertyBuilder<N> {
-        HalfFloatNumberPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            boost: self.boost,
-            coerce: self.coerce,
-            ignore_malformed: self.ignore_malformed,
-            index: self.index,
-            on_script_error: self.on_script_error,
-            script: self.script,
-            time_series_metric: self.time_series_metric,
-            time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type,
-            null_value: self.null_value,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl HalfFloatNumberPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -11790,6 +10973,15 @@ impl<S0> HalfFloatNumberPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -11841,6 +11033,15 @@ impl<S0> HalfFloatNumberPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -11997,24 +11198,9 @@ impl<S0> HalfFloatNumberPropertyBuilder<(S0,)> {
     }
 }
 
-impl HalfFloatNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> HalfFloatNumberPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> HalfFloatNumberPropertyBuilder<(S0,)> {
+impl HalfFloatNumberPropertyBuilder {
     /// Builds a [`HalfFloatNumberProperty`].
-    pub fn build(self) -> HalfFloatNumberProperty
-    where
-        S0: crate::typed::builder::IsSet<half_float_number_property_members::r#type>,
-    {
+    pub fn build(self) -> HalfFloatNumberProperty {
         HalfFloatNumberProperty {
             meta: self.meta,
             properties: self.properties,
@@ -12033,16 +11219,12 @@ impl<S0> HalfFloatNumberPropertyBuilder<(S0,)> {
             script: self.script,
             time_series_metric: self.time_series_metric,
             time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type.unwrap(),
             null_value: self.null_value,
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for HalfFloatNumberPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<half_float_number_property_members::r#type>,
-{
+impl crate::typed::builder::Build for HalfFloatNumberPropertyBuilder {
     type Output = HalfFloatNumberProperty;
 
     fn build(self) -> HalfFloatNumberProperty {
@@ -12050,16 +11232,13 @@ where
     }
 }
 
-impl<S0> From<HalfFloatNumberPropertyBuilder<(S0,)>> for HalfFloatNumberProperty
-where
-    S0: crate::typed::builder::IsSet<half_float_number_property_members::r#type>,
-{
-    fn from(builder: HalfFloatNumberPropertyBuilder<(S0,)>) -> Self {
+impl From<HalfFloatNumberPropertyBuilder> for HalfFloatNumberProperty {
+    fn from(builder: HalfFloatNumberPropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct HistogramProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -12078,20 +11257,15 @@ pub struct HistogramProperty {
     pub ignore_malformed: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_series_metric: Option<TimeSeriesMetricType>,
-    pub r#type: String,
 }
 
 impl HistogramProperty {
     /// Creates a builder for [`HistogramProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> HistogramPropertyBuilder {
         HistogramPropertyBuilder::new()
     }
 
     /// Creates a [`HistogramProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = HistogramProperty>>(
         f: impl FnOnce(HistogramPropertyBuilder) -> B,
     ) -> HistogramProperty {
@@ -12099,16 +11273,9 @@ impl HistogramProperty {
     }
 }
 
-/// Markers of the required members of [`HistogramPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod histogram_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`HistogramProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct HistogramPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct HistogramPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -12117,11 +11284,9 @@ pub struct HistogramPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
     ignore_malformed: Option<bool>,
     time_series_metric: Option<TimeSeriesMetricType>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl HistogramPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl HistogramPropertyBuilder {
     pub(crate) fn new() -> Self {
         HistogramPropertyBuilder {
             meta: None,
@@ -12132,28 +11297,11 @@ impl HistogramPropertyBuilder<(crate::typed::builder::NotSet,)> {
             synthetic_source_keep: None,
             ignore_malformed: None,
             time_series_metric: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> HistogramPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> HistogramPropertyBuilder<N> {
-        HistogramPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            ignore_malformed: self.ignore_malformed,
-            time_series_metric: self.time_series_metric,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl HistogramPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -12201,6 +11349,15 @@ impl<S0> HistogramPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -12254,6 +11411,15 @@ impl<S0> HistogramPropertyBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
+    }
+
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
         self.synthetic_source_keep = Some(value.into());
         self
@@ -12288,24 +11454,9 @@ impl<S0> HistogramPropertyBuilder<(S0,)> {
     }
 }
 
-impl HistogramPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> HistogramPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> HistogramPropertyBuilder<(S0,)> {
+impl HistogramPropertyBuilder {
     /// Builds a [`HistogramProperty`].
-    pub fn build(self) -> HistogramProperty
-    where
-        S0: crate::typed::builder::IsSet<histogram_property_members::r#type>,
-    {
+    pub fn build(self) -> HistogramProperty {
         HistogramProperty {
             meta: self.meta,
             properties: self.properties,
@@ -12315,15 +11466,11 @@ impl<S0> HistogramPropertyBuilder<(S0,)> {
             synthetic_source_keep: self.synthetic_source_keep,
             ignore_malformed: self.ignore_malformed,
             time_series_metric: self.time_series_metric,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for HistogramPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<histogram_property_members::r#type>,
-{
+impl crate::typed::builder::Build for HistogramPropertyBuilder {
     type Output = HistogramProperty;
 
     fn build(self) -> HistogramProperty {
@@ -12331,16 +11478,13 @@ where
     }
 }
 
-impl<S0> From<HistogramPropertyBuilder<(S0,)>> for HistogramProperty
-where
-    S0: crate::typed::builder::IsSet<histogram_property_members::r#type>,
-{
-    fn from(builder: HistogramPropertyBuilder<(S0,)>) -> Self {
+impl From<HistogramPropertyBuilder> for HistogramProperty {
+    fn from(builder: HistogramPropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct IcuCollationProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -12361,7 +11505,6 @@ pub struct IcuCollationProperty {
     pub store: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub doc_values: Option<DocValues>,
-    pub r#type: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub norms: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -12400,15 +11543,11 @@ pub struct IcuCollationProperty {
 
 impl IcuCollationProperty {
     /// Creates a builder for [`IcuCollationProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> IcuCollationPropertyBuilder {
         IcuCollationPropertyBuilder::new()
     }
 
     /// Creates a [`IcuCollationProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = IcuCollationProperty>>(
         f: impl FnOnce(IcuCollationPropertyBuilder) -> B,
     ) -> IcuCollationProperty {
@@ -12416,16 +11555,9 @@ impl IcuCollationProperty {
     }
 }
 
-/// Markers of the required members of [`IcuCollationPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod icu_collation_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`IcuCollationProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct IcuCollationPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct IcuCollationPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -12435,7 +11567,6 @@ pub struct IcuCollationPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     copy_to: Option<crate::typed::_types::Fields>,
     store: Option<bool>,
     doc_values: Option<DocValues>,
-    r#type: Option<String>,
     norms: Option<bool>,
     index_options: Option<IndexOptions>,
     index: Option<bool>,
@@ -12452,10 +11583,9 @@ pub struct IcuCollationPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     numeric: Option<bool>,
     variable_top: Option<String>,
     hiragana_quaternary_mode: Option<bool>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl IcuCollationPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl IcuCollationPropertyBuilder {
     pub(crate) fn new() -> Self {
         IcuCollationPropertyBuilder {
             meta: None,
@@ -12467,7 +11597,6 @@ impl IcuCollationPropertyBuilder<(crate::typed::builder::NotSet,)> {
             copy_to: None,
             store: None,
             doc_values: None,
-            r#type: None,
             norms: None,
             index_options: None,
             index: None,
@@ -12484,44 +11613,11 @@ impl IcuCollationPropertyBuilder<(crate::typed::builder::NotSet,)> {
             numeric: None,
             variable_top: None,
             hiragana_quaternary_mode: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> IcuCollationPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> IcuCollationPropertyBuilder<N> {
-        IcuCollationPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            r#type: self.r#type,
-            norms: self.norms,
-            index_options: self.index_options,
-            index: self.index,
-            null_value: self.null_value,
-            rules: self.rules,
-            language: self.language,
-            country: self.country,
-            variant: self.variant,
-            strength: self.strength,
-            decomposition: self.decomposition,
-            alternate: self.alternate,
-            case_level: self.case_level,
-            case_first: self.case_first,
-            numeric: self.numeric,
-            variable_top: self.variable_top,
-            hiragana_quaternary_mode: self.hiragana_quaternary_mode,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl IcuCollationPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -12569,6 +11665,15 @@ impl<S0> IcuCollationPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -12620,6 +11725,15 @@ impl<S0> IcuCollationPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -12869,24 +11983,9 @@ impl<S0> IcuCollationPropertyBuilder<(S0,)> {
     }
 }
 
-impl IcuCollationPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> IcuCollationPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> IcuCollationPropertyBuilder<(S0,)> {
+impl IcuCollationPropertyBuilder {
     /// Builds a [`IcuCollationProperty`].
-    pub fn build(self) -> IcuCollationProperty
-    where
-        S0: crate::typed::builder::IsSet<icu_collation_property_members::r#type>,
-    {
+    pub fn build(self) -> IcuCollationProperty {
         IcuCollationProperty {
             meta: self.meta,
             properties: self.properties,
@@ -12897,7 +11996,6 @@ impl<S0> IcuCollationPropertyBuilder<(S0,)> {
             copy_to: self.copy_to,
             store: self.store,
             doc_values: self.doc_values,
-            r#type: self.r#type.unwrap(),
             norms: self.norms,
             index_options: self.index_options,
             index: self.index,
@@ -12918,10 +12016,7 @@ impl<S0> IcuCollationPropertyBuilder<(S0,)> {
     }
 }
 
-impl<S0> crate::typed::builder::Build for IcuCollationPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<icu_collation_property_members::r#type>,
-{
+impl crate::typed::builder::Build for IcuCollationPropertyBuilder {
     type Output = IcuCollationProperty;
 
     fn build(self) -> IcuCollationProperty {
@@ -12929,11 +12024,8 @@ where
     }
 }
 
-impl<S0> From<IcuCollationPropertyBuilder<(S0,)>> for IcuCollationProperty
-where
-    S0: crate::typed::builder::IsSet<icu_collation_property_members::r#type>,
-{
-    fn from(builder: IcuCollationPropertyBuilder<(S0,)>) -> Self {
+impl From<IcuCollationPropertyBuilder> for IcuCollationProperty {
+    fn from(builder: IcuCollationPropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -13046,7 +12138,7 @@ pub enum IndexOptions {
     Offsets,
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct IntegerNumberProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -13085,22 +12177,17 @@ pub struct IntegerNumberProperty {
     /// For internal use by Elastic only. Marks the field as a time series dimension. Defaults to false.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_series_dimension: Option<bool>,
-    pub r#type: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub null_value: Option<i32>,
 }
 
 impl IntegerNumberProperty {
     /// Creates a builder for [`IntegerNumberProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> IntegerNumberPropertyBuilder {
         IntegerNumberPropertyBuilder::new()
     }
 
     /// Creates a [`IntegerNumberProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = IntegerNumberProperty>>(
         f: impl FnOnce(IntegerNumberPropertyBuilder) -> B,
     ) -> IntegerNumberProperty {
@@ -13108,16 +12195,9 @@ impl IntegerNumberProperty {
     }
 }
 
-/// Markers of the required members of [`IntegerNumberPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod integer_number_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`IntegerNumberProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct IntegerNumberPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct IntegerNumberPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -13135,12 +12215,10 @@ pub struct IntegerNumberPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     script: Option<crate::typed::_types::Script>,
     time_series_metric: Option<TimeSeriesMetricType>,
     time_series_dimension: Option<bool>,
-    r#type: Option<String>,
     null_value: Option<i32>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl IntegerNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl IntegerNumberPropertyBuilder {
     pub(crate) fn new() -> Self {
         IntegerNumberPropertyBuilder {
             meta: None,
@@ -13160,39 +12238,12 @@ impl IntegerNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
             script: None,
             time_series_metric: None,
             time_series_dimension: None,
-            r#type: None,
             null_value: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> IntegerNumberPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> IntegerNumberPropertyBuilder<N> {
-        IntegerNumberPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            boost: self.boost,
-            coerce: self.coerce,
-            ignore_malformed: self.ignore_malformed,
-            index: self.index,
-            on_script_error: self.on_script_error,
-            script: self.script,
-            time_series_metric: self.time_series_metric,
-            time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type,
-            null_value: self.null_value,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl IntegerNumberPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -13240,6 +12291,15 @@ impl<S0> IntegerNumberPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -13291,6 +12351,15 @@ impl<S0> IntegerNumberPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -13447,24 +12516,9 @@ impl<S0> IntegerNumberPropertyBuilder<(S0,)> {
     }
 }
 
-impl IntegerNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> IntegerNumberPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> IntegerNumberPropertyBuilder<(S0,)> {
+impl IntegerNumberPropertyBuilder {
     /// Builds a [`IntegerNumberProperty`].
-    pub fn build(self) -> IntegerNumberProperty
-    where
-        S0: crate::typed::builder::IsSet<integer_number_property_members::r#type>,
-    {
+    pub fn build(self) -> IntegerNumberProperty {
         IntegerNumberProperty {
             meta: self.meta,
             properties: self.properties,
@@ -13483,16 +12537,12 @@ impl<S0> IntegerNumberPropertyBuilder<(S0,)> {
             script: self.script,
             time_series_metric: self.time_series_metric,
             time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type.unwrap(),
             null_value: self.null_value,
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for IntegerNumberPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<integer_number_property_members::r#type>,
-{
+impl crate::typed::builder::Build for IntegerNumberPropertyBuilder {
     type Output = IntegerNumberProperty;
 
     fn build(self) -> IntegerNumberProperty {
@@ -13500,16 +12550,13 @@ where
     }
 }
 
-impl<S0> From<IntegerNumberPropertyBuilder<(S0,)>> for IntegerNumberProperty
-where
-    S0: crate::typed::builder::IsSet<integer_number_property_members::r#type>,
-{
-    fn from(builder: IntegerNumberPropertyBuilder<(S0,)>) -> Self {
+impl From<IntegerNumberPropertyBuilder> for IntegerNumberProperty {
+    fn from(builder: IntegerNumberPropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct IntegerRangeProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -13536,20 +12583,15 @@ pub struct IntegerRangeProperty {
     pub coerce: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub index: Option<bool>,
-    pub r#type: String,
 }
 
 impl IntegerRangeProperty {
     /// Creates a builder for [`IntegerRangeProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> IntegerRangePropertyBuilder {
         IntegerRangePropertyBuilder::new()
     }
 
     /// Creates a [`IntegerRangeProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = IntegerRangeProperty>>(
         f: impl FnOnce(IntegerRangePropertyBuilder) -> B,
     ) -> IntegerRangeProperty {
@@ -13557,16 +12599,9 @@ impl IntegerRangeProperty {
     }
 }
 
-/// Markers of the required members of [`IntegerRangePropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod integer_range_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`IntegerRangeProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct IntegerRangePropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct IntegerRangePropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -13579,11 +12614,9 @@ pub struct IntegerRangePropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     boost: Option<crate::typed::support::Float64>,
     coerce: Option<bool>,
     index: Option<bool>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl IntegerRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl IntegerRangePropertyBuilder {
     pub(crate) fn new() -> Self {
         IntegerRangePropertyBuilder {
             meta: None,
@@ -13598,32 +12631,11 @@ impl IntegerRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
             boost: None,
             coerce: None,
             index: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> IntegerRangePropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> IntegerRangePropertyBuilder<N> {
-        IntegerRangePropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            boost: self.boost,
-            coerce: self.coerce,
-            index: self.index,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl IntegerRangePropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -13671,6 +12683,15 @@ impl<S0> IntegerRangePropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -13722,6 +12743,15 @@ impl<S0> IntegerRangePropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -13802,24 +12832,9 @@ impl<S0> IntegerRangePropertyBuilder<(S0,)> {
     }
 }
 
-impl IntegerRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> IntegerRangePropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> IntegerRangePropertyBuilder<(S0,)> {
+impl IntegerRangePropertyBuilder {
     /// Builds a [`IntegerRangeProperty`].
-    pub fn build(self) -> IntegerRangeProperty
-    where
-        S0: crate::typed::builder::IsSet<integer_range_property_members::r#type>,
-    {
+    pub fn build(self) -> IntegerRangeProperty {
         IntegerRangeProperty {
             meta: self.meta,
             properties: self.properties,
@@ -13833,15 +12848,11 @@ impl<S0> IntegerRangePropertyBuilder<(S0,)> {
             boost: self.boost,
             coerce: self.coerce,
             index: self.index,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for IntegerRangePropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<integer_range_property_members::r#type>,
-{
+impl crate::typed::builder::Build for IntegerRangePropertyBuilder {
     type Output = IntegerRangeProperty;
 
     fn build(self) -> IntegerRangeProperty {
@@ -13849,16 +12860,13 @@ where
     }
 }
 
-impl<S0> From<IntegerRangePropertyBuilder<(S0,)>> for IntegerRangeProperty
-where
-    S0: crate::typed::builder::IsSet<integer_range_property_members::r#type>,
-{
-    fn from(builder: IntegerRangePropertyBuilder<(S0,)>) -> Self {
+impl From<IntegerRangePropertyBuilder> for IntegerRangeProperty {
+    fn from(builder: IntegerRangePropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct IpProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -13894,20 +12902,15 @@ pub struct IpProperty {
     /// For internal use by Elastic only. Marks the field as a time series dimension. Defaults to false.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_series_dimension: Option<bool>,
-    pub r#type: String,
 }
 
 impl IpProperty {
     /// Creates a builder for [`IpProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> IpPropertyBuilder {
         IpPropertyBuilder::new()
     }
 
     /// Creates a [`IpProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = IpProperty>>(
         f: impl FnOnce(IpPropertyBuilder) -> B,
     ) -> IpProperty {
@@ -13915,16 +12918,9 @@ impl IpProperty {
     }
 }
 
-/// Markers of the required members of [`IpPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod ip_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`IpProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct IpPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct IpPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -13941,11 +12937,9 @@ pub struct IpPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     on_script_error: Option<OnScriptError>,
     script: Option<crate::typed::_types::Script>,
     time_series_dimension: Option<bool>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl IpPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl IpPropertyBuilder {
     pub(crate) fn new() -> Self {
         IpPropertyBuilder {
             meta: None,
@@ -13964,36 +12958,11 @@ impl IpPropertyBuilder<(crate::typed::builder::NotSet,)> {
             on_script_error: None,
             script: None,
             time_series_dimension: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> IpPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> IpPropertyBuilder<N> {
-        IpPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            boost: self.boost,
-            index: self.index,
-            ignore_malformed: self.ignore_malformed,
-            null_value: self.null_value,
-            on_script_error: self.on_script_error,
-            script: self.script,
-            time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl IpPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -14041,6 +13010,15 @@ impl<S0> IpPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -14092,6 +13070,15 @@ impl<S0> IpPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -14225,24 +13212,9 @@ impl<S0> IpPropertyBuilder<(S0,)> {
     }
 }
 
-impl IpPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> IpPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> IpPropertyBuilder<(S0,)> {
+impl IpPropertyBuilder {
     /// Builds a [`IpProperty`].
-    pub fn build(self) -> IpProperty
-    where
-        S0: crate::typed::builder::IsSet<ip_property_members::r#type>,
-    {
+    pub fn build(self) -> IpProperty {
         IpProperty {
             meta: self.meta,
             properties: self.properties,
@@ -14260,15 +13232,11 @@ impl<S0> IpPropertyBuilder<(S0,)> {
             on_script_error: self.on_script_error,
             script: self.script,
             time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for IpPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<ip_property_members::r#type>,
-{
+impl crate::typed::builder::Build for IpPropertyBuilder {
     type Output = IpProperty;
 
     fn build(self) -> IpProperty {
@@ -14276,16 +13244,13 @@ where
     }
 }
 
-impl<S0> From<IpPropertyBuilder<(S0,)>> for IpProperty
-where
-    S0: crate::typed::builder::IsSet<ip_property_members::r#type>,
-{
-    fn from(builder: IpPropertyBuilder<(S0,)>) -> Self {
+impl From<IpPropertyBuilder> for IpProperty {
+    fn from(builder: IpPropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct IpRangeProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -14312,20 +13277,15 @@ pub struct IpRangeProperty {
     pub coerce: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub index: Option<bool>,
-    pub r#type: String,
 }
 
 impl IpRangeProperty {
     /// Creates a builder for [`IpRangeProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> IpRangePropertyBuilder {
         IpRangePropertyBuilder::new()
     }
 
     /// Creates a [`IpRangeProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = IpRangeProperty>>(
         f: impl FnOnce(IpRangePropertyBuilder) -> B,
     ) -> IpRangeProperty {
@@ -14333,16 +13293,9 @@ impl IpRangeProperty {
     }
 }
 
-/// Markers of the required members of [`IpRangePropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod ip_range_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`IpRangeProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct IpRangePropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct IpRangePropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -14355,11 +13308,9 @@ pub struct IpRangePropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     boost: Option<crate::typed::support::Float64>,
     coerce: Option<bool>,
     index: Option<bool>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl IpRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl IpRangePropertyBuilder {
     pub(crate) fn new() -> Self {
         IpRangePropertyBuilder {
             meta: None,
@@ -14374,32 +13325,11 @@ impl IpRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
             boost: None,
             coerce: None,
             index: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> IpRangePropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> IpRangePropertyBuilder<N> {
-        IpRangePropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            boost: self.boost,
-            coerce: self.coerce,
-            index: self.index,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl IpRangePropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -14447,6 +13377,15 @@ impl<S0> IpRangePropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -14498,6 +13437,15 @@ impl<S0> IpRangePropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -14578,24 +13526,9 @@ impl<S0> IpRangePropertyBuilder<(S0,)> {
     }
 }
 
-impl IpRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> IpRangePropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> IpRangePropertyBuilder<(S0,)> {
+impl IpRangePropertyBuilder {
     /// Builds a [`IpRangeProperty`].
-    pub fn build(self) -> IpRangeProperty
-    where
-        S0: crate::typed::builder::IsSet<ip_range_property_members::r#type>,
-    {
+    pub fn build(self) -> IpRangeProperty {
         IpRangeProperty {
             meta: self.meta,
             properties: self.properties,
@@ -14609,15 +13542,11 @@ impl<S0> IpRangePropertyBuilder<(S0,)> {
             boost: self.boost,
             coerce: self.coerce,
             index: self.index,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for IpRangePropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<ip_range_property_members::r#type>,
-{
+impl crate::typed::builder::Build for IpRangePropertyBuilder {
     type Output = IpRangeProperty;
 
     fn build(self) -> IpRangeProperty {
@@ -14625,16 +13554,13 @@ where
     }
 }
 
-impl<S0> From<IpRangePropertyBuilder<(S0,)>> for IpRangeProperty
-where
-    S0: crate::typed::builder::IsSet<ip_range_property_members::r#type>,
-{
-    fn from(builder: IpRangePropertyBuilder<(S0,)>) -> Self {
+impl From<IpRangePropertyBuilder> for IpRangeProperty {
+    fn from(builder: IpRangePropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct JoinProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -14654,7 +13580,6 @@ pub struct JoinProperty {
         Option<indexmap::IndexMap<crate::typed::_types::RelationName, JoinPropertyRelations>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub eager_global_ordinals: Option<bool>,
-    pub r#type: String,
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -14684,15 +13609,11 @@ impl From<&str> for JoinPropertyRelations {
 
 impl JoinProperty {
     /// Creates a builder for [`JoinProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> JoinPropertyBuilder {
         JoinPropertyBuilder::new()
     }
 
     /// Creates a [`JoinProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = JoinProperty>>(
         f: impl FnOnce(JoinPropertyBuilder) -> B,
     ) -> JoinProperty {
@@ -14700,16 +13621,9 @@ impl JoinProperty {
     }
 }
 
-/// Markers of the required members of [`JoinPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod join_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`JoinProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct JoinPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct JoinPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -14719,11 +13633,9 @@ pub struct JoinPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     relations:
         Option<indexmap::IndexMap<crate::typed::_types::RelationName, JoinPropertyRelations>>,
     eager_global_ordinals: Option<bool>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl JoinPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl JoinPropertyBuilder {
     pub(crate) fn new() -> Self {
         JoinPropertyBuilder {
             meta: None,
@@ -14734,28 +13646,11 @@ impl JoinPropertyBuilder<(crate::typed::builder::NotSet,)> {
             synthetic_source_keep: None,
             relations: None,
             eager_global_ordinals: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> JoinPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> JoinPropertyBuilder<N> {
-        JoinPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            relations: self.relations,
-            eager_global_ordinals: self.eager_global_ordinals,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl JoinPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -14803,6 +13698,15 @@ impl<S0> JoinPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -14854,6 +13758,15 @@ impl<S0> JoinPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -14910,24 +13823,9 @@ impl<S0> JoinPropertyBuilder<(S0,)> {
     }
 }
 
-impl JoinPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> JoinPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> JoinPropertyBuilder<(S0,)> {
+impl JoinPropertyBuilder {
     /// Builds a [`JoinProperty`].
-    pub fn build(self) -> JoinProperty
-    where
-        S0: crate::typed::builder::IsSet<join_property_members::r#type>,
-    {
+    pub fn build(self) -> JoinProperty {
         JoinProperty {
             meta: self.meta,
             properties: self.properties,
@@ -14937,15 +13835,11 @@ impl<S0> JoinPropertyBuilder<(S0,)> {
             synthetic_source_keep: self.synthetic_source_keep,
             relations: self.relations,
             eager_global_ordinals: self.eager_global_ordinals,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for JoinPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<join_property_members::r#type>,
-{
+impl crate::typed::builder::Build for JoinPropertyBuilder {
     type Output = JoinProperty;
 
     fn build(self) -> JoinProperty {
@@ -14953,16 +13847,13 @@ where
     }
 }
 
-impl<S0> From<JoinPropertyBuilder<(S0,)>> for JoinProperty
-where
-    S0: crate::typed::builder::IsSet<join_property_members::r#type>,
-{
-    fn from(builder: JoinPropertyBuilder<(S0,)>) -> Self {
+impl From<JoinPropertyBuilder> for JoinProperty {
+    fn from(builder: JoinPropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct KeywordProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -15008,7 +13899,6 @@ pub struct KeywordProperty {
     /// For internal use by Elastic only. Marks the field as a time series dimension. Defaults to false.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_series_dimension: Option<bool>,
-    pub r#type: String,
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -15032,15 +13922,11 @@ impl From<&str> for KeywordPropertySimilarity {
 
 impl KeywordProperty {
     /// Creates a builder for [`KeywordProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> KeywordPropertyBuilder {
         KeywordPropertyBuilder::new()
     }
 
     /// Creates a [`KeywordProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = KeywordProperty>>(
         f: impl FnOnce(KeywordPropertyBuilder) -> B,
     ) -> KeywordProperty {
@@ -15048,16 +13934,9 @@ impl KeywordProperty {
     }
 }
 
-/// Markers of the required members of [`KeywordPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod keyword_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`KeywordProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct KeywordPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct KeywordPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -15079,11 +13958,9 @@ pub struct KeywordPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     similarity: Option<KeywordPropertySimilarity>,
     split_queries_on_whitespace: Option<bool>,
     time_series_dimension: Option<bool>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl KeywordPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl KeywordPropertyBuilder {
     pub(crate) fn new() -> Self {
         KeywordPropertyBuilder {
             meta: None,
@@ -15107,41 +13984,11 @@ impl KeywordPropertyBuilder<(crate::typed::builder::NotSet,)> {
             similarity: None,
             split_queries_on_whitespace: None,
             time_series_dimension: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> KeywordPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> KeywordPropertyBuilder<N> {
-        KeywordPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            boost: self.boost,
-            eager_global_ordinals: self.eager_global_ordinals,
-            index: self.index,
-            index_options: self.index_options,
-            script: self.script,
-            on_script_error: self.on_script_error,
-            normalizer: self.normalizer,
-            norms: self.norms,
-            null_value: self.null_value,
-            similarity: self.similarity,
-            split_queries_on_whitespace: self.split_queries_on_whitespace,
-            time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl KeywordPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -15189,6 +14036,15 @@ impl<S0> KeywordPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -15240,6 +14096,15 @@ impl<S0> KeywordPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -15428,24 +14293,9 @@ impl<S0> KeywordPropertyBuilder<(S0,)> {
     }
 }
 
-impl KeywordPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> KeywordPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> KeywordPropertyBuilder<(S0,)> {
+impl KeywordPropertyBuilder {
     /// Builds a [`KeywordProperty`].
-    pub fn build(self) -> KeywordProperty
-    where
-        S0: crate::typed::builder::IsSet<keyword_property_members::r#type>,
-    {
+    pub fn build(self) -> KeywordProperty {
         KeywordProperty {
             meta: self.meta,
             properties: self.properties,
@@ -15468,15 +14318,11 @@ impl<S0> KeywordPropertyBuilder<(S0,)> {
             similarity: self.similarity,
             split_queries_on_whitespace: self.split_queries_on_whitespace,
             time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for KeywordPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<keyword_property_members::r#type>,
-{
+impl crate::typed::builder::Build for KeywordPropertyBuilder {
     type Output = KeywordProperty;
 
     fn build(self) -> KeywordProperty {
@@ -15484,16 +14330,13 @@ where
     }
 }
 
-impl<S0> From<KeywordPropertyBuilder<(S0,)>> for KeywordProperty
-where
-    S0: crate::typed::builder::IsSet<keyword_property_members::r#type>,
-{
-    fn from(builder: KeywordPropertyBuilder<(S0,)>) -> Self {
+impl From<KeywordPropertyBuilder> for KeywordProperty {
+    fn from(builder: KeywordPropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct LongNumberProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -15532,22 +14375,17 @@ pub struct LongNumberProperty {
     /// For internal use by Elastic only. Marks the field as a time series dimension. Defaults to false.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_series_dimension: Option<bool>,
-    pub r#type: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub null_value: Option<i64>,
 }
 
 impl LongNumberProperty {
     /// Creates a builder for [`LongNumberProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> LongNumberPropertyBuilder {
         LongNumberPropertyBuilder::new()
     }
 
     /// Creates a [`LongNumberProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = LongNumberProperty>>(
         f: impl FnOnce(LongNumberPropertyBuilder) -> B,
     ) -> LongNumberProperty {
@@ -15555,16 +14393,9 @@ impl LongNumberProperty {
     }
 }
 
-/// Markers of the required members of [`LongNumberPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod long_number_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`LongNumberProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct LongNumberPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct LongNumberPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -15582,12 +14413,10 @@ pub struct LongNumberPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     script: Option<crate::typed::_types::Script>,
     time_series_metric: Option<TimeSeriesMetricType>,
     time_series_dimension: Option<bool>,
-    r#type: Option<String>,
     null_value: Option<i64>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl LongNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl LongNumberPropertyBuilder {
     pub(crate) fn new() -> Self {
         LongNumberPropertyBuilder {
             meta: None,
@@ -15607,39 +14436,12 @@ impl LongNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
             script: None,
             time_series_metric: None,
             time_series_dimension: None,
-            r#type: None,
             null_value: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> LongNumberPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> LongNumberPropertyBuilder<N> {
-        LongNumberPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            boost: self.boost,
-            coerce: self.coerce,
-            ignore_malformed: self.ignore_malformed,
-            index: self.index,
-            on_script_error: self.on_script_error,
-            script: self.script,
-            time_series_metric: self.time_series_metric,
-            time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type,
-            null_value: self.null_value,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl LongNumberPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -15687,6 +14489,15 @@ impl<S0> LongNumberPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -15738,6 +14549,15 @@ impl<S0> LongNumberPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -15894,24 +14714,9 @@ impl<S0> LongNumberPropertyBuilder<(S0,)> {
     }
 }
 
-impl LongNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> LongNumberPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> LongNumberPropertyBuilder<(S0,)> {
+impl LongNumberPropertyBuilder {
     /// Builds a [`LongNumberProperty`].
-    pub fn build(self) -> LongNumberProperty
-    where
-        S0: crate::typed::builder::IsSet<long_number_property_members::r#type>,
-    {
+    pub fn build(self) -> LongNumberProperty {
         LongNumberProperty {
             meta: self.meta,
             properties: self.properties,
@@ -15930,16 +14735,12 @@ impl<S0> LongNumberPropertyBuilder<(S0,)> {
             script: self.script,
             time_series_metric: self.time_series_metric,
             time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type.unwrap(),
             null_value: self.null_value,
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for LongNumberPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<long_number_property_members::r#type>,
-{
+impl crate::typed::builder::Build for LongNumberPropertyBuilder {
     type Output = LongNumberProperty;
 
     fn build(self) -> LongNumberProperty {
@@ -15947,16 +14748,13 @@ where
     }
 }
 
-impl<S0> From<LongNumberPropertyBuilder<(S0,)>> for LongNumberProperty
-where
-    S0: crate::typed::builder::IsSet<long_number_property_members::r#type>,
-{
-    fn from(builder: LongNumberPropertyBuilder<(S0,)>) -> Self {
+impl From<LongNumberPropertyBuilder> for LongNumberProperty {
+    fn from(builder: LongNumberPropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct LongRangeProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -15983,20 +14781,15 @@ pub struct LongRangeProperty {
     pub coerce: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub index: Option<bool>,
-    pub r#type: String,
 }
 
 impl LongRangeProperty {
     /// Creates a builder for [`LongRangeProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> LongRangePropertyBuilder {
         LongRangePropertyBuilder::new()
     }
 
     /// Creates a [`LongRangeProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = LongRangeProperty>>(
         f: impl FnOnce(LongRangePropertyBuilder) -> B,
     ) -> LongRangeProperty {
@@ -16004,16 +14797,9 @@ impl LongRangeProperty {
     }
 }
 
-/// Markers of the required members of [`LongRangePropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod long_range_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`LongRangeProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct LongRangePropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct LongRangePropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -16026,11 +14812,9 @@ pub struct LongRangePropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     boost: Option<crate::typed::support::Float64>,
     coerce: Option<bool>,
     index: Option<bool>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl LongRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl LongRangePropertyBuilder {
     pub(crate) fn new() -> Self {
         LongRangePropertyBuilder {
             meta: None,
@@ -16045,32 +14829,11 @@ impl LongRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
             boost: None,
             coerce: None,
             index: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> LongRangePropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> LongRangePropertyBuilder<N> {
-        LongRangePropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            boost: self.boost,
-            coerce: self.coerce,
-            index: self.index,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl LongRangePropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -16118,6 +14881,15 @@ impl<S0> LongRangePropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -16169,6 +14941,15 @@ impl<S0> LongRangePropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -16249,24 +15030,9 @@ impl<S0> LongRangePropertyBuilder<(S0,)> {
     }
 }
 
-impl LongRangePropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> LongRangePropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> LongRangePropertyBuilder<(S0,)> {
+impl LongRangePropertyBuilder {
     /// Builds a [`LongRangeProperty`].
-    pub fn build(self) -> LongRangeProperty
-    where
-        S0: crate::typed::builder::IsSet<long_range_property_members::r#type>,
-    {
+    pub fn build(self) -> LongRangeProperty {
         LongRangeProperty {
             meta: self.meta,
             properties: self.properties,
@@ -16280,15 +15046,11 @@ impl<S0> LongRangePropertyBuilder<(S0,)> {
             boost: self.boost,
             coerce: self.coerce,
             index: self.index,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for LongRangePropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<long_range_property_members::r#type>,
-{
+impl crate::typed::builder::Build for LongRangePropertyBuilder {
     type Output = LongRangeProperty;
 
     fn build(self) -> LongRangeProperty {
@@ -16296,11 +15058,8 @@ where
     }
 }
 
-impl<S0> From<LongRangePropertyBuilder<(S0,)>> for LongRangeProperty
-where
-    S0: crate::typed::builder::IsSet<long_range_property_members::r#type>,
-{
-    fn from(builder: LongRangePropertyBuilder<(S0,)>) -> Self {
+impl From<LongRangePropertyBuilder> for LongRangeProperty {
+    fn from(builder: LongRangePropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -16310,9 +15069,8 @@ where
 /// disables norms (norms: false). Term queries perform as fast if not faster as on text fields, however queries
 /// that need positions such as the match_phrase query perform slower as they need to look at the _source document
 /// to verify whether a phrase matches. All queries return constant scores that are equal to 1.0.
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct MatchOnlyTextProperty {
-    pub r#type: String,
     /// Multi-fields allow the same string value to be indexed in multiple ways for different purposes, such as one
     /// field for search and a multi-field for sorting and aggregations, or the same string value analyzed by different analyzers.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -16328,15 +15086,11 @@ pub struct MatchOnlyTextProperty {
 
 impl MatchOnlyTextProperty {
     /// Creates a builder for [`MatchOnlyTextProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> MatchOnlyTextPropertyBuilder {
         MatchOnlyTextPropertyBuilder::new()
     }
 
     /// Creates a [`MatchOnlyTextProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = MatchOnlyTextProperty>>(
         f: impl FnOnce(MatchOnlyTextPropertyBuilder) -> B,
     ) -> MatchOnlyTextProperty {
@@ -16344,46 +15098,25 @@ impl MatchOnlyTextProperty {
     }
 }
 
-/// Markers of the required members of [`MatchOnlyTextPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod match_only_text_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`MatchOnlyTextProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct MatchOnlyTextPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
-    r#type: Option<String>,
+pub struct MatchOnlyTextPropertyBuilder {
     fields: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     meta: Option<indexmap::IndexMap<String, String>>,
     copy_to: Option<crate::typed::_types::Fields>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl MatchOnlyTextPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl MatchOnlyTextPropertyBuilder {
     pub(crate) fn new() -> Self {
         MatchOnlyTextPropertyBuilder {
-            r#type: None,
             fields: None,
             meta: None,
             copy_to: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> MatchOnlyTextPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> MatchOnlyTextPropertyBuilder<N> {
-        MatchOnlyTextPropertyBuilder {
-            r#type: self.r#type,
-            fields: self.fields,
-            meta: self.meta,
-            copy_to: self.copy_to,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl MatchOnlyTextPropertyBuilder {
     /// Multi-fields allow the same string value to be indexed in multiple ways for different purposes, such as one
     /// field for search and a multi-field for sorting and aggregations, or the same string value analyzed by different analyzers.
     pub fn fields(
@@ -16413,6 +15146,15 @@ impl<S0> MatchOnlyTextPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     /// Metadata about the field.
@@ -16449,26 +15191,10 @@ impl<S0> MatchOnlyTextPropertyBuilder<(S0,)> {
     }
 }
 
-impl MatchOnlyTextPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> MatchOnlyTextPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> MatchOnlyTextPropertyBuilder<(S0,)> {
+impl MatchOnlyTextPropertyBuilder {
     /// Builds a [`MatchOnlyTextProperty`].
-    pub fn build(self) -> MatchOnlyTextProperty
-    where
-        S0: crate::typed::builder::IsSet<match_only_text_property_members::r#type>,
-    {
+    pub fn build(self) -> MatchOnlyTextProperty {
         MatchOnlyTextProperty {
-            r#type: self.r#type.unwrap(),
             fields: self.fields,
             meta: self.meta,
             copy_to: self.copy_to,
@@ -16476,10 +15202,7 @@ impl<S0> MatchOnlyTextPropertyBuilder<(S0,)> {
     }
 }
 
-impl<S0> crate::typed::builder::Build for MatchOnlyTextPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<match_only_text_property_members::r#type>,
-{
+impl crate::typed::builder::Build for MatchOnlyTextPropertyBuilder {
     type Output = MatchOnlyTextProperty;
 
     fn build(self) -> MatchOnlyTextProperty {
@@ -16487,11 +15210,8 @@ where
     }
 }
 
-impl<S0> From<MatchOnlyTextPropertyBuilder<(S0,)>> for MatchOnlyTextProperty
-where
-    S0: crate::typed::builder::IsSet<match_only_text_property_members::r#type>,
-{
-    fn from(builder: MatchOnlyTextPropertyBuilder<(S0,)>) -> Self {
+impl From<MatchOnlyTextPropertyBuilder> for MatchOnlyTextProperty {
+    fn from(builder: MatchOnlyTextPropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -16504,7 +15224,7 @@ pub enum MatchType {
     Regex,
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct Murmur3HashProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -16525,20 +15245,15 @@ pub struct Murmur3HashProperty {
     pub store: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub doc_values: Option<DocValues>,
-    pub r#type: String,
 }
 
 impl Murmur3HashProperty {
     /// Creates a builder for [`Murmur3HashProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> Murmur3HashPropertyBuilder {
         Murmur3HashPropertyBuilder::new()
     }
 
     /// Creates a [`Murmur3HashProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = Murmur3HashProperty>>(
         f: impl FnOnce(Murmur3HashPropertyBuilder) -> B,
     ) -> Murmur3HashProperty {
@@ -16546,16 +15261,9 @@ impl Murmur3HashProperty {
     }
 }
 
-/// Markers of the required members of [`Murmur3HashPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod murmur3_hash_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`Murmur3HashProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct Murmur3HashPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct Murmur3HashPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -16565,11 +15273,9 @@ pub struct Murmur3HashPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     copy_to: Option<crate::typed::_types::Fields>,
     store: Option<bool>,
     doc_values: Option<DocValues>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl Murmur3HashPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl Murmur3HashPropertyBuilder {
     pub(crate) fn new() -> Self {
         Murmur3HashPropertyBuilder {
             meta: None,
@@ -16581,29 +15287,11 @@ impl Murmur3HashPropertyBuilder<(crate::typed::builder::NotSet,)> {
             copy_to: None,
             store: None,
             doc_values: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> Murmur3HashPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> Murmur3HashPropertyBuilder<N> {
-        Murmur3HashPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl Murmur3HashPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -16651,6 +15339,15 @@ impl<S0> Murmur3HashPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -16702,6 +15399,15 @@ impl<S0> Murmur3HashPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -16749,24 +15455,9 @@ impl<S0> Murmur3HashPropertyBuilder<(S0,)> {
     }
 }
 
-impl Murmur3HashPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> Murmur3HashPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> Murmur3HashPropertyBuilder<(S0,)> {
+impl Murmur3HashPropertyBuilder {
     /// Builds a [`Murmur3HashProperty`].
-    pub fn build(self) -> Murmur3HashProperty
-    where
-        S0: crate::typed::builder::IsSet<murmur3_hash_property_members::r#type>,
-    {
+    pub fn build(self) -> Murmur3HashProperty {
         Murmur3HashProperty {
             meta: self.meta,
             properties: self.properties,
@@ -16777,15 +15468,11 @@ impl<S0> Murmur3HashPropertyBuilder<(S0,)> {
             copy_to: self.copy_to,
             store: self.store,
             doc_values: self.doc_values,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for Murmur3HashPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<murmur3_hash_property_members::r#type>,
-{
+impl crate::typed::builder::Build for Murmur3HashPropertyBuilder {
     type Output = Murmur3HashProperty;
 
     fn build(self) -> Murmur3HashProperty {
@@ -16793,16 +15480,13 @@ where
     }
 }
 
-impl<S0> From<Murmur3HashPropertyBuilder<(S0,)>> for Murmur3HashProperty
-where
-    S0: crate::typed::builder::IsSet<murmur3_hash_property_members::r#type>,
-{
-    fn from(builder: Murmur3HashPropertyBuilder<(S0,)>) -> Self {
+impl From<Murmur3HashPropertyBuilder> for Murmur3HashProperty {
+    fn from(builder: Murmur3HashPropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct NestedProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -16827,20 +15511,15 @@ pub struct NestedProperty {
     pub include_in_parent: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub include_in_root: Option<bool>,
-    pub r#type: String,
 }
 
 impl NestedProperty {
     /// Creates a builder for [`NestedProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> NestedPropertyBuilder {
         NestedPropertyBuilder::new()
     }
 
     /// Creates a [`NestedProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = NestedProperty>>(
         f: impl FnOnce(NestedPropertyBuilder) -> B,
     ) -> NestedProperty {
@@ -16848,16 +15527,9 @@ impl NestedProperty {
     }
 }
 
-/// Markers of the required members of [`NestedPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod nested_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`NestedProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct NestedPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct NestedPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -16869,11 +15541,9 @@ pub struct NestedPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     enabled: Option<bool>,
     include_in_parent: Option<bool>,
     include_in_root: Option<bool>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl NestedPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl NestedPropertyBuilder {
     pub(crate) fn new() -> Self {
         NestedPropertyBuilder {
             meta: None,
@@ -16887,31 +15557,11 @@ impl NestedPropertyBuilder<(crate::typed::builder::NotSet,)> {
             enabled: None,
             include_in_parent: None,
             include_in_root: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> NestedPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> NestedPropertyBuilder<N> {
-        NestedPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            enabled: self.enabled,
-            include_in_parent: self.include_in_parent,
-            include_in_root: self.include_in_root,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl NestedPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -16959,6 +15609,15 @@ impl<S0> NestedPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -17010,6 +15669,15 @@ impl<S0> NestedPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -17079,24 +15747,9 @@ impl<S0> NestedPropertyBuilder<(S0,)> {
     }
 }
 
-impl NestedPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> NestedPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> NestedPropertyBuilder<(S0,)> {
+impl NestedPropertyBuilder {
     /// Builds a [`NestedProperty`].
-    pub fn build(self) -> NestedProperty
-    where
-        S0: crate::typed::builder::IsSet<nested_property_members::r#type>,
-    {
+    pub fn build(self) -> NestedProperty {
         NestedProperty {
             meta: self.meta,
             properties: self.properties,
@@ -17109,15 +15762,11 @@ impl<S0> NestedPropertyBuilder<(S0,)> {
             enabled: self.enabled,
             include_in_parent: self.include_in_parent,
             include_in_root: self.include_in_root,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for NestedPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<nested_property_members::r#type>,
-{
+impl crate::typed::builder::Build for NestedPropertyBuilder {
     type Output = NestedProperty;
 
     fn build(self) -> NestedProperty {
@@ -17125,11 +15774,8 @@ where
     }
 }
 
-impl<S0> From<NestedPropertyBuilder<(S0,)>> for NestedProperty
-where
-    S0: crate::typed::builder::IsSet<nested_property_members::r#type>,
-{
-    fn from(builder: NestedPropertyBuilder<(S0,)>) -> Self {
+impl From<NestedPropertyBuilder> for NestedProperty {
+    fn from(builder: NestedPropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -17285,6 +15931,15 @@ impl NumberPropertyBaseBuilder {
         self
     }
 
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
+    }
+
     pub fn ignore_above(mut self, value: i32) -> Self {
         self.ignore_above = Some(value);
         self
@@ -17334,6 +15989,15 @@ impl NumberPropertyBaseBuilder {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -17541,8 +16205,6 @@ pub struct ObjectProperty {
     pub enabled: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub subobjects: Option<Subobjects>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub r#type: Option<String>,
 }
 
 impl ObjectProperty {
@@ -17572,7 +16234,6 @@ pub struct ObjectPropertyBuilder {
     store: Option<bool>,
     enabled: Option<bool>,
     subobjects: Option<Subobjects>,
-    r#type: Option<String>,
 }
 
 impl ObjectPropertyBuilder {
@@ -17588,7 +16249,6 @@ impl ObjectPropertyBuilder {
             store: None,
             enabled: None,
             subobjects: None,
-            r#type: None,
         }
     }
 }
@@ -17643,6 +16303,15 @@ impl ObjectPropertyBuilder {
         self
     }
 
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
+    }
+
     pub fn ignore_above(mut self, value: i32) -> Self {
         self.ignore_above = Some(value);
         self
@@ -17692,6 +16361,15 @@ impl ObjectPropertyBuilder {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -17748,17 +16426,6 @@ impl ObjectPropertyBuilder {
         self.subobjects = value;
         self
     }
-
-    pub fn r#type(mut self, value: impl Into<String>) -> Self {
-        self.r#type = Some(value.into());
-        self
-    }
-
-    /// Sets [`type`](Self::type) if `value` is `Some`.
-    pub fn maybe_type(mut self, value: Option<String>) -> Self {
-        self.r#type = value;
-        self
-    }
 }
 
 impl ObjectPropertyBuilder {
@@ -17775,7 +16442,6 @@ impl ObjectPropertyBuilder {
             store: self.store,
             enabled: self.enabled,
             subobjects: self.subobjects,
-            r#type: self.r#type,
         }
     }
 }
@@ -17822,8 +16488,6 @@ pub struct PassthroughObjectProperty {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub store: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub r#type: Option<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub enabled: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub priority: Option<i32>,
@@ -17856,7 +16520,6 @@ pub struct PassthroughObjectPropertyBuilder {
     synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
     copy_to: Option<crate::typed::_types::Fields>,
     store: Option<bool>,
-    r#type: Option<String>,
     enabled: Option<bool>,
     priority: Option<i32>,
     time_series_dimension: Option<bool>,
@@ -17873,7 +16536,6 @@ impl PassthroughObjectPropertyBuilder {
             synthetic_source_keep: None,
             copy_to: None,
             store: None,
-            r#type: None,
             enabled: None,
             priority: None,
             time_series_dimension: None,
@@ -17931,6 +16593,15 @@ impl PassthroughObjectPropertyBuilder {
         self
     }
 
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
+    }
+
     pub fn ignore_above(mut self, value: i32) -> Self {
         self.ignore_above = Some(value);
         self
@@ -17982,6 +16653,15 @@ impl PassthroughObjectPropertyBuilder {
         self
     }
 
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
+    }
+
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
         self.synthetic_source_keep = Some(value.into());
         self
@@ -18012,17 +16692,6 @@ impl PassthroughObjectPropertyBuilder {
     /// Sets [`store`](Self::store) if `value` is `Some`.
     pub fn maybe_store(mut self, value: Option<bool>) -> Self {
         self.store = value;
-        self
-    }
-
-    pub fn r#type(mut self, value: impl Into<String>) -> Self {
-        self.r#type = Some(value.into());
-        self
-    }
-
-    /// Sets [`type`](Self::type) if `value` is `Some`.
-    pub fn maybe_type(mut self, value: Option<String>) -> Self {
-        self.r#type = value;
         self
     }
 
@@ -18072,7 +16741,6 @@ impl PassthroughObjectPropertyBuilder {
             synthetic_source_keep: self.synthetic_source_keep,
             copy_to: self.copy_to,
             store: self.store,
-            r#type: self.r#type,
             enabled: self.enabled,
             priority: self.priority,
             time_series_dimension: self.time_series_dimension,
@@ -18094,7 +16762,7 @@ impl From<PassthroughObjectPropertyBuilder> for PassthroughObjectProperty {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct PercolatorProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -18109,20 +16777,15 @@ pub struct PercolatorProperty {
     pub fields: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
-    pub r#type: String,
 }
 
 impl PercolatorProperty {
     /// Creates a builder for [`PercolatorProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> PercolatorPropertyBuilder {
         PercolatorPropertyBuilder::new()
     }
 
     /// Creates a [`PercolatorProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = PercolatorProperty>>(
         f: impl FnOnce(PercolatorPropertyBuilder) -> B,
     ) -> PercolatorProperty {
@@ -18130,27 +16793,18 @@ impl PercolatorProperty {
     }
 }
 
-/// Markers of the required members of [`PercolatorPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod percolator_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`PercolatorProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct PercolatorPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct PercolatorPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
     dynamic: Option<DynamicMapping>,
     fields: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl PercolatorPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl PercolatorPropertyBuilder {
     pub(crate) fn new() -> Self {
         PercolatorPropertyBuilder {
             meta: None,
@@ -18159,26 +16813,11 @@ impl PercolatorPropertyBuilder<(crate::typed::builder::NotSet,)> {
             dynamic: None,
             fields: None,
             synthetic_source_keep: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> PercolatorPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> PercolatorPropertyBuilder<N> {
-        PercolatorPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl PercolatorPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -18226,6 +16865,15 @@ impl<S0> PercolatorPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -18279,6 +16927,15 @@ impl<S0> PercolatorPropertyBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
+    }
+
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
         self.synthetic_source_keep = Some(value.into());
         self
@@ -18291,24 +16948,9 @@ impl<S0> PercolatorPropertyBuilder<(S0,)> {
     }
 }
 
-impl PercolatorPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> PercolatorPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> PercolatorPropertyBuilder<(S0,)> {
+impl PercolatorPropertyBuilder {
     /// Builds a [`PercolatorProperty`].
-    pub fn build(self) -> PercolatorProperty
-    where
-        S0: crate::typed::builder::IsSet<percolator_property_members::r#type>,
-    {
+    pub fn build(self) -> PercolatorProperty {
         PercolatorProperty {
             meta: self.meta,
             properties: self.properties,
@@ -18316,15 +16958,11 @@ impl<S0> PercolatorPropertyBuilder<(S0,)> {
             dynamic: self.dynamic,
             fields: self.fields,
             synthetic_source_keep: self.synthetic_source_keep,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for PercolatorPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<percolator_property_members::r#type>,
-{
+impl crate::typed::builder::Build for PercolatorPropertyBuilder {
     type Output = PercolatorProperty;
 
     fn build(self) -> PercolatorProperty {
@@ -18332,16 +16970,13 @@ where
     }
 }
 
-impl<S0> From<PercolatorPropertyBuilder<(S0,)>> for PercolatorProperty
-where
-    S0: crate::typed::builder::IsSet<percolator_property_members::r#type>,
-{
-    fn from(builder: PercolatorPropertyBuilder<(S0,)>) -> Self {
+impl From<PercolatorPropertyBuilder> for PercolatorProperty {
+    fn from(builder: PercolatorPropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct PointProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -18368,20 +17003,15 @@ pub struct PointProperty {
     pub ignore_z_value: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub null_value: Option<String>,
-    pub r#type: String,
 }
 
 impl PointProperty {
     /// Creates a builder for [`PointProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> PointPropertyBuilder {
         PointPropertyBuilder::new()
     }
 
     /// Creates a [`PointProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = PointProperty>>(
         f: impl FnOnce(PointPropertyBuilder) -> B,
     ) -> PointProperty {
@@ -18389,16 +17019,9 @@ impl PointProperty {
     }
 }
 
-/// Markers of the required members of [`PointPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod point_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`PointProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct PointPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct PointPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -18411,11 +17034,9 @@ pub struct PointPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     ignore_malformed: Option<bool>,
     ignore_z_value: Option<bool>,
     null_value: Option<String>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl PointPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl PointPropertyBuilder {
     pub(crate) fn new() -> Self {
         PointPropertyBuilder {
             meta: None,
@@ -18430,32 +17051,11 @@ impl PointPropertyBuilder<(crate::typed::builder::NotSet,)> {
             ignore_malformed: None,
             ignore_z_value: None,
             null_value: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> PointPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> PointPropertyBuilder<N> {
-        PointPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            ignore_malformed: self.ignore_malformed,
-            ignore_z_value: self.ignore_z_value,
-            null_value: self.null_value,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl PointPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -18503,6 +17103,15 @@ impl<S0> PointPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -18554,6 +17163,15 @@ impl<S0> PointPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -18634,24 +17252,9 @@ impl<S0> PointPropertyBuilder<(S0,)> {
     }
 }
 
-impl PointPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> PointPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> PointPropertyBuilder<(S0,)> {
+impl PointPropertyBuilder {
     /// Builds a [`PointProperty`].
-    pub fn build(self) -> PointProperty
-    where
-        S0: crate::typed::builder::IsSet<point_property_members::r#type>,
-    {
+    pub fn build(self) -> PointProperty {
         PointProperty {
             meta: self.meta,
             properties: self.properties,
@@ -18665,15 +17268,11 @@ impl<S0> PointPropertyBuilder<(S0,)> {
             ignore_malformed: self.ignore_malformed,
             ignore_z_value: self.ignore_z_value,
             null_value: self.null_value,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for PointPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<point_property_members::r#type>,
-{
+impl crate::typed::builder::Build for PointPropertyBuilder {
     type Output = PointProperty;
 
     fn build(self) -> PointProperty {
@@ -18681,11 +17280,8 @@ where
     }
 }
 
-impl<S0> From<PointPropertyBuilder<(S0,)>> for PointProperty
-where
-    S0: crate::typed::builder::IsSet<point_property_members::r#type>,
-{
-    fn from(builder: PointPropertyBuilder<(S0,)>) -> Self {
+impl From<PointPropertyBuilder> for PointProperty {
+    fn from(builder: PointPropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -18698,14 +17294,2038 @@ pub enum PreserveLeafArrays {
     Exact,
 }
 
-/// This union of types isn't supported by the code generator yet, and is represented as a JSON value.
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
-#[serde(transparent)]
-pub struct Property(pub serde_json::Value);
+/// Variants are identified by the `type` property. Variants unknown to this client are kept as JSON values in `Unknown`.
+#[derive(Debug, Clone, PartialEq)]
+pub enum Property {
+    Binary(BinaryProperty),
+    Boolean(BooleanProperty),
+    DynamicType(DynamicProperty),
+    Join(JoinProperty),
+    Keyword(KeywordProperty),
+    /// A variant of text that trades scoring and efficiency of positional queries for space efficiency. This field
+    /// effectively stores data the same way as a text field that only indexes documents (index_options: docs) and
+    /// disables norms (norms: false). Term queries perform as fast if not faster as on text fields, however queries
+    /// that need positions such as the match_phrase query perform slower as they need to look at the _source document
+    /// to verify whether a phrase matches. All queries return constant scores that are equal to 1.0.
+    MatchOnlyText(MatchOnlyTextProperty),
+    Percolator(PercolatorProperty),
+    RankFeature(RankFeatureProperty),
+    RankFeatures(RankFeaturesProperty),
+    SearchAsYouType(SearchAsYouTypeProperty),
+    Text(TextProperty),
+    Version(VersionProperty),
+    Wildcard(WildcardProperty),
+    DateNanos(DateNanosProperty),
+    Date(DateProperty),
+    AggregateMetricDouble(AggregateMetricDoubleProperty),
+    DenseVector(DenseVectorProperty),
+    Flattened(FlattenedProperty),
+    Nested(NestedProperty),
+    Object(ObjectProperty),
+    Passthrough(PassthroughObjectProperty),
+    /// Technical preview
+    RankVectors(RankVectorProperty),
+    SemanticText(SemanticTextProperty),
+    SparseVector(SparseVectorProperty),
+    Completion(CompletionProperty),
+    ConstantKeyword(ConstantKeywordProperty),
+    CountedKeyword(CountedKeywordProperty),
+    Alias(FieldAliasProperty),
+    Histogram(HistogramProperty),
+    ExponentialHistogram(ExponentialHistogramProperty),
+    Ip(IpProperty),
+    Murmur3(Murmur3HashProperty),
+    TokenCount(TokenCountProperty),
+    GeoPoint(GeoPointProperty),
+    /// The `geo_shape` data type facilitates the indexing of and searching with arbitrary geo shapes such as rectangles
+    /// and polygons.
+    GeoShape(GeoShapeProperty),
+    Point(PointProperty),
+    /// The `shape` data type facilitates the indexing of and searching with arbitrary `x, y` cartesian shapes such as
+    /// rectangles and polygons.
+    Shape(ShapeProperty),
+    Byte(ByteNumberProperty),
+    Double(DoubleNumberProperty),
+    Float(FloatNumberProperty),
+    HalfFloat(HalfFloatNumberProperty),
+    Integer(IntegerNumberProperty),
+    Long(LongNumberProperty),
+    ScaledFloat(ScaledFloatNumberProperty),
+    Short(ShortNumberProperty),
+    UnsignedLong(UnsignedLongNumberProperty),
+    DateRange(DateRangeProperty),
+    DoubleRange(DoubleRangeProperty),
+    FloatRange(FloatRangeProperty),
+    IntegerRange(IntegerRangeProperty),
+    IpRange(IpRangeProperty),
+    LongRange(LongRangeProperty),
+    IcuCollationKeyword(IcuCollationProperty),
+    /// A variant unknown to this client.
+    Unknown(serde_json::Value),
+}
 
-impl From<serde_json::Value> for Property {
-    fn from(value: serde_json::Value) -> Self {
-        Property(value)
+impl serde::Serialize for Property {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        use serde::ser::Error;
+        let (tag, value) = match self {
+            Property::Binary(value) => (
+                serde_json::Value::from("binary"),
+                serde_json::to_value(value),
+            ),
+            Property::Boolean(value) => (
+                serde_json::Value::from("boolean"),
+                serde_json::to_value(value),
+            ),
+            Property::DynamicType(value) => (
+                serde_json::Value::from("{dynamic_type}"),
+                serde_json::to_value(value),
+            ),
+            Property::Join(value) => (serde_json::Value::from("join"), serde_json::to_value(value)),
+            Property::Keyword(value) => (
+                serde_json::Value::from("keyword"),
+                serde_json::to_value(value),
+            ),
+            Property::MatchOnlyText(value) => (
+                serde_json::Value::from("match_only_text"),
+                serde_json::to_value(value),
+            ),
+            Property::Percolator(value) => (
+                serde_json::Value::from("percolator"),
+                serde_json::to_value(value),
+            ),
+            Property::RankFeature(value) => (
+                serde_json::Value::from("rank_feature"),
+                serde_json::to_value(value),
+            ),
+            Property::RankFeatures(value) => (
+                serde_json::Value::from("rank_features"),
+                serde_json::to_value(value),
+            ),
+            Property::SearchAsYouType(value) => (
+                serde_json::Value::from("search_as_you_type"),
+                serde_json::to_value(value),
+            ),
+            Property::Text(value) => (serde_json::Value::from("text"), serde_json::to_value(value)),
+            Property::Version(value) => (
+                serde_json::Value::from("version"),
+                serde_json::to_value(value),
+            ),
+            Property::Wildcard(value) => (
+                serde_json::Value::from("wildcard"),
+                serde_json::to_value(value),
+            ),
+            Property::DateNanos(value) => (
+                serde_json::Value::from("date_nanos"),
+                serde_json::to_value(value),
+            ),
+            Property::Date(value) => (serde_json::Value::from("date"), serde_json::to_value(value)),
+            Property::AggregateMetricDouble(value) => (
+                serde_json::Value::from("aggregate_metric_double"),
+                serde_json::to_value(value),
+            ),
+            Property::DenseVector(value) => (
+                serde_json::Value::from("dense_vector"),
+                serde_json::to_value(value),
+            ),
+            Property::Flattened(value) => (
+                serde_json::Value::from("flattened"),
+                serde_json::to_value(value),
+            ),
+            Property::Nested(value) => (
+                serde_json::Value::from("nested"),
+                serde_json::to_value(value),
+            ),
+            Property::Object(value) => (
+                serde_json::Value::from("object"),
+                serde_json::to_value(value),
+            ),
+            Property::Passthrough(value) => (
+                serde_json::Value::from("passthrough"),
+                serde_json::to_value(value),
+            ),
+            Property::RankVectors(value) => (
+                serde_json::Value::from("rank_vectors"),
+                serde_json::to_value(value),
+            ),
+            Property::SemanticText(value) => (
+                serde_json::Value::from("semantic_text"),
+                serde_json::to_value(value),
+            ),
+            Property::SparseVector(value) => (
+                serde_json::Value::from("sparse_vector"),
+                serde_json::to_value(value),
+            ),
+            Property::Completion(value) => (
+                serde_json::Value::from("completion"),
+                serde_json::to_value(value),
+            ),
+            Property::ConstantKeyword(value) => (
+                serde_json::Value::from("constant_keyword"),
+                serde_json::to_value(value),
+            ),
+            Property::CountedKeyword(value) => (
+                serde_json::Value::from("counted_keyword"),
+                serde_json::to_value(value),
+            ),
+            Property::Alias(value) => (
+                serde_json::Value::from("alias"),
+                serde_json::to_value(value),
+            ),
+            Property::Histogram(value) => (
+                serde_json::Value::from("histogram"),
+                serde_json::to_value(value),
+            ),
+            Property::ExponentialHistogram(value) => (
+                serde_json::Value::from("exponential_histogram"),
+                serde_json::to_value(value),
+            ),
+            Property::Ip(value) => (serde_json::Value::from("ip"), serde_json::to_value(value)),
+            Property::Murmur3(value) => (
+                serde_json::Value::from("murmur3"),
+                serde_json::to_value(value),
+            ),
+            Property::TokenCount(value) => (
+                serde_json::Value::from("token_count"),
+                serde_json::to_value(value),
+            ),
+            Property::GeoPoint(value) => (
+                serde_json::Value::from("geo_point"),
+                serde_json::to_value(value),
+            ),
+            Property::GeoShape(value) => (
+                serde_json::Value::from("geo_shape"),
+                serde_json::to_value(value),
+            ),
+            Property::Point(value) => (
+                serde_json::Value::from("point"),
+                serde_json::to_value(value),
+            ),
+            Property::Shape(value) => (
+                serde_json::Value::from("shape"),
+                serde_json::to_value(value),
+            ),
+            Property::Byte(value) => (serde_json::Value::from("byte"), serde_json::to_value(value)),
+            Property::Double(value) => (
+                serde_json::Value::from("double"),
+                serde_json::to_value(value),
+            ),
+            Property::Float(value) => (
+                serde_json::Value::from("float"),
+                serde_json::to_value(value),
+            ),
+            Property::HalfFloat(value) => (
+                serde_json::Value::from("half_float"),
+                serde_json::to_value(value),
+            ),
+            Property::Integer(value) => (
+                serde_json::Value::from("integer"),
+                serde_json::to_value(value),
+            ),
+            Property::Long(value) => (serde_json::Value::from("long"), serde_json::to_value(value)),
+            Property::ScaledFloat(value) => (
+                serde_json::Value::from("scaled_float"),
+                serde_json::to_value(value),
+            ),
+            Property::Short(value) => (
+                serde_json::Value::from("short"),
+                serde_json::to_value(value),
+            ),
+            Property::UnsignedLong(value) => (
+                serde_json::Value::from("unsigned_long"),
+                serde_json::to_value(value),
+            ),
+            Property::DateRange(value) => (
+                serde_json::Value::from("date_range"),
+                serde_json::to_value(value),
+            ),
+            Property::DoubleRange(value) => (
+                serde_json::Value::from("double_range"),
+                serde_json::to_value(value),
+            ),
+            Property::FloatRange(value) => (
+                serde_json::Value::from("float_range"),
+                serde_json::to_value(value),
+            ),
+            Property::IntegerRange(value) => (
+                serde_json::Value::from("integer_range"),
+                serde_json::to_value(value),
+            ),
+            Property::IpRange(value) => (
+                serde_json::Value::from("ip_range"),
+                serde_json::to_value(value),
+            ),
+            Property::LongRange(value) => (
+                serde_json::Value::from("long_range"),
+                serde_json::to_value(value),
+            ),
+            Property::IcuCollationKeyword(value) => (
+                serde_json::Value::from("icu_collation_keyword"),
+                serde_json::to_value(value),
+            ),
+            Property::Unknown(value) => return value.serialize(serializer),
+        };
+        let mut object = serde_json::Map::new();
+        object.insert("type".to_string(), tag);
+        if let serde_json::Value::Object(fields) = value.map_err(S::Error::custom)? {
+            object.extend(fields);
+        }
+        object.serialize(serializer)
+    }
+}
+
+impl<'de> serde::Deserialize<'de> for Property {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        use serde::de::Error;
+        let mut object = serde_json::Map::deserialize(deserializer)?;
+        let tag = object
+            .remove("type")
+            .unwrap_or_else(|| serde_json::Value::from("object"));
+        let result = match tag.as_str() {
+            Some("binary") => serde_json::from_value(object.into()).map(Property::Binary),
+            Some("boolean") => serde_json::from_value(object.into()).map(Property::Boolean),
+            Some("{dynamic_type}") => {
+                serde_json::from_value(object.into()).map(Property::DynamicType)
+            }
+            Some("join") => serde_json::from_value(object.into()).map(Property::Join),
+            Some("keyword") => serde_json::from_value(object.into()).map(Property::Keyword),
+            Some("match_only_text") => {
+                serde_json::from_value(object.into()).map(Property::MatchOnlyText)
+            }
+            Some("percolator") => serde_json::from_value(object.into()).map(Property::Percolator),
+            Some("rank_feature") => {
+                serde_json::from_value(object.into()).map(Property::RankFeature)
+            }
+            Some("rank_features") => {
+                serde_json::from_value(object.into()).map(Property::RankFeatures)
+            }
+            Some("search_as_you_type") => {
+                serde_json::from_value(object.into()).map(Property::SearchAsYouType)
+            }
+            Some("text") => serde_json::from_value(object.into()).map(Property::Text),
+            Some("version") => serde_json::from_value(object.into()).map(Property::Version),
+            Some("wildcard") => serde_json::from_value(object.into()).map(Property::Wildcard),
+            Some("date_nanos") => serde_json::from_value(object.into()).map(Property::DateNanos),
+            Some("date") => serde_json::from_value(object.into()).map(Property::Date),
+            Some("aggregate_metric_double") => {
+                serde_json::from_value(object.into()).map(Property::AggregateMetricDouble)
+            }
+            Some("dense_vector") => {
+                serde_json::from_value(object.into()).map(Property::DenseVector)
+            }
+            Some("flattened") => serde_json::from_value(object.into()).map(Property::Flattened),
+            Some("nested") => serde_json::from_value(object.into()).map(Property::Nested),
+            Some("object") => serde_json::from_value(object.into()).map(Property::Object),
+            Some("passthrough") => serde_json::from_value(object.into()).map(Property::Passthrough),
+            Some("rank_vectors") => {
+                serde_json::from_value(object.into()).map(Property::RankVectors)
+            }
+            Some("semantic_text") => {
+                serde_json::from_value(object.into()).map(Property::SemanticText)
+            }
+            Some("sparse_vector") => {
+                serde_json::from_value(object.into()).map(Property::SparseVector)
+            }
+            Some("completion") => serde_json::from_value(object.into()).map(Property::Completion),
+            Some("constant_keyword") => {
+                serde_json::from_value(object.into()).map(Property::ConstantKeyword)
+            }
+            Some("counted_keyword") => {
+                serde_json::from_value(object.into()).map(Property::CountedKeyword)
+            }
+            Some("alias") => serde_json::from_value(object.into()).map(Property::Alias),
+            Some("histogram") => serde_json::from_value(object.into()).map(Property::Histogram),
+            Some("exponential_histogram") => {
+                serde_json::from_value(object.into()).map(Property::ExponentialHistogram)
+            }
+            Some("ip") => serde_json::from_value(object.into()).map(Property::Ip),
+            Some("murmur3") => serde_json::from_value(object.into()).map(Property::Murmur3),
+            Some("token_count") => serde_json::from_value(object.into()).map(Property::TokenCount),
+            Some("geo_point") => serde_json::from_value(object.into()).map(Property::GeoPoint),
+            Some("geo_shape") => serde_json::from_value(object.into()).map(Property::GeoShape),
+            Some("point") => serde_json::from_value(object.into()).map(Property::Point),
+            Some("shape") => serde_json::from_value(object.into()).map(Property::Shape),
+            Some("byte") => serde_json::from_value(object.into()).map(Property::Byte),
+            Some("double") => serde_json::from_value(object.into()).map(Property::Double),
+            Some("float") => serde_json::from_value(object.into()).map(Property::Float),
+            Some("half_float") => serde_json::from_value(object.into()).map(Property::HalfFloat),
+            Some("integer") => serde_json::from_value(object.into()).map(Property::Integer),
+            Some("long") => serde_json::from_value(object.into()).map(Property::Long),
+            Some("scaled_float") => {
+                serde_json::from_value(object.into()).map(Property::ScaledFloat)
+            }
+            Some("short") => serde_json::from_value(object.into()).map(Property::Short),
+            Some("unsigned_long") => {
+                serde_json::from_value(object.into()).map(Property::UnsignedLong)
+            }
+            Some("date_range") => serde_json::from_value(object.into()).map(Property::DateRange),
+            Some("double_range") => {
+                serde_json::from_value(object.into()).map(Property::DoubleRange)
+            }
+            Some("float_range") => serde_json::from_value(object.into()).map(Property::FloatRange),
+            Some("integer_range") => {
+                serde_json::from_value(object.into()).map(Property::IntegerRange)
+            }
+            Some("ip_range") => serde_json::from_value(object.into()).map(Property::IpRange),
+            Some("long_range") => serde_json::from_value(object.into()).map(Property::LongRange),
+            Some("icu_collation_keyword") => {
+                serde_json::from_value(object.into()).map(Property::IcuCollationKeyword)
+            }
+            _ => {
+                object.insert("type".to_string(), tag);
+                return Ok(Property::Unknown(object.into()));
+            }
+        };
+        result.map_err(D::Error::custom)
+    }
+}
+
+impl From<BinaryProperty> for Property {
+    fn from(value: BinaryProperty) -> Self {
+        Property::Binary(value)
+    }
+}
+
+impl From<BooleanProperty> for Property {
+    fn from(value: BooleanProperty) -> Self {
+        Property::Boolean(value)
+    }
+}
+
+impl From<DynamicProperty> for Property {
+    fn from(value: DynamicProperty) -> Self {
+        Property::DynamicType(value)
+    }
+}
+
+impl From<JoinProperty> for Property {
+    fn from(value: JoinProperty) -> Self {
+        Property::Join(value)
+    }
+}
+
+impl From<KeywordProperty> for Property {
+    fn from(value: KeywordProperty) -> Self {
+        Property::Keyword(value)
+    }
+}
+
+impl From<MatchOnlyTextProperty> for Property {
+    fn from(value: MatchOnlyTextProperty) -> Self {
+        Property::MatchOnlyText(value)
+    }
+}
+
+impl From<PercolatorProperty> for Property {
+    fn from(value: PercolatorProperty) -> Self {
+        Property::Percolator(value)
+    }
+}
+
+impl From<RankFeatureProperty> for Property {
+    fn from(value: RankFeatureProperty) -> Self {
+        Property::RankFeature(value)
+    }
+}
+
+impl From<RankFeaturesProperty> for Property {
+    fn from(value: RankFeaturesProperty) -> Self {
+        Property::RankFeatures(value)
+    }
+}
+
+impl From<SearchAsYouTypeProperty> for Property {
+    fn from(value: SearchAsYouTypeProperty) -> Self {
+        Property::SearchAsYouType(value)
+    }
+}
+
+impl From<TextProperty> for Property {
+    fn from(value: TextProperty) -> Self {
+        Property::Text(value)
+    }
+}
+
+impl From<VersionProperty> for Property {
+    fn from(value: VersionProperty) -> Self {
+        Property::Version(value)
+    }
+}
+
+impl From<WildcardProperty> for Property {
+    fn from(value: WildcardProperty) -> Self {
+        Property::Wildcard(value)
+    }
+}
+
+impl From<DateNanosProperty> for Property {
+    fn from(value: DateNanosProperty) -> Self {
+        Property::DateNanos(value)
+    }
+}
+
+impl From<DateProperty> for Property {
+    fn from(value: DateProperty) -> Self {
+        Property::Date(value)
+    }
+}
+
+impl From<AggregateMetricDoubleProperty> for Property {
+    fn from(value: AggregateMetricDoubleProperty) -> Self {
+        Property::AggregateMetricDouble(value)
+    }
+}
+
+impl From<DenseVectorProperty> for Property {
+    fn from(value: DenseVectorProperty) -> Self {
+        Property::DenseVector(value)
+    }
+}
+
+impl From<FlattenedProperty> for Property {
+    fn from(value: FlattenedProperty) -> Self {
+        Property::Flattened(value)
+    }
+}
+
+impl From<NestedProperty> for Property {
+    fn from(value: NestedProperty) -> Self {
+        Property::Nested(value)
+    }
+}
+
+impl From<ObjectProperty> for Property {
+    fn from(value: ObjectProperty) -> Self {
+        Property::Object(value)
+    }
+}
+
+impl From<PassthroughObjectProperty> for Property {
+    fn from(value: PassthroughObjectProperty) -> Self {
+        Property::Passthrough(value)
+    }
+}
+
+impl From<RankVectorProperty> for Property {
+    fn from(value: RankVectorProperty) -> Self {
+        Property::RankVectors(value)
+    }
+}
+
+impl From<SemanticTextProperty> for Property {
+    fn from(value: SemanticTextProperty) -> Self {
+        Property::SemanticText(value)
+    }
+}
+
+impl From<SparseVectorProperty> for Property {
+    fn from(value: SparseVectorProperty) -> Self {
+        Property::SparseVector(value)
+    }
+}
+
+impl From<CompletionProperty> for Property {
+    fn from(value: CompletionProperty) -> Self {
+        Property::Completion(value)
+    }
+}
+
+impl From<ConstantKeywordProperty> for Property {
+    fn from(value: ConstantKeywordProperty) -> Self {
+        Property::ConstantKeyword(value)
+    }
+}
+
+impl From<CountedKeywordProperty> for Property {
+    fn from(value: CountedKeywordProperty) -> Self {
+        Property::CountedKeyword(value)
+    }
+}
+
+impl From<FieldAliasProperty> for Property {
+    fn from(value: FieldAliasProperty) -> Self {
+        Property::Alias(value)
+    }
+}
+
+impl From<HistogramProperty> for Property {
+    fn from(value: HistogramProperty) -> Self {
+        Property::Histogram(value)
+    }
+}
+
+impl From<ExponentialHistogramProperty> for Property {
+    fn from(value: ExponentialHistogramProperty) -> Self {
+        Property::ExponentialHistogram(value)
+    }
+}
+
+impl From<IpProperty> for Property {
+    fn from(value: IpProperty) -> Self {
+        Property::Ip(value)
+    }
+}
+
+impl From<Murmur3HashProperty> for Property {
+    fn from(value: Murmur3HashProperty) -> Self {
+        Property::Murmur3(value)
+    }
+}
+
+impl From<TokenCountProperty> for Property {
+    fn from(value: TokenCountProperty) -> Self {
+        Property::TokenCount(value)
+    }
+}
+
+impl From<GeoPointProperty> for Property {
+    fn from(value: GeoPointProperty) -> Self {
+        Property::GeoPoint(value)
+    }
+}
+
+impl From<GeoShapeProperty> for Property {
+    fn from(value: GeoShapeProperty) -> Self {
+        Property::GeoShape(value)
+    }
+}
+
+impl From<PointProperty> for Property {
+    fn from(value: PointProperty) -> Self {
+        Property::Point(value)
+    }
+}
+
+impl From<ShapeProperty> for Property {
+    fn from(value: ShapeProperty) -> Self {
+        Property::Shape(value)
+    }
+}
+
+impl From<ByteNumberProperty> for Property {
+    fn from(value: ByteNumberProperty) -> Self {
+        Property::Byte(value)
+    }
+}
+
+impl From<DoubleNumberProperty> for Property {
+    fn from(value: DoubleNumberProperty) -> Self {
+        Property::Double(value)
+    }
+}
+
+impl From<FloatNumberProperty> for Property {
+    fn from(value: FloatNumberProperty) -> Self {
+        Property::Float(value)
+    }
+}
+
+impl From<HalfFloatNumberProperty> for Property {
+    fn from(value: HalfFloatNumberProperty) -> Self {
+        Property::HalfFloat(value)
+    }
+}
+
+impl From<IntegerNumberProperty> for Property {
+    fn from(value: IntegerNumberProperty) -> Self {
+        Property::Integer(value)
+    }
+}
+
+impl From<LongNumberProperty> for Property {
+    fn from(value: LongNumberProperty) -> Self {
+        Property::Long(value)
+    }
+}
+
+impl From<ScaledFloatNumberProperty> for Property {
+    fn from(value: ScaledFloatNumberProperty) -> Self {
+        Property::ScaledFloat(value)
+    }
+}
+
+impl From<ShortNumberProperty> for Property {
+    fn from(value: ShortNumberProperty) -> Self {
+        Property::Short(value)
+    }
+}
+
+impl From<UnsignedLongNumberProperty> for Property {
+    fn from(value: UnsignedLongNumberProperty) -> Self {
+        Property::UnsignedLong(value)
+    }
+}
+
+impl From<DateRangeProperty> for Property {
+    fn from(value: DateRangeProperty) -> Self {
+        Property::DateRange(value)
+    }
+}
+
+impl From<DoubleRangeProperty> for Property {
+    fn from(value: DoubleRangeProperty) -> Self {
+        Property::DoubleRange(value)
+    }
+}
+
+impl From<FloatRangeProperty> for Property {
+    fn from(value: FloatRangeProperty) -> Self {
+        Property::FloatRange(value)
+    }
+}
+
+impl From<IntegerRangeProperty> for Property {
+    fn from(value: IntegerRangeProperty) -> Self {
+        Property::IntegerRange(value)
+    }
+}
+
+impl From<IpRangeProperty> for Property {
+    fn from(value: IpRangeProperty) -> Self {
+        Property::IpRange(value)
+    }
+}
+
+impl From<LongRangeProperty> for Property {
+    fn from(value: LongRangeProperty) -> Self {
+        Property::LongRange(value)
+    }
+}
+
+impl From<IcuCollationProperty> for Property {
+    fn from(value: IcuCollationProperty) -> Self {
+        Property::IcuCollationKeyword(value)
+    }
+}
+
+impl From<BinaryPropertyBuilder> for Property {
+    fn from(builder: BinaryPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<BooleanPropertyBuilder> for Property {
+    fn from(builder: BooleanPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<DynamicPropertyBuilder> for Property {
+    fn from(builder: DynamicPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<JoinPropertyBuilder> for Property {
+    fn from(builder: JoinPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<KeywordPropertyBuilder> for Property {
+    fn from(builder: KeywordPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<MatchOnlyTextPropertyBuilder> for Property {
+    fn from(builder: MatchOnlyTextPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<PercolatorPropertyBuilder> for Property {
+    fn from(builder: PercolatorPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<RankFeaturePropertyBuilder> for Property {
+    fn from(builder: RankFeaturePropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<RankFeaturesPropertyBuilder> for Property {
+    fn from(builder: RankFeaturesPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<SearchAsYouTypePropertyBuilder> for Property {
+    fn from(builder: SearchAsYouTypePropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<TextPropertyBuilder> for Property {
+    fn from(builder: TextPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<VersionPropertyBuilder> for Property {
+    fn from(builder: VersionPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<WildcardPropertyBuilder> for Property {
+    fn from(builder: WildcardPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<DateNanosPropertyBuilder> for Property {
+    fn from(builder: DateNanosPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<DatePropertyBuilder> for Property {
+    fn from(builder: DatePropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl
+    From<
+        AggregateMetricDoublePropertyBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    > for Property
+{
+    fn from(
+        builder: AggregateMetricDoublePropertyBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<DenseVectorPropertyBuilder> for Property {
+    fn from(builder: DenseVectorPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<FlattenedPropertyBuilder> for Property {
+    fn from(builder: FlattenedPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<NestedPropertyBuilder> for Property {
+    fn from(builder: NestedPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<ObjectPropertyBuilder> for Property {
+    fn from(builder: ObjectPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<PassthroughObjectPropertyBuilder> for Property {
+    fn from(builder: PassthroughObjectPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<RankVectorPropertyBuilder> for Property {
+    fn from(builder: RankVectorPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<SemanticTextPropertyBuilder> for Property {
+    fn from(builder: SemanticTextPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<SparseVectorPropertyBuilder> for Property {
+    fn from(builder: SparseVectorPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<CompletionPropertyBuilder> for Property {
+    fn from(builder: CompletionPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<ConstantKeywordPropertyBuilder> for Property {
+    fn from(builder: ConstantKeywordPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<CountedKeywordPropertyBuilder> for Property {
+    fn from(builder: CountedKeywordPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<FieldAliasPropertyBuilder> for Property {
+    fn from(builder: FieldAliasPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<HistogramPropertyBuilder> for Property {
+    fn from(builder: HistogramPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<ExponentialHistogramPropertyBuilder> for Property {
+    fn from(builder: ExponentialHistogramPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<IpPropertyBuilder> for Property {
+    fn from(builder: IpPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<Murmur3HashPropertyBuilder> for Property {
+    fn from(builder: Murmur3HashPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<TokenCountPropertyBuilder> for Property {
+    fn from(builder: TokenCountPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<GeoPointPropertyBuilder> for Property {
+    fn from(builder: GeoPointPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<GeoShapePropertyBuilder> for Property {
+    fn from(builder: GeoShapePropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<PointPropertyBuilder> for Property {
+    fn from(builder: PointPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<ShapePropertyBuilder> for Property {
+    fn from(builder: ShapePropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<ByteNumberPropertyBuilder> for Property {
+    fn from(builder: ByteNumberPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<DoubleNumberPropertyBuilder> for Property {
+    fn from(builder: DoubleNumberPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<FloatNumberPropertyBuilder> for Property {
+    fn from(builder: FloatNumberPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<HalfFloatNumberPropertyBuilder> for Property {
+    fn from(builder: HalfFloatNumberPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<IntegerNumberPropertyBuilder> for Property {
+    fn from(builder: IntegerNumberPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<LongNumberPropertyBuilder> for Property {
+    fn from(builder: LongNumberPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<ScaledFloatNumberPropertyBuilder> for Property {
+    fn from(builder: ScaledFloatNumberPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<ShortNumberPropertyBuilder> for Property {
+    fn from(builder: ShortNumberPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<UnsignedLongNumberPropertyBuilder> for Property {
+    fn from(builder: UnsignedLongNumberPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<DateRangePropertyBuilder> for Property {
+    fn from(builder: DateRangePropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<DoubleRangePropertyBuilder> for Property {
+    fn from(builder: DoubleRangePropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<FloatRangePropertyBuilder> for Property {
+    fn from(builder: FloatRangePropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<IntegerRangePropertyBuilder> for Property {
+    fn from(builder: IntegerRangePropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<IpRangePropertyBuilder> for Property {
+    fn from(builder: IpRangePropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<LongRangePropertyBuilder> for Property {
+    fn from(builder: LongRangePropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl From<IcuCollationPropertyBuilder> for Property {
+    fn from(builder: IcuCollationPropertyBuilder) -> Self {
+        builder.build().into()
+    }
+}
+
+impl Property {
+    /// Creates a builder for [`Property`].
+    ///
+    /// Required: a variant.
+    pub fn builder() -> PropertyBuilder {
+        PropertyBuilder::new()
+    }
+
+    /// Creates a [`Property`] from a function that sets the members of its builder.
+    ///
+    /// Required: a variant.
+    pub fn of<B: crate::typed::builder::Build<Output = Property>>(
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Property {
+        f(Self::builder()).build()
+    }
+}
+
+/// Builder for [`Property`].
+#[must_use = "the builder does nothing until `build()` is called"]
+pub struct PropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+    variant: Option<Property>,
+    _state: std::marker::PhantomData<S>,
+}
+
+impl PropertyBuilder<(crate::typed::builder::NotSet,)> {
+    pub(crate) fn new() -> Self {
+        PropertyBuilder {
+            variant: None,
+            _state: std::marker::PhantomData,
+        }
+    }
+}
+
+impl<S0> PropertyBuilder<(S0,)> {
+    fn with_state<N>(self) -> PropertyBuilder<N> {
+        PropertyBuilder {
+            variant: self.variant,
+            _state: std::marker::PhantomData,
+        }
+    }
+}
+
+impl PropertyBuilder<(crate::typed::builder::NotSet,)> {
+    pub fn binary(
+        self,
+        value: impl Into<BinaryProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Binary(value.into()));
+        builder
+    }
+
+    /// Sets [`binary`](Self::binary) with a builder.
+    pub fn binary_with<B: crate::typed::builder::Build<Output = BinaryProperty>>(
+        self,
+        f: impl FnOnce(BinaryPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.binary(f(BinaryPropertyBuilder::new()).build())
+    }
+
+    pub fn boolean(
+        self,
+        value: impl Into<BooleanProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Boolean(value.into()));
+        builder
+    }
+
+    /// Sets [`boolean`](Self::boolean) with a builder.
+    pub fn boolean_with<B: crate::typed::builder::Build<Output = BooleanProperty>>(
+        self,
+        f: impl FnOnce(BooleanPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.boolean(f(BooleanPropertyBuilder::new()).build())
+    }
+
+    pub fn dynamic_type(
+        self,
+        value: impl Into<DynamicProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::DynamicType(value.into()));
+        builder
+    }
+
+    /// Sets [`dynamic_type`](Self::dynamic_type) with a builder.
+    pub fn dynamic_type_with<B: crate::typed::builder::Build<Output = DynamicProperty>>(
+        self,
+        f: impl FnOnce(DynamicPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.dynamic_type(f(DynamicPropertyBuilder::new()).build())
+    }
+
+    pub fn join(
+        self,
+        value: impl Into<JoinProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Join(value.into()));
+        builder
+    }
+
+    /// Sets [`join`](Self::join) with a builder.
+    pub fn join_with<B: crate::typed::builder::Build<Output = JoinProperty>>(
+        self,
+        f: impl FnOnce(JoinPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.join(f(JoinPropertyBuilder::new()).build())
+    }
+
+    pub fn keyword(
+        self,
+        value: impl Into<KeywordProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Keyword(value.into()));
+        builder
+    }
+
+    /// Sets [`keyword`](Self::keyword) with a builder.
+    pub fn keyword_with<B: crate::typed::builder::Build<Output = KeywordProperty>>(
+        self,
+        f: impl FnOnce(KeywordPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.keyword(f(KeywordPropertyBuilder::new()).build())
+    }
+
+    /// A variant of text that trades scoring and efficiency of positional queries for space efficiency. This field
+    /// effectively stores data the same way as a text field that only indexes documents (index_options: docs) and
+    /// disables norms (norms: false). Term queries perform as fast if not faster as on text fields, however queries
+    /// that need positions such as the match_phrase query perform slower as they need to look at the _source document
+    /// to verify whether a phrase matches. All queries return constant scores that are equal to 1.0.
+    pub fn match_only_text(
+        self,
+        value: impl Into<MatchOnlyTextProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::MatchOnlyText(value.into()));
+        builder
+    }
+
+    /// Sets [`match_only_text`](Self::match_only_text) with a builder.
+    pub fn match_only_text_with<B: crate::typed::builder::Build<Output = MatchOnlyTextProperty>>(
+        self,
+        f: impl FnOnce(MatchOnlyTextPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.match_only_text(f(MatchOnlyTextPropertyBuilder::new()).build())
+    }
+
+    pub fn percolator(
+        self,
+        value: impl Into<PercolatorProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Percolator(value.into()));
+        builder
+    }
+
+    /// Sets [`percolator`](Self::percolator) with a builder.
+    pub fn percolator_with<B: crate::typed::builder::Build<Output = PercolatorProperty>>(
+        self,
+        f: impl FnOnce(PercolatorPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.percolator(f(PercolatorPropertyBuilder::new()).build())
+    }
+
+    pub fn rank_feature(
+        self,
+        value: impl Into<RankFeatureProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::RankFeature(value.into()));
+        builder
+    }
+
+    /// Sets [`rank_feature`](Self::rank_feature) with a builder.
+    pub fn rank_feature_with<B: crate::typed::builder::Build<Output = RankFeatureProperty>>(
+        self,
+        f: impl FnOnce(RankFeaturePropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.rank_feature(f(RankFeaturePropertyBuilder::new()).build())
+    }
+
+    pub fn rank_features(
+        self,
+        value: impl Into<RankFeaturesProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::RankFeatures(value.into()));
+        builder
+    }
+
+    /// Sets [`rank_features`](Self::rank_features) with a builder.
+    pub fn rank_features_with<B: crate::typed::builder::Build<Output = RankFeaturesProperty>>(
+        self,
+        f: impl FnOnce(RankFeaturesPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.rank_features(f(RankFeaturesPropertyBuilder::new()).build())
+    }
+
+    pub fn search_as_you_type(
+        self,
+        value: impl Into<SearchAsYouTypeProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::SearchAsYouType(value.into()));
+        builder
+    }
+
+    /// Sets [`search_as_you_type`](Self::search_as_you_type) with a builder.
+    pub fn search_as_you_type_with<
+        B: crate::typed::builder::Build<Output = SearchAsYouTypeProperty>,
+    >(
+        self,
+        f: impl FnOnce(SearchAsYouTypePropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.search_as_you_type(f(SearchAsYouTypePropertyBuilder::new()).build())
+    }
+
+    pub fn text(
+        self,
+        value: impl Into<TextProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Text(value.into()));
+        builder
+    }
+
+    /// Sets [`text`](Self::text) with a builder.
+    pub fn text_with<B: crate::typed::builder::Build<Output = TextProperty>>(
+        self,
+        f: impl FnOnce(TextPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.text(f(TextPropertyBuilder::new()).build())
+    }
+
+    pub fn version(
+        self,
+        value: impl Into<VersionProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Version(value.into()));
+        builder
+    }
+
+    /// Sets [`version`](Self::version) with a builder.
+    pub fn version_with<B: crate::typed::builder::Build<Output = VersionProperty>>(
+        self,
+        f: impl FnOnce(VersionPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.version(f(VersionPropertyBuilder::new()).build())
+    }
+
+    pub fn wildcard(
+        self,
+        value: impl Into<WildcardProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Wildcard(value.into()));
+        builder
+    }
+
+    /// Sets [`wildcard`](Self::wildcard) with a builder.
+    pub fn wildcard_with<B: crate::typed::builder::Build<Output = WildcardProperty>>(
+        self,
+        f: impl FnOnce(WildcardPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.wildcard(f(WildcardPropertyBuilder::new()).build())
+    }
+
+    pub fn date_nanos(
+        self,
+        value: impl Into<DateNanosProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::DateNanos(value.into()));
+        builder
+    }
+
+    /// Sets [`date_nanos`](Self::date_nanos) with a builder.
+    pub fn date_nanos_with<B: crate::typed::builder::Build<Output = DateNanosProperty>>(
+        self,
+        f: impl FnOnce(DateNanosPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.date_nanos(f(DateNanosPropertyBuilder::new()).build())
+    }
+
+    pub fn date(
+        self,
+        value: impl Into<DateProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Date(value.into()));
+        builder
+    }
+
+    /// Sets [`date`](Self::date) with a builder.
+    pub fn date_with<B: crate::typed::builder::Build<Output = DateProperty>>(
+        self,
+        f: impl FnOnce(DatePropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.date(f(DatePropertyBuilder::new()).build())
+    }
+
+    pub fn aggregate_metric_double(
+        self,
+        value: impl Into<AggregateMetricDoubleProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::AggregateMetricDouble(value.into()));
+        builder
+    }
+
+    /// Sets [`aggregate_metric_double`](Self::aggregate_metric_double) with a builder.
+    pub fn aggregate_metric_double_with<
+        B: crate::typed::builder::Build<Output = AggregateMetricDoubleProperty>,
+    >(
+        self,
+        f: impl FnOnce(AggregateMetricDoublePropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.aggregate_metric_double(f(AggregateMetricDoublePropertyBuilder::new()).build())
+    }
+
+    pub fn dense_vector(
+        self,
+        value: impl Into<DenseVectorProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::DenseVector(value.into()));
+        builder
+    }
+
+    /// Sets [`dense_vector`](Self::dense_vector) with a builder.
+    pub fn dense_vector_with<B: crate::typed::builder::Build<Output = DenseVectorProperty>>(
+        self,
+        f: impl FnOnce(DenseVectorPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.dense_vector(f(DenseVectorPropertyBuilder::new()).build())
+    }
+
+    pub fn flattened(
+        self,
+        value: impl Into<FlattenedProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Flattened(value.into()));
+        builder
+    }
+
+    /// Sets [`flattened`](Self::flattened) with a builder.
+    pub fn flattened_with<B: crate::typed::builder::Build<Output = FlattenedProperty>>(
+        self,
+        f: impl FnOnce(FlattenedPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.flattened(f(FlattenedPropertyBuilder::new()).build())
+    }
+
+    pub fn nested(
+        self,
+        value: impl Into<NestedProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Nested(value.into()));
+        builder
+    }
+
+    /// Sets [`nested`](Self::nested) with a builder.
+    pub fn nested_with<B: crate::typed::builder::Build<Output = NestedProperty>>(
+        self,
+        f: impl FnOnce(NestedPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.nested(f(NestedPropertyBuilder::new()).build())
+    }
+
+    pub fn object(
+        self,
+        value: impl Into<ObjectProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Object(value.into()));
+        builder
+    }
+
+    /// Sets [`object`](Self::object) with a builder.
+    pub fn object_with<B: crate::typed::builder::Build<Output = ObjectProperty>>(
+        self,
+        f: impl FnOnce(ObjectPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.object(f(ObjectPropertyBuilder::new()).build())
+    }
+
+    pub fn passthrough(
+        self,
+        value: impl Into<PassthroughObjectProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Passthrough(value.into()));
+        builder
+    }
+
+    /// Sets [`passthrough`](Self::passthrough) with a builder.
+    pub fn passthrough_with<B: crate::typed::builder::Build<Output = PassthroughObjectProperty>>(
+        self,
+        f: impl FnOnce(PassthroughObjectPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.passthrough(f(PassthroughObjectPropertyBuilder::new()).build())
+    }
+
+    /// Technical preview
+    pub fn rank_vectors(
+        self,
+        value: impl Into<RankVectorProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::RankVectors(value.into()));
+        builder
+    }
+
+    /// Sets [`rank_vectors`](Self::rank_vectors) with a builder.
+    pub fn rank_vectors_with<B: crate::typed::builder::Build<Output = RankVectorProperty>>(
+        self,
+        f: impl FnOnce(RankVectorPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.rank_vectors(f(RankVectorPropertyBuilder::new()).build())
+    }
+
+    pub fn semantic_text(
+        self,
+        value: impl Into<SemanticTextProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::SemanticText(value.into()));
+        builder
+    }
+
+    /// Sets [`semantic_text`](Self::semantic_text) with a builder.
+    pub fn semantic_text_with<B: crate::typed::builder::Build<Output = SemanticTextProperty>>(
+        self,
+        f: impl FnOnce(SemanticTextPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.semantic_text(f(SemanticTextPropertyBuilder::new()).build())
+    }
+
+    pub fn sparse_vector(
+        self,
+        value: impl Into<SparseVectorProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::SparseVector(value.into()));
+        builder
+    }
+
+    /// Sets [`sparse_vector`](Self::sparse_vector) with a builder.
+    pub fn sparse_vector_with<B: crate::typed::builder::Build<Output = SparseVectorProperty>>(
+        self,
+        f: impl FnOnce(SparseVectorPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.sparse_vector(f(SparseVectorPropertyBuilder::new()).build())
+    }
+
+    pub fn completion(
+        self,
+        value: impl Into<CompletionProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Completion(value.into()));
+        builder
+    }
+
+    /// Sets [`completion`](Self::completion) with a builder.
+    pub fn completion_with<B: crate::typed::builder::Build<Output = CompletionProperty>>(
+        self,
+        f: impl FnOnce(CompletionPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.completion(f(CompletionPropertyBuilder::new()).build())
+    }
+
+    pub fn constant_keyword(
+        self,
+        value: impl Into<ConstantKeywordProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::ConstantKeyword(value.into()));
+        builder
+    }
+
+    /// Sets [`constant_keyword`](Self::constant_keyword) with a builder.
+    pub fn constant_keyword_with<
+        B: crate::typed::builder::Build<Output = ConstantKeywordProperty>,
+    >(
+        self,
+        f: impl FnOnce(ConstantKeywordPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.constant_keyword(f(ConstantKeywordPropertyBuilder::new()).build())
+    }
+
+    pub fn counted_keyword(
+        self,
+        value: impl Into<CountedKeywordProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::CountedKeyword(value.into()));
+        builder
+    }
+
+    /// Sets [`counted_keyword`](Self::counted_keyword) with a builder.
+    pub fn counted_keyword_with<
+        B: crate::typed::builder::Build<Output = CountedKeywordProperty>,
+    >(
+        self,
+        f: impl FnOnce(CountedKeywordPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.counted_keyword(f(CountedKeywordPropertyBuilder::new()).build())
+    }
+
+    pub fn alias(
+        self,
+        value: impl Into<FieldAliasProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Alias(value.into()));
+        builder
+    }
+
+    /// Sets [`alias`](Self::alias) with a builder.
+    pub fn alias_with<B: crate::typed::builder::Build<Output = FieldAliasProperty>>(
+        self,
+        f: impl FnOnce(FieldAliasPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.alias(f(FieldAliasPropertyBuilder::new()).build())
+    }
+
+    pub fn histogram(
+        self,
+        value: impl Into<HistogramProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Histogram(value.into()));
+        builder
+    }
+
+    /// Sets [`histogram`](Self::histogram) with a builder.
+    pub fn histogram_with<B: crate::typed::builder::Build<Output = HistogramProperty>>(
+        self,
+        f: impl FnOnce(HistogramPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.histogram(f(HistogramPropertyBuilder::new()).build())
+    }
+
+    pub fn exponential_histogram(
+        self,
+        value: impl Into<ExponentialHistogramProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::ExponentialHistogram(value.into()));
+        builder
+    }
+
+    /// Sets [`exponential_histogram`](Self::exponential_histogram) with a builder.
+    pub fn exponential_histogram_with<
+        B: crate::typed::builder::Build<Output = ExponentialHistogramProperty>,
+    >(
+        self,
+        f: impl FnOnce(ExponentialHistogramPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.exponential_histogram(f(ExponentialHistogramPropertyBuilder::new()).build())
+    }
+
+    pub fn ip(
+        self,
+        value: impl Into<IpProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Ip(value.into()));
+        builder
+    }
+
+    /// Sets [`ip`](Self::ip) with a builder.
+    pub fn ip_with<B: crate::typed::builder::Build<Output = IpProperty>>(
+        self,
+        f: impl FnOnce(IpPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.ip(f(IpPropertyBuilder::new()).build())
+    }
+
+    pub fn murmur3(
+        self,
+        value: impl Into<Murmur3HashProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Murmur3(value.into()));
+        builder
+    }
+
+    /// Sets [`murmur3`](Self::murmur3) with a builder.
+    pub fn murmur3_with<B: crate::typed::builder::Build<Output = Murmur3HashProperty>>(
+        self,
+        f: impl FnOnce(Murmur3HashPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.murmur3(f(Murmur3HashPropertyBuilder::new()).build())
+    }
+
+    pub fn token_count(
+        self,
+        value: impl Into<TokenCountProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::TokenCount(value.into()));
+        builder
+    }
+
+    /// Sets [`token_count`](Self::token_count) with a builder.
+    pub fn token_count_with<B: crate::typed::builder::Build<Output = TokenCountProperty>>(
+        self,
+        f: impl FnOnce(TokenCountPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.token_count(f(TokenCountPropertyBuilder::new()).build())
+    }
+
+    pub fn geo_point(
+        self,
+        value: impl Into<GeoPointProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::GeoPoint(value.into()));
+        builder
+    }
+
+    /// Sets [`geo_point`](Self::geo_point) with a builder.
+    pub fn geo_point_with<B: crate::typed::builder::Build<Output = GeoPointProperty>>(
+        self,
+        f: impl FnOnce(GeoPointPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.geo_point(f(GeoPointPropertyBuilder::new()).build())
+    }
+
+    /// The `geo_shape` data type facilitates the indexing of and searching with arbitrary geo shapes such as rectangles
+    /// and polygons.
+    pub fn geo_shape(
+        self,
+        value: impl Into<GeoShapeProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::GeoShape(value.into()));
+        builder
+    }
+
+    /// Sets [`geo_shape`](Self::geo_shape) with a builder.
+    pub fn geo_shape_with<B: crate::typed::builder::Build<Output = GeoShapeProperty>>(
+        self,
+        f: impl FnOnce(GeoShapePropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.geo_shape(f(GeoShapePropertyBuilder::new()).build())
+    }
+
+    pub fn point(
+        self,
+        value: impl Into<PointProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Point(value.into()));
+        builder
+    }
+
+    /// Sets [`point`](Self::point) with a builder.
+    pub fn point_with<B: crate::typed::builder::Build<Output = PointProperty>>(
+        self,
+        f: impl FnOnce(PointPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.point(f(PointPropertyBuilder::new()).build())
+    }
+
+    /// The `shape` data type facilitates the indexing of and searching with arbitrary `x, y` cartesian shapes such as
+    /// rectangles and polygons.
+    pub fn shape(
+        self,
+        value: impl Into<ShapeProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Shape(value.into()));
+        builder
+    }
+
+    /// Sets [`shape`](Self::shape) with a builder.
+    pub fn shape_with<B: crate::typed::builder::Build<Output = ShapeProperty>>(
+        self,
+        f: impl FnOnce(ShapePropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.shape(f(ShapePropertyBuilder::new()).build())
+    }
+
+    pub fn byte(
+        self,
+        value: impl Into<ByteNumberProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Byte(value.into()));
+        builder
+    }
+
+    /// Sets [`byte`](Self::byte) with a builder.
+    pub fn byte_with<B: crate::typed::builder::Build<Output = ByteNumberProperty>>(
+        self,
+        f: impl FnOnce(ByteNumberPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.byte(f(ByteNumberPropertyBuilder::new()).build())
+    }
+
+    pub fn double(
+        self,
+        value: impl Into<DoubleNumberProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Double(value.into()));
+        builder
+    }
+
+    /// Sets [`double`](Self::double) with a builder.
+    pub fn double_with<B: crate::typed::builder::Build<Output = DoubleNumberProperty>>(
+        self,
+        f: impl FnOnce(DoubleNumberPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.double(f(DoubleNumberPropertyBuilder::new()).build())
+    }
+
+    pub fn float(
+        self,
+        value: impl Into<FloatNumberProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Float(value.into()));
+        builder
+    }
+
+    /// Sets [`float`](Self::float) with a builder.
+    pub fn float_with<B: crate::typed::builder::Build<Output = FloatNumberProperty>>(
+        self,
+        f: impl FnOnce(FloatNumberPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.float(f(FloatNumberPropertyBuilder::new()).build())
+    }
+
+    pub fn half_float(
+        self,
+        value: impl Into<HalfFloatNumberProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::HalfFloat(value.into()));
+        builder
+    }
+
+    /// Sets [`half_float`](Self::half_float) with a builder.
+    pub fn half_float_with<B: crate::typed::builder::Build<Output = HalfFloatNumberProperty>>(
+        self,
+        f: impl FnOnce(HalfFloatNumberPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.half_float(f(HalfFloatNumberPropertyBuilder::new()).build())
+    }
+
+    pub fn integer(
+        self,
+        value: impl Into<IntegerNumberProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Integer(value.into()));
+        builder
+    }
+
+    /// Sets [`integer`](Self::integer) with a builder.
+    pub fn integer_with<B: crate::typed::builder::Build<Output = IntegerNumberProperty>>(
+        self,
+        f: impl FnOnce(IntegerNumberPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.integer(f(IntegerNumberPropertyBuilder::new()).build())
+    }
+
+    pub fn long(
+        self,
+        value: impl Into<LongNumberProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Long(value.into()));
+        builder
+    }
+
+    /// Sets [`long`](Self::long) with a builder.
+    pub fn long_with<B: crate::typed::builder::Build<Output = LongNumberProperty>>(
+        self,
+        f: impl FnOnce(LongNumberPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.long(f(LongNumberPropertyBuilder::new()).build())
+    }
+
+    pub fn scaled_float(
+        self,
+        value: impl Into<ScaledFloatNumberProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::ScaledFloat(value.into()));
+        builder
+    }
+
+    /// Sets [`scaled_float`](Self::scaled_float) with a builder.
+    pub fn scaled_float_with<
+        B: crate::typed::builder::Build<Output = ScaledFloatNumberProperty>,
+    >(
+        self,
+        f: impl FnOnce(ScaledFloatNumberPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.scaled_float(f(ScaledFloatNumberPropertyBuilder::new()).build())
+    }
+
+    pub fn short(
+        self,
+        value: impl Into<ShortNumberProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::Short(value.into()));
+        builder
+    }
+
+    /// Sets [`short`](Self::short) with a builder.
+    pub fn short_with<B: crate::typed::builder::Build<Output = ShortNumberProperty>>(
+        self,
+        f: impl FnOnce(ShortNumberPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.short(f(ShortNumberPropertyBuilder::new()).build())
+    }
+
+    pub fn unsigned_long(
+        self,
+        value: impl Into<UnsignedLongNumberProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::UnsignedLong(value.into()));
+        builder
+    }
+
+    /// Sets [`unsigned_long`](Self::unsigned_long) with a builder.
+    pub fn unsigned_long_with<
+        B: crate::typed::builder::Build<Output = UnsignedLongNumberProperty>,
+    >(
+        self,
+        f: impl FnOnce(UnsignedLongNumberPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.unsigned_long(f(UnsignedLongNumberPropertyBuilder::new()).build())
+    }
+
+    pub fn date_range(
+        self,
+        value: impl Into<DateRangeProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::DateRange(value.into()));
+        builder
+    }
+
+    /// Sets [`date_range`](Self::date_range) with a builder.
+    pub fn date_range_with<B: crate::typed::builder::Build<Output = DateRangeProperty>>(
+        self,
+        f: impl FnOnce(DateRangePropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.date_range(f(DateRangePropertyBuilder::new()).build())
+    }
+
+    pub fn double_range(
+        self,
+        value: impl Into<DoubleRangeProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::DoubleRange(value.into()));
+        builder
+    }
+
+    /// Sets [`double_range`](Self::double_range) with a builder.
+    pub fn double_range_with<B: crate::typed::builder::Build<Output = DoubleRangeProperty>>(
+        self,
+        f: impl FnOnce(DoubleRangePropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.double_range(f(DoubleRangePropertyBuilder::new()).build())
+    }
+
+    pub fn float_range(
+        self,
+        value: impl Into<FloatRangeProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::FloatRange(value.into()));
+        builder
+    }
+
+    /// Sets [`float_range`](Self::float_range) with a builder.
+    pub fn float_range_with<B: crate::typed::builder::Build<Output = FloatRangeProperty>>(
+        self,
+        f: impl FnOnce(FloatRangePropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.float_range(f(FloatRangePropertyBuilder::new()).build())
+    }
+
+    pub fn integer_range(
+        self,
+        value: impl Into<IntegerRangeProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::IntegerRange(value.into()));
+        builder
+    }
+
+    /// Sets [`integer_range`](Self::integer_range) with a builder.
+    pub fn integer_range_with<B: crate::typed::builder::Build<Output = IntegerRangeProperty>>(
+        self,
+        f: impl FnOnce(IntegerRangePropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.integer_range(f(IntegerRangePropertyBuilder::new()).build())
+    }
+
+    pub fn ip_range(
+        self,
+        value: impl Into<IpRangeProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::IpRange(value.into()));
+        builder
+    }
+
+    /// Sets [`ip_range`](Self::ip_range) with a builder.
+    pub fn ip_range_with<B: crate::typed::builder::Build<Output = IpRangeProperty>>(
+        self,
+        f: impl FnOnce(IpRangePropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.ip_range(f(IpRangePropertyBuilder::new()).build())
+    }
+
+    pub fn long_range(
+        self,
+        value: impl Into<LongRangeProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::LongRange(value.into()));
+        builder
+    }
+
+    /// Sets [`long_range`](Self::long_range) with a builder.
+    pub fn long_range_with<B: crate::typed::builder::Build<Output = LongRangeProperty>>(
+        self,
+        f: impl FnOnce(LongRangePropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.long_range(f(LongRangePropertyBuilder::new()).build())
+    }
+
+    pub fn icu_collation_keyword(
+        self,
+        value: impl Into<IcuCollationProperty>,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        let mut builder = self.with_state();
+        builder.variant = Some(Property::IcuCollationKeyword(value.into()));
+        builder
+    }
+
+    /// Sets [`icu_collation_keyword`](Self::icu_collation_keyword) with a builder.
+    pub fn icu_collation_keyword_with<
+        B: crate::typed::builder::Build<Output = IcuCollationProperty>,
+    >(
+        self,
+        f: impl FnOnce(IcuCollationPropertyBuilder) -> B,
+    ) -> PropertyBuilder<(crate::typed::builder::Set,)> {
+        self.icu_collation_keyword(f(IcuCollationPropertyBuilder::new()).build())
+    }
+}
+
+impl<S0> PropertyBuilder<(S0,)> {
+    /// Builds a [`Property`].
+    pub fn build(self) -> Property
+    where
+        S0: crate::typed::builder::IsVariantSet<Property>,
+    {
+        self.variant.unwrap()
+    }
+}
+
+impl<S0> crate::typed::builder::Build for PropertyBuilder<(S0,)>
+where
+    S0: crate::typed::builder::IsVariantSet<Property>,
+{
+    type Output = Property;
+
+    fn build(self) -> Property {
+        Self::build(self)
+    }
+}
+
+impl<S0> From<PropertyBuilder<(S0,)>> for Property
+where
+    S0: crate::typed::builder::IsVariantSet<Property>,
+{
+    fn from(builder: PropertyBuilder<(S0,)>) -> Self {
+        builder.build()
     }
 }
 
@@ -18814,6 +19434,15 @@ impl PropertyBaseBuilder {
         self
     }
 
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
+    }
+
     pub fn ignore_above(mut self, value: i32) -> Self {
         self.ignore_above = Some(value);
         self
@@ -18863,6 +19492,15 @@ impl PropertyBaseBuilder {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -19034,6 +19672,15 @@ impl RangePropertyBaseBuilder {
         self
     }
 
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
+    }
+
     pub fn ignore_above(mut self, value: i32) -> Self {
         self.ignore_above = Some(value);
         self
@@ -19083,6 +19730,15 @@ impl RangePropertyBaseBuilder {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -19197,7 +19853,7 @@ impl From<RangePropertyBaseBuilder> for RangePropertyBase {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct RankFeatureProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -19214,20 +19870,15 @@ pub struct RankFeatureProperty {
     pub synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub positive_score_impact: Option<bool>,
-    pub r#type: String,
 }
 
 impl RankFeatureProperty {
     /// Creates a builder for [`RankFeatureProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> RankFeaturePropertyBuilder {
         RankFeaturePropertyBuilder::new()
     }
 
     /// Creates a [`RankFeatureProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = RankFeatureProperty>>(
         f: impl FnOnce(RankFeaturePropertyBuilder) -> B,
     ) -> RankFeatureProperty {
@@ -19235,16 +19886,9 @@ impl RankFeatureProperty {
     }
 }
 
-/// Markers of the required members of [`RankFeaturePropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod rank_feature_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`RankFeatureProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct RankFeaturePropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct RankFeaturePropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -19252,11 +19896,9 @@ pub struct RankFeaturePropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     fields: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
     positive_score_impact: Option<bool>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl RankFeaturePropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl RankFeaturePropertyBuilder {
     pub(crate) fn new() -> Self {
         RankFeaturePropertyBuilder {
             meta: None,
@@ -19266,27 +19908,11 @@ impl RankFeaturePropertyBuilder<(crate::typed::builder::NotSet,)> {
             fields: None,
             synthetic_source_keep: None,
             positive_score_impact: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> RankFeaturePropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> RankFeaturePropertyBuilder<N> {
-        RankFeaturePropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            positive_score_impact: self.positive_score_impact,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl RankFeaturePropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -19334,6 +19960,15 @@ impl<S0> RankFeaturePropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -19387,6 +20022,15 @@ impl<S0> RankFeaturePropertyBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
+    }
+
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
         self.synthetic_source_keep = Some(value.into());
         self
@@ -19410,24 +20054,9 @@ impl<S0> RankFeaturePropertyBuilder<(S0,)> {
     }
 }
 
-impl RankFeaturePropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> RankFeaturePropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> RankFeaturePropertyBuilder<(S0,)> {
+impl RankFeaturePropertyBuilder {
     /// Builds a [`RankFeatureProperty`].
-    pub fn build(self) -> RankFeatureProperty
-    where
-        S0: crate::typed::builder::IsSet<rank_feature_property_members::r#type>,
-    {
+    pub fn build(self) -> RankFeatureProperty {
         RankFeatureProperty {
             meta: self.meta,
             properties: self.properties,
@@ -19436,15 +20065,11 @@ impl<S0> RankFeaturePropertyBuilder<(S0,)> {
             fields: self.fields,
             synthetic_source_keep: self.synthetic_source_keep,
             positive_score_impact: self.positive_score_impact,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for RankFeaturePropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<rank_feature_property_members::r#type>,
-{
+impl crate::typed::builder::Build for RankFeaturePropertyBuilder {
     type Output = RankFeatureProperty;
 
     fn build(self) -> RankFeatureProperty {
@@ -19452,16 +20077,13 @@ where
     }
 }
 
-impl<S0> From<RankFeaturePropertyBuilder<(S0,)>> for RankFeatureProperty
-where
-    S0: crate::typed::builder::IsSet<rank_feature_property_members::r#type>,
-{
-    fn from(builder: RankFeaturePropertyBuilder<(S0,)>) -> Self {
+impl From<RankFeaturePropertyBuilder> for RankFeatureProperty {
+    fn from(builder: RankFeaturePropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct RankFeaturesProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -19478,20 +20100,15 @@ pub struct RankFeaturesProperty {
     pub synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub positive_score_impact: Option<bool>,
-    pub r#type: String,
 }
 
 impl RankFeaturesProperty {
     /// Creates a builder for [`RankFeaturesProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> RankFeaturesPropertyBuilder {
         RankFeaturesPropertyBuilder::new()
     }
 
     /// Creates a [`RankFeaturesProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = RankFeaturesProperty>>(
         f: impl FnOnce(RankFeaturesPropertyBuilder) -> B,
     ) -> RankFeaturesProperty {
@@ -19499,16 +20116,9 @@ impl RankFeaturesProperty {
     }
 }
 
-/// Markers of the required members of [`RankFeaturesPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod rank_features_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`RankFeaturesProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct RankFeaturesPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct RankFeaturesPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -19516,11 +20126,9 @@ pub struct RankFeaturesPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     fields: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
     positive_score_impact: Option<bool>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl RankFeaturesPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl RankFeaturesPropertyBuilder {
     pub(crate) fn new() -> Self {
         RankFeaturesPropertyBuilder {
             meta: None,
@@ -19530,27 +20138,11 @@ impl RankFeaturesPropertyBuilder<(crate::typed::builder::NotSet,)> {
             fields: None,
             synthetic_source_keep: None,
             positive_score_impact: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> RankFeaturesPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> RankFeaturesPropertyBuilder<N> {
-        RankFeaturesPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            positive_score_impact: self.positive_score_impact,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl RankFeaturesPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -19598,6 +20190,15 @@ impl<S0> RankFeaturesPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -19649,6 +20250,15 @@ impl<S0> RankFeaturesPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -19674,24 +20284,9 @@ impl<S0> RankFeaturesPropertyBuilder<(S0,)> {
     }
 }
 
-impl RankFeaturesPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> RankFeaturesPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> RankFeaturesPropertyBuilder<(S0,)> {
+impl RankFeaturesPropertyBuilder {
     /// Builds a [`RankFeaturesProperty`].
-    pub fn build(self) -> RankFeaturesProperty
-    where
-        S0: crate::typed::builder::IsSet<rank_features_property_members::r#type>,
-    {
+    pub fn build(self) -> RankFeaturesProperty {
         RankFeaturesProperty {
             meta: self.meta,
             properties: self.properties,
@@ -19700,15 +20295,11 @@ impl<S0> RankFeaturesPropertyBuilder<(S0,)> {
             fields: self.fields,
             synthetic_source_keep: self.synthetic_source_keep,
             positive_score_impact: self.positive_score_impact,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for RankFeaturesPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<rank_features_property_members::r#type>,
-{
+impl crate::typed::builder::Build for RankFeaturesPropertyBuilder {
     type Output = RankFeaturesProperty;
 
     fn build(self) -> RankFeaturesProperty {
@@ -19716,11 +20307,8 @@ where
     }
 }
 
-impl<S0> From<RankFeaturesPropertyBuilder<(S0,)>> for RankFeaturesProperty
-where
-    S0: crate::typed::builder::IsSet<rank_features_property_members::r#type>,
-{
-    fn from(builder: RankFeaturesPropertyBuilder<(S0,)>) -> Self {
+impl From<RankFeaturesPropertyBuilder> for RankFeaturesProperty {
+    fn from(builder: RankFeaturesPropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -19736,7 +20324,7 @@ pub enum RankVectorElementType {
 }
 
 /// Technical preview
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct RankVectorProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -19751,7 +20339,6 @@ pub struct RankVectorProperty {
     pub fields: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
-    pub r#type: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub element_type: Option<RankVectorElementType>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -19760,15 +20347,11 @@ pub struct RankVectorProperty {
 
 impl RankVectorProperty {
     /// Creates a builder for [`RankVectorProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> RankVectorPropertyBuilder {
         RankVectorPropertyBuilder::new()
     }
 
     /// Creates a [`RankVectorProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = RankVectorProperty>>(
         f: impl FnOnce(RankVectorPropertyBuilder) -> B,
     ) -> RankVectorProperty {
@@ -19776,29 +20359,20 @@ impl RankVectorProperty {
     }
 }
 
-/// Markers of the required members of [`RankVectorPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod rank_vector_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`RankVectorProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct RankVectorPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct RankVectorPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
     dynamic: Option<DynamicMapping>,
     fields: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
-    r#type: Option<String>,
     element_type: Option<RankVectorElementType>,
     dims: Option<i32>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl RankVectorPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl RankVectorPropertyBuilder {
     pub(crate) fn new() -> Self {
         RankVectorPropertyBuilder {
             meta: None,
@@ -19807,30 +20381,13 @@ impl RankVectorPropertyBuilder<(crate::typed::builder::NotSet,)> {
             dynamic: None,
             fields: None,
             synthetic_source_keep: None,
-            r#type: None,
             element_type: None,
             dims: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> RankVectorPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> RankVectorPropertyBuilder<N> {
-        RankVectorPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            r#type: self.r#type,
-            element_type: self.element_type,
-            dims: self.dims,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl RankVectorPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -19878,6 +20435,15 @@ impl<S0> RankVectorPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -19929,6 +20495,15 @@ impl<S0> RankVectorPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -19965,24 +20540,9 @@ impl<S0> RankVectorPropertyBuilder<(S0,)> {
     }
 }
 
-impl RankVectorPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> RankVectorPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> RankVectorPropertyBuilder<(S0,)> {
+impl RankVectorPropertyBuilder {
     /// Builds a [`RankVectorProperty`].
-    pub fn build(self) -> RankVectorProperty
-    where
-        S0: crate::typed::builder::IsSet<rank_vector_property_members::r#type>,
-    {
+    pub fn build(self) -> RankVectorProperty {
         RankVectorProperty {
             meta: self.meta,
             properties: self.properties,
@@ -19990,17 +20550,13 @@ impl<S0> RankVectorPropertyBuilder<(S0,)> {
             dynamic: self.dynamic,
             fields: self.fields,
             synthetic_source_keep: self.synthetic_source_keep,
-            r#type: self.r#type.unwrap(),
             element_type: self.element_type,
             dims: self.dims,
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for RankVectorPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<rank_vector_property_members::r#type>,
-{
+impl crate::typed::builder::Build for RankVectorPropertyBuilder {
     type Output = RankVectorProperty;
 
     fn build(self) -> RankVectorProperty {
@@ -20008,11 +20564,8 @@ where
     }
 }
 
-impl<S0> From<RankVectorPropertyBuilder<(S0,)>> for RankVectorProperty
-where
-    S0: crate::typed::builder::IsSet<rank_vector_property_members::r#type>,
-{
-    fn from(builder: RankVectorPropertyBuilder<(S0,)>) -> Self {
+impl From<RankVectorPropertyBuilder> for RankVectorProperty {
+    fn from(builder: RankVectorPropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -20558,7 +21111,7 @@ pub enum RuntimeFieldType {
 
 pub type RuntimeFields = indexmap::IndexMap<crate::typed::_types::Field, RuntimeField>;
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct ScaledFloatNumberProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -20597,7 +21150,6 @@ pub struct ScaledFloatNumberProperty {
     /// For internal use by Elastic only. Marks the field as a time series dimension. Defaults to false.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_series_dimension: Option<bool>,
-    pub r#type: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub null_value: Option<crate::typed::support::Float64>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -20606,15 +21158,11 @@ pub struct ScaledFloatNumberProperty {
 
 impl ScaledFloatNumberProperty {
     /// Creates a builder for [`ScaledFloatNumberProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> ScaledFloatNumberPropertyBuilder {
         ScaledFloatNumberPropertyBuilder::new()
     }
 
     /// Creates a [`ScaledFloatNumberProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = ScaledFloatNumberProperty>>(
         f: impl FnOnce(ScaledFloatNumberPropertyBuilder) -> B,
     ) -> ScaledFloatNumberProperty {
@@ -20622,16 +21170,9 @@ impl ScaledFloatNumberProperty {
     }
 }
 
-/// Markers of the required members of [`ScaledFloatNumberPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod scaled_float_number_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`ScaledFloatNumberProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct ScaledFloatNumberPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct ScaledFloatNumberPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -20649,13 +21190,11 @@ pub struct ScaledFloatNumberPropertyBuilder<S = (crate::typed::builder::NotSet,)
     script: Option<crate::typed::_types::Script>,
     time_series_metric: Option<TimeSeriesMetricType>,
     time_series_dimension: Option<bool>,
-    r#type: Option<String>,
     null_value: Option<crate::typed::support::Float64>,
     scaling_factor: Option<crate::typed::support::Float64>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl ScaledFloatNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl ScaledFloatNumberPropertyBuilder {
     pub(crate) fn new() -> Self {
         ScaledFloatNumberPropertyBuilder {
             meta: None,
@@ -20675,41 +21214,13 @@ impl ScaledFloatNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
             script: None,
             time_series_metric: None,
             time_series_dimension: None,
-            r#type: None,
             null_value: None,
             scaling_factor: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> ScaledFloatNumberPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> ScaledFloatNumberPropertyBuilder<N> {
-        ScaledFloatNumberPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            boost: self.boost,
-            coerce: self.coerce,
-            ignore_malformed: self.ignore_malformed,
-            index: self.index,
-            on_script_error: self.on_script_error,
-            script: self.script,
-            time_series_metric: self.time_series_metric,
-            time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type,
-            null_value: self.null_value,
-            scaling_factor: self.scaling_factor,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl ScaledFloatNumberPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -20757,6 +21268,15 @@ impl<S0> ScaledFloatNumberPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -20808,6 +21328,15 @@ impl<S0> ScaledFloatNumberPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -20975,24 +21504,9 @@ impl<S0> ScaledFloatNumberPropertyBuilder<(S0,)> {
     }
 }
 
-impl ScaledFloatNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> ScaledFloatNumberPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> ScaledFloatNumberPropertyBuilder<(S0,)> {
+impl ScaledFloatNumberPropertyBuilder {
     /// Builds a [`ScaledFloatNumberProperty`].
-    pub fn build(self) -> ScaledFloatNumberProperty
-    where
-        S0: crate::typed::builder::IsSet<scaled_float_number_property_members::r#type>,
-    {
+    pub fn build(self) -> ScaledFloatNumberProperty {
         ScaledFloatNumberProperty {
             meta: self.meta,
             properties: self.properties,
@@ -21011,17 +21525,13 @@ impl<S0> ScaledFloatNumberPropertyBuilder<(S0,)> {
             script: self.script,
             time_series_metric: self.time_series_metric,
             time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type.unwrap(),
             null_value: self.null_value,
             scaling_factor: self.scaling_factor,
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for ScaledFloatNumberPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<scaled_float_number_property_members::r#type>,
-{
+impl crate::typed::builder::Build for ScaledFloatNumberPropertyBuilder {
     type Output = ScaledFloatNumberProperty;
 
     fn build(self) -> ScaledFloatNumberProperty {
@@ -21029,16 +21539,13 @@ where
     }
 }
 
-impl<S0> From<ScaledFloatNumberPropertyBuilder<(S0,)>> for ScaledFloatNumberProperty
-where
-    S0: crate::typed::builder::IsSet<scaled_float_number_property_members::r#type>,
-{
-    fn from(builder: ScaledFloatNumberPropertyBuilder<(S0,)>) -> Self {
+impl From<ScaledFloatNumberPropertyBuilder> for ScaledFloatNumberProperty {
+    fn from(builder: ScaledFloatNumberPropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct SearchAsYouTypeProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -21075,7 +21582,6 @@ pub struct SearchAsYouTypeProperty {
     pub similarity: Option<SearchAsYouTypePropertySimilarity>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub term_vector: Option<TermVectorOption>,
-    pub r#type: String,
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -21099,15 +21605,11 @@ impl From<&str> for SearchAsYouTypePropertySimilarity {
 
 impl SearchAsYouTypeProperty {
     /// Creates a builder for [`SearchAsYouTypeProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> SearchAsYouTypePropertyBuilder {
         SearchAsYouTypePropertyBuilder::new()
     }
 
     /// Creates a [`SearchAsYouTypeProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = SearchAsYouTypeProperty>>(
         f: impl FnOnce(SearchAsYouTypePropertyBuilder) -> B,
     ) -> SearchAsYouTypeProperty {
@@ -21115,16 +21617,9 @@ impl SearchAsYouTypeProperty {
     }
 }
 
-/// Markers of the required members of [`SearchAsYouTypePropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod search_as_you_type_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`SearchAsYouTypeProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct SearchAsYouTypePropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct SearchAsYouTypePropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -21142,11 +21637,9 @@ pub struct SearchAsYouTypePropertyBuilder<S = (crate::typed::builder::NotSet,)> 
     search_quote_analyzer: Option<String>,
     similarity: Option<SearchAsYouTypePropertySimilarity>,
     term_vector: Option<TermVectorOption>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl SearchAsYouTypePropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl SearchAsYouTypePropertyBuilder {
     pub(crate) fn new() -> Self {
         SearchAsYouTypePropertyBuilder {
             meta: None,
@@ -21166,37 +21659,11 @@ impl SearchAsYouTypePropertyBuilder<(crate::typed::builder::NotSet,)> {
             search_quote_analyzer: None,
             similarity: None,
             term_vector: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> SearchAsYouTypePropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> SearchAsYouTypePropertyBuilder<N> {
-        SearchAsYouTypePropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            analyzer: self.analyzer,
-            index: self.index,
-            index_options: self.index_options,
-            max_shingle_size: self.max_shingle_size,
-            norms: self.norms,
-            search_analyzer: self.search_analyzer,
-            search_quote_analyzer: self.search_quote_analyzer,
-            similarity: self.similarity,
-            term_vector: self.term_vector,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl SearchAsYouTypePropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -21244,6 +21711,15 @@ impl<S0> SearchAsYouTypePropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -21295,6 +21771,15 @@ impl<S0> SearchAsYouTypePropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -21430,24 +21915,9 @@ impl<S0> SearchAsYouTypePropertyBuilder<(S0,)> {
     }
 }
 
-impl SearchAsYouTypePropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> SearchAsYouTypePropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> SearchAsYouTypePropertyBuilder<(S0,)> {
+impl SearchAsYouTypePropertyBuilder {
     /// Builds a [`SearchAsYouTypeProperty`].
-    pub fn build(self) -> SearchAsYouTypeProperty
-    where
-        S0: crate::typed::builder::IsSet<search_as_you_type_property_members::r#type>,
-    {
+    pub fn build(self) -> SearchAsYouTypeProperty {
         SearchAsYouTypeProperty {
             meta: self.meta,
             properties: self.properties,
@@ -21466,15 +21936,11 @@ impl<S0> SearchAsYouTypePropertyBuilder<(S0,)> {
             search_quote_analyzer: self.search_quote_analyzer,
             similarity: self.similarity,
             term_vector: self.term_vector,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for SearchAsYouTypePropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<search_as_you_type_property_members::r#type>,
-{
+impl crate::typed::builder::Build for SearchAsYouTypePropertyBuilder {
     type Output = SearchAsYouTypeProperty;
 
     fn build(self) -> SearchAsYouTypeProperty {
@@ -21482,11 +21948,8 @@ where
     }
 }
 
-impl<S0> From<SearchAsYouTypePropertyBuilder<(S0,)>> for SearchAsYouTypeProperty
-where
-    S0: crate::typed::builder::IsSet<search_as_you_type_property_members::r#type>,
-{
-    fn from(builder: SearchAsYouTypePropertyBuilder<(S0,)>) -> Self {
+impl From<SearchAsYouTypePropertyBuilder> for SearchAsYouTypeProperty {
+    fn from(builder: SearchAsYouTypePropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -21595,9 +22058,8 @@ impl From<SemanticTextIndexOptionsBuilder> for SemanticTextIndexOptions {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct SemanticTextProperty {
-    pub r#type: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub meta: Option<indexmap::IndexMap<String, String>>,
     /// Inference endpoint that will be used to generate embeddings for the field.
@@ -21642,15 +22104,11 @@ impl From<ChunkingSettings> for SemanticTextPropertyChunkingSettings {
 
 impl SemanticTextProperty {
     /// Creates a builder for [`SemanticTextProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> SemanticTextPropertyBuilder {
         SemanticTextPropertyBuilder::new()
     }
 
     /// Creates a [`SemanticTextProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = SemanticTextProperty>>(
         f: impl FnOnce(SemanticTextPropertyBuilder) -> B,
     ) -> SemanticTextProperty {
@@ -21658,55 +22116,31 @@ impl SemanticTextProperty {
     }
 }
 
-/// Markers of the required members of [`SemanticTextPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod semantic_text_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`SemanticTextProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct SemanticTextPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
-    r#type: Option<String>,
+pub struct SemanticTextPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     inference_id: Option<crate::typed::_types::Id>,
     search_inference_id: Option<crate::typed::_types::Id>,
     index_options: Option<SemanticTextIndexOptions>,
     chunking_settings: Option<SemanticTextPropertyChunkingSettings>,
     fields: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl SemanticTextPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl SemanticTextPropertyBuilder {
     pub(crate) fn new() -> Self {
         SemanticTextPropertyBuilder {
-            r#type: None,
             meta: None,
             inference_id: None,
             search_inference_id: None,
             index_options: None,
             chunking_settings: None,
             fields: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> SemanticTextPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> SemanticTextPropertyBuilder<N> {
-        SemanticTextPropertyBuilder {
-            r#type: self.r#type,
-            meta: self.meta,
-            inference_id: self.inference_id,
-            search_inference_id: self.search_inference_id,
-            index_options: self.index_options,
-            chunking_settings: self.chunking_settings,
-            fields: self.fields,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl SemanticTextPropertyBuilder {
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
         self
@@ -21829,28 +22263,21 @@ impl<S0> SemanticTextPropertyBuilder<(S0,)> {
             .insert(key.into(), value.into());
         self
     }
-}
 
-impl SemanticTextPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
         self,
-        value: impl Into<String>,
-    ) -> SemanticTextPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 }
 
-impl<S0> SemanticTextPropertyBuilder<(S0,)> {
+impl SemanticTextPropertyBuilder {
     /// Builds a [`SemanticTextProperty`].
-    pub fn build(self) -> SemanticTextProperty
-    where
-        S0: crate::typed::builder::IsSet<semantic_text_property_members::r#type>,
-    {
+    pub fn build(self) -> SemanticTextProperty {
         SemanticTextProperty {
-            r#type: self.r#type.unwrap(),
             meta: self.meta,
             inference_id: self.inference_id,
             search_inference_id: self.search_inference_id,
@@ -21861,10 +22288,7 @@ impl<S0> SemanticTextPropertyBuilder<(S0,)> {
     }
 }
 
-impl<S0> crate::typed::builder::Build for SemanticTextPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<semantic_text_property_members::r#type>,
-{
+impl crate::typed::builder::Build for SemanticTextPropertyBuilder {
     type Output = SemanticTextProperty;
 
     fn build(self) -> SemanticTextProperty {
@@ -21872,18 +22296,15 @@ where
     }
 }
 
-impl<S0> From<SemanticTextPropertyBuilder<(S0,)>> for SemanticTextProperty
-where
-    S0: crate::typed::builder::IsSet<semantic_text_property_members::r#type>,
-{
-    fn from(builder: SemanticTextPropertyBuilder<(S0,)>) -> Self {
+impl From<SemanticTextPropertyBuilder> for SemanticTextProperty {
+    fn from(builder: SemanticTextPropertyBuilder) -> Self {
         builder.build()
     }
 }
 
 /// The `shape` data type facilitates the indexing of and searching with arbitrary `x, y` cartesian shapes such as
 /// rectangles and polygons.
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct ShapeProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -21912,20 +22333,15 @@ pub struct ShapeProperty {
     pub ignore_z_value: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub orientation: Option<GeoOrientation>,
-    pub r#type: String,
 }
 
 impl ShapeProperty {
     /// Creates a builder for [`ShapeProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> ShapePropertyBuilder {
         ShapePropertyBuilder::new()
     }
 
     /// Creates a [`ShapeProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = ShapeProperty>>(
         f: impl FnOnce(ShapePropertyBuilder) -> B,
     ) -> ShapeProperty {
@@ -21933,16 +22349,9 @@ impl ShapeProperty {
     }
 }
 
-/// Markers of the required members of [`ShapePropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod shape_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`ShapeProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct ShapePropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct ShapePropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -21956,11 +22365,9 @@ pub struct ShapePropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     ignore_malformed: Option<bool>,
     ignore_z_value: Option<bool>,
     orientation: Option<GeoOrientation>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl ShapePropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl ShapePropertyBuilder {
     pub(crate) fn new() -> Self {
         ShapePropertyBuilder {
             meta: None,
@@ -21976,33 +22383,11 @@ impl ShapePropertyBuilder<(crate::typed::builder::NotSet,)> {
             ignore_malformed: None,
             ignore_z_value: None,
             orientation: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> ShapePropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> ShapePropertyBuilder<N> {
-        ShapePropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            coerce: self.coerce,
-            ignore_malformed: self.ignore_malformed,
-            ignore_z_value: self.ignore_z_value,
-            orientation: self.orientation,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl ShapePropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -22050,6 +22435,15 @@ impl<S0> ShapePropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -22101,6 +22495,15 @@ impl<S0> ShapePropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -22192,24 +22595,9 @@ impl<S0> ShapePropertyBuilder<(S0,)> {
     }
 }
 
-impl ShapePropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> ShapePropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> ShapePropertyBuilder<(S0,)> {
+impl ShapePropertyBuilder {
     /// Builds a [`ShapeProperty`].
-    pub fn build(self) -> ShapeProperty
-    where
-        S0: crate::typed::builder::IsSet<shape_property_members::r#type>,
-    {
+    pub fn build(self) -> ShapeProperty {
         ShapeProperty {
             meta: self.meta,
             properties: self.properties,
@@ -22224,15 +22612,11 @@ impl<S0> ShapePropertyBuilder<(S0,)> {
             ignore_malformed: self.ignore_malformed,
             ignore_z_value: self.ignore_z_value,
             orientation: self.orientation,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for ShapePropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<shape_property_members::r#type>,
-{
+impl crate::typed::builder::Build for ShapePropertyBuilder {
     type Output = ShapeProperty;
 
     fn build(self) -> ShapeProperty {
@@ -22240,16 +22624,13 @@ where
     }
 }
 
-impl<S0> From<ShapePropertyBuilder<(S0,)>> for ShapeProperty
-where
-    S0: crate::typed::builder::IsSet<shape_property_members::r#type>,
-{
-    fn from(builder: ShapePropertyBuilder<(S0,)>) -> Self {
+impl From<ShapePropertyBuilder> for ShapeProperty {
+    fn from(builder: ShapePropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct ShortNumberProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -22288,22 +22669,17 @@ pub struct ShortNumberProperty {
     /// For internal use by Elastic only. Marks the field as a time series dimension. Defaults to false.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_series_dimension: Option<bool>,
-    pub r#type: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub null_value: Option<i16>,
 }
 
 impl ShortNumberProperty {
     /// Creates a builder for [`ShortNumberProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> ShortNumberPropertyBuilder {
         ShortNumberPropertyBuilder::new()
     }
 
     /// Creates a [`ShortNumberProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = ShortNumberProperty>>(
         f: impl FnOnce(ShortNumberPropertyBuilder) -> B,
     ) -> ShortNumberProperty {
@@ -22311,16 +22687,9 @@ impl ShortNumberProperty {
     }
 }
 
-/// Markers of the required members of [`ShortNumberPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod short_number_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`ShortNumberProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct ShortNumberPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct ShortNumberPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -22338,12 +22707,10 @@ pub struct ShortNumberPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     script: Option<crate::typed::_types::Script>,
     time_series_metric: Option<TimeSeriesMetricType>,
     time_series_dimension: Option<bool>,
-    r#type: Option<String>,
     null_value: Option<i16>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl ShortNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl ShortNumberPropertyBuilder {
     pub(crate) fn new() -> Self {
         ShortNumberPropertyBuilder {
             meta: None,
@@ -22363,39 +22730,12 @@ impl ShortNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
             script: None,
             time_series_metric: None,
             time_series_dimension: None,
-            r#type: None,
             null_value: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> ShortNumberPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> ShortNumberPropertyBuilder<N> {
-        ShortNumberPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            boost: self.boost,
-            coerce: self.coerce,
-            ignore_malformed: self.ignore_malformed,
-            index: self.index,
-            on_script_error: self.on_script_error,
-            script: self.script,
-            time_series_metric: self.time_series_metric,
-            time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type,
-            null_value: self.null_value,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl ShortNumberPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -22443,6 +22783,15 @@ impl<S0> ShortNumberPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -22494,6 +22843,15 @@ impl<S0> ShortNumberPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -22650,24 +23008,9 @@ impl<S0> ShortNumberPropertyBuilder<(S0,)> {
     }
 }
 
-impl ShortNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> ShortNumberPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> ShortNumberPropertyBuilder<(S0,)> {
+impl ShortNumberPropertyBuilder {
     /// Builds a [`ShortNumberProperty`].
-    pub fn build(self) -> ShortNumberProperty
-    where
-        S0: crate::typed::builder::IsSet<short_number_property_members::r#type>,
-    {
+    pub fn build(self) -> ShortNumberProperty {
         ShortNumberProperty {
             meta: self.meta,
             properties: self.properties,
@@ -22686,16 +23029,12 @@ impl<S0> ShortNumberPropertyBuilder<(S0,)> {
             script: self.script,
             time_series_metric: self.time_series_metric,
             time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type.unwrap(),
             null_value: self.null_value,
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for ShortNumberPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<short_number_property_members::r#type>,
-{
+impl crate::typed::builder::Build for ShortNumberPropertyBuilder {
     type Output = ShortNumberProperty;
 
     fn build(self) -> ShortNumberProperty {
@@ -22703,11 +23042,8 @@ where
     }
 }
 
-impl<S0> From<ShortNumberPropertyBuilder<(S0,)>> for ShortNumberProperty
-where
-    S0: crate::typed::builder::IsSet<short_number_property_members::r#type>,
-{
-    fn from(builder: ShortNumberPropertyBuilder<(S0,)>) -> Self {
+impl From<ShortNumberPropertyBuilder> for ShortNumberProperty {
+    fn from(builder: ShortNumberPropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -23072,7 +23408,7 @@ impl From<SparseVectorIndexOptionsBuilder> for SparseVectorIndexOptions {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct SparseVectorProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -23089,7 +23425,6 @@ pub struct SparseVectorProperty {
     pub synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub store: Option<bool>,
-    pub r#type: String,
     /// Additional index options for the sparse vector field that controls the
     /// token pruning behavior of the sparse vector field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -23098,15 +23433,11 @@ pub struct SparseVectorProperty {
 
 impl SparseVectorProperty {
     /// Creates a builder for [`SparseVectorProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> SparseVectorPropertyBuilder {
         SparseVectorPropertyBuilder::new()
     }
 
     /// Creates a [`SparseVectorProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = SparseVectorProperty>>(
         f: impl FnOnce(SparseVectorPropertyBuilder) -> B,
     ) -> SparseVectorProperty {
@@ -23114,16 +23445,9 @@ impl SparseVectorProperty {
     }
 }
 
-/// Markers of the required members of [`SparseVectorPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod sparse_vector_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`SparseVectorProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct SparseVectorPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct SparseVectorPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -23131,12 +23455,10 @@ pub struct SparseVectorPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     fields: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     synthetic_source_keep: Option<SyntheticSourceKeepEnum>,
     store: Option<bool>,
-    r#type: Option<String>,
     index_options: Option<SparseVectorIndexOptions>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl SparseVectorPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl SparseVectorPropertyBuilder {
     pub(crate) fn new() -> Self {
         SparseVectorPropertyBuilder {
             meta: None,
@@ -23146,29 +23468,12 @@ impl SparseVectorPropertyBuilder<(crate::typed::builder::NotSet,)> {
             fields: None,
             synthetic_source_keep: None,
             store: None,
-            r#type: None,
             index_options: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> SparseVectorPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> SparseVectorPropertyBuilder<N> {
-        SparseVectorPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            store: self.store,
-            r#type: self.r#type,
-            index_options: self.index_options,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl SparseVectorPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -23216,6 +23521,15 @@ impl<S0> SparseVectorPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -23269,6 +23583,15 @@ impl<S0> SparseVectorPropertyBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
+    }
+
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
         self.synthetic_source_keep = Some(value.into());
         self
@@ -23315,24 +23638,9 @@ impl<S0> SparseVectorPropertyBuilder<(S0,)> {
     }
 }
 
-impl SparseVectorPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> SparseVectorPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> SparseVectorPropertyBuilder<(S0,)> {
+impl SparseVectorPropertyBuilder {
     /// Builds a [`SparseVectorProperty`].
-    pub fn build(self) -> SparseVectorProperty
-    where
-        S0: crate::typed::builder::IsSet<sparse_vector_property_members::r#type>,
-    {
+    pub fn build(self) -> SparseVectorProperty {
         SparseVectorProperty {
             meta: self.meta,
             properties: self.properties,
@@ -23341,16 +23649,12 @@ impl<S0> SparseVectorPropertyBuilder<(S0,)> {
             fields: self.fields,
             synthetic_source_keep: self.synthetic_source_keep,
             store: self.store,
-            r#type: self.r#type.unwrap(),
             index_options: self.index_options,
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for SparseVectorPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<sparse_vector_property_members::r#type>,
-{
+impl crate::typed::builder::Build for SparseVectorPropertyBuilder {
     type Output = SparseVectorProperty;
 
     fn build(self) -> SparseVectorProperty {
@@ -23358,11 +23662,8 @@ where
     }
 }
 
-impl<S0> From<SparseVectorPropertyBuilder<(S0,)>> for SparseVectorProperty
-where
-    S0: crate::typed::builder::IsSet<sparse_vector_property_members::r#type>,
-{
-    fn from(builder: SparseVectorPropertyBuilder<(S0,)>) -> Self {
+impl From<SparseVectorPropertyBuilder> for SparseVectorProperty {
+    fn from(builder: SparseVectorPropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -23679,7 +23980,7 @@ impl From<TextIndexPrefixesBuilder> for TextIndexPrefixes {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct TextProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -23728,7 +24029,6 @@ pub struct TextProperty {
     pub similarity: Option<TextPropertySimilarity>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub term_vector: Option<TermVectorOption>,
-    pub r#type: String,
 }
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -23765,15 +24065,11 @@ impl From<&str> for TextPropertySimilarity {
 
 impl TextProperty {
     /// Creates a builder for [`TextProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> TextPropertyBuilder {
         TextPropertyBuilder::new()
     }
 
     /// Creates a [`TextProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = TextProperty>>(
         f: impl FnOnce(TextPropertyBuilder) -> B,
     ) -> TextProperty {
@@ -23781,16 +24077,9 @@ impl TextProperty {
     }
 }
 
-/// Markers of the required members of [`TextPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod text_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`TextProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct TextPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct TextPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -23814,11 +24103,9 @@ pub struct TextPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     search_quote_analyzer: Option<String>,
     similarity: Option<TextPropertySimilarity>,
     term_vector: Option<TermVectorOption>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl TextPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl TextPropertyBuilder {
     pub(crate) fn new() -> Self {
         TextPropertyBuilder {
             meta: None,
@@ -23844,43 +24131,11 @@ impl TextPropertyBuilder<(crate::typed::builder::NotSet,)> {
             search_quote_analyzer: None,
             similarity: None,
             term_vector: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> TextPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> TextPropertyBuilder<N> {
-        TextPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            analyzer: self.analyzer,
-            boost: self.boost,
-            eager_global_ordinals: self.eager_global_ordinals,
-            fielddata: self.fielddata,
-            fielddata_frequency_filter: self.fielddata_frequency_filter,
-            index: self.index,
-            index_options: self.index_options,
-            index_phrases: self.index_phrases,
-            index_prefixes: self.index_prefixes,
-            norms: self.norms,
-            position_increment_gap: self.position_increment_gap,
-            search_analyzer: self.search_analyzer,
-            search_quote_analyzer: self.search_quote_analyzer,
-            similarity: self.similarity,
-            term_vector: self.term_vector,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl TextPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -23928,6 +24183,15 @@ impl<S0> TextPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -23979,6 +24243,15 @@ impl<S0> TextPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -24200,24 +24473,9 @@ impl<S0> TextPropertyBuilder<(S0,)> {
     }
 }
 
-impl TextPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> TextPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> TextPropertyBuilder<(S0,)> {
+impl TextPropertyBuilder {
     /// Builds a [`TextProperty`].
-    pub fn build(self) -> TextProperty
-    where
-        S0: crate::typed::builder::IsSet<text_property_members::r#type>,
-    {
+    pub fn build(self) -> TextProperty {
         TextProperty {
             meta: self.meta,
             properties: self.properties,
@@ -24242,15 +24500,11 @@ impl<S0> TextPropertyBuilder<(S0,)> {
             search_quote_analyzer: self.search_quote_analyzer,
             similarity: self.similarity,
             term_vector: self.term_vector,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for TextPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<text_property_members::r#type>,
-{
+impl crate::typed::builder::Build for TextPropertyBuilder {
     type Output = TextProperty;
 
     fn build(self) -> TextProperty {
@@ -24258,11 +24512,8 @@ where
     }
 }
 
-impl<S0> From<TextPropertyBuilder<(S0,)>> for TextProperty
-where
-    S0: crate::typed::builder::IsSet<text_property_members::r#type>,
-{
-    fn from(builder: TextPropertyBuilder<(S0,)>) -> Self {
+impl From<TextPropertyBuilder> for TextProperty {
+    fn from(builder: TextPropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -24281,7 +24532,7 @@ pub enum TimeSeriesMetricType {
     Position,
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct TokenCountProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -24312,20 +24563,15 @@ pub struct TokenCountProperty {
     pub null_value: Option<crate::typed::support::Float64>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub enable_position_increments: Option<bool>,
-    pub r#type: String,
 }
 
 impl TokenCountProperty {
     /// Creates a builder for [`TokenCountProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> TokenCountPropertyBuilder {
         TokenCountPropertyBuilder::new()
     }
 
     /// Creates a [`TokenCountProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = TokenCountProperty>>(
         f: impl FnOnce(TokenCountPropertyBuilder) -> B,
     ) -> TokenCountProperty {
@@ -24333,16 +24579,9 @@ impl TokenCountProperty {
     }
 }
 
-/// Markers of the required members of [`TokenCountPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod token_count_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`TokenCountProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct TokenCountPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct TokenCountPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -24357,11 +24596,9 @@ pub struct TokenCountPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     index: Option<bool>,
     null_value: Option<crate::typed::support::Float64>,
     enable_position_increments: Option<bool>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl TokenCountPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl TokenCountPropertyBuilder {
     pub(crate) fn new() -> Self {
         TokenCountPropertyBuilder {
             meta: None,
@@ -24378,34 +24615,11 @@ impl TokenCountPropertyBuilder<(crate::typed::builder::NotSet,)> {
             index: None,
             null_value: None,
             enable_position_increments: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> TokenCountPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> TokenCountPropertyBuilder<N> {
-        TokenCountPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            analyzer: self.analyzer,
-            boost: self.boost,
-            index: self.index,
-            null_value: self.null_value,
-            enable_position_increments: self.enable_position_increments,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl TokenCountPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -24453,6 +24667,15 @@ impl<S0> TokenCountPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -24504,6 +24727,15 @@ impl<S0> TokenCountPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -24606,24 +24838,9 @@ impl<S0> TokenCountPropertyBuilder<(S0,)> {
     }
 }
 
-impl TokenCountPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> TokenCountPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> TokenCountPropertyBuilder<(S0,)> {
+impl TokenCountPropertyBuilder {
     /// Builds a [`TokenCountProperty`].
-    pub fn build(self) -> TokenCountProperty
-    where
-        S0: crate::typed::builder::IsSet<token_count_property_members::r#type>,
-    {
+    pub fn build(self) -> TokenCountProperty {
         TokenCountProperty {
             meta: self.meta,
             properties: self.properties,
@@ -24639,15 +24856,11 @@ impl<S0> TokenCountPropertyBuilder<(S0,)> {
             index: self.index,
             null_value: self.null_value,
             enable_position_increments: self.enable_position_increments,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for TokenCountPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<token_count_property_members::r#type>,
-{
+impl crate::typed::builder::Build for TokenCountPropertyBuilder {
     type Output = TokenCountProperty;
 
     fn build(self) -> TokenCountProperty {
@@ -24655,11 +24868,8 @@ where
     }
 }
 
-impl<S0> From<TokenCountPropertyBuilder<(S0,)>> for TokenCountProperty
-where
-    S0: crate::typed::builder::IsSet<token_count_property_members::r#type>,
-{
-    fn from(builder: TokenCountPropertyBuilder<(S0,)>) -> Self {
+impl From<TokenCountPropertyBuilder> for TokenCountProperty {
+    fn from(builder: TokenCountPropertyBuilder) -> Self {
         builder.build()
     }
 }
@@ -24956,6 +25166,15 @@ impl TypeMappingBuilder {
         self
     }
 
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
+    }
+
     pub fn routing(mut self, value: impl Into<RoutingField>) -> Self {
         self.routing = Some(value.into());
         self
@@ -25127,7 +25346,7 @@ impl From<TypeMappingBuilder> for TypeMapping {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct UnsignedLongNumberProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -25166,22 +25385,17 @@ pub struct UnsignedLongNumberProperty {
     /// For internal use by Elastic only. Marks the field as a time series dimension. Defaults to false.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_series_dimension: Option<bool>,
-    pub r#type: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub null_value: Option<u64>,
 }
 
 impl UnsignedLongNumberProperty {
     /// Creates a builder for [`UnsignedLongNumberProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> UnsignedLongNumberPropertyBuilder {
         UnsignedLongNumberPropertyBuilder::new()
     }
 
     /// Creates a [`UnsignedLongNumberProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = UnsignedLongNumberProperty>>(
         f: impl FnOnce(UnsignedLongNumberPropertyBuilder) -> B,
     ) -> UnsignedLongNumberProperty {
@@ -25189,16 +25403,9 @@ impl UnsignedLongNumberProperty {
     }
 }
 
-/// Markers of the required members of [`UnsignedLongNumberPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod unsigned_long_number_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`UnsignedLongNumberProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct UnsignedLongNumberPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct UnsignedLongNumberPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -25216,12 +25423,10 @@ pub struct UnsignedLongNumberPropertyBuilder<S = (crate::typed::builder::NotSet,
     script: Option<crate::typed::_types::Script>,
     time_series_metric: Option<TimeSeriesMetricType>,
     time_series_dimension: Option<bool>,
-    r#type: Option<String>,
     null_value: Option<u64>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl UnsignedLongNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl UnsignedLongNumberPropertyBuilder {
     pub(crate) fn new() -> Self {
         UnsignedLongNumberPropertyBuilder {
             meta: None,
@@ -25241,39 +25446,12 @@ impl UnsignedLongNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
             script: None,
             time_series_metric: None,
             time_series_dimension: None,
-            r#type: None,
             null_value: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> UnsignedLongNumberPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> UnsignedLongNumberPropertyBuilder<N> {
-        UnsignedLongNumberPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            boost: self.boost,
-            coerce: self.coerce,
-            ignore_malformed: self.ignore_malformed,
-            index: self.index,
-            on_script_error: self.on_script_error,
-            script: self.script,
-            time_series_metric: self.time_series_metric,
-            time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type,
-            null_value: self.null_value,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl UnsignedLongNumberPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -25321,6 +25499,15 @@ impl<S0> UnsignedLongNumberPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -25372,6 +25559,15 @@ impl<S0> UnsignedLongNumberPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -25528,24 +25724,9 @@ impl<S0> UnsignedLongNumberPropertyBuilder<(S0,)> {
     }
 }
 
-impl UnsignedLongNumberPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> UnsignedLongNumberPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> UnsignedLongNumberPropertyBuilder<(S0,)> {
+impl UnsignedLongNumberPropertyBuilder {
     /// Builds a [`UnsignedLongNumberProperty`].
-    pub fn build(self) -> UnsignedLongNumberProperty
-    where
-        S0: crate::typed::builder::IsSet<unsigned_long_number_property_members::r#type>,
-    {
+    pub fn build(self) -> UnsignedLongNumberProperty {
         UnsignedLongNumberProperty {
             meta: self.meta,
             properties: self.properties,
@@ -25564,16 +25745,12 @@ impl<S0> UnsignedLongNumberPropertyBuilder<(S0,)> {
             script: self.script,
             time_series_metric: self.time_series_metric,
             time_series_dimension: self.time_series_dimension,
-            r#type: self.r#type.unwrap(),
             null_value: self.null_value,
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for UnsignedLongNumberPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<unsigned_long_number_property_members::r#type>,
-{
+impl crate::typed::builder::Build for UnsignedLongNumberPropertyBuilder {
     type Output = UnsignedLongNumberProperty;
 
     fn build(self) -> UnsignedLongNumberProperty {
@@ -25581,16 +25758,13 @@ where
     }
 }
 
-impl<S0> From<UnsignedLongNumberPropertyBuilder<(S0,)>> for UnsignedLongNumberProperty
-where
-    S0: crate::typed::builder::IsSet<unsigned_long_number_property_members::r#type>,
-{
-    fn from(builder: UnsignedLongNumberPropertyBuilder<(S0,)>) -> Self {
+impl From<UnsignedLongNumberPropertyBuilder> for UnsignedLongNumberProperty {
+    fn from(builder: UnsignedLongNumberPropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct VersionProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -25611,20 +25785,15 @@ pub struct VersionProperty {
     pub store: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub doc_values: Option<DocValues>,
-    pub r#type: String,
 }
 
 impl VersionProperty {
     /// Creates a builder for [`VersionProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> VersionPropertyBuilder {
         VersionPropertyBuilder::new()
     }
 
     /// Creates a [`VersionProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = VersionProperty>>(
         f: impl FnOnce(VersionPropertyBuilder) -> B,
     ) -> VersionProperty {
@@ -25632,16 +25801,9 @@ impl VersionProperty {
     }
 }
 
-/// Markers of the required members of [`VersionPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod version_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`VersionProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct VersionPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct VersionPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -25651,11 +25813,9 @@ pub struct VersionPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     copy_to: Option<crate::typed::_types::Fields>,
     store: Option<bool>,
     doc_values: Option<DocValues>,
-    r#type: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl VersionPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl VersionPropertyBuilder {
     pub(crate) fn new() -> Self {
         VersionPropertyBuilder {
             meta: None,
@@ -25667,29 +25827,11 @@ impl VersionPropertyBuilder<(crate::typed::builder::NotSet,)> {
             copy_to: None,
             store: None,
             doc_values: None,
-            r#type: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> VersionPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> VersionPropertyBuilder<N> {
-        VersionPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            r#type: self.r#type,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl VersionPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -25737,6 +25879,15 @@ impl<S0> VersionPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -25788,6 +25939,15 @@ impl<S0> VersionPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -25835,24 +25995,9 @@ impl<S0> VersionPropertyBuilder<(S0,)> {
     }
 }
 
-impl VersionPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> VersionPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> VersionPropertyBuilder<(S0,)> {
+impl VersionPropertyBuilder {
     /// Builds a [`VersionProperty`].
-    pub fn build(self) -> VersionProperty
-    where
-        S0: crate::typed::builder::IsSet<version_property_members::r#type>,
-    {
+    pub fn build(self) -> VersionProperty {
         VersionProperty {
             meta: self.meta,
             properties: self.properties,
@@ -25863,15 +26008,11 @@ impl<S0> VersionPropertyBuilder<(S0,)> {
             copy_to: self.copy_to,
             store: self.store,
             doc_values: self.doc_values,
-            r#type: self.r#type.unwrap(),
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for VersionPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<version_property_members::r#type>,
-{
+impl crate::typed::builder::Build for VersionPropertyBuilder {
     type Output = VersionProperty;
 
     fn build(self) -> VersionProperty {
@@ -25879,16 +26020,13 @@ where
     }
 }
 
-impl<S0> From<VersionPropertyBuilder<(S0,)>> for VersionProperty
-where
-    S0: crate::typed::builder::IsSet<version_property_members::r#type>,
-{
-    fn from(builder: VersionPropertyBuilder<(S0,)>) -> Self {
+impl From<VersionPropertyBuilder> for VersionProperty {
+    fn from(builder: VersionPropertyBuilder) -> Self {
         builder.build()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct WildcardProperty {
     /// Metadata about the field.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -25909,22 +26047,17 @@ pub struct WildcardProperty {
     pub store: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub doc_values: Option<DocValues>,
-    pub r#type: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub null_value: Option<String>,
 }
 
 impl WildcardProperty {
     /// Creates a builder for [`WildcardProperty`].
-    ///
-    /// Required: `type`.
     pub fn builder() -> WildcardPropertyBuilder {
         WildcardPropertyBuilder::new()
     }
 
     /// Creates a [`WildcardProperty`] from a function that sets the members of its builder.
-    ///
-    /// Required: `type`.
     pub fn of<B: crate::typed::builder::Build<Output = WildcardProperty>>(
         f: impl FnOnce(WildcardPropertyBuilder) -> B,
     ) -> WildcardProperty {
@@ -25932,16 +26065,9 @@ impl WildcardProperty {
     }
 }
 
-/// Markers of the required members of [`WildcardPropertyBuilder`], named in compilation errors when they're missing.
-#[doc(hidden)]
-#[allow(non_camel_case_types)]
-pub mod wildcard_property_members {
-    pub struct r#type;
-}
-
 /// Builder for [`WildcardProperty`].
 #[must_use = "the builder does nothing until `build()` is called"]
-pub struct WildcardPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
+pub struct WildcardPropertyBuilder {
     meta: Option<indexmap::IndexMap<String, String>>,
     properties: Option<indexmap::IndexMap<crate::typed::_types::PropertyName, Property>>,
     ignore_above: Option<i32>,
@@ -25951,12 +26077,10 @@ pub struct WildcardPropertyBuilder<S = (crate::typed::builder::NotSet,)> {
     copy_to: Option<crate::typed::_types::Fields>,
     store: Option<bool>,
     doc_values: Option<DocValues>,
-    r#type: Option<String>,
     null_value: Option<String>,
-    _state: std::marker::PhantomData<S>,
 }
 
-impl WildcardPropertyBuilder<(crate::typed::builder::NotSet,)> {
+impl WildcardPropertyBuilder {
     pub(crate) fn new() -> Self {
         WildcardPropertyBuilder {
             meta: None,
@@ -25968,31 +26092,12 @@ impl WildcardPropertyBuilder<(crate::typed::builder::NotSet,)> {
             copy_to: None,
             store: None,
             doc_values: None,
-            r#type: None,
             null_value: None,
-            _state: std::marker::PhantomData,
         }
     }
 }
 
-impl<S0> WildcardPropertyBuilder<(S0,)> {
-    fn with_state<N>(self) -> WildcardPropertyBuilder<N> {
-        WildcardPropertyBuilder {
-            meta: self.meta,
-            properties: self.properties,
-            ignore_above: self.ignore_above,
-            dynamic: self.dynamic,
-            fields: self.fields,
-            synthetic_source_keep: self.synthetic_source_keep,
-            copy_to: self.copy_to,
-            store: self.store,
-            doc_values: self.doc_values,
-            r#type: self.r#type,
-            null_value: self.null_value,
-            _state: std::marker::PhantomData,
-        }
-    }
-
+impl WildcardPropertyBuilder {
     /// Metadata about the field.
     pub fn meta(mut self, value: impl Into<indexmap::IndexMap<String, String>>) -> Self {
         self.meta = Some(value.into());
@@ -26040,6 +26145,15 @@ impl<S0> WildcardPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`properties`](Self::properties), with a builder.
+    pub fn add_properties_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_properties(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn ignore_above(mut self, value: i32) -> Self {
@@ -26091,6 +26205,15 @@ impl<S0> WildcardPropertyBuilder<(S0,)> {
             .get_or_insert_with(Default::default)
             .insert(key.into(), value.into());
         self
+    }
+
+    /// Adds an entry to [`fields`](Self::fields), with a builder.
+    pub fn add_fields_with<B: crate::typed::builder::Build<Output = Property>>(
+        self,
+        key: impl Into<crate::typed::_types::PropertyName>,
+        f: impl FnOnce(PropertyBuilder) -> B,
+    ) -> Self {
+        self.add_fields(key, f(PropertyBuilder::new()).build())
     }
 
     pub fn synthetic_source_keep(mut self, value: impl Into<SyntheticSourceKeepEnum>) -> Self {
@@ -26149,24 +26272,9 @@ impl<S0> WildcardPropertyBuilder<(S0,)> {
     }
 }
 
-impl WildcardPropertyBuilder<(crate::typed::builder::NotSet,)> {
-    /// **Required.**
-    pub fn r#type(
-        self,
-        value: impl Into<String>,
-    ) -> WildcardPropertyBuilder<(crate::typed::builder::Set,)> {
-        let mut builder = self.with_state();
-        builder.r#type = Some(value.into());
-        builder
-    }
-}
-
-impl<S0> WildcardPropertyBuilder<(S0,)> {
+impl WildcardPropertyBuilder {
     /// Builds a [`WildcardProperty`].
-    pub fn build(self) -> WildcardProperty
-    where
-        S0: crate::typed::builder::IsSet<wildcard_property_members::r#type>,
-    {
+    pub fn build(self) -> WildcardProperty {
         WildcardProperty {
             meta: self.meta,
             properties: self.properties,
@@ -26177,16 +26285,12 @@ impl<S0> WildcardPropertyBuilder<(S0,)> {
             copy_to: self.copy_to,
             store: self.store,
             doc_values: self.doc_values,
-            r#type: self.r#type.unwrap(),
             null_value: self.null_value,
         }
     }
 }
 
-impl<S0> crate::typed::builder::Build for WildcardPropertyBuilder<(S0,)>
-where
-    S0: crate::typed::builder::IsSet<wildcard_property_members::r#type>,
-{
+impl crate::typed::builder::Build for WildcardPropertyBuilder {
     type Output = WildcardProperty;
 
     fn build(self) -> WildcardProperty {
@@ -26194,11 +26298,8 @@ where
     }
 }
 
-impl<S0> From<WildcardPropertyBuilder<(S0,)>> for WildcardProperty
-where
-    S0: crate::typed::builder::IsSet<wildcard_property_members::r#type>,
-{
-    fn from(builder: WildcardPropertyBuilder<(S0,)>) -> Self {
+impl From<WildcardPropertyBuilder> for WildcardProperty {
+    fn from(builder: WildcardPropertyBuilder) -> Self {
         builder.build()
     }
 }
