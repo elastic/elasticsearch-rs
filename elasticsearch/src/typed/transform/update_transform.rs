@@ -292,6 +292,14 @@ impl<S0, C> RequestBuilder<(S0,), C> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// The source of the data for the transform.
     pub fn source(mut self, value: impl Into<crate::typed::transform::_types::Source>) -> Self {
         self.source = Some(value.into());

@@ -127,6 +127,18 @@ impl ConfigurationBuilder {
         self
     }
 
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// If false, the entire snapshot will fail if one or more indices included in the snapshot do not have all primary shards available.
     pub fn partial(mut self, value: bool) -> Self {
         self.partial = Some(value);

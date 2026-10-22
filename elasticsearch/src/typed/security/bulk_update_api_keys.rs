@@ -199,6 +199,18 @@ impl<S0, C> RequestBuilder<(S0,), C> {
         self
     }
 
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// The role descriptors to assign to the API keys.
     /// An API key's effective permissions are an intersection of its assigned privileges and the point-in-time snapshot of permissions of the owner user.
     /// You can assign new privileges by specifying them in this parameter.

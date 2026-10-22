@@ -170,6 +170,14 @@ impl<S0, S1, S2, S3> QueryUserBuilder<(S0, S1, S2, S3)> {
         self.sort = value;
         self
     }
+
+    /// Adds an element to [`sort`](Self::sort).
+    pub fn add_sort(mut self, value: impl Into<crate::typed::_types::FieldValue>) -> Self {
+        self.sort
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S1, S2, S3> QueryUserBuilder<(crate::typed::builder::NotSet, S1, S2, S3)> {
@@ -550,6 +558,14 @@ impl<C> RequestBuilder<(), C> {
     /// Sets [`search_after`](Self::search_after) if `value` is `Some`.
     pub fn maybe_search_after(mut self, value: Option<crate::typed::_types::SortResults>) -> Self {
         self.search_after = value;
+        self
+    }
+
+    /// Adds an element to [`search_after`](Self::search_after).
+    pub fn add_search_after(mut self, value: impl Into<crate::typed::_types::FieldValue>) -> Self {
+        self.search_after
+            .get_or_insert_with(Default::default)
+            .push(value.into());
         self
     }
 }

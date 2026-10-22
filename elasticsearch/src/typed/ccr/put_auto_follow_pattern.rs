@@ -266,6 +266,17 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
         self
     }
 
+    /// Adds an element to [`leader_index_patterns`](Self::leader_index_patterns).
+    pub fn add_leader_index_patterns(
+        mut self,
+        value: impl Into<crate::typed::_types::IndexPattern>,
+    ) -> Self {
+        self.leader_index_patterns
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
     /// An array of simple index patterns that can be used to exclude indices from being auto-followed. Indices in the remote cluster whose names are matching one or more leader_index_patterns and one or more leader_index_exclusion_patterns won’t be followed.
     pub fn leader_index_exclusion_patterns(
         mut self,
@@ -281,6 +292,17 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
         value: Option<crate::typed::_types::IndexPatterns>,
     ) -> Self {
         self.leader_index_exclusion_patterns = value;
+        self
+    }
+
+    /// Adds an element to [`leader_index_exclusion_patterns`](Self::leader_index_exclusion_patterns).
+    pub fn add_leader_index_exclusion_patterns(
+        mut self,
+        value: impl Into<crate::typed::_types::IndexPattern>,
+    ) -> Self {
+        self.leader_index_exclusion_patterns
+            .get_or_insert_with(Default::default)
+            .push(value.into());
         self
     }
 

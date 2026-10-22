@@ -217,6 +217,14 @@ impl<C> RequestBuilder<(), C> {
         self.search_after = value;
         self
     }
+
+    /// Adds an element to [`search_after`](Self::search_after).
+    pub fn add_search_after(mut self, value: impl Into<crate::typed::_types::FieldValue>) -> Self {
+        self.search_after
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<C> RequestBuilder<(), C> {

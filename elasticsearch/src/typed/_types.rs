@@ -2178,6 +2178,14 @@ impl<S0, S1, S2> DiversifyRetrieverBuilder<(S0, S1, S2)> {
         self
     }
 
+    /// Adds an element to [`query_vector`](Self::query_vector).
+    pub fn add_query_vector(mut self, value: f32) -> Self {
+        self.query_vector
+            .get_or_insert_with(Default::default)
+            .push(value);
+        self
+    }
+
     /// a dense vector query vector builder to use instead of a static query_vector
     pub fn query_vector_builder(mut self, value: impl Into<QueryVectorBuilder>) -> Self {
         self.query_vector_builder = Some(value.into());
@@ -7986,6 +7994,14 @@ impl<S0> KnnQueryBuilder<(S0,)> {
         self
     }
 
+    /// Adds an element to [`query_vector`](Self::query_vector).
+    pub fn add_query_vector(mut self, value: f32) -> Self {
+        self.query_vector
+            .get_or_insert_with(Default::default)
+            .push(value);
+        self
+    }
+
     /// The query vector builder. You must provide a query_vector_builder or query_vector, but not both.
     pub fn query_vector_builder(mut self, value: impl Into<QueryVectorBuilder>) -> Self {
         self.query_vector_builder = Some(value.into());
@@ -8292,6 +8308,14 @@ impl<S0, S1> KnnRetrieverBuilder<(S0, S1)> {
         self
     }
 
+    /// Adds an element to [`query_vector`](Self::query_vector).
+    pub fn add_query_vector(mut self, value: f32) -> Self {
+        self.query_vector
+            .get_or_insert_with(Default::default)
+            .push(value);
+        self
+    }
+
     /// Defines a model to build a query vector.
     pub fn query_vector_builder(mut self, value: impl Into<QueryVectorBuilder>) -> Self {
         self.query_vector_builder = Some(value.into());
@@ -8563,6 +8587,14 @@ impl<S0> KnnSearchBuilder<(S0,)> {
     /// Sets [`query_vector`](Self::query_vector) if `value` is `Some`.
     pub fn maybe_query_vector(mut self, value: Option<QueryVector>) -> Self {
         self.query_vector = value;
+        self
+    }
+
+    /// Adds an element to [`query_vector`](Self::query_vector).
+    pub fn add_query_vector(mut self, value: f32) -> Self {
+        self.query_vector
+            .get_or_insert_with(Default::default)
+            .push(value);
         self
     }
 
@@ -20832,6 +20864,14 @@ impl StandardRetrieverBuilder {
     /// Sets [`search_after`](Self::search_after) if `value` is `Some`.
     pub fn maybe_search_after(mut self, value: Option<SortResults>) -> Self {
         self.search_after = value;
+        self
+    }
+
+    /// Adds an element to [`search_after`](Self::search_after).
+    pub fn add_search_after(mut self, value: impl Into<FieldValue>) -> Self {
+        self.search_after
+            .get_or_insert_with(Default::default)
+            .push(value.into());
         self
     }
 

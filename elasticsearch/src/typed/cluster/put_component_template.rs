@@ -263,6 +263,14 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// Marks this index template as deprecated. When creating or updating a non-deprecated index template
     /// that uses deprecated components, Elasticsearch will emit a deprecation warning.
     pub fn deprecated(mut self, value: bool) -> Self {

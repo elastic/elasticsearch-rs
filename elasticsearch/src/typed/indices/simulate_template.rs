@@ -499,6 +499,14 @@ impl<C> RequestBuilder<(), C> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// The configuration option ignore_missing_component_templates can be used when an index template
     /// references a component template that might not exist
     pub fn ignore_missing_component_templates(mut self, value: impl Into<Vec<String>>) -> Self {

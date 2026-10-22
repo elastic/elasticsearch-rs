@@ -344,6 +344,18 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
         self
     }
 
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// If `true`, allows the snapshot to proceed even if some of the target shards are unavailable.
     /// In this case, the resulting snapshot will not contain snapshots of the unavailable target shards, and will report its state as `PARTIAL`.
     /// Additionally, if `true`, allows index metadata operations such as deletions while the snapshot is in progress.

@@ -1211,6 +1211,34 @@ impl<S0> SourceBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`runtime_mappings`](Self::runtime_mappings).
+    pub fn add_runtime_mappings(
+        mut self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<crate::typed::_types::mapping::RuntimeField>,
+    ) -> Self {
+        self.runtime_mappings
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`runtime_mappings`](Self::runtime_mappings), with a builder.
+    pub fn add_runtime_mappings_with(
+        self,
+        key: impl Into<crate::typed::_types::Field>,
+        f: impl FnOnce(
+            crate::typed::_types::mapping::RuntimeFieldBuilder,
+        ) -> crate::typed::_types::mapping::RuntimeFieldBuilder<(
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_runtime_mappings(
+            key,
+            f(crate::typed::_types::mapping::RuntimeFieldBuilder::new()).build(),
+        )
+    }
+
     /// Specifies a subset of projects to target using project
     /// metadata tags in a subset of Lucene query syntax.
     /// Allowed Lucene queries: the _alias tag and a single value (possibly wildcarded).

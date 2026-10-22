@@ -373,6 +373,14 @@ impl<S0> ApiKeyAggregationContainerBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl ApiKeyAggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
@@ -1521,6 +1529,14 @@ impl<C> RequestBuilder<(), C> {
     /// Sets [`search_after`](Self::search_after) if `value` is `Some`.
     pub fn maybe_search_after(mut self, value: Option<crate::typed::_types::SortResults>) -> Self {
         self.search_after = value;
+        self
+    }
+
+    /// Adds an element to [`search_after`](Self::search_after).
+    pub fn add_search_after(mut self, value: impl Into<crate::typed::_types::FieldValue>) -> Self {
+        self.search_after
+            .get_or_insert_with(Default::default)
+            .push(value.into());
         self
     }
 }

@@ -365,6 +365,14 @@ impl<S0, S1, S2, S3, C> RequestBuilder<(S0, S1, S2, S3), C> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// The approximate maximum amount of memory resources that are permitted for
     /// analytical processing. If your `elasticsearch.yml` file contains an
     /// `xpack.ml.max_model_memory_limit` setting, an error occurs when you try

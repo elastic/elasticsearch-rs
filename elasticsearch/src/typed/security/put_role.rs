@@ -452,6 +452,18 @@ impl<S0, C> RequestBuilder<(S0,), C> {
         self
     }
 
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// A list of users that the owners of this role can impersonate. *Note*: in Serverless, the run-as feature is disabled. For API compatibility, you can still specify an empty `run_as` field, but a non-empty list will be rejected.
     pub fn run_as(mut self, value: impl Into<Vec<String>>) -> Self {
         self.run_as = Some(value.into());

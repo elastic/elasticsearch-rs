@@ -724,6 +724,18 @@ impl<S0, S1, S2, S3, S4> WatchRecordBuilder<(S0, S1, S2, S3, S4)> {
         self
     }
 
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn result(
         mut self,
         value: impl Into<crate::typed::watcher::_types::ExecutionResult>,

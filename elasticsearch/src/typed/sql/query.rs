@@ -474,6 +474,34 @@ impl<C> RequestBuilder<(), C> {
         self
     }
 
+    /// Adds an entry to [`runtime_mappings`](Self::runtime_mappings).
+    pub fn add_runtime_mappings(
+        mut self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<crate::typed::_types::mapping::RuntimeField>,
+    ) -> Self {
+        self.runtime_mappings
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`runtime_mappings`](Self::runtime_mappings), with a builder.
+    pub fn add_runtime_mappings_with(
+        self,
+        key: impl Into<crate::typed::_types::Field>,
+        f: impl FnOnce(
+            crate::typed::_types::mapping::RuntimeFieldBuilder,
+        ) -> crate::typed::_types::mapping::RuntimeFieldBuilder<(
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_runtime_mappings(
+            key,
+            f(crate::typed::_types::mapping::RuntimeFieldBuilder::new()).build(),
+        )
+    }
+
     /// The ISO-8601 time zone ID for the search.
     pub fn time_zone(mut self, value: impl Into<crate::typed::_types::TimeZone>) -> Self {
         self.time_zone = Some(value.into());

@@ -357,6 +357,18 @@ impl<S0> QueryRoleBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// A list of users that the API keys can impersonate.
     /// NOTE: In Elastic Cloud Serverless, the run-as feature is disabled.
     /// For API compatibility, you can still specify an empty `run_as` field, but a non-empty list will be rejected.
@@ -458,6 +470,14 @@ impl<S0> QueryRoleBuilder<(S0,)> {
     /// Sets [`sort`](Self::sort) if `value` is `Some`.
     pub fn maybe_sort(mut self, value: Option<crate::typed::_types::SortResults>) -> Self {
         self.sort = value;
+        self
+    }
+
+    /// Adds an element to [`sort`](Self::sort).
+    pub fn add_sort(mut self, value: impl Into<crate::typed::_types::FieldValue>) -> Self {
+        self.sort
+            .get_or_insert_with(Default::default)
+            .push(value.into());
         self
     }
 }
@@ -736,6 +756,14 @@ impl<C> RequestBuilder<(), C> {
     /// Sets [`search_after`](Self::search_after) if `value` is `Some`.
     pub fn maybe_search_after(mut self, value: Option<crate::typed::_types::SortResults>) -> Self {
         self.search_after = value;
+        self
+    }
+
+    /// Adds an element to [`search_after`](Self::search_after).
+    pub fn add_search_after(mut self, value: impl Into<crate::typed::_types::FieldValue>) -> Self {
+        self.search_after
+            .get_or_insert_with(Default::default)
+            .push(value.into());
         self
     }
 }

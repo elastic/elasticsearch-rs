@@ -602,6 +602,14 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10>
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// If `true`, the data stream allows custom routing on write request.
     pub fn allow_custom_routing(mut self, value: bool) -> Self {
         self.allow_custom_routing = Some(value);
@@ -6876,6 +6884,14 @@ impl<S0, S1> IndexTemplateBuilder<(S0, S1)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn allow_auto_create(mut self, value: bool) -> Self {
         self.allow_auto_create = Some(value);
         self
@@ -7740,6 +7756,14 @@ impl<S0, S1> IndexTemplateWithRolloverBuilder<(S0, S1)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 

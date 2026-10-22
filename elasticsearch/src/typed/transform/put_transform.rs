@@ -326,6 +326,14 @@ impl<S0, S1, S2, C> RequestBuilder<(S0, S1, S2), C> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// The pivot method transforms the data by aggregating and grouping it. These objects define the group by fields
     /// and the aggregation to reduce the data.
     pub fn pivot(mut self, value: impl Into<crate::typed::transform::_types::Pivot>) -> Self {

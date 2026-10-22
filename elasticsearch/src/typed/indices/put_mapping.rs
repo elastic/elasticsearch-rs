@@ -476,6 +476,14 @@ impl<S0, C> RequestBuilder<(S0,), C> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// Automatically map strings into numeric data types for all fields.
     pub fn numeric_detection(mut self, value: bool) -> Self {
         self.numeric_detection = Some(value);
@@ -603,6 +611,34 @@ impl<S0, C> RequestBuilder<(S0,), C> {
     ) -> Self {
         self.runtime = value;
         self
+    }
+
+    /// Adds an entry to [`runtime`](Self::runtime).
+    pub fn add_runtime(
+        mut self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<crate::typed::_types::mapping::RuntimeField>,
+    ) -> Self {
+        self.runtime
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`runtime`](Self::runtime), with a builder.
+    pub fn add_runtime_with(
+        self,
+        key: impl Into<crate::typed::_types::Field>,
+        f: impl FnOnce(
+            crate::typed::_types::mapping::RuntimeFieldBuilder,
+        ) -> crate::typed::_types::mapping::RuntimeFieldBuilder<(
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_runtime(
+            key,
+            f(crate::typed::_types::mapping::RuntimeFieldBuilder::new()).build(),
+        )
     }
 }
 

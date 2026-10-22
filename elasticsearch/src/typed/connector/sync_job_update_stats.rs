@@ -207,6 +207,18 @@ impl<S0, S1, S2, S3, C> RequestBuilder<(S0, S1, S2, S3), C> {
         self
     }
 
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// The total number of documents in the target index after the sync job finished.
     pub fn total_document_count(mut self, value: i32) -> Self {
         self.total_document_count = Some(value);

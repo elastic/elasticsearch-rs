@@ -10504,6 +10504,14 @@ impl StatsBuilder {
         self
     }
 
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(mut self, value: impl Into<crate::typed::_types::NodeRole>) -> Self {
+        self.roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
     /// Contains script statistics for the node.
     pub fn script(mut self, value: impl Into<Scripting>) -> Self {
         self.script = Some(value.into());

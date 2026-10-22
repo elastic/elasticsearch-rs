@@ -443,6 +443,14 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7> ApiKeyBuilder<(S0, S1, S2, S3, S4, S5, S6, 
         self.sort = value;
         self
     }
+
+    /// Adds an element to [`sort`](Self::sort).
+    pub fn add_sort(mut self, value: impl Into<crate::typed::_types::FieldValue>) -> Self {
+        self.sort
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S1, S2, S3, S4, S5, S6, S7>
@@ -3832,6 +3840,18 @@ impl RoleDescriptorBuilder {
         self
     }
 
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// A list of users that the API keys can impersonate.
     /// NOTE: In Elastic Cloud Serverless, the run-as feature is disabled.
     /// For API compatibility, you can still specify an empty `run_as` field, but a non-empty list will be rejected.
@@ -4172,6 +4192,18 @@ impl<S0, S1> RoleDescriptorReadBuilder<(S0, S1)> {
     /// Sets [`metadata`](Self::metadata) if `value` is `Some`.
     pub fn maybe_metadata(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.metadata = value;
+        self
+    }
+
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 

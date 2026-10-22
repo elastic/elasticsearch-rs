@@ -407,6 +407,14 @@ impl<S0, S1, S2, S3, S4, S5> UpdateByQueryRethrottleNodeBuilder<(S0, S1, S2, S3,
         self.roles = value;
         self
     }
+
+    /// Adds an element to [`roles`](Self::roles).
+    pub fn add_roles(mut self, value: impl Into<crate::typed::_types::NodeRole>) -> Self {
+        self.roles
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
 }
 
 impl<S1, S2, S3, S4, S5>

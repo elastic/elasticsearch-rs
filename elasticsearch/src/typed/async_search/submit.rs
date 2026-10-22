@@ -1467,6 +1467,14 @@ impl<C> RequestBuilder<(), C> {
         self
     }
 
+    /// Adds an element to [`search_after`](Self::search_after).
+    pub fn add_search_after(mut self, value: impl Into<crate::typed::_types::FieldValue>) -> Self {
+        self.search_after
+            .get_or_insert_with(Default::default)
+            .push(value.into());
+        self
+    }
+
     /// The number of hits to return. By default, you cannot page through more
     /// than 10,000 hits using the from and size parameters. To page through more
     /// hits, use the search_after parameter.
@@ -1734,6 +1742,34 @@ impl<C> RequestBuilder<(), C> {
     ) -> Self {
         self.runtime_mappings = value;
         self
+    }
+
+    /// Adds an entry to [`runtime_mappings`](Self::runtime_mappings).
+    pub fn add_runtime_mappings(
+        mut self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<crate::typed::_types::mapping::RuntimeField>,
+    ) -> Self {
+        self.runtime_mappings
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`runtime_mappings`](Self::runtime_mappings), with a builder.
+    pub fn add_runtime_mappings_with(
+        self,
+        key: impl Into<crate::typed::_types::Field>,
+        f: impl FnOnce(
+            crate::typed::_types::mapping::RuntimeFieldBuilder,
+        ) -> crate::typed::_types::mapping::RuntimeFieldBuilder<(
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_runtime_mappings(
+            key,
+            f(crate::typed::_types::mapping::RuntimeFieldBuilder::new()).build(),
+        )
     }
 
     /// Stats groups to associate with the search. Each group maintains a statistics

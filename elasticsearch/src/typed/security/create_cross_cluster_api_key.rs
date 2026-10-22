@@ -204,6 +204,18 @@ impl<S0, S1, C> RequestBuilder<(S0, S1), C> {
         self
     }
 
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// The certificate identity to associate with this API key.
     /// This field is used to restrict the API key to connections authenticated by a specific TLS certificate.
     /// The value should match the certificate's distinguished name (DN) pattern.

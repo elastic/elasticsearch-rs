@@ -256,6 +256,18 @@ impl<C> RequestBuilder<(), C> {
         self.metadata = value;
         self
     }
+
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl<C> RequestBuilder<(), C> {

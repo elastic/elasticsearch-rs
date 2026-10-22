@@ -23058,6 +23058,14 @@ impl TypeMappingBuilder {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn numeric_detection(mut self, value: bool) -> Self {
         self.numeric_detection = Some(value);
         self

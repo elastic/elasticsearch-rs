@@ -638,6 +638,34 @@ impl<S0, C> RequestBuilder<(S0,), C> {
         self
     }
 
+    /// Adds an entry to [`runtime_mappings`](Self::runtime_mappings).
+    pub fn add_runtime_mappings(
+        mut self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<crate::typed::_types::mapping::RuntimeField>,
+    ) -> Self {
+        self.runtime_mappings
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`runtime_mappings`](Self::runtime_mappings), with a builder.
+    pub fn add_runtime_mappings_with(
+        self,
+        key: impl Into<crate::typed::_types::Field>,
+        f: impl FnOnce(
+            crate::typed::_types::mapping::RuntimeFieldBuilder,
+        ) -> crate::typed::_types::mapping::RuntimeFieldBuilder<(
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_runtime_mappings(
+            key,
+            f(crate::typed::_types::mapping::RuntimeFieldBuilder::new()).build(),
+        )
+    }
+
     /// Specifies scripts that evaluate custom expressions and returns script fields to the datafeed.
     /// The detector configuration objects in a job can contain functions that use these script fields.
     pub fn script_fields(

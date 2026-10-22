@@ -155,6 +155,41 @@ impl<S0, C> RequestBuilder<(S0,), C> {
         self
     }
 
+    /// Adds an entry to [`configuration`](Self::configuration).
+    pub fn add_configuration(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<crate::typed::connector::_types::ConnectorConfigProperties>,
+    ) -> Self {
+        self.configuration
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`configuration`](Self::configuration), with a builder.
+    pub fn add_configuration_with(
+        self,
+        key: impl Into<String>,
+        f: impl FnOnce(
+            crate::typed::connector::_types::ConnectorConfigPropertiesBuilder,
+        ) -> crate::typed::connector::_types::ConnectorConfigPropertiesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_configuration(
+            key,
+            f(crate::typed::connector::_types::ConnectorConfigPropertiesBuilder::new()).build(),
+        )
+    }
+
     pub fn values(
         mut self,
         value: impl Into<indexmap::IndexMap<String, serde_json::Value>>,

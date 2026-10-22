@@ -796,6 +796,34 @@ impl<S0, S1, S2, S3, S4, C> RequestBuilder<(S0, S1, S2, S3, S4), C> {
         self
     }
 
+    /// Adds an entry to [`runtime_mappings`](Self::runtime_mappings).
+    pub fn add_runtime_mappings(
+        mut self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<crate::typed::_types::mapping::RuntimeField>,
+    ) -> Self {
+        self.runtime_mappings
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
+    /// Adds an entry to [`runtime_mappings`](Self::runtime_mappings), with a builder.
+    pub fn add_runtime_mappings_with(
+        self,
+        key: impl Into<crate::typed::_types::Field>,
+        f: impl FnOnce(
+            crate::typed::_types::mapping::RuntimeFieldBuilder,
+        ) -> crate::typed::_types::mapping::RuntimeFieldBuilder<(
+            crate::typed::builder::Set,
+        )>,
+    ) -> Self {
+        self.add_runtime_mappings(
+            key,
+            f(crate::typed::_types::mapping::RuntimeFieldBuilder::new()).build(),
+        )
+    }
+
     /// The maximum number of features to return in the hits layer. Accepts 0-10000.
     /// If 0, results don't include the hits layer.
     pub fn size2(mut self, value: i32) -> Self {

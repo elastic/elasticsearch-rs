@@ -152,6 +152,14 @@ impl<S0> AdjacencyMatrixAggregateBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl AdjacencyMatrixAggregateBuilder<(crate::typed::builder::NotSet,)> {
@@ -472,6 +480,14 @@ impl AggregateBaseBuilder {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -2672,6 +2688,14 @@ impl<S0> AggregationContainerBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl AggregationContainerBuilder<(crate::typed::builder::NotSet,)> {
@@ -4536,6 +4560,14 @@ impl<S0, S1> AutoDateHistogramAggregateBuilder<(S0, S1)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl<S1> AutoDateHistogramAggregateBuilder<(crate::typed::builder::NotSet, S1)> {
@@ -5138,6 +5170,14 @@ impl<S0> AvgAggregateBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn value_as_string(mut self, value: impl Into<String>) -> Self {
         self.value_as_string = Some(value.into());
         self
@@ -5314,6 +5354,14 @@ impl<S0, S1, S2, S3, S4, S5, S6> BoxPlotAggregateBuilder<(S0, S1, S2, S3, S4, S5
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -6514,6 +6562,14 @@ impl<S0, S1> BucketMetricValueAggregateBuilder<(S0, S1)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn value_as_string(mut self, value: impl Into<String>) -> Self {
         self.value_as_string = Some(value.into());
         self
@@ -7651,6 +7707,14 @@ impl<S0> CardinalityAggregateBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl CardinalityAggregateBuilder<(crate::typed::builder::NotSet,)> {
@@ -7900,6 +7964,14 @@ impl CartesianBoundsAggregateBuilder {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn bounds(
         mut self,
         value: impl Into<crate::typed::_types::TopLeftBottomRightGeoBounds>,
@@ -8102,6 +8174,14 @@ impl<S0> CartesianCentroidAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -8628,6 +8708,14 @@ impl<S0> ChangePointAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -9446,6 +9534,14 @@ impl<S0> ChildrenAggregateBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// Additional properties.
     pub fn additional_properties(
         mut self,
@@ -9609,6 +9705,14 @@ impl<S0> CompositeAggregateBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn after_key(mut self, value: impl Into<CompositeAggregateKey>) -> Self {
         self.after_key = Some(value.into());
         self
@@ -9617,6 +9721,18 @@ impl<S0> CompositeAggregateBuilder<(S0,)> {
     /// Sets [`after_key`](Self::after_key) if `value` is `Some`.
     pub fn maybe_after_key(mut self, value: Option<CompositeAggregateKey>) -> Self {
         self.after_key = value;
+        self
+    }
+
+    /// Adds an entry to [`after_key`](Self::after_key).
+    pub fn add_after_key(
+        mut self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<crate::typed::_types::FieldValue>,
+    ) -> Self {
+        self.after_key
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -9707,6 +9823,18 @@ impl CompositeAggregationBuilder {
     /// Sets [`after`](Self::after) if `value` is `Some`.
     pub fn maybe_after(mut self, value: Option<CompositeAggregateKey>) -> Self {
         self.after = value;
+        self
+    }
+
+    /// Adds an entry to [`after`](Self::after).
+    pub fn add_after(
+        mut self,
+        key: impl Into<crate::typed::_types::Field>,
+        value: impl Into<crate::typed::_types::FieldValue>,
+    ) -> Self {
+        self.after
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -11043,6 +11171,14 @@ impl<S0> CumulativeCardinalityAggregateBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn value_as_string(mut self, value: impl Into<String>) -> Self {
         self.value_as_string = Some(value.into());
         self
@@ -11433,6 +11569,14 @@ impl<S0> DateHistogramAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -12021,6 +12165,14 @@ impl<S0> DateRangeAggregateBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl DateRangeAggregateBuilder<(crate::typed::builder::NotSet,)> {
@@ -12399,6 +12551,14 @@ impl<S0> DerivativeAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -12952,6 +13112,14 @@ impl<S0> DoubleTermsAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -13971,6 +14139,14 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -15451,6 +15627,14 @@ impl<S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11>
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn min_as_string(mut self, value: impl Into<String>) -> Self {
         self.min_as_string = Some(value.into());
         self
@@ -16618,6 +16802,14 @@ impl<S0> FilterAggregateBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// Additional properties.
     pub fn additional_properties(
         mut self,
@@ -16718,6 +16910,14 @@ impl<S0> FiltersAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -17260,6 +17460,14 @@ impl<S0> FrequentItemSetsAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -17818,6 +18026,14 @@ impl GeoBoundsAggregateBuilder {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn bounds(mut self, value: impl Into<crate::typed::_types::GeoBounds>) -> Self {
         self.bounds = Some(value.into());
         self
@@ -18019,6 +18235,14 @@ impl<S0> GeoCentroidAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -18248,6 +18472,14 @@ impl<S0> GeoDistanceAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -18485,6 +18717,14 @@ impl<S0> GeoHashGridAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -18832,6 +19072,14 @@ impl<S0> GeoHexGridAggregateBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl GeoHexGridAggregateBuilder<(crate::typed::builder::NotSet,)> {
@@ -19059,6 +19307,14 @@ impl<S0, S1, S2> GeoLineAggregateBuilder<(S0, S1, S2)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -19535,6 +19791,14 @@ impl<S0> GeoTileGridAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -20042,6 +20306,14 @@ impl<S0> GlobalAggregateBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// Additional properties.
     pub fn additional_properties(
         mut self,
@@ -20293,6 +20565,14 @@ impl<S0> HdrPercentileRanksAggregateBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl HdrPercentileRanksAggregateBuilder<(crate::typed::builder::NotSet,)> {
@@ -20381,6 +20661,14 @@ impl<S0> HdrPercentilesAggregateBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl HdrPercentilesAggregateBuilder<(crate::typed::builder::NotSet,)> {
@@ -20467,6 +20755,14 @@ impl<S0> HistogramAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -21721,6 +22017,14 @@ impl InferenceAggregateBuilder {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn value(mut self, value: impl Into<crate::typed::_types::FieldValue>) -> Self {
         self.value = Some(value.into());
         self
@@ -22580,6 +22884,14 @@ impl<S0> IpPrefixAggregateBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl IpPrefixAggregateBuilder<(crate::typed::builder::NotSet,)> {
@@ -23082,6 +23394,14 @@ impl<S0> IpRangeAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -23807,6 +24127,14 @@ impl<S0> LongRareTermsAggregateBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl LongRareTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
@@ -24042,6 +24370,14 @@ impl<S0> LongTermsAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -24409,6 +24745,14 @@ impl<S0> MatrixStatsAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -25064,6 +25408,14 @@ impl<S0> MaxAggregateBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn value_as_string(mut self, value: impl Into<String>) -> Self {
         self.value_as_string = Some(value.into());
         self
@@ -25399,6 +25751,14 @@ impl<S0> MedianAbsoluteDeviationAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -25788,6 +26148,14 @@ impl<S0> MinAggregateBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn value_as_string(mut self, value: impl Into<String>) -> Self {
         self.value_as_string = Some(value.into());
         self
@@ -26164,6 +26532,14 @@ impl<S0> MissingAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -26808,6 +27184,14 @@ impl<S0> MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder<(crate::typed::builder::NotSet,)> {
@@ -26898,6 +27282,14 @@ impl<S0> MultiBucketAggregateBaseCompositeBucketBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -26991,6 +27383,14 @@ impl<S0> MultiBucketAggregateBaseDateHistogramBucketBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl MultiBucketAggregateBaseDateHistogramBucketBuilder<(crate::typed::builder::NotSet,)> {
@@ -27081,6 +27481,14 @@ impl<S0> MultiBucketAggregateBaseDoubleTermsBucketBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl MultiBucketAggregateBaseDoubleTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
@@ -27169,6 +27577,14 @@ impl<S0> MultiBucketAggregateBaseFiltersBucketBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -27263,6 +27679,14 @@ impl<S0> MultiBucketAggregateBaseFrequentItemSetsBucketBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl MultiBucketAggregateBaseFrequentItemSetsBucketBuilder<(crate::typed::builder::NotSet,)> {
@@ -27355,6 +27779,14 @@ impl<S0> MultiBucketAggregateBaseGeoHashGridBucketBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl MultiBucketAggregateBaseGeoHashGridBucketBuilder<(crate::typed::builder::NotSet,)> {
@@ -27443,6 +27875,14 @@ impl<S0> MultiBucketAggregateBaseGeoHexGridBucketBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -27535,6 +27975,14 @@ impl<S0> MultiBucketAggregateBaseGeoTileGridBucketBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl MultiBucketAggregateBaseGeoTileGridBucketBuilder<(crate::typed::builder::NotSet,)> {
@@ -27623,6 +28071,14 @@ impl<S0> MultiBucketAggregateBaseHistogramBucketBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -27715,6 +28171,14 @@ impl<S0> MultiBucketAggregateBaseIpPrefixBucketBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl MultiBucketAggregateBaseIpPrefixBucketBuilder<(crate::typed::builder::NotSet,)> {
@@ -27803,6 +28267,14 @@ impl<S0> MultiBucketAggregateBaseIpRangeBucketBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -27896,6 +28368,14 @@ impl<S0> MultiBucketAggregateBaseLongRareTermsBucketBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl MultiBucketAggregateBaseLongRareTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
@@ -27984,6 +28464,14 @@ impl<S0> MultiBucketAggregateBaseLongTermsBucketBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -28076,6 +28564,14 @@ impl<S0> MultiBucketAggregateBaseMultiTermsBucketBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl MultiBucketAggregateBaseMultiTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
@@ -28164,6 +28660,14 @@ impl<S0> MultiBucketAggregateBaseRangeBucketBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -28256,6 +28760,14 @@ impl<S0> MultiBucketAggregateBaseSignificantLongTermsBucketBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -28351,6 +28863,14 @@ impl<S0> MultiBucketAggregateBaseSignificantStringTermsBucketBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -28449,6 +28969,14 @@ impl<S0> MultiBucketAggregateBaseStringRareTermsBucketBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl MultiBucketAggregateBaseStringRareTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
@@ -28541,6 +29069,14 @@ impl<S0> MultiBucketAggregateBaseStringTermsBucketBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl MultiBucketAggregateBaseStringTermsBucketBuilder<(crate::typed::builder::NotSet,)> {
@@ -28629,6 +29165,14 @@ impl<S0> MultiBucketAggregateBaseTimeSeriesBucketBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -28723,6 +29267,14 @@ impl<S0> MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder<(crate::typed::builder::NotSet,)> {
@@ -28815,6 +29367,14 @@ impl<S0> MultiBucketAggregateBaseVoidBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -29152,6 +29712,14 @@ impl<S0> MultiTermsAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -29711,6 +30279,14 @@ impl<S0> NestedAggregateBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// Additional properties.
     pub fn additional_properties(
         mut self,
@@ -30242,6 +30818,14 @@ impl<S0> ParentAggregateBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// Additional properties.
     pub fn additional_properties(
         mut self,
@@ -30667,6 +31251,14 @@ impl<S0> PercentilesAggregateBaseBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl PercentilesAggregateBaseBuilder<(crate::typed::builder::NotSet,)> {
@@ -30979,6 +31571,14 @@ impl<S0> PercentilesBucketAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -31400,6 +32000,14 @@ impl<S0> RangeAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -32009,6 +32617,14 @@ impl<S0> RateAggregateBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn value_as_string(mut self, value: impl Into<String>) -> Self {
         self.value_as_string = Some(value.into());
         self
@@ -32278,6 +32894,14 @@ impl<S0> ReverseNestedAggregateBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// Additional properties.
     pub fn additional_properties(
         mut self,
@@ -32442,6 +33066,14 @@ impl<S0> SamplerAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -32690,6 +33322,14 @@ impl<S0> ScriptedMetricAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -33157,6 +33797,14 @@ impl<S0> SignificantLongTermsAggregateBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn bg_count(mut self, value: i64) -> Self {
         self.bg_count = Some(value);
         self
@@ -33515,6 +34163,14 @@ impl<S0> SignificantStringTermsAggregateBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn bg_count(mut self, value: i64) -> Self {
         self.bg_count = Some(value);
         self
@@ -33862,6 +34518,14 @@ impl<S0> SignificantTermsAggregateBaseSignificantLongTermsBucketBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn bg_count(mut self, value: i64) -> Self {
         self.bg_count = Some(value);
         self
@@ -34000,6 +34664,14 @@ impl<S0> SignificantTermsAggregateBaseSignificantStringTermsBucketBuilder<(S0,)>
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -34142,6 +34814,14 @@ impl<S0> SignificantTermsAggregateBaseVoidBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -35563,6 +36243,14 @@ impl<S0> SimpleValueAggregateBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn value_as_string(mut self, value: impl Into<String>) -> Self {
         self.value_as_string = Some(value.into());
         self
@@ -35667,6 +36355,14 @@ impl<S0> SingleBucketAggregateBaseBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -35801,6 +36497,14 @@ impl<S0> SingleMetricAggregateBaseBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -36832,6 +37536,14 @@ impl<S0, S1, S2, S3, S4> StatsAggregateBuilder<(S0, S1, S2, S3, S4)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn min_as_string(mut self, value: impl Into<String>) -> Self {
         self.min_as_string = Some(value.into());
         self
@@ -37322,6 +38034,14 @@ impl<S0, S1, S2, S3, S4> StatsBucketAggregateBuilder<(S0, S1, S2, S3, S4)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn min_as_string(mut self, value: impl Into<String>) -> Self {
         self.min_as_string = Some(value.into());
         self
@@ -37773,6 +38493,14 @@ impl<S0> StringRareTermsAggregateBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl StringRareTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
@@ -38116,6 +38844,14 @@ impl<S0, S1, S2, S3, S4> StringStatsAggregateBuilder<(S0, S1, S2, S3, S4)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -38513,6 +39249,14 @@ impl<S0> StringTermsAggregateBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn doc_count_error_upper_bound(mut self, value: i64) -> Self {
         self.doc_count_error_upper_bound = Some(value);
         self
@@ -38787,6 +39531,14 @@ impl<S0> SumAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -39186,6 +39938,14 @@ impl<S0> TDigestPercentileRanksAggregateBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl TDigestPercentileRanksAggregateBuilder<(crate::typed::builder::NotSet,)> {
@@ -39274,6 +40034,14 @@ impl<S0> TDigestPercentilesAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -39386,6 +40154,14 @@ impl<S0> TTestAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -39619,6 +40395,14 @@ impl<S0> TermsAggregateBaseDoubleTermsBucketBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn doc_count_error_upper_bound(mut self, value: i64) -> Self {
         self.doc_count_error_upper_bound = Some(value);
         self
@@ -39740,6 +40524,14 @@ impl<S0> TermsAggregateBaseLongTermsBucketBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -39867,6 +40659,14 @@ impl<S0> TermsAggregateBaseMultiTermsBucketBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn doc_count_error_upper_bound(mut self, value: i64) -> Self {
         self.doc_count_error_upper_bound = Some(value);
         self
@@ -39991,6 +40791,14 @@ impl<S0> TermsAggregateBaseStringTermsBucketBuilder<(S0,)> {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     pub fn doc_count_error_upper_bound(mut self, value: i64) -> Self {
         self.doc_count_error_upper_bound = Some(value);
         self
@@ -40112,6 +40920,14 @@ impl<S0> TermsAggregateBaseVoidBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -40999,6 +41815,14 @@ impl<S0> TimeSeriesAggregateBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl TimeSeriesAggregateBuilder<(crate::typed::builder::NotSet,)> {
@@ -41283,6 +42107,14 @@ impl<S0> TopHitsAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -41960,6 +42792,14 @@ impl<S0> TopMetricsAggregateBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl TopMetricsAggregateBuilder<(crate::typed::builder::NotSet,)> {
@@ -42449,6 +43289,14 @@ impl<S0> UnmappedRareTermsAggregateBuilder<(S0,)> {
         self.meta = value;
         self
     }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
 }
 
 impl UnmappedRareTermsAggregateBuilder<(crate::typed::builder::NotSet,)> {
@@ -42541,6 +43389,14 @@ impl<S0> UnmappedSamplerAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -42660,6 +43516,14 @@ impl<S0> UnmappedSignificantTermsAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -42785,6 +43649,14 @@ impl<S0> UnmappedTermsAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -42922,6 +43794,14 @@ impl<S0> ValueCountAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 
@@ -43163,6 +44043,14 @@ impl<S0> VariableWidthHistogramAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 }
@@ -43913,6 +44801,14 @@ impl<S0> WeightedAvgAggregateBuilder<(S0,)> {
     /// Sets [`meta`](Self::meta) if `value` is `Some`.
     pub fn maybe_meta(mut self, value: Option<crate::typed::_types::Metadata>) -> Self {
         self.meta = value;
+        self
+    }
+
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
         self
     }
 

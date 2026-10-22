@@ -229,6 +229,18 @@ impl<S0, C> RequestBuilder<(S0,), C> {
         self
     }
 
+    /// Adds an entry to [`metadata`](Self::metadata).
+    pub fn add_metadata(
+        mut self,
+        key: impl Into<String>,
+        value: impl Into<serde_json::Value>,
+    ) -> Self {
+        self.metadata
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// A list of role names that are granted to the users that match the role mapping rules.
     /// Exactly one of `roles` or `role_templates` must be specified.
     pub fn roles(mut self, value: impl Into<Vec<String>>) -> Self {

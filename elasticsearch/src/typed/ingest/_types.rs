@@ -10427,6 +10427,14 @@ impl PipelineBuilder {
         self
     }
 
+    /// Adds an entry to [`meta`](Self::meta).
+    pub fn add_meta(mut self, key: impl Into<String>, value: impl Into<serde_json::Value>) -> Self {
+        self.meta
+            .get_or_insert_with(Default::default)
+            .insert(key.into(), value.into());
+        self
+    }
+
     /// Date and time when the pipeline was created. Only returned if the `human` query parameter is `true`.
     pub fn created_date(mut self, value: impl Into<crate::typed::_types::DateTime>) -> Self {
         self.created_date = Some(value.into());
