@@ -18,6 +18,24 @@ impl NodeShutdownStatus {
     pub fn builder() -> NodeShutdownStatusBuilder {
         NodeShutdownStatusBuilder::new()
     }
+
+    /// Creates a [`NodeShutdownStatus`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeShutdownStatusBuilder,
+        ) -> NodeShutdownStatusBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NodeShutdownStatus {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeShutdownStatus`].
@@ -414,6 +432,15 @@ impl PersistentTaskStatus {
     pub fn builder() -> PersistentTaskStatusBuilder {
         PersistentTaskStatusBuilder::new()
     }
+
+    /// Creates a [`PersistentTaskStatus`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PersistentTaskStatusBuilder,
+        ) -> PersistentTaskStatusBuilder<(crate::typed::builder::Set,)>,
+    ) -> PersistentTaskStatus {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PersistentTaskStatus`].
@@ -482,6 +509,13 @@ impl PluginsStatus {
     /// Creates a builder for [`PluginsStatus`].
     pub fn builder() -> PluginsStatusBuilder {
         PluginsStatusBuilder::new()
+    }
+
+    /// Creates a [`PluginsStatus`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(PluginsStatusBuilder) -> PluginsStatusBuilder<(crate::typed::builder::Set,)>,
+    ) -> PluginsStatus {
+        f(Self::builder()).build()
     }
 }
 
@@ -581,6 +615,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -824,6 +863,15 @@ impl ShardMigrationStatus {
     /// Creates a builder for [`ShardMigrationStatus`].
     pub fn builder() -> ShardMigrationStatusBuilder {
         ShardMigrationStatusBuilder::new()
+    }
+
+    /// Creates a [`ShardMigrationStatus`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardMigrationStatusBuilder,
+        ) -> ShardMigrationStatusBuilder<(crate::typed::builder::Set,)>,
+    ) -> ShardMigrationStatus {
+        f(Self::builder()).build()
     }
 }
 

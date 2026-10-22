@@ -95,6 +95,23 @@ impl AuthenticatedUser {
     pub fn builder() -> AuthenticatedUserBuilder {
         AuthenticatedUserBuilder::new()
     }
+
+    /// Creates a [`AuthenticatedUser`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AuthenticatedUserBuilder,
+        ) -> AuthenticatedUserBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AuthenticatedUser {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AuthenticatedUser`].
@@ -520,6 +537,18 @@ impl AuthenticationProvider {
     pub fn builder() -> AuthenticationProviderBuilder {
         AuthenticationProviderBuilder::new()
     }
+
+    /// Creates a [`AuthenticationProvider`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AuthenticationProviderBuilder,
+        ) -> AuthenticationProviderBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AuthenticationProvider {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AuthenticationProvider`].
@@ -676,6 +705,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -1039,6 +1073,16 @@ impl UserRealm {
     /// Creates a builder for [`UserRealm`].
     pub fn builder() -> UserRealmBuilder {
         UserRealmBuilder::new()
+    }
+
+    /// Creates a [`UserRealm`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UserRealmBuilder,
+        )
+            -> UserRealmBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> UserRealm {
+        f(Self::builder()).build()
     }
 }
 

@@ -34,6 +34,11 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -257,6 +262,13 @@ impl StreamStatus {
     /// Creates a builder for [`StreamStatus`].
     pub fn builder() -> StreamStatusBuilder {
         StreamStatusBuilder::new()
+    }
+
+    /// Creates a [`StreamStatus`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(StreamStatusBuilder) -> StreamStatusBuilder<(crate::typed::builder::Set,)>,
+    ) -> StreamStatus {
+        f(Self::builder()).build()
     }
 }
 

@@ -12,6 +12,18 @@ impl Acknowledgement {
     pub fn builder() -> AcknowledgementBuilder {
         AcknowledgementBuilder::new()
     }
+
+    /// Creates a [`Acknowledgement`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AcknowledgementBuilder,
+        ) -> AcknowledgementBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Acknowledgement {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Acknowledgement`].
@@ -144,6 +156,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

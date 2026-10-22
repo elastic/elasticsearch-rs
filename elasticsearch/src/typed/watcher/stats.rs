@@ -39,6 +39,11 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -347,6 +352,15 @@ impl WatchRecordQueuedStats {
     pub fn builder() -> WatchRecordQueuedStatsBuilder {
         WatchRecordQueuedStatsBuilder::new()
     }
+
+    /// Creates a [`WatchRecordQueuedStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            WatchRecordQueuedStatsBuilder,
+        ) -> WatchRecordQueuedStatsBuilder<(crate::typed::builder::Set,)>,
+    ) -> WatchRecordQueuedStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`WatchRecordQueuedStats`].
@@ -428,6 +442,21 @@ impl WatchRecordStats {
     /// Creates a builder for [`WatchRecordStats`].
     pub fn builder() -> WatchRecordStatsBuilder {
         WatchRecordStatsBuilder::new()
+    }
+
+    /// Creates a [`WatchRecordStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            WatchRecordStatsBuilder,
+        ) -> WatchRecordStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> WatchRecordStats {
+        f(Self::builder()).build()
     }
 }
 
@@ -715,6 +744,20 @@ impl WatcherNodeStats {
     /// Creates a builder for [`WatcherNodeStats`].
     pub fn builder() -> WatcherNodeStatsBuilder {
         WatcherNodeStatsBuilder::new()
+    }
+
+    /// Creates a [`WatcherNodeStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            WatcherNodeStatsBuilder,
+        ) -> WatcherNodeStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> WatcherNodeStats {
+        f(Self::builder()).build()
     }
 }
 

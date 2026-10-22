@@ -13,6 +13,19 @@ impl FileDetails {
     pub fn builder() -> FileDetailsBuilder {
         FileDetailsBuilder::new()
     }
+
+    /// Creates a [`FileDetails`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FileDetailsBuilder,
+        ) -> FileDetailsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FileDetails {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FileDetails`].
@@ -174,6 +187,20 @@ impl RecoveryBytes {
     /// Creates a builder for [`RecoveryBytes`].
     pub fn builder() -> RecoveryBytesBuilder {
         RecoveryBytesBuilder::new()
+    }
+
+    /// Creates a [`RecoveryBytes`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RecoveryBytesBuilder,
+        ) -> RecoveryBytesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RecoveryBytes {
+        f(Self::builder()).build()
     }
 }
 
@@ -457,6 +484,20 @@ impl RecoveryFiles {
     pub fn builder() -> RecoveryFilesBuilder {
         RecoveryFilesBuilder::new()
     }
+
+    /// Creates a [`RecoveryFiles`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RecoveryFilesBuilder,
+        ) -> RecoveryFilesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RecoveryFiles {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RecoveryFiles`].
@@ -695,6 +736,21 @@ impl RecoveryIndexStatus {
     /// Creates a builder for [`RecoveryIndexStatus`].
     pub fn builder() -> RecoveryIndexStatusBuilder {
         RecoveryIndexStatusBuilder::new()
+    }
+
+    /// Creates a [`RecoveryIndexStatus`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RecoveryIndexStatusBuilder,
+        ) -> RecoveryIndexStatusBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RecoveryIndexStatus {
+        f(Self::builder()).build()
     }
 }
 
@@ -1067,6 +1123,11 @@ impl RecoveryOrigin {
     pub fn builder() -> RecoveryOriginBuilder {
         RecoveryOriginBuilder::new()
     }
+
+    /// Creates a [`RecoveryOrigin`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RecoveryOriginBuilder) -> RecoveryOriginBuilder) -> RecoveryOrigin {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RecoveryOrigin`].
@@ -1336,6 +1397,18 @@ impl RecoveryStartStatus {
     pub fn builder() -> RecoveryStartStatusBuilder {
         RecoveryStartStatusBuilder::new()
     }
+
+    /// Creates a [`RecoveryStartStatus`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RecoveryStartStatusBuilder,
+        ) -> RecoveryStartStatusBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RecoveryStartStatus {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RecoveryStartStatus`].
@@ -1464,6 +1537,13 @@ impl RecoveryStatus {
     /// Creates a builder for [`RecoveryStatus`].
     pub fn builder() -> RecoveryStatusBuilder {
         RecoveryStatusBuilder::new()
+    }
+
+    /// Creates a [`RecoveryStatus`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RecoveryStatusBuilder) -> RecoveryStatusBuilder<(crate::typed::builder::Set,)>,
+    ) -> RecoveryStatus {
+        f(Self::builder()).build()
     }
 }
 
@@ -1617,6 +1697,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -1999,6 +2084,27 @@ impl ShardRecovery {
     /// Creates a builder for [`ShardRecovery`].
     pub fn builder() -> ShardRecoveryBuilder {
         ShardRecoveryBuilder::new()
+    }
+
+    /// Creates a [`ShardRecovery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardRecoveryBuilder,
+        ) -> ShardRecoveryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardRecovery {
+        f(Self::builder()).build()
     }
 }
 
@@ -3097,6 +3203,21 @@ impl TranslogStatus {
     pub fn builder() -> TranslogStatusBuilder {
         TranslogStatusBuilder::new()
     }
+
+    /// Creates a [`TranslogStatus`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TranslogStatusBuilder,
+        ) -> TranslogStatusBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> TranslogStatus {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TranslogStatus`].
@@ -3343,6 +3464,16 @@ impl VerifyIndex {
     /// Creates a builder for [`VerifyIndex`].
     pub fn builder() -> VerifyIndexBuilder {
         VerifyIndexBuilder::new()
+    }
+
+    /// Creates a [`VerifyIndex`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            VerifyIndexBuilder,
+        )
+            -> VerifyIndexBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> VerifyIndex {
+        f(Self::builder()).build()
     }
 }
 

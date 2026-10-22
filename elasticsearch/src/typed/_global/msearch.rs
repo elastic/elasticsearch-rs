@@ -76,6 +76,20 @@ impl MultiSearchItem {
     pub fn builder() -> MultiSearchItemBuilder {
         MultiSearchItemBuilder::new()
     }
+
+    /// Creates a [`MultiSearchItem`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiSearchItemBuilder,
+        ) -> MultiSearchItemBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MultiSearchItem {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MultiSearchItem`].
@@ -605,6 +619,18 @@ impl MultiSearchResult {
     pub fn builder() -> MultiSearchResultBuilder {
         MultiSearchResultBuilder::new()
     }
+
+    /// Creates a [`MultiSearchResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiSearchResultBuilder,
+        ) -> MultiSearchResultBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MultiSearchResult {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MultiSearchResult`].
@@ -737,6 +763,13 @@ impl MultisearchHeader {
     /// Creates a builder for [`MultisearchHeader`].
     pub fn builder() -> MultisearchHeaderBuilder {
         MultisearchHeaderBuilder::new()
+    }
+
+    /// Creates a [`MultisearchHeader`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MultisearchHeaderBuilder) -> MultisearchHeaderBuilder,
+    ) -> MultisearchHeader {
+        f(Self::builder()).build()
     }
 }
 
@@ -1080,6 +1113,13 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 

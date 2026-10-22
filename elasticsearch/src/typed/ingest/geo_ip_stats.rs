@@ -22,6 +22,22 @@ impl GeoIpDownloadStatistics {
     pub fn builder() -> GeoIpDownloadStatisticsBuilder {
         GeoIpDownloadStatisticsBuilder::new()
     }
+
+    /// Creates a [`GeoIpDownloadStatistics`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GeoIpDownloadStatisticsBuilder,
+        ) -> GeoIpDownloadStatisticsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> GeoIpDownloadStatistics {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GeoIpDownloadStatistics`].
@@ -309,6 +325,15 @@ impl GeoIpNodeDatabaseName {
     pub fn builder() -> GeoIpNodeDatabaseNameBuilder {
         GeoIpNodeDatabaseNameBuilder::new()
     }
+
+    /// Creates a [`GeoIpNodeDatabaseName`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GeoIpNodeDatabaseNameBuilder,
+        ) -> GeoIpNodeDatabaseNameBuilder<(crate::typed::builder::Set,)>,
+    ) -> GeoIpNodeDatabaseName {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GeoIpNodeDatabaseName`].
@@ -382,6 +407,18 @@ impl GeoIpNodeDatabases {
     /// Creates a builder for [`GeoIpNodeDatabases`].
     pub fn builder() -> GeoIpNodeDatabasesBuilder {
         GeoIpNodeDatabasesBuilder::new()
+    }
+
+    /// Creates a [`GeoIpNodeDatabases`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GeoIpNodeDatabasesBuilder,
+        ) -> GeoIpNodeDatabasesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> GeoIpNodeDatabases {
+        f(Self::builder()).build()
     }
 }
 
@@ -504,6 +541,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

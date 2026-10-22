@@ -13,6 +13,19 @@ impl Explanation {
     pub fn builder() -> ExplanationBuilder {
         ExplanationBuilder::new()
     }
+
+    /// Creates a [`Explanation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ExplanationBuilder,
+        ) -> ExplanationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Explanation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Explanation`].
@@ -167,6 +180,18 @@ impl ExplanationDetail {
     /// Creates a builder for [`ExplanationDetail`].
     pub fn builder() -> ExplanationDetailBuilder {
         ExplanationDetailBuilder::new()
+    }
+
+    /// Creates a [`ExplanationDetail`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ExplanationDetailBuilder,
+        ) -> ExplanationDetailBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ExplanationDetail {
+        f(Self::builder()).build()
     }
 }
 
@@ -365,6 +390,16 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RequestBuilder,
+        )
+            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 

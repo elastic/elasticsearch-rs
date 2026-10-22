@@ -21,6 +21,13 @@ impl CCSStats {
     pub fn builder() -> CCSStatsBuilder {
         CCSStatsBuilder::new()
     }
+
+    /// Creates a [`CCSStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CCSStatsBuilder) -> CCSStatsBuilder<(crate::typed::builder::Set,)>,
+    ) -> CCSStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CCSStats`].
@@ -213,6 +220,19 @@ impl CCSUsageClusterStats {
     /// Creates a builder for [`CCSUsageClusterStats`].
     pub fn builder() -> CCSUsageClusterStatsBuilder {
         CCSUsageClusterStatsBuilder::new()
+    }
+
+    /// Creates a [`CCSUsageClusterStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CCSUsageClusterStatsBuilder,
+        ) -> CCSUsageClusterStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CCSUsageClusterStats {
+        f(Self::builder()).build()
     }
 }
 
@@ -410,6 +430,26 @@ impl CCSUsageStats {
     /// Creates a builder for [`CCSUsageStats`].
     pub fn builder() -> CCSUsageStatsBuilder {
         CCSUsageStatsBuilder::new()
+    }
+
+    /// Creates a [`CCSUsageStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CCSUsageStatsBuilder,
+        ) -> CCSUsageStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CCSUsageStats {
+        f(Self::builder()).build()
     }
 }
 
@@ -1208,6 +1248,19 @@ impl CCSUsageTimeValue {
     pub fn builder() -> CCSUsageTimeValueBuilder {
         CCSUsageTimeValueBuilder::new()
     }
+
+    /// Creates a [`CCSUsageTimeValue`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CCSUsageTimeValueBuilder,
+        ) -> CCSUsageTimeValueBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CCSUsageTimeValue {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CCSUsageTimeValue`].
@@ -1384,6 +1437,25 @@ impl CharFilterTypes {
     /// Creates a builder for [`CharFilterTypes`].
     pub fn builder() -> CharFilterTypesBuilder {
         CharFilterTypesBuilder::new()
+    }
+
+    /// Creates a [`CharFilterTypes`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CharFilterTypesBuilder,
+        ) -> CharFilterTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CharFilterTypes {
+        f(Self::builder()).build()
     }
 }
 
@@ -1983,6 +2055,13 @@ impl ClusterFileSystem {
     pub fn builder() -> ClusterFileSystemBuilder {
         ClusterFileSystemBuilder::new()
     }
+
+    /// Creates a [`ClusterFileSystem`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ClusterFileSystemBuilder) -> ClusterFileSystemBuilder,
+    ) -> ClusterFileSystem {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ClusterFileSystem`].
@@ -2326,6 +2405,27 @@ impl ClusterIndices {
     /// Creates a builder for [`ClusterIndices`].
     pub fn builder() -> ClusterIndicesBuilder {
         ClusterIndicesBuilder::new()
+    }
+
+    /// Creates a [`ClusterIndices`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClusterIndicesBuilder,
+        ) -> ClusterIndicesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterIndices {
+        f(Self::builder()).build()
     }
 }
 
@@ -3507,6 +3607,13 @@ impl ClusterIndicesShards {
     pub fn builder() -> ClusterIndicesShardsBuilder {
         ClusterIndicesShardsBuilder::new()
     }
+
+    /// Creates a [`ClusterIndicesShards`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ClusterIndicesShardsBuilder) -> ClusterIndicesShardsBuilder,
+    ) -> ClusterIndicesShards {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ClusterIndicesShards`].
@@ -3625,6 +3732,19 @@ impl ClusterIndicesShardsIndex {
     /// Creates a builder for [`ClusterIndicesShardsIndex`].
     pub fn builder() -> ClusterIndicesShardsIndexBuilder {
         ClusterIndicesShardsIndexBuilder::new()
+    }
+
+    /// Creates a [`ClusterIndicesShardsIndex`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClusterIndicesShardsIndexBuilder,
+        ) -> ClusterIndicesShardsIndexBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterIndicesShardsIndex {
+        f(Self::builder()).build()
     }
 }
 
@@ -3827,6 +3947,16 @@ impl ClusterIngest {
     pub fn builder() -> ClusterIngestBuilder {
         ClusterIngestBuilder::new()
     }
+
+    /// Creates a [`ClusterIngest`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClusterIngestBuilder,
+        )
+            -> ClusterIngestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> ClusterIngest {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ClusterIngest`].
@@ -3931,6 +4061,20 @@ impl ClusterJvm {
     /// Creates a builder for [`ClusterJvm`].
     pub fn builder() -> ClusterJvmBuilder {
         ClusterJvmBuilder::new()
+    }
+
+    /// Creates a [`ClusterJvm`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClusterJvmBuilder,
+        ) -> ClusterJvmBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterJvm {
+        f(Self::builder()).build()
     }
 }
 
@@ -4164,6 +4308,18 @@ impl ClusterJvmMemory {
     pub fn builder() -> ClusterJvmMemoryBuilder {
         ClusterJvmMemoryBuilder::new()
     }
+
+    /// Creates a [`ClusterJvmMemory`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClusterJvmMemoryBuilder,
+        ) -> ClusterJvmMemoryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterJvmMemory {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ClusterJvmMemory`].
@@ -4307,6 +4463,23 @@ impl ClusterJvmVersion {
     /// Creates a builder for [`ClusterJvmVersion`].
     pub fn builder() -> ClusterJvmVersionBuilder {
         ClusterJvmVersionBuilder::new()
+    }
+
+    /// Creates a [`ClusterJvmVersion`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClusterJvmVersionBuilder,
+        ) -> ClusterJvmVersionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterJvmVersion {
+        f(Self::builder()).build()
     }
 }
 
@@ -4642,6 +4815,18 @@ impl ClusterNetworkTypes {
     pub fn builder() -> ClusterNetworkTypesBuilder {
         ClusterNetworkTypesBuilder::new()
     }
+
+    /// Creates a [`ClusterNetworkTypes`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClusterNetworkTypesBuilder,
+        ) -> ClusterNetworkTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterNetworkTypes {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ClusterNetworkTypes`].
@@ -4772,6 +4957,15 @@ impl ClusterNodeCount {
     /// Creates a builder for [`ClusterNodeCount`].
     pub fn builder() -> ClusterNodeCountBuilder {
         ClusterNodeCountBuilder::new()
+    }
+
+    /// Creates a [`ClusterNodeCount`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClusterNodeCountBuilder,
+        ) -> ClusterNodeCountBuilder<(crate::typed::builder::Set,)>,
+    ) -> ClusterNodeCount {
+        f(Self::builder()).build()
     }
 }
 
@@ -5085,6 +5279,28 @@ impl ClusterNodes {
     /// Creates a builder for [`ClusterNodes`].
     pub fn builder() -> ClusterNodesBuilder {
         ClusterNodesBuilder::new()
+    }
+
+    /// Creates a [`ClusterNodes`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClusterNodesBuilder,
+        ) -> ClusterNodesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterNodes {
+        f(Self::builder()).build()
     }
 }
 
@@ -6206,6 +6422,21 @@ impl ClusterOperatingSystem {
     pub fn builder() -> ClusterOperatingSystemBuilder {
         ClusterOperatingSystemBuilder::new()
     }
+
+    /// Creates a [`ClusterOperatingSystem`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClusterOperatingSystemBuilder,
+        ) -> ClusterOperatingSystemBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterOperatingSystem {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ClusterOperatingSystem`].
@@ -6517,6 +6748,18 @@ impl ClusterOperatingSystemArchitecture {
     pub fn builder() -> ClusterOperatingSystemArchitectureBuilder {
         ClusterOperatingSystemArchitectureBuilder::new()
     }
+
+    /// Creates a [`ClusterOperatingSystemArchitecture`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClusterOperatingSystemArchitectureBuilder,
+        ) -> ClusterOperatingSystemArchitectureBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterOperatingSystemArchitecture {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ClusterOperatingSystemArchitecture`].
@@ -6641,6 +6884,18 @@ impl ClusterOperatingSystemName {
     pub fn builder() -> ClusterOperatingSystemNameBuilder {
         ClusterOperatingSystemNameBuilder::new()
     }
+
+    /// Creates a [`ClusterOperatingSystemName`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClusterOperatingSystemNameBuilder,
+        ) -> ClusterOperatingSystemNameBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterOperatingSystemName {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ClusterOperatingSystemName`].
@@ -6753,6 +7008,18 @@ impl ClusterOperatingSystemPrettyName {
     /// Creates a builder for [`ClusterOperatingSystemPrettyName`].
     pub fn builder() -> ClusterOperatingSystemPrettyNameBuilder {
         ClusterOperatingSystemPrettyNameBuilder::new()
+    }
+
+    /// Creates a [`ClusterOperatingSystemPrettyName`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClusterOperatingSystemPrettyNameBuilder,
+        ) -> ClusterOperatingSystemPrettyNameBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterOperatingSystemPrettyName {
+        f(Self::builder()).build()
     }
 }
 
@@ -6878,6 +7145,18 @@ impl ClusterProcess {
     pub fn builder() -> ClusterProcessBuilder {
         ClusterProcessBuilder::new()
     }
+
+    /// Creates a [`ClusterProcess`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClusterProcessBuilder,
+        ) -> ClusterProcessBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterProcess {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ClusterProcess`].
@@ -7001,6 +7280,15 @@ impl ClusterProcessCpu {
     pub fn builder() -> ClusterProcessCpuBuilder {
         ClusterProcessCpuBuilder::new()
     }
+
+    /// Creates a [`ClusterProcessCpu`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClusterProcessCpuBuilder,
+        ) -> ClusterProcessCpuBuilder<(crate::typed::builder::Set,)>,
+    ) -> ClusterProcessCpu {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ClusterProcessCpu`].
@@ -7076,6 +7364,19 @@ impl ClusterProcessOpenFileDescriptors {
     /// Creates a builder for [`ClusterProcessOpenFileDescriptors`].
     pub fn builder() -> ClusterProcessOpenFileDescriptorsBuilder {
         ClusterProcessOpenFileDescriptorsBuilder::new()
+    }
+
+    /// Creates a [`ClusterProcessOpenFileDescriptors`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClusterProcessOpenFileDescriptorsBuilder,
+        ) -> ClusterProcessOpenFileDescriptorsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterProcessOpenFileDescriptors {
+        f(Self::builder()).build()
     }
 }
 
@@ -7242,6 +7543,20 @@ impl ClusterProcessor {
     /// Creates a builder for [`ClusterProcessor`].
     pub fn builder() -> ClusterProcessorBuilder {
         ClusterProcessorBuilder::new()
+    }
+
+    /// Creates a [`ClusterProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClusterProcessorBuilder,
+        ) -> ClusterProcessorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -7453,6 +7768,19 @@ impl ClusterShardMetrics {
     pub fn builder() -> ClusterShardMetricsBuilder {
         ClusterShardMetricsBuilder::new()
     }
+
+    /// Creates a [`ClusterShardMetrics`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClusterShardMetricsBuilder,
+        ) -> ClusterShardMetricsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterShardMetrics {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ClusterShardMetrics`].
@@ -7612,6 +7940,18 @@ impl ClusterSnapshotStats {
     pub fn builder() -> ClusterSnapshotStatsBuilder {
         ClusterSnapshotStatsBuilder::new()
     }
+
+    /// Creates a [`ClusterSnapshotStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClusterSnapshotStatsBuilder,
+        ) -> ClusterSnapshotStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterSnapshotStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ClusterSnapshotStats`].
@@ -7748,6 +8088,23 @@ impl DenseVectorOffHeapStats {
     /// Creates a builder for [`DenseVectorOffHeapStats`].
     pub fn builder() -> DenseVectorOffHeapStatsBuilder {
         DenseVectorOffHeapStatsBuilder::new()
+    }
+
+    /// Creates a [`DenseVectorOffHeapStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DenseVectorOffHeapStatsBuilder,
+        ) -> DenseVectorOffHeapStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DenseVectorOffHeapStats {
+        f(Self::builder()).build()
     }
 }
 
@@ -8215,6 +8572,15 @@ impl DenseVectorStats {
     pub fn builder() -> DenseVectorStatsBuilder {
         DenseVectorStatsBuilder::new()
     }
+
+    /// Creates a [`DenseVectorStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DenseVectorStatsBuilder,
+        ) -> DenseVectorStatsBuilder<(crate::typed::builder::Set,)>,
+    ) -> DenseVectorStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DenseVectorStats`].
@@ -8315,6 +8681,13 @@ impl ExtendedRetrieversSearchUsage {
     pub fn builder() -> ExtendedRetrieversSearchUsageBuilder {
         ExtendedRetrieversSearchUsageBuilder::new()
     }
+
+    /// Creates a [`ExtendedRetrieversSearchUsage`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ExtendedRetrieversSearchUsageBuilder) -> ExtendedRetrieversSearchUsageBuilder,
+    ) -> ExtendedRetrieversSearchUsage {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ExtendedRetrieversSearchUsage`].
@@ -8387,6 +8760,13 @@ impl ExtendedSearchUsage {
     /// Creates a builder for [`ExtendedSearchUsage`].
     pub fn builder() -> ExtendedSearchUsageBuilder {
         ExtendedSearchUsageBuilder::new()
+    }
+
+    /// Creates a [`ExtendedSearchUsage`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ExtendedSearchUsageBuilder) -> ExtendedSearchUsageBuilder,
+    ) -> ExtendedSearchUsage {
+        f(Self::builder()).build()
     }
 }
 
@@ -8473,6 +8853,13 @@ impl ExtendedSectionSearchUsage {
     pub fn builder() -> ExtendedSectionSearchUsageBuilder {
         ExtendedSectionSearchUsageBuilder::new()
     }
+
+    /// Creates a [`ExtendedSectionSearchUsage`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ExtendedSectionSearchUsageBuilder) -> ExtendedSectionSearchUsageBuilder,
+    ) -> ExtendedSectionSearchUsage {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ExtendedSectionSearchUsage`].
@@ -8531,6 +8918,15 @@ impl ExtendedTextSimilarityRetrieverUsage {
     /// Creates a builder for [`ExtendedTextSimilarityRetrieverUsage`].
     pub fn builder() -> ExtendedTextSimilarityRetrieverUsageBuilder {
         ExtendedTextSimilarityRetrieverUsageBuilder::new()
+    }
+
+    /// Creates a [`ExtendedTextSimilarityRetrieverUsage`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ExtendedTextSimilarityRetrieverUsageBuilder,
+        ) -> ExtendedTextSimilarityRetrieverUsageBuilder,
+    ) -> ExtendedTextSimilarityRetrieverUsage {
+        f(Self::builder()).build()
     }
 }
 
@@ -8611,6 +9007,19 @@ impl FieldTypes {
     /// Creates a builder for [`FieldTypes`].
     pub fn builder() -> FieldTypesBuilder {
         FieldTypesBuilder::new()
+    }
+
+    /// Creates a [`FieldTypes`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FieldTypesBuilder,
+        ) -> FieldTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FieldTypes {
+        f(Self::builder()).build()
     }
 }
 
@@ -8950,6 +9359,19 @@ impl FieldTypesMappings {
     pub fn builder() -> FieldTypesMappingsBuilder {
         FieldTypesMappingsBuilder::new()
     }
+
+    /// Creates a [`FieldTypesMappings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FieldTypesMappingsBuilder,
+        ) -> FieldTypesMappingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FieldTypesMappings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FieldTypesMappings`].
@@ -9178,6 +9600,15 @@ impl IndexingPressure {
     pub fn builder() -> IndexingPressureBuilder {
         IndexingPressureBuilder::new()
     }
+
+    /// Creates a [`IndexingPressure`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndexingPressureBuilder,
+        ) -> IndexingPressureBuilder<(crate::typed::builder::Set,)>,
+    ) -> IndexingPressure {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexingPressure`].
@@ -9261,6 +9692,20 @@ impl IndicesVersions {
     /// Creates a builder for [`IndicesVersions`].
     pub fn builder() -> IndicesVersionsBuilder {
         IndicesVersionsBuilder::new()
+    }
+
+    /// Creates a [`IndicesVersions`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndicesVersionsBuilder,
+        ) -> IndicesVersionsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IndicesVersions {
+        f(Self::builder()).build()
     }
 }
 
@@ -9475,6 +9920,13 @@ impl MultipleSynonymGraphFilter {
     pub fn builder() -> MultipleSynonymGraphFilterBuilder {
         MultipleSynonymGraphFilterBuilder::new()
     }
+
+    /// Creates a [`MultipleSynonymGraphFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MultipleSynonymGraphFilterBuilder) -> MultipleSynonymGraphFilterBuilder,
+    ) -> MultipleSynonymGraphFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MultipleSynonymGraphFilter`].
@@ -9549,6 +10001,19 @@ impl NodePackagingType {
     /// Creates a builder for [`NodePackagingType`].
     pub fn builder() -> NodePackagingTypeBuilder {
         NodePackagingTypeBuilder::new()
+    }
+
+    /// Creates a [`NodePackagingType`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodePackagingTypeBuilder,
+        ) -> NodePackagingTypeBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NodePackagingType {
+        f(Self::builder()).build()
     }
 }
 
@@ -9731,6 +10196,21 @@ impl OperatingSystemMemoryInfo {
     /// Creates a builder for [`OperatingSystemMemoryInfo`].
     pub fn builder() -> OperatingSystemMemoryInfoBuilder {
         OperatingSystemMemoryInfoBuilder::new()
+    }
+
+    /// Creates a [`OperatingSystemMemoryInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            OperatingSystemMemoryInfoBuilder,
+        ) -> OperatingSystemMemoryInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> OperatingSystemMemoryInfo {
+        f(Self::builder()).build()
     }
 }
 
@@ -10060,6 +10540,19 @@ impl PerRepositoryStats {
     pub fn builder() -> PerRepositoryStatsBuilder {
         PerRepositoryStatsBuilder::new()
     }
+
+    /// Creates a [`PerRepositoryStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PerRepositoryStatsBuilder,
+        ) -> PerRepositoryStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> PerRepositoryStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PerRepositoryStats`].
@@ -10283,6 +10776,28 @@ impl RemoteClusterInfo {
     /// Creates a builder for [`RemoteClusterInfo`].
     pub fn builder() -> RemoteClusterInfoBuilder {
         RemoteClusterInfoBuilder::new()
+    }
+
+    /// Creates a [`RemoteClusterInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RemoteClusterInfoBuilder,
+        ) -> RemoteClusterInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RemoteClusterInfo {
+        f(Self::builder()).build()
     }
 }
 
@@ -11245,6 +11760,23 @@ impl RepositoryStatsCurrentCounts {
     pub fn builder() -> RepositoryStatsCurrentCountsBuilder {
         RepositoryStatsCurrentCountsBuilder::new()
     }
+
+    /// Creates a [`RepositoryStatsCurrentCounts`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RepositoryStatsCurrentCountsBuilder,
+        ) -> RepositoryStatsCurrentCountsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RepositoryStatsCurrentCounts {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RepositoryStatsCurrentCounts`].
@@ -11594,6 +12126,20 @@ impl RepositoryStatsShards {
     pub fn builder() -> RepositoryStatsShardsBuilder {
         RepositoryStatsShardsBuilder::new()
     }
+
+    /// Creates a [`RepositoryStatsShards`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RepositoryStatsShardsBuilder,
+        ) -> RepositoryStatsShardsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RepositoryStatsShards {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RepositoryStatsShards`].
@@ -11812,6 +12358,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -12099,6 +12650,30 @@ impl RuntimeFieldTypes {
     /// Creates a builder for [`RuntimeFieldTypes`].
     pub fn builder() -> RuntimeFieldTypesBuilder {
         RuntimeFieldTypesBuilder::new()
+    }
+
+    /// Creates a [`RuntimeFieldTypes`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RuntimeFieldTypesBuilder,
+        ) -> RuntimeFieldTypesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RuntimeFieldTypes {
+        f(Self::builder()).build()
     }
 }
 
@@ -13236,6 +13811,22 @@ impl SearchUsageStats {
     pub fn builder() -> SearchUsageStatsBuilder {
         SearchUsageStatsBuilder::new()
     }
+
+    /// Creates a [`SearchUsageStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SearchUsageStatsBuilder,
+        ) -> SearchUsageStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SearchUsageStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SearchUsageStats`].
@@ -13553,6 +14144,21 @@ impl SnapshotCurrentCounts {
     pub fn builder() -> SnapshotCurrentCountsBuilder {
         SnapshotCurrentCountsBuilder::new()
     }
+
+    /// Creates a [`SnapshotCurrentCounts`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SnapshotCurrentCountsBuilder,
+        ) -> SnapshotCurrentCountsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SnapshotCurrentCounts {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SnapshotCurrentCounts`].
@@ -13799,6 +14405,15 @@ impl SparseVectorStats {
     pub fn builder() -> SparseVectorStatsBuilder {
         SparseVectorStatsBuilder::new()
     }
+
+    /// Creates a [`SparseVectorStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SparseVectorStatsBuilder,
+        ) -> SparseVectorStatsBuilder<(crate::typed::builder::Set,)>,
+    ) -> SparseVectorStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SparseVectorStats`].
@@ -13891,6 +14506,24 @@ impl StatsResponseBase {
     /// Creates a builder for [`StatsResponseBase`].
     pub fn builder() -> StatsResponseBaseBuilder {
         StatsResponseBaseBuilder::new()
+    }
+
+    /// Creates a [`StatsResponseBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            StatsResponseBaseBuilder,
+        ) -> StatsResponseBaseBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> StatsResponseBase {
+        f(Self::builder()).build()
     }
 }
 
@@ -14390,6 +15023,16 @@ impl SynonymsStats {
     /// Creates a builder for [`SynonymsStats`].
     pub fn builder() -> SynonymsStatsBuilder {
         SynonymsStatsBuilder::new()
+    }
+
+    /// Creates a [`SynonymsStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SynonymsStatsBuilder,
+        )
+            -> SynonymsStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> SynonymsStats {
+        f(Self::builder()).build()
     }
 }
 

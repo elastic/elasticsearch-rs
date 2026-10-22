@@ -12,6 +12,18 @@ impl AutoscalingCapacity {
     pub fn builder() -> AutoscalingCapacityBuilder {
         AutoscalingCapacityBuilder::new()
     }
+
+    /// Creates a [`AutoscalingCapacity`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AutoscalingCapacityBuilder,
+        ) -> AutoscalingCapacityBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AutoscalingCapacity {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AutoscalingCapacity`].
@@ -141,6 +153,15 @@ impl AutoscalingDecider {
     pub fn builder() -> AutoscalingDeciderBuilder {
         AutoscalingDeciderBuilder::new()
     }
+
+    /// Creates a [`AutoscalingDecider`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AutoscalingDeciderBuilder,
+        ) -> AutoscalingDeciderBuilder<(crate::typed::builder::Set,)>,
+    ) -> AutoscalingDecider {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AutoscalingDecider`].
@@ -255,6 +276,20 @@ impl AutoscalingDeciders {
     /// Creates a builder for [`AutoscalingDeciders`].
     pub fn builder() -> AutoscalingDecidersBuilder {
         AutoscalingDecidersBuilder::new()
+    }
+
+    /// Creates a [`AutoscalingDeciders`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AutoscalingDecidersBuilder,
+        ) -> AutoscalingDecidersBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AutoscalingDeciders {
+        f(Self::builder()).build()
     }
 }
 
@@ -472,6 +507,13 @@ impl AutoscalingNode {
     pub fn builder() -> AutoscalingNodeBuilder {
         AutoscalingNodeBuilder::new()
     }
+
+    /// Creates a [`AutoscalingNode`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(AutoscalingNodeBuilder) -> AutoscalingNodeBuilder<(crate::typed::builder::Set,)>,
+    ) -> AutoscalingNode {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AutoscalingNode`].
@@ -541,6 +583,18 @@ impl AutoscalingResources {
     /// Creates a builder for [`AutoscalingResources`].
     pub fn builder() -> AutoscalingResourcesBuilder {
         AutoscalingResourcesBuilder::new()
+    }
+
+    /// Creates a [`AutoscalingResources`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AutoscalingResourcesBuilder,
+        ) -> AutoscalingResourcesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AutoscalingResources {
+        f(Self::builder()).build()
     }
 }
 
@@ -675,6 +729,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

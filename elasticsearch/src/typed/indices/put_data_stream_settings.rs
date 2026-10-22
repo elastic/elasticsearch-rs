@@ -13,6 +13,18 @@ impl DataStreamSettingsError {
     pub fn builder() -> DataStreamSettingsErrorBuilder {
         DataStreamSettingsErrorBuilder::new()
     }
+
+    /// Creates a [`DataStreamSettingsError`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DataStreamSettingsErrorBuilder,
+        ) -> DataStreamSettingsErrorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DataStreamSettingsError {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DataStreamSettingsError`].
@@ -121,6 +133,18 @@ impl IndexSettingResults {
     /// Creates a builder for [`IndexSettingResults`].
     pub fn builder() -> IndexSettingResultsBuilder {
         IndexSettingResultsBuilder::new()
+    }
+
+    /// Creates a [`IndexSettingResults`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndexSettingResultsBuilder,
+        ) -> IndexSettingResultsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IndexSettingResults {
+        f(Self::builder()).build()
     }
 }
 
@@ -304,6 +328,16 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RequestBuilder,
+        )
+            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -677,6 +711,21 @@ impl UpdatedDataStreamSettings {
     /// Creates a builder for [`UpdatedDataStreamSettings`].
     pub fn builder() -> UpdatedDataStreamSettingsBuilder {
         UpdatedDataStreamSettingsBuilder::new()
+    }
+
+    /// Creates a [`UpdatedDataStreamSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UpdatedDataStreamSettingsBuilder,
+        ) -> UpdatedDataStreamSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> UpdatedDataStreamSettings {
+        f(Self::builder()).build()
     }
 }
 

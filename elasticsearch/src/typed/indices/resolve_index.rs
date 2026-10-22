@@ -62,6 +62,13 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -465,6 +472,18 @@ impl ResolveIndexAliasItem {
     pub fn builder() -> ResolveIndexAliasItemBuilder {
         ResolveIndexAliasItemBuilder::new()
     }
+
+    /// Creates a [`ResolveIndexAliasItem`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ResolveIndexAliasItemBuilder,
+        ) -> ResolveIndexAliasItemBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ResolveIndexAliasItem {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ResolveIndexAliasItem`].
@@ -565,6 +584,19 @@ impl ResolveIndexDataStreamsItem {
     /// Creates a builder for [`ResolveIndexDataStreamsItem`].
     pub fn builder() -> ResolveIndexDataStreamsItemBuilder {
         ResolveIndexDataStreamsItemBuilder::new()
+    }
+
+    /// Creates a [`ResolveIndexDataStreamsItem`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ResolveIndexDataStreamsItemBuilder,
+        ) -> ResolveIndexDataStreamsItemBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ResolveIndexDataStreamsItem {
+        f(Self::builder()).build()
     }
 }
 
@@ -727,6 +759,18 @@ impl ResolveIndexItem {
     /// Creates a builder for [`ResolveIndexItem`].
     pub fn builder() -> ResolveIndexItemBuilder {
         ResolveIndexItemBuilder::new()
+    }
+
+    /// Creates a [`ResolveIndexItem`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ResolveIndexItemBuilder,
+        ) -> ResolveIndexItemBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ResolveIndexItem {
+        f(Self::builder()).build()
     }
 }
 

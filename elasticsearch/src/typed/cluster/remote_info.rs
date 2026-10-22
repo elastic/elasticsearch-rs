@@ -41,6 +41,24 @@ impl ClusterRemoteProxyInfo {
     pub fn builder() -> ClusterRemoteProxyInfoBuilder {
         ClusterRemoteProxyInfoBuilder::new()
     }
+
+    /// Creates a [`ClusterRemoteProxyInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClusterRemoteProxyInfoBuilder,
+        ) -> ClusterRemoteProxyInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterRemoteProxyInfo {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ClusterRemoteProxyInfo`].
@@ -459,6 +477,23 @@ impl ClusterRemoteSniffInfo {
     pub fn builder() -> ClusterRemoteSniffInfoBuilder {
         ClusterRemoteSniffInfoBuilder::new()
     }
+
+    /// Creates a [`ClusterRemoteSniffInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClusterRemoteSniffInfoBuilder,
+        ) -> ClusterRemoteSniffInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterRemoteSniffInfo {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ClusterRemoteSniffInfo`].
@@ -818,6 +853,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

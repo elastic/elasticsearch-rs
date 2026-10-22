@@ -16,6 +16,18 @@ impl AuthenticateApiKey {
     pub fn builder() -> AuthenticateApiKeyBuilder {
         AuthenticateApiKeyBuilder::new()
     }
+
+    /// Creates a [`AuthenticateApiKey`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AuthenticateApiKeyBuilder,
+        ) -> AuthenticateApiKeyBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AuthenticateApiKey {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AuthenticateApiKey`].
@@ -168,6 +180,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -429,6 +446,11 @@ impl Token {
     /// Creates a builder for [`Token`].
     pub fn builder() -> TokenBuilder {
         TokenBuilder::new()
+    }
+
+    /// Creates a [`Token`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(TokenBuilder) -> TokenBuilder) -> Token {
+        f(Self::builder()).build()
     }
 }
 

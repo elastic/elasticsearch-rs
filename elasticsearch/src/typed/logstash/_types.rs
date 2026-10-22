@@ -26,6 +26,22 @@ impl Pipeline {
     pub fn builder() -> PipelineBuilder {
         PipelineBuilder::new()
     }
+
+    /// Creates a [`Pipeline`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PipelineBuilder,
+        ) -> PipelineBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Pipeline {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Pipeline`].
@@ -333,6 +349,18 @@ impl PipelineMetadata {
     pub fn builder() -> PipelineMetadataBuilder {
         PipelineMetadataBuilder::new()
     }
+
+    /// Creates a [`PipelineMetadata`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PipelineMetadataBuilder,
+        ) -> PipelineMetadataBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> PipelineMetadata {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PipelineMetadata`].
@@ -445,6 +473,22 @@ impl PipelineSettings {
     /// Creates a builder for [`PipelineSettings`].
     pub fn builder() -> PipelineSettingsBuilder {
         PipelineSettingsBuilder::new()
+    }
+
+    /// Creates a [`PipelineSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PipelineSettingsBuilder,
+        ) -> PipelineSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> PipelineSettings {
+        f(Self::builder()).build()
     }
 }
 

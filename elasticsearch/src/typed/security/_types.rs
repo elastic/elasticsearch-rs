@@ -16,6 +16,11 @@ impl Access {
     pub fn builder() -> AccessBuilder {
         AccessBuilder::new()
     }
+
+    /// Creates a [`Access`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(AccessBuilder) -> AccessBuilder) -> Access {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Access`].
@@ -170,6 +175,24 @@ impl ApiKey {
     /// Creates a builder for [`ApiKey`].
     pub fn builder() -> ApiKeyBuilder {
         ApiKeyBuilder::new()
+    }
+
+    /// Creates a [`ApiKey`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ApiKeyBuilder,
+        ) -> ApiKeyBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ApiKey {
+        f(Self::builder()).build()
     }
 }
 
@@ -777,6 +800,15 @@ impl ApplicationGlobalUserPrivileges {
     pub fn builder() -> ApplicationGlobalUserPrivilegesBuilder {
         ApplicationGlobalUserPrivilegesBuilder::new()
     }
+
+    /// Creates a [`ApplicationGlobalUserPrivileges`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ApplicationGlobalUserPrivilegesBuilder,
+        ) -> ApplicationGlobalUserPrivilegesBuilder<(crate::typed::builder::Set,)>,
+    ) -> ApplicationGlobalUserPrivileges {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ApplicationGlobalUserPrivileges`].
@@ -864,6 +896,19 @@ impl ApplicationPrivileges {
     /// Creates a builder for [`ApplicationPrivileges`].
     pub fn builder() -> ApplicationPrivilegesBuilder {
         ApplicationPrivilegesBuilder::new()
+    }
+
+    /// Creates a [`ApplicationPrivileges`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ApplicationPrivilegesBuilder,
+        ) -> ApplicationPrivilegesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ApplicationPrivileges {
+        f(Self::builder()).build()
     }
 }
 
@@ -1026,6 +1071,16 @@ impl BulkError {
     pub fn builder() -> BulkErrorBuilder {
         BulkErrorBuilder::new()
     }
+
+    /// Creates a [`BulkError`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            BulkErrorBuilder,
+        )
+            -> BulkErrorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> BulkError {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`BulkError`].
@@ -1118,6 +1173,13 @@ impl ClusterNode {
     /// Creates a builder for [`ClusterNode`].
     pub fn builder() -> ClusterNodeBuilder {
         ClusterNodeBuilder::new()
+    }
+
+    /// Creates a [`ClusterNode`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ClusterNodeBuilder) -> ClusterNodeBuilder<(crate::typed::builder::Set,)>,
+    ) -> ClusterNode {
+        f(Self::builder()).build()
     }
 }
 
@@ -1324,6 +1386,13 @@ impl CreatedStatus {
     pub fn builder() -> CreatedStatusBuilder {
         CreatedStatusBuilder::new()
     }
+
+    /// Creates a [`CreatedStatus`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CreatedStatusBuilder) -> CreatedStatusBuilder<(crate::typed::builder::Set,)>,
+    ) -> CreatedStatus {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CreatedStatus`].
@@ -1419,6 +1488,18 @@ impl DataSourcePrivileges {
     /// Creates a builder for [`DataSourcePrivileges`].
     pub fn builder() -> DataSourcePrivilegesBuilder {
         DataSourcePrivilegesBuilder::new()
+    }
+
+    /// Creates a [`DataSourcePrivileges`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DataSourcePrivilegesBuilder,
+        ) -> DataSourcePrivilegesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DataSourcePrivileges {
+        f(Self::builder()).build()
     }
 }
 
@@ -1524,6 +1605,11 @@ impl FieldSecurity {
     pub fn builder() -> FieldSecurityBuilder {
         FieldSecurityBuilder::new()
     }
+
+    /// Creates a [`FieldSecurity`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(FieldSecurityBuilder) -> FieldSecurityBuilder) -> FieldSecurity {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FieldSecurity`].
@@ -1601,6 +1687,11 @@ impl GlobalPrivilege {
     /// Creates a builder for [`GlobalPrivilege`].
     pub fn builder() -> GlobalPrivilegeBuilder {
         GlobalPrivilegeBuilder::new()
+    }
+
+    /// Creates a [`GlobalPrivilege`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(GlobalPrivilegeBuilder) -> GlobalPrivilegeBuilder) -> GlobalPrivilege {
+        f(Self::builder()).build()
     }
 }
 
@@ -1854,6 +1945,18 @@ impl IndicesPrivileges {
     pub fn builder() -> IndicesPrivilegesBuilder {
         IndicesPrivilegesBuilder::new()
     }
+
+    /// Creates a [`IndicesPrivileges`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndicesPrivilegesBuilder,
+        ) -> IndicesPrivilegesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IndicesPrivileges {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndicesPrivileges`].
@@ -2044,6 +2147,18 @@ impl IndicesPrivilegesBase {
     /// Creates a builder for [`IndicesPrivilegesBase`].
     pub fn builder() -> IndicesPrivilegesBaseBuilder {
         IndicesPrivilegesBaseBuilder::new()
+    }
+
+    /// Creates a [`IndicesPrivilegesBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndicesPrivilegesBaseBuilder,
+        ) -> IndicesPrivilegesBaseBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IndicesPrivilegesBase {
+        f(Self::builder()).build()
     }
 }
 
@@ -2241,6 +2356,13 @@ impl ManageRolesGlobalUserPrivileges {
     pub fn builder() -> ManageRolesGlobalUserPrivilegesBuilder {
         ManageRolesGlobalUserPrivilegesBuilder::new()
     }
+
+    /// Creates a [`ManageRolesGlobalUserPrivileges`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ManageRolesGlobalUserPrivilegesBuilder) -> ManageRolesGlobalUserPrivilegesBuilder,
+    ) -> ManageRolesGlobalUserPrivileges {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ManageRolesGlobalUserPrivileges`].
@@ -2307,6 +2429,18 @@ impl ManageRolesIndexPermissions {
     /// Creates a builder for [`ManageRolesIndexPermissions`].
     pub fn builder() -> ManageRolesIndexPermissionsBuilder {
         ManageRolesIndexPermissionsBuilder::new()
+    }
+
+    /// Creates a [`ManageRolesIndexPermissions`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ManageRolesIndexPermissionsBuilder,
+        ) -> ManageRolesIndexPermissionsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ManageRolesIndexPermissions {
+        f(Self::builder()).build()
     }
 }
 
@@ -2421,6 +2555,15 @@ impl ManageRolesPrivileges {
     pub fn builder() -> ManageRolesPrivilegesBuilder {
         ManageRolesPrivilegesBuilder::new()
     }
+
+    /// Creates a [`ManageRolesPrivileges`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ManageRolesPrivilegesBuilder,
+        ) -> ManageRolesPrivilegesBuilder<(crate::typed::builder::Set,)>,
+    ) -> ManageRolesPrivileges {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ManageRolesPrivileges`].
@@ -2489,6 +2632,15 @@ impl ManageUserPrivileges {
     /// Creates a builder for [`ManageUserPrivileges`].
     pub fn builder() -> ManageUserPrivilegesBuilder {
         ManageUserPrivilegesBuilder::new()
+    }
+
+    /// Creates a [`ManageUserPrivileges`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ManageUserPrivilegesBuilder,
+        ) -> ManageUserPrivilegesBuilder<(crate::typed::builder::Set,)>,
+    ) -> ManageUserPrivileges {
+        f(Self::builder()).build()
     }
 }
 
@@ -2559,6 +2711,15 @@ impl NodeSecurityStats {
     /// Creates a builder for [`NodeSecurityStats`].
     pub fn builder() -> NodeSecurityStatsBuilder {
         NodeSecurityStatsBuilder::new()
+    }
+
+    /// Creates a [`NodeSecurityStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeSecurityStatsBuilder,
+        ) -> NodeSecurityStatsBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeSecurityStats {
+        f(Self::builder()).build()
     }
 }
 
@@ -2638,6 +2799,16 @@ impl RealmInfo {
     /// Creates a builder for [`RealmInfo`].
     pub fn builder() -> RealmInfoBuilder {
         RealmInfoBuilder::new()
+    }
+
+    /// Creates a [`RealmInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RealmInfoBuilder,
+        )
+            -> RealmInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> RealmInfo {
+        f(Self::builder()).build()
     }
 }
 
@@ -2744,6 +2915,18 @@ impl RemoteClusterPrivileges {
     /// Creates a builder for [`RemoteClusterPrivileges`].
     pub fn builder() -> RemoteClusterPrivilegesBuilder {
         RemoteClusterPrivilegesBuilder::new()
+    }
+
+    /// Creates a [`RemoteClusterPrivileges`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RemoteClusterPrivilegesBuilder,
+        ) -> RemoteClusterPrivilegesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RemoteClusterPrivileges {
+        f(Self::builder()).build()
     }
 }
 
@@ -2887,6 +3070,19 @@ impl RemoteIndicesPrivileges {
     /// Creates a builder for [`RemoteIndicesPrivileges`].
     pub fn builder() -> RemoteIndicesPrivilegesBuilder {
         RemoteIndicesPrivilegesBuilder::new()
+    }
+
+    /// Creates a [`RemoteIndicesPrivileges`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RemoteIndicesPrivilegesBuilder,
+        ) -> RemoteIndicesPrivilegesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RemoteIndicesPrivileges {
+        f(Self::builder()).build()
     }
 }
 
@@ -3138,6 +3334,20 @@ impl RemoteUserIndicesPrivileges {
     /// Creates a builder for [`RemoteUserIndicesPrivileges`].
     pub fn builder() -> RemoteUserIndicesPrivilegesBuilder {
         RemoteUserIndicesPrivilegesBuilder::new()
+    }
+
+    /// Creates a [`RemoteUserIndicesPrivileges`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RemoteUserIndicesPrivilegesBuilder,
+        ) -> RemoteUserIndicesPrivilegesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RemoteUserIndicesPrivileges {
+        f(Self::builder()).build()
     }
 }
 
@@ -3417,6 +3627,15 @@ impl ReplicationAccess {
     pub fn builder() -> ReplicationAccessBuilder {
         ReplicationAccessBuilder::new()
     }
+
+    /// Creates a [`ReplicationAccess`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ReplicationAccessBuilder,
+        ) -> ReplicationAccessBuilder<(crate::typed::builder::Set,)>,
+    ) -> ReplicationAccess {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ReplicationAccess`].
@@ -3504,6 +3723,13 @@ impl Restriction {
     /// Creates a builder for [`Restriction`].
     pub fn builder() -> RestrictionBuilder {
         RestrictionBuilder::new()
+    }
+
+    /// Creates a [`Restriction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RestrictionBuilder) -> RestrictionBuilder<(crate::typed::builder::Set,)>,
+    ) -> Restriction {
+        f(Self::builder()).build()
     }
 }
 
@@ -3615,6 +3841,11 @@ impl RoleDescriptor {
     /// Creates a builder for [`RoleDescriptor`].
     pub fn builder() -> RoleDescriptorBuilder {
         RoleDescriptorBuilder::new()
+    }
+
+    /// Creates a [`RoleDescriptor`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RoleDescriptorBuilder) -> RoleDescriptorBuilder) -> RoleDescriptor {
+        f(Self::builder()).build()
     }
 }
 
@@ -4003,6 +4234,18 @@ impl RoleDescriptorRead {
     pub fn builder() -> RoleDescriptorReadBuilder {
         RoleDescriptorReadBuilder::new()
     }
+
+    /// Creates a [`RoleDescriptorRead`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RoleDescriptorReadBuilder,
+        ) -> RoleDescriptorReadBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RoleDescriptorRead {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RoleDescriptorRead`].
@@ -4375,6 +4618,19 @@ impl RoleMapping {
     pub fn builder() -> RoleMappingBuilder {
         RoleMappingBuilder::new()
     }
+
+    /// Creates a [`RoleMapping`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RoleMappingBuilder,
+        ) -> RoleMappingBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RoleMapping {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RoleMapping`].
@@ -4596,6 +4852,13 @@ impl RoleMappingRule {
     pub fn builder() -> RoleMappingRuleBuilder {
         RoleMappingRuleBuilder::new()
     }
+
+    /// Creates a [`RoleMappingRule`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RoleMappingRuleBuilder) -> RoleMappingRuleBuilder<(crate::typed::builder::Set,)>,
+    ) -> RoleMappingRule {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RoleMappingRule`].
@@ -4723,6 +4986,13 @@ impl RoleTemplate {
     pub fn builder() -> RoleTemplateBuilder {
         RoleTemplateBuilder::new()
     }
+
+    /// Creates a [`RoleTemplate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RoleTemplateBuilder) -> RoleTemplateBuilder<(crate::typed::builder::Set,)>,
+    ) -> RoleTemplate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RoleTemplate`].
@@ -4845,6 +5115,13 @@ impl RoleTemplateQuery {
     pub fn builder() -> RoleTemplateQueryBuilder {
         RoleTemplateQueryBuilder::new()
     }
+
+    /// Creates a [`RoleTemplateQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RoleTemplateQueryBuilder) -> RoleTemplateQueryBuilder,
+    ) -> RoleTemplateQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RoleTemplateQuery`].
@@ -4921,6 +5198,13 @@ impl RoleTemplateScript {
     /// Creates a builder for [`RoleTemplateScript`].
     pub fn builder() -> RoleTemplateScriptBuilder {
         RoleTemplateScriptBuilder::new()
+    }
+
+    /// Creates a [`RoleTemplateScript`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RoleTemplateScriptBuilder) -> RoleTemplateScriptBuilder,
+    ) -> RoleTemplateScript {
+        f(Self::builder()).build()
     }
 }
 
@@ -5063,6 +5347,13 @@ impl RolesStats {
     pub fn builder() -> RolesStatsBuilder {
         RolesStatsBuilder::new()
     }
+
+    /// Creates a [`RolesStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RolesStatsBuilder) -> RolesStatsBuilder<(crate::typed::builder::Set,)>,
+    ) -> RolesStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RolesStats`].
@@ -5179,6 +5470,13 @@ impl SearchAccess {
     /// Creates a builder for [`SearchAccess`].
     pub fn builder() -> SearchAccessBuilder {
         SearchAccessBuilder::new()
+    }
+
+    /// Creates a [`SearchAccess`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SearchAccessBuilder) -> SearchAccessBuilder<(crate::typed::builder::Set,)>,
+    ) -> SearchAccess {
+        f(Self::builder()).build()
     }
 }
 
@@ -5307,6 +5605,13 @@ impl SecuritySettings {
     pub fn builder() -> SecuritySettingsBuilder {
         SecuritySettingsBuilder::new()
     }
+
+    /// Creates a [`SecuritySettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SecuritySettingsBuilder) -> SecuritySettingsBuilder,
+    ) -> SecuritySettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SecuritySettings`].
@@ -5424,6 +5729,20 @@ impl User {
     /// Creates a builder for [`User`].
     pub fn builder() -> UserBuilder {
         UserBuilder::new()
+    }
+
+    /// Creates a [`User`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UserBuilder,
+        ) -> UserBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> User {
+        f(Self::builder()).build()
     }
 }
 
@@ -5693,6 +6012,19 @@ impl UserIndicesPrivileges {
     pub fn builder() -> UserIndicesPrivilegesBuilder {
         UserIndicesPrivilegesBuilder::new()
     }
+
+    /// Creates a [`UserIndicesPrivileges`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UserIndicesPrivilegesBuilder,
+        ) -> UserIndicesPrivilegesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> UserIndicesPrivileges {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`UserIndicesPrivileges`].
@@ -5943,6 +6275,19 @@ impl UserIndicesPrivilegesBase {
     pub fn builder() -> UserIndicesPrivilegesBaseBuilder {
         UserIndicesPrivilegesBaseBuilder::new()
     }
+
+    /// Creates a [`UserIndicesPrivilegesBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UserIndicesPrivilegesBaseBuilder,
+        ) -> UserIndicesPrivilegesBaseBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> UserIndicesPrivilegesBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`UserIndicesPrivilegesBase`].
@@ -6161,6 +6506,20 @@ impl UserProfile {
     /// Creates a builder for [`UserProfile`].
     pub fn builder() -> UserProfileBuilder {
         UserProfileBuilder::new()
+    }
+
+    /// Creates a [`UserProfile`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UserProfileBuilder,
+        ) -> UserProfileBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> UserProfile {
+        f(Self::builder()).build()
     }
 }
 
@@ -6384,6 +6743,18 @@ impl UserProfileHitMetadata {
     pub fn builder() -> UserProfileHitMetadataBuilder {
         UserProfileHitMetadataBuilder::new()
     }
+
+    /// Creates a [`UserProfileHitMetadata`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UserProfileHitMetadataBuilder,
+        ) -> UserProfileHitMetadataBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> UserProfileHitMetadata {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`UserProfileHitMetadata`].
@@ -6530,6 +6901,19 @@ impl UserProfileUser {
     /// Creates a builder for [`UserProfileUser`].
     pub fn builder() -> UserProfileUserBuilder {
         UserProfileUserBuilder::new()
+    }
+
+    /// Creates a [`UserProfileUser`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UserProfileUserBuilder,
+        ) -> UserProfileUserBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> UserProfileUser {
+        f(Self::builder()).build()
     }
 }
 
@@ -6738,6 +7122,22 @@ impl UserProfileWithMetadata {
     /// Creates a builder for [`UserProfileWithMetadata`].
     pub fn builder() -> UserProfileWithMetadataBuilder {
         UserProfileWithMetadataBuilder::new()
+    }
+
+    /// Creates a [`UserProfileWithMetadata`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UserProfileWithMetadataBuilder,
+        ) -> UserProfileWithMetadataBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> UserProfileWithMetadata {
+        f(Self::builder()).build()
     }
 }
 
@@ -7063,6 +7463,15 @@ impl WriteProfileGlobalUserPrivileges {
     /// Creates a builder for [`WriteProfileGlobalUserPrivileges`].
     pub fn builder() -> WriteProfileGlobalUserPrivilegesBuilder {
         WriteProfileGlobalUserPrivilegesBuilder::new()
+    }
+
+    /// Creates a [`WriteProfileGlobalUserPrivileges`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            WriteProfileGlobalUserPrivilegesBuilder,
+        ) -> WriteProfileGlobalUserPrivilegesBuilder,
+    ) -> WriteProfileGlobalUserPrivileges {
+        f(Self::builder()).build()
     }
 }
 

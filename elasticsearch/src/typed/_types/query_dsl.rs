@@ -111,6 +111,11 @@ impl BoolQuery {
     pub fn builder() -> BoolQueryBuilder {
         BoolQueryBuilder::new()
     }
+
+    /// Creates a [`BoolQuery`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(BoolQueryBuilder) -> BoolQueryBuilder) -> BoolQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`BoolQuery`].
@@ -278,6 +283,19 @@ impl BoostingQuery {
     /// Creates a builder for [`BoostingQuery`].
     pub fn builder() -> BoostingQueryBuilder {
         BoostingQueryBuilder::new()
+    }
+
+    /// Creates a [`BoostingQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            BoostingQueryBuilder,
+        ) -> BoostingQueryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> BoostingQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -533,6 +551,18 @@ impl CombinedFieldsQuery {
     pub fn builder() -> CombinedFieldsQueryBuilder {
         CombinedFieldsQueryBuilder::new()
     }
+
+    /// Creates a [`CombinedFieldsQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CombinedFieldsQueryBuilder,
+        ) -> CombinedFieldsQueryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CombinedFieldsQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CombinedFieldsQuery`].
@@ -767,6 +797,15 @@ impl CommonTermsQuery {
     pub fn builder() -> CommonTermsQueryBuilder {
         CommonTermsQueryBuilder::new()
     }
+
+    /// Creates a [`CommonTermsQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CommonTermsQueryBuilder,
+        ) -> CommonTermsQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> CommonTermsQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CommonTermsQuery`].
@@ -962,6 +1001,15 @@ impl ConstantScoreQuery {
     pub fn builder() -> ConstantScoreQueryBuilder {
         ConstantScoreQueryBuilder::new()
     }
+
+    /// Creates a [`ConstantScoreQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ConstantScoreQueryBuilder,
+        ) -> ConstantScoreQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> ConstantScoreQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ConstantScoreQuery`].
@@ -1082,6 +1130,13 @@ impl DateDecayFunction {
     pub fn builder() -> DateDecayFunctionBuilder {
         DateDecayFunctionBuilder::new()
     }
+
+    /// Creates a [`DateDecayFunction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DateDecayFunctionBuilder) -> DateDecayFunctionBuilder,
+    ) -> DateDecayFunction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DateDecayFunction`].
@@ -1179,6 +1234,19 @@ impl DateDistanceFeatureQuery {
     /// Creates a builder for [`DateDistanceFeatureQuery`].
     pub fn builder() -> DateDistanceFeatureQueryBuilder {
         DateDistanceFeatureQueryBuilder::new()
+    }
+
+    /// Creates a [`DateDistanceFeatureQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DateDistanceFeatureQueryBuilder,
+        ) -> DateDistanceFeatureQueryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DateDistanceFeatureQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -1407,6 +1475,11 @@ impl DateRangeQuery {
     pub fn builder() -> DateRangeQueryBuilder {
         DateRangeQueryBuilder::new()
     }
+
+    /// Creates a [`DateRangeQuery`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(DateRangeQueryBuilder) -> DateRangeQueryBuilder) -> DateRangeQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DateRangeQuery`].
@@ -1600,6 +1673,13 @@ impl DecayFunctionBase {
     pub fn builder() -> DecayFunctionBaseBuilder {
         DecayFunctionBaseBuilder::new()
     }
+
+    /// Creates a [`DecayFunctionBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DecayFunctionBaseBuilder) -> DecayFunctionBaseBuilder,
+    ) -> DecayFunctionBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DecayFunctionBase`].
@@ -1682,6 +1762,15 @@ impl DecayFunctionBaseDateMathDuration {
     /// Creates a builder for [`DecayFunctionBaseDateMathDuration`].
     pub fn builder() -> DecayFunctionBaseDateMathDurationBuilder {
         DecayFunctionBaseDateMathDurationBuilder::new()
+    }
+
+    /// Creates a [`DecayFunctionBaseDateMathDuration`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DecayFunctionBaseDateMathDurationBuilder,
+        ) -> DecayFunctionBaseDateMathDurationBuilder,
+    ) -> DecayFunctionBaseDateMathDuration {
+        f(Self::builder()).build()
     }
 }
 
@@ -1767,6 +1856,15 @@ impl DecayFunctionBaseGeoLocationDistance {
     pub fn builder() -> DecayFunctionBaseGeoLocationDistanceBuilder {
         DecayFunctionBaseGeoLocationDistanceBuilder::new()
     }
+
+    /// Creates a [`DecayFunctionBaseGeoLocationDistance`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DecayFunctionBaseGeoLocationDistanceBuilder,
+        ) -> DecayFunctionBaseGeoLocationDistanceBuilder,
+    ) -> DecayFunctionBaseGeoLocationDistance {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DecayFunctionBaseGeoLocationDistance`].
@@ -1850,6 +1948,13 @@ impl DecayFunctionBasedoubledouble {
     /// Creates a builder for [`DecayFunctionBasedoubledouble`].
     pub fn builder() -> DecayFunctionBasedoubledoubleBuilder {
         DecayFunctionBasedoubledoubleBuilder::new()
+    }
+
+    /// Creates a [`DecayFunctionBasedoubledouble`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DecayFunctionBasedoubledoubleBuilder) -> DecayFunctionBasedoubledoubleBuilder,
+    ) -> DecayFunctionBasedoubledouble {
+        f(Self::builder()).build()
     }
 }
 
@@ -1939,6 +2044,11 @@ impl DecayPlacement {
     /// Creates a builder for [`DecayPlacement`].
     pub fn builder() -> DecayPlacementBuilder {
         DecayPlacementBuilder::new()
+    }
+
+    /// Creates a [`DecayPlacement`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(DecayPlacementBuilder) -> DecayPlacementBuilder) -> DecayPlacement {
+        f(Self::builder()).build()
     }
 }
 
@@ -2051,6 +2161,13 @@ impl DecayPlacementDateMathDuration {
     pub fn builder() -> DecayPlacementDateMathDurationBuilder {
         DecayPlacementDateMathDurationBuilder::new()
     }
+
+    /// Creates a [`DecayPlacementDateMathDuration`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DecayPlacementDateMathDurationBuilder) -> DecayPlacementDateMathDurationBuilder,
+    ) -> DecayPlacementDateMathDuration {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DecayPlacementDateMathDuration`].
@@ -2162,6 +2279,15 @@ impl DecayPlacementGeoLocationDistance {
     pub fn builder() -> DecayPlacementGeoLocationDistanceBuilder {
         DecayPlacementGeoLocationDistanceBuilder::new()
     }
+
+    /// Creates a [`DecayPlacementGeoLocationDistance`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DecayPlacementGeoLocationDistanceBuilder,
+        ) -> DecayPlacementGeoLocationDistanceBuilder,
+    ) -> DecayPlacementGeoLocationDistance {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DecayPlacementGeoLocationDistance`].
@@ -2272,6 +2398,13 @@ impl DecayPlacementdoubledouble {
     /// Creates a builder for [`DecayPlacementdoubledouble`].
     pub fn builder() -> DecayPlacementdoubledoubleBuilder {
         DecayPlacementdoubledoubleBuilder::new()
+    }
+
+    /// Creates a [`DecayPlacementdoubledouble`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DecayPlacementdoubledoubleBuilder) -> DecayPlacementdoubledoubleBuilder,
+    ) -> DecayPlacementdoubledouble {
+        f(Self::builder()).build()
     }
 }
 
@@ -2386,6 +2519,13 @@ impl DisMaxQuery {
     /// Creates a builder for [`DisMaxQuery`].
     pub fn builder() -> DisMaxQueryBuilder {
         DisMaxQueryBuilder::new()
+    }
+
+    /// Creates a [`DisMaxQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DisMaxQueryBuilder) -> DisMaxQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> DisMaxQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -2539,6 +2679,19 @@ impl DistanceFeatureQueryBase {
     /// Creates a builder for [`DistanceFeatureQueryBase`].
     pub fn builder() -> DistanceFeatureQueryBaseBuilder {
         DistanceFeatureQueryBaseBuilder::new()
+    }
+
+    /// Creates a [`DistanceFeatureQueryBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DistanceFeatureQueryBaseBuilder,
+        ) -> DistanceFeatureQueryBaseBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DistanceFeatureQueryBase {
+        f(Self::builder()).build()
     }
 }
 
@@ -2758,6 +2911,19 @@ impl DistanceFeatureQueryBaseDateMathDuration {
     /// Creates a builder for [`DistanceFeatureQueryBaseDateMathDuration`].
     pub fn builder() -> DistanceFeatureQueryBaseDateMathDurationBuilder {
         DistanceFeatureQueryBaseDateMathDurationBuilder::new()
+    }
+
+    /// Creates a [`DistanceFeatureQueryBaseDateMathDuration`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DistanceFeatureQueryBaseDateMathDurationBuilder,
+        ) -> DistanceFeatureQueryBaseDateMathDurationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DistanceFeatureQueryBaseDateMathDuration {
+        f(Self::builder()).build()
     }
 }
 
@@ -2986,6 +3152,19 @@ impl DistanceFeatureQueryBaseGeoLocationDistance {
     pub fn builder() -> DistanceFeatureQueryBaseGeoLocationDistanceBuilder {
         DistanceFeatureQueryBaseGeoLocationDistanceBuilder::new()
     }
+
+    /// Creates a [`DistanceFeatureQueryBaseGeoLocationDistance`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DistanceFeatureQueryBaseGeoLocationDistanceBuilder,
+        ) -> DistanceFeatureQueryBaseGeoLocationDistanceBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DistanceFeatureQueryBaseGeoLocationDistance {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DistanceFeatureQueryBaseGeoLocationDistance`].
@@ -3205,6 +3384,13 @@ impl ExistsQuery {
     pub fn builder() -> ExistsQueryBuilder {
         ExistsQueryBuilder::new()
     }
+
+    /// Creates a [`ExistsQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ExistsQueryBuilder) -> ExistsQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> ExistsQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ExistsQuery`].
@@ -3316,6 +3502,13 @@ impl FieldAndFormat {
     pub fn builder() -> FieldAndFormatBuilder {
         FieldAndFormatBuilder::new()
     }
+
+    /// Creates a [`FieldAndFormat`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FieldAndFormatBuilder) -> FieldAndFormatBuilder<(crate::typed::builder::Set,)>,
+    ) -> FieldAndFormat {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FieldAndFormat`].
@@ -3426,6 +3619,13 @@ impl FieldLookup {
     /// Creates a builder for [`FieldLookup`].
     pub fn builder() -> FieldLookupBuilder {
         FieldLookupBuilder::new()
+    }
+
+    /// Creates a [`FieldLookup`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FieldLookupBuilder) -> FieldLookupBuilder<(crate::typed::builder::Set,)>,
+    ) -> FieldLookup {
+        f(Self::builder()).build()
     }
 }
 
@@ -3591,6 +3791,15 @@ impl FieldValueFactorScoreFunction {
     /// Creates a builder for [`FieldValueFactorScoreFunction`].
     pub fn builder() -> FieldValueFactorScoreFunctionBuilder {
         FieldValueFactorScoreFunctionBuilder::new()
+    }
+
+    /// Creates a [`FieldValueFactorScoreFunction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FieldValueFactorScoreFunctionBuilder,
+        ) -> FieldValueFactorScoreFunctionBuilder<(crate::typed::builder::Set,)>,
+    ) -> FieldValueFactorScoreFunction {
+        f(Self::builder()).build()
     }
 }
 
@@ -3839,6 +4048,15 @@ impl FunctionScoreContainer {
     /// Creates a builder for [`FunctionScoreContainer`].
     pub fn builder() -> FunctionScoreContainerBuilder {
         FunctionScoreContainerBuilder::new()
+    }
+
+    /// Creates a [`FunctionScoreContainer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FunctionScoreContainerBuilder,
+        ) -> FunctionScoreContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> FunctionScoreContainer {
+        f(Self::builder()).build()
     }
 }
 
@@ -4091,6 +4309,13 @@ impl FunctionScoreQuery {
     pub fn builder() -> FunctionScoreQueryBuilder {
         FunctionScoreQueryBuilder::new()
     }
+
+    /// Creates a [`FunctionScoreQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FunctionScoreQueryBuilder) -> FunctionScoreQueryBuilder,
+    ) -> FunctionScoreQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FunctionScoreQuery`].
@@ -4341,6 +4566,13 @@ impl FuzzyQuery {
     pub fn builder() -> FuzzyQueryBuilder {
         FuzzyQueryBuilder::new()
     }
+
+    /// Creates a [`FuzzyQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FuzzyQueryBuilder) -> FuzzyQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> FuzzyQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FuzzyQuery`].
@@ -4552,6 +4784,13 @@ impl GeoBoundingBoxQuery {
     pub fn builder() -> GeoBoundingBoxQueryBuilder {
         GeoBoundingBoxQueryBuilder::new()
     }
+
+    /// Creates a [`GeoBoundingBoxQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(GeoBoundingBoxQueryBuilder) -> GeoBoundingBoxQueryBuilder,
+    ) -> GeoBoundingBoxQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GeoBoundingBoxQuery`].
@@ -4699,6 +4938,13 @@ impl GeoDecayFunction {
     pub fn builder() -> GeoDecayFunctionBuilder {
         GeoDecayFunctionBuilder::new()
     }
+
+    /// Creates a [`GeoDecayFunction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(GeoDecayFunctionBuilder) -> GeoDecayFunctionBuilder,
+    ) -> GeoDecayFunction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GeoDecayFunction`].
@@ -4796,6 +5042,19 @@ impl GeoDistanceFeatureQuery {
     /// Creates a builder for [`GeoDistanceFeatureQuery`].
     pub fn builder() -> GeoDistanceFeatureQueryBuilder {
         GeoDistanceFeatureQueryBuilder::new()
+    }
+
+    /// Creates a [`GeoDistanceFeatureQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GeoDistanceFeatureQueryBuilder,
+        ) -> GeoDistanceFeatureQueryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> GeoDistanceFeatureQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -5022,6 +5281,15 @@ impl GeoDistanceQuery {
     pub fn builder() -> GeoDistanceQueryBuilder {
         GeoDistanceQueryBuilder::new()
     }
+
+    /// Creates a [`GeoDistanceQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GeoDistanceQueryBuilder,
+        ) -> GeoDistanceQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> GeoDistanceQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GeoDistanceQuery`].
@@ -5229,6 +5497,13 @@ impl GeoGridQuery {
     pub fn builder() -> GeoGridQueryBuilder {
         GeoGridQueryBuilder::new()
     }
+
+    /// Creates a [`GeoGridQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(GeoGridQueryBuilder) -> GeoGridQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> GeoGridQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GeoGridQuery`].
@@ -5333,6 +5608,15 @@ impl GeoPolygonPoints {
     pub fn builder() -> GeoPolygonPointsBuilder {
         GeoPolygonPointsBuilder::new()
     }
+
+    /// Creates a [`GeoPolygonPoints`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GeoPolygonPointsBuilder,
+        ) -> GeoPolygonPointsBuilder<(crate::typed::builder::Set,)>,
+    ) -> GeoPolygonPoints {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GeoPolygonPoints`].
@@ -5415,6 +5699,11 @@ impl GeoPolygonQuery {
     /// Creates a builder for [`GeoPolygonQuery`].
     pub fn builder() -> GeoPolygonQueryBuilder {
         GeoPolygonQueryBuilder::new()
+    }
+
+    /// Creates a [`GeoPolygonQuery`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(GeoPolygonQueryBuilder) -> GeoPolygonQueryBuilder) -> GeoPolygonQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -5545,6 +5834,13 @@ impl GeoShapeFieldQuery {
     pub fn builder() -> GeoShapeFieldQueryBuilder {
         GeoShapeFieldQueryBuilder::new()
     }
+
+    /// Creates a [`GeoShapeFieldQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(GeoShapeFieldQueryBuilder) -> GeoShapeFieldQueryBuilder,
+    ) -> GeoShapeFieldQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GeoShapeFieldQuery`].
@@ -5650,6 +5946,11 @@ impl GeoShapeQuery {
     /// Creates a builder for [`GeoShapeQuery`].
     pub fn builder() -> GeoShapeQueryBuilder {
         GeoShapeQueryBuilder::new()
+    }
+
+    /// Creates a [`GeoShapeQuery`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(GeoShapeQueryBuilder) -> GeoShapeQueryBuilder) -> GeoShapeQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -5801,6 +6102,16 @@ impl HasChildQuery {
     /// Creates a builder for [`HasChildQuery`].
     pub fn builder() -> HasChildQueryBuilder {
         HasChildQueryBuilder::new()
+    }
+
+    /// Creates a [`HasChildQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HasChildQueryBuilder,
+        )
+            -> HasChildQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> HasChildQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -6062,6 +6373,18 @@ impl HasParentQuery {
     pub fn builder() -> HasParentQueryBuilder {
         HasParentQueryBuilder::new()
     }
+
+    /// Creates a [`HasParentQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HasParentQueryBuilder,
+        ) -> HasParentQueryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> HasParentQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HasParentQuery`].
@@ -6277,6 +6600,11 @@ impl IdsQuery {
     pub fn builder() -> IdsQueryBuilder {
         IdsQueryBuilder::new()
     }
+
+    /// Creates a [`IdsQuery`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(IdsQueryBuilder) -> IdsQueryBuilder) -> IdsQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IdsQuery`].
@@ -6374,6 +6702,13 @@ impl IntervalsAllOf {
     /// Creates a builder for [`IntervalsAllOf`].
     pub fn builder() -> IntervalsAllOfBuilder {
         IntervalsAllOfBuilder::new()
+    }
+
+    /// Creates a [`IntervalsAllOf`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IntervalsAllOfBuilder) -> IntervalsAllOfBuilder<(crate::typed::builder::Set,)>,
+    ) -> IntervalsAllOf {
+        f(Self::builder()).build()
     }
 }
 
@@ -6505,6 +6840,13 @@ impl IntervalsAnyOf {
     /// Creates a builder for [`IntervalsAnyOf`].
     pub fn builder() -> IntervalsAnyOfBuilder {
         IntervalsAnyOfBuilder::new()
+    }
+
+    /// Creates a [`IntervalsAnyOf`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IntervalsAnyOfBuilder) -> IntervalsAnyOfBuilder<(crate::typed::builder::Set,)>,
+    ) -> IntervalsAnyOf {
+        f(Self::builder()).build()
     }
 }
 
@@ -6716,6 +7058,15 @@ impl IntervalsContainer {
     /// Creates a builder for [`IntervalsContainer`].
     pub fn builder() -> IntervalsContainerBuilder {
         IntervalsContainerBuilder::new()
+    }
+
+    /// Creates a [`IntervalsContainer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IntervalsContainerBuilder,
+        ) -> IntervalsContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> IntervalsContainer {
+        f(Self::builder()).build()
     }
 }
 
@@ -6957,6 +7308,13 @@ impl IntervalsFilter {
     /// Creates a builder for [`IntervalsFilter`].
     pub fn builder() -> IntervalsFilterBuilder {
         IntervalsFilterBuilder::new()
+    }
+
+    /// Creates a [`IntervalsFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IntervalsFilterBuilder) -> IntervalsFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> IntervalsFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -7212,6 +7570,13 @@ impl IntervalsFuzzy {
     pub fn builder() -> IntervalsFuzzyBuilder {
         IntervalsFuzzyBuilder::new()
     }
+
+    /// Creates a [`IntervalsFuzzy`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IntervalsFuzzyBuilder) -> IntervalsFuzzyBuilder<(crate::typed::builder::Set,)>,
+    ) -> IntervalsFuzzy {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IntervalsFuzzy`].
@@ -7381,6 +7746,13 @@ impl IntervalsMatch {
     pub fn builder() -> IntervalsMatchBuilder {
         IntervalsMatchBuilder::new()
     }
+
+    /// Creates a [`IntervalsMatch`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IntervalsMatchBuilder) -> IntervalsMatchBuilder<(crate::typed::builder::Set,)>,
+    ) -> IntervalsMatch {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IntervalsMatch`].
@@ -7548,6 +7920,13 @@ impl IntervalsPrefix {
     /// Creates a builder for [`IntervalsPrefix`].
     pub fn builder() -> IntervalsPrefixBuilder {
         IntervalsPrefixBuilder::new()
+    }
+
+    /// Creates a [`IntervalsPrefix`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IntervalsPrefixBuilder) -> IntervalsPrefixBuilder<(crate::typed::builder::Set,)>,
+    ) -> IntervalsPrefix {
+        f(Self::builder()).build()
     }
 }
 
@@ -7776,6 +8155,13 @@ impl IntervalsQuery {
     /// Creates a builder for [`IntervalsQuery`].
     pub fn builder() -> IntervalsQueryBuilder {
         IntervalsQueryBuilder::new()
+    }
+
+    /// Creates a [`IntervalsQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IntervalsQueryBuilder) -> IntervalsQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> IntervalsQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -8016,6 +8402,11 @@ impl IntervalsRange {
     pub fn builder() -> IntervalsRangeBuilder {
         IntervalsRangeBuilder::new()
     }
+
+    /// Creates a [`IntervalsRange`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(IntervalsRangeBuilder) -> IntervalsRangeBuilder) -> IntervalsRange {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IntervalsRange`].
@@ -8155,6 +8546,13 @@ impl IntervalsRegexp {
     pub fn builder() -> IntervalsRegexpBuilder {
         IntervalsRegexpBuilder::new()
     }
+
+    /// Creates a [`IntervalsRegexp`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IntervalsRegexpBuilder) -> IntervalsRegexpBuilder<(crate::typed::builder::Set,)>,
+    ) -> IntervalsRegexp {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IntervalsRegexp`].
@@ -8266,6 +8664,15 @@ impl IntervalsWildcard {
     /// Creates a builder for [`IntervalsWildcard`].
     pub fn builder() -> IntervalsWildcardBuilder {
         IntervalsWildcardBuilder::new()
+    }
+
+    /// Creates a [`IntervalsWildcard`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IntervalsWildcardBuilder,
+        ) -> IntervalsWildcardBuilder<(crate::typed::builder::Set,)>,
+    ) -> IntervalsWildcard {
+        f(Self::builder()).build()
     }
 }
 
@@ -8391,6 +8798,13 @@ impl KqlQuery {
     /// Creates a builder for [`KqlQuery`].
     pub fn builder() -> KqlQueryBuilder {
         KqlQueryBuilder::new()
+    }
+
+    /// Creates a [`KqlQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(KqlQueryBuilder) -> KqlQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> KqlQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -8586,6 +9000,11 @@ impl LikeDocument {
     /// Creates a builder for [`LikeDocument`].
     pub fn builder() -> LikeDocumentBuilder {
         LikeDocumentBuilder::new()
+    }
+
+    /// Creates a [`LikeDocument`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(LikeDocumentBuilder) -> LikeDocumentBuilder) -> LikeDocument {
+        f(Self::builder()).build()
     }
 }
 
@@ -8791,6 +9210,13 @@ impl LongNumberRangeQuery {
     pub fn builder() -> LongNumberRangeQueryBuilder {
         LongNumberRangeQueryBuilder::new()
     }
+
+    /// Creates a [`LongNumberRangeQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(LongNumberRangeQueryBuilder) -> LongNumberRangeQueryBuilder,
+    ) -> LongNumberRangeQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`LongNumberRangeQuery`].
@@ -8945,6 +9371,11 @@ impl MatchAllQuery {
     pub fn builder() -> MatchAllQueryBuilder {
         MatchAllQueryBuilder::new()
     }
+
+    /// Creates a [`MatchAllQuery`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(MatchAllQueryBuilder) -> MatchAllQueryBuilder) -> MatchAllQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MatchAllQuery`].
@@ -9057,6 +9488,15 @@ impl MatchBoolPrefixQuery {
     /// Creates a builder for [`MatchBoolPrefixQuery`].
     pub fn builder() -> MatchBoolPrefixQueryBuilder {
         MatchBoolPrefixQueryBuilder::new()
+    }
+
+    /// Creates a [`MatchBoolPrefixQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MatchBoolPrefixQueryBuilder,
+        ) -> MatchBoolPrefixQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> MatchBoolPrefixQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -9317,6 +9757,11 @@ impl MatchNoneQuery {
     pub fn builder() -> MatchNoneQueryBuilder {
         MatchNoneQueryBuilder::new()
     }
+
+    /// Creates a [`MatchNoneQuery`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(MatchNoneQueryBuilder) -> MatchNoneQueryBuilder) -> MatchNoneQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MatchNoneQuery`].
@@ -9409,6 +9854,15 @@ impl MatchPhrasePrefixQuery {
     /// Creates a builder for [`MatchPhrasePrefixQuery`].
     pub fn builder() -> MatchPhrasePrefixQueryBuilder {
         MatchPhrasePrefixQueryBuilder::new()
+    }
+
+    /// Creates a [`MatchPhrasePrefixQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MatchPhrasePrefixQueryBuilder,
+        ) -> MatchPhrasePrefixQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> MatchPhrasePrefixQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -9595,6 +10049,15 @@ impl MatchPhraseQuery {
     /// Creates a builder for [`MatchPhraseQuery`].
     pub fn builder() -> MatchPhraseQueryBuilder {
         MatchPhraseQueryBuilder::new()
+    }
+
+    /// Creates a [`MatchPhraseQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MatchPhraseQueryBuilder,
+        ) -> MatchPhraseQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> MatchPhraseQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -9823,6 +10286,13 @@ impl MatchQuery {
     /// Creates a builder for [`MatchQuery`].
     pub fn builder() -> MatchQueryBuilder {
         MatchQueryBuilder::new()
+    }
+
+    /// Creates a [`MatchQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MatchQueryBuilder) -> MatchQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> MatchQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -10231,6 +10701,15 @@ impl MoreLikeThisQuery {
     /// Creates a builder for [`MoreLikeThisQuery`].
     pub fn builder() -> MoreLikeThisQueryBuilder {
         MoreLikeThisQueryBuilder::new()
+    }
+
+    /// Creates a [`MoreLikeThisQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MoreLikeThisQueryBuilder,
+        ) -> MoreLikeThisQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> MoreLikeThisQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -10689,6 +11168,13 @@ impl MultiMatchQuery {
     pub fn builder() -> MultiMatchQueryBuilder {
         MultiMatchQueryBuilder::new()
     }
+
+    /// Creates a [`MultiMatchQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MultiMatchQueryBuilder) -> MultiMatchQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> MultiMatchQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MultiMatchQuery`].
@@ -11098,6 +11584,16 @@ impl NestedQuery {
     pub fn builder() -> NestedQueryBuilder {
         NestedQueryBuilder::new()
     }
+
+    /// Creates a [`NestedQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NestedQueryBuilder,
+        )
+            -> NestedQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> NestedQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NestedQuery`].
@@ -11322,6 +11818,13 @@ impl NumberRangeQuery {
     pub fn builder() -> NumberRangeQueryBuilder {
         NumberRangeQueryBuilder::new()
     }
+
+    /// Creates a [`NumberRangeQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NumberRangeQueryBuilder) -> NumberRangeQueryBuilder,
+    ) -> NumberRangeQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NumberRangeQuery`].
@@ -11475,6 +11978,13 @@ impl NumericDecayFunction {
     pub fn builder() -> NumericDecayFunctionBuilder {
         NumericDecayFunctionBuilder::new()
     }
+
+    /// Creates a [`NumericDecayFunction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NumericDecayFunctionBuilder) -> NumericDecayFunctionBuilder,
+    ) -> NumericDecayFunction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NumericDecayFunction`].
@@ -11576,6 +12086,11 @@ impl ParentIdQuery {
     /// Creates a builder for [`ParentIdQuery`].
     pub fn builder() -> ParentIdQueryBuilder {
         ParentIdQueryBuilder::new()
+    }
+
+    /// Creates a [`ParentIdQuery`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(ParentIdQueryBuilder) -> ParentIdQueryBuilder) -> ParentIdQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -11726,6 +12241,13 @@ impl PercolateQuery {
     /// Creates a builder for [`PercolateQuery`].
     pub fn builder() -> PercolateQueryBuilder {
         PercolateQueryBuilder::new()
+    }
+
+    /// Creates a [`PercolateQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(PercolateQueryBuilder) -> PercolateQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> PercolateQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -11972,6 +12494,13 @@ impl PinnedDoc {
     pub fn builder() -> PinnedDocBuilder {
         PinnedDocBuilder::new()
     }
+
+    /// Creates a [`PinnedDoc`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(PinnedDocBuilder) -> PinnedDocBuilder<(crate::typed::builder::Set,)>,
+    ) -> PinnedDoc {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PinnedDoc`].
@@ -12081,6 +12610,16 @@ impl PinnedQuery {
     /// Creates a builder for [`PinnedQuery`].
     pub fn builder() -> PinnedQueryBuilder {
         PinnedQueryBuilder::new()
+    }
+
+    /// Creates a [`PinnedQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PinnedQueryBuilder,
+        )
+            -> PinnedQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> PinnedQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -12233,6 +12772,13 @@ impl PrefixQuery {
     pub fn builder() -> PrefixQueryBuilder {
         PrefixQueryBuilder::new()
     }
+
+    /// Creates a [`PrefixQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(PrefixQueryBuilder) -> PrefixQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> PrefixQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PrefixQuery`].
@@ -12382,6 +12928,11 @@ impl QueryBase {
     /// Creates a builder for [`QueryBase`].
     pub fn builder() -> QueryBaseBuilder {
         QueryBaseBuilder::new()
+    }
+
+    /// Creates a [`QueryBase`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(QueryBaseBuilder) -> QueryBaseBuilder) -> QueryBase {
+        f(Self::builder()).build()
     }
 }
 
@@ -13266,6 +13817,13 @@ impl QueryContainer {
     /// Creates a builder for [`QueryContainer`].
     pub fn builder() -> QueryContainerBuilder {
         QueryContainerBuilder::new()
+    }
+
+    /// Creates a [`QueryContainer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(QueryContainerBuilder) -> QueryContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> QueryContainer {
+        f(Self::builder()).build()
     }
 }
 
@@ -14698,6 +15256,15 @@ impl QueryStringQuery {
     pub fn builder() -> QueryStringQueryBuilder {
         QueryStringQueryBuilder::new()
     }
+
+    /// Creates a [`QueryStringQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            QueryStringQueryBuilder,
+        ) -> QueryStringQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> QueryStringQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`QueryStringQuery`].
@@ -15243,6 +15810,13 @@ impl RandomScoreFunction {
     pub fn builder() -> RandomScoreFunctionBuilder {
         RandomScoreFunctionBuilder::new()
     }
+
+    /// Creates a [`RandomScoreFunction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RandomScoreFunctionBuilder) -> RandomScoreFunctionBuilder,
+    ) -> RandomScoreFunction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RandomScoreFunction`].
@@ -15343,6 +15917,11 @@ impl RangeQueryBase {
     /// Creates a builder for [`RangeQueryBase`].
     pub fn builder() -> RangeQueryBaseBuilder {
         RangeQueryBaseBuilder::new()
+    }
+
+    /// Creates a [`RangeQueryBase`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RangeQueryBaseBuilder) -> RangeQueryBaseBuilder) -> RangeQueryBase {
+        f(Self::builder()).build()
     }
 }
 
@@ -15513,6 +16092,13 @@ impl RangeQueryBaseDateMath {
     pub fn builder() -> RangeQueryBaseDateMathBuilder {
         RangeQueryBaseDateMathBuilder::new()
     }
+
+    /// Creates a [`RangeQueryBaseDateMath`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RangeQueryBaseDateMathBuilder) -> RangeQueryBaseDateMathBuilder,
+    ) -> RangeQueryBaseDateMath {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RangeQueryBaseDateMath`].
@@ -15681,6 +16267,13 @@ impl RangeQueryBasedouble {
     /// Creates a builder for [`RangeQueryBasedouble`].
     pub fn builder() -> RangeQueryBasedoubleBuilder {
         RangeQueryBasedoubleBuilder::new()
+    }
+
+    /// Creates a [`RangeQueryBasedouble`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RangeQueryBasedoubleBuilder) -> RangeQueryBasedoubleBuilder,
+    ) -> RangeQueryBasedouble {
+        f(Self::builder()).build()
     }
 }
 
@@ -15851,6 +16444,13 @@ impl RangeQueryBaselong {
     pub fn builder() -> RangeQueryBaselongBuilder {
         RangeQueryBaselongBuilder::new()
     }
+
+    /// Creates a [`RangeQueryBaselong`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RangeQueryBaselongBuilder) -> RangeQueryBaselongBuilder,
+    ) -> RangeQueryBaselong {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RangeQueryBaselong`].
@@ -16020,6 +16620,13 @@ impl RangeQueryBasestring {
     pub fn builder() -> RangeQueryBasestringBuilder {
         RangeQueryBasestringBuilder::new()
     }
+
+    /// Creates a [`RangeQueryBasestring`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RangeQueryBasestringBuilder) -> RangeQueryBasestringBuilder,
+    ) -> RangeQueryBasestring {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RangeQueryBasestring`].
@@ -16178,6 +16785,13 @@ impl RankFeatureFunction {
     pub fn builder() -> RankFeatureFunctionBuilder {
         RankFeatureFunctionBuilder::new()
     }
+
+    /// Creates a [`RankFeatureFunction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RankFeatureFunctionBuilder) -> RankFeatureFunctionBuilder,
+    ) -> RankFeatureFunction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RankFeatureFunction`].
@@ -16212,6 +16826,13 @@ impl RankFeatureFunctionLinear {
     /// Creates a builder for [`RankFeatureFunctionLinear`].
     pub fn builder() -> RankFeatureFunctionLinearBuilder {
         RankFeatureFunctionLinearBuilder::new()
+    }
+
+    /// Creates a [`RankFeatureFunctionLinear`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RankFeatureFunctionLinearBuilder) -> RankFeatureFunctionLinearBuilder,
+    ) -> RankFeatureFunctionLinear {
+        f(Self::builder()).build()
     }
 }
 
@@ -16250,6 +16871,15 @@ impl RankFeatureFunctionLogarithm {
     /// Creates a builder for [`RankFeatureFunctionLogarithm`].
     pub fn builder() -> RankFeatureFunctionLogarithmBuilder {
         RankFeatureFunctionLogarithmBuilder::new()
+    }
+
+    /// Creates a [`RankFeatureFunctionLogarithm`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RankFeatureFunctionLogarithmBuilder,
+        ) -> RankFeatureFunctionLogarithmBuilder<(crate::typed::builder::Set,)>,
+    ) -> RankFeatureFunctionLogarithm {
+        f(Self::builder()).build()
     }
 }
 
@@ -16325,6 +16955,13 @@ impl RankFeatureFunctionSaturation {
     pub fn builder() -> RankFeatureFunctionSaturationBuilder {
         RankFeatureFunctionSaturationBuilder::new()
     }
+
+    /// Creates a [`RankFeatureFunctionSaturation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RankFeatureFunctionSaturationBuilder) -> RankFeatureFunctionSaturationBuilder,
+    ) -> RankFeatureFunctionSaturation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RankFeatureFunctionSaturation`].
@@ -16378,6 +17015,18 @@ impl RankFeatureFunctionSigmoid {
     /// Creates a builder for [`RankFeatureFunctionSigmoid`].
     pub fn builder() -> RankFeatureFunctionSigmoidBuilder {
         RankFeatureFunctionSigmoidBuilder::new()
+    }
+
+    /// Creates a [`RankFeatureFunctionSigmoid`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RankFeatureFunctionSigmoidBuilder,
+        ) -> RankFeatureFunctionSigmoidBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RankFeatureFunctionSigmoid {
+        f(Self::builder()).build()
     }
 }
 
@@ -16509,6 +17158,15 @@ impl RankFeatureQuery {
     /// Creates a builder for [`RankFeatureQuery`].
     pub fn builder() -> RankFeatureQueryBuilder {
         RankFeatureQueryBuilder::new()
+    }
+
+    /// Creates a [`RankFeatureQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RankFeatureQueryBuilder,
+        ) -> RankFeatureQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> RankFeatureQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -16739,6 +17397,13 @@ impl RegexpQuery {
     pub fn builder() -> RegexpQueryBuilder {
         RegexpQueryBuilder::new()
     }
+
+    /// Creates a [`RegexpQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RegexpQueryBuilder) -> RegexpQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> RegexpQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RegexpQuery`].
@@ -16952,6 +17617,16 @@ impl RuleQuery {
     pub fn builder() -> RuleQueryBuilder {
         RuleQueryBuilder::new()
     }
+
+    /// Creates a [`RuleQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RuleQueryBuilder,
+        )
+            -> RuleQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> RuleQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RuleQuery`].
@@ -17128,6 +17803,13 @@ impl ScriptQuery {
     pub fn builder() -> ScriptQueryBuilder {
         ScriptQueryBuilder::new()
     }
+
+    /// Creates a [`ScriptQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ScriptQueryBuilder) -> ScriptQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> ScriptQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ScriptQuery`].
@@ -17242,6 +17924,15 @@ impl ScriptScoreFunction {
     pub fn builder() -> ScriptScoreFunctionBuilder {
         ScriptScoreFunctionBuilder::new()
     }
+
+    /// Creates a [`ScriptScoreFunction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ScriptScoreFunctionBuilder,
+        ) -> ScriptScoreFunctionBuilder<(crate::typed::builder::Set,)>,
+    ) -> ScriptScoreFunction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ScriptScoreFunction`].
@@ -17334,6 +18025,18 @@ impl ScriptScoreQuery {
     /// Creates a builder for [`ScriptScoreQuery`].
     pub fn builder() -> ScriptScoreQueryBuilder {
         ScriptScoreQueryBuilder::new()
+    }
+
+    /// Creates a [`ScriptScoreQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ScriptScoreQueryBuilder,
+        ) -> ScriptScoreQueryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ScriptScoreQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -17511,6 +18214,16 @@ impl SemanticQuery {
     pub fn builder() -> SemanticQueryBuilder {
         SemanticQueryBuilder::new()
     }
+
+    /// Creates a [`SemanticQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SemanticQueryBuilder,
+        )
+            -> SemanticQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> SemanticQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SemanticQuery`].
@@ -17650,6 +18363,11 @@ impl ShapeFieldQuery {
     pub fn builder() -> ShapeFieldQueryBuilder {
         ShapeFieldQueryBuilder::new()
     }
+
+    /// Creates a [`ShapeFieldQuery`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(ShapeFieldQueryBuilder) -> ShapeFieldQueryBuilder) -> ShapeFieldQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ShapeFieldQuery`].
@@ -17755,6 +18473,11 @@ impl ShapeQuery {
     /// Creates a builder for [`ShapeQuery`].
     pub fn builder() -> ShapeQueryBuilder {
         ShapeQueryBuilder::new()
+    }
+
+    /// Creates a [`ShapeQuery`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(ShapeQueryBuilder) -> ShapeQueryBuilder) -> ShapeQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -17961,6 +18684,15 @@ impl SimpleQueryStringQuery {
     /// Creates a builder for [`SimpleQueryStringQuery`].
     pub fn builder() -> SimpleQueryStringQueryBuilder {
         SimpleQueryStringQueryBuilder::new()
+    }
+
+    /// Creates a [`SimpleQueryStringQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SimpleQueryStringQueryBuilder,
+        ) -> SimpleQueryStringQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> SimpleQueryStringQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -18288,6 +19020,18 @@ impl SpanContainingQuery {
     pub fn builder() -> SpanContainingQueryBuilder {
         SpanContainingQueryBuilder::new()
     }
+
+    /// Creates a [`SpanContainingQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SpanContainingQueryBuilder,
+        ) -> SpanContainingQueryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SpanContainingQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SpanContainingQuery`].
@@ -18450,6 +19194,18 @@ impl SpanFieldMaskingQuery {
     pub fn builder() -> SpanFieldMaskingQueryBuilder {
         SpanFieldMaskingQueryBuilder::new()
     }
+
+    /// Creates a [`SpanFieldMaskingQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SpanFieldMaskingQueryBuilder,
+        ) -> SpanFieldMaskingQueryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SpanFieldMaskingQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SpanFieldMaskingQuery`].
@@ -18602,6 +19358,18 @@ impl SpanFirstQuery {
     pub fn builder() -> SpanFirstQueryBuilder {
         SpanFirstQueryBuilder::new()
     }
+
+    /// Creates a [`SpanFirstQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SpanFirstQueryBuilder,
+        ) -> SpanFirstQueryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SpanFirstQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SpanFirstQuery`].
@@ -18750,6 +19518,15 @@ impl SpanMultiTermQuery {
     pub fn builder() -> SpanMultiTermQueryBuilder {
         SpanMultiTermQueryBuilder::new()
     }
+
+    /// Creates a [`SpanMultiTermQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SpanMultiTermQueryBuilder,
+        ) -> SpanMultiTermQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> SpanMultiTermQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SpanMultiTermQuery`].
@@ -18876,6 +19653,13 @@ impl SpanNearQuery {
     /// Creates a builder for [`SpanNearQuery`].
     pub fn builder() -> SpanNearQueryBuilder {
         SpanNearQueryBuilder::new()
+    }
+
+    /// Creates a [`SpanNearQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SpanNearQueryBuilder) -> SpanNearQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> SpanNearQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -19033,6 +19817,16 @@ impl SpanNotQuery {
     /// Creates a builder for [`SpanNotQuery`].
     pub fn builder() -> SpanNotQueryBuilder {
         SpanNotQueryBuilder::new()
+    }
+
+    /// Creates a [`SpanNotQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SpanNotQueryBuilder,
+        )
+            -> SpanNotQueryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> SpanNotQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -19237,6 +20031,13 @@ impl SpanOrQuery {
     /// Creates a builder for [`SpanOrQuery`].
     pub fn builder() -> SpanOrQueryBuilder {
         SpanOrQueryBuilder::new()
+    }
+
+    /// Creates a [`SpanOrQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SpanOrQueryBuilder) -> SpanOrQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> SpanOrQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -19491,6 +20292,13 @@ impl SpanQuery {
     /// Creates a builder for [`SpanQuery`].
     pub fn builder() -> SpanQueryBuilder {
         SpanQueryBuilder::new()
+    }
+
+    /// Creates a [`SpanQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SpanQueryBuilder) -> SpanQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> SpanQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -19760,6 +20568,13 @@ impl SpanTermQuery {
     pub fn builder() -> SpanTermQueryBuilder {
         SpanTermQueryBuilder::new()
     }
+
+    /// Creates a [`SpanTermQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SpanTermQueryBuilder) -> SpanTermQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> SpanTermQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SpanTermQuery`].
@@ -19875,6 +20690,18 @@ impl SpanWithinQuery {
     /// Creates a builder for [`SpanWithinQuery`].
     pub fn builder() -> SpanWithinQueryBuilder {
         SpanWithinQueryBuilder::new()
+    }
+
+    /// Creates a [`SpanWithinQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SpanWithinQueryBuilder,
+        ) -> SpanWithinQueryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SpanWithinQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -20068,6 +20895,18 @@ impl SparseVectorQuery {
     /// Creates a builder for [`SparseVectorQuery`].
     pub fn builder() -> SparseVectorQueryBuilder {
         SparseVectorQueryBuilder::new()
+    }
+
+    /// Creates a [`SparseVectorQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SparseVectorQueryBuilder,
+        ) -> SparseVectorQueryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SparseVectorQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -20285,6 +21124,13 @@ impl TermQuery {
     pub fn builder() -> TermQueryBuilder {
         TermQueryBuilder::new()
     }
+
+    /// Creates a [`TermQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TermQueryBuilder) -> TermQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> TermQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TermQuery`].
@@ -20427,6 +21273,11 @@ impl TermRangeQuery {
     /// Creates a builder for [`TermRangeQuery`].
     pub fn builder() -> TermRangeQueryBuilder {
         TermRangeQueryBuilder::new()
+    }
+
+    /// Creates a [`TermRangeQuery`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(TermRangeQueryBuilder) -> TermRangeQueryBuilder) -> TermRangeQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -20578,6 +21429,19 @@ impl TermsLookup {
     /// Creates a builder for [`TermsLookup`].
     pub fn builder() -> TermsLookupBuilder {
         TermsLookupBuilder::new()
+    }
+
+    /// Creates a [`TermsLookup`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TermsLookupBuilder,
+        ) -> TermsLookupBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> TermsLookup {
+        f(Self::builder()).build()
     }
 }
 
@@ -20759,6 +21623,11 @@ impl TermsQuery {
     pub fn builder() -> TermsQueryBuilder {
         TermsQueryBuilder::new()
     }
+
+    /// Creates a [`TermsQuery`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(TermsQueryBuilder) -> TermsQueryBuilder) -> TermsQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TermsQuery`].
@@ -20889,6 +21758,13 @@ impl TermsSetQuery {
     /// Creates a builder for [`TermsSetQuery`].
     pub fn builder() -> TermsSetQueryBuilder {
         TermsSetQueryBuilder::new()
+    }
+
+    /// Creates a [`TermsSetQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TermsSetQueryBuilder) -> TermsSetQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> TermsSetQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -21081,6 +21957,18 @@ impl TextExpansionQuery {
     /// Creates a builder for [`TextExpansionQuery`].
     pub fn builder() -> TextExpansionQueryBuilder {
         TextExpansionQueryBuilder::new()
+    }
+
+    /// Creates a [`TextExpansionQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TextExpansionQueryBuilder,
+        ) -> TextExpansionQueryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> TextExpansionQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -21280,6 +22168,13 @@ impl TypeQuery {
     pub fn builder() -> TypeQueryBuilder {
         TypeQueryBuilder::new()
     }
+
+    /// Creates a [`TypeQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TypeQueryBuilder) -> TypeQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> TypeQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TypeQuery`].
@@ -21388,6 +22283,13 @@ impl UntypedDecayFunction {
     pub fn builder() -> UntypedDecayFunctionBuilder {
         UntypedDecayFunctionBuilder::new()
     }
+
+    /// Creates a [`UntypedDecayFunction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(UntypedDecayFunctionBuilder) -> UntypedDecayFunctionBuilder,
+    ) -> UntypedDecayFunction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`UntypedDecayFunction`].
@@ -21484,6 +22386,19 @@ impl UntypedDistanceFeatureQuery {
     /// Creates a builder for [`UntypedDistanceFeatureQuery`].
     pub fn builder() -> UntypedDistanceFeatureQueryBuilder {
         UntypedDistanceFeatureQueryBuilder::new()
+    }
+
+    /// Creates a [`UntypedDistanceFeatureQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UntypedDistanceFeatureQueryBuilder,
+        ) -> UntypedDistanceFeatureQueryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> UntypedDistanceFeatureQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -21712,6 +22627,13 @@ impl UntypedRangeQuery {
     pub fn builder() -> UntypedRangeQueryBuilder {
         UntypedRangeQueryBuilder::new()
     }
+
+    /// Creates a [`UntypedRangeQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(UntypedRangeQueryBuilder) -> UntypedRangeQueryBuilder,
+    ) -> UntypedRangeQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`UntypedRangeQuery`].
@@ -21920,6 +22842,15 @@ impl WeightedTokensQuery {
     pub fn builder() -> WeightedTokensQueryBuilder {
         WeightedTokensQueryBuilder::new()
     }
+
+    /// Creates a [`WeightedTokensQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            WeightedTokensQueryBuilder,
+        ) -> WeightedTokensQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> WeightedTokensQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`WeightedTokensQuery`].
@@ -22075,6 +23006,11 @@ impl WildcardQuery {
     pub fn builder() -> WildcardQueryBuilder {
         WildcardQueryBuilder::new()
     }
+
+    /// Creates a [`WildcardQuery`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(WildcardQueryBuilder) -> WildcardQueryBuilder) -> WildcardQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`WildcardQuery`].
@@ -22222,6 +23158,13 @@ impl WrapperQuery {
     /// Creates a builder for [`WrapperQuery`].
     pub fn builder() -> WrapperQueryBuilder {
         WrapperQueryBuilder::new()
+    }
+
+    /// Creates a [`WrapperQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(WrapperQueryBuilder) -> WrapperQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> WrapperQuery {
+        f(Self::builder()).build()
     }
 }
 

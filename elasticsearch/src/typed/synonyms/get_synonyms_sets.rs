@@ -36,6 +36,11 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -278,6 +283,18 @@ impl SynonymsSetItem {
     /// Creates a builder for [`SynonymsSetItem`].
     pub fn builder() -> SynonymsSetItemBuilder {
         SynonymsSetItemBuilder::new()
+    }
+
+    /// Creates a [`SynonymsSetItem`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SynonymsSetItemBuilder,
+        ) -> SynonymsSetItemBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SynonymsSetItem {
+        f(Self::builder()).build()
     }
 }
 

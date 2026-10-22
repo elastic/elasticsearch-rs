@@ -42,6 +42,21 @@ impl IngestDocumentSimulation {
     pub fn builder() -> IngestDocumentSimulationBuilder {
         IngestDocumentSimulationBuilder::new()
     }
+
+    /// Creates a [`IngestDocumentSimulation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IngestDocumentSimulationBuilder,
+        ) -> IngestDocumentSimulationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IngestDocumentSimulation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IngestDocumentSimulation`].
@@ -469,6 +484,13 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -996,6 +1018,13 @@ impl SimulateIngestDocumentResult {
     /// Creates a builder for [`SimulateIngestDocumentResult`].
     pub fn builder() -> SimulateIngestDocumentResultBuilder {
         SimulateIngestDocumentResultBuilder::new()
+    }
+
+    /// Creates a [`SimulateIngestDocumentResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SimulateIngestDocumentResultBuilder) -> SimulateIngestDocumentResultBuilder,
+    ) -> SimulateIngestDocumentResult {
+        f(Self::builder()).build()
     }
 }
 

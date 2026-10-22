@@ -50,6 +50,11 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -501,6 +506,13 @@ impl TrainedModelsRecord {
     /// Creates a builder for [`TrainedModelsRecord`].
     pub fn builder() -> TrainedModelsRecordBuilder {
         TrainedModelsRecordBuilder::new()
+    }
+
+    /// Creates a [`TrainedModelsRecord`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TrainedModelsRecordBuilder) -> TrainedModelsRecordBuilder,
+    ) -> TrainedModelsRecord {
+        f(Self::builder()).build()
     }
 }
 

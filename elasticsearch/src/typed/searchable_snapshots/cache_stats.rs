@@ -11,6 +11,11 @@ impl Node {
     pub fn builder() -> NodeBuilder {
         NodeBuilder::new()
     }
+
+    /// Creates a [`Node`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(NodeBuilder) -> NodeBuilder<(crate::typed::builder::Set,)>) -> Node {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Node`].
@@ -121,6 +126,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -356,6 +366,24 @@ impl Shared {
     /// Creates a builder for [`Shared`].
     pub fn builder() -> SharedBuilder {
         SharedBuilder::new()
+    }
+
+    /// Creates a [`Shared`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SharedBuilder,
+        ) -> SharedBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Shared {
+        f(Self::builder()).build()
     }
 }
 

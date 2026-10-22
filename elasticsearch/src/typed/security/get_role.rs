@@ -57,6 +57,18 @@ impl IndicesPrivilegesRead {
     pub fn builder() -> IndicesPrivilegesReadBuilder {
         IndicesPrivilegesReadBuilder::new()
     }
+
+    /// Creates a [`IndicesPrivilegesRead`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndicesPrivilegesReadBuilder,
+        ) -> IndicesPrivilegesReadBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IndicesPrivilegesRead {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndicesPrivilegesRead`].
@@ -276,6 +288,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -541,6 +558,20 @@ impl Role {
     /// Creates a builder for [`Role`].
     pub fn builder() -> RoleBuilder {
         RoleBuilder::new()
+    }
+
+    /// Creates a [`Role`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RoleBuilder,
+        ) -> RoleBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Role {
+        f(Self::builder()).build()
     }
 }
 

@@ -49,6 +49,32 @@ impl HealthResponseBody {
     pub fn builder() -> HealthResponseBodyBuilder {
         HealthResponseBodyBuilder::new()
     }
+
+    /// Creates a [`HealthResponseBody`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HealthResponseBodyBuilder,
+        ) -> HealthResponseBodyBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> HealthResponseBody {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HealthResponseBody`].
@@ -1546,6 +1572,25 @@ impl IndexHealthStats {
     pub fn builder() -> IndexHealthStatsBuilder {
         IndexHealthStatsBuilder::new()
     }
+
+    /// Creates a [`IndexHealthStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndexHealthStatsBuilder,
+        ) -> IndexHealthStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IndexHealthStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexHealthStats`].
@@ -2181,6 +2226,11 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -2652,6 +2702,23 @@ impl ShardHealthStats {
     /// Creates a builder for [`ShardHealthStats`].
     pub fn builder() -> ShardHealthStatsBuilder {
         ShardHealthStatsBuilder::new()
+    }
+
+    /// Creates a [`ShardHealthStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardHealthStatsBuilder,
+        ) -> ShardHealthStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardHealthStats {
+        f(Self::builder()).build()
     }
 }
 

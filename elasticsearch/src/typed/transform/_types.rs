@@ -26,6 +26,11 @@ impl Destination {
     pub fn builder() -> DestinationBuilder {
         DestinationBuilder::new()
     }
+
+    /// Creates a [`Destination`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(DestinationBuilder) -> DestinationBuilder) -> Destination {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Destination`].
@@ -142,6 +147,15 @@ impl DestinationAlias {
     pub fn builder() -> DestinationAliasBuilder {
         DestinationAliasBuilder::new()
     }
+
+    /// Creates a [`DestinationAlias`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DestinationAliasBuilder,
+        ) -> DestinationAliasBuilder<(crate::typed::builder::Set,)>,
+    ) -> DestinationAlias {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DestinationAlias`].
@@ -232,6 +246,16 @@ impl Latest {
     /// Creates a builder for [`Latest`].
     pub fn builder() -> LatestBuilder {
         LatestBuilder::new()
+    }
+
+    /// Creates a [`Latest`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LatestBuilder,
+        )
+            -> LatestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Latest {
+        f(Self::builder()).build()
     }
 }
 
@@ -337,6 +361,11 @@ impl Pivot {
     /// Creates a builder for [`Pivot`].
     pub fn builder() -> PivotBuilder {
         PivotBuilder::new()
+    }
+
+    /// Creates a [`Pivot`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(PivotBuilder) -> PivotBuilder) -> Pivot {
+        f(Self::builder()).build()
     }
 }
 
@@ -542,6 +571,15 @@ impl PivotGroupByContainer {
     pub fn builder() -> PivotGroupByContainerBuilder {
         PivotGroupByContainerBuilder::new()
     }
+
+    /// Creates a [`PivotGroupByContainer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PivotGroupByContainerBuilder,
+        ) -> PivotGroupByContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> PivotGroupByContainer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PivotGroupByContainer`].
@@ -686,6 +724,18 @@ impl RetentionPolicy {
     pub fn builder() -> RetentionPolicyBuilder {
         RetentionPolicyBuilder::new()
     }
+
+    /// Creates a [`RetentionPolicy`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RetentionPolicyBuilder,
+        ) -> RetentionPolicyBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RetentionPolicy {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RetentionPolicy`].
@@ -802,6 +852,15 @@ impl RetentionPolicyContainer {
     /// Creates a builder for [`RetentionPolicyContainer`].
     pub fn builder() -> RetentionPolicyContainerBuilder {
         RetentionPolicyContainerBuilder::new()
+    }
+
+    /// Creates a [`RetentionPolicyContainer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RetentionPolicyContainerBuilder,
+        ) -> RetentionPolicyContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> RetentionPolicyContainer {
+        f(Self::builder()).build()
     }
 }
 
@@ -927,6 +986,11 @@ impl Settings {
     /// Creates a builder for [`Settings`].
     pub fn builder() -> SettingsBuilder {
         SettingsBuilder::new()
+    }
+
+    /// Creates a [`Settings`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(SettingsBuilder) -> SettingsBuilder) -> Settings {
+        f(Self::builder()).build()
     }
 }
 
@@ -1126,6 +1190,13 @@ impl Source {
     /// Creates a builder for [`Source`].
     pub fn builder() -> SourceBuilder {
         SourceBuilder::new()
+    }
+
+    /// Creates a [`Source`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SourceBuilder) -> SourceBuilder<(crate::typed::builder::Set,)>,
+    ) -> Source {
+        f(Self::builder()).build()
     }
 }
 
@@ -1328,6 +1399,13 @@ impl SyncContainer {
     pub fn builder() -> SyncContainerBuilder {
         SyncContainerBuilder::new()
     }
+
+    /// Creates a [`SyncContainer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SyncContainerBuilder) -> SyncContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> SyncContainer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SyncContainer`].
@@ -1409,6 +1487,13 @@ impl TimeSync {
     /// Creates a builder for [`TimeSync`].
     pub fn builder() -> TimeSyncBuilder {
         TimeSyncBuilder::new()
+    }
+
+    /// Creates a [`TimeSync`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TimeSyncBuilder) -> TimeSyncBuilder<(crate::typed::builder::Set,)>,
+    ) -> TimeSync {
+        f(Self::builder()).build()
     }
 }
 

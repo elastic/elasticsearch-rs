@@ -289,6 +289,15 @@ impl ApiKeyAggregationContainer {
     pub fn builder() -> ApiKeyAggregationContainerBuilder {
         ApiKeyAggregationContainerBuilder::new()
     }
+
+    /// Creates a [`ApiKeyAggregationContainer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ApiKeyAggregationContainerBuilder,
+        ) -> ApiKeyAggregationContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> ApiKeyAggregationContainer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ApiKeyAggregationContainer`].
@@ -620,6 +629,13 @@ impl ApiKeyFiltersAggregation {
     pub fn builder() -> ApiKeyFiltersAggregationBuilder {
         ApiKeyFiltersAggregationBuilder::new()
     }
+
+    /// Creates a [`ApiKeyFiltersAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ApiKeyFiltersAggregationBuilder) -> ApiKeyFiltersAggregationBuilder,
+    ) -> ApiKeyFiltersAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ApiKeyFiltersAggregation`].
@@ -870,6 +886,15 @@ impl ApiKeyQueryContainer {
     /// Creates a builder for [`ApiKeyQueryContainer`].
     pub fn builder() -> ApiKeyQueryContainerBuilder {
         ApiKeyQueryContainerBuilder::new()
+    }
+
+    /// Creates a [`ApiKeyQueryContainer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ApiKeyQueryContainerBuilder,
+        ) -> ApiKeyQueryContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> ApiKeyQueryContainer {
+        f(Self::builder()).build()
     }
 }
 
@@ -1259,6 +1284,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

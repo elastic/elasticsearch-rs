@@ -12,6 +12,16 @@ impl Context {
     pub fn builder() -> ContextBuilder {
         ContextBuilder::new()
     }
+
+    /// Creates a [`Context`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ContextBuilder,
+        )
+            -> ContextBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Context {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Context`].
@@ -105,6 +115,19 @@ impl ContextMethod {
     /// Creates a builder for [`ContextMethod`].
     pub fn builder() -> ContextMethodBuilder {
         ContextMethodBuilder::new()
+    }
+
+    /// Creates a [`ContextMethod`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ContextMethodBuilder,
+        ) -> ContextMethodBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ContextMethod {
+        f(Self::builder()).build()
     }
 }
 
@@ -262,6 +285,18 @@ impl ContextMethodParam {
     pub fn builder() -> ContextMethodParamBuilder {
         ContextMethodParamBuilder::new()
     }
+
+    /// Creates a [`ContextMethodParam`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ContextMethodParamBuilder,
+        ) -> ContextMethodParamBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ContextMethodParam {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ContextMethodParam`].
@@ -381,6 +416,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

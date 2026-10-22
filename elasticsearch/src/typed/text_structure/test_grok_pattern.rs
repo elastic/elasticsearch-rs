@@ -13,6 +13,19 @@ impl MatchedField {
     pub fn builder() -> MatchedFieldBuilder {
         MatchedFieldBuilder::new()
     }
+
+    /// Creates a [`MatchedField`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MatchedFieldBuilder,
+        ) -> MatchedFieldBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MatchedField {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MatchedField`].
@@ -164,6 +177,13 @@ impl MatchedText {
     pub fn builder() -> MatchedTextBuilder {
         MatchedTextBuilder::new()
     }
+
+    /// Creates a [`MatchedText`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MatchedTextBuilder) -> MatchedTextBuilder<(crate::typed::builder::Set,)>,
+    ) -> MatchedText {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MatchedText`].
@@ -292,6 +312,16 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RequestBuilder,
+        )
+            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 

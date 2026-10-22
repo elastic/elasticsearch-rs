@@ -59,6 +59,13 @@ impl GrantApiKey {
     pub fn builder() -> GrantApiKeyBuilder {
         GrantApiKeyBuilder::new()
     }
+
+    /// Creates a [`GrantApiKey`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(GrantApiKeyBuilder) -> GrantApiKeyBuilder<(crate::typed::builder::Set,)>,
+    ) -> GrantApiKey {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GrantApiKey`].
@@ -254,6 +261,16 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RequestBuilder,
+        )
+            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 

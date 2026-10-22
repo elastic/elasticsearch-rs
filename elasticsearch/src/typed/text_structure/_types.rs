@@ -33,6 +33,19 @@ impl FieldStat {
     pub fn builder() -> FieldStatBuilder {
         FieldStatBuilder::new()
     }
+
+    /// Creates a [`FieldStat`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FieldStatBuilder,
+        ) -> FieldStatBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FieldStat {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FieldStat`].
@@ -284,6 +297,16 @@ impl TopHit {
     /// Creates a builder for [`TopHit`].
     pub fn builder() -> TopHitBuilder {
         TopHitBuilder::new()
+    }
+
+    /// Creates a [`TopHit`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TopHitBuilder,
+        )
+            -> TopHitBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> TopHit {
+        f(Self::builder()).build()
     }
 }
 

@@ -47,6 +47,25 @@ impl ParentReindexStatus {
     pub fn builder() -> ParentReindexStatusBuilder {
         ParentReindexStatusBuilder::new()
     }
+
+    /// Creates a [`ParentReindexStatus`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ParentReindexStatusBuilder,
+        ) -> ParentReindexStatusBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ParentReindexStatus {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ParentReindexStatus`].
@@ -745,6 +764,27 @@ impl ParentReindexTask {
     /// Creates a builder for [`ParentReindexTask`].
     pub fn builder() -> ParentReindexTaskBuilder {
         ParentReindexTaskBuilder::new()
+    }
+
+    /// Creates a [`ParentReindexTask`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ParentReindexTaskBuilder,
+        ) -> ParentReindexTaskBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ParentReindexTask {
+        f(Self::builder()).build()
     }
 }
 
@@ -1623,6 +1663,22 @@ impl ReindexNode {
     pub fn builder() -> ReindexNodeBuilder {
         ReindexNodeBuilder::new()
     }
+
+    /// Creates a [`ReindexNode`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ReindexNodeBuilder,
+        ) -> ReindexNodeBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ReindexNode {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ReindexNode`].
@@ -1921,6 +1977,27 @@ impl ReindexTask {
     /// Creates a builder for [`ReindexTask`].
     pub fn builder() -> ReindexTaskBuilder {
         ReindexTaskBuilder::new()
+    }
+
+    /// Creates a [`ReindexTask`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ReindexTaskBuilder,
+        ) -> ReindexTaskBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ReindexTask {
+        f(Self::builder()).build()
     }
 }
 
@@ -2815,6 +2892,16 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RequestBuilder,
+        )
+            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 

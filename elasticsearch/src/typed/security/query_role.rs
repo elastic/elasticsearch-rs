@@ -49,6 +49,13 @@ impl QueryRole {
     pub fn builder() -> QueryRoleBuilder {
         QueryRoleBuilder::new()
     }
+
+    /// Creates a [`QueryRole`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(QueryRoleBuilder) -> QueryRoleBuilder<(crate::typed::builder::Set,)>,
+    ) -> QueryRole {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`QueryRole`].
@@ -583,6 +590,11 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -1073,6 +1085,15 @@ impl RoleQueryContainer {
     /// Creates a builder for [`RoleQueryContainer`].
     pub fn builder() -> RoleQueryContainerBuilder {
         RoleQueryContainerBuilder::new()
+    }
+
+    /// Creates a [`RoleQueryContainer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RoleQueryContainerBuilder,
+        ) -> RoleQueryContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> RoleQueryContainer {
+        f(Self::builder()).build()
     }
 }
 

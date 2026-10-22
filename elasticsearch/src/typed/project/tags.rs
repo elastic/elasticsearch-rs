@@ -13,6 +13,13 @@ impl ProjectTags {
     pub fn builder() -> ProjectTagsBuilder {
         ProjectTagsBuilder::new()
     }
+
+    /// Creates a [`ProjectTags`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ProjectTagsBuilder) -> ProjectTagsBuilder<(crate::typed::builder::Set,)>,
+    ) -> ProjectTags {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ProjectTags`].
@@ -168,6 +175,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -416,6 +428,20 @@ impl Tags {
     /// Creates a builder for [`Tags`].
     pub fn builder() -> TagsBuilder {
         TagsBuilder::new()
+    }
+
+    /// Creates a [`Tags`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TagsBuilder,
+        ) -> TagsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Tags {
+        f(Self::builder()).build()
     }
 }
 

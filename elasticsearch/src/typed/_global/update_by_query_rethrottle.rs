@@ -38,6 +38,16 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RequestBuilder,
+        )
+            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -332,6 +342,22 @@ impl UpdateByQueryRethrottleNode {
     /// Creates a builder for [`UpdateByQueryRethrottleNode`].
     pub fn builder() -> UpdateByQueryRethrottleNodeBuilder {
         UpdateByQueryRethrottleNodeBuilder::new()
+    }
+
+    /// Creates a [`UpdateByQueryRethrottleNode`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UpdateByQueryRethrottleNodeBuilder,
+        ) -> UpdateByQueryRethrottleNodeBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> UpdateByQueryRethrottleNode {
+        f(Self::builder()).build()
     }
 }
 

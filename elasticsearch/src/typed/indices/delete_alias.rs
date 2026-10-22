@@ -14,6 +14,15 @@ impl IndicesAliasesResponseBody {
     pub fn builder() -> IndicesAliasesResponseBodyBuilder {
         IndicesAliasesResponseBodyBuilder::new()
     }
+
+    /// Creates a [`IndicesAliasesResponseBody`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndicesAliasesResponseBodyBuilder,
+        ) -> IndicesAliasesResponseBodyBuilder<(crate::typed::builder::Set,)>,
+    ) -> IndicesAliasesResponseBody {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndicesAliasesResponseBody`].
@@ -133,6 +142,16 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RequestBuilder,
+        )
+            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 

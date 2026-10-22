@@ -12,6 +12,16 @@ impl Column {
     pub fn builder() -> ColumnBuilder {
         ColumnBuilder::new()
     }
+
+    /// Creates a [`Column`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ColumnBuilder,
+        )
+            -> ColumnBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Column {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Column`].

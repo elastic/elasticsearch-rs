@@ -19,6 +19,13 @@ impl AnalyzeDetail {
     pub fn builder() -> AnalyzeDetailBuilder {
         AnalyzeDetailBuilder::new()
     }
+
+    /// Creates a [`AnalyzeDetail`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(AnalyzeDetailBuilder) -> AnalyzeDetailBuilder<(crate::typed::builder::Set,)>,
+    ) -> AnalyzeDetail {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AnalyzeDetail`].
@@ -221,6 +228,21 @@ impl AnalyzeToken {
     /// Creates a builder for [`AnalyzeToken`].
     pub fn builder() -> AnalyzeTokenBuilder {
         AnalyzeTokenBuilder::new()
+    }
+
+    /// Creates a [`AnalyzeToken`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AnalyzeTokenBuilder,
+        ) -> AnalyzeTokenBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AnalyzeToken {
+        f(Self::builder()).build()
     }
 }
 
@@ -465,6 +487,18 @@ impl AnalyzerDetail {
     pub fn builder() -> AnalyzerDetailBuilder {
         AnalyzerDetailBuilder::new()
     }
+
+    /// Creates a [`AnalyzerDetail`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AnalyzerDetailBuilder,
+        ) -> AnalyzerDetailBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AnalyzerDetail {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AnalyzerDetail`].
@@ -560,6 +594,18 @@ impl CharFilterDetail {
     /// Creates a builder for [`CharFilterDetail`].
     pub fn builder() -> CharFilterDetailBuilder {
         CharFilterDetailBuilder::new()
+    }
+
+    /// Creates a [`CharFilterDetail`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CharFilterDetailBuilder,
+        ) -> CharFilterDetailBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CharFilterDetail {
+        f(Self::builder()).build()
     }
 }
 
@@ -670,6 +716,24 @@ impl ExplainAnalyzeToken {
     /// Creates a builder for [`ExplainAnalyzeToken`].
     pub fn builder() -> ExplainAnalyzeTokenBuilder {
         ExplainAnalyzeTokenBuilder::new()
+    }
+
+    /// Creates a [`ExplainAnalyzeToken`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ExplainAnalyzeTokenBuilder,
+        ) -> ExplainAnalyzeTokenBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ExplainAnalyzeToken {
+        f(Self::builder()).build()
     }
 }
 
@@ -1132,6 +1196,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -1630,6 +1699,16 @@ impl TokenDetail {
     /// Creates a builder for [`TokenDetail`].
     pub fn builder() -> TokenDetailBuilder {
         TokenDetailBuilder::new()
+    }
+
+    /// Creates a [`TokenDetail`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TokenDetailBuilder,
+        )
+            -> TokenDetailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> TokenDetail {
+        f(Self::builder()).build()
     }
 }
 

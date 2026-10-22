@@ -12,6 +12,18 @@ impl AbstractChangePoint {
     pub fn builder() -> AbstractChangePointBuilder {
         AbstractChangePointBuilder::new()
     }
+
+    /// Creates a [`AbstractChangePoint`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AbstractChangePointBuilder,
+        ) -> AbstractChangePointBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AbstractChangePoint {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AbstractChangePoint`].
@@ -113,6 +125,15 @@ impl AdjacencyMatrixAggregate {
     pub fn builder() -> AdjacencyMatrixAggregateBuilder {
         AdjacencyMatrixAggregateBuilder::new()
     }
+
+    /// Creates a [`AdjacencyMatrixAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AdjacencyMatrixAggregateBuilder,
+        ) -> AdjacencyMatrixAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> AdjacencyMatrixAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AdjacencyMatrixAggregate`].
@@ -213,6 +234,13 @@ impl AdjacencyMatrixAggregation {
     /// Creates a builder for [`AdjacencyMatrixAggregation`].
     pub fn builder() -> AdjacencyMatrixAggregationBuilder {
         AdjacencyMatrixAggregationBuilder::new()
+    }
+
+    /// Creates a [`AdjacencyMatrixAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(AdjacencyMatrixAggregationBuilder) -> AdjacencyMatrixAggregationBuilder,
+    ) -> AdjacencyMatrixAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -322,6 +350,18 @@ impl AdjacencyMatrixBucket {
     /// Creates a builder for [`AdjacencyMatrixBucket`].
     pub fn builder() -> AdjacencyMatrixBucketBuilder {
         AdjacencyMatrixBucketBuilder::new()
+    }
+
+    /// Creates a [`AdjacencyMatrixBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AdjacencyMatrixBucketBuilder,
+        ) -> AdjacencyMatrixBucketBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AdjacencyMatrixBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -457,6 +497,11 @@ impl AggregateBase {
     pub fn builder() -> AggregateBaseBuilder {
         AggregateBaseBuilder::new()
     }
+
+    /// Creates a [`AggregateBase`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(AggregateBaseBuilder) -> AggregateBaseBuilder) -> AggregateBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AggregateBase`].
@@ -541,6 +586,11 @@ impl Aggregation {
     /// Creates a builder for [`Aggregation`].
     pub fn builder() -> AggregationBuilder {
         AggregationBuilder::new()
+    }
+
+    /// Creates a [`Aggregation`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(AggregationBuilder) -> AggregationBuilder) -> Aggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -2604,6 +2654,15 @@ impl AggregationContainer {
     pub fn builder() -> AggregationContainerBuilder {
         AggregationContainerBuilder::new()
     }
+
+    /// Creates a [`AggregationContainer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AggregationContainerBuilder,
+        ) -> AggregationContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> AggregationContainer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AggregationContainer`].
@@ -4287,6 +4346,13 @@ impl AggregationRange {
     pub fn builder() -> AggregationRangeBuilder {
         AggregationRangeBuilder::new()
     }
+
+    /// Creates a [`AggregationRange`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(AggregationRangeBuilder) -> AggregationRangeBuilder,
+    ) -> AggregationRange {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AggregationRange`].
@@ -4393,6 +4459,18 @@ impl ArrayPercentilesItem {
     /// Creates a builder for [`ArrayPercentilesItem`].
     pub fn builder() -> ArrayPercentilesItemBuilder {
         ArrayPercentilesItemBuilder::new()
+    }
+
+    /// Creates a [`ArrayPercentilesItem`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ArrayPercentilesItemBuilder,
+        ) -> ArrayPercentilesItemBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ArrayPercentilesItem {
+        f(Self::builder()).build()
     }
 }
 
@@ -4510,6 +4588,18 @@ impl AutoDateHistogramAggregate {
     /// Creates a builder for [`AutoDateHistogramAggregate`].
     pub fn builder() -> AutoDateHistogramAggregateBuilder {
         AutoDateHistogramAggregateBuilder::new()
+    }
+
+    /// Creates a [`AutoDateHistogramAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AutoDateHistogramAggregateBuilder,
+        ) -> AutoDateHistogramAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AutoDateHistogramAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -4681,6 +4771,13 @@ impl AutoDateHistogramAggregation {
     /// Creates a builder for [`AutoDateHistogramAggregation`].
     pub fn builder() -> AutoDateHistogramAggregationBuilder {
         AutoDateHistogramAggregationBuilder::new()
+    }
+
+    /// Creates a [`AutoDateHistogramAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(AutoDateHistogramAggregationBuilder) -> AutoDateHistogramAggregationBuilder,
+    ) -> AutoDateHistogramAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -4900,6 +4997,13 @@ impl AverageAggregation {
     pub fn builder() -> AverageAggregationBuilder {
         AverageAggregationBuilder::new()
     }
+
+    /// Creates a [`AverageAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(AverageAggregationBuilder) -> AverageAggregationBuilder,
+    ) -> AverageAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AverageAggregation`].
@@ -5016,6 +5120,13 @@ impl AverageBucketAggregation {
     pub fn builder() -> AverageBucketAggregationBuilder {
         AverageBucketAggregationBuilder::new()
     }
+
+    /// Creates a [`AverageBucketAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(AverageBucketAggregationBuilder) -> AverageBucketAggregationBuilder,
+    ) -> AverageBucketAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AverageBucketAggregation`].
@@ -5126,6 +5237,13 @@ impl AvgAggregate {
     /// Creates a builder for [`AvgAggregate`].
     pub fn builder() -> AvgAggregateBuilder {
         AvgAggregateBuilder::new()
+    }
+
+    /// Creates a [`AvgAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(AvgAggregateBuilder) -> AvgAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> AvgAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -5257,6 +5375,23 @@ impl BoxPlotAggregate {
     /// Creates a builder for [`BoxPlotAggregate`].
     pub fn builder() -> BoxPlotAggregateBuilder {
         BoxPlotAggregateBuilder::new()
+    }
+
+    /// Creates a [`BoxPlotAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            BoxPlotAggregateBuilder,
+        ) -> BoxPlotAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> BoxPlotAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -5724,6 +5859,13 @@ impl BoxplotAggregation {
     pub fn builder() -> BoxplotAggregationBuilder {
         BoxplotAggregationBuilder::new()
     }
+
+    /// Creates a [`BoxplotAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(BoxplotAggregationBuilder) -> BoxplotAggregationBuilder,
+    ) -> BoxplotAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`BoxplotAggregation`].
@@ -5847,6 +5989,13 @@ impl BucketAggregationBase {
     pub fn builder() -> BucketAggregationBaseBuilder {
         BucketAggregationBaseBuilder::new()
     }
+
+    /// Creates a [`BucketAggregationBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(BucketAggregationBaseBuilder) -> BucketAggregationBaseBuilder,
+    ) -> BucketAggregationBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`BucketAggregationBase`].
@@ -5888,6 +6037,15 @@ impl BucketCorrelationAggregation {
     /// Creates a builder for [`BucketCorrelationAggregation`].
     pub fn builder() -> BucketCorrelationAggregationBuilder {
         BucketCorrelationAggregationBuilder::new()
+    }
+
+    /// Creates a [`BucketCorrelationAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            BucketCorrelationAggregationBuilder,
+        ) -> BucketCorrelationAggregationBuilder<(crate::typed::builder::Set,)>,
+    ) -> BucketCorrelationAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -5988,6 +6146,15 @@ impl BucketCorrelationFunction {
     pub fn builder() -> BucketCorrelationFunctionBuilder {
         BucketCorrelationFunctionBuilder::new()
     }
+
+    /// Creates a [`BucketCorrelationFunction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            BucketCorrelationFunctionBuilder,
+        ) -> BucketCorrelationFunctionBuilder<(crate::typed::builder::Set,)>,
+    ) -> BucketCorrelationFunction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`BucketCorrelationFunction`].
@@ -6072,6 +6239,17 @@ impl BucketCorrelationFunctionCountCorrelation {
     /// Creates a builder for [`BucketCorrelationFunctionCountCorrelation`].
     pub fn builder() -> BucketCorrelationFunctionCountCorrelationBuilder {
         BucketCorrelationFunctionCountCorrelationBuilder::new()
+    }
+
+    /// Creates a [`BucketCorrelationFunctionCountCorrelation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            BucketCorrelationFunctionCountCorrelationBuilder,
+        ) -> BucketCorrelationFunctionCountCorrelationBuilder<
+            (crate::typed::builder::Set,),
+        >,
+    ) -> BucketCorrelationFunctionCountCorrelation {
+        f(Self::builder()).build()
     }
 }
 
@@ -6170,6 +6348,18 @@ impl BucketCorrelationFunctionCountCorrelationIndicator {
     /// Creates a builder for [`BucketCorrelationFunctionCountCorrelationIndicator`].
     pub fn builder() -> BucketCorrelationFunctionCountCorrelationIndicatorBuilder {
         BucketCorrelationFunctionCountCorrelationIndicatorBuilder::new()
+    }
+
+    /// Creates a [`BucketCorrelationFunctionCountCorrelationIndicator`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            BucketCorrelationFunctionCountCorrelationIndicatorBuilder,
+        ) -> BucketCorrelationFunctionCountCorrelationIndicatorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> BucketCorrelationFunctionCountCorrelationIndicator {
+        f(Self::builder()).build()
     }
 }
 
@@ -6358,6 +6548,13 @@ impl BucketKsAggregation {
     pub fn builder() -> BucketKsAggregationBuilder {
         BucketKsAggregationBuilder::new()
     }
+
+    /// Creates a [`BucketKsAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(BucketKsAggregationBuilder) -> BucketKsAggregationBuilder,
+    ) -> BucketKsAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`BucketKsAggregation`].
@@ -6509,6 +6706,18 @@ impl BucketMetricValueAggregate {
     pub fn builder() -> BucketMetricValueAggregateBuilder {
         BucketMetricValueAggregateBuilder::new()
     }
+
+    /// Creates a [`BucketMetricValueAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            BucketMetricValueAggregateBuilder,
+        ) -> BucketMetricValueAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> BucketMetricValueAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`BucketMetricValueAggregate`].
@@ -6659,6 +6868,13 @@ impl BucketPathAggregation {
     pub fn builder() -> BucketPathAggregationBuilder {
         BucketPathAggregationBuilder::new()
     }
+
+    /// Creates a [`BucketPathAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(BucketPathAggregationBuilder) -> BucketPathAggregationBuilder,
+    ) -> BucketPathAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`BucketPathAggregation`].
@@ -6723,6 +6939,13 @@ impl BucketScriptAggregation {
     /// Creates a builder for [`BucketScriptAggregation`].
     pub fn builder() -> BucketScriptAggregationBuilder {
         BucketScriptAggregationBuilder::new()
+    }
+
+    /// Creates a [`BucketScriptAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(BucketScriptAggregationBuilder) -> BucketScriptAggregationBuilder,
+    ) -> BucketScriptAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -6845,6 +7068,13 @@ impl BucketSelectorAggregation {
     pub fn builder() -> BucketSelectorAggregationBuilder {
         BucketSelectorAggregationBuilder::new()
     }
+
+    /// Creates a [`BucketSelectorAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(BucketSelectorAggregationBuilder) -> BucketSelectorAggregationBuilder,
+    ) -> BucketSelectorAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`BucketSelectorAggregation`].
@@ -6965,6 +7195,13 @@ impl BucketSortAggregation {
     /// Creates a builder for [`BucketSortAggregation`].
     pub fn builder() -> BucketSortAggregationBuilder {
         BucketSortAggregationBuilder::new()
+    }
+
+    /// Creates a [`BucketSortAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(BucketSortAggregationBuilder) -> BucketSortAggregationBuilder,
+    ) -> BucketSortAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -7668,6 +7905,15 @@ impl CardinalityAggregate {
     pub fn builder() -> CardinalityAggregateBuilder {
         CardinalityAggregateBuilder::new()
     }
+
+    /// Creates a [`CardinalityAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CardinalityAggregateBuilder,
+        ) -> CardinalityAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> CardinalityAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CardinalityAggregate`].
@@ -7773,6 +8019,13 @@ impl CardinalityAggregation {
     /// Creates a builder for [`CardinalityAggregation`].
     pub fn builder() -> CardinalityAggregationBuilder {
         CardinalityAggregationBuilder::new()
+    }
+
+    /// Creates a [`CardinalityAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CardinalityAggregationBuilder) -> CardinalityAggregationBuilder,
+    ) -> CardinalityAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -7934,6 +8187,13 @@ impl CartesianBoundsAggregate {
     pub fn builder() -> CartesianBoundsAggregateBuilder {
         CartesianBoundsAggregateBuilder::new()
     }
+
+    /// Creates a [`CartesianBoundsAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CartesianBoundsAggregateBuilder) -> CartesianBoundsAggregateBuilder,
+    ) -> CartesianBoundsAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CartesianBoundsAggregate`].
@@ -8037,6 +8297,13 @@ impl CartesianBoundsAggregation {
     pub fn builder() -> CartesianBoundsAggregationBuilder {
         CartesianBoundsAggregationBuilder::new()
     }
+
+    /// Creates a [`CartesianBoundsAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CartesianBoundsAggregationBuilder) -> CartesianBoundsAggregationBuilder,
+    ) -> CartesianBoundsAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CartesianBoundsAggregation`].
@@ -8133,6 +8400,15 @@ impl CartesianCentroidAggregate {
     /// Creates a builder for [`CartesianCentroidAggregate`].
     pub fn builder() -> CartesianCentroidAggregateBuilder {
         CartesianCentroidAggregateBuilder::new()
+    }
+
+    /// Creates a [`CartesianCentroidAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CartesianCentroidAggregateBuilder,
+        ) -> CartesianCentroidAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> CartesianCentroidAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -8263,6 +8539,13 @@ impl CartesianCentroidAggregation {
     /// Creates a builder for [`CartesianCentroidAggregation`].
     pub fn builder() -> CartesianCentroidAggregationBuilder {
         CartesianCentroidAggregationBuilder::new()
+    }
+
+    /// Creates a [`CartesianCentroidAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CartesianCentroidAggregationBuilder) -> CartesianCentroidAggregationBuilder,
+    ) -> CartesianCentroidAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -8401,6 +8684,15 @@ impl CategorizeTextAggregation {
     /// Creates a builder for [`CategorizeTextAggregation`].
     pub fn builder() -> CategorizeTextAggregationBuilder {
         CategorizeTextAggregationBuilder::new()
+    }
+
+    /// Creates a [`CategorizeTextAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CategorizeTextAggregationBuilder,
+        ) -> CategorizeTextAggregationBuilder<(crate::typed::builder::Set,)>,
+    ) -> CategorizeTextAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -8668,6 +8960,15 @@ impl ChangePointAggregate {
     pub fn builder() -> ChangePointAggregateBuilder {
         ChangePointAggregateBuilder::new()
     }
+
+    /// Creates a [`ChangePointAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ChangePointAggregateBuilder,
+        ) -> ChangePointAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> ChangePointAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ChangePointAggregate`].
@@ -8805,6 +9106,13 @@ impl ChangePointAggregation {
     pub fn builder() -> ChangePointAggregationBuilder {
         ChangePointAggregationBuilder::new()
     }
+
+    /// Creates a [`ChangePointAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ChangePointAggregationBuilder) -> ChangePointAggregationBuilder,
+    ) -> ChangePointAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ChangePointAggregation`].
@@ -8894,6 +9202,18 @@ impl ChangePointBucket {
     /// Creates a builder for [`ChangePointBucket`].
     pub fn builder() -> ChangePointBucketBuilder {
         ChangePointBucketBuilder::new()
+    }
+
+    /// Creates a [`ChangePointBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ChangePointBucketBuilder,
+        ) -> ChangePointBucketBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ChangePointBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -9166,6 +9486,13 @@ impl ChangeType {
     pub fn builder() -> ChangeTypeBuilder {
         ChangeTypeBuilder::new()
     }
+
+    /// Creates a [`ChangeType`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ChangeTypeBuilder) -> ChangeTypeBuilder<(crate::typed::builder::Set,)>,
+    ) -> ChangeType {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ChangeType`].
@@ -9385,6 +9712,18 @@ impl ChiSquareHeuristic {
     pub fn builder() -> ChiSquareHeuristicBuilder {
         ChiSquareHeuristicBuilder::new()
     }
+
+    /// Creates a [`ChiSquareHeuristic`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ChiSquareHeuristicBuilder,
+        ) -> ChiSquareHeuristicBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ChiSquareHeuristic {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ChiSquareHeuristic`].
@@ -9490,6 +9829,15 @@ impl ChildrenAggregate {
     /// Creates a builder for [`ChildrenAggregate`].
     pub fn builder() -> ChildrenAggregateBuilder {
         ChildrenAggregateBuilder::new()
+    }
+
+    /// Creates a [`ChildrenAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ChildrenAggregateBuilder,
+        ) -> ChildrenAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> ChildrenAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -9605,6 +9953,13 @@ impl ChildrenAggregation {
     pub fn builder() -> ChildrenAggregationBuilder {
         ChildrenAggregationBuilder::new()
     }
+
+    /// Creates a [`ChildrenAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ChildrenAggregationBuilder) -> ChildrenAggregationBuilder,
+    ) -> ChildrenAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ChildrenAggregation`].
@@ -9661,6 +10016,15 @@ impl CompositeAggregate {
     /// Creates a builder for [`CompositeAggregate`].
     pub fn builder() -> CompositeAggregateBuilder {
         CompositeAggregateBuilder::new()
+    }
+
+    /// Creates a [`CompositeAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CompositeAggregateBuilder,
+        ) -> CompositeAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> CompositeAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -9793,6 +10157,13 @@ impl CompositeAggregation {
     pub fn builder() -> CompositeAggregationBuilder {
         CompositeAggregationBuilder::new()
     }
+
+    /// Creates a [`CompositeAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CompositeAggregationBuilder) -> CompositeAggregationBuilder,
+    ) -> CompositeAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CompositeAggregation`].
@@ -9920,6 +10291,13 @@ impl CompositeAggregationBase {
     /// Creates a builder for [`CompositeAggregationBase`].
     pub fn builder() -> CompositeAggregationBaseBuilder {
         CompositeAggregationBaseBuilder::new()
+    }
+
+    /// Creates a [`CompositeAggregationBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CompositeAggregationBaseBuilder) -> CompositeAggregationBaseBuilder,
+    ) -> CompositeAggregationBase {
+        f(Self::builder()).build()
     }
 }
 
@@ -10116,6 +10494,15 @@ impl CompositeAggregationSource {
     pub fn builder() -> CompositeAggregationSourceBuilder {
         CompositeAggregationSourceBuilder::new()
     }
+
+    /// Creates a [`CompositeAggregationSource`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CompositeAggregationSourceBuilder,
+        ) -> CompositeAggregationSourceBuilder<(crate::typed::builder::Set,)>,
+    ) -> CompositeAggregationSource {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CompositeAggregationSource`].
@@ -10255,6 +10642,18 @@ impl CompositeBucket {
     /// Creates a builder for [`CompositeBucket`].
     pub fn builder() -> CompositeBucketBuilder {
         CompositeBucketBuilder::new()
+    }
+
+    /// Creates a [`CompositeBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CompositeBucketBuilder,
+        ) -> CompositeBucketBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CompositeBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -10396,6 +10795,15 @@ impl CompositeDateHistogramAggregation {
     /// Creates a builder for [`CompositeDateHistogramAggregation`].
     pub fn builder() -> CompositeDateHistogramAggregationBuilder {
         CompositeDateHistogramAggregationBuilder::new()
+    }
+
+    /// Creates a [`CompositeDateHistogramAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CompositeDateHistogramAggregationBuilder,
+        ) -> CompositeDateHistogramAggregationBuilder,
+    ) -> CompositeDateHistogramAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -10629,6 +11037,13 @@ impl CompositeGeoTileGridAggregation {
     pub fn builder() -> CompositeGeoTileGridAggregationBuilder {
         CompositeGeoTileGridAggregationBuilder::new()
     }
+
+    /// Creates a [`CompositeGeoTileGridAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CompositeGeoTileGridAggregationBuilder) -> CompositeGeoTileGridAggregationBuilder,
+    ) -> CompositeGeoTileGridAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CompositeGeoTileGridAggregation`].
@@ -10804,6 +11219,15 @@ impl CompositeHistogramAggregation {
     /// Creates a builder for [`CompositeHistogramAggregation`].
     pub fn builder() -> CompositeHistogramAggregationBuilder {
         CompositeHistogramAggregationBuilder::new()
+    }
+
+    /// Creates a [`CompositeHistogramAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CompositeHistogramAggregationBuilder,
+        ) -> CompositeHistogramAggregationBuilder<(crate::typed::builder::Set,)>,
+    ) -> CompositeHistogramAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -10989,6 +11413,13 @@ impl CompositeTermsAggregation {
     pub fn builder() -> CompositeTermsAggregationBuilder {
         CompositeTermsAggregationBuilder::new()
     }
+
+    /// Creates a [`CompositeTermsAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CompositeTermsAggregationBuilder) -> CompositeTermsAggregationBuilder,
+    ) -> CompositeTermsAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CompositeTermsAggregation`].
@@ -11128,6 +11559,15 @@ impl CumulativeCardinalityAggregate {
     pub fn builder() -> CumulativeCardinalityAggregateBuilder {
         CumulativeCardinalityAggregateBuilder::new()
     }
+
+    /// Creates a [`CumulativeCardinalityAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CumulativeCardinalityAggregateBuilder,
+        ) -> CumulativeCardinalityAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> CumulativeCardinalityAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CumulativeCardinalityAggregate`].
@@ -11246,6 +11686,15 @@ impl CumulativeCardinalityAggregation {
     pub fn builder() -> CumulativeCardinalityAggregationBuilder {
         CumulativeCardinalityAggregationBuilder::new()
     }
+
+    /// Creates a [`CumulativeCardinalityAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CumulativeCardinalityAggregationBuilder,
+        ) -> CumulativeCardinalityAggregationBuilder,
+    ) -> CumulativeCardinalityAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CumulativeCardinalityAggregation`].
@@ -11341,6 +11790,13 @@ impl CumulativeSumAggregation {
     pub fn builder() -> CumulativeSumAggregationBuilder {
         CumulativeSumAggregationBuilder::new()
     }
+
+    /// Creates a [`CumulativeSumAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CumulativeSumAggregationBuilder) -> CumulativeSumAggregationBuilder,
+    ) -> CumulativeSumAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CumulativeSumAggregation`].
@@ -11431,6 +11887,13 @@ impl CustomCategorizeTextAnalyzer {
     /// Creates a builder for [`CustomCategorizeTextAnalyzer`].
     pub fn builder() -> CustomCategorizeTextAnalyzerBuilder {
         CustomCategorizeTextAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`CustomCategorizeTextAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CustomCategorizeTextAnalyzerBuilder) -> CustomCategorizeTextAnalyzerBuilder,
+    ) -> CustomCategorizeTextAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -11531,6 +11994,15 @@ impl DateHistogramAggregate {
     /// Creates a builder for [`DateHistogramAggregate`].
     pub fn builder() -> DateHistogramAggregateBuilder {
         DateHistogramAggregateBuilder::new()
+    }
+
+    /// Creates a [`DateHistogramAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DateHistogramAggregateBuilder,
+        ) -> DateHistogramAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> DateHistogramAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -11669,6 +12141,13 @@ impl DateHistogramAggregation {
     /// Creates a builder for [`DateHistogramAggregation`].
     pub fn builder() -> DateHistogramAggregationBuilder {
         DateHistogramAggregationBuilder::new()
+    }
+
+    /// Creates a [`DateHistogramAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DateHistogramAggregationBuilder) -> DateHistogramAggregationBuilder,
+    ) -> DateHistogramAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -11985,6 +12464,18 @@ impl DateHistogramBucket {
     pub fn builder() -> DateHistogramBucketBuilder {
         DateHistogramBucketBuilder::new()
     }
+
+    /// Creates a [`DateHistogramBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DateHistogramBucketBuilder,
+        ) -> DateHistogramBucketBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DateHistogramBucket {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DateHistogramBucket`].
@@ -12126,6 +12617,15 @@ impl DateRangeAggregate {
     pub fn builder() -> DateRangeAggregateBuilder {
         DateRangeAggregateBuilder::new()
     }
+
+    /// Creates a [`DateRangeAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DateRangeAggregateBuilder,
+        ) -> DateRangeAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> DateRangeAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DateRangeAggregate`].
@@ -12235,6 +12735,13 @@ impl DateRangeAggregation {
     /// Creates a builder for [`DateRangeAggregation`].
     pub fn builder() -> DateRangeAggregationBuilder {
         DateRangeAggregationBuilder::new()
+    }
+
+    /// Creates a [`DateRangeAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DateRangeAggregationBuilder) -> DateRangeAggregationBuilder,
+    ) -> DateRangeAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -12391,6 +12898,13 @@ impl DateRangeExpression {
     pub fn builder() -> DateRangeExpressionBuilder {
         DateRangeExpressionBuilder::new()
     }
+
+    /// Creates a [`DateRangeExpression`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DateRangeExpressionBuilder) -> DateRangeExpressionBuilder,
+    ) -> DateRangeExpression {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DateRangeExpression`].
@@ -12504,6 +13018,15 @@ impl DerivativeAggregate {
     /// Creates a builder for [`DerivativeAggregate`].
     pub fn builder() -> DerivativeAggregateBuilder {
         DerivativeAggregateBuilder::new()
+    }
+
+    /// Creates a [`DerivativeAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DerivativeAggregateBuilder,
+        ) -> DerivativeAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> DerivativeAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -12653,6 +13176,13 @@ impl DerivativeAggregation {
     pub fn builder() -> DerivativeAggregationBuilder {
         DerivativeAggregationBuilder::new()
     }
+
+    /// Creates a [`DerivativeAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DerivativeAggregationBuilder) -> DerivativeAggregationBuilder,
+    ) -> DerivativeAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DerivativeAggregation`].
@@ -12739,6 +13269,15 @@ impl Dip {
     /// Creates a builder for [`Dip`].
     pub fn builder() -> DipBuilder {
         DipBuilder::new()
+    }
+
+    /// Creates a [`Dip`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DipBuilder,
+        ) -> DipBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Dip {
+        f(Self::builder()).build()
     }
 }
 
@@ -12827,6 +13366,18 @@ impl DistributionChange {
     /// Creates a builder for [`DistributionChange`].
     pub fn builder() -> DistributionChangeBuilder {
         DistributionChangeBuilder::new()
+    }
+
+    /// Creates a [`DistributionChange`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DistributionChangeBuilder,
+        ) -> DistributionChangeBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DistributionChange {
+        f(Self::builder()).build()
     }
 }
 
@@ -12939,6 +13490,13 @@ impl DiversifiedSamplerAggregation {
     /// Creates a builder for [`DiversifiedSamplerAggregation`].
     pub fn builder() -> DiversifiedSamplerAggregationBuilder {
         DiversifiedSamplerAggregationBuilder::new()
+    }
+
+    /// Creates a [`DiversifiedSamplerAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DiversifiedSamplerAggregationBuilder) -> DiversifiedSamplerAggregationBuilder,
+    ) -> DiversifiedSamplerAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -13069,6 +13627,15 @@ impl DoubleTermsAggregate {
     pub fn builder() -> DoubleTermsAggregateBuilder {
         DoubleTermsAggregateBuilder::new()
     }
+
+    /// Creates a [`DoubleTermsAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DoubleTermsAggregateBuilder,
+        ) -> DoubleTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> DoubleTermsAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DoubleTermsAggregate`].
@@ -13198,6 +13765,18 @@ impl DoubleTermsBucket {
     /// Creates a builder for [`DoubleTermsBucket`].
     pub fn builder() -> DoubleTermsBucketBuilder {
         DoubleTermsBucketBuilder::new()
+    }
+
+    /// Creates a [`DoubleTermsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DoubleTermsBucketBuilder,
+        ) -> DoubleTermsBucketBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DoubleTermsBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -13349,6 +13928,13 @@ impl EwmaModelSettings {
     pub fn builder() -> EwmaModelSettingsBuilder {
         EwmaModelSettingsBuilder::new()
     }
+
+    /// Creates a [`EwmaModelSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(EwmaModelSettingsBuilder) -> EwmaModelSettingsBuilder,
+    ) -> EwmaModelSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`EwmaModelSettings`].
@@ -13415,6 +14001,18 @@ impl EwmaMovingAverageAggregation {
     /// Creates a builder for [`EwmaMovingAverageAggregation`].
     pub fn builder() -> EwmaMovingAverageAggregationBuilder {
         EwmaMovingAverageAggregationBuilder::new()
+    }
+
+    /// Creates a [`EwmaMovingAverageAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            EwmaMovingAverageAggregationBuilder,
+        ) -> EwmaMovingAverageAggregationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> EwmaMovingAverageAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -13634,6 +14232,13 @@ impl ExtendedBoundsFieldDateMath {
     pub fn builder() -> ExtendedBoundsFieldDateMathBuilder {
         ExtendedBoundsFieldDateMathBuilder::new()
     }
+
+    /// Creates a [`ExtendedBoundsFieldDateMath`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ExtendedBoundsFieldDateMathBuilder) -> ExtendedBoundsFieldDateMathBuilder,
+    ) -> ExtendedBoundsFieldDateMath {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ExtendedBoundsFieldDateMath`].
@@ -13708,6 +14313,13 @@ impl ExtendedBoundsdouble {
     /// Creates a builder for [`ExtendedBoundsdouble`].
     pub fn builder() -> ExtendedBoundsdoubleBuilder {
         ExtendedBoundsdoubleBuilder::new()
+    }
+
+    /// Creates a [`ExtendedBoundsdouble`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ExtendedBoundsdoubleBuilder) -> ExtendedBoundsdoubleBuilder,
+    ) -> ExtendedBoundsdouble {
+        f(Self::builder()).build()
     }
 }
 
@@ -14003,6 +14615,28 @@ impl ExtendedStatsAggregate {
     /// Creates a builder for [`ExtendedStatsAggregate`].
     pub fn builder() -> ExtendedStatsAggregateBuilder {
         ExtendedStatsAggregateBuilder::new()
+    }
+
+    /// Creates a [`ExtendedStatsAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ExtendedStatsAggregateBuilder,
+        ) -> ExtendedStatsAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ExtendedStatsAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -15142,6 +15776,13 @@ impl ExtendedStatsAggregation {
     pub fn builder() -> ExtendedStatsAggregationBuilder {
         ExtendedStatsAggregationBuilder::new()
     }
+
+    /// Creates a [`ExtendedStatsAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ExtendedStatsAggregationBuilder) -> ExtendedStatsAggregationBuilder,
+    ) -> ExtendedStatsAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ExtendedStatsAggregation`].
@@ -15488,6 +16129,28 @@ impl ExtendedStatsBucketAggregate {
     /// Creates a builder for [`ExtendedStatsBucketAggregate`].
     pub fn builder() -> ExtendedStatsBucketAggregateBuilder {
         ExtendedStatsBucketAggregateBuilder::new()
+    }
+
+    /// Creates a [`ExtendedStatsBucketAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ExtendedStatsBucketAggregateBuilder,
+        ) -> ExtendedStatsBucketAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ExtendedStatsBucketAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -16626,6 +17289,13 @@ impl ExtendedStatsBucketAggregation {
     pub fn builder() -> ExtendedStatsBucketAggregationBuilder {
         ExtendedStatsBucketAggregationBuilder::new()
     }
+
+    /// Creates a [`ExtendedStatsBucketAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ExtendedStatsBucketAggregationBuilder) -> ExtendedStatsBucketAggregationBuilder,
+    ) -> ExtendedStatsBucketAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ExtendedStatsBucketAggregation`].
@@ -16759,6 +17429,13 @@ impl FilterAggregate {
     pub fn builder() -> FilterAggregateBuilder {
         FilterAggregateBuilder::new()
     }
+
+    /// Creates a [`FilterAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FilterAggregateBuilder) -> FilterAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> FilterAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FilterAggregate`].
@@ -16873,6 +17550,15 @@ impl FiltersAggregate {
     pub fn builder() -> FiltersAggregateBuilder {
         FiltersAggregateBuilder::new()
     }
+
+    /// Creates a [`FiltersAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FiltersAggregateBuilder,
+        ) -> FiltersAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> FiltersAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FiltersAggregate`].
@@ -16976,6 +17662,13 @@ impl FiltersAggregation {
     /// Creates a builder for [`FiltersAggregation`].
     pub fn builder() -> FiltersAggregationBuilder {
         FiltersAggregationBuilder::new()
+    }
+
+    /// Creates a [`FiltersAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FiltersAggregationBuilder) -> FiltersAggregationBuilder,
+    ) -> FiltersAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -17082,6 +17775,13 @@ impl FiltersBucket {
     /// Creates a builder for [`FiltersBucket`].
     pub fn builder() -> FiltersBucketBuilder {
         FiltersBucketBuilder::new()
+    }
+
+    /// Creates a [`FiltersBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FiltersBucketBuilder) -> FiltersBucketBuilder<(crate::typed::builder::Set,)>,
+    ) -> FiltersBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -17196,6 +17896,13 @@ impl FormatMetricAggregationBase {
     /// Creates a builder for [`FormatMetricAggregationBase`].
     pub fn builder() -> FormatMetricAggregationBaseBuilder {
         FormatMetricAggregationBaseBuilder::new()
+    }
+
+    /// Creates a [`FormatMetricAggregationBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FormatMetricAggregationBaseBuilder) -> FormatMetricAggregationBaseBuilder,
+    ) -> FormatMetricAggregationBase {
+        f(Self::builder()).build()
     }
 }
 
@@ -17314,6 +18021,13 @@ impl FormattableMetricAggregation {
     pub fn builder() -> FormattableMetricAggregationBuilder {
         FormattableMetricAggregationBuilder::new()
     }
+
+    /// Creates a [`FormattableMetricAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FormattableMetricAggregationBuilder) -> FormattableMetricAggregationBuilder,
+    ) -> FormattableMetricAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FormattableMetricAggregation`].
@@ -17423,6 +18137,15 @@ impl FrequentItemSetsAggregate {
     pub fn builder() -> FrequentItemSetsAggregateBuilder {
         FrequentItemSetsAggregateBuilder::new()
     }
+
+    /// Creates a [`FrequentItemSetsAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FrequentItemSetsAggregateBuilder,
+        ) -> FrequentItemSetsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> FrequentItemSetsAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FrequentItemSetsAggregate`].
@@ -17529,6 +18252,15 @@ impl FrequentItemSetsAggregation {
     /// Creates a builder for [`FrequentItemSetsAggregation`].
     pub fn builder() -> FrequentItemSetsAggregationBuilder {
         FrequentItemSetsAggregationBuilder::new()
+    }
+
+    /// Creates a [`FrequentItemSetsAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FrequentItemSetsAggregationBuilder,
+        ) -> FrequentItemSetsAggregationBuilder<(crate::typed::builder::Set,)>,
+    ) -> FrequentItemSetsAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -17688,6 +18420,19 @@ impl FrequentItemSetsBucket {
     /// Creates a builder for [`FrequentItemSetsBucket`].
     pub fn builder() -> FrequentItemSetsBucketBuilder {
         FrequentItemSetsBucketBuilder::new()
+    }
+
+    /// Creates a [`FrequentItemSetsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FrequentItemSetsBucketBuilder,
+        ) -> FrequentItemSetsBucketBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FrequentItemSetsBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -17875,6 +18620,15 @@ impl FrequentItemSetsField {
     pub fn builder() -> FrequentItemSetsFieldBuilder {
         FrequentItemSetsFieldBuilder::new()
     }
+
+    /// Creates a [`FrequentItemSetsField`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FrequentItemSetsFieldBuilder,
+        ) -> FrequentItemSetsFieldBuilder<(crate::typed::builder::Set,)>,
+    ) -> FrequentItemSetsField {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FrequentItemSetsField`].
@@ -17996,6 +18750,13 @@ impl GeoBoundsAggregate {
     pub fn builder() -> GeoBoundsAggregateBuilder {
         GeoBoundsAggregateBuilder::new()
     }
+
+    /// Creates a [`GeoBoundsAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(GeoBoundsAggregateBuilder) -> GeoBoundsAggregateBuilder,
+    ) -> GeoBoundsAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GeoBoundsAggregate`].
@@ -18082,6 +18843,13 @@ impl GeoBoundsAggregation {
     /// Creates a builder for [`GeoBoundsAggregation`].
     pub fn builder() -> GeoBoundsAggregationBuilder {
         GeoBoundsAggregationBuilder::new()
+    }
+
+    /// Creates a [`GeoBoundsAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(GeoBoundsAggregationBuilder) -> GeoBoundsAggregationBuilder,
+    ) -> GeoBoundsAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -18194,6 +18962,15 @@ impl GeoCentroidAggregate {
     /// Creates a builder for [`GeoCentroidAggregate`].
     pub fn builder() -> GeoCentroidAggregateBuilder {
         GeoCentroidAggregateBuilder::new()
+    }
+
+    /// Creates a [`GeoCentroidAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GeoCentroidAggregateBuilder,
+        ) -> GeoCentroidAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> GeoCentroidAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -18310,6 +19087,13 @@ impl GeoCentroidAggregation {
     /// Creates a builder for [`GeoCentroidAggregation`].
     pub fn builder() -> GeoCentroidAggregationBuilder {
         GeoCentroidAggregationBuilder::new()
+    }
+
+    /// Creates a [`GeoCentroidAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(GeoCentroidAggregationBuilder) -> GeoCentroidAggregationBuilder,
+    ) -> GeoCentroidAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -18435,6 +19219,15 @@ impl GeoDistanceAggregate {
     pub fn builder() -> GeoDistanceAggregateBuilder {
         GeoDistanceAggregateBuilder::new()
     }
+
+    /// Creates a [`GeoDistanceAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GeoDistanceAggregateBuilder,
+        ) -> GeoDistanceAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> GeoDistanceAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GeoDistanceAggregate`].
@@ -18540,6 +19333,13 @@ impl GeoDistanceAggregation {
     /// Creates a builder for [`GeoDistanceAggregation`].
     pub fn builder() -> GeoDistanceAggregationBuilder {
         GeoDistanceAggregationBuilder::new()
+    }
+
+    /// Creates a [`GeoDistanceAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(GeoDistanceAggregationBuilder) -> GeoDistanceAggregationBuilder,
+    ) -> GeoDistanceAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -18680,6 +19480,15 @@ impl GeoHashGridAggregate {
     pub fn builder() -> GeoHashGridAggregateBuilder {
         GeoHashGridAggregateBuilder::new()
     }
+
+    /// Creates a [`GeoHashGridAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GeoHashGridAggregateBuilder,
+        ) -> GeoHashGridAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> GeoHashGridAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GeoHashGridAggregate`].
@@ -18787,6 +19596,13 @@ impl GeoHashGridAggregation {
     /// Creates a builder for [`GeoHashGridAggregation`].
     pub fn builder() -> GeoHashGridAggregationBuilder {
         GeoHashGridAggregationBuilder::new()
+    }
+
+    /// Creates a [`GeoHashGridAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(GeoHashGridAggregationBuilder) -> GeoHashGridAggregationBuilder,
+    ) -> GeoHashGridAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -18912,6 +19728,18 @@ impl GeoHashGridBucket {
     pub fn builder() -> GeoHashGridBucketBuilder {
         GeoHashGridBucketBuilder::new()
     }
+
+    /// Creates a [`GeoHashGridBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GeoHashGridBucketBuilder,
+        ) -> GeoHashGridBucketBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> GeoHashGridBucket {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GeoHashGridBucket`].
@@ -19033,6 +19861,15 @@ impl GeoHexGridAggregate {
     pub fn builder() -> GeoHexGridAggregateBuilder {
         GeoHexGridAggregateBuilder::new()
     }
+
+    /// Creates a [`GeoHexGridAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GeoHexGridAggregateBuilder,
+        ) -> GeoHexGridAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> GeoHexGridAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GeoHexGridAggregate`].
@@ -19128,6 +19965,18 @@ impl GeoHexGridBucket {
     /// Creates a builder for [`GeoHexGridBucket`].
     pub fn builder() -> GeoHexGridBucketBuilder {
         GeoHexGridBucketBuilder::new()
+    }
+
+    /// Creates a [`GeoHexGridBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GeoHexGridBucketBuilder,
+        ) -> GeoHexGridBucketBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> GeoHexGridBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -19251,6 +20100,19 @@ impl GeoLineAggregate {
     /// Creates a builder for [`GeoLineAggregate`].
     pub fn builder() -> GeoLineAggregateBuilder {
         GeoLineAggregateBuilder::new()
+    }
+
+    /// Creates a [`GeoLineAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GeoLineAggregateBuilder,
+        ) -> GeoLineAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> GeoLineAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -19458,6 +20320,15 @@ impl GeoLineAggregation {
     pub fn builder() -> GeoLineAggregationBuilder {
         GeoLineAggregationBuilder::new()
     }
+
+    /// Creates a [`GeoLineAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GeoLineAggregationBuilder,
+        ) -> GeoLineAggregationBuilder<(crate::typed::builder::Set,)>,
+    ) -> GeoLineAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GeoLineAggregation`].
@@ -19611,6 +20482,13 @@ impl GeoLinePoint {
     pub fn builder() -> GeoLinePointBuilder {
         GeoLinePointBuilder::new()
     }
+
+    /// Creates a [`GeoLinePoint`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(GeoLinePointBuilder) -> GeoLinePointBuilder<(crate::typed::builder::Set,)>,
+    ) -> GeoLinePoint {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GeoLinePoint`].
@@ -19681,6 +20559,13 @@ impl GeoLineSort {
     /// Creates a builder for [`GeoLineSort`].
     pub fn builder() -> GeoLineSortBuilder {
         GeoLineSortBuilder::new()
+    }
+
+    /// Creates a [`GeoLineSort`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(GeoLineSortBuilder) -> GeoLineSortBuilder<(crate::typed::builder::Set,)>,
+    ) -> GeoLineSort {
+        f(Self::builder()).build()
     }
 }
 
@@ -19753,6 +20638,15 @@ impl GeoTileGridAggregate {
     /// Creates a builder for [`GeoTileGridAggregate`].
     pub fn builder() -> GeoTileGridAggregateBuilder {
         GeoTileGridAggregateBuilder::new()
+    }
+
+    /// Creates a [`GeoTileGridAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GeoTileGridAggregateBuilder,
+        ) -> GeoTileGridAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> GeoTileGridAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -19862,6 +20756,13 @@ impl GeoTileGridAggregation {
     /// Creates a builder for [`GeoTileGridAggregation`].
     pub fn builder() -> GeoTileGridAggregationBuilder {
         GeoTileGridAggregationBuilder::new()
+    }
+
+    /// Creates a [`GeoTileGridAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(GeoTileGridAggregationBuilder) -> GeoTileGridAggregationBuilder,
+    ) -> GeoTileGridAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -19987,6 +20888,18 @@ impl GeoTileGridBucket {
     /// Creates a builder for [`GeoTileGridBucket`].
     pub fn builder() -> GeoTileGridBucketBuilder {
         GeoTileGridBucketBuilder::new()
+    }
+
+    /// Creates a [`GeoTileGridBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GeoTileGridBucketBuilder,
+        ) -> GeoTileGridBucketBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> GeoTileGridBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -20121,6 +21034,15 @@ impl GeohexGridAggregation {
     /// Creates a builder for [`GeohexGridAggregation`].
     pub fn builder() -> GeohexGridAggregationBuilder {
         GeohexGridAggregationBuilder::new()
+    }
+
+    /// Creates a [`GeohexGridAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GeohexGridAggregationBuilder,
+        ) -> GeohexGridAggregationBuilder<(crate::typed::builder::Set,)>,
+    ) -> GeohexGridAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -20263,6 +21185,13 @@ impl GlobalAggregate {
     pub fn builder() -> GlobalAggregateBuilder {
         GlobalAggregateBuilder::new()
     }
+
+    /// Creates a [`GlobalAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(GlobalAggregateBuilder) -> GlobalAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> GlobalAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GlobalAggregate`].
@@ -20373,6 +21302,13 @@ impl GlobalAggregation {
     pub fn builder() -> GlobalAggregationBuilder {
         GlobalAggregationBuilder::new()
     }
+
+    /// Creates a [`GlobalAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(GlobalAggregationBuilder) -> GlobalAggregationBuilder,
+    ) -> GlobalAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GlobalAggregation`].
@@ -20411,6 +21347,15 @@ impl GoogleNormalizedDistanceHeuristic {
     /// Creates a builder for [`GoogleNormalizedDistanceHeuristic`].
     pub fn builder() -> GoogleNormalizedDistanceHeuristicBuilder {
         GoogleNormalizedDistanceHeuristicBuilder::new()
+    }
+
+    /// Creates a [`GoogleNormalizedDistanceHeuristic`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GoogleNormalizedDistanceHeuristicBuilder,
+        ) -> GoogleNormalizedDistanceHeuristicBuilder,
+    ) -> GoogleNormalizedDistanceHeuristic {
+        f(Self::builder()).build()
     }
 }
 
@@ -20469,6 +21414,11 @@ impl HdrMethod {
     pub fn builder() -> HdrMethodBuilder {
         HdrMethodBuilder::new()
     }
+
+    /// Creates a [`HdrMethod`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(HdrMethodBuilder) -> HdrMethodBuilder) -> HdrMethod {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HdrMethod`].
@@ -20525,6 +21475,15 @@ impl HdrPercentileRanksAggregate {
     /// Creates a builder for [`HdrPercentileRanksAggregate`].
     pub fn builder() -> HdrPercentileRanksAggregateBuilder {
         HdrPercentileRanksAggregateBuilder::new()
+    }
+
+    /// Creates a [`HdrPercentileRanksAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HdrPercentileRanksAggregateBuilder,
+        ) -> HdrPercentileRanksAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> HdrPercentileRanksAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -20622,6 +21581,15 @@ impl HdrPercentilesAggregate {
     pub fn builder() -> HdrPercentilesAggregateBuilder {
         HdrPercentilesAggregateBuilder::new()
     }
+
+    /// Creates a [`HdrPercentilesAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HdrPercentilesAggregateBuilder,
+        ) -> HdrPercentilesAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> HdrPercentilesAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HdrPercentilesAggregate`].
@@ -20717,6 +21685,15 @@ impl HistogramAggregate {
     /// Creates a builder for [`HistogramAggregate`].
     pub fn builder() -> HistogramAggregateBuilder {
         HistogramAggregateBuilder::new()
+    }
+
+    /// Creates a [`HistogramAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HistogramAggregateBuilder,
+        ) -> HistogramAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> HistogramAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -20845,6 +21822,13 @@ impl HistogramAggregation {
     /// Creates a builder for [`HistogramAggregation`].
     pub fn builder() -> HistogramAggregationBuilder {
         HistogramAggregationBuilder::new()
+    }
+
+    /// Creates a [`HistogramAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(HistogramAggregationBuilder) -> HistogramAggregationBuilder,
+    ) -> HistogramAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -21085,6 +22069,18 @@ impl HistogramBucket {
     pub fn builder() -> HistogramBucketBuilder {
         HistogramBucketBuilder::new()
     }
+
+    /// Creates a [`HistogramBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HistogramBucketBuilder,
+        ) -> HistogramBucketBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> HistogramBucket {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HistogramBucket`].
@@ -21219,6 +22215,13 @@ impl HoltLinearModelSettings {
     pub fn builder() -> HoltLinearModelSettingsBuilder {
         HoltLinearModelSettingsBuilder::new()
     }
+
+    /// Creates a [`HoltLinearModelSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(HoltLinearModelSettingsBuilder) -> HoltLinearModelSettingsBuilder,
+    ) -> HoltLinearModelSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HoltLinearModelSettings`].
@@ -21303,6 +22306,18 @@ impl HoltMovingAverageAggregation {
     /// Creates a builder for [`HoltMovingAverageAggregation`].
     pub fn builder() -> HoltMovingAverageAggregationBuilder {
         HoltMovingAverageAggregationBuilder::new()
+    }
+
+    /// Creates a [`HoltMovingAverageAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HoltMovingAverageAggregationBuilder,
+        ) -> HoltMovingAverageAggregationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> HoltMovingAverageAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -21528,6 +22543,13 @@ impl HoltWintersModelSettings {
     pub fn builder() -> HoltWintersModelSettingsBuilder {
         HoltWintersModelSettingsBuilder::new()
     }
+
+    /// Creates a [`HoltWintersModelSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(HoltWintersModelSettingsBuilder) -> HoltWintersModelSettingsBuilder,
+    ) -> HoltWintersModelSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HoltWintersModelSettings`].
@@ -21668,6 +22690,18 @@ impl HoltWintersMovingAverageAggregation {
     /// Creates a builder for [`HoltWintersMovingAverageAggregation`].
     pub fn builder() -> HoltWintersMovingAverageAggregationBuilder {
         HoltWintersMovingAverageAggregationBuilder::new()
+    }
+
+    /// Creates a [`HoltWintersMovingAverageAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HoltWintersMovingAverageAggregationBuilder,
+        ) -> HoltWintersMovingAverageAggregationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> HoltWintersMovingAverageAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -21898,6 +22932,13 @@ impl Indeterminable {
     pub fn builder() -> IndeterminableBuilder {
         IndeterminableBuilder::new()
     }
+
+    /// Creates a [`Indeterminable`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IndeterminableBuilder) -> IndeterminableBuilder<(crate::typed::builder::Set,)>,
+    ) -> Indeterminable {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Indeterminable`].
@@ -21978,6 +23019,13 @@ impl InferenceAggregate {
     /// Creates a builder for [`InferenceAggregate`].
     pub fn builder() -> InferenceAggregateBuilder {
         InferenceAggregateBuilder::new()
+    }
+
+    /// Creates a [`InferenceAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(InferenceAggregateBuilder) -> InferenceAggregateBuilder,
+    ) -> InferenceAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -22176,6 +23224,15 @@ impl InferenceAggregation {
     pub fn builder() -> InferenceAggregationBuilder {
         InferenceAggregationBuilder::new()
     }
+
+    /// Creates a [`InferenceAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceAggregationBuilder,
+        ) -> InferenceAggregationBuilder<(crate::typed::builder::Set,)>,
+    ) -> InferenceAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InferenceAggregation`].
@@ -22322,6 +23379,18 @@ impl InferenceClassImportance {
     pub fn builder() -> InferenceClassImportanceBuilder {
         InferenceClassImportanceBuilder::new()
     }
+
+    /// Creates a [`InferenceClassImportance`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceClassImportanceBuilder,
+        ) -> InferenceClassImportanceBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceClassImportance {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InferenceClassImportance`].
@@ -22456,6 +23525,15 @@ impl InferenceConfigContainer {
     pub fn builder() -> InferenceConfigContainerBuilder {
         InferenceConfigContainerBuilder::new()
     }
+
+    /// Creates a [`InferenceConfigContainer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceConfigContainerBuilder,
+        ) -> InferenceConfigContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> InferenceConfigContainer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InferenceConfigContainer`].
@@ -22563,6 +23641,15 @@ impl InferenceFeatureImportance {
     /// Creates a builder for [`InferenceFeatureImportance`].
     pub fn builder() -> InferenceFeatureImportanceBuilder {
         InferenceFeatureImportanceBuilder::new()
+    }
+
+    /// Creates a [`InferenceFeatureImportance`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceFeatureImportanceBuilder,
+        ) -> InferenceFeatureImportanceBuilder<(crate::typed::builder::Set,)>,
+    ) -> InferenceFeatureImportance {
+        f(Self::builder()).build()
     }
 }
 
@@ -22687,6 +23774,19 @@ impl InferenceTopClassEntry {
     /// Creates a builder for [`InferenceTopClassEntry`].
     pub fn builder() -> InferenceTopClassEntryBuilder {
         InferenceTopClassEntryBuilder::new()
+    }
+
+    /// Creates a [`InferenceTopClassEntry`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceTopClassEntryBuilder,
+        ) -> InferenceTopClassEntryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceTopClassEntry {
+        f(Self::builder()).build()
     }
 }
 
@@ -22845,6 +23945,15 @@ impl IpPrefixAggregate {
     pub fn builder() -> IpPrefixAggregateBuilder {
         IpPrefixAggregateBuilder::new()
     }
+
+    /// Creates a [`IpPrefixAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IpPrefixAggregateBuilder,
+        ) -> IpPrefixAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> IpPrefixAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IpPrefixAggregate`].
@@ -22952,6 +24061,18 @@ impl IpPrefixAggregation {
     /// Creates a builder for [`IpPrefixAggregation`].
     pub fn builder() -> IpPrefixAggregationBuilder {
         IpPrefixAggregationBuilder::new()
+    }
+
+    /// Creates a [`IpPrefixAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IpPrefixAggregationBuilder,
+        ) -> IpPrefixAggregationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IpPrefixAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -23126,6 +24247,20 @@ impl IpPrefixBucket {
     /// Creates a builder for [`IpPrefixBucket`].
     pub fn builder() -> IpPrefixBucketBuilder {
         IpPrefixBucketBuilder::new()
+    }
+
+    /// Creates a [`IpPrefixBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IpPrefixBucketBuilder,
+        ) -> IpPrefixBucketBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IpPrefixBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -23357,6 +24492,15 @@ impl IpRangeAggregate {
     pub fn builder() -> IpRangeAggregateBuilder {
         IpRangeAggregateBuilder::new()
     }
+
+    /// Creates a [`IpRangeAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IpRangeAggregateBuilder,
+        ) -> IpRangeAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> IpRangeAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IpRangeAggregate`].
@@ -23453,6 +24597,13 @@ impl IpRangeAggregation {
     /// Creates a builder for [`IpRangeAggregation`].
     pub fn builder() -> IpRangeAggregationBuilder {
         IpRangeAggregationBuilder::new()
+    }
+
+    /// Creates a [`IpRangeAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IpRangeAggregationBuilder) -> IpRangeAggregationBuilder,
+    ) -> IpRangeAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -23586,6 +24737,13 @@ impl IpRangeAggregationRange {
     pub fn builder() -> IpRangeAggregationRangeBuilder {
         IpRangeAggregationRangeBuilder::new()
     }
+
+    /// Creates a [`IpRangeAggregationRange`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IpRangeAggregationRangeBuilder) -> IpRangeAggregationRangeBuilder,
+    ) -> IpRangeAggregationRange {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IpRangeAggregationRange`].
@@ -23679,6 +24837,13 @@ impl IpRangeBucket {
     /// Creates a builder for [`IpRangeBucket`].
     pub fn builder() -> IpRangeBucketBuilder {
         IpRangeBucketBuilder::new()
+    }
+
+    /// Creates a [`IpRangeBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IpRangeBucketBuilder) -> IpRangeBucketBuilder<(crate::typed::builder::Set,)>,
+    ) -> IpRangeBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -23864,6 +25029,18 @@ impl LinearMovingAverageAggregation {
     /// Creates a builder for [`LinearMovingAverageAggregation`].
     pub fn builder() -> LinearMovingAverageAggregationBuilder {
         LinearMovingAverageAggregationBuilder::new()
+    }
+
+    /// Creates a [`LinearMovingAverageAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LinearMovingAverageAggregationBuilder,
+        ) -> LinearMovingAverageAggregationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> LinearMovingAverageAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -24088,6 +25265,15 @@ impl LongRareTermsAggregate {
     pub fn builder() -> LongRareTermsAggregateBuilder {
         LongRareTermsAggregateBuilder::new()
     }
+
+    /// Creates a [`LongRareTermsAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LongRareTermsAggregateBuilder,
+        ) -> LongRareTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> LongRareTermsAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`LongRareTermsAggregate`].
@@ -24185,6 +25371,18 @@ impl LongRareTermsBucket {
     /// Creates a builder for [`LongRareTermsBucket`].
     pub fn builder() -> LongRareTermsBucketBuilder {
         LongRareTermsBucketBuilder::new()
+    }
+
+    /// Creates a [`LongRareTermsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LongRareTermsBucketBuilder,
+        ) -> LongRareTermsBucketBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> LongRareTermsBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -24327,6 +25525,15 @@ impl LongTermsAggregate {
     pub fn builder() -> LongTermsAggregateBuilder {
         LongTermsAggregateBuilder::new()
     }
+
+    /// Creates a [`LongTermsAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LongTermsAggregateBuilder,
+        ) -> LongTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> LongTermsAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`LongTermsAggregate`].
@@ -24456,6 +25663,18 @@ impl LongTermsBucket {
     /// Creates a builder for [`LongTermsBucket`].
     pub fn builder() -> LongTermsBucketBuilder {
         LongTermsBucketBuilder::new()
+    }
+
+    /// Creates a [`LongTermsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LongTermsBucketBuilder,
+        ) -> LongTermsBucketBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> LongTermsBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -24607,6 +25826,13 @@ impl MatrixAggregation {
     pub fn builder() -> MatrixAggregationBuilder {
         MatrixAggregationBuilder::new()
     }
+
+    /// Creates a [`MatrixAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MatrixAggregationBuilder) -> MatrixAggregationBuilder,
+    ) -> MatrixAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MatrixAggregation`].
@@ -24704,6 +25930,15 @@ impl MatrixStatsAggregate {
     /// Creates a builder for [`MatrixStatsAggregate`].
     pub fn builder() -> MatrixStatsAggregateBuilder {
         MatrixStatsAggregateBuilder::new()
+    }
+
+    /// Creates a [`MatrixStatsAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MatrixStatsAggregateBuilder,
+        ) -> MatrixStatsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> MatrixStatsAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -24849,6 +26084,13 @@ impl MatrixStatsAggregation {
     pub fn builder() -> MatrixStatsAggregationBuilder {
         MatrixStatsAggregationBuilder::new()
     }
+
+    /// Creates a [`MatrixStatsAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MatrixStatsAggregationBuilder) -> MatrixStatsAggregationBuilder,
+    ) -> MatrixStatsAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MatrixStatsAggregation`].
@@ -24965,6 +26207,24 @@ impl MatrixStatsFields {
     /// Creates a builder for [`MatrixStatsFields`].
     pub fn builder() -> MatrixStatsFieldsBuilder {
         MatrixStatsFieldsBuilder::new()
+    }
+
+    /// Creates a [`MatrixStatsFields`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MatrixStatsFieldsBuilder,
+        ) -> MatrixStatsFieldsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MatrixStatsFields {
+        f(Self::builder()).build()
     }
 }
 
@@ -25365,6 +26625,13 @@ impl MaxAggregate {
     pub fn builder() -> MaxAggregateBuilder {
         MaxAggregateBuilder::new()
     }
+
+    /// Creates a [`MaxAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MaxAggregateBuilder) -> MaxAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> MaxAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MaxAggregate`].
@@ -25484,6 +26751,11 @@ impl MaxAggregation {
     pub fn builder() -> MaxAggregationBuilder {
         MaxAggregationBuilder::new()
     }
+
+    /// Creates a [`MaxAggregation`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(MaxAggregationBuilder) -> MaxAggregationBuilder) -> MaxAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MaxAggregation`].
@@ -25600,6 +26872,13 @@ impl MaxBucketAggregation {
     pub fn builder() -> MaxBucketAggregationBuilder {
         MaxBucketAggregationBuilder::new()
     }
+
+    /// Creates a [`MaxBucketAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MaxBucketAggregationBuilder) -> MaxBucketAggregationBuilder,
+    ) -> MaxBucketAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MaxBucketAggregation`].
@@ -25710,6 +26989,16 @@ impl MedianAbsoluteDeviationAggregate {
     /// Creates a builder for [`MedianAbsoluteDeviationAggregate`].
     pub fn builder() -> MedianAbsoluteDeviationAggregateBuilder {
         MedianAbsoluteDeviationAggregateBuilder::new()
+    }
+
+    /// Creates a [`MedianAbsoluteDeviationAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MedianAbsoluteDeviationAggregateBuilder,
+        )
+            -> MedianAbsoluteDeviationAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> MedianAbsoluteDeviationAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -25840,6 +27129,15 @@ impl MedianAbsoluteDeviationAggregation {
     /// Creates a builder for [`MedianAbsoluteDeviationAggregation`].
     pub fn builder() -> MedianAbsoluteDeviationAggregationBuilder {
         MedianAbsoluteDeviationAggregationBuilder::new()
+    }
+
+    /// Creates a [`MedianAbsoluteDeviationAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MedianAbsoluteDeviationAggregationBuilder,
+        ) -> MedianAbsoluteDeviationAggregationBuilder,
+    ) -> MedianAbsoluteDeviationAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -25987,6 +27285,13 @@ impl MetricAggregationBase {
     pub fn builder() -> MetricAggregationBaseBuilder {
         MetricAggregationBaseBuilder::new()
     }
+
+    /// Creates a [`MetricAggregationBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MetricAggregationBaseBuilder) -> MetricAggregationBaseBuilder,
+    ) -> MetricAggregationBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MetricAggregationBase`].
@@ -26104,6 +27409,13 @@ impl MinAggregate {
     /// Creates a builder for [`MinAggregate`].
     pub fn builder() -> MinAggregateBuilder {
         MinAggregateBuilder::new()
+    }
+
+    /// Creates a [`MinAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MinAggregateBuilder) -> MinAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> MinAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -26224,6 +27536,11 @@ impl MinAggregation {
     pub fn builder() -> MinAggregationBuilder {
         MinAggregationBuilder::new()
     }
+
+    /// Creates a [`MinAggregation`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(MinAggregationBuilder) -> MinAggregationBuilder) -> MinAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MinAggregation`].
@@ -26339,6 +27656,13 @@ impl MinBucketAggregation {
     /// Creates a builder for [`MinBucketAggregation`].
     pub fn builder() -> MinBucketAggregationBuilder {
         MinBucketAggregationBuilder::new()
+    }
+
+    /// Creates a [`MinBucketAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MinBucketAggregationBuilder) -> MinBucketAggregationBuilder,
+    ) -> MinBucketAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -26492,6 +27816,15 @@ impl MissingAggregate {
     pub fn builder() -> MissingAggregateBuilder {
         MissingAggregateBuilder::new()
     }
+
+    /// Creates a [`MissingAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MissingAggregateBuilder,
+        ) -> MissingAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> MissingAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MissingAggregate`].
@@ -26608,6 +27941,13 @@ impl MissingAggregation {
     pub fn builder() -> MissingAggregationBuilder {
         MissingAggregationBuilder::new()
     }
+
+    /// Creates a [`MissingAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MissingAggregationBuilder) -> MissingAggregationBuilder,
+    ) -> MissingAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MissingAggregation`].
@@ -26712,6 +28052,13 @@ impl MovingAverageAggregationBase {
     /// Creates a builder for [`MovingAverageAggregationBase`].
     pub fn builder() -> MovingAverageAggregationBaseBuilder {
         MovingAverageAggregationBaseBuilder::new()
+    }
+
+    /// Creates a [`MovingAverageAggregationBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MovingAverageAggregationBaseBuilder) -> MovingAverageAggregationBaseBuilder,
+    ) -> MovingAverageAggregationBase {
+        f(Self::builder()).build()
     }
 }
 
@@ -26859,6 +28206,13 @@ impl MovingFunctionAggregation {
     /// Creates a builder for [`MovingFunctionAggregation`].
     pub fn builder() -> MovingFunctionAggregationBuilder {
         MovingFunctionAggregationBuilder::new()
+    }
+
+    /// Creates a [`MovingFunctionAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MovingFunctionAggregationBuilder) -> MovingFunctionAggregationBuilder,
+    ) -> MovingFunctionAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -27010,6 +28364,13 @@ impl MovingPercentilesAggregation {
     pub fn builder() -> MovingPercentilesAggregationBuilder {
         MovingPercentilesAggregationBuilder::new()
     }
+
+    /// Creates a [`MovingPercentilesAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MovingPercentilesAggregationBuilder) -> MovingPercentilesAggregationBuilder,
+    ) -> MovingPercentilesAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MovingPercentilesAggregation`].
@@ -27143,6 +28504,17 @@ impl MultiBucketAggregateBaseAdjacencyMatrixBucket {
     pub fn builder() -> MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder {
         MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder::new()
     }
+
+    /// Creates a [`MultiBucketAggregateBaseAdjacencyMatrixBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder,
+        ) -> MultiBucketAggregateBaseAdjacencyMatrixBucketBuilder<(
+            crate::typed::builder::Set,
+        )>,
+    ) -> MultiBucketAggregateBaseAdjacencyMatrixBucket {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MultiBucketAggregateBaseAdjacencyMatrixBucket`].
@@ -27245,6 +28617,16 @@ impl MultiBucketAggregateBaseCompositeBucket {
     pub fn builder() -> MultiBucketAggregateBaseCompositeBucketBuilder {
         MultiBucketAggregateBaseCompositeBucketBuilder::new()
     }
+
+    /// Creates a [`MultiBucketAggregateBaseCompositeBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseCompositeBucketBuilder,
+        )
+            -> MultiBucketAggregateBaseCompositeBucketBuilder<(crate::typed::builder::Set,)>,
+    ) -> MultiBucketAggregateBaseCompositeBucket {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MultiBucketAggregateBaseCompositeBucket`].
@@ -27342,6 +28724,17 @@ impl MultiBucketAggregateBaseDateHistogramBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseDateHistogramBucket`].
     pub fn builder() -> MultiBucketAggregateBaseDateHistogramBucketBuilder {
         MultiBucketAggregateBaseDateHistogramBucketBuilder::new()
+    }
+
+    /// Creates a [`MultiBucketAggregateBaseDateHistogramBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseDateHistogramBucketBuilder,
+        ) -> MultiBucketAggregateBaseDateHistogramBucketBuilder<(
+            crate::typed::builder::Set,
+        )>,
+    ) -> MultiBucketAggregateBaseDateHistogramBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -27442,6 +28835,17 @@ impl MultiBucketAggregateBaseDoubleTermsBucket {
     pub fn builder() -> MultiBucketAggregateBaseDoubleTermsBucketBuilder {
         MultiBucketAggregateBaseDoubleTermsBucketBuilder::new()
     }
+
+    /// Creates a [`MultiBucketAggregateBaseDoubleTermsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseDoubleTermsBucketBuilder,
+        ) -> MultiBucketAggregateBaseDoubleTermsBucketBuilder<
+            (crate::typed::builder::Set,),
+        >,
+    ) -> MultiBucketAggregateBaseDoubleTermsBucket {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MultiBucketAggregateBaseDoubleTermsBucket`].
@@ -27540,6 +28944,16 @@ impl MultiBucketAggregateBaseFiltersBucket {
     pub fn builder() -> MultiBucketAggregateBaseFiltersBucketBuilder {
         MultiBucketAggregateBaseFiltersBucketBuilder::new()
     }
+
+    /// Creates a [`MultiBucketAggregateBaseFiltersBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseFiltersBucketBuilder,
+        )
+            -> MultiBucketAggregateBaseFiltersBucketBuilder<(crate::typed::builder::Set,)>,
+    ) -> MultiBucketAggregateBaseFiltersBucket {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MultiBucketAggregateBaseFiltersBucket`].
@@ -27637,6 +29051,17 @@ impl MultiBucketAggregateBaseFrequentItemSetsBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseFrequentItemSetsBucket`].
     pub fn builder() -> MultiBucketAggregateBaseFrequentItemSetsBucketBuilder {
         MultiBucketAggregateBaseFrequentItemSetsBucketBuilder::new()
+    }
+
+    /// Creates a [`MultiBucketAggregateBaseFrequentItemSetsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseFrequentItemSetsBucketBuilder,
+        ) -> MultiBucketAggregateBaseFrequentItemSetsBucketBuilder<(
+            crate::typed::builder::Set,
+        )>,
+    ) -> MultiBucketAggregateBaseFrequentItemSetsBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -27740,6 +29165,17 @@ impl MultiBucketAggregateBaseGeoHashGridBucket {
     pub fn builder() -> MultiBucketAggregateBaseGeoHashGridBucketBuilder {
         MultiBucketAggregateBaseGeoHashGridBucketBuilder::new()
     }
+
+    /// Creates a [`MultiBucketAggregateBaseGeoHashGridBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseGeoHashGridBucketBuilder,
+        ) -> MultiBucketAggregateBaseGeoHashGridBucketBuilder<
+            (crate::typed::builder::Set,),
+        >,
+    ) -> MultiBucketAggregateBaseGeoHashGridBucket {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MultiBucketAggregateBaseGeoHashGridBucket`].
@@ -27837,6 +29273,16 @@ impl MultiBucketAggregateBaseGeoHexGridBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseGeoHexGridBucket`].
     pub fn builder() -> MultiBucketAggregateBaseGeoHexGridBucketBuilder {
         MultiBucketAggregateBaseGeoHexGridBucketBuilder::new()
+    }
+
+    /// Creates a [`MultiBucketAggregateBaseGeoHexGridBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseGeoHexGridBucketBuilder,
+        )
+            -> MultiBucketAggregateBaseGeoHexGridBucketBuilder<(crate::typed::builder::Set,)>,
+    ) -> MultiBucketAggregateBaseGeoHexGridBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -27936,6 +29382,17 @@ impl MultiBucketAggregateBaseGeoTileGridBucket {
     pub fn builder() -> MultiBucketAggregateBaseGeoTileGridBucketBuilder {
         MultiBucketAggregateBaseGeoTileGridBucketBuilder::new()
     }
+
+    /// Creates a [`MultiBucketAggregateBaseGeoTileGridBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseGeoTileGridBucketBuilder,
+        ) -> MultiBucketAggregateBaseGeoTileGridBucketBuilder<
+            (crate::typed::builder::Set,),
+        >,
+    ) -> MultiBucketAggregateBaseGeoTileGridBucket {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MultiBucketAggregateBaseGeoTileGridBucket`].
@@ -28033,6 +29490,16 @@ impl MultiBucketAggregateBaseHistogramBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseHistogramBucket`].
     pub fn builder() -> MultiBucketAggregateBaseHistogramBucketBuilder {
         MultiBucketAggregateBaseHistogramBucketBuilder::new()
+    }
+
+    /// Creates a [`MultiBucketAggregateBaseHistogramBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseHistogramBucketBuilder,
+        )
+            -> MultiBucketAggregateBaseHistogramBucketBuilder<(crate::typed::builder::Set,)>,
+    ) -> MultiBucketAggregateBaseHistogramBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -28132,6 +29599,16 @@ impl MultiBucketAggregateBaseIpPrefixBucket {
     pub fn builder() -> MultiBucketAggregateBaseIpPrefixBucketBuilder {
         MultiBucketAggregateBaseIpPrefixBucketBuilder::new()
     }
+
+    /// Creates a [`MultiBucketAggregateBaseIpPrefixBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseIpPrefixBucketBuilder,
+        )
+            -> MultiBucketAggregateBaseIpPrefixBucketBuilder<(crate::typed::builder::Set,)>,
+    ) -> MultiBucketAggregateBaseIpPrefixBucket {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MultiBucketAggregateBaseIpPrefixBucket`].
@@ -28230,6 +29707,16 @@ impl MultiBucketAggregateBaseIpRangeBucket {
     pub fn builder() -> MultiBucketAggregateBaseIpRangeBucketBuilder {
         MultiBucketAggregateBaseIpRangeBucketBuilder::new()
     }
+
+    /// Creates a [`MultiBucketAggregateBaseIpRangeBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseIpRangeBucketBuilder,
+        )
+            -> MultiBucketAggregateBaseIpRangeBucketBuilder<(crate::typed::builder::Set,)>,
+    ) -> MultiBucketAggregateBaseIpRangeBucket {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MultiBucketAggregateBaseIpRangeBucket`].
@@ -28327,6 +29814,17 @@ impl MultiBucketAggregateBaseLongRareTermsBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseLongRareTermsBucket`].
     pub fn builder() -> MultiBucketAggregateBaseLongRareTermsBucketBuilder {
         MultiBucketAggregateBaseLongRareTermsBucketBuilder::new()
+    }
+
+    /// Creates a [`MultiBucketAggregateBaseLongRareTermsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseLongRareTermsBucketBuilder,
+        ) -> MultiBucketAggregateBaseLongRareTermsBucketBuilder<(
+            crate::typed::builder::Set,
+        )>,
+    ) -> MultiBucketAggregateBaseLongRareTermsBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -28427,6 +29925,16 @@ impl MultiBucketAggregateBaseLongTermsBucket {
     pub fn builder() -> MultiBucketAggregateBaseLongTermsBucketBuilder {
         MultiBucketAggregateBaseLongTermsBucketBuilder::new()
     }
+
+    /// Creates a [`MultiBucketAggregateBaseLongTermsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseLongTermsBucketBuilder,
+        )
+            -> MultiBucketAggregateBaseLongTermsBucketBuilder<(crate::typed::builder::Set,)>,
+    ) -> MultiBucketAggregateBaseLongTermsBucket {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MultiBucketAggregateBaseLongTermsBucket`].
@@ -28524,6 +30032,16 @@ impl MultiBucketAggregateBaseMultiTermsBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseMultiTermsBucket`].
     pub fn builder() -> MultiBucketAggregateBaseMultiTermsBucketBuilder {
         MultiBucketAggregateBaseMultiTermsBucketBuilder::new()
+    }
+
+    /// Creates a [`MultiBucketAggregateBaseMultiTermsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseMultiTermsBucketBuilder,
+        )
+            -> MultiBucketAggregateBaseMultiTermsBucketBuilder<(crate::typed::builder::Set,)>,
+    ) -> MultiBucketAggregateBaseMultiTermsBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -28623,6 +30141,16 @@ impl MultiBucketAggregateBaseRangeBucket {
     pub fn builder() -> MultiBucketAggregateBaseRangeBucketBuilder {
         MultiBucketAggregateBaseRangeBucketBuilder::new()
     }
+
+    /// Creates a [`MultiBucketAggregateBaseRangeBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseRangeBucketBuilder,
+        )
+            -> MultiBucketAggregateBaseRangeBucketBuilder<(crate::typed::builder::Set,)>,
+    ) -> MultiBucketAggregateBaseRangeBucket {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MultiBucketAggregateBaseRangeBucket`].
@@ -28720,6 +30248,17 @@ impl MultiBucketAggregateBaseSignificantLongTermsBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseSignificantLongTermsBucket`].
     pub fn builder() -> MultiBucketAggregateBaseSignificantLongTermsBucketBuilder {
         MultiBucketAggregateBaseSignificantLongTermsBucketBuilder::new()
+    }
+
+    /// Creates a [`MultiBucketAggregateBaseSignificantLongTermsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseSignificantLongTermsBucketBuilder,
+        ) -> MultiBucketAggregateBaseSignificantLongTermsBucketBuilder<(
+            crate::typed::builder::Set,
+        )>,
+    ) -> MultiBucketAggregateBaseSignificantLongTermsBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -28823,6 +30362,17 @@ impl MultiBucketAggregateBaseSignificantStringTermsBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseSignificantStringTermsBucket`].
     pub fn builder() -> MultiBucketAggregateBaseSignificantStringTermsBucketBuilder {
         MultiBucketAggregateBaseSignificantStringTermsBucketBuilder::new()
+    }
+
+    /// Creates a [`MultiBucketAggregateBaseSignificantStringTermsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseSignificantStringTermsBucketBuilder,
+        ) -> MultiBucketAggregateBaseSignificantStringTermsBucketBuilder<(
+            crate::typed::builder::Set,
+        )>,
+    ) -> MultiBucketAggregateBaseSignificantStringTermsBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -28928,6 +30478,17 @@ impl MultiBucketAggregateBaseStringRareTermsBucket {
     pub fn builder() -> MultiBucketAggregateBaseStringRareTermsBucketBuilder {
         MultiBucketAggregateBaseStringRareTermsBucketBuilder::new()
     }
+
+    /// Creates a [`MultiBucketAggregateBaseStringRareTermsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseStringRareTermsBucketBuilder,
+        ) -> MultiBucketAggregateBaseStringRareTermsBucketBuilder<(
+            crate::typed::builder::Set,
+        )>,
+    ) -> MultiBucketAggregateBaseStringRareTermsBucket {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MultiBucketAggregateBaseStringRareTermsBucket`].
@@ -29030,6 +30591,17 @@ impl MultiBucketAggregateBaseStringTermsBucket {
     pub fn builder() -> MultiBucketAggregateBaseStringTermsBucketBuilder {
         MultiBucketAggregateBaseStringTermsBucketBuilder::new()
     }
+
+    /// Creates a [`MultiBucketAggregateBaseStringTermsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseStringTermsBucketBuilder,
+        ) -> MultiBucketAggregateBaseStringTermsBucketBuilder<
+            (crate::typed::builder::Set,),
+        >,
+    ) -> MultiBucketAggregateBaseStringTermsBucket {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MultiBucketAggregateBaseStringTermsBucket`].
@@ -29128,6 +30700,16 @@ impl MultiBucketAggregateBaseTimeSeriesBucket {
     pub fn builder() -> MultiBucketAggregateBaseTimeSeriesBucketBuilder {
         MultiBucketAggregateBaseTimeSeriesBucketBuilder::new()
     }
+
+    /// Creates a [`MultiBucketAggregateBaseTimeSeriesBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseTimeSeriesBucketBuilder,
+        )
+            -> MultiBucketAggregateBaseTimeSeriesBucketBuilder<(crate::typed::builder::Set,)>,
+    ) -> MultiBucketAggregateBaseTimeSeriesBucket {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MultiBucketAggregateBaseTimeSeriesBucket`].
@@ -29225,6 +30807,17 @@ impl MultiBucketAggregateBaseVariableWidthHistogramBucket {
     /// Creates a builder for [`MultiBucketAggregateBaseVariableWidthHistogramBucket`].
     pub fn builder() -> MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder {
         MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder::new()
+    }
+
+    /// Creates a [`MultiBucketAggregateBaseVariableWidthHistogramBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder,
+        ) -> MultiBucketAggregateBaseVariableWidthHistogramBucketBuilder<(
+            crate::typed::builder::Set,
+        )>,
+    ) -> MultiBucketAggregateBaseVariableWidthHistogramBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -29330,6 +30923,15 @@ impl MultiBucketAggregateBaseVoid {
     pub fn builder() -> MultiBucketAggregateBaseVoidBuilder {
         MultiBucketAggregateBaseVoidBuilder::new()
     }
+
+    /// Creates a [`MultiBucketAggregateBaseVoid`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiBucketAggregateBaseVoidBuilder,
+        ) -> MultiBucketAggregateBaseVoidBuilder<(crate::typed::builder::Set,)>,
+    ) -> MultiBucketAggregateBaseVoid {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MultiBucketAggregateBaseVoid`].
@@ -29427,6 +31029,13 @@ impl MultiBucketBase {
     /// Creates a builder for [`MultiBucketBase`].
     pub fn builder() -> MultiBucketBaseBuilder {
         MultiBucketBaseBuilder::new()
+    }
+
+    /// Creates a [`MultiBucketBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MultiBucketBaseBuilder) -> MultiBucketBaseBuilder<(crate::typed::builder::Set,)>,
+    ) -> MultiBucketBase {
+        f(Self::builder()).build()
     }
 }
 
@@ -29556,6 +31165,13 @@ impl MultiTermLookup {
     pub fn builder() -> MultiTermLookupBuilder {
         MultiTermLookupBuilder::new()
     }
+
+    /// Creates a [`MultiTermLookup`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MultiTermLookupBuilder) -> MultiTermLookupBuilder<(crate::typed::builder::Set,)>,
+    ) -> MultiTermLookup {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MultiTermLookup`].
@@ -29668,6 +31284,15 @@ impl MultiTermsAggregate {
     /// Creates a builder for [`MultiTermsAggregate`].
     pub fn builder() -> MultiTermsAggregateBuilder {
         MultiTermsAggregateBuilder::new()
+    }
+
+    /// Creates a [`MultiTermsAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiTermsAggregateBuilder,
+        ) -> MultiTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> MultiTermsAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -29814,6 +31439,15 @@ impl MultiTermsAggregation {
     /// Creates a builder for [`MultiTermsAggregation`].
     pub fn builder() -> MultiTermsAggregationBuilder {
         MultiTermsAggregationBuilder::new()
+    }
+
+    /// Creates a [`MultiTermsAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiTermsAggregationBuilder,
+        ) -> MultiTermsAggregationBuilder<(crate::typed::builder::Set,)>,
+    ) -> MultiTermsAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -30007,6 +31641,18 @@ impl MultiTermsBucket {
     pub fn builder() -> MultiTermsBucketBuilder {
         MultiTermsBucketBuilder::new()
     }
+
+    /// Creates a [`MultiTermsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiTermsBucketBuilder,
+        ) -> MultiTermsBucketBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MultiTermsBucket {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MultiTermsBucket`].
@@ -30161,6 +31807,13 @@ impl MutualInformationHeuristic {
     pub fn builder() -> MutualInformationHeuristicBuilder {
         MutualInformationHeuristicBuilder::new()
     }
+
+    /// Creates a [`MutualInformationHeuristic`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MutualInformationHeuristicBuilder) -> MutualInformationHeuristicBuilder,
+    ) -> MutualInformationHeuristic {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MutualInformationHeuristic`].
@@ -30235,6 +31888,13 @@ impl NestedAggregate {
     /// Creates a builder for [`NestedAggregate`].
     pub fn builder() -> NestedAggregateBuilder {
         NestedAggregateBuilder::new()
+    }
+
+    /// Creates a [`NestedAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NestedAggregateBuilder) -> NestedAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> NestedAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -30350,6 +32010,13 @@ impl NestedAggregation {
     pub fn builder() -> NestedAggregationBuilder {
         NestedAggregationBuilder::new()
     }
+
+    /// Creates a [`NestedAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NestedAggregationBuilder) -> NestedAggregationBuilder,
+    ) -> NestedAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NestedAggregation`].
@@ -30402,6 +32069,19 @@ impl NonStationary {
     /// Creates a builder for [`NonStationary`].
     pub fn builder() -> NonStationaryBuilder {
         NonStationaryBuilder::new()
+    }
+
+    /// Creates a [`NonStationary`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NonStationaryBuilder,
+        ) -> NonStationaryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NonStationary {
+        f(Self::builder()).build()
     }
 }
 
@@ -30570,6 +32250,13 @@ impl NormalizeAggregation {
     pub fn builder() -> NormalizeAggregationBuilder {
         NormalizeAggregationBuilder::new()
     }
+
+    /// Creates a [`NormalizeAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NormalizeAggregationBuilder) -> NormalizeAggregationBuilder,
+    ) -> NormalizeAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NormalizeAggregation`].
@@ -30699,6 +32386,11 @@ impl PValueHeuristic {
     pub fn builder() -> PValueHeuristicBuilder {
         PValueHeuristicBuilder::new()
     }
+
+    /// Creates a [`PValueHeuristic`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(PValueHeuristicBuilder) -> PValueHeuristicBuilder) -> PValueHeuristic {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PValueHeuristic`].
@@ -30774,6 +32466,13 @@ impl ParentAggregate {
     /// Creates a builder for [`ParentAggregate`].
     pub fn builder() -> ParentAggregateBuilder {
         ParentAggregateBuilder::new()
+    }
+
+    /// Creates a [`ParentAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ParentAggregateBuilder) -> ParentAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> ParentAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -30889,6 +32588,13 @@ impl ParentAggregation {
     pub fn builder() -> ParentAggregationBuilder {
         ParentAggregationBuilder::new()
     }
+
+    /// Creates a [`ParentAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ParentAggregationBuilder) -> ParentAggregationBuilder,
+    ) -> ParentAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ParentAggregation`].
@@ -30939,6 +32645,13 @@ impl PercentageScoreHeuristic {
     /// Creates a builder for [`PercentageScoreHeuristic`].
     pub fn builder() -> PercentageScoreHeuristicBuilder {
         PercentageScoreHeuristicBuilder::new()
+    }
+
+    /// Creates a [`PercentageScoreHeuristic`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(PercentageScoreHeuristicBuilder) -> PercentageScoreHeuristicBuilder,
+    ) -> PercentageScoreHeuristic {
+        f(Self::builder()).build()
     }
 }
 
@@ -31012,6 +32725,13 @@ impl PercentileRanksAggregation {
     /// Creates a builder for [`PercentileRanksAggregation`].
     pub fn builder() -> PercentileRanksAggregationBuilder {
         PercentileRanksAggregationBuilder::new()
+    }
+
+    /// Creates a [`PercentileRanksAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(PercentileRanksAggregationBuilder) -> PercentileRanksAggregationBuilder,
+    ) -> PercentileRanksAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -31212,6 +32932,15 @@ impl PercentilesAggregateBase {
     pub fn builder() -> PercentilesAggregateBaseBuilder {
         PercentilesAggregateBaseBuilder::new()
     }
+
+    /// Creates a [`PercentilesAggregateBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PercentilesAggregateBaseBuilder,
+        ) -> PercentilesAggregateBaseBuilder<(crate::typed::builder::Set,)>,
+    ) -> PercentilesAggregateBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PercentilesAggregateBase`].
@@ -31353,6 +33082,13 @@ impl PercentilesAggregation {
     /// Creates a builder for [`PercentilesAggregation`].
     pub fn builder() -> PercentilesAggregationBuilder {
         PercentilesAggregationBuilder::new()
+    }
+
+    /// Creates a [`PercentilesAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(PercentilesAggregationBuilder) -> PercentilesAggregationBuilder,
+    ) -> PercentilesAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -31534,6 +33270,15 @@ impl PercentilesBucketAggregate {
     pub fn builder() -> PercentilesBucketAggregateBuilder {
         PercentilesBucketAggregateBuilder::new()
     }
+
+    /// Creates a [`PercentilesBucketAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PercentilesBucketAggregateBuilder,
+        ) -> PercentilesBucketAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> PercentilesBucketAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PercentilesBucketAggregate`].
@@ -31639,6 +33384,13 @@ impl PercentilesBucketAggregation {
     /// Creates a builder for [`PercentilesBucketAggregation`].
     pub fn builder() -> PercentilesBucketAggregationBuilder {
         PercentilesBucketAggregationBuilder::new()
+    }
+
+    /// Creates a [`PercentilesBucketAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(PercentilesBucketAggregationBuilder) -> PercentilesBucketAggregationBuilder,
+    ) -> PercentilesBucketAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -31758,6 +33510,13 @@ impl PipelineAggregationBase {
     pub fn builder() -> PipelineAggregationBaseBuilder {
         PipelineAggregationBaseBuilder::new()
     }
+
+    /// Creates a [`PipelineAggregationBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(PipelineAggregationBaseBuilder) -> PipelineAggregationBaseBuilder,
+    ) -> PipelineAggregationBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PipelineAggregationBase`].
@@ -31853,6 +33612,15 @@ impl RandomSamplerAggregation {
     /// Creates a builder for [`RandomSamplerAggregation`].
     pub fn builder() -> RandomSamplerAggregationBuilder {
         RandomSamplerAggregationBuilder::new()
+    }
+
+    /// Creates a [`RandomSamplerAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RandomSamplerAggregationBuilder,
+        ) -> RandomSamplerAggregationBuilder<(crate::typed::builder::Set,)>,
+    ) -> RandomSamplerAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -31963,6 +33731,13 @@ impl RangeAggregate {
     pub fn builder() -> RangeAggregateBuilder {
         RangeAggregateBuilder::new()
     }
+
+    /// Creates a [`RangeAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RangeAggregateBuilder) -> RangeAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> RangeAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RangeAggregate`].
@@ -32070,6 +33845,13 @@ impl RangeAggregation {
     /// Creates a builder for [`RangeAggregation`].
     pub fn builder() -> RangeAggregationBuilder {
         RangeAggregationBuilder::new()
+    }
+
+    /// Creates a [`RangeAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RangeAggregationBuilder) -> RangeAggregationBuilder,
+    ) -> RangeAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -32237,6 +34019,13 @@ impl RangeBucket {
     /// Creates a builder for [`RangeBucket`].
     pub fn builder() -> RangeBucketBuilder {
         RangeBucketBuilder::new()
+    }
+
+    /// Creates a [`RangeBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RangeBucketBuilder) -> RangeBucketBuilder<(crate::typed::builder::Set,)>,
+    ) -> RangeBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -32424,6 +34213,13 @@ impl RareTermsAggregation {
     pub fn builder() -> RareTermsAggregationBuilder {
         RareTermsAggregationBuilder::new()
     }
+
+    /// Creates a [`RareTermsAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RareTermsAggregationBuilder) -> RareTermsAggregationBuilder,
+    ) -> RareTermsAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RareTermsAggregation`].
@@ -32574,6 +34370,13 @@ impl RateAggregate {
     pub fn builder() -> RateAggregateBuilder {
         RateAggregateBuilder::new()
     }
+
+    /// Creates a [`RateAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RateAggregateBuilder) -> RateAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> RateAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RateAggregate`].
@@ -32697,6 +34500,11 @@ impl RateAggregation {
     /// Creates a builder for [`RateAggregation`].
     pub fn builder() -> RateAggregationBuilder {
         RateAggregationBuilder::new()
+    }
+
+    /// Creates a [`RateAggregation`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RateAggregationBuilder) -> RateAggregationBuilder) -> RateAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -32851,6 +34659,15 @@ impl ReverseNestedAggregate {
     pub fn builder() -> ReverseNestedAggregateBuilder {
         ReverseNestedAggregateBuilder::new()
     }
+
+    /// Creates a [`ReverseNestedAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ReverseNestedAggregateBuilder,
+        ) -> ReverseNestedAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> ReverseNestedAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ReverseNestedAggregate`].
@@ -32969,6 +34786,13 @@ impl ReverseNestedAggregation {
     pub fn builder() -> ReverseNestedAggregationBuilder {
         ReverseNestedAggregationBuilder::new()
     }
+
+    /// Creates a [`ReverseNestedAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ReverseNestedAggregationBuilder) -> ReverseNestedAggregationBuilder,
+    ) -> ReverseNestedAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ReverseNestedAggregation`].
@@ -33025,6 +34849,15 @@ impl SamplerAggregate {
     /// Creates a builder for [`SamplerAggregate`].
     pub fn builder() -> SamplerAggregateBuilder {
         SamplerAggregateBuilder::new()
+    }
+
+    /// Creates a [`SamplerAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SamplerAggregateBuilder,
+        ) -> SamplerAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> SamplerAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -33140,6 +34973,13 @@ impl SamplerAggregation {
     pub fn builder() -> SamplerAggregationBuilder {
         SamplerAggregationBuilder::new()
     }
+
+    /// Creates a [`SamplerAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SamplerAggregationBuilder) -> SamplerAggregationBuilder,
+    ) -> SamplerAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SamplerAggregation`].
@@ -33205,6 +35045,15 @@ impl ScriptedHeuristic {
     /// Creates a builder for [`ScriptedHeuristic`].
     pub fn builder() -> ScriptedHeuristicBuilder {
         ScriptedHeuristicBuilder::new()
+    }
+
+    /// Creates a [`ScriptedHeuristic`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ScriptedHeuristicBuilder,
+        ) -> ScriptedHeuristicBuilder<(crate::typed::builder::Set,)>,
+    ) -> ScriptedHeuristic {
+        f(Self::builder()).build()
     }
 }
 
@@ -33284,6 +35133,15 @@ impl ScriptedMetricAggregate {
     /// Creates a builder for [`ScriptedMetricAggregate`].
     pub fn builder() -> ScriptedMetricAggregateBuilder {
         ScriptedMetricAggregateBuilder::new()
+    }
+
+    /// Creates a [`ScriptedMetricAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ScriptedMetricAggregateBuilder,
+        ) -> ScriptedMetricAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> ScriptedMetricAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -33406,6 +35264,13 @@ impl ScriptedMetricAggregation {
     /// Creates a builder for [`ScriptedMetricAggregation`].
     pub fn builder() -> ScriptedMetricAggregationBuilder {
         ScriptedMetricAggregationBuilder::new()
+    }
+
+    /// Creates a [`ScriptedMetricAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ScriptedMetricAggregationBuilder) -> ScriptedMetricAggregationBuilder,
+    ) -> ScriptedMetricAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -33643,6 +35508,13 @@ impl SerialDifferencingAggregation {
     pub fn builder() -> SerialDifferencingAggregationBuilder {
         SerialDifferencingAggregationBuilder::new()
     }
+
+    /// Creates a [`SerialDifferencingAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SerialDifferencingAggregationBuilder) -> SerialDifferencingAggregationBuilder,
+    ) -> SerialDifferencingAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SerialDifferencingAggregation`].
@@ -33750,6 +35622,15 @@ impl SignificantLongTermsAggregate {
     /// Creates a builder for [`SignificantLongTermsAggregate`].
     pub fn builder() -> SignificantLongTermsAggregateBuilder {
         SignificantLongTermsAggregateBuilder::new()
+    }
+
+    /// Creates a [`SignificantLongTermsAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SignificantLongTermsAggregateBuilder,
+        ) -> SignificantLongTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> SignificantLongTermsAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -33882,6 +35763,20 @@ impl SignificantLongTermsBucket {
     /// Creates a builder for [`SignificantLongTermsBucket`].
     pub fn builder() -> SignificantLongTermsBucketBuilder {
         SignificantLongTermsBucketBuilder::new()
+    }
+
+    /// Creates a [`SignificantLongTermsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SignificantLongTermsBucketBuilder,
+        ) -> SignificantLongTermsBucketBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SignificantLongTermsBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -34117,6 +36012,15 @@ impl SignificantStringTermsAggregate {
     pub fn builder() -> SignificantStringTermsAggregateBuilder {
         SignificantStringTermsAggregateBuilder::new()
     }
+
+    /// Creates a [`SignificantStringTermsAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SignificantStringTermsAggregateBuilder,
+        ) -> SignificantStringTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> SignificantStringTermsAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SignificantStringTermsAggregate`].
@@ -34248,6 +36152,20 @@ impl SignificantStringTermsBucket {
     /// Creates a builder for [`SignificantStringTermsBucket`].
     pub fn builder() -> SignificantStringTermsBucketBuilder {
         SignificantStringTermsBucketBuilder::new()
+    }
+
+    /// Creates a [`SignificantStringTermsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SignificantStringTermsBucketBuilder,
+        ) -> SignificantStringTermsBucketBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SignificantStringTermsBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -34468,6 +36386,17 @@ impl SignificantTermsAggregateBaseSignificantLongTermsBucket {
     pub fn builder() -> SignificantTermsAggregateBaseSignificantLongTermsBucketBuilder {
         SignificantTermsAggregateBaseSignificantLongTermsBucketBuilder::new()
     }
+
+    /// Creates a [`SignificantTermsAggregateBaseSignificantLongTermsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SignificantTermsAggregateBaseSignificantLongTermsBucketBuilder,
+        ) -> SignificantTermsAggregateBaseSignificantLongTermsBucketBuilder<(
+            crate::typed::builder::Set,
+        )>,
+    ) -> SignificantTermsAggregateBaseSignificantLongTermsBucket {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SignificantTermsAggregateBaseSignificantLongTermsBucket`].
@@ -34614,6 +36543,17 @@ impl SignificantTermsAggregateBaseSignificantStringTermsBucket {
     /// Creates a builder for [`SignificantTermsAggregateBaseSignificantStringTermsBucket`].
     pub fn builder() -> SignificantTermsAggregateBaseSignificantStringTermsBucketBuilder {
         SignificantTermsAggregateBaseSignificantStringTermsBucketBuilder::new()
+    }
+
+    /// Creates a [`SignificantTermsAggregateBaseSignificantStringTermsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SignificantTermsAggregateBaseSignificantStringTermsBucketBuilder,
+        ) -> SignificantTermsAggregateBaseSignificantStringTermsBucketBuilder<(
+            crate::typed::builder::Set,
+        )>,
+    ) -> SignificantTermsAggregateBaseSignificantStringTermsBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -34770,6 +36710,16 @@ impl SignificantTermsAggregateBaseVoid {
     /// Creates a builder for [`SignificantTermsAggregateBaseVoid`].
     pub fn builder() -> SignificantTermsAggregateBaseVoidBuilder {
         SignificantTermsAggregateBaseVoidBuilder::new()
+    }
+
+    /// Creates a [`SignificantTermsAggregateBaseVoid`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SignificantTermsAggregateBaseVoidBuilder,
+        )
+            -> SignificantTermsAggregateBaseVoidBuilder<(crate::typed::builder::Set,)>,
+    ) -> SignificantTermsAggregateBaseVoid {
+        f(Self::builder()).build()
     }
 }
 
@@ -34951,6 +36901,13 @@ impl SignificantTermsAggregation {
     /// Creates a builder for [`SignificantTermsAggregation`].
     pub fn builder() -> SignificantTermsAggregationBuilder {
         SignificantTermsAggregationBuilder::new()
+    }
+
+    /// Creates a [`SignificantTermsAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SignificantTermsAggregationBuilder) -> SignificantTermsAggregationBuilder,
+    ) -> SignificantTermsAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -35332,6 +37289,19 @@ impl SignificantTermsBucketBase {
     pub fn builder() -> SignificantTermsBucketBaseBuilder {
         SignificantTermsBucketBaseBuilder::new()
     }
+
+    /// Creates a [`SignificantTermsBucketBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SignificantTermsBucketBaseBuilder,
+        ) -> SignificantTermsBucketBaseBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SignificantTermsBucketBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SignificantTermsBucketBase`].
@@ -35561,6 +37531,13 @@ impl SignificantTextAggregation {
     /// Creates a builder for [`SignificantTextAggregation`].
     pub fn builder() -> SignificantTextAggregationBuilder {
         SignificantTextAggregationBuilder::new()
+    }
+
+    /// Creates a [`SignificantTextAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SignificantTextAggregationBuilder) -> SignificantTextAggregationBuilder,
+    ) -> SignificantTextAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -35955,6 +37932,18 @@ impl SimpleMovingAverageAggregation {
     pub fn builder() -> SimpleMovingAverageAggregationBuilder {
         SimpleMovingAverageAggregationBuilder::new()
     }
+
+    /// Creates a [`SimpleMovingAverageAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SimpleMovingAverageAggregationBuilder,
+        ) -> SimpleMovingAverageAggregationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SimpleMovingAverageAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SimpleMovingAverageAggregation`].
@@ -36200,6 +38189,15 @@ impl SimpleValueAggregate {
     pub fn builder() -> SimpleValueAggregateBuilder {
         SimpleValueAggregateBuilder::new()
     }
+
+    /// Creates a [`SimpleValueAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SimpleValueAggregateBuilder,
+        ) -> SimpleValueAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> SimpleValueAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SimpleValueAggregate`].
@@ -36314,6 +38312,15 @@ impl SingleBucketAggregateBase {
     /// Creates a builder for [`SingleBucketAggregateBase`].
     pub fn builder() -> SingleBucketAggregateBaseBuilder {
         SingleBucketAggregateBaseBuilder::new()
+    }
+
+    /// Creates a [`SingleBucketAggregateBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SingleBucketAggregateBaseBuilder,
+        ) -> SingleBucketAggregateBaseBuilder<(crate::typed::builder::Set,)>,
+    ) -> SingleBucketAggregateBase {
+        f(Self::builder()).build()
     }
 }
 
@@ -36457,6 +38464,15 @@ impl SingleMetricAggregateBase {
     pub fn builder() -> SingleMetricAggregateBaseBuilder {
         SingleMetricAggregateBaseBuilder::new()
     }
+
+    /// Creates a [`SingleMetricAggregateBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SingleMetricAggregateBaseBuilder,
+        ) -> SingleMetricAggregateBaseBuilder<(crate::typed::builder::Set,)>,
+    ) -> SingleMetricAggregateBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SingleMetricAggregateBase`].
@@ -36568,6 +38584,16 @@ impl Spike {
     /// Creates a builder for [`Spike`].
     pub fn builder() -> SpikeBuilder {
         SpikeBuilder::new()
+    }
+
+    /// Creates a [`Spike`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SpikeBuilder,
+        )
+            -> SpikeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Spike {
+        f(Self::builder()).build()
     }
 }
 
@@ -36776,6 +38802,22 @@ impl StandardDeviationBounds {
     /// Creates a builder for [`StandardDeviationBounds`].
     pub fn builder() -> StandardDeviationBoundsBuilder {
         StandardDeviationBoundsBuilder::new()
+    }
+
+    /// Creates a [`StandardDeviationBounds`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            StandardDeviationBoundsBuilder,
+        ) -> StandardDeviationBoundsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> StandardDeviationBounds {
+        f(Self::builder()).build()
     }
 }
 
@@ -37062,6 +39104,22 @@ impl StandardDeviationBoundsAsString {
     pub fn builder() -> StandardDeviationBoundsAsStringBuilder {
         StandardDeviationBoundsAsStringBuilder::new()
     }
+
+    /// Creates a [`StandardDeviationBoundsAsString`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            StandardDeviationBoundsAsStringBuilder,
+        ) -> StandardDeviationBoundsAsStringBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> StandardDeviationBoundsAsString {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`StandardDeviationBoundsAsString`].
@@ -37346,6 +39404,11 @@ impl Stationary {
     pub fn builder() -> StationaryBuilder {
         StationaryBuilder::new()
     }
+
+    /// Creates a [`Stationary`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(StationaryBuilder) -> StationaryBuilder) -> Stationary {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Stationary`].
@@ -37455,6 +39518,21 @@ impl StatsAggregate {
     /// Creates a builder for [`StatsAggregate`].
     pub fn builder() -> StatsAggregateBuilder {
         StatsAggregateBuilder::new()
+    }
+
+    /// Creates a [`StatsAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            StatsAggregateBuilder,
+        ) -> StatsAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> StatsAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -37776,6 +39854,13 @@ impl StatsAggregation {
     pub fn builder() -> StatsAggregationBuilder {
         StatsAggregationBuilder::new()
     }
+
+    /// Creates a [`StatsAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(StatsAggregationBuilder) -> StatsAggregationBuilder,
+    ) -> StatsAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`StatsAggregation`].
@@ -37953,6 +40038,21 @@ impl StatsBucketAggregate {
     /// Creates a builder for [`StatsBucketAggregate`].
     pub fn builder() -> StatsBucketAggregateBuilder {
         StatsBucketAggregateBuilder::new()
+    }
+
+    /// Creates a [`StatsBucketAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            StatsBucketAggregateBuilder,
+        ) -> StatsBucketAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> StatsBucketAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -38273,6 +40373,13 @@ impl StatsBucketAggregation {
     pub fn builder() -> StatsBucketAggregationBuilder {
         StatsBucketAggregationBuilder::new()
     }
+
+    /// Creates a [`StatsBucketAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(StatsBucketAggregationBuilder) -> StatsBucketAggregationBuilder,
+    ) -> StatsBucketAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`StatsBucketAggregation`].
@@ -38359,6 +40466,16 @@ impl StepChange {
     /// Creates a builder for [`StepChange`].
     pub fn builder() -> StepChangeBuilder {
         StepChangeBuilder::new()
+    }
+
+    /// Creates a [`StepChange`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            StepChangeBuilder,
+        )
+            -> StepChangeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> StepChange {
+        f(Self::builder()).build()
     }
 }
 
@@ -38453,6 +40570,15 @@ impl StringRareTermsAggregate {
     /// Creates a builder for [`StringRareTermsAggregate`].
     pub fn builder() -> StringRareTermsAggregateBuilder {
         StringRareTermsAggregateBuilder::new()
+    }
+
+    /// Creates a [`StringRareTermsAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            StringRareTermsAggregateBuilder,
+        ) -> StringRareTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> StringRareTermsAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -38551,6 +40677,18 @@ impl StringRareTermsBucket {
     /// Creates a builder for [`StringRareTermsBucket`].
     pub fn builder() -> StringRareTermsBucketBuilder {
         StringRareTermsBucketBuilder::new()
+    }
+
+    /// Creates a [`StringRareTermsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            StringRareTermsBucketBuilder,
+        ) -> StringRareTermsBucketBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> StringRareTermsBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -38766,6 +40904,21 @@ impl StringStatsAggregate {
     /// Creates a builder for [`StringStatsAggregate`].
     pub fn builder() -> StringStatsAggregateBuilder {
         StringStatsAggregateBuilder::new()
+    }
+
+    /// Creates a [`StringStatsAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            StringStatsAggregateBuilder,
+        ) -> StringStatsAggregateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> StringStatsAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -39088,6 +41241,13 @@ impl StringStatsAggregation {
     pub fn builder() -> StringStatsAggregationBuilder {
         StringStatsAggregationBuilder::new()
     }
+
+    /// Creates a [`StringStatsAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(StringStatsAggregationBuilder) -> StringStatsAggregationBuilder,
+    ) -> StringStatsAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`StringStatsAggregation`].
@@ -39202,6 +41362,15 @@ impl StringTermsAggregate {
     /// Creates a builder for [`StringTermsAggregate`].
     pub fn builder() -> StringTermsAggregateBuilder {
         StringTermsAggregateBuilder::new()
+    }
+
+    /// Creates a [`StringTermsAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            StringTermsAggregateBuilder,
+        ) -> StringTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> StringTermsAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -39330,6 +41499,18 @@ impl StringTermsBucket {
     /// Creates a builder for [`StringTermsBucket`].
     pub fn builder() -> StringTermsBucketBuilder {
         StringTermsBucketBuilder::new()
+    }
+
+    /// Creates a [`StringTermsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            StringTermsBucketBuilder,
+        ) -> StringTermsBucketBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> StringTermsBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -39491,6 +41672,13 @@ impl SumAggregate {
     pub fn builder() -> SumAggregateBuilder {
         SumAggregateBuilder::new()
     }
+
+    /// Creates a [`SumAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SumAggregateBuilder) -> SumAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> SumAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SumAggregate`].
@@ -39610,6 +41798,11 @@ impl SumAggregation {
     pub fn builder() -> SumAggregationBuilder {
         SumAggregationBuilder::new()
     }
+
+    /// Creates a [`SumAggregation`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(SumAggregationBuilder) -> SumAggregationBuilder) -> SumAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SumAggregation`].
@@ -39726,6 +41919,13 @@ impl SumBucketAggregation {
     pub fn builder() -> SumBucketAggregationBuilder {
         SumBucketAggregationBuilder::new()
     }
+
+    /// Creates a [`SumBucketAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SumBucketAggregationBuilder) -> SumBucketAggregationBuilder,
+    ) -> SumBucketAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SumBucketAggregation`].
@@ -39818,6 +42018,11 @@ impl TDigest {
     pub fn builder() -> TDigestBuilder {
         TDigestBuilder::new()
     }
+
+    /// Creates a [`TDigest`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(TDigestBuilder) -> TDigestBuilder) -> TDigest {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TDigest`].
@@ -39898,6 +42103,15 @@ impl TDigestPercentileRanksAggregate {
     /// Creates a builder for [`TDigestPercentileRanksAggregate`].
     pub fn builder() -> TDigestPercentileRanksAggregateBuilder {
         TDigestPercentileRanksAggregateBuilder::new()
+    }
+
+    /// Creates a [`TDigestPercentileRanksAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TDigestPercentileRanksAggregateBuilder,
+        ) -> TDigestPercentileRanksAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> TDigestPercentileRanksAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -39996,6 +42210,15 @@ impl TDigestPercentilesAggregate {
     /// Creates a builder for [`TDigestPercentilesAggregate`].
     pub fn builder() -> TDigestPercentilesAggregateBuilder {
         TDigestPercentilesAggregateBuilder::new()
+    }
+
+    /// Creates a [`TDigestPercentilesAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TDigestPercentilesAggregateBuilder,
+        ) -> TDigestPercentilesAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> TDigestPercentilesAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -40114,6 +42337,13 @@ impl TTestAggregate {
     pub fn builder() -> TTestAggregateBuilder {
         TTestAggregateBuilder::new()
     }
+
+    /// Creates a [`TTestAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TTestAggregateBuilder) -> TTestAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> TTestAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TTestAggregate`].
@@ -40228,6 +42458,13 @@ impl TTestAggregation {
     /// Creates a builder for [`TTestAggregation`].
     pub fn builder() -> TTestAggregationBuilder {
         TTestAggregationBuilder::new()
+    }
+
+    /// Creates a [`TTestAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TTestAggregationBuilder) -> TTestAggregationBuilder,
+    ) -> TTestAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -40348,6 +42585,16 @@ impl TermsAggregateBaseDoubleTermsBucket {
     /// Creates a builder for [`TermsAggregateBaseDoubleTermsBucket`].
     pub fn builder() -> TermsAggregateBaseDoubleTermsBucketBuilder {
         TermsAggregateBaseDoubleTermsBucketBuilder::new()
+    }
+
+    /// Creates a [`TermsAggregateBaseDoubleTermsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TermsAggregateBaseDoubleTermsBucketBuilder,
+        )
+            -> TermsAggregateBaseDoubleTermsBucketBuilder<(crate::typed::builder::Set,)>,
+    ) -> TermsAggregateBaseDoubleTermsBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -40481,6 +42728,16 @@ impl TermsAggregateBaseLongTermsBucket {
     pub fn builder() -> TermsAggregateBaseLongTermsBucketBuilder {
         TermsAggregateBaseLongTermsBucketBuilder::new()
     }
+
+    /// Creates a [`TermsAggregateBaseLongTermsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TermsAggregateBaseLongTermsBucketBuilder,
+        )
+            -> TermsAggregateBaseLongTermsBucketBuilder<(crate::typed::builder::Set,)>,
+    ) -> TermsAggregateBaseLongTermsBucket {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TermsAggregateBaseLongTermsBucket`].
@@ -40612,6 +42869,16 @@ impl TermsAggregateBaseMultiTermsBucket {
     /// Creates a builder for [`TermsAggregateBaseMultiTermsBucket`].
     pub fn builder() -> TermsAggregateBaseMultiTermsBucketBuilder {
         TermsAggregateBaseMultiTermsBucketBuilder::new()
+    }
+
+    /// Creates a [`TermsAggregateBaseMultiTermsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TermsAggregateBaseMultiTermsBucketBuilder,
+        )
+            -> TermsAggregateBaseMultiTermsBucketBuilder<(crate::typed::builder::Set,)>,
+    ) -> TermsAggregateBaseMultiTermsBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -40745,6 +43012,16 @@ impl TermsAggregateBaseStringTermsBucket {
     pub fn builder() -> TermsAggregateBaseStringTermsBucketBuilder {
         TermsAggregateBaseStringTermsBucketBuilder::new()
     }
+
+    /// Creates a [`TermsAggregateBaseStringTermsBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TermsAggregateBaseStringTermsBucketBuilder,
+        )
+            -> TermsAggregateBaseStringTermsBucketBuilder<(crate::typed::builder::Set,)>,
+    ) -> TermsAggregateBaseStringTermsBucket {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TermsAggregateBaseStringTermsBucket`].
@@ -40876,6 +43153,15 @@ impl TermsAggregateBaseVoid {
     /// Creates a builder for [`TermsAggregateBaseVoid`].
     pub fn builder() -> TermsAggregateBaseVoidBuilder {
         TermsAggregateBaseVoidBuilder::new()
+    }
+
+    /// Creates a [`TermsAggregateBaseVoid`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TermsAggregateBaseVoidBuilder,
+        ) -> TermsAggregateBaseVoidBuilder<(crate::typed::builder::Set,)>,
+    ) -> TermsAggregateBaseVoid {
+        f(Self::builder()).build()
     }
 }
 
@@ -41050,6 +43336,13 @@ impl TermsAggregation {
     /// Creates a builder for [`TermsAggregation`].
     pub fn builder() -> TermsAggregationBuilder {
         TermsAggregationBuilder::new()
+    }
+
+    /// Creates a [`TermsAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TermsAggregationBuilder) -> TermsAggregationBuilder,
+    ) -> TermsAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -41383,6 +43676,13 @@ impl TermsBucketBase {
     pub fn builder() -> TermsBucketBaseBuilder {
         TermsBucketBaseBuilder::new()
     }
+
+    /// Creates a [`TermsBucketBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TermsBucketBaseBuilder) -> TermsBucketBaseBuilder<(crate::typed::builder::Set,)>,
+    ) -> TermsBucketBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TermsBucketBase`].
@@ -41547,6 +43847,18 @@ impl TermsPartition {
     pub fn builder() -> TermsPartitionBuilder {
         TermsPartitionBuilder::new()
     }
+
+    /// Creates a [`TermsPartition`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TermsPartitionBuilder,
+        ) -> TermsPartitionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> TermsPartition {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TermsPartition`].
@@ -41646,6 +43958,13 @@ impl TestPopulation {
     /// Creates a builder for [`TestPopulation`].
     pub fn builder() -> TestPopulationBuilder {
         TestPopulationBuilder::new()
+    }
+
+    /// Creates a [`TestPopulation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TestPopulationBuilder) -> TestPopulationBuilder<(crate::typed::builder::Set,)>,
+    ) -> TestPopulation {
+        f(Self::builder()).build()
     }
 }
 
@@ -41776,6 +44095,15 @@ impl TimeSeriesAggregate {
     pub fn builder() -> TimeSeriesAggregateBuilder {
         TimeSeriesAggregateBuilder::new()
     }
+
+    /// Creates a [`TimeSeriesAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TimeSeriesAggregateBuilder,
+        ) -> TimeSeriesAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> TimeSeriesAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TimeSeriesAggregate`].
@@ -41873,6 +44201,13 @@ impl TimeSeriesAggregation {
     pub fn builder() -> TimeSeriesAggregationBuilder {
         TimeSeriesAggregationBuilder::new()
     }
+
+    /// Creates a [`TimeSeriesAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TimeSeriesAggregationBuilder) -> TimeSeriesAggregationBuilder,
+    ) -> TimeSeriesAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TimeSeriesAggregation`].
@@ -41946,6 +44281,18 @@ impl TimeSeriesBucket {
     /// Creates a builder for [`TimeSeriesBucket`].
     pub fn builder() -> TimeSeriesBucketBuilder {
         TimeSeriesBucketBuilder::new()
+    }
+
+    /// Creates a [`TimeSeriesBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TimeSeriesBucketBuilder,
+        ) -> TimeSeriesBucketBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> TimeSeriesBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -42069,6 +44416,15 @@ impl TopHitsAggregate {
     /// Creates a builder for [`TopHitsAggregate`].
     pub fn builder() -> TopHitsAggregateBuilder {
         TopHitsAggregateBuilder::new()
+    }
+
+    /// Creates a [`TopHitsAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TopHitsAggregateBuilder,
+        ) -> TopHitsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> TopHitsAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -42222,6 +44578,13 @@ impl TopHitsAggregation {
     /// Creates a builder for [`TopHitsAggregation`].
     pub fn builder() -> TopHitsAggregationBuilder {
         TopHitsAggregationBuilder::new()
+    }
+
+    /// Creates a [`TopHitsAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TopHitsAggregationBuilder) -> TopHitsAggregationBuilder,
+    ) -> TopHitsAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -42657,6 +45020,16 @@ impl TopMetrics {
     pub fn builder() -> TopMetricsBuilder {
         TopMetricsBuilder::new()
     }
+
+    /// Creates a [`TopMetrics`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TopMetricsBuilder,
+        )
+            -> TopMetricsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> TopMetrics {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TopMetrics`].
@@ -42752,6 +45125,15 @@ impl TopMetricsAggregate {
     /// Creates a builder for [`TopMetricsAggregate`].
     pub fn builder() -> TopMetricsAggregateBuilder {
         TopMetricsAggregateBuilder::new()
+    }
+
+    /// Creates a [`TopMetricsAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TopMetricsAggregateBuilder,
+        ) -> TopMetricsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> TopMetricsAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -42880,6 +45262,13 @@ impl TopMetricsAggregation {
     /// Creates a builder for [`TopMetricsAggregation`].
     pub fn builder() -> TopMetricsAggregationBuilder {
         TopMetricsAggregationBuilder::new()
+    }
+
+    /// Creates a [`TopMetricsAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TopMetricsAggregationBuilder) -> TopMetricsAggregationBuilder,
+    ) -> TopMetricsAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -43020,6 +45409,13 @@ impl TopMetricsValue {
     pub fn builder() -> TopMetricsValueBuilder {
         TopMetricsValueBuilder::new()
     }
+
+    /// Creates a [`TopMetricsValue`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TopMetricsValueBuilder) -> TopMetricsValueBuilder<(crate::typed::builder::Set,)>,
+    ) -> TopMetricsValue {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TopMetricsValue`].
@@ -43091,6 +45487,19 @@ impl TrendChange {
     /// Creates a builder for [`TrendChange`].
     pub fn builder() -> TrendChangeBuilder {
         TrendChangeBuilder::new()
+    }
+
+    /// Creates a [`TrendChange`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TrendChangeBuilder,
+        ) -> TrendChangeBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> TrendChange {
+        f(Self::builder()).build()
     }
 }
 
@@ -43250,6 +45659,15 @@ impl UnmappedRareTermsAggregate {
     pub fn builder() -> UnmappedRareTermsAggregateBuilder {
         UnmappedRareTermsAggregateBuilder::new()
     }
+
+    /// Creates a [`UnmappedRareTermsAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UnmappedRareTermsAggregateBuilder,
+        ) -> UnmappedRareTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> UnmappedRareTermsAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`UnmappedRareTermsAggregate`].
@@ -43348,6 +45766,15 @@ impl UnmappedSamplerAggregate {
     /// Creates a builder for [`UnmappedSamplerAggregate`].
     pub fn builder() -> UnmappedSamplerAggregateBuilder {
         UnmappedSamplerAggregateBuilder::new()
+    }
+
+    /// Creates a [`UnmappedSamplerAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UnmappedSamplerAggregateBuilder,
+        ) -> UnmappedSamplerAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> UnmappedSamplerAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -43472,6 +45899,16 @@ impl UnmappedSignificantTermsAggregate {
     /// Creates a builder for [`UnmappedSignificantTermsAggregate`].
     pub fn builder() -> UnmappedSignificantTermsAggregateBuilder {
         UnmappedSignificantTermsAggregateBuilder::new()
+    }
+
+    /// Creates a [`UnmappedSignificantTermsAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UnmappedSignificantTermsAggregateBuilder,
+        )
+            -> UnmappedSignificantTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> UnmappedSignificantTermsAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -43605,6 +46042,15 @@ impl UnmappedTermsAggregate {
     /// Creates a builder for [`UnmappedTermsAggregate`].
     pub fn builder() -> UnmappedTermsAggregateBuilder {
         UnmappedTermsAggregateBuilder::new()
+    }
+
+    /// Creates a [`UnmappedTermsAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UnmappedTermsAggregateBuilder,
+        ) -> UnmappedTermsAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> UnmappedTermsAggregate {
+        f(Self::builder()).build()
     }
 }
 
@@ -43754,6 +46200,15 @@ impl ValueCountAggregate {
     pub fn builder() -> ValueCountAggregateBuilder {
         ValueCountAggregateBuilder::new()
     }
+
+    /// Creates a [`ValueCountAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ValueCountAggregateBuilder,
+        ) -> ValueCountAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> ValueCountAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ValueCountAggregate`].
@@ -43872,6 +46327,13 @@ impl ValueCountAggregation {
     /// Creates a builder for [`ValueCountAggregation`].
     pub fn builder() -> ValueCountAggregationBuilder {
         ValueCountAggregationBuilder::new()
+    }
+
+    /// Creates a [`ValueCountAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ValueCountAggregationBuilder) -> ValueCountAggregationBuilder,
+    ) -> ValueCountAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -44006,6 +46468,15 @@ impl VariableWidthHistogramAggregate {
     pub fn builder() -> VariableWidthHistogramAggregateBuilder {
         VariableWidthHistogramAggregateBuilder::new()
     }
+
+    /// Creates a [`VariableWidthHistogramAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            VariableWidthHistogramAggregateBuilder,
+        ) -> VariableWidthHistogramAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> VariableWidthHistogramAggregate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`VariableWidthHistogramAggregate`].
@@ -44116,6 +46587,15 @@ impl VariableWidthHistogramAggregation {
     /// Creates a builder for [`VariableWidthHistogramAggregation`].
     pub fn builder() -> VariableWidthHistogramAggregationBuilder {
         VariableWidthHistogramAggregationBuilder::new()
+    }
+
+    /// Creates a [`VariableWidthHistogramAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            VariableWidthHistogramAggregationBuilder,
+        ) -> VariableWidthHistogramAggregationBuilder,
+    ) -> VariableWidthHistogramAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -44252,6 +46732,20 @@ impl VariableWidthHistogramBucket {
     /// Creates a builder for [`VariableWidthHistogramBucket`].
     pub fn builder() -> VariableWidthHistogramBucketBuilder {
         VariableWidthHistogramBucketBuilder::new()
+    }
+
+    /// Creates a [`VariableWidthHistogramBucket`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            VariableWidthHistogramBucketBuilder,
+        ) -> VariableWidthHistogramBucketBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> VariableWidthHistogramBucket {
+        f(Self::builder()).build()
     }
 }
 
@@ -44521,6 +47015,13 @@ impl WeightedAverageAggregation {
     pub fn builder() -> WeightedAverageAggregationBuilder {
         WeightedAverageAggregationBuilder::new()
     }
+
+    /// Creates a [`WeightedAverageAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(WeightedAverageAggregationBuilder) -> WeightedAverageAggregationBuilder,
+    ) -> WeightedAverageAggregation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`WeightedAverageAggregation`].
@@ -44643,6 +47144,13 @@ impl WeightedAverageValue {
     pub fn builder() -> WeightedAverageValueBuilder {
         WeightedAverageValueBuilder::new()
     }
+
+    /// Creates a [`WeightedAverageValue`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(WeightedAverageValueBuilder) -> WeightedAverageValueBuilder,
+    ) -> WeightedAverageValue {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`WeightedAverageValue`].
@@ -44760,6 +47268,15 @@ impl WeightedAvgAggregate {
     /// Creates a builder for [`WeightedAvgAggregate`].
     pub fn builder() -> WeightedAvgAggregateBuilder {
         WeightedAvgAggregateBuilder::new()
+    }
+
+    /// Creates a [`WeightedAvgAggregate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            WeightedAvgAggregateBuilder,
+        ) -> WeightedAvgAggregateBuilder<(crate::typed::builder::Set,)>,
+    ) -> WeightedAvgAggregate {
+        f(Self::builder()).build()
     }
 }
 

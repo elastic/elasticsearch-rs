@@ -53,6 +53,11 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -283,6 +288,19 @@ impl RollupJob {
     pub fn builder() -> RollupJobBuilder {
         RollupJobBuilder::new()
     }
+
+    /// Creates a [`RollupJob`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RollupJobBuilder,
+        ) -> RollupJobBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RollupJob {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RollupJob`].
@@ -499,6 +517,24 @@ impl RollupJobConfiguration {
     /// Creates a builder for [`RollupJobConfiguration`].
     pub fn builder() -> RollupJobConfigurationBuilder {
         RollupJobConfigurationBuilder::new()
+    }
+
+    /// Creates a [`RollupJobConfiguration`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RollupJobConfigurationBuilder,
+        ) -> RollupJobConfigurationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RollupJobConfiguration {
+        f(Self::builder()).build()
     }
 }
 
@@ -899,6 +935,28 @@ impl RollupJobStats {
     /// Creates a builder for [`RollupJobStats`].
     pub fn builder() -> RollupJobStatsBuilder {
         RollupJobStatsBuilder::new()
+    }
+
+    /// Creates a [`RollupJobStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RollupJobStatsBuilder,
+        ) -> RollupJobStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RollupJobStats {
+        f(Self::builder()).build()
     }
 }
 
@@ -1798,6 +1856,13 @@ impl RollupJobStatus {
     /// Creates a builder for [`RollupJobStatus`].
     pub fn builder() -> RollupJobStatusBuilder {
         RollupJobStatusBuilder::new()
+    }
+
+    /// Creates a [`RollupJobStatus`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RollupJobStatusBuilder) -> RollupJobStatusBuilder<(crate::typed::builder::Set,)>,
+    ) -> RollupJobStatus {
+        f(Self::builder()).build()
     }
 }
 

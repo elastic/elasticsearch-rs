@@ -41,6 +41,11 @@ impl CreateOperation {
     pub fn builder() -> CreateOperationBuilder {
         CreateOperationBuilder::new()
     }
+
+    /// Creates a [`CreateOperation`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(CreateOperationBuilder) -> CreateOperationBuilder) -> CreateOperation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CreateOperation`].
@@ -266,6 +271,11 @@ impl DeleteOperation {
     pub fn builder() -> DeleteOperationBuilder {
         DeleteOperationBuilder::new()
     }
+
+    /// Creates a [`DeleteOperation`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(DeleteOperationBuilder) -> DeleteOperationBuilder) -> DeleteOperation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DeleteOperation`].
@@ -448,6 +458,11 @@ impl IndexOperation {
     /// Creates a builder for [`IndexOperation`].
     pub fn builder() -> IndexOperationBuilder {
         IndexOperationBuilder::new()
+    }
+
+    /// Creates a [`IndexOperation`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(IndexOperationBuilder) -> IndexOperationBuilder) -> IndexOperation {
+        f(Self::builder()).build()
     }
 }
 
@@ -674,6 +689,11 @@ impl OperationBase {
     pub fn builder() -> OperationBaseBuilder {
         OperationBaseBuilder::new()
     }
+
+    /// Creates a [`OperationBase`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(OperationBaseBuilder) -> OperationBaseBuilder) -> OperationBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`OperationBase`].
@@ -880,6 +900,15 @@ impl OperationContainer {
     /// Creates a builder for [`OperationContainer`].
     pub fn builder() -> OperationContainerBuilder {
         OperationContainerBuilder::new()
+    }
+
+    /// Creates a [`OperationContainer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            OperationContainerBuilder,
+        ) -> OperationContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> OperationContainer {
+        f(Self::builder()).build()
     }
 }
 
@@ -1203,6 +1232,13 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -1858,6 +1894,16 @@ impl ResponseItem {
     pub fn builder() -> ResponseItemBuilder {
         ResponseItemBuilder::new()
     }
+
+    /// Creates a [`ResponseItem`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ResponseItemBuilder,
+        )
+            -> ResponseItemBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> ResponseItem {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ResponseItem`].
@@ -2179,6 +2225,11 @@ impl UpdateAction {
     pub fn builder() -> UpdateActionBuilder {
         UpdateActionBuilder::new()
     }
+
+    /// Creates a [`UpdateAction`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(UpdateActionBuilder) -> UpdateActionBuilder) -> UpdateAction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`UpdateAction`].
@@ -2361,6 +2412,11 @@ impl UpdateOperation {
     /// Creates a builder for [`UpdateOperation`].
     pub fn builder() -> UpdateOperationBuilder {
         UpdateOperationBuilder::new()
+    }
+
+    /// Creates a [`UpdateOperation`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(UpdateOperationBuilder) -> UpdateOperationBuilder) -> UpdateOperation {
+        f(Self::builder()).build()
     }
 }
 
@@ -2562,6 +2618,11 @@ impl WriteOperation {
     /// Creates a builder for [`WriteOperation`].
     pub fn builder() -> WriteOperationBuilder {
         WriteOperationBuilder::new()
+    }
+
+    /// Creates a [`WriteOperation`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(WriteOperationBuilder) -> WriteOperationBuilder) -> WriteOperation {
+        f(Self::builder()).build()
     }
 }
 

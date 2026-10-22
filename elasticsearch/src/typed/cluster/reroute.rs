@@ -25,6 +25,11 @@ impl Command {
     pub fn builder() -> CommandBuilder {
         CommandBuilder::new()
     }
+
+    /// Creates a [`Command`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(CommandBuilder) -> CommandBuilder) -> Command {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Command`].
@@ -229,6 +234,20 @@ impl CommandAllocatePrimaryAction {
     pub fn builder() -> CommandAllocatePrimaryActionBuilder {
         CommandAllocatePrimaryActionBuilder::new()
     }
+
+    /// Creates a [`CommandAllocatePrimaryAction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CommandAllocatePrimaryActionBuilder,
+        ) -> CommandAllocatePrimaryActionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CommandAllocatePrimaryAction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CommandAllocatePrimaryAction`].
@@ -422,6 +441,19 @@ impl CommandAllocateReplicaAction {
     pub fn builder() -> CommandAllocateReplicaActionBuilder {
         CommandAllocateReplicaActionBuilder::new()
     }
+
+    /// Creates a [`CommandAllocateReplicaAction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CommandAllocateReplicaActionBuilder,
+        ) -> CommandAllocateReplicaActionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CommandAllocateReplicaAction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CommandAllocateReplicaAction`].
@@ -580,6 +612,19 @@ impl CommandCancelAction {
     /// Creates a builder for [`CommandCancelAction`].
     pub fn builder() -> CommandCancelActionBuilder {
         CommandCancelActionBuilder::new()
+    }
+
+    /// Creates a [`CommandCancelAction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CommandCancelActionBuilder,
+        ) -> CommandCancelActionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CommandCancelAction {
+        f(Self::builder()).build()
     }
 }
 
@@ -755,6 +800,20 @@ impl CommandMoveAction {
     /// Creates a builder for [`CommandMoveAction`].
     pub fn builder() -> CommandMoveActionBuilder {
         CommandMoveActionBuilder::new()
+    }
+
+    /// Creates a [`CommandMoveAction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CommandMoveActionBuilder,
+        ) -> CommandMoveActionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CommandMoveAction {
+        f(Self::builder()).build()
     }
 }
 
@@ -995,6 +1054,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -1369,6 +1433,19 @@ impl RerouteDecision {
     pub fn builder() -> RerouteDecisionBuilder {
         RerouteDecisionBuilder::new()
     }
+
+    /// Creates a [`RerouteDecision`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RerouteDecisionBuilder,
+        ) -> RerouteDecisionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RerouteDecision {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RerouteDecision`].
@@ -1525,6 +1602,19 @@ impl RerouteExplanation {
     /// Creates a builder for [`RerouteExplanation`].
     pub fn builder() -> RerouteExplanationBuilder {
         RerouteExplanationBuilder::new()
+    }
+
+    /// Creates a [`RerouteExplanation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RerouteExplanationBuilder,
+        ) -> RerouteExplanationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RerouteExplanation {
+        f(Self::builder()).build()
     }
 }
 
@@ -1702,6 +1792,20 @@ impl RerouteParameters {
     /// Creates a builder for [`RerouteParameters`].
     pub fn builder() -> RerouteParametersBuilder {
         RerouteParametersBuilder::new()
+    }
+
+    /// Creates a [`RerouteParameters`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RerouteParametersBuilder,
+        ) -> RerouteParametersBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RerouteParameters {
+        f(Self::builder()).build()
     }
 }
 

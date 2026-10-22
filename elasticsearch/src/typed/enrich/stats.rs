@@ -18,6 +18,24 @@ impl CacheStats {
     pub fn builder() -> CacheStatsBuilder {
         CacheStatsBuilder::new()
     }
+
+    /// Creates a [`CacheStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CacheStatsBuilder,
+        ) -> CacheStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CacheStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CacheStats`].
@@ -390,6 +408,21 @@ impl CoordinatorStats {
     pub fn builder() -> CoordinatorStatsBuilder {
         CoordinatorStatsBuilder::new()
     }
+
+    /// Creates a [`CoordinatorStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CoordinatorStatsBuilder,
+        ) -> CoordinatorStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CoordinatorStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CoordinatorStats`].
@@ -618,6 +651,18 @@ impl ExecutingPolicy {
     pub fn builder() -> ExecutingPolicyBuilder {
         ExecutingPolicyBuilder::new()
     }
+
+    /// Creates a [`ExecutingPolicy`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ExecutingPolicyBuilder,
+        ) -> ExecutingPolicyBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ExecutingPolicy {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ExecutingPolicy`].
@@ -755,6 +800,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

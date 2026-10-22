@@ -45,6 +45,11 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -327,6 +332,16 @@ impl ResponseBase {
     /// Creates a builder for [`ResponseBase`].
     pub fn builder() -> ResponseBaseBuilder {
         ResponseBaseBuilder::new()
+    }
+
+    /// Creates a [`ResponseBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ResponseBaseBuilder,
+        )
+            -> ResponseBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> ResponseBase {
+        f(Self::builder()).build()
     }
 }
 

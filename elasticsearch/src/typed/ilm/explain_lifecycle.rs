@@ -76,6 +76,19 @@ impl LifecycleExplainManaged {
     pub fn builder() -> LifecycleExplainManagedBuilder {
         LifecycleExplainManagedBuilder::new()
     }
+
+    /// Creates a [`LifecycleExplainManaged`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LifecycleExplainManagedBuilder,
+        ) -> LifecycleExplainManagedBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> LifecycleExplainManaged {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`LifecycleExplainManaged`].
@@ -720,6 +733,19 @@ impl LifecycleExplainPhaseExecution {
     pub fn builder() -> LifecycleExplainPhaseExecutionBuilder {
         LifecycleExplainPhaseExecutionBuilder::new()
     }
+
+    /// Creates a [`LifecycleExplainPhaseExecution`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LifecycleExplainPhaseExecutionBuilder,
+        ) -> LifecycleExplainPhaseExecutionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> LifecycleExplainPhaseExecution {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`LifecycleExplainPhaseExecution`].
@@ -904,6 +930,18 @@ impl LifecycleExplainUnmanaged {
     pub fn builder() -> LifecycleExplainUnmanagedBuilder {
         LifecycleExplainUnmanagedBuilder::new()
     }
+
+    /// Creates a [`LifecycleExplainUnmanaged`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LifecycleExplainUnmanagedBuilder,
+        ) -> LifecycleExplainUnmanagedBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> LifecycleExplainUnmanaged {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`LifecycleExplainUnmanaged`].
@@ -1038,6 +1076,13 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 

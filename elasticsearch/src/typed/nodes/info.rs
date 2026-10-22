@@ -36,6 +36,15 @@ impl DeprecationIndexing {
     pub fn builder() -> DeprecationIndexingBuilder {
         DeprecationIndexingBuilder::new()
     }
+
+    /// Creates a [`DeprecationIndexing`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DeprecationIndexingBuilder,
+        ) -> DeprecationIndexingBuilder<(crate::typed::builder::Set,)>,
+    ) -> DeprecationIndexing {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DeprecationIndexing`].
@@ -152,6 +161,29 @@ impl NodeInfo {
     /// Creates a builder for [`NodeInfo`].
     pub fn builder() -> NodeInfoBuilder {
         NodeInfoBuilder::new()
+    }
+
+    /// Creates a [`NodeInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoBuilder,
+        ) -> NodeInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NodeInfo {
+        f(Self::builder()).build()
     }
 }
 
@@ -1614,6 +1646,13 @@ impl NodeInfoAction {
     pub fn builder() -> NodeInfoActionBuilder {
         NodeInfoActionBuilder::new()
     }
+
+    /// Creates a [`NodeInfoAction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NodeInfoActionBuilder) -> NodeInfoActionBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoAction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeInfoAction`].
@@ -1682,6 +1721,15 @@ impl NodeInfoAggregation {
     /// Creates a builder for [`NodeInfoAggregation`].
     pub fn builder() -> NodeInfoAggregationBuilder {
         NodeInfoAggregationBuilder::new()
+    }
+
+    /// Creates a [`NodeInfoAggregation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoAggregationBuilder,
+        ) -> NodeInfoAggregationBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoAggregation {
+        f(Self::builder()).build()
     }
 }
 
@@ -1752,6 +1800,15 @@ impl NodeInfoBootstrap {
     pub fn builder() -> NodeInfoBootstrapBuilder {
         NodeInfoBootstrapBuilder::new()
     }
+
+    /// Creates a [`NodeInfoBootstrap`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoBootstrapBuilder,
+        ) -> NodeInfoBootstrapBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoBootstrap {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeInfoBootstrap`].
@@ -1820,6 +1877,13 @@ impl NodeInfoClient {
     /// Creates a builder for [`NodeInfoClient`].
     pub fn builder() -> NodeInfoClientBuilder {
         NodeInfoClientBuilder::new()
+    }
+
+    /// Creates a [`NodeInfoClient`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NodeInfoClientBuilder) -> NodeInfoClientBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoClient {
+        f(Self::builder()).build()
     }
 }
 
@@ -1948,6 +2012,13 @@ impl NodeInfoDiscover {
     pub fn builder() -> NodeInfoDiscoverBuilder {
         NodeInfoDiscoverBuilder::new()
     }
+
+    /// Creates a [`NodeInfoDiscover`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NodeInfoDiscoverBuilder) -> NodeInfoDiscoverBuilder,
+    ) -> NodeInfoDiscover {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeInfoDiscover`].
@@ -2055,6 +2126,19 @@ impl NodeInfoHttp {
     /// Creates a builder for [`NodeInfoHttp`].
     pub fn builder() -> NodeInfoHttpBuilder {
         NodeInfoHttpBuilder::new()
+    }
+
+    /// Creates a [`NodeInfoHttp`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoHttpBuilder,
+        ) -> NodeInfoHttpBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NodeInfoHttp {
+        f(Self::builder()).build()
     }
 }
 
@@ -2229,6 +2313,13 @@ impl NodeInfoIngest {
     pub fn builder() -> NodeInfoIngestBuilder {
         NodeInfoIngestBuilder::new()
     }
+
+    /// Creates a [`NodeInfoIngest`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NodeInfoIngestBuilder) -> NodeInfoIngestBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoIngest {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeInfoIngest`].
@@ -2297,6 +2388,15 @@ impl NodeInfoIngestDownloader {
     /// Creates a builder for [`NodeInfoIngestDownloader`].
     pub fn builder() -> NodeInfoIngestDownloaderBuilder {
         NodeInfoIngestDownloaderBuilder::new()
+    }
+
+    /// Creates a [`NodeInfoIngestDownloader`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoIngestDownloaderBuilder,
+        ) -> NodeInfoIngestDownloaderBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoIngestDownloader {
+        f(Self::builder()).build()
     }
 }
 
@@ -2368,6 +2468,15 @@ impl NodeInfoIngestInfo {
     /// Creates a builder for [`NodeInfoIngestInfo`].
     pub fn builder() -> NodeInfoIngestInfoBuilder {
         NodeInfoIngestInfoBuilder::new()
+    }
+
+    /// Creates a [`NodeInfoIngestInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoIngestInfoBuilder,
+        ) -> NodeInfoIngestInfoBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoIngestInfo {
+        f(Self::builder()).build()
     }
 }
 
@@ -2447,6 +2556,15 @@ impl NodeInfoIngestProcessor {
     /// Creates a builder for [`NodeInfoIngestProcessor`].
     pub fn builder() -> NodeInfoIngestProcessorBuilder {
         NodeInfoIngestProcessorBuilder::new()
+    }
+
+    /// Creates a [`NodeInfoIngestProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoIngestProcessorBuilder,
+        ) -> NodeInfoIngestProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoIngestProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -2532,6 +2650,21 @@ impl NodeInfoJvmMemory {
     /// Creates a builder for [`NodeInfoJvmMemory`].
     pub fn builder() -> NodeInfoJvmMemoryBuilder {
         NodeInfoJvmMemoryBuilder::new()
+    }
+
+    /// Creates a [`NodeInfoJvmMemory`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoJvmMemoryBuilder,
+        ) -> NodeInfoJvmMemoryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NodeInfoJvmMemory {
+        f(Self::builder()).build()
     }
 }
 
@@ -2836,6 +2969,18 @@ impl NodeInfoMemory {
     pub fn builder() -> NodeInfoMemoryBuilder {
         NodeInfoMemoryBuilder::new()
     }
+
+    /// Creates a [`NodeInfoMemory`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoMemoryBuilder,
+        ) -> NodeInfoMemoryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NodeInfoMemory {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeInfoMemory`].
@@ -2937,6 +3082,24 @@ impl NodeInfoOSCPU {
     /// Creates a builder for [`NodeInfoOSCPU`].
     pub fn builder() -> NodeInfoOSCPUBuilder {
         NodeInfoOSCPUBuilder::new()
+    }
+
+    /// Creates a [`NodeInfoOSCPU`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoOSCPUBuilder,
+        ) -> NodeInfoOSCPUBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NodeInfoOSCPU {
+        f(Self::builder()).build()
     }
 }
 
@@ -3338,6 +3501,11 @@ impl NodeInfoPath {
     pub fn builder() -> NodeInfoPathBuilder {
         NodeInfoPathBuilder::new()
     }
+
+    /// Creates a [`NodeInfoPath`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(NodeInfoPathBuilder) -> NodeInfoPathBuilder) -> NodeInfoPath {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeInfoPath`].
@@ -3442,6 +3610,15 @@ impl NodeInfoRepositories {
     pub fn builder() -> NodeInfoRepositoriesBuilder {
         NodeInfoRepositoriesBuilder::new()
     }
+
+    /// Creates a [`NodeInfoRepositories`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoRepositoriesBuilder,
+        ) -> NodeInfoRepositoriesBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoRepositories {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeInfoRepositories`].
@@ -3521,6 +3698,15 @@ impl NodeInfoRepositoriesUrl {
     pub fn builder() -> NodeInfoRepositoriesUrlBuilder {
         NodeInfoRepositoriesUrlBuilder::new()
     }
+
+    /// Creates a [`NodeInfoRepositoriesUrl`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoRepositoriesUrlBuilder,
+        ) -> NodeInfoRepositoriesUrlBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoRepositoriesUrl {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeInfoRepositoriesUrl`].
@@ -3593,6 +3779,13 @@ impl NodeInfoScript {
     /// Creates a builder for [`NodeInfoScript`].
     pub fn builder() -> NodeInfoScriptBuilder {
         NodeInfoScriptBuilder::new()
+    }
+
+    /// Creates a [`NodeInfoScript`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NodeInfoScriptBuilder) -> NodeInfoScriptBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoScript {
+        f(Self::builder()).build()
     }
 }
 
@@ -3678,6 +3871,13 @@ impl NodeInfoSearch {
     pub fn builder() -> NodeInfoSearchBuilder {
         NodeInfoSearchBuilder::new()
     }
+
+    /// Creates a [`NodeInfoSearch`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NodeInfoSearchBuilder) -> NodeInfoSearchBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoSearch {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeInfoSearch`].
@@ -3756,6 +3956,15 @@ impl NodeInfoSearchRemote {
     /// Creates a builder for [`NodeInfoSearchRemote`].
     pub fn builder() -> NodeInfoSearchRemoteBuilder {
         NodeInfoSearchRemoteBuilder::new()
+    }
+
+    /// Creates a [`NodeInfoSearchRemote`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoSearchRemoteBuilder,
+        ) -> NodeInfoSearchRemoteBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoSearchRemote {
+        f(Self::builder()).build()
     }
 }
 
@@ -3850,6 +4059,20 @@ impl NodeInfoSettings {
     /// Creates a builder for [`NodeInfoSettings`].
     pub fn builder() -> NodeInfoSettingsBuilder {
         NodeInfoSettingsBuilder::new()
+    }
+
+    /// Creates a [`NodeInfoSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoSettingsBuilder,
+        ) -> NodeInfoSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NodeInfoSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -4373,6 +4596,18 @@ impl NodeInfoSettingsCluster {
     pub fn builder() -> NodeInfoSettingsClusterBuilder {
         NodeInfoSettingsClusterBuilder::new()
     }
+
+    /// Creates a [`NodeInfoSettingsCluster`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoSettingsClusterBuilder,
+        ) -> NodeInfoSettingsClusterBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NodeInfoSettingsCluster {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeInfoSettingsCluster`].
@@ -4561,6 +4796,15 @@ impl NodeInfoSettingsClusterElection {
     pub fn builder() -> NodeInfoSettingsClusterElectionBuilder {
         NodeInfoSettingsClusterElectionBuilder::new()
     }
+
+    /// Creates a [`NodeInfoSettingsClusterElection`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoSettingsClusterElectionBuilder,
+        ) -> NodeInfoSettingsClusterElectionBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoSettingsClusterElection {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeInfoSettingsClusterElection`].
@@ -4694,6 +4938,15 @@ impl NodeInfoSettingsHttp {
     pub fn builder() -> NodeInfoSettingsHttpBuilder {
         NodeInfoSettingsHttpBuilder::new()
     }
+
+    /// Creates a [`NodeInfoSettingsHttp`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoSettingsHttpBuilder,
+        ) -> NodeInfoSettingsHttpBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoSettingsHttp {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeInfoSettingsHttp`].
@@ -4817,6 +5070,15 @@ impl NodeInfoSettingsHttpType {
     /// Creates a builder for [`NodeInfoSettingsHttpType`].
     pub fn builder() -> NodeInfoSettingsHttpTypeBuilder {
         NodeInfoSettingsHttpTypeBuilder::new()
+    }
+
+    /// Creates a [`NodeInfoSettingsHttpType`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoSettingsHttpTypeBuilder,
+        ) -> NodeInfoSettingsHttpTypeBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoSettingsHttpType {
+        f(Self::builder()).build()
     }
 }
 
@@ -4955,6 +5217,13 @@ impl NodeInfoSettingsIngest {
     /// Creates a builder for [`NodeInfoSettingsIngest`].
     pub fn builder() -> NodeInfoSettingsIngestBuilder {
         NodeInfoSettingsIngestBuilder::new()
+    }
+
+    /// Creates a [`NodeInfoSettingsIngest`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NodeInfoSettingsIngestBuilder) -> NodeInfoSettingsIngestBuilder,
+    ) -> NodeInfoSettingsIngest {
+        f(Self::builder()).build()
     }
 }
 
@@ -5838,6 +6107,13 @@ impl NodeInfoSettingsNetwork {
     pub fn builder() -> NodeInfoSettingsNetworkBuilder {
         NodeInfoSettingsNetworkBuilder::new()
     }
+
+    /// Creates a [`NodeInfoSettingsNetwork`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NodeInfoSettingsNetworkBuilder) -> NodeInfoSettingsNetworkBuilder,
+    ) -> NodeInfoSettingsNetwork {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeInfoSettingsNetwork`].
@@ -5890,6 +6166,18 @@ impl NodeInfoSettingsNode {
     /// Creates a builder for [`NodeInfoSettingsNode`].
     pub fn builder() -> NodeInfoSettingsNodeBuilder {
         NodeInfoSettingsNodeBuilder::new()
+    }
+
+    /// Creates a [`NodeInfoSettingsNode`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoSettingsNodeBuilder,
+        ) -> NodeInfoSettingsNodeBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NodeInfoSettingsNode {
+        f(Self::builder()).build()
     }
 }
 
@@ -6015,6 +6303,15 @@ impl NodeInfoSettingsTransport {
     /// Creates a builder for [`NodeInfoSettingsTransport`].
     pub fn builder() -> NodeInfoSettingsTransportBuilder {
         NodeInfoSettingsTransportBuilder::new()
+    }
+
+    /// Creates a [`NodeInfoSettingsTransport`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoSettingsTransportBuilder,
+        ) -> NodeInfoSettingsTransportBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoSettingsTransport {
+        f(Self::builder()).build()
     }
 }
 
@@ -6161,6 +6458,16 @@ impl NodeInfoSettingsTransportFeatures {
     pub fn builder() -> NodeInfoSettingsTransportFeaturesBuilder {
         NodeInfoSettingsTransportFeaturesBuilder::new()
     }
+
+    /// Creates a [`NodeInfoSettingsTransportFeatures`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoSettingsTransportFeaturesBuilder,
+        )
+            -> NodeInfoSettingsTransportFeaturesBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoSettingsTransportFeatures {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeInfoSettingsTransportFeatures`].
@@ -6234,6 +6541,15 @@ impl NodeInfoSettingsTransportType {
     pub fn builder() -> NodeInfoSettingsTransportTypeBuilder {
         NodeInfoSettingsTransportTypeBuilder::new()
     }
+
+    /// Creates a [`NodeInfoSettingsTransportType`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoSettingsTransportTypeBuilder,
+        ) -> NodeInfoSettingsTransportTypeBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoSettingsTransportType {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeInfoSettingsTransportType`].
@@ -6306,6 +6622,19 @@ impl NodeInfoTransport {
     /// Creates a builder for [`NodeInfoTransport`].
     pub fn builder() -> NodeInfoTransportBuilder {
         NodeInfoTransportBuilder::new()
+    }
+
+    /// Creates a [`NodeInfoTransport`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoTransportBuilder,
+        ) -> NodeInfoTransportBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NodeInfoTransport {
+        f(Self::builder()).build()
     }
 }
 
@@ -6468,6 +6797,13 @@ impl NodeInfoXpack {
     pub fn builder() -> NodeInfoXpackBuilder {
         NodeInfoXpackBuilder::new()
     }
+
+    /// Creates a [`NodeInfoXpack`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NodeInfoXpackBuilder) -> NodeInfoXpackBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoXpack {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeInfoXpack`].
@@ -6625,6 +6961,15 @@ impl NodeInfoXpackLicense {
     pub fn builder() -> NodeInfoXpackLicenseBuilder {
         NodeInfoXpackLicenseBuilder::new()
     }
+
+    /// Creates a [`NodeInfoXpackLicense`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoXpackLicenseBuilder,
+        ) -> NodeInfoXpackLicenseBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoXpackLicense {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeInfoXpackLicense`].
@@ -6704,6 +7049,15 @@ impl NodeInfoXpackLicenseType {
     pub fn builder() -> NodeInfoXpackLicenseTypeBuilder {
         NodeInfoXpackLicenseTypeBuilder::new()
     }
+
+    /// Creates a [`NodeInfoXpackLicenseType`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoXpackLicenseTypeBuilder,
+        ) -> NodeInfoXpackLicenseTypeBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoXpackLicenseType {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeInfoXpackLicenseType`].
@@ -6776,6 +7130,11 @@ impl NodeInfoXpackMl {
     pub fn builder() -> NodeInfoXpackMlBuilder {
         NodeInfoXpackMlBuilder::new()
     }
+
+    /// Creates a [`NodeInfoXpackMl`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(NodeInfoXpackMlBuilder) -> NodeInfoXpackMlBuilder) -> NodeInfoXpackMl {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeInfoXpackMl`].
@@ -6835,6 +7194,15 @@ impl NodeInfoXpackSecurity {
     /// Creates a builder for [`NodeInfoXpackSecurity`].
     pub fn builder() -> NodeInfoXpackSecurityBuilder {
         NodeInfoXpackSecurityBuilder::new()
+    }
+
+    /// Creates a [`NodeInfoXpackSecurity`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoXpackSecurityBuilder,
+        ) -> NodeInfoXpackSecurityBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoXpackSecurity {
+        f(Self::builder()).build()
     }
 }
 
@@ -6981,6 +7349,13 @@ impl NodeInfoXpackSecurityAuthc {
     pub fn builder() -> NodeInfoXpackSecurityAuthcBuilder {
         NodeInfoXpackSecurityAuthcBuilder::new()
     }
+
+    /// Creates a [`NodeInfoXpackSecurityAuthc`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NodeInfoXpackSecurityAuthcBuilder) -> NodeInfoXpackSecurityAuthcBuilder,
+    ) -> NodeInfoXpackSecurityAuthc {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeInfoXpackSecurityAuthc`].
@@ -7073,6 +7448,15 @@ impl NodeInfoXpackSecurityAuthcRealms {
     /// Creates a builder for [`NodeInfoXpackSecurityAuthcRealms`].
     pub fn builder() -> NodeInfoXpackSecurityAuthcRealmsBuilder {
         NodeInfoXpackSecurityAuthcRealmsBuilder::new()
+    }
+
+    /// Creates a [`NodeInfoXpackSecurityAuthcRealms`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoXpackSecurityAuthcRealmsBuilder,
+        ) -> NodeInfoXpackSecurityAuthcRealmsBuilder,
+    ) -> NodeInfoXpackSecurityAuthcRealms {
+        f(Self::builder()).build()
     }
 }
 
@@ -7257,6 +7641,16 @@ impl NodeInfoXpackSecurityAuthcRealmsStatus {
     pub fn builder() -> NodeInfoXpackSecurityAuthcRealmsStatusBuilder {
         NodeInfoXpackSecurityAuthcRealmsStatusBuilder::new()
     }
+
+    /// Creates a [`NodeInfoXpackSecurityAuthcRealmsStatus`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoXpackSecurityAuthcRealmsStatusBuilder,
+        )
+            -> NodeInfoXpackSecurityAuthcRealmsStatusBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoXpackSecurityAuthcRealmsStatus {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeInfoXpackSecurityAuthcRealmsStatus`].
@@ -7345,6 +7739,15 @@ impl NodeInfoXpackSecurityAuthcToken {
     pub fn builder() -> NodeInfoXpackSecurityAuthcTokenBuilder {
         NodeInfoXpackSecurityAuthcTokenBuilder::new()
     }
+
+    /// Creates a [`NodeInfoXpackSecurityAuthcToken`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoXpackSecurityAuthcTokenBuilder,
+        ) -> NodeInfoXpackSecurityAuthcTokenBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoXpackSecurityAuthcToken {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeInfoXpackSecurityAuthcToken`].
@@ -7417,6 +7820,15 @@ impl NodeInfoXpackSecuritySsl {
     /// Creates a builder for [`NodeInfoXpackSecuritySsl`].
     pub fn builder() -> NodeInfoXpackSecuritySslBuilder {
         NodeInfoXpackSecuritySslBuilder::new()
+    }
+
+    /// Creates a [`NodeInfoXpackSecuritySsl`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeInfoXpackSecuritySslBuilder,
+        ) -> NodeInfoXpackSecuritySslBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeInfoXpackSecuritySsl {
+        f(Self::builder()).build()
     }
 }
 
@@ -7526,6 +7938,27 @@ impl NodeJvmInfo {
     /// Creates a builder for [`NodeJvmInfo`].
     pub fn builder() -> NodeJvmInfoBuilder {
         NodeJvmInfoBuilder::new()
+    }
+
+    /// Creates a [`NodeJvmInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeJvmInfoBuilder,
+        ) -> NodeJvmInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NodeJvmInfo {
+        f(Self::builder()).build()
     }
 }
 
@@ -8391,6 +8824,22 @@ impl NodeOperatingSystemInfo {
     pub fn builder() -> NodeOperatingSystemInfoBuilder {
         NodeOperatingSystemInfoBuilder::new()
     }
+
+    /// Creates a [`NodeOperatingSystemInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeOperatingSystemInfoBuilder,
+        ) -> NodeOperatingSystemInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NodeOperatingSystemInfo {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeOperatingSystemInfo`].
@@ -8787,6 +9236,19 @@ impl NodeProcessInfo {
     pub fn builder() -> NodeProcessInfoBuilder {
         NodeProcessInfoBuilder::new()
     }
+
+    /// Creates a [`NodeProcessInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeProcessInfoBuilder,
+        ) -> NodeProcessInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NodeProcessInfo {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeProcessInfo`].
@@ -8950,6 +9412,18 @@ impl NodeThreadPoolInfo {
     /// Creates a builder for [`NodeThreadPoolInfo`].
     pub fn builder() -> NodeThreadPoolInfoBuilder {
         NodeThreadPoolInfoBuilder::new()
+    }
+
+    /// Creates a [`NodeThreadPoolInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeThreadPoolInfoBuilder,
+        ) -> NodeThreadPoolInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NodeThreadPoolInfo {
+        f(Self::builder()).build()
     }
 }
 
@@ -9162,6 +9636,18 @@ impl RemoveClusterServer {
     pub fn builder() -> RemoveClusterServerBuilder {
         RemoveClusterServerBuilder::new()
     }
+
+    /// Creates a [`RemoveClusterServer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RemoveClusterServerBuilder,
+        ) -> RemoveClusterServerBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RemoveClusterServer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RemoveClusterServer`].
@@ -9289,6 +9775,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -9579,6 +10070,16 @@ impl ResponseBase {
     /// Creates a builder for [`ResponseBase`].
     pub fn builder() -> ResponseBaseBuilder {
         ResponseBaseBuilder::new()
+    }
+
+    /// Creates a [`ResponseBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ResponseBaseBuilder,
+        )
+            -> ResponseBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> ResponseBase {
+        f(Self::builder()).build()
     }
 }
 

@@ -12,6 +12,16 @@ impl Overlapping {
     pub fn builder() -> OverlappingBuilder {
         OverlappingBuilder::new()
     }
+
+    /// Creates a [`Overlapping`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            OverlappingBuilder,
+        )
+            -> OverlappingBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Overlapping {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Overlapping`].
@@ -171,6 +181,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -747,6 +762,19 @@ impl Template {
     /// Creates a builder for [`Template`].
     pub fn builder() -> TemplateBuilder {
         TemplateBuilder::new()
+    }
+
+    /// Creates a [`Template`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TemplateBuilder,
+        ) -> TemplateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Template {
+        f(Self::builder()).build()
     }
 }
 

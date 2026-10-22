@@ -60,6 +60,20 @@ impl QueryUser {
     pub fn builder() -> QueryUserBuilder {
         QueryUserBuilder::new()
     }
+
+    /// Creates a [`QueryUser`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            QueryUserBuilder,
+        ) -> QueryUserBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> QueryUser {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`QueryUser`].
@@ -372,6 +386,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -877,6 +896,15 @@ impl UserQueryContainer {
     /// Creates a builder for [`UserQueryContainer`].
     pub fn builder() -> UserQueryContainerBuilder {
         UserQueryContainerBuilder::new()
+    }
+
+    /// Creates a [`UserQueryContainer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UserQueryContainerBuilder,
+        ) -> UserQueryContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> UserQueryContainer {
+        f(Self::builder()).build()
     }
 }
 

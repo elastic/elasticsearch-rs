@@ -55,6 +55,11 @@ impl AliasesRecord {
     pub fn builder() -> AliasesRecordBuilder {
         AliasesRecordBuilder::new()
     }
+
+    /// Creates a [`AliasesRecord`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(AliasesRecordBuilder) -> AliasesRecordBuilder) -> AliasesRecord {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AliasesRecord`].
@@ -224,6 +229,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

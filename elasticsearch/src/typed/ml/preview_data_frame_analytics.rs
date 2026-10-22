@@ -18,6 +18,18 @@ impl DataframePreviewConfig {
     pub fn builder() -> DataframePreviewConfigBuilder {
         DataframePreviewConfigBuilder::new()
     }
+
+    /// Creates a [`DataframePreviewConfig`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DataframePreviewConfigBuilder,
+        ) -> DataframePreviewConfigBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DataframePreviewConfig {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DataframePreviewConfig`].
@@ -230,6 +242,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

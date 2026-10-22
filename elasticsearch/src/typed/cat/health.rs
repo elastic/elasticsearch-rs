@@ -126,6 +126,11 @@ impl HealthRecord {
     pub fn builder() -> HealthRecordBuilder {
         HealthRecordBuilder::new()
     }
+
+    /// Creates a [`HealthRecord`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(HealthRecordBuilder) -> HealthRecordBuilder) -> HealthRecord {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HealthRecord`].
@@ -433,6 +438,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

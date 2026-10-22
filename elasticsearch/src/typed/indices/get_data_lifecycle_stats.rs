@@ -16,6 +16,19 @@ impl DataStreamStats {
     pub fn builder() -> DataStreamStatsBuilder {
         DataStreamStatsBuilder::new()
     }
+
+    /// Creates a [`DataStreamStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DataStreamStatsBuilder,
+        ) -> DataStreamStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DataStreamStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DataStreamStats`].
@@ -194,6 +207,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

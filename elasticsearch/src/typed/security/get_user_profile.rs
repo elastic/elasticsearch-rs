@@ -15,6 +15,18 @@ impl GetUserProfileErrors {
     pub fn builder() -> GetUserProfileErrorsBuilder {
         GetUserProfileErrorsBuilder::new()
     }
+
+    /// Creates a [`GetUserProfileErrors`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GetUserProfileErrorsBuilder,
+        ) -> GetUserProfileErrorsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> GetUserProfileErrors {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GetUserProfileErrors`].
@@ -155,6 +167,13 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 

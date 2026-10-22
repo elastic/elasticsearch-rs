@@ -72,6 +72,11 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -487,6 +492,25 @@ impl SearchShardsNodeAttributes {
     /// Creates a builder for [`SearchShardsNodeAttributes`].
     pub fn builder() -> SearchShardsNodeAttributesBuilder {
         SearchShardsNodeAttributesBuilder::new()
+    }
+
+    /// Creates a [`SearchShardsNodeAttributes`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SearchShardsNodeAttributesBuilder,
+        ) -> SearchShardsNodeAttributesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SearchShardsNodeAttributes {
+        f(Self::builder()).build()
     }
 }
 
@@ -1101,6 +1125,11 @@ impl ShardStoreIndex {
     /// Creates a builder for [`ShardStoreIndex`].
     pub fn builder() -> ShardStoreIndexBuilder {
         ShardStoreIndexBuilder::new()
+    }
+
+    /// Creates a [`ShardStoreIndex`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(ShardStoreIndexBuilder) -> ShardStoreIndexBuilder) -> ShardStoreIndex {
+        f(Self::builder()).build()
     }
 }
 

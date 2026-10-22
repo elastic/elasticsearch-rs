@@ -50,6 +50,22 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RequestBuilder,
+        ) -> RequestBuilder<
+            (
+                crate::typed::builder::Set,
+                crate::typed::builder::Set,
+                crate::typed::builder::Set,
+            ),
+            (),
+        >,
+    ) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -452,6 +468,13 @@ impl StepKey {
     /// Creates a builder for [`StepKey`].
     pub fn builder() -> StepKeyBuilder {
         StepKeyBuilder::new()
+    }
+
+    /// Creates a [`StepKey`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(StepKeyBuilder) -> StepKeyBuilder<(crate::typed::builder::Set,)>,
+    ) -> StepKey {
+        f(Self::builder()).build()
     }
 }
 

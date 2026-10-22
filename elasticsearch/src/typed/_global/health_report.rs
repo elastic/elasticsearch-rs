@@ -16,6 +16,16 @@ impl BaseIndicator {
     pub fn builder() -> BaseIndicatorBuilder {
         BaseIndicatorBuilder::new()
     }
+
+    /// Creates a [`BaseIndicator`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            BaseIndicatorBuilder,
+        )
+            -> BaseIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> BaseIndicator {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`BaseIndicator`].
@@ -191,6 +201,18 @@ impl DataStreamLifecycleDetails {
     pub fn builder() -> DataStreamLifecycleDetailsBuilder {
         DataStreamLifecycleDetailsBuilder::new()
     }
+
+    /// Creates a [`DataStreamLifecycleDetails`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DataStreamLifecycleDetailsBuilder,
+        ) -> DataStreamLifecycleDetailsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DataStreamLifecycleDetails {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DataStreamLifecycleDetails`].
@@ -352,6 +374,18 @@ impl DataStreamLifecycleIndicator {
     /// Creates a builder for [`DataStreamLifecycleIndicator`].
     pub fn builder() -> DataStreamLifecycleIndicatorBuilder {
         DataStreamLifecycleIndicatorBuilder::new()
+    }
+
+    /// Creates a [`DataStreamLifecycleIndicator`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DataStreamLifecycleIndicatorBuilder,
+        ) -> DataStreamLifecycleIndicatorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DataStreamLifecycleIndicator {
+        f(Self::builder()).build()
     }
 }
 
@@ -572,6 +606,21 @@ impl Diagnosis {
     /// Creates a builder for [`Diagnosis`].
     pub fn builder() -> DiagnosisBuilder {
         DiagnosisBuilder::new()
+    }
+
+    /// Creates a [`Diagnosis`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DiagnosisBuilder,
+        ) -> DiagnosisBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Diagnosis {
+        f(Self::builder()).build()
     }
 }
 
@@ -817,6 +866,13 @@ impl DiagnosisAffectedResources {
     pub fn builder() -> DiagnosisAffectedResourcesBuilder {
         DiagnosisAffectedResourcesBuilder::new()
     }
+
+    /// Creates a [`DiagnosisAffectedResources`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DiagnosisAffectedResourcesBuilder) -> DiagnosisAffectedResourcesBuilder,
+    ) -> DiagnosisAffectedResources {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DiagnosisAffectedResources`].
@@ -977,6 +1033,16 @@ impl DiskIndicator {
     /// Creates a builder for [`DiskIndicator`].
     pub fn builder() -> DiskIndicatorBuilder {
         DiskIndicatorBuilder::new()
+    }
+
+    /// Creates a [`DiskIndicator`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DiskIndicatorBuilder,
+        )
+            -> DiskIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> DiskIndicator {
+        f(Self::builder()).build()
     }
 }
 
@@ -1184,6 +1250,21 @@ impl DiskIndicatorDetails {
     /// Creates a builder for [`DiskIndicatorDetails`].
     pub fn builder() -> DiskIndicatorDetailsBuilder {
         DiskIndicatorDetailsBuilder::new()
+    }
+
+    /// Creates a [`DiskIndicatorDetails`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DiskIndicatorDetailsBuilder,
+        ) -> DiskIndicatorDetailsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DiskIndicatorDetails {
+        f(Self::builder()).build()
     }
 }
 
@@ -1415,6 +1496,18 @@ impl DlmFrozenTransitionOverdueIndex {
     pub fn builder() -> DlmFrozenTransitionOverdueIndexBuilder {
         DlmFrozenTransitionOverdueIndexBuilder::new()
     }
+
+    /// Creates a [`DlmFrozenTransitionOverdueIndex`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DlmFrozenTransitionOverdueIndexBuilder,
+        ) -> DlmFrozenTransitionOverdueIndexBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DlmFrozenTransitionOverdueIndex {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DlmFrozenTransitionOverdueIndex`].
@@ -1556,6 +1649,18 @@ impl DlmFrozenTransitionsIndicator {
     /// Creates a builder for [`DlmFrozenTransitionsIndicator`].
     pub fn builder() -> DlmFrozenTransitionsIndicatorBuilder {
         DlmFrozenTransitionsIndicatorBuilder::new()
+    }
+
+    /// Creates a [`DlmFrozenTransitionsIndicator`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DlmFrozenTransitionsIndicatorBuilder,
+        ) -> DlmFrozenTransitionsIndicatorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DlmFrozenTransitionsIndicator {
+        f(Self::builder()).build()
     }
 }
 
@@ -1801,6 +1906,15 @@ impl DlmFrozenTransitionsIndicatorDetails {
     pub fn builder() -> DlmFrozenTransitionsIndicatorDetailsBuilder {
         DlmFrozenTransitionsIndicatorDetailsBuilder::new()
     }
+
+    /// Creates a [`DlmFrozenTransitionsIndicatorDetails`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DlmFrozenTransitionsIndicatorDetailsBuilder,
+        ) -> DlmFrozenTransitionsIndicatorDetailsBuilder,
+    ) -> DlmFrozenTransitionsIndicatorDetails {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DlmFrozenTransitionsIndicatorDetails`].
@@ -2005,6 +2119,18 @@ impl FileSettingsIndicator {
     /// Creates a builder for [`FileSettingsIndicator`].
     pub fn builder() -> FileSettingsIndicatorBuilder {
         FileSettingsIndicatorBuilder::new()
+    }
+
+    /// Creates a [`FileSettingsIndicator`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FileSettingsIndicatorBuilder,
+        ) -> FileSettingsIndicatorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FileSettingsIndicator {
+        f(Self::builder()).build()
     }
 }
 
@@ -2211,6 +2337,18 @@ impl FileSettingsIndicatorDetails {
     pub fn builder() -> FileSettingsIndicatorDetailsBuilder {
         FileSettingsIndicatorDetailsBuilder::new()
     }
+
+    /// Creates a [`FileSettingsIndicatorDetails`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FileSettingsIndicatorDetailsBuilder,
+        ) -> FileSettingsIndicatorDetailsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FileSettingsIndicatorDetails {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FileSettingsIndicatorDetails`].
@@ -2329,6 +2467,16 @@ impl IlmIndicator {
     /// Creates a builder for [`IlmIndicator`].
     pub fn builder() -> IlmIndicatorBuilder {
         IlmIndicatorBuilder::new()
+    }
+
+    /// Creates a [`IlmIndicator`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IlmIndicatorBuilder,
+        )
+            -> IlmIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> IlmIndicator {
+        f(Self::builder()).build()
     }
 }
 
@@ -2532,6 +2680,19 @@ impl IlmIndicatorDetails {
     pub fn builder() -> IlmIndicatorDetailsBuilder {
         IlmIndicatorDetailsBuilder::new()
     }
+
+    /// Creates a [`IlmIndicatorDetails`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IlmIndicatorDetailsBuilder,
+        ) -> IlmIndicatorDetailsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IlmIndicatorDetails {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IlmIndicatorDetails`].
@@ -2689,6 +2850,20 @@ impl Impact {
     /// Creates a builder for [`Impact`].
     pub fn builder() -> ImpactBuilder {
         ImpactBuilder::new()
+    }
+
+    /// Creates a [`Impact`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ImpactBuilder,
+        ) -> ImpactBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Impact {
+        f(Self::builder()).build()
     }
 }
 
@@ -2942,6 +3117,16 @@ impl IndicatorNode {
     pub fn builder() -> IndicatorNodeBuilder {
         IndicatorNodeBuilder::new()
     }
+
+    /// Creates a [`IndicatorNode`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndicatorNodeBuilder,
+        )
+            -> IndicatorNodeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> IndicatorNode {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndicatorNode`].
@@ -3058,6 +3243,11 @@ impl Indicators {
     /// Creates a builder for [`Indicators`].
     pub fn builder() -> IndicatorsBuilder {
         IndicatorsBuilder::new()
+    }
+
+    /// Creates a [`Indicators`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(IndicatorsBuilder) -> IndicatorsBuilder) -> Indicators {
+        f(Self::builder()).build()
     }
 }
 
@@ -3417,6 +3607,18 @@ impl MasterIsStableIndicator {
     pub fn builder() -> MasterIsStableIndicatorBuilder {
         MasterIsStableIndicatorBuilder::new()
     }
+
+    /// Creates a [`MasterIsStableIndicator`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MasterIsStableIndicatorBuilder,
+        ) -> MasterIsStableIndicatorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MasterIsStableIndicator {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MasterIsStableIndicator`].
@@ -3626,6 +3828,18 @@ impl MasterIsStableIndicatorClusterFormationNode {
     pub fn builder() -> MasterIsStableIndicatorClusterFormationNodeBuilder {
         MasterIsStableIndicatorClusterFormationNodeBuilder::new()
     }
+
+    /// Creates a [`MasterIsStableIndicatorClusterFormationNode`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MasterIsStableIndicatorClusterFormationNodeBuilder,
+        ) -> MasterIsStableIndicatorClusterFormationNodeBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MasterIsStableIndicatorClusterFormationNode {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MasterIsStableIndicatorClusterFormationNode`].
@@ -3764,6 +3978,18 @@ impl MasterIsStableIndicatorDetails {
     /// Creates a builder for [`MasterIsStableIndicatorDetails`].
     pub fn builder() -> MasterIsStableIndicatorDetailsBuilder {
         MasterIsStableIndicatorDetailsBuilder::new()
+    }
+
+    /// Creates a [`MasterIsStableIndicatorDetails`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MasterIsStableIndicatorDetailsBuilder,
+        ) -> MasterIsStableIndicatorDetailsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MasterIsStableIndicatorDetails {
+        f(Self::builder()).build()
     }
 }
 
@@ -3976,6 +4202,18 @@ impl MasterIsStableIndicatorExceptionFetchingHistory {
     pub fn builder() -> MasterIsStableIndicatorExceptionFetchingHistoryBuilder {
         MasterIsStableIndicatorExceptionFetchingHistoryBuilder::new()
     }
+
+    /// Creates a [`MasterIsStableIndicatorExceptionFetchingHistory`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MasterIsStableIndicatorExceptionFetchingHistoryBuilder,
+        ) -> MasterIsStableIndicatorExceptionFetchingHistoryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MasterIsStableIndicatorExceptionFetchingHistory {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MasterIsStableIndicatorExceptionFetchingHistory`].
@@ -4112,6 +4350,19 @@ impl ProjectEncryptionKeyDetails {
     /// Creates a builder for [`ProjectEncryptionKeyDetails`].
     pub fn builder() -> ProjectEncryptionKeyDetailsBuilder {
         ProjectEncryptionKeyDetailsBuilder::new()
+    }
+
+    /// Creates a [`ProjectEncryptionKeyDetails`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ProjectEncryptionKeyDetailsBuilder,
+        ) -> ProjectEncryptionKeyDetailsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ProjectEncryptionKeyDetails {
+        f(Self::builder()).build()
     }
 }
 
@@ -4322,6 +4573,18 @@ impl ProjectEncryptionKeyIndicator {
     /// Creates a builder for [`ProjectEncryptionKeyIndicator`].
     pub fn builder() -> ProjectEncryptionKeyIndicatorBuilder {
         ProjectEncryptionKeyIndicatorBuilder::new()
+    }
+
+    /// Creates a [`ProjectEncryptionKeyIndicator`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ProjectEncryptionKeyIndicatorBuilder,
+        ) -> ProjectEncryptionKeyIndicatorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ProjectEncryptionKeyIndicator {
+        f(Self::builder()).build()
     }
 }
 
@@ -4553,6 +4816,18 @@ impl RepositoryIntegrityIndicator {
     pub fn builder() -> RepositoryIntegrityIndicatorBuilder {
         RepositoryIntegrityIndicatorBuilder::new()
     }
+
+    /// Creates a [`RepositoryIntegrityIndicator`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RepositoryIntegrityIndicatorBuilder,
+        ) -> RepositoryIntegrityIndicatorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RepositoryIntegrityIndicator {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RepositoryIntegrityIndicator`].
@@ -4771,6 +5046,15 @@ impl RepositoryIntegrityIndicatorDetails {
     pub fn builder() -> RepositoryIntegrityIndicatorDetailsBuilder {
         RepositoryIntegrityIndicatorDetailsBuilder::new()
     }
+
+    /// Creates a [`RepositoryIntegrityIndicatorDetails`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RepositoryIntegrityIndicatorDetailsBuilder,
+        ) -> RepositoryIntegrityIndicatorDetailsBuilder,
+    ) -> RepositoryIntegrityIndicatorDetails {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RepositoryIntegrityIndicatorDetails`].
@@ -4905,6 +5189,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -5221,6 +5510,18 @@ impl ShardsAvailabilityIndicator {
     pub fn builder() -> ShardsAvailabilityIndicatorBuilder {
         ShardsAvailabilityIndicatorBuilder::new()
     }
+
+    /// Creates a [`ShardsAvailabilityIndicator`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardsAvailabilityIndicatorBuilder,
+        ) -> ShardsAvailabilityIndicatorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardsAvailabilityIndicator {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ShardsAvailabilityIndicator`].
@@ -5453,6 +5754,26 @@ impl ShardsAvailabilityIndicatorDetails {
     /// Creates a builder for [`ShardsAvailabilityIndicatorDetails`].
     pub fn builder() -> ShardsAvailabilityIndicatorDetailsBuilder {
         ShardsAvailabilityIndicatorDetailsBuilder::new()
+    }
+
+    /// Creates a [`ShardsAvailabilityIndicatorDetails`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardsAvailabilityIndicatorDetailsBuilder,
+        ) -> ShardsAvailabilityIndicatorDetailsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardsAvailabilityIndicatorDetails {
+        f(Self::builder()).build()
     }
 }
 
@@ -6159,6 +6480,18 @@ impl ShardsCapacityIndicator {
     pub fn builder() -> ShardsCapacityIndicatorBuilder {
         ShardsCapacityIndicatorBuilder::new()
     }
+
+    /// Creates a [`ShardsCapacityIndicator`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardsCapacityIndicatorBuilder,
+        ) -> ShardsCapacityIndicatorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardsCapacityIndicator {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ShardsCapacityIndicator`].
@@ -6366,6 +6699,18 @@ impl ShardsCapacityIndicatorDetails {
     pub fn builder() -> ShardsCapacityIndicatorDetailsBuilder {
         ShardsCapacityIndicatorDetailsBuilder::new()
     }
+
+    /// Creates a [`ShardsCapacityIndicatorDetails`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardsCapacityIndicatorDetailsBuilder,
+        ) -> ShardsCapacityIndicatorDetailsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardsCapacityIndicatorDetails {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ShardsCapacityIndicatorDetails`].
@@ -6506,6 +6851,16 @@ impl ShardsCapacityIndicatorTierDetail {
     pub fn builder() -> ShardsCapacityIndicatorTierDetailBuilder {
         ShardsCapacityIndicatorTierDetailBuilder::new()
     }
+
+    /// Creates a [`ShardsCapacityIndicatorTierDetail`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardsCapacityIndicatorTierDetailBuilder,
+        )
+            -> ShardsCapacityIndicatorTierDetailBuilder<(crate::typed::builder::Set,)>,
+    ) -> ShardsCapacityIndicatorTierDetail {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ShardsCapacityIndicatorTierDetail`].
@@ -6601,6 +6956,16 @@ impl SlmIndicator {
     /// Creates a builder for [`SlmIndicator`].
     pub fn builder() -> SlmIndicatorBuilder {
         SlmIndicatorBuilder::new()
+    }
+
+    /// Creates a [`SlmIndicator`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SlmIndicatorBuilder,
+        )
+            -> SlmIndicatorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> SlmIndicator {
+        f(Self::builder()).build()
     }
 }
 
@@ -6804,6 +7169,18 @@ impl SlmIndicatorDetails {
     pub fn builder() -> SlmIndicatorDetailsBuilder {
         SlmIndicatorDetailsBuilder::new()
     }
+
+    /// Creates a [`SlmIndicatorDetails`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SlmIndicatorDetailsBuilder,
+        ) -> SlmIndicatorDetailsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SlmIndicatorDetails {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SlmIndicatorDetails`].
@@ -6933,6 +7310,15 @@ impl SlmIndicatorUnhealthyPolicies {
     pub fn builder() -> SlmIndicatorUnhealthyPoliciesBuilder {
         SlmIndicatorUnhealthyPoliciesBuilder::new()
     }
+
+    /// Creates a [`SlmIndicatorUnhealthyPolicies`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SlmIndicatorUnhealthyPoliciesBuilder,
+        ) -> SlmIndicatorUnhealthyPoliciesBuilder<(crate::typed::builder::Set,)>,
+    ) -> SlmIndicatorUnhealthyPolicies {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SlmIndicatorUnhealthyPolicies`].
@@ -7038,6 +7424,19 @@ impl StagnatingBackingIndices {
     /// Creates a builder for [`StagnatingBackingIndices`].
     pub fn builder() -> StagnatingBackingIndicesBuilder {
         StagnatingBackingIndicesBuilder::new()
+    }
+
+    /// Creates a [`StagnatingBackingIndices`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            StagnatingBackingIndicesBuilder,
+        ) -> StagnatingBackingIndicesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> StagnatingBackingIndices {
+        f(Self::builder()).build()
     }
 }
 

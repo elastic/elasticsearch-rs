@@ -11,6 +11,15 @@ impl IndicesShardStores {
     pub fn builder() -> IndicesShardStoresBuilder {
         IndicesShardStoresBuilder::new()
     }
+
+    /// Creates a [`IndicesShardStores`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndicesShardStoresBuilder,
+        ) -> IndicesShardStoresBuilder<(crate::typed::builder::Set,)>,
+    ) -> IndicesShardStores {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndicesShardStores`].
@@ -128,6 +137,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -475,6 +489,13 @@ impl ShardStore {
     pub fn builder() -> ShardStoreBuilder {
         ShardStoreBuilder::new()
     }
+
+    /// Creates a [`ShardStore`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ShardStoreBuilder) -> ShardStoreBuilder<(crate::typed::builder::Set,)>,
+    ) -> ShardStore {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ShardStore`].
@@ -627,6 +648,18 @@ impl ShardStoreException {
     pub fn builder() -> ShardStoreExceptionBuilder {
         ShardStoreExceptionBuilder::new()
     }
+
+    /// Creates a [`ShardStoreException`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardStoreExceptionBuilder,
+        ) -> ShardStoreExceptionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardStoreException {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ShardStoreException`].
@@ -732,6 +765,20 @@ impl ShardStoreNode {
     /// Creates a builder for [`ShardStoreNode`].
     pub fn builder() -> ShardStoreNodeBuilder {
         ShardStoreNodeBuilder::new()
+    }
+
+    /// Creates a [`ShardStoreNode`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardStoreNodeBuilder,
+        ) -> ShardStoreNodeBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardStoreNode {
+        f(Self::builder()).build()
     }
 }
 
@@ -968,6 +1015,15 @@ impl ShardStoreWrapper {
     /// Creates a builder for [`ShardStoreWrapper`].
     pub fn builder() -> ShardStoreWrapperBuilder {
         ShardStoreWrapperBuilder::new()
+    }
+
+    /// Creates a [`ShardStoreWrapper`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardStoreWrapperBuilder,
+        ) -> ShardStoreWrapperBuilder<(crate::typed::builder::Set,)>,
+    ) -> ShardStoreWrapper {
+        f(Self::builder()).build()
     }
 }
 

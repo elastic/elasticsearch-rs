@@ -12,6 +12,18 @@ impl LanguageContext {
     pub fn builder() -> LanguageContextBuilder {
         LanguageContextBuilder::new()
     }
+
+    /// Creates a [`LanguageContext`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LanguageContextBuilder,
+        ) -> LanguageContextBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> LanguageContext {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`LanguageContext`].
@@ -128,6 +140,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

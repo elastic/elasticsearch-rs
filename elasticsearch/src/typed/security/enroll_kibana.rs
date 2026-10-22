@@ -35,6 +35,11 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -245,6 +250,16 @@ impl Token {
     /// Creates a builder for [`Token`].
     pub fn builder() -> TokenBuilder {
         TokenBuilder::new()
+    }
+
+    /// Creates a [`Token`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TokenBuilder,
+        )
+            -> TokenBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Token {
+        f(Self::builder()).build()
     }
 }
 

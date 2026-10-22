@@ -18,6 +18,19 @@ impl DocumentRating {
     pub fn builder() -> DocumentRatingBuilder {
         DocumentRatingBuilder::new()
     }
+
+    /// Creates a [`DocumentRating`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DocumentRatingBuilder,
+        ) -> DocumentRatingBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DocumentRating {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DocumentRating`].
@@ -177,6 +190,19 @@ impl RankEvalHit {
     /// Creates a builder for [`RankEvalHit`].
     pub fn builder() -> RankEvalHitBuilder {
         RankEvalHitBuilder::new()
+    }
+
+    /// Creates a [`RankEvalHit`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RankEvalHitBuilder,
+        ) -> RankEvalHitBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RankEvalHit {
+        f(Self::builder()).build()
     }
 }
 
@@ -354,6 +380,13 @@ impl RankEvalHitItem {
     pub fn builder() -> RankEvalHitItemBuilder {
         RankEvalHitItemBuilder::new()
     }
+
+    /// Creates a [`RankEvalHitItem`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RankEvalHitItemBuilder) -> RankEvalHitItemBuilder<(crate::typed::builder::Set,)>,
+    ) -> RankEvalHitItem {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RankEvalHitItem`].
@@ -460,6 +493,11 @@ impl RankEvalMetric {
     /// Creates a builder for [`RankEvalMetric`].
     pub fn builder() -> RankEvalMetricBuilder {
         RankEvalMetricBuilder::new()
+    }
+
+    /// Creates a [`RankEvalMetric`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RankEvalMetricBuilder) -> RankEvalMetricBuilder) -> RankEvalMetric {
+        f(Self::builder()).build()
     }
 }
 
@@ -632,6 +670,13 @@ impl RankEvalMetricBase {
     pub fn builder() -> RankEvalMetricBaseBuilder {
         RankEvalMetricBaseBuilder::new()
     }
+
+    /// Creates a [`RankEvalMetricBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RankEvalMetricBaseBuilder) -> RankEvalMetricBaseBuilder,
+    ) -> RankEvalMetricBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RankEvalMetricBase`].
@@ -691,6 +736,21 @@ impl RankEvalMetricDetail {
     /// Creates a builder for [`RankEvalMetricDetail`].
     pub fn builder() -> RankEvalMetricDetailBuilder {
         RankEvalMetricDetailBuilder::new()
+    }
+
+    /// Creates a [`RankEvalMetricDetail`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RankEvalMetricDetailBuilder,
+        ) -> RankEvalMetricDetailBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RankEvalMetricDetail {
+        f(Self::builder()).build()
     }
 }
 
@@ -931,6 +991,15 @@ impl RankEvalMetricDiscountedCumulativeGain {
     pub fn builder() -> RankEvalMetricDiscountedCumulativeGainBuilder {
         RankEvalMetricDiscountedCumulativeGainBuilder::new()
     }
+
+    /// Creates a [`RankEvalMetricDiscountedCumulativeGain`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RankEvalMetricDiscountedCumulativeGainBuilder,
+        ) -> RankEvalMetricDiscountedCumulativeGainBuilder,
+    ) -> RankEvalMetricDiscountedCumulativeGain {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RankEvalMetricDiscountedCumulativeGain`].
@@ -1007,6 +1076,16 @@ impl RankEvalMetricExpectedReciprocalRank {
     /// Creates a builder for [`RankEvalMetricExpectedReciprocalRank`].
     pub fn builder() -> RankEvalMetricExpectedReciprocalRankBuilder {
         RankEvalMetricExpectedReciprocalRankBuilder::new()
+    }
+
+    /// Creates a [`RankEvalMetricExpectedReciprocalRank`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RankEvalMetricExpectedReciprocalRankBuilder,
+        )
+            -> RankEvalMetricExpectedReciprocalRankBuilder<(crate::typed::builder::Set,)>,
+    ) -> RankEvalMetricExpectedReciprocalRank {
+        f(Self::builder()).build()
     }
 }
 
@@ -1104,6 +1183,15 @@ impl RankEvalMetricMeanReciprocalRank {
     pub fn builder() -> RankEvalMetricMeanReciprocalRankBuilder {
         RankEvalMetricMeanReciprocalRankBuilder::new()
     }
+
+    /// Creates a [`RankEvalMetricMeanReciprocalRank`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RankEvalMetricMeanReciprocalRankBuilder,
+        ) -> RankEvalMetricMeanReciprocalRankBuilder,
+    ) -> RankEvalMetricMeanReciprocalRank {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RankEvalMetricMeanReciprocalRank`].
@@ -1182,6 +1270,13 @@ impl RankEvalMetricPrecision {
     /// Creates a builder for [`RankEvalMetricPrecision`].
     pub fn builder() -> RankEvalMetricPrecisionBuilder {
         RankEvalMetricPrecisionBuilder::new()
+    }
+
+    /// Creates a [`RankEvalMetricPrecision`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RankEvalMetricPrecisionBuilder) -> RankEvalMetricPrecisionBuilder,
+    ) -> RankEvalMetricPrecision {
+        f(Self::builder()).build()
     }
 }
 
@@ -1273,6 +1368,13 @@ impl RankEvalMetricRatingTreshold {
     pub fn builder() -> RankEvalMetricRatingTresholdBuilder {
         RankEvalMetricRatingTresholdBuilder::new()
     }
+
+    /// Creates a [`RankEvalMetricRatingTreshold`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RankEvalMetricRatingTresholdBuilder) -> RankEvalMetricRatingTresholdBuilder,
+    ) -> RankEvalMetricRatingTreshold {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RankEvalMetricRatingTreshold`].
@@ -1349,6 +1451,13 @@ impl RankEvalMetricRecall {
     pub fn builder() -> RankEvalMetricRecallBuilder {
         RankEvalMetricRecallBuilder::new()
     }
+
+    /// Creates a [`RankEvalMetricRecall`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RankEvalMetricRecallBuilder) -> RankEvalMetricRecallBuilder,
+    ) -> RankEvalMetricRecall {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RankEvalMetricRecall`].
@@ -1420,6 +1529,13 @@ impl RankEvalQuery {
     /// Creates a builder for [`RankEvalQuery`].
     pub fn builder() -> RankEvalQueryBuilder {
         RankEvalQueryBuilder::new()
+    }
+
+    /// Creates a [`RankEvalQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RankEvalQueryBuilder) -> RankEvalQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> RankEvalQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -1528,6 +1644,18 @@ impl RankEvalRequestItem {
     /// Creates a builder for [`RankEvalRequestItem`].
     pub fn builder() -> RankEvalRequestItemBuilder {
         RankEvalRequestItemBuilder::new()
+    }
+
+    /// Creates a [`RankEvalRequestItem`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RankEvalRequestItemBuilder,
+        ) -> RankEvalRequestItemBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RankEvalRequestItem {
+        f(Self::builder()).build()
     }
 }
 
@@ -1747,6 +1875,13 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -2155,6 +2290,18 @@ impl UnratedDocument {
     /// Creates a builder for [`UnratedDocument`].
     pub fn builder() -> UnratedDocumentBuilder {
         UnratedDocumentBuilder::new()
+    }
+
+    /// Creates a [`UnratedDocument`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UnratedDocumentBuilder,
+        ) -> UnratedDocumentBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> UnratedDocument {
+        f(Self::builder()).build()
     }
 }
 

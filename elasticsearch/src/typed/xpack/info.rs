@@ -12,6 +12,18 @@ impl BuildInformation {
     pub fn builder() -> BuildInformationBuilder {
         BuildInformationBuilder::new()
     }
+
+    /// Creates a [`BuildInformation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            BuildInformationBuilder,
+        ) -> BuildInformationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> BuildInformation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`BuildInformation`].
@@ -112,6 +124,16 @@ impl Feature {
     /// Creates a builder for [`Feature`].
     pub fn builder() -> FeatureBuilder {
         FeatureBuilder::new()
+    }
+
+    /// Creates a [`Feature`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FeatureBuilder,
+        )
+            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Feature {
+        f(Self::builder()).build()
     }
 }
 
@@ -269,6 +291,43 @@ impl Features {
     /// Creates a builder for [`Features`].
     pub fn builder() -> FeaturesBuilder {
         FeaturesBuilder::new()
+    }
+
+    /// Creates a [`Features`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FeaturesBuilder,
+        ) -> FeaturesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Features {
+        f(Self::builder()).build()
     }
 }
 
@@ -5471,6 +5530,21 @@ impl MinimalLicenseInformation {
     pub fn builder() -> MinimalLicenseInformationBuilder {
         MinimalLicenseInformationBuilder::new()
     }
+
+    /// Creates a [`MinimalLicenseInformation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MinimalLicenseInformationBuilder,
+        ) -> MinimalLicenseInformationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MinimalLicenseInformation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MinimalLicenseInformation`].
@@ -5711,6 +5785,18 @@ impl NativeCodeInformation {
     pub fn builder() -> NativeCodeInformationBuilder {
         NativeCodeInformationBuilder::new()
     }
+
+    /// Creates a [`NativeCodeInformation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NativeCodeInformationBuilder,
+        ) -> NativeCodeInformationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NativeCodeInformation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NativeCodeInformation`].
@@ -5842,6 +5928,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

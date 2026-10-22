@@ -12,6 +12,18 @@ impl ComponentTemplate {
     pub fn builder() -> ComponentTemplateBuilder {
         ComponentTemplateBuilder::new()
     }
+
+    /// Creates a [`ComponentTemplate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ComponentTemplateBuilder,
+        ) -> ComponentTemplateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ComponentTemplate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ComponentTemplate`].
@@ -136,6 +148,15 @@ impl ComponentTemplateNode {
     /// Creates a builder for [`ComponentTemplateNode`].
     pub fn builder() -> ComponentTemplateNodeBuilder {
         ComponentTemplateNodeBuilder::new()
+    }
+
+    /// Creates a [`ComponentTemplateNode`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ComponentTemplateNodeBuilder,
+        ) -> ComponentTemplateNodeBuilder<(crate::typed::builder::Set,)>,
+    ) -> ComponentTemplateNode {
+        f(Self::builder()).build()
     }
 }
 
@@ -360,6 +381,16 @@ impl ComponentTemplateNodeWithRollover {
     /// Creates a builder for [`ComponentTemplateNodeWithRollover`].
     pub fn builder() -> ComponentTemplateNodeWithRolloverBuilder {
         ComponentTemplateNodeWithRolloverBuilder::new()
+    }
+
+    /// Creates a [`ComponentTemplateNodeWithRollover`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ComponentTemplateNodeWithRolloverBuilder,
+        )
+            -> ComponentTemplateNodeWithRolloverBuilder<(crate::typed::builder::Set,)>,
+    ) -> ComponentTemplateNodeWithRollover {
+        f(Self::builder()).build()
     }
 }
 
@@ -588,6 +619,13 @@ impl ComponentTemplateSummary {
     /// Creates a builder for [`ComponentTemplateSummary`].
     pub fn builder() -> ComponentTemplateSummaryBuilder {
         ComponentTemplateSummaryBuilder::new()
+    }
+
+    /// Creates a [`ComponentTemplateSummary`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ComponentTemplateSummaryBuilder) -> ComponentTemplateSummaryBuilder,
+    ) -> ComponentTemplateSummary {
+        f(Self::builder()).build()
     }
 }
 
@@ -881,6 +919,13 @@ impl ComponentTemplateSummaryRes {
     /// Creates a builder for [`ComponentTemplateSummaryRes`].
     pub fn builder() -> ComponentTemplateSummaryResBuilder {
         ComponentTemplateSummaryResBuilder::new()
+    }
+
+    /// Creates a [`ComponentTemplateSummaryRes`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ComponentTemplateSummaryResBuilder) -> ComponentTemplateSummaryResBuilder,
+    ) -> ComponentTemplateSummaryRes {
+        f(Self::builder()).build()
     }
 }
 

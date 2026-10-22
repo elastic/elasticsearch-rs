@@ -12,6 +12,15 @@ impl AnalyticsCollection {
     pub fn builder() -> AnalyticsCollectionBuilder {
         AnalyticsCollectionBuilder::new()
     }
+
+    /// Creates a [`AnalyticsCollection`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AnalyticsCollectionBuilder,
+        ) -> AnalyticsCollectionBuilder<(crate::typed::builder::Set,)>,
+    ) -> AnalyticsCollection {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AnalyticsCollection`].
@@ -89,6 +98,13 @@ impl EventDataStream {
     /// Creates a builder for [`EventDataStream`].
     pub fn builder() -> EventDataStreamBuilder {
         EventDataStreamBuilder::new()
+    }
+
+    /// Creates a [`EventDataStream`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(EventDataStreamBuilder) -> EventDataStreamBuilder<(crate::typed::builder::Set,)>,
+    ) -> EventDataStream {
+        f(Self::builder()).build()
     }
 }
 
@@ -179,6 +195,19 @@ impl SearchApplication {
     /// Creates a builder for [`SearchApplication`].
     pub fn builder() -> SearchApplicationBuilder {
         SearchApplicationBuilder::new()
+    }
+
+    /// Creates a [`SearchApplication`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SearchApplicationBuilder,
+        ) -> SearchApplicationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SearchApplication {
+        f(Self::builder()).build()
     }
 }
 
@@ -393,6 +422,15 @@ impl SearchApplicationParameters {
     pub fn builder() -> SearchApplicationParametersBuilder {
         SearchApplicationParametersBuilder::new()
     }
+
+    /// Creates a [`SearchApplicationParameters`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SearchApplicationParametersBuilder,
+        ) -> SearchApplicationParametersBuilder<(crate::typed::builder::Set,)>,
+    ) -> SearchApplicationParameters {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SearchApplicationParameters`].
@@ -513,6 +551,15 @@ impl SearchApplicationTemplate {
     /// Creates a builder for [`SearchApplicationTemplate`].
     pub fn builder() -> SearchApplicationTemplateBuilder {
         SearchApplicationTemplateBuilder::new()
+    }
+
+    /// Creates a [`SearchApplicationTemplate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SearchApplicationTemplateBuilder,
+        ) -> SearchApplicationTemplateBuilder<(crate::typed::builder::Set,)>,
+    ) -> SearchApplicationTemplate {
+        f(Self::builder()).build()
     }
 }
 

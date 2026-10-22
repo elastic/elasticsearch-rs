@@ -13,6 +13,15 @@ impl CloseIndexResult {
     pub fn builder() -> CloseIndexResultBuilder {
         CloseIndexResultBuilder::new()
     }
+
+    /// Creates a [`CloseIndexResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CloseIndexResultBuilder,
+        ) -> CloseIndexResultBuilder<(crate::typed::builder::Set,)>,
+    ) -> CloseIndexResult {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CloseIndexResult`].
@@ -122,6 +131,15 @@ impl CloseShardResult {
     /// Creates a builder for [`CloseShardResult`].
     pub fn builder() -> CloseShardResultBuilder {
         CloseShardResultBuilder::new()
+    }
+
+    /// Creates a [`CloseShardResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CloseShardResultBuilder,
+        ) -> CloseShardResultBuilder<(crate::typed::builder::Set,)>,
+    ) -> CloseShardResult {
+        f(Self::builder()).build()
     }
 }
 
@@ -254,6 +272,13 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 

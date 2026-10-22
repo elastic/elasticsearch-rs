@@ -110,6 +110,20 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of<TDocument, TPartialDocument>(
+        f: impl FnOnce(
+            RequestBuilder,
+        ) -> RequestBuilder<
+            (crate::typed::builder::Set, crate::typed::builder::Set),
+            (),
+            TDocument,
+            TPartialDocument,
+        >,
+    ) -> Request<TDocument, TPartialDocument> {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -1063,6 +1077,21 @@ impl UpdateWriteResponseBase {
     /// Creates a builder for [`UpdateWriteResponseBase`].
     pub fn builder() -> UpdateWriteResponseBaseBuilder {
         UpdateWriteResponseBaseBuilder::new()
+    }
+
+    /// Creates a [`UpdateWriteResponseBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UpdateWriteResponseBaseBuilder,
+        ) -> UpdateWriteResponseBaseBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> UpdateWriteResponseBase {
+        f(Self::builder()).build()
     }
 }
 

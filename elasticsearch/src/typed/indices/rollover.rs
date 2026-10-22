@@ -106,6 +106,13 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -707,6 +714,13 @@ impl RolloverConditions {
     /// Creates a builder for [`RolloverConditions`].
     pub fn builder() -> RolloverConditionsBuilder {
         RolloverConditionsBuilder::new()
+    }
+
+    /// Creates a [`RolloverConditions`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RolloverConditionsBuilder) -> RolloverConditionsBuilder,
+    ) -> RolloverConditions {
+        f(Self::builder()).build()
     }
 }
 

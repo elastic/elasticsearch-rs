@@ -104,6 +104,11 @@ impl DatafeedsRecord {
     pub fn builder() -> DatafeedsRecordBuilder {
         DatafeedsRecordBuilder::new()
     }
+
+    /// Creates a [`DatafeedsRecord`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(DatafeedsRecordBuilder) -> DatafeedsRecordBuilder) -> DatafeedsRecord {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DatafeedsRecord`].
@@ -371,6 +376,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

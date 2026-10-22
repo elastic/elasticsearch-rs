@@ -18,6 +18,11 @@ impl AggregateOutput {
     pub fn builder() -> AggregateOutputBuilder {
         AggregateOutputBuilder::new()
     }
+
+    /// Creates a [`AggregateOutput`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(AggregateOutputBuilder) -> AggregateOutputBuilder) -> AggregateOutput {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AggregateOutput`].
@@ -150,6 +155,13 @@ impl Definition {
     pub fn builder() -> DefinitionBuilder {
         DefinitionBuilder::new()
     }
+
+    /// Creates a [`Definition`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DefinitionBuilder) -> DefinitionBuilder<(crate::typed::builder::Set,)>,
+    ) -> Definition {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Definition`].
@@ -267,6 +279,13 @@ impl Ensemble {
     /// Creates a builder for [`Ensemble`].
     pub fn builder() -> EnsembleBuilder {
         EnsembleBuilder::new()
+    }
+
+    /// Creates a [`Ensemble`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(EnsembleBuilder) -> EnsembleBuilder<(crate::typed::builder::Set,)>,
+    ) -> Ensemble {
+        f(Self::builder()).build()
     }
 }
 
@@ -423,6 +442,19 @@ impl FrequencyEncodingPreprocessor {
     pub fn builder() -> FrequencyEncodingPreprocessorBuilder {
         FrequencyEncodingPreprocessorBuilder::new()
     }
+
+    /// Creates a [`FrequencyEncodingPreprocessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FrequencyEncodingPreprocessorBuilder,
+        ) -> FrequencyEncodingPreprocessorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FrequencyEncodingPreprocessor {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FrequencyEncodingPreprocessor`].
@@ -578,6 +610,13 @@ impl Input {
     pub fn builder() -> InputBuilder {
         InputBuilder::new()
     }
+
+    /// Creates a [`Input`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(InputBuilder) -> InputBuilder<(crate::typed::builder::Set,)>,
+    ) -> Input {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Input`].
@@ -647,6 +686,18 @@ impl OneHotEncodingPreprocessor {
     /// Creates a builder for [`OneHotEncodingPreprocessor`].
     pub fn builder() -> OneHotEncodingPreprocessorBuilder {
         OneHotEncodingPreprocessorBuilder::new()
+    }
+
+    /// Creates a [`OneHotEncodingPreprocessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            OneHotEncodingPreprocessorBuilder,
+        ) -> OneHotEncodingPreprocessorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> OneHotEncodingPreprocessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -835,6 +886,13 @@ impl Preprocessor {
     /// Creates a builder for [`Preprocessor`].
     pub fn builder() -> PreprocessorBuilder {
         PreprocessorBuilder::new()
+    }
+
+    /// Creates a [`Preprocessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(PreprocessorBuilder) -> PreprocessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> Preprocessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -1028,6 +1086,13 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -1623,6 +1688,20 @@ impl TargetMeanEncodingPreprocessor {
     pub fn builder() -> TargetMeanEncodingPreprocessorBuilder {
         TargetMeanEncodingPreprocessorBuilder::new()
     }
+
+    /// Creates a [`TargetMeanEncodingPreprocessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TargetMeanEncodingPreprocessorBuilder,
+        ) -> TargetMeanEncodingPreprocessorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> TargetMeanEncodingPreprocessor {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TargetMeanEncodingPreprocessor`].
@@ -1834,6 +1913,11 @@ impl TrainedModel {
     pub fn builder() -> TrainedModelBuilder {
         TrainedModelBuilder::new()
     }
+
+    /// Creates a [`TrainedModel`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(TrainedModelBuilder) -> TrainedModelBuilder) -> TrainedModel {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TrainedModel`].
@@ -1957,6 +2041,18 @@ impl TrainedModelTree {
     /// Creates a builder for [`TrainedModelTree`].
     pub fn builder() -> TrainedModelTreeBuilder {
         TrainedModelTreeBuilder::new()
+    }
+
+    /// Creates a [`TrainedModelTree`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TrainedModelTreeBuilder,
+        ) -> TrainedModelTreeBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> TrainedModelTree {
+        f(Self::builder()).build()
     }
 }
 
@@ -2107,6 +2203,15 @@ impl TrainedModelTreeNode {
     /// Creates a builder for [`TrainedModelTreeNode`].
     pub fn builder() -> TrainedModelTreeNodeBuilder {
         TrainedModelTreeNodeBuilder::new()
+    }
+
+    /// Creates a [`TrainedModelTreeNode`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TrainedModelTreeNodeBuilder,
+        ) -> TrainedModelTreeNodeBuilder<(crate::typed::builder::Set,)>,
+    ) -> TrainedModelTreeNode {
+        f(Self::builder()).build()
     }
 }
 
@@ -2296,6 +2401,13 @@ impl Weights {
     /// Creates a builder for [`Weights`].
     pub fn builder() -> WeightsBuilder {
         WeightsBuilder::new()
+    }
+
+    /// Creates a [`Weights`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(WeightsBuilder) -> WeightsBuilder<(crate::typed::builder::Set,)>,
+    ) -> Weights {
+        f(Self::builder()).build()
     }
 }
 

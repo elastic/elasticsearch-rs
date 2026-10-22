@@ -14,6 +14,18 @@ impl AnalyticsAcknowledgeResponseBase {
     pub fn builder() -> AnalyticsAcknowledgeResponseBaseBuilder {
         AnalyticsAcknowledgeResponseBaseBuilder::new()
     }
+
+    /// Creates a [`AnalyticsAcknowledgeResponseBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AnalyticsAcknowledgeResponseBaseBuilder,
+        ) -> AnalyticsAcknowledgeResponseBaseBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AnalyticsAcknowledgeResponseBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AnalyticsAcknowledgeResponseBase`].
@@ -155,6 +167,13 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 

@@ -13,6 +13,15 @@ impl DataStreamWithOptions {
     pub fn builder() -> DataStreamWithOptionsBuilder {
         DataStreamWithOptionsBuilder::new()
     }
+
+    /// Creates a [`DataStreamWithOptions`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DataStreamWithOptionsBuilder,
+        ) -> DataStreamWithOptionsBuilder<(crate::typed::builder::Set,)>,
+    ) -> DataStreamWithOptions {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DataStreamWithOptions`].
@@ -142,6 +151,13 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 

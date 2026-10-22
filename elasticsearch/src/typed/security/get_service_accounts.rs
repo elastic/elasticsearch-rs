@@ -14,6 +14,18 @@ impl BuiltInServiceAccount {
     pub fn builder() -> BuiltInServiceAccountBuilder {
         BuiltInServiceAccountBuilder::new()
     }
+
+    /// Creates a [`BuiltInServiceAccount`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            BuiltInServiceAccountBuilder,
+        ) -> BuiltInServiceAccountBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> BuiltInServiceAccount {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`BuiltInServiceAccount`].
@@ -164,6 +176,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -486,6 +503,19 @@ impl UserManagedServiceAccount {
     /// Creates a builder for [`UserManagedServiceAccount`].
     pub fn builder() -> UserManagedServiceAccountBuilder {
         UserManagedServiceAccountBuilder::new()
+    }
+
+    /// Creates a [`UserManagedServiceAccount`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UserManagedServiceAccountBuilder,
+        ) -> UserManagedServiceAccountBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> UserManagedServiceAccount {
+        f(Self::builder()).build()
     }
 }
 

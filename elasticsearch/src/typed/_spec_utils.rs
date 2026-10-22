@@ -17,6 +17,21 @@ impl BaseNode {
     pub fn builder() -> BaseNodeBuilder {
         BaseNodeBuilder::new()
     }
+
+    /// Creates a [`BaseNode`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            BaseNodeBuilder,
+        ) -> BaseNodeBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> BaseNode {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`BaseNode`].
@@ -292,6 +307,13 @@ impl CommonCatQueryParameters {
     pub fn builder() -> CommonCatQueryParametersBuilder {
         CommonCatQueryParametersBuilder::new()
     }
+
+    /// Creates a [`CommonCatQueryParameters`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CommonCatQueryParametersBuilder) -> CommonCatQueryParametersBuilder,
+    ) -> CommonCatQueryParameters {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CommonCatQueryParameters`].
@@ -462,6 +484,13 @@ impl CommonQueryParameters {
     /// Creates a builder for [`CommonQueryParameters`].
     pub fn builder() -> CommonQueryParametersBuilder {
         CommonQueryParametersBuilder::new()
+    }
+
+    /// Creates a [`CommonQueryParameters`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CommonQueryParametersBuilder) -> CommonQueryParametersBuilder,
+    ) -> CommonQueryParameters {
+        f(Self::builder()).build()
     }
 }
 

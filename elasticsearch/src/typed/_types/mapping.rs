@@ -30,6 +30,19 @@ impl AggregateMetricDoubleProperty {
     pub fn builder() -> AggregateMetricDoublePropertyBuilder {
         AggregateMetricDoublePropertyBuilder::new()
     }
+
+    /// Creates a [`AggregateMetricDoubleProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AggregateMetricDoublePropertyBuilder,
+        ) -> AggregateMetricDoublePropertyBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AggregateMetricDoubleProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AggregateMetricDoubleProperty`].
@@ -358,6 +371,26 @@ impl AllField {
     /// Creates a builder for [`AllField`].
     pub fn builder() -> AllFieldBuilder {
         AllFieldBuilder::new()
+    }
+
+    /// Creates a [`AllField`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AllFieldBuilder,
+        ) -> AllFieldBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AllField {
+        f(Self::builder()).build()
     }
 }
 
@@ -1075,6 +1108,13 @@ impl BinaryProperty {
     pub fn builder() -> BinaryPropertyBuilder {
         BinaryPropertyBuilder::new()
     }
+
+    /// Creates a [`BinaryProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(BinaryPropertyBuilder) -> BinaryPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> BinaryProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`BinaryProperty`].
@@ -1359,6 +1399,13 @@ impl BooleanProperty {
     /// Creates a builder for [`BooleanProperty`].
     pub fn builder() -> BooleanPropertyBuilder {
         BooleanPropertyBuilder::new()
+    }
+
+    /// Creates a [`BooleanProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(BooleanPropertyBuilder) -> BooleanPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> BooleanProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -1794,6 +1841,15 @@ impl ByteNumberProperty {
     /// Creates a builder for [`ByteNumberProperty`].
     pub fn builder() -> ByteNumberPropertyBuilder {
         ByteNumberPropertyBuilder::new()
+    }
+
+    /// Creates a [`ByteNumberProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ByteNumberPropertyBuilder,
+        ) -> ByteNumberPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> ByteNumberProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -2231,6 +2287,15 @@ impl ChunkRescorerChunkingSettings {
     pub fn builder() -> ChunkRescorerChunkingSettingsBuilder {
         ChunkRescorerChunkingSettingsBuilder::new()
     }
+
+    /// Creates a [`ChunkRescorerChunkingSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ChunkRescorerChunkingSettingsBuilder,
+        ) -> ChunkRescorerChunkingSettingsBuilder<(crate::typed::builder::Set,)>,
+    ) -> ChunkRescorerChunkingSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ChunkRescorerChunkingSettings`].
@@ -2458,6 +2523,18 @@ impl ChunkingSettings {
     pub fn builder() -> ChunkingSettingsBuilder {
         ChunkingSettingsBuilder::new()
     }
+
+    /// Creates a [`ChunkingSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ChunkingSettingsBuilder,
+        ) -> ChunkingSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ChunkingSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ChunkingSettings`].
@@ -2684,6 +2761,15 @@ impl CompletionProperty {
     /// Creates a builder for [`CompletionProperty`].
     pub fn builder() -> CompletionPropertyBuilder {
         CompletionPropertyBuilder::new()
+    }
+
+    /// Creates a [`CompletionProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CompletionPropertyBuilder,
+        ) -> CompletionPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> CompletionProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -3045,6 +3131,15 @@ impl CompositeSubField {
     pub fn builder() -> CompositeSubFieldBuilder {
         CompositeSubFieldBuilder::new()
     }
+
+    /// Creates a [`CompositeSubField`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CompositeSubFieldBuilder,
+        ) -> CompositeSubFieldBuilder<(crate::typed::builder::Set,)>,
+    ) -> CompositeSubField {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CompositeSubField`].
@@ -3128,6 +3223,15 @@ impl ConstantKeywordProperty {
     /// Creates a builder for [`ConstantKeywordProperty`].
     pub fn builder() -> ConstantKeywordPropertyBuilder {
         ConstantKeywordPropertyBuilder::new()
+    }
+
+    /// Creates a [`ConstantKeywordProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ConstantKeywordPropertyBuilder,
+        ) -> ConstantKeywordPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> ConstantKeywordProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -3366,6 +3470,13 @@ impl CorePropertyBase {
     pub fn builder() -> CorePropertyBaseBuilder {
         CorePropertyBaseBuilder::new()
     }
+
+    /// Creates a [`CorePropertyBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CorePropertyBaseBuilder) -> CorePropertyBaseBuilder,
+    ) -> CorePropertyBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CorePropertyBase`].
@@ -3577,6 +3688,15 @@ impl CountedKeywordProperty {
     /// Creates a builder for [`CountedKeywordProperty`].
     pub fn builder() -> CountedKeywordPropertyBuilder {
         CountedKeywordPropertyBuilder::new()
+    }
+
+    /// Creates a [`CountedKeywordProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CountedKeywordPropertyBuilder,
+        ) -> CountedKeywordPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> CountedKeywordProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -3797,6 +3917,15 @@ impl DataStreamTimestamp {
     pub fn builder() -> DataStreamTimestampBuilder {
         DataStreamTimestampBuilder::new()
     }
+
+    /// Creates a [`DataStreamTimestamp`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DataStreamTimestampBuilder,
+        ) -> DataStreamTimestampBuilder<(crate::typed::builder::Set,)>,
+    ) -> DataStreamTimestamp {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DataStreamTimestamp`].
@@ -3897,6 +4026,15 @@ impl DateNanosProperty {
     /// Creates a builder for [`DateNanosProperty`].
     pub fn builder() -> DateNanosPropertyBuilder {
         DateNanosPropertyBuilder::new()
+    }
+
+    /// Creates a [`DateNanosProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DateNanosPropertyBuilder,
+        ) -> DateNanosPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> DateNanosProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -4313,6 +4451,13 @@ impl DateProperty {
     /// Creates a builder for [`DateProperty`].
     pub fn builder() -> DatePropertyBuilder {
         DatePropertyBuilder::new()
+    }
+
+    /// Creates a [`DateProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DatePropertyBuilder) -> DatePropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> DateProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -4766,6 +4911,15 @@ impl DateRangeProperty {
     pub fn builder() -> DateRangePropertyBuilder {
         DateRangePropertyBuilder::new()
     }
+
+    /// Creates a [`DateRangeProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DateRangePropertyBuilder,
+        ) -> DateRangePropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> DateRangeProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DateRangeProperty`].
@@ -5156,6 +5310,15 @@ impl DenseVectorIndexOptions {
     pub fn builder() -> DenseVectorIndexOptionsBuilder {
         DenseVectorIndexOptionsBuilder::new()
     }
+
+    /// Creates a [`DenseVectorIndexOptions`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DenseVectorIndexOptionsBuilder,
+        ) -> DenseVectorIndexOptionsBuilder<(crate::typed::builder::Set,)>,
+    ) -> DenseVectorIndexOptions {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DenseVectorIndexOptions`].
@@ -5453,6 +5616,16 @@ impl DenseVectorIndexOptionsRescoreVector {
     pub fn builder() -> DenseVectorIndexOptionsRescoreVectorBuilder {
         DenseVectorIndexOptionsRescoreVectorBuilder::new()
     }
+
+    /// Creates a [`DenseVectorIndexOptionsRescoreVector`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DenseVectorIndexOptionsRescoreVectorBuilder,
+        )
+            -> DenseVectorIndexOptionsRescoreVectorBuilder<(crate::typed::builder::Set,)>,
+    ) -> DenseVectorIndexOptionsRescoreVector {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DenseVectorIndexOptionsRescoreVector`].
@@ -5619,6 +5792,15 @@ impl DenseVectorProperty {
     /// Creates a builder for [`DenseVectorProperty`].
     pub fn builder() -> DenseVectorPropertyBuilder {
         DenseVectorPropertyBuilder::new()
+    }
+
+    /// Creates a [`DenseVectorProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DenseVectorPropertyBuilder,
+        ) -> DenseVectorPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> DenseVectorProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -6005,6 +6187,11 @@ impl DocValuesConfig {
     pub fn builder() -> DocValuesConfigBuilder {
         DocValuesConfigBuilder::new()
     }
+
+    /// Creates a [`DocValuesConfig`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(DocValuesConfigBuilder) -> DocValuesConfigBuilder) -> DocValuesConfig {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DocValuesConfig`].
@@ -6098,6 +6285,13 @@ impl DocValuesPropertyBase {
     /// Creates a builder for [`DocValuesPropertyBase`].
     pub fn builder() -> DocValuesPropertyBaseBuilder {
         DocValuesPropertyBaseBuilder::new()
+    }
+
+    /// Creates a [`DocValuesPropertyBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DocValuesPropertyBaseBuilder) -> DocValuesPropertyBaseBuilder,
+    ) -> DocValuesPropertyBase {
+        f(Self::builder()).build()
     }
 }
 
@@ -6348,6 +6542,15 @@ impl DoubleNumberProperty {
     /// Creates a builder for [`DoubleNumberProperty`].
     pub fn builder() -> DoubleNumberPropertyBuilder {
         DoubleNumberPropertyBuilder::new()
+    }
+
+    /// Creates a [`DoubleNumberProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DoubleNumberPropertyBuilder,
+        ) -> DoubleNumberPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> DoubleNumberProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -6768,6 +6971,15 @@ impl DoubleRangeProperty {
     pub fn builder() -> DoubleRangePropertyBuilder {
         DoubleRangePropertyBuilder::new()
     }
+
+    /// Creates a [`DoubleRangeProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DoubleRangePropertyBuilder,
+        ) -> DoubleRangePropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> DoubleRangeProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DoubleRangeProperty`].
@@ -7149,6 +7361,13 @@ impl DynamicProperty {
     /// Creates a builder for [`DynamicProperty`].
     pub fn builder() -> DynamicPropertyBuilder {
         DynamicPropertyBuilder::new()
+    }
+
+    /// Creates a [`DynamicProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DynamicPropertyBuilder) -> DynamicPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> DynamicProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -7959,6 +8178,13 @@ impl DynamicTemplate {
     pub fn builder() -> DynamicTemplateBuilder {
         DynamicTemplateBuilder::new()
     }
+
+    /// Creates a [`DynamicTemplate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DynamicTemplateBuilder) -> DynamicTemplateBuilder<(crate::typed::builder::Set,)>,
+    ) -> DynamicTemplate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DynamicTemplate`].
@@ -8173,6 +8399,15 @@ impl ExponentialHistogramProperty {
     /// Creates a builder for [`ExponentialHistogramProperty`].
     pub fn builder() -> ExponentialHistogramPropertyBuilder {
         ExponentialHistogramPropertyBuilder::new()
+    }
+
+    /// Creates a [`ExponentialHistogramProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ExponentialHistogramPropertyBuilder,
+        ) -> ExponentialHistogramPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> ExponentialHistogramProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -8410,6 +8645,15 @@ impl FieldAliasProperty {
     pub fn builder() -> FieldAliasPropertyBuilder {
         FieldAliasPropertyBuilder::new()
     }
+
+    /// Creates a [`FieldAliasProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FieldAliasPropertyBuilder,
+        ) -> FieldAliasPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> FieldAliasProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FieldAliasProperty`].
@@ -8630,6 +8874,16 @@ impl FieldMapping {
     pub fn builder() -> FieldMappingBuilder {
         FieldMappingBuilder::new()
     }
+
+    /// Creates a [`FieldMapping`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FieldMappingBuilder,
+        )
+            -> FieldMappingBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> FieldMapping {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FieldMapping`].
@@ -8724,6 +8978,13 @@ impl FieldNamesField {
     /// Creates a builder for [`FieldNamesField`].
     pub fn builder() -> FieldNamesFieldBuilder {
         FieldNamesFieldBuilder::new()
+    }
+
+    /// Creates a [`FieldNamesField`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FieldNamesFieldBuilder) -> FieldNamesFieldBuilder<(crate::typed::builder::Set,)>,
+    ) -> FieldNamesField {
+        f(Self::builder()).build()
     }
 }
 
@@ -8930,6 +9191,15 @@ impl FlattenedProperty {
     /// Creates a builder for [`FlattenedProperty`].
     pub fn builder() -> FlattenedPropertyBuilder {
         FlattenedPropertyBuilder::new()
+    }
+
+    /// Creates a [`FlattenedProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FlattenedPropertyBuilder,
+        ) -> FlattenedPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> FlattenedProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -9350,6 +9620,15 @@ impl FloatNumberProperty {
     pub fn builder() -> FloatNumberPropertyBuilder {
         FloatNumberPropertyBuilder::new()
     }
+
+    /// Creates a [`FloatNumberProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FloatNumberPropertyBuilder,
+        ) -> FloatNumberPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> FloatNumberProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FloatNumberProperty`].
@@ -9769,6 +10048,15 @@ impl FloatRangeProperty {
     pub fn builder() -> FloatRangePropertyBuilder {
         FloatRangePropertyBuilder::new()
     }
+
+    /// Creates a [`FloatRangeProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FloatRangePropertyBuilder,
+        ) -> FloatRangePropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> FloatRangeProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FloatRangeProperty`].
@@ -10118,6 +10406,15 @@ impl GeoPointProperty {
     /// Creates a builder for [`GeoPointProperty`].
     pub fn builder() -> GeoPointPropertyBuilder {
         GeoPointPropertyBuilder::new()
+    }
+
+    /// Creates a [`GeoPointProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GeoPointPropertyBuilder,
+        ) -> GeoPointPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> GeoPointProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -10514,6 +10811,15 @@ impl GeoShapeProperty {
     pub fn builder() -> GeoShapePropertyBuilder {
         GeoShapePropertyBuilder::new()
     }
+
+    /// Creates a [`GeoShapeProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GeoShapePropertyBuilder,
+        ) -> GeoShapePropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> GeoShapeProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GeoShapeProperty`].
@@ -10899,6 +11205,15 @@ impl HalfFloatNumberProperty {
     /// Creates a builder for [`HalfFloatNumberProperty`].
     pub fn builder() -> HalfFloatNumberPropertyBuilder {
         HalfFloatNumberPropertyBuilder::new()
+    }
+
+    /// Creates a [`HalfFloatNumberProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HalfFloatNumberPropertyBuilder,
+        ) -> HalfFloatNumberPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> HalfFloatNumberProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -11313,6 +11628,15 @@ impl HistogramProperty {
     pub fn builder() -> HistogramPropertyBuilder {
         HistogramPropertyBuilder::new()
     }
+
+    /// Creates a [`HistogramProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HistogramPropertyBuilder,
+        ) -> HistogramPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> HistogramProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HistogramProperty`].
@@ -11599,6 +11923,15 @@ impl IcuCollationProperty {
     /// Creates a builder for [`IcuCollationProperty`].
     pub fn builder() -> IcuCollationPropertyBuilder {
         IcuCollationPropertyBuilder::new()
+    }
+
+    /// Creates a [`IcuCollationProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IcuCollationPropertyBuilder,
+        ) -> IcuCollationPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> IcuCollationProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -12115,6 +12448,13 @@ impl IndexField {
     pub fn builder() -> IndexFieldBuilder {
         IndexFieldBuilder::new()
     }
+
+    /// Creates a [`IndexField`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IndexFieldBuilder) -> IndexFieldBuilder<(crate::typed::builder::Set,)>,
+    ) -> IndexField {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexField`].
@@ -12231,6 +12571,15 @@ impl IntegerNumberProperty {
     /// Creates a builder for [`IntegerNumberProperty`].
     pub fn builder() -> IntegerNumberPropertyBuilder {
         IntegerNumberPropertyBuilder::new()
+    }
+
+    /// Creates a [`IntegerNumberProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IntegerNumberPropertyBuilder,
+        ) -> IntegerNumberPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> IntegerNumberProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -12651,6 +13000,15 @@ impl IntegerRangeProperty {
     pub fn builder() -> IntegerRangePropertyBuilder {
         IntegerRangePropertyBuilder::new()
     }
+
+    /// Creates a [`IntegerRangeProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IntegerRangePropertyBuilder,
+        ) -> IntegerRangePropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> IntegerRangeProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IntegerRangeProperty`].
@@ -12978,6 +13336,13 @@ impl IpProperty {
     /// Creates a builder for [`IpProperty`].
     pub fn builder() -> IpPropertyBuilder {
         IpPropertyBuilder::new()
+    }
+
+    /// Creates a [`IpProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IpPropertyBuilder) -> IpPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> IpProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -13367,6 +13732,13 @@ impl IpRangeProperty {
     pub fn builder() -> IpRangePropertyBuilder {
         IpRangePropertyBuilder::new()
     }
+
+    /// Creates a [`IpRangeProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IpRangePropertyBuilder) -> IpRangePropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> IpRangeProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IpRangeProperty`].
@@ -13704,6 +14076,13 @@ impl JoinProperty {
     pub fn builder() -> JoinPropertyBuilder {
         JoinPropertyBuilder::new()
     }
+
+    /// Creates a [`JoinProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(JoinPropertyBuilder) -> JoinPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> JoinProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`JoinProperty`].
@@ -14021,6 +14400,13 @@ impl KeywordProperty {
     /// Creates a builder for [`KeywordProperty`].
     pub fn builder() -> KeywordPropertyBuilder {
         KeywordPropertyBuilder::new()
+    }
+
+    /// Creates a [`KeywordProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(KeywordPropertyBuilder) -> KeywordPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> KeywordProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -14499,6 +14885,15 @@ impl LongNumberProperty {
     pub fn builder() -> LongNumberPropertyBuilder {
         LongNumberPropertyBuilder::new()
     }
+
+    /// Creates a [`LongNumberProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LongNumberPropertyBuilder,
+        ) -> LongNumberPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> LongNumberProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`LongNumberProperty`].
@@ -14918,6 +15313,15 @@ impl LongRangeProperty {
     pub fn builder() -> LongRangePropertyBuilder {
         LongRangePropertyBuilder::new()
     }
+
+    /// Creates a [`LongRangeProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LongRangePropertyBuilder,
+        ) -> LongRangePropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> LongRangeProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`LongRangeProperty`].
@@ -15228,6 +15632,15 @@ impl MatchOnlyTextProperty {
     pub fn builder() -> MatchOnlyTextPropertyBuilder {
         MatchOnlyTextPropertyBuilder::new()
     }
+
+    /// Creates a [`MatchOnlyTextProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MatchOnlyTextPropertyBuilder,
+        ) -> MatchOnlyTextPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> MatchOnlyTextProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MatchOnlyTextProperty`].
@@ -15399,6 +15812,15 @@ impl Murmur3HashProperty {
     /// Creates a builder for [`Murmur3HashProperty`].
     pub fn builder() -> Murmur3HashPropertyBuilder {
         Murmur3HashPropertyBuilder::new()
+    }
+
+    /// Creates a [`Murmur3HashProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            Murmur3HashPropertyBuilder,
+        ) -> Murmur3HashPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> Murmur3HashProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -15671,6 +16093,13 @@ impl NestedProperty {
     /// Creates a builder for [`NestedProperty`].
     pub fn builder() -> NestedPropertyBuilder {
         NestedPropertyBuilder::new()
+    }
+
+    /// Creates a [`NestedProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NestedPropertyBuilder) -> NestedPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> NestedProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -15986,6 +16415,13 @@ impl NumberPropertyBase {
     /// Creates a builder for [`NumberPropertyBase`].
     pub fn builder() -> NumberPropertyBaseBuilder {
         NumberPropertyBaseBuilder::new()
+    }
+
+    /// Creates a [`NumberPropertyBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NumberPropertyBaseBuilder) -> NumberPropertyBaseBuilder,
+    ) -> NumberPropertyBase {
+        f(Self::builder()).build()
     }
 }
 
@@ -16342,6 +16778,11 @@ impl ObjectProperty {
     pub fn builder() -> ObjectPropertyBuilder {
         ObjectPropertyBuilder::new()
     }
+
+    /// Creates a [`ObjectProperty`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(ObjectPropertyBuilder) -> ObjectPropertyBuilder) -> ObjectProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ObjectProperty`].
@@ -16613,6 +17054,13 @@ impl PassthroughObjectProperty {
     pub fn builder() -> PassthroughObjectPropertyBuilder {
         PassthroughObjectPropertyBuilder::new()
     }
+
+    /// Creates a [`PassthroughObjectProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(PassthroughObjectPropertyBuilder) -> PassthroughObjectPropertyBuilder,
+    ) -> PassthroughObjectProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PassthroughObjectProperty`].
@@ -16879,6 +17327,15 @@ impl PercolatorProperty {
     pub fn builder() -> PercolatorPropertyBuilder {
         PercolatorPropertyBuilder::new()
     }
+
+    /// Creates a [`PercolatorProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PercolatorPropertyBuilder,
+        ) -> PercolatorPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> PercolatorProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PercolatorProperty`].
@@ -17107,6 +17564,13 @@ impl PointProperty {
     /// Creates a builder for [`PointProperty`].
     pub fn builder() -> PointPropertyBuilder {
         PointPropertyBuilder::new()
+    }
+
+    /// Creates a [`PointProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(PointPropertyBuilder) -> PointPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> PointProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -17433,6 +17897,11 @@ impl PropertyBase {
     pub fn builder() -> PropertyBaseBuilder {
         PropertyBaseBuilder::new()
     }
+
+    /// Creates a [`PropertyBase`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(PropertyBaseBuilder) -> PropertyBaseBuilder) -> PropertyBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PropertyBase`].
@@ -17625,6 +18094,13 @@ impl RangePropertyBase {
     /// Creates a builder for [`RangePropertyBase`].
     pub fn builder() -> RangePropertyBaseBuilder {
         RangePropertyBaseBuilder::new()
+    }
+
+    /// Creates a [`RangePropertyBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RangePropertyBaseBuilder) -> RangePropertyBaseBuilder,
+    ) -> RangePropertyBase {
+        f(Self::builder()).build()
     }
 }
 
@@ -17894,6 +18370,15 @@ impl RankFeatureProperty {
     pub fn builder() -> RankFeaturePropertyBuilder {
         RankFeaturePropertyBuilder::new()
     }
+
+    /// Creates a [`RankFeatureProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RankFeaturePropertyBuilder,
+        ) -> RankFeaturePropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> RankFeatureProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RankFeatureProperty`].
@@ -18127,6 +18612,15 @@ impl RankFeaturesProperty {
     /// Creates a builder for [`RankFeaturesProperty`].
     pub fn builder() -> RankFeaturesPropertyBuilder {
         RankFeaturesPropertyBuilder::new()
+    }
+
+    /// Creates a [`RankFeaturesProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RankFeaturesPropertyBuilder,
+        ) -> RankFeaturesPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> RankFeaturesProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -18375,6 +18869,15 @@ impl RankVectorProperty {
     pub fn builder() -> RankVectorPropertyBuilder {
         RankVectorPropertyBuilder::new()
     }
+
+    /// Creates a [`RankVectorProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RankVectorPropertyBuilder,
+        ) -> RankVectorPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> RankVectorProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RankVectorProperty`].
@@ -18609,6 +19112,13 @@ impl RoutingField {
     pub fn builder() -> RoutingFieldBuilder {
         RoutingFieldBuilder::new()
     }
+
+    /// Creates a [`RoutingField`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RoutingFieldBuilder) -> RoutingFieldBuilder<(crate::typed::builder::Set,)>,
+    ) -> RoutingField {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RoutingField`].
@@ -18698,6 +19208,13 @@ impl RuntimeField {
     /// Creates a builder for [`RuntimeField`].
     pub fn builder() -> RuntimeFieldBuilder {
         RuntimeFieldBuilder::new()
+    }
+
+    /// Creates a [`RuntimeField`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RuntimeFieldBuilder) -> RuntimeFieldBuilder<(crate::typed::builder::Set,)>,
+    ) -> RuntimeField {
+        f(Self::builder()).build()
     }
 }
 
@@ -18953,6 +19470,15 @@ impl RuntimeFieldFetchFields {
     pub fn builder() -> RuntimeFieldFetchFieldsBuilder {
         RuntimeFieldFetchFieldsBuilder::new()
     }
+
+    /// Creates a [`RuntimeFieldFetchFields`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RuntimeFieldFetchFieldsBuilder,
+        ) -> RuntimeFieldFetchFieldsBuilder<(crate::typed::builder::Set,)>,
+    ) -> RuntimeFieldFetchFields {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RuntimeFieldFetchFields`].
@@ -19105,6 +19631,15 @@ impl ScaledFloatNumberProperty {
     /// Creates a builder for [`ScaledFloatNumberProperty`].
     pub fn builder() -> ScaledFloatNumberPropertyBuilder {
         ScaledFloatNumberPropertyBuilder::new()
+    }
+
+    /// Creates a [`ScaledFloatNumberProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ScaledFloatNumberPropertyBuilder,
+        ) -> ScaledFloatNumberPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> ScaledFloatNumberProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -19571,6 +20106,15 @@ impl SearchAsYouTypeProperty {
     pub fn builder() -> SearchAsYouTypePropertyBuilder {
         SearchAsYouTypePropertyBuilder::new()
     }
+
+    /// Creates a [`SearchAsYouTypeProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SearchAsYouTypePropertyBuilder,
+        ) -> SearchAsYouTypePropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> SearchAsYouTypeProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SearchAsYouTypeProperty`].
@@ -19945,6 +20489,13 @@ impl SemanticTextIndexOptions {
     pub fn builder() -> SemanticTextIndexOptionsBuilder {
         SemanticTextIndexOptionsBuilder::new()
     }
+
+    /// Creates a [`SemanticTextIndexOptions`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SemanticTextIndexOptionsBuilder) -> SemanticTextIndexOptionsBuilder,
+    ) -> SemanticTextIndexOptions {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SemanticTextIndexOptions`].
@@ -20070,6 +20621,15 @@ impl SemanticTextProperty {
     /// Creates a builder for [`SemanticTextProperty`].
     pub fn builder() -> SemanticTextPropertyBuilder {
         SemanticTextPropertyBuilder::new()
+    }
+
+    /// Creates a [`SemanticTextProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SemanticTextPropertyBuilder,
+        ) -> SemanticTextPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> SemanticTextProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -20313,6 +20873,13 @@ impl ShapeProperty {
     /// Creates a builder for [`ShapeProperty`].
     pub fn builder() -> ShapePropertyBuilder {
         ShapePropertyBuilder::new()
+    }
+
+    /// Creates a [`ShapeProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ShapePropertyBuilder) -> ShapePropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> ShapeProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -20661,6 +21228,15 @@ impl ShortNumberProperty {
     /// Creates a builder for [`ShortNumberProperty`].
     pub fn builder() -> ShortNumberPropertyBuilder {
         ShortNumberPropertyBuilder::new()
+    }
+
+    /// Creates a [`ShortNumberProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShortNumberPropertyBuilder,
+        ) -> ShortNumberPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> ShortNumberProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -21056,6 +21632,13 @@ impl SizeField {
     pub fn builder() -> SizeFieldBuilder {
         SizeFieldBuilder::new()
     }
+
+    /// Creates a [`SizeField`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SizeFieldBuilder) -> SizeFieldBuilder<(crate::typed::builder::Set,)>,
+    ) -> SizeField {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SizeField`].
@@ -21128,6 +21711,11 @@ impl SourceField {
     /// Creates a builder for [`SourceField`].
     pub fn builder() -> SourceFieldBuilder {
         SourceFieldBuilder::new()
+    }
+
+    /// Creates a [`SourceField`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(SourceFieldBuilder) -> SourceFieldBuilder) -> SourceField {
+        f(Self::builder()).build()
     }
 }
 
@@ -21265,6 +21853,13 @@ impl SparseVectorIndexOptions {
     pub fn builder() -> SparseVectorIndexOptionsBuilder {
         SparseVectorIndexOptionsBuilder::new()
     }
+
+    /// Creates a [`SparseVectorIndexOptions`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SparseVectorIndexOptionsBuilder) -> SparseVectorIndexOptionsBuilder,
+    ) -> SparseVectorIndexOptions {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SparseVectorIndexOptions`].
@@ -21374,6 +21969,15 @@ impl SparseVectorProperty {
     /// Creates a builder for [`SparseVectorProperty`].
     pub fn builder() -> SparseVectorPropertyBuilder {
         SparseVectorPropertyBuilder::new()
+    }
+
+    /// Creates a [`SparseVectorProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SparseVectorPropertyBuilder,
+        ) -> SparseVectorPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> SparseVectorProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -21659,6 +22263,18 @@ impl SuggestContext {
     pub fn builder() -> SuggestContextBuilder {
         SuggestContextBuilder::new()
     }
+
+    /// Creates a [`SuggestContext`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SuggestContextBuilder,
+        ) -> SuggestContextBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SuggestContext {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SuggestContext`].
@@ -21823,6 +22439,13 @@ impl TextIndexPrefixes {
     pub fn builder() -> TextIndexPrefixesBuilder {
         TextIndexPrefixesBuilder::new()
     }
+
+    /// Creates a [`TextIndexPrefixes`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TextIndexPrefixesBuilder) -> TextIndexPrefixesBuilder,
+    ) -> TextIndexPrefixes {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TextIndexPrefixes`].
@@ -21969,6 +22592,13 @@ impl TextProperty {
     /// Creates a builder for [`TextProperty`].
     pub fn builder() -> TextPropertyBuilder {
         TextPropertyBuilder::new()
+    }
+
+    /// Creates a [`TextProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TextPropertyBuilder) -> TextPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> TextProperty {
+        f(Self::builder()).build()
     }
 }
 
@@ -22494,6 +23124,15 @@ impl TokenCountProperty {
     pub fn builder() -> TokenCountPropertyBuilder {
         TokenCountPropertyBuilder::new()
     }
+
+    /// Creates a [`TokenCountProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TokenCountPropertyBuilder,
+        ) -> TokenCountPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> TokenCountProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TokenCountProperty`].
@@ -22858,6 +23497,11 @@ impl TypeMapping {
     /// Creates a builder for [`TypeMapping`].
     pub fn builder() -> TypeMappingBuilder {
         TypeMappingBuilder::new()
+    }
+
+    /// Creates a [`TypeMapping`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(TypeMappingBuilder) -> TypeMappingBuilder) -> TypeMapping {
+        f(Self::builder()).build()
     }
 }
 
@@ -23315,6 +23959,15 @@ impl UnsignedLongNumberProperty {
     pub fn builder() -> UnsignedLongNumberPropertyBuilder {
         UnsignedLongNumberPropertyBuilder::new()
     }
+
+    /// Creates a [`UnsignedLongNumberProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UnsignedLongNumberPropertyBuilder,
+        ) -> UnsignedLongNumberPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> UnsignedLongNumberProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`UnsignedLongNumberProperty`].
@@ -23730,6 +24383,13 @@ impl VersionProperty {
     pub fn builder() -> VersionPropertyBuilder {
         VersionPropertyBuilder::new()
     }
+
+    /// Creates a [`VersionProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(VersionPropertyBuilder) -> VersionPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> VersionProperty {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`VersionProperty`].
@@ -23999,6 +24659,15 @@ impl WildcardProperty {
     /// Creates a builder for [`WildcardProperty`].
     pub fn builder() -> WildcardPropertyBuilder {
         WildcardPropertyBuilder::new()
+    }
+
+    /// Creates a [`WildcardProperty`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            WildcardPropertyBuilder,
+        ) -> WildcardPropertyBuilder<(crate::typed::builder::Set,)>,
+    ) -> WildcardProperty {
+        f(Self::builder()).build()
     }
 }
 

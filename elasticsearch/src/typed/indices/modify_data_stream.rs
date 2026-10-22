@@ -25,6 +25,13 @@ impl Action {
     pub fn builder() -> ActionBuilder {
         ActionBuilder::new()
     }
+
+    /// Creates a [`Action`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ActionBuilder) -> ActionBuilder<(crate::typed::builder::Set,)>,
+    ) -> Action {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Action`].
@@ -161,6 +168,18 @@ impl IndexAndDataStreamAction {
     pub fn builder() -> IndexAndDataStreamActionBuilder {
         IndexAndDataStreamActionBuilder::new()
     }
+
+    /// Creates a [`IndexAndDataStreamAction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndexAndDataStreamActionBuilder,
+        ) -> IndexAndDataStreamActionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IndexAndDataStreamAction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexAndDataStreamAction`].
@@ -286,6 +305,13 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 

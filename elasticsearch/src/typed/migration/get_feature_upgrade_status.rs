@@ -14,6 +14,20 @@ impl MigrationFeature {
     pub fn builder() -> MigrationFeatureBuilder {
         MigrationFeatureBuilder::new()
     }
+
+    /// Creates a [`MigrationFeature`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MigrationFeatureBuilder,
+        ) -> MigrationFeatureBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MigrationFeature {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MigrationFeature`].
@@ -207,6 +221,18 @@ impl MigrationFeatureIndexInfo {
     pub fn builder() -> MigrationFeatureIndexInfoBuilder {
         MigrationFeatureIndexInfoBuilder::new()
     }
+
+    /// Creates a [`MigrationFeatureIndexInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MigrationFeatureIndexInfoBuilder,
+        ) -> MigrationFeatureIndexInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MigrationFeatureIndexInfo {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MigrationFeatureIndexInfo`].
@@ -371,6 +397,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

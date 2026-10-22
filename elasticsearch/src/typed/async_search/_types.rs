@@ -54,6 +54,20 @@ impl AsyncSearch {
     pub fn builder() -> AsyncSearchBuilder {
         AsyncSearchBuilder::new()
     }
+
+    /// Creates a [`AsyncSearch`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AsyncSearchBuilder,
+        ) -> AsyncSearchBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AsyncSearch {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AsyncSearch`].
@@ -569,6 +583,21 @@ impl AsyncSearchDocumentResponseBase {
     pub fn builder() -> AsyncSearchDocumentResponseBaseBuilder {
         AsyncSearchDocumentResponseBaseBuilder::new()
     }
+
+    /// Creates a [`AsyncSearchDocumentResponseBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AsyncSearchDocumentResponseBaseBuilder,
+        ) -> AsyncSearchDocumentResponseBaseBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AsyncSearchDocumentResponseBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AsyncSearchDocumentResponseBase`].
@@ -963,6 +992,20 @@ impl AsyncSearchResponseBase {
     pub fn builder() -> AsyncSearchResponseBaseBuilder {
         AsyncSearchResponseBaseBuilder::new()
     }
+
+    /// Creates a [`AsyncSearchResponseBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AsyncSearchResponseBaseBuilder,
+        ) -> AsyncSearchResponseBaseBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AsyncSearchResponseBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AsyncSearchResponseBase`].
@@ -1283,6 +1326,20 @@ impl AsyncSearchResponseException {
     /// Creates a builder for [`AsyncSearchResponseException`].
     pub fn builder() -> AsyncSearchResponseExceptionBuilder {
         AsyncSearchResponseExceptionBuilder::new()
+    }
+
+    /// Creates a [`AsyncSearchResponseException`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AsyncSearchResponseExceptionBuilder,
+        ) -> AsyncSearchResponseExceptionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AsyncSearchResponseException {
+        f(Self::builder()).build()
     }
 }
 

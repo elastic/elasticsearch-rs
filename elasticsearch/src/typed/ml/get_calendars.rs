@@ -17,6 +17,16 @@ impl Calendar {
     pub fn builder() -> CalendarBuilder {
         CalendarBuilder::new()
     }
+
+    /// Creates a [`Calendar`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CalendarBuilder,
+        )
+            -> CalendarBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Calendar {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Calendar`].
@@ -153,6 +163,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

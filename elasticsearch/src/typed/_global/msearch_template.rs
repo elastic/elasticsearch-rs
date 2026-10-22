@@ -70,6 +70,13 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -512,6 +519,11 @@ impl TemplateConfig {
     /// Creates a builder for [`TemplateConfig`].
     pub fn builder() -> TemplateConfigBuilder {
         TemplateConfigBuilder::new()
+    }
+
+    /// Creates a [`TemplateConfig`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(TemplateConfigBuilder) -> TemplateConfigBuilder) -> TemplateConfig {
+        f(Self::builder()).build()
     }
 }
 

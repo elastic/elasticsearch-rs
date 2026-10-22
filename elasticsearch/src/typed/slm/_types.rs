@@ -30,6 +30,11 @@ impl Configuration {
     pub fn builder() -> ConfigurationBuilder {
         ConfigurationBuilder::new()
     }
+
+    /// Creates a [`Configuration`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(ConfigurationBuilder) -> ConfigurationBuilder) -> Configuration {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Configuration`].
@@ -184,6 +189,20 @@ impl InProgress {
     /// Creates a builder for [`InProgress`].
     pub fn builder() -> InProgressBuilder {
         InProgressBuilder::new()
+    }
+
+    /// Creates a [`InProgress`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InProgressBuilder,
+        ) -> InProgressBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InProgress {
+        f(Self::builder()).build()
     }
 }
 
@@ -376,6 +395,16 @@ impl Invocation {
     pub fn builder() -> InvocationBuilder {
         InvocationBuilder::new()
     }
+
+    /// Creates a [`Invocation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InvocationBuilder,
+        )
+            -> InvocationBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Invocation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Invocation`].
@@ -475,6 +504,19 @@ impl Policy {
     /// Creates a builder for [`Policy`].
     pub fn builder() -> PolicyBuilder {
         PolicyBuilder::new()
+    }
+
+    /// Creates a [`Policy`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PolicyBuilder,
+        ) -> PolicyBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Policy {
+        f(Self::builder()).build()
     }
 }
 
@@ -685,6 +727,19 @@ impl Retention {
     pub fn builder() -> RetentionBuilder {
         RetentionBuilder::new()
     }
+
+    /// Creates a [`Retention`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RetentionBuilder,
+        ) -> RetentionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Retention {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Retention`].
@@ -854,6 +909,21 @@ impl SnapshotLifecycle {
     /// Creates a builder for [`SnapshotLifecycle`].
     pub fn builder() -> SnapshotLifecycleBuilder {
         SnapshotLifecycleBuilder::new()
+    }
+
+    /// Creates a [`SnapshotLifecycle`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SnapshotLifecycleBuilder,
+        ) -> SnapshotLifecycleBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SnapshotLifecycle {
+        f(Self::builder()).build()
     }
 }
 
@@ -1224,6 +1294,21 @@ impl SnapshotPolicyStats {
     pub fn builder() -> SnapshotPolicyStatsBuilder {
         SnapshotPolicyStatsBuilder::new()
     }
+
+    /// Creates a [`SnapshotPolicyStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SnapshotPolicyStatsBuilder,
+        ) -> SnapshotPolicyStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SnapshotPolicyStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SnapshotPolicyStats`].
@@ -1485,6 +1570,11 @@ impl Statistics {
     /// Creates a builder for [`Statistics`].
     pub fn builder() -> StatisticsBuilder {
         StatisticsBuilder::new()
+    }
+
+    /// Creates a [`Statistics`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(StatisticsBuilder) -> StatisticsBuilder) -> Statistics {
+        f(Self::builder()).build()
     }
 }
 

@@ -51,6 +51,11 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -579,6 +584,13 @@ impl TransformsRecord {
     /// Creates a builder for [`TransformsRecord`].
     pub fn builder() -> TransformsRecordBuilder {
         TransformsRecordBuilder::new()
+    }
+
+    /// Creates a [`TransformsRecord`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TransformsRecordBuilder) -> TransformsRecordBuilder,
+    ) -> TransformsRecord {
+        f(Self::builder()).build()
     }
 }
 

@@ -14,6 +14,20 @@ impl Connection {
     pub fn builder() -> ConnectionBuilder {
         ConnectionBuilder::new()
     }
+
+    /// Creates a [`Connection`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ConnectionBuilder,
+        ) -> ConnectionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Connection {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Connection`].
@@ -214,6 +228,13 @@ impl ExploreControls {
     pub fn builder() -> ExploreControlsBuilder {
         ExploreControlsBuilder::new()
     }
+
+    /// Creates a [`ExploreControls`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ExploreControlsBuilder) -> ExploreControlsBuilder<(crate::typed::builder::Set,)>,
+    ) -> ExploreControls {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ExploreControls`].
@@ -358,6 +379,11 @@ impl Hop {
     pub fn builder() -> HopBuilder {
         HopBuilder::new()
     }
+
+    /// Creates a [`Hop`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(HopBuilder) -> HopBuilder<(crate::typed::builder::Set,)>) -> Hop {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Hop`].
@@ -487,6 +513,18 @@ impl SampleDiversity {
     pub fn builder() -> SampleDiversityBuilder {
         SampleDiversityBuilder::new()
     }
+
+    /// Creates a [`SampleDiversity`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SampleDiversityBuilder,
+        ) -> SampleDiversityBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SampleDiversity {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SampleDiversity`].
@@ -585,6 +623,20 @@ impl Vertex {
     /// Creates a builder for [`Vertex`].
     pub fn builder() -> VertexBuilder {
         VertexBuilder::new()
+    }
+
+    /// Creates a [`Vertex`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            VertexBuilder,
+        ) -> VertexBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Vertex {
+        f(Self::builder()).build()
     }
 }
 
@@ -790,6 +842,15 @@ impl VertexDefinition {
     pub fn builder() -> VertexDefinitionBuilder {
         VertexDefinitionBuilder::new()
     }
+
+    /// Creates a [`VertexDefinition`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            VertexDefinitionBuilder,
+        ) -> VertexDefinitionBuilder<(crate::typed::builder::Set,)>,
+    ) -> VertexDefinition {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`VertexDefinition`].
@@ -966,6 +1027,13 @@ impl VertexInclude {
     /// Creates a builder for [`VertexInclude`].
     pub fn builder() -> VertexIncludeBuilder {
         VertexIncludeBuilder::new()
+    }
+
+    /// Creates a [`VertexInclude`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(VertexIncludeBuilder) -> VertexIncludeBuilder<(crate::typed::builder::Set,)>,
+    ) -> VertexInclude {
+        f(Self::builder()).build()
     }
 }
 

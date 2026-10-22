@@ -54,6 +54,11 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -401,6 +406,19 @@ impl TransformSummary {
     /// Creates a builder for [`TransformSummary`].
     pub fn builder() -> TransformSummaryBuilder {
         TransformSummaryBuilder::new()
+    }
+
+    /// Creates a [`TransformSummary`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TransformSummaryBuilder,
+        ) -> TransformSummaryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> TransformSummary {
+        f(Self::builder()).build()
     }
 }
 

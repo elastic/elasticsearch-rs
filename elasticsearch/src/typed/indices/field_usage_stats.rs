@@ -18,6 +18,24 @@ impl FieldSummary {
     pub fn builder() -> FieldSummaryBuilder {
         FieldSummaryBuilder::new()
     }
+
+    /// Creates a [`FieldSummary`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FieldSummaryBuilder,
+        ) -> FieldSummaryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FieldSummary {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FieldSummary`].
@@ -408,6 +426,13 @@ impl FieldsUsageBody {
     pub fn builder() -> FieldsUsageBodyBuilder {
         FieldsUsageBodyBuilder::new()
     }
+
+    /// Creates a [`FieldsUsageBody`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FieldsUsageBodyBuilder) -> FieldsUsageBodyBuilder<(crate::typed::builder::Set,)>,
+    ) -> FieldsUsageBody {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FieldsUsageBody`].
@@ -519,6 +544,23 @@ impl InvertedIndex {
     /// Creates a builder for [`InvertedIndex`].
     pub fn builder() -> InvertedIndexBuilder {
         InvertedIndexBuilder::new()
+    }
+
+    /// Creates a [`InvertedIndex`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InvertedIndexBuilder,
+        ) -> InvertedIndexBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InvertedIndex {
+        f(Self::builder()).build()
     }
 }
 
@@ -888,6 +930,13 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -1231,6 +1280,16 @@ impl ShardsStats {
     pub fn builder() -> ShardsStatsBuilder {
         ShardsStatsBuilder::new()
     }
+
+    /// Creates a [`ShardsStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardsStatsBuilder,
+        )
+            -> ShardsStatsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> ShardsStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ShardsStats`].
@@ -1344,6 +1403,13 @@ impl UsageStatsIndex {
     pub fn builder() -> UsageStatsIndexBuilder {
         UsageStatsIndexBuilder::new()
     }
+
+    /// Creates a [`UsageStatsIndex`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(UsageStatsIndexBuilder) -> UsageStatsIndexBuilder<(crate::typed::builder::Set,)>,
+    ) -> UsageStatsIndex {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`UsageStatsIndex`].
@@ -1415,6 +1481,20 @@ impl UsageStatsShards {
     /// Creates a builder for [`UsageStatsShards`].
     pub fn builder() -> UsageStatsShardsBuilder {
         UsageStatsShardsBuilder::new()
+    }
+
+    /// Creates a [`UsageStatsShards`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UsageStatsShardsBuilder,
+        ) -> UsageStatsShardsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> UsageStatsShards {
+        f(Self::builder()).build()
     }
 }
 

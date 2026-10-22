@@ -12,6 +12,16 @@ impl Feature {
     pub fn builder() -> FeatureBuilder {
         FeatureBuilder::new()
     }
+
+    /// Creates a [`Feature`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FeatureBuilder,
+        )
+            -> FeatureBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Feature {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Feature`].

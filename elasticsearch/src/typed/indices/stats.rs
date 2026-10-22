@@ -73,6 +73,11 @@ impl IndexStats {
     pub fn builder() -> IndexStatsBuilder {
         IndexStatsBuilder::new()
     }
+
+    /// Creates a [`IndexStats`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(IndexStatsBuilder) -> IndexStatsBuilder) -> IndexStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexStats`].
@@ -718,6 +723,11 @@ impl IndicesStats {
     pub fn builder() -> IndicesStatsBuilder {
         IndicesStatsBuilder::new()
     }
+
+    /// Creates a [`IndicesStats`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(IndicesStatsBuilder) -> IndicesStatsBuilder) -> IndicesStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndicesStats`].
@@ -868,6 +878,21 @@ impl MappingStats {
     /// Creates a builder for [`MappingStats`].
     pub fn builder() -> MappingStatsBuilder {
         MappingStatsBuilder::new()
+    }
+
+    /// Creates a [`MappingStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MappingStatsBuilder,
+        ) -> MappingStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MappingStats {
+        f(Self::builder()).build()
     }
 }
 
@@ -1170,6 +1195,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -1645,6 +1675,20 @@ impl ShardCommit {
     pub fn builder() -> ShardCommitBuilder {
         ShardCommitBuilder::new()
     }
+
+    /// Creates a [`ShardCommit`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardCommitBuilder,
+        ) -> ShardCommitBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardCommit {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ShardCommit`].
@@ -1844,6 +1888,18 @@ impl ShardFileSizeInfo {
     pub fn builder() -> ShardFileSizeInfoBuilder {
         ShardFileSizeInfoBuilder::new()
     }
+
+    /// Creates a [`ShardFileSizeInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardFileSizeInfoBuilder,
+        ) -> ShardFileSizeInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardFileSizeInfo {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ShardFileSizeInfo`].
@@ -2002,6 +2058,20 @@ impl ShardLease {
     /// Creates a builder for [`ShardLease`].
     pub fn builder() -> ShardLeaseBuilder {
         ShardLeaseBuilder::new()
+    }
+
+    /// Creates a [`ShardLease`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardLeaseBuilder,
+        ) -> ShardLeaseBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardLease {
+        f(Self::builder()).build()
     }
 }
 
@@ -2195,6 +2265,19 @@ impl ShardPath {
     pub fn builder() -> ShardPathBuilder {
         ShardPathBuilder::new()
     }
+
+    /// Creates a [`ShardPath`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardPathBuilder,
+        ) -> ShardPathBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardPath {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ShardPath`].
@@ -2357,6 +2440,23 @@ impl ShardQueryCache {
     /// Creates a builder for [`ShardQueryCache`].
     pub fn builder() -> ShardQueryCacheBuilder {
         ShardQueryCacheBuilder::new()
+    }
+
+    /// Creates a [`ShardQueryCache`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardQueryCacheBuilder,
+        ) -> ShardQueryCacheBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardQueryCache {
+        f(Self::builder()).build()
     }
 }
 
@@ -2698,6 +2798,19 @@ impl ShardRetentionLeases {
     pub fn builder() -> ShardRetentionLeasesBuilder {
         ShardRetentionLeasesBuilder::new()
     }
+
+    /// Creates a [`ShardRetentionLeases`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardRetentionLeasesBuilder,
+        ) -> ShardRetentionLeasesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardRetentionLeases {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ShardRetentionLeases`].
@@ -2875,6 +2988,19 @@ impl ShardRouting {
     /// Creates a builder for [`ShardRouting`].
     pub fn builder() -> ShardRoutingBuilder {
         ShardRoutingBuilder::new()
+    }
+
+    /// Creates a [`ShardRouting`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardRoutingBuilder,
+        ) -> ShardRoutingBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardRouting {
+        f(Self::builder()).build()
     }
 }
 
@@ -3056,6 +3182,19 @@ impl ShardSequenceNumber {
     /// Creates a builder for [`ShardSequenceNumber`].
     pub fn builder() -> ShardSequenceNumberBuilder {
         ShardSequenceNumberBuilder::new()
+    }
+
+    /// Creates a [`ShardSequenceNumber`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardSequenceNumberBuilder,
+        ) -> ShardSequenceNumberBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardSequenceNumber {
+        f(Self::builder()).build()
     }
 }
 
@@ -3266,6 +3405,11 @@ impl ShardStats {
     /// Creates a builder for [`ShardStats`].
     pub fn builder() -> ShardStatsBuilder {
         ShardStatsBuilder::new()
+    }
+
+    /// Creates a [`ShardStats`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(ShardStatsBuilder) -> ShardStatsBuilder) -> ShardStats {
+        f(Self::builder()).build()
     }
 }
 
@@ -4169,6 +4313,15 @@ impl ShardsTotalStats {
     /// Creates a builder for [`ShardsTotalStats`].
     pub fn builder() -> ShardsTotalStatsBuilder {
         ShardsTotalStatsBuilder::new()
+    }
+
+    /// Creates a [`ShardsTotalStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardsTotalStatsBuilder,
+        ) -> ShardsTotalStatsBuilder<(crate::typed::builder::Set,)>,
+    ) -> ShardsTotalStats {
+        f(Self::builder()).build()
     }
 }
 

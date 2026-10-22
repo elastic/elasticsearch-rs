@@ -14,6 +14,20 @@ impl ConfusionMatrixItem {
     pub fn builder() -> ConfusionMatrixItemBuilder {
         ConfusionMatrixItemBuilder::new()
     }
+
+    /// Creates a [`ConfusionMatrixItem`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ConfusionMatrixItemBuilder,
+        ) -> ConfusionMatrixItemBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ConfusionMatrixItem {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ConfusionMatrixItem`].
@@ -205,6 +219,18 @@ impl ConfusionMatrixPrediction {
     pub fn builder() -> ConfusionMatrixPredictionBuilder {
         ConfusionMatrixPredictionBuilder::new()
     }
+
+    /// Creates a [`ConfusionMatrixPrediction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ConfusionMatrixPredictionBuilder,
+        ) -> ConfusionMatrixPredictionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ConfusionMatrixPrediction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ConfusionMatrixPrediction`].
@@ -317,6 +343,20 @@ impl ConfusionMatrixThreshold {
     /// Creates a builder for [`ConfusionMatrixThreshold`].
     pub fn builder() -> ConfusionMatrixThresholdBuilder {
         ConfusionMatrixThresholdBuilder::new()
+    }
+
+    /// Creates a [`ConfusionMatrixThreshold`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ConfusionMatrixThresholdBuilder,
+        ) -> ConfusionMatrixThresholdBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ConfusionMatrixThreshold {
+        f(Self::builder()).build()
     }
 }
 
@@ -528,6 +568,13 @@ impl DataframeClassificationSummary {
     pub fn builder() -> DataframeClassificationSummaryBuilder {
         DataframeClassificationSummaryBuilder::new()
     }
+
+    /// Creates a [`DataframeClassificationSummary`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DataframeClassificationSummaryBuilder) -> DataframeClassificationSummaryBuilder,
+    ) -> DataframeClassificationSummary {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DataframeClassificationSummary`].
@@ -719,6 +766,18 @@ impl DataframeClassificationSummaryAccuracy {
     pub fn builder() -> DataframeClassificationSummaryAccuracyBuilder {
         DataframeClassificationSummaryAccuracyBuilder::new()
     }
+
+    /// Creates a [`DataframeClassificationSummaryAccuracy`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DataframeClassificationSummaryAccuracyBuilder,
+        ) -> DataframeClassificationSummaryAccuracyBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DataframeClassificationSummaryAccuracy {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DataframeClassificationSummaryAccuracy`].
@@ -838,6 +897,18 @@ impl DataframeClassificationSummaryMulticlassConfusionMatrix {
     /// Creates a builder for [`DataframeClassificationSummaryMulticlassConfusionMatrix`].
     pub fn builder() -> DataframeClassificationSummaryMulticlassConfusionMatrixBuilder {
         DataframeClassificationSummaryMulticlassConfusionMatrixBuilder::new()
+    }
+
+    /// Creates a [`DataframeClassificationSummaryMulticlassConfusionMatrix`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DataframeClassificationSummaryMulticlassConfusionMatrixBuilder,
+        ) -> DataframeClassificationSummaryMulticlassConfusionMatrixBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DataframeClassificationSummaryMulticlassConfusionMatrix {
+        f(Self::builder()).build()
     }
 }
 
@@ -980,6 +1051,18 @@ impl DataframeClassificationSummaryPrecision {
     pub fn builder() -> DataframeClassificationSummaryPrecisionBuilder {
         DataframeClassificationSummaryPrecisionBuilder::new()
     }
+
+    /// Creates a [`DataframeClassificationSummaryPrecision`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DataframeClassificationSummaryPrecisionBuilder,
+        ) -> DataframeClassificationSummaryPrecisionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DataframeClassificationSummaryPrecision {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DataframeClassificationSummaryPrecision`].
@@ -1099,6 +1182,18 @@ impl DataframeClassificationSummaryRecall {
     /// Creates a builder for [`DataframeClassificationSummaryRecall`].
     pub fn builder() -> DataframeClassificationSummaryRecallBuilder {
         DataframeClassificationSummaryRecallBuilder::new()
+    }
+
+    /// Creates a [`DataframeClassificationSummaryRecall`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DataframeClassificationSummaryRecallBuilder,
+        ) -> DataframeClassificationSummaryRecallBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DataframeClassificationSummaryRecall {
+        f(Self::builder()).build()
     }
 }
 
@@ -1220,6 +1315,18 @@ impl DataframeEvaluationClass {
     pub fn builder() -> DataframeEvaluationClassBuilder {
         DataframeEvaluationClassBuilder::new()
     }
+
+    /// Creates a [`DataframeEvaluationClass`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DataframeEvaluationClassBuilder,
+        ) -> DataframeEvaluationClassBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DataframeEvaluationClass {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DataframeEvaluationClass`].
@@ -1322,6 +1429,16 @@ impl DataframeEvaluationSummaryAucRoc {
     /// Creates a builder for [`DataframeEvaluationSummaryAucRoc`].
     pub fn builder() -> DataframeEvaluationSummaryAucRocBuilder {
         DataframeEvaluationSummaryAucRocBuilder::new()
+    }
+
+    /// Creates a [`DataframeEvaluationSummaryAucRoc`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DataframeEvaluationSummaryAucRocBuilder,
+        )
+            -> DataframeEvaluationSummaryAucRocBuilder<(crate::typed::builder::Set,)>,
+    ) -> DataframeEvaluationSummaryAucRoc {
+        f(Self::builder()).build()
     }
 }
 
@@ -1443,6 +1560,19 @@ impl DataframeEvaluationSummaryAucRocCurveItem {
     /// Creates a builder for [`DataframeEvaluationSummaryAucRocCurveItem`].
     pub fn builder() -> DataframeEvaluationSummaryAucRocCurveItemBuilder {
         DataframeEvaluationSummaryAucRocCurveItemBuilder::new()
+    }
+
+    /// Creates a [`DataframeEvaluationSummaryAucRocCurveItem`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DataframeEvaluationSummaryAucRocCurveItemBuilder,
+        ) -> DataframeEvaluationSummaryAucRocCurveItemBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DataframeEvaluationSummaryAucRocCurveItem {
+        f(Self::builder()).build()
     }
 }
 
@@ -1610,6 +1740,15 @@ impl DataframeEvaluationValue {
     pub fn builder() -> DataframeEvaluationValueBuilder {
         DataframeEvaluationValueBuilder::new()
     }
+
+    /// Creates a [`DataframeEvaluationValue`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DataframeEvaluationValueBuilder,
+        ) -> DataframeEvaluationValueBuilder<(crate::typed::builder::Set,)>,
+    ) -> DataframeEvaluationValue {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DataframeEvaluationValue`].
@@ -1691,6 +1830,15 @@ impl DataframeOutlierDetectionSummary {
     /// Creates a builder for [`DataframeOutlierDetectionSummary`].
     pub fn builder() -> DataframeOutlierDetectionSummaryBuilder {
         DataframeOutlierDetectionSummaryBuilder::new()
+    }
+
+    /// Creates a [`DataframeOutlierDetectionSummary`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DataframeOutlierDetectionSummaryBuilder,
+        ) -> DataframeOutlierDetectionSummaryBuilder,
+    ) -> DataframeOutlierDetectionSummary {
+        f(Self::builder()).build()
     }
 }
 
@@ -1884,6 +2032,13 @@ impl DataframeRegressionSummary {
     pub fn builder() -> DataframeRegressionSummaryBuilder {
         DataframeRegressionSummaryBuilder::new()
     }
+
+    /// Creates a [`DataframeRegressionSummary`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DataframeRegressionSummaryBuilder) -> DataframeRegressionSummaryBuilder,
+    ) -> DataframeRegressionSummary {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DataframeRegressionSummary`].
@@ -2053,6 +2208,16 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RequestBuilder,
+        )
+            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 

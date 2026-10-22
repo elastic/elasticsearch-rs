@@ -34,6 +34,13 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -291,6 +298,16 @@ impl StatusError {
     pub fn builder() -> StatusErrorBuilder {
         StatusErrorBuilder::new()
     }
+
+    /// Creates a [`StatusError`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            StatusErrorBuilder,
+        )
+            -> StatusErrorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> StatusError {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`StatusError`].
@@ -386,6 +403,19 @@ impl StatusInProgress {
     /// Creates a builder for [`StatusInProgress`].
     pub fn builder() -> StatusInProgressBuilder {
         StatusInProgressBuilder::new()
+    }
+
+    /// Creates a [`StatusInProgress`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            StatusInProgressBuilder,
+        ) -> StatusInProgressBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> StatusInProgress {
+        f(Self::builder()).build()
     }
 }
 

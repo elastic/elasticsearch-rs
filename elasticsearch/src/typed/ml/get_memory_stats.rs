@@ -25,6 +25,19 @@ impl JvmStats {
     pub fn builder() -> JvmStatsBuilder {
         JvmStatsBuilder::new()
     }
+
+    /// Creates a [`JvmStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            JvmStatsBuilder,
+        ) -> JvmStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> JvmStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`JvmStats`].
@@ -257,6 +270,21 @@ impl MemMlStats {
     /// Creates a builder for [`MemMlStats`].
     pub fn builder() -> MemMlStatsBuilder {
         MemMlStatsBuilder::new()
+    }
+
+    /// Creates a [`MemMlStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MemMlStatsBuilder,
+        ) -> MemMlStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MemMlStats {
+        f(Self::builder()).build()
     }
 }
 
@@ -598,6 +626,19 @@ impl MemStats {
     pub fn builder() -> MemStatsBuilder {
         MemStatsBuilder::new()
     }
+
+    /// Creates a [`MemStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MemStatsBuilder,
+        ) -> MemStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MemStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MemStats`].
@@ -816,6 +857,23 @@ impl Memory {
     /// Creates a builder for [`Memory`].
     pub fn builder() -> MemoryBuilder {
         MemoryBuilder::new()
+    }
+
+    /// Creates a [`Memory`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MemoryBuilder,
+        ) -> MemoryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Memory {
+        f(Self::builder()).build()
     }
 }
 
@@ -1203,6 +1261,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

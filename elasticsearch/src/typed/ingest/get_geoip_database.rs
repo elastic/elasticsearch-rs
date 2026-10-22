@@ -14,6 +14,20 @@ impl DatabaseConfigurationMetadata {
     pub fn builder() -> DatabaseConfigurationMetadataBuilder {
         DatabaseConfigurationMetadataBuilder::new()
     }
+
+    /// Creates a [`DatabaseConfigurationMetadata`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DatabaseConfigurationMetadataBuilder,
+        ) -> DatabaseConfigurationMetadataBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DatabaseConfigurationMetadata {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DatabaseConfigurationMetadata`].
@@ -241,6 +255,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

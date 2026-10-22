@@ -43,6 +43,11 @@ impl Hint {
     pub fn builder() -> HintBuilder {
         HintBuilder::new()
     }
+
+    /// Creates a [`Hint`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(HintBuilder) -> HintBuilder) -> Hint {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Hint`].
@@ -185,6 +190,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -562,6 +572,18 @@ impl TotalUserProfiles {
     /// Creates a builder for [`TotalUserProfiles`].
     pub fn builder() -> TotalUserProfilesBuilder {
         TotalUserProfilesBuilder::new()
+    }
+
+    /// Creates a [`TotalUserProfiles`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TotalUserProfilesBuilder,
+        ) -> TotalUserProfilesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> TotalUserProfiles {
+        f(Self::builder()).build()
     }
 }
 

@@ -35,6 +35,19 @@ impl AsyncEsqlResult {
     pub fn builder() -> AsyncEsqlResultBuilder {
         AsyncEsqlResultBuilder::new()
     }
+
+    /// Creates a [`AsyncEsqlResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AsyncEsqlResultBuilder,
+        ) -> AsyncEsqlResultBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AsyncEsqlResult {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AsyncEsqlResult`].
@@ -348,6 +361,15 @@ impl ClassifiedNamedParameter {
     pub fn builder() -> ClassifiedNamedParameterBuilder {
         ClassifiedNamedParameterBuilder::new()
     }
+
+    /// Creates a [`ClassifiedNamedParameter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClassifiedNamedParameterBuilder,
+        ) -> ClassifiedNamedParameterBuilder<(crate::typed::builder::Set,)>,
+    ) -> ClassifiedNamedParameter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ClassifiedNamedParameter`].
@@ -446,6 +468,15 @@ impl DatasetFieldMapping {
     /// Creates a builder for [`DatasetFieldMapping`].
     pub fn builder() -> DatasetFieldMappingBuilder {
         DatasetFieldMappingBuilder::new()
+    }
+
+    /// Creates a [`DatasetFieldMapping`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DatasetFieldMappingBuilder,
+        ) -> DatasetFieldMappingBuilder<(crate::typed::builder::Set,)>,
+    ) -> DatasetFieldMapping {
+        f(Self::builder()).build()
     }
 }
 
@@ -560,6 +591,11 @@ impl DatasetMapping {
     /// Creates a builder for [`DatasetMapping`].
     pub fn builder() -> DatasetMappingBuilder {
         DatasetMappingBuilder::new()
+    }
+
+    /// Creates a [`DatasetMapping`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(DatasetMappingBuilder) -> DatasetMappingBuilder) -> DatasetMapping {
+        f(Self::builder()).build()
     }
 }
 
@@ -701,6 +737,19 @@ impl ESQLDataSource {
     /// Creates a builder for [`ESQLDataSource`].
     pub fn builder() -> ESQLDataSourceBuilder {
         ESQLDataSourceBuilder::new()
+    }
+
+    /// Creates a [`ESQLDataSource`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ESQLDataSourceBuilder,
+        ) -> ESQLDataSourceBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ESQLDataSource {
+        f(Self::builder()).build()
     }
 }
 
@@ -896,6 +945,19 @@ impl ESQLDataset {
     /// Creates a builder for [`ESQLDataset`].
     pub fn builder() -> ESQLDatasetBuilder {
         ESQLDatasetBuilder::new()
+    }
+
+    /// Creates a [`ESQLDataset`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ESQLDatasetBuilder,
+        ) -> ESQLDatasetBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ESQLDataset {
+        f(Self::builder()).build()
     }
 }
 
@@ -1159,6 +1221,16 @@ impl ESQLView {
     pub fn builder() -> ESQLViewBuilder {
         ESQLViewBuilder::new()
     }
+
+    /// Creates a [`ESQLView`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ESQLViewBuilder,
+        )
+            -> ESQLViewBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> ESQLView {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ESQLView`].
@@ -1297,6 +1369,13 @@ impl EsqlApproximationSettings {
     pub fn builder() -> EsqlApproximationSettingsBuilder {
         EsqlApproximationSettingsBuilder::new()
     }
+
+    /// Creates a [`EsqlApproximationSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(EsqlApproximationSettingsBuilder) -> EsqlApproximationSettingsBuilder,
+    ) -> EsqlApproximationSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`EsqlApproximationSettings`].
@@ -1375,6 +1454,18 @@ impl EsqlClusterDetails {
     /// Creates a builder for [`EsqlClusterDetails`].
     pub fn builder() -> EsqlClusterDetailsBuilder {
         EsqlClusterDetailsBuilder::new()
+    }
+
+    /// Creates a [`EsqlClusterDetails`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            EsqlClusterDetailsBuilder,
+        ) -> EsqlClusterDetailsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> EsqlClusterDetails {
+        f(Self::builder()).build()
     }
 }
 
@@ -1558,6 +1649,23 @@ impl EsqlClusterInfo {
     /// Creates a builder for [`EsqlClusterInfo`].
     pub fn builder() -> EsqlClusterInfoBuilder {
         EsqlClusterInfoBuilder::new()
+    }
+
+    /// Creates a [`EsqlClusterInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            EsqlClusterInfoBuilder,
+        ) -> EsqlClusterInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> EsqlClusterInfo {
+        f(Self::builder()).build()
     }
 }
 
@@ -1897,6 +2005,18 @@ impl EsqlColumnInfo {
     pub fn builder() -> EsqlColumnInfoBuilder {
         EsqlColumnInfoBuilder::new()
     }
+
+    /// Creates a [`EsqlColumnInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            EsqlColumnInfoBuilder,
+        ) -> EsqlColumnInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> EsqlColumnInfo {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`EsqlColumnInfo`].
@@ -2032,6 +2152,13 @@ impl EsqlQuerySettings {
     pub fn builder() -> EsqlQuerySettingsBuilder {
         EsqlQuerySettingsBuilder::new()
     }
+
+    /// Creates a [`EsqlQuerySettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(EsqlQuerySettingsBuilder) -> EsqlQuerySettingsBuilder,
+    ) -> EsqlQuerySettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`EsqlQuerySettings`].
@@ -2163,6 +2290,16 @@ impl EsqlResult {
     /// Creates a builder for [`EsqlResult`].
     pub fn builder() -> EsqlResultBuilder {
         EsqlResultBuilder::new()
+    }
+
+    /// Creates a [`EsqlResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            EsqlResultBuilder,
+        )
+            -> EsqlResultBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> EsqlResult {
+        f(Self::builder()).build()
     }
 }
 
@@ -2402,6 +2539,19 @@ impl EsqlShardFailure {
     pub fn builder() -> EsqlShardFailureBuilder {
         EsqlShardFailureBuilder::new()
     }
+
+    /// Creates a [`EsqlShardFailure`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            EsqlShardFailureBuilder,
+        ) -> EsqlShardFailureBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> EsqlShardFailure {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`EsqlShardFailure`].
@@ -2589,6 +2739,13 @@ impl EsqlShardInfo {
     pub fn builder() -> EsqlShardInfoBuilder {
         EsqlShardInfoBuilder::new()
     }
+
+    /// Creates a [`EsqlShardInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(EsqlShardInfoBuilder) -> EsqlShardInfoBuilder<(crate::typed::builder::Set,)>,
+    ) -> EsqlShardInfo {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`EsqlShardInfo`].
@@ -2701,6 +2858,13 @@ impl IdPath {
     /// Creates a builder for [`IdPath`].
     pub fn builder() -> IdPathBuilder {
         IdPathBuilder::new()
+    }
+
+    /// Creates a [`IdPath`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IdPathBuilder) -> IdPathBuilder<(crate::typed::builder::Set,)>,
+    ) -> IdPath {
+        f(Self::builder()).build()
     }
 }
 
@@ -2818,6 +2982,15 @@ impl TableValuesContainer {
     /// Creates a builder for [`TableValuesContainer`].
     pub fn builder() -> TableValuesContainerBuilder {
         TableValuesContainerBuilder::new()
+    }
+
+    /// Creates a [`TableValuesContainer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TableValuesContainerBuilder,
+        ) -> TableValuesContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> TableValuesContainer {
+        f(Self::builder()).build()
     }
 }
 

@@ -34,6 +34,15 @@ impl DateHistogramGrouping {
     pub fn builder() -> DateHistogramGroupingBuilder {
         DateHistogramGroupingBuilder::new()
     }
+
+    /// Creates a [`DateHistogramGrouping`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DateHistogramGroupingBuilder,
+        ) -> DateHistogramGroupingBuilder<(crate::typed::builder::Set,)>,
+    ) -> DateHistogramGrouping {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DateHistogramGrouping`].
@@ -210,6 +219,16 @@ impl FieldMetric {
     pub fn builder() -> FieldMetricBuilder {
         FieldMetricBuilder::new()
     }
+
+    /// Creates a [`FieldMetric`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FieldMetricBuilder,
+        )
+            -> FieldMetricBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> FieldMetric {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FieldMetric`].
@@ -316,6 +335,11 @@ impl Groupings {
     /// Creates a builder for [`Groupings`].
     pub fn builder() -> GroupingsBuilder {
         GroupingsBuilder::new()
+    }
+
+    /// Creates a [`Groupings`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(GroupingsBuilder) -> GroupingsBuilder) -> Groupings {
+        f(Self::builder()).build()
     }
 }
 
@@ -443,6 +467,18 @@ impl HistogramGrouping {
     pub fn builder() -> HistogramGroupingBuilder {
         HistogramGroupingBuilder::new()
     }
+
+    /// Creates a [`HistogramGrouping`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HistogramGroupingBuilder,
+        ) -> HistogramGroupingBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> HistogramGrouping {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HistogramGrouping`].
@@ -561,6 +597,13 @@ impl TermsGrouping {
     /// Creates a builder for [`TermsGrouping`].
     pub fn builder() -> TermsGroupingBuilder {
         TermsGroupingBuilder::new()
+    }
+
+    /// Creates a [`TermsGrouping`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TermsGroupingBuilder) -> TermsGroupingBuilder<(crate::typed::builder::Set,)>,
+    ) -> TermsGrouping {
+        f(Self::builder()).build()
     }
 }
 

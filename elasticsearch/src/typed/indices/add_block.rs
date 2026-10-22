@@ -12,6 +12,18 @@ impl AddIndicesBlockStatus {
     pub fn builder() -> AddIndicesBlockStatusBuilder {
         AddIndicesBlockStatusBuilder::new()
     }
+
+    /// Creates a [`AddIndicesBlockStatus`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AddIndicesBlockStatusBuilder,
+        ) -> AddIndicesBlockStatusBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AddIndicesBlockStatus {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AddIndicesBlockStatus`].
@@ -162,6 +174,16 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RequestBuilder,
+        )
+            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 

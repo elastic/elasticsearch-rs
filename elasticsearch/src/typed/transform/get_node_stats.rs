@@ -32,6 +32,11 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -236,6 +241,15 @@ impl TransformNodeFullStats {
     pub fn builder() -> TransformNodeFullStatsBuilder {
         TransformNodeFullStatsBuilder::new()
     }
+
+    /// Creates a [`TransformNodeFullStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TransformNodeFullStatsBuilder,
+        ) -> TransformNodeFullStatsBuilder<(crate::typed::builder::Set,)>,
+    ) -> TransformNodeFullStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TransformNodeFullStats`].
@@ -338,6 +352,15 @@ impl TransformNodeStats {
     pub fn builder() -> TransformNodeStatsBuilder {
         TransformNodeStatsBuilder::new()
     }
+
+    /// Creates a [`TransformNodeStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TransformNodeStatsBuilder,
+        ) -> TransformNodeStatsBuilder<(crate::typed::builder::Set,)>,
+    ) -> TransformNodeStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TransformNodeStats`].
@@ -418,6 +441,15 @@ impl TransformSchedulerStats {
     /// Creates a builder for [`TransformSchedulerStats`].
     pub fn builder() -> TransformSchedulerStatsBuilder {
         TransformSchedulerStatsBuilder::new()
+    }
+
+    /// Creates a [`TransformSchedulerStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TransformSchedulerStatsBuilder,
+        ) -> TransformSchedulerStatsBuilder<(crate::typed::builder::Set,)>,
+    ) -> TransformSchedulerStats {
+        f(Self::builder()).build()
     }
 }
 

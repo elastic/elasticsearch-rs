@@ -34,6 +34,13 @@ impl NodeAttributesRecord {
     pub fn builder() -> NodeAttributesRecordBuilder {
         NodeAttributesRecordBuilder::new()
     }
+
+    /// Creates a [`NodeAttributesRecord`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NodeAttributesRecordBuilder) -> NodeAttributesRecordBuilder,
+    ) -> NodeAttributesRecord {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeAttributesRecord`].
@@ -228,6 +235,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

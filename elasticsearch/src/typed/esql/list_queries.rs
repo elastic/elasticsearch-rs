@@ -15,6 +15,21 @@ impl Body {
     pub fn builder() -> BodyBuilder {
         BodyBuilder::new()
     }
+
+    /// Creates a [`Body`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            BodyBuilder,
+        ) -> BodyBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Body {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Body`].
@@ -259,6 +274,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

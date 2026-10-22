@@ -2352,6 +2352,11 @@ impl CatRequestBase {
     pub fn builder() -> CatRequestBaseBuilder {
         CatRequestBaseBuilder::new()
     }
+
+    /// Creates a [`CatRequestBase`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(CatRequestBaseBuilder) -> CatRequestBaseBuilder) -> CatRequestBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CatRequestBase`].

@@ -19,6 +19,19 @@ impl Policy {
     pub fn builder() -> PolicyBuilder {
         PolicyBuilder::new()
     }
+
+    /// Creates a [`Policy`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PolicyBuilder,
+        ) -> PolicyBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Policy {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Policy`].
@@ -246,6 +259,13 @@ impl Summary {
     /// Creates a builder for [`Summary`].
     pub fn builder() -> SummaryBuilder {
         SummaryBuilder::new()
+    }
+
+    /// Creates a [`Summary`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SummaryBuilder) -> SummaryBuilder<(crate::typed::builder::Set,)>,
+    ) -> Summary {
+        f(Self::builder()).build()
     }
 }
 

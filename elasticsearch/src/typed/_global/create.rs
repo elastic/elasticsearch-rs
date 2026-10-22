@@ -144,6 +144,23 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of<TDocument>(
+        f: impl FnOnce(
+            RequestBuilder,
+        ) -> RequestBuilder<
+            (
+                crate::typed::builder::Set,
+                crate::typed::builder::Set,
+                crate::typed::builder::Set,
+            ),
+            (),
+            TDocument,
+        >,
+    ) -> Request<TDocument> {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].

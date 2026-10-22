@@ -15,6 +15,21 @@ impl AnomalyDetectors {
     pub fn builder() -> AnomalyDetectorsBuilder {
         AnomalyDetectorsBuilder::new()
     }
+
+    /// Creates a [`AnomalyDetectors`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AnomalyDetectorsBuilder,
+        ) -> AnomalyDetectorsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AnomalyDetectors {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AnomalyDetectors`].
@@ -245,6 +260,13 @@ impl Datafeeds {
     pub fn builder() -> DatafeedsBuilder {
         DatafeedsBuilder::new()
     }
+
+    /// Creates a [`Datafeeds`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DatafeedsBuilder) -> DatafeedsBuilder<(crate::typed::builder::Set,)>,
+    ) -> Datafeeds {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Datafeeds`].
@@ -314,6 +336,19 @@ impl Defaults {
     /// Creates a builder for [`Defaults`].
     pub fn builder() -> DefaultsBuilder {
         DefaultsBuilder::new()
+    }
+
+    /// Creates a [`Defaults`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DefaultsBuilder,
+        ) -> DefaultsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Defaults {
+        f(Self::builder()).build()
     }
 }
 
@@ -504,6 +539,13 @@ impl Limits {
     pub fn builder() -> LimitsBuilder {
         LimitsBuilder::new()
     }
+
+    /// Creates a [`Limits`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(LimitsBuilder) -> LimitsBuilder<(crate::typed::builder::Set,)>,
+    ) -> Limits {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Limits`].
@@ -654,6 +696,16 @@ impl NativeCode {
     pub fn builder() -> NativeCodeBuilder {
         NativeCodeBuilder::new()
     }
+
+    /// Creates a [`NativeCode`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NativeCodeBuilder,
+        )
+            -> NativeCodeBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> NativeCode {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NativeCode`].
@@ -774,6 +826,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

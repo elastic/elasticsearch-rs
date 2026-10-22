@@ -11,6 +11,13 @@ impl IndexAliases {
     pub fn builder() -> IndexAliasesBuilder {
         IndexAliasesBuilder::new()
     }
+
+    /// Creates a [`IndexAliases`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IndexAliasesBuilder) -> IndexAliasesBuilder<(crate::typed::builder::Set,)>,
+    ) -> IndexAliases {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexAliases`].
@@ -83,6 +90,18 @@ impl NotFoundAliases {
     /// Creates a builder for [`NotFoundAliases`].
     pub fn builder() -> NotFoundAliasesBuilder {
         NotFoundAliasesBuilder::new()
+    }
+
+    /// Creates a [`NotFoundAliases`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NotFoundAliasesBuilder,
+        ) -> NotFoundAliasesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NotFoundAliases {
+        f(Self::builder()).build()
     }
 }
 

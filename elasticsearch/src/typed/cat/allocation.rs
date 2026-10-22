@@ -275,6 +275,13 @@ impl AllocationRecord {
     pub fn builder() -> AllocationRecordBuilder {
         AllocationRecordBuilder::new()
     }
+
+    /// Creates a [`AllocationRecord`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(AllocationRecordBuilder) -> AllocationRecordBuilder,
+    ) -> AllocationRecord {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AllocationRecord`].
@@ -568,6 +575,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

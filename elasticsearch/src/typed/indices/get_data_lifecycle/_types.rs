@@ -14,6 +14,11 @@ impl GlobalRetention {
     pub fn builder() -> GlobalRetentionBuilder {
         GlobalRetentionBuilder::new()
     }
+
+    /// Creates a [`GlobalRetention`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(GlobalRetentionBuilder) -> GlobalRetentionBuilder) -> GlobalRetention {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GlobalRetention`].

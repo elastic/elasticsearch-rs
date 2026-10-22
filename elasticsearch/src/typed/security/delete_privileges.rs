@@ -11,6 +11,13 @@ impl FoundStatus {
     pub fn builder() -> FoundStatusBuilder {
         FoundStatusBuilder::new()
     }
+
+    /// Creates a [`FoundStatus`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FoundStatusBuilder) -> FoundStatusBuilder<(crate::typed::builder::Set,)>,
+    ) -> FoundStatus {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FoundStatus`].
@@ -107,6 +114,16 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RequestBuilder,
+        )
+            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 

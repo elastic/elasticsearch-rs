@@ -22,6 +22,13 @@ impl AdaptiveAllocations {
     pub fn builder() -> AdaptiveAllocationsBuilder {
         AdaptiveAllocationsBuilder::new()
     }
+
+    /// Creates a [`AdaptiveAllocations`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(AdaptiveAllocationsBuilder) -> AdaptiveAllocationsBuilder,
+    ) -> AdaptiveAllocations {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AdaptiveAllocations`].
@@ -124,6 +131,15 @@ impl Ai21ServiceSettings {
     /// Creates a builder for [`Ai21ServiceSettings`].
     pub fn builder() -> Ai21ServiceSettingsBuilder {
         Ai21ServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`Ai21ServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            Ai21ServiceSettingsBuilder,
+        ) -> Ai21ServiceSettingsBuilder<(crate::typed::builder::Set,)>,
+    ) -> Ai21ServiceSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -289,6 +305,20 @@ impl AlibabaCloudServiceSettings {
     /// Creates a builder for [`AlibabaCloudServiceSettings`].
     pub fn builder() -> AlibabaCloudServiceSettingsBuilder {
         AlibabaCloudServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`AlibabaCloudServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AlibabaCloudServiceSettingsBuilder,
+        ) -> AlibabaCloudServiceSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AlibabaCloudServiceSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -547,6 +577,13 @@ impl AlibabaCloudTaskSettings {
     pub fn builder() -> AlibabaCloudTaskSettingsBuilder {
         AlibabaCloudTaskSettingsBuilder::new()
     }
+
+    /// Creates a [`AlibabaCloudTaskSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(AlibabaCloudTaskSettingsBuilder) -> AlibabaCloudTaskSettingsBuilder,
+    ) -> AlibabaCloudTaskSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AlibabaCloudTaskSettings`].
@@ -660,6 +697,20 @@ impl AmazonBedrockServiceSettings {
     /// Creates a builder for [`AmazonBedrockServiceSettings`].
     pub fn builder() -> AmazonBedrockServiceSettingsBuilder {
         AmazonBedrockServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`AmazonBedrockServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AmazonBedrockServiceSettingsBuilder,
+        ) -> AmazonBedrockServiceSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AmazonBedrockServiceSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -932,6 +983,13 @@ impl AmazonBedrockTaskSettings {
     pub fn builder() -> AmazonBedrockTaskSettingsBuilder {
         AmazonBedrockTaskSettingsBuilder::new()
     }
+
+    /// Creates a [`AmazonBedrockTaskSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(AmazonBedrockTaskSettingsBuilder) -> AmazonBedrockTaskSettingsBuilder,
+    ) -> AmazonBedrockTaskSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AmazonBedrockTaskSettings`].
@@ -1104,6 +1162,21 @@ impl AmazonSageMakerServiceSettings {
     /// Creates a builder for [`AmazonSageMakerServiceSettings`].
     pub fn builder() -> AmazonSageMakerServiceSettingsBuilder {
         AmazonSageMakerServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`AmazonSageMakerServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AmazonSageMakerServiceSettingsBuilder,
+        ) -> AmazonSageMakerServiceSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AmazonSageMakerServiceSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -1503,6 +1576,13 @@ impl AmazonSageMakerTaskSettings {
     pub fn builder() -> AmazonSageMakerTaskSettingsBuilder {
         AmazonSageMakerTaskSettingsBuilder::new()
     }
+
+    /// Creates a [`AmazonSageMakerTaskSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(AmazonSageMakerTaskSettingsBuilder) -> AmazonSageMakerTaskSettingsBuilder,
+    ) -> AmazonSageMakerTaskSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AmazonSageMakerTaskSettings`].
@@ -1628,6 +1708,18 @@ impl AnthropicServiceSettings {
     /// Creates a builder for [`AnthropicServiceSettings`].
     pub fn builder() -> AnthropicServiceSettingsBuilder {
         AnthropicServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`AnthropicServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AnthropicServiceSettingsBuilder,
+        ) -> AnthropicServiceSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AnthropicServiceSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -1780,6 +1872,15 @@ impl AnthropicTaskSettings {
     /// Creates a builder for [`AnthropicTaskSettings`].
     pub fn builder() -> AnthropicTaskSettingsBuilder {
         AnthropicTaskSettingsBuilder::new()
+    }
+
+    /// Creates a [`AnthropicTaskSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AnthropicTaskSettingsBuilder,
+        ) -> AnthropicTaskSettingsBuilder<(crate::typed::builder::Set,)>,
+    ) -> AnthropicTaskSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -1940,6 +2041,20 @@ impl AzureAiStudioServiceSettings {
     /// Creates a builder for [`AzureAiStudioServiceSettings`].
     pub fn builder() -> AzureAiStudioServiceSettingsBuilder {
         AzureAiStudioServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`AzureAiStudioServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AzureAiStudioServiceSettingsBuilder,
+        ) -> AzureAiStudioServiceSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AzureAiStudioServiceSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -2209,6 +2324,13 @@ impl AzureAiStudioTaskSettings {
     pub fn builder() -> AzureAiStudioTaskSettingsBuilder {
         AzureAiStudioTaskSettingsBuilder::new()
     }
+
+    /// Creates a [`AzureAiStudioTaskSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(AzureAiStudioTaskSettingsBuilder) -> AzureAiStudioTaskSettingsBuilder,
+    ) -> AzureAiStudioTaskSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AzureAiStudioTaskSettings`].
@@ -2433,6 +2555,19 @@ impl AzureOpenAIServiceSettings {
     /// Creates a builder for [`AzureOpenAIServiceSettings`].
     pub fn builder() -> AzureOpenAIServiceSettingsBuilder {
         AzureOpenAIServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`AzureOpenAIServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AzureOpenAIServiceSettingsBuilder,
+        ) -> AzureOpenAIServiceSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AzureOpenAIServiceSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -2776,6 +2911,13 @@ impl AzureOpenAITaskSettings {
     pub fn builder() -> AzureOpenAITaskSettingsBuilder {
         AzureOpenAITaskSettingsBuilder::new()
     }
+
+    /// Creates a [`AzureOpenAITaskSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(AzureOpenAITaskSettingsBuilder) -> AzureOpenAITaskSettingsBuilder,
+    ) -> AzureOpenAITaskSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AzureOpenAITaskSettings`].
@@ -2882,6 +3024,13 @@ impl BaseReasoningDetail {
     pub fn builder() -> BaseReasoningDetailBuilder {
         BaseReasoningDetailBuilder::new()
     }
+
+    /// Creates a [`BaseReasoningDetail`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(BaseReasoningDetailBuilder) -> BaseReasoningDetailBuilder,
+    ) -> BaseReasoningDetail {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`BaseReasoningDetail`].
@@ -2976,6 +3125,18 @@ impl ChatCompletionChoice {
     /// Creates a builder for [`ChatCompletionChoice`].
     pub fn builder() -> ChatCompletionChoiceBuilder {
         ChatCompletionChoiceBuilder::new()
+    }
+
+    /// Creates a [`ChatCompletionChoice`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ChatCompletionChoiceBuilder,
+        ) -> ChatCompletionChoiceBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ChatCompletionChoice {
+        f(Self::builder()).build()
     }
 }
 
@@ -3107,6 +3268,15 @@ impl ChatCompletionCompletionTokensDetails {
     pub fn builder() -> ChatCompletionCompletionTokensDetailsBuilder {
         ChatCompletionCompletionTokensDetailsBuilder::new()
     }
+
+    /// Creates a [`ChatCompletionCompletionTokensDetails`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ChatCompletionCompletionTokensDetailsBuilder,
+        ) -> ChatCompletionCompletionTokensDetailsBuilder,
+    ) -> ChatCompletionCompletionTokensDetails {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ChatCompletionCompletionTokensDetails`].
@@ -3174,6 +3344,19 @@ impl ChatCompletionInferenceResult {
     /// Creates a builder for [`ChatCompletionInferenceResult`].
     pub fn builder() -> ChatCompletionInferenceResultBuilder {
         ChatCompletionInferenceResultBuilder::new()
+    }
+
+    /// Creates a [`ChatCompletionInferenceResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ChatCompletionInferenceResultBuilder,
+        ) -> ChatCompletionInferenceResultBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ChatCompletionInferenceResult {
+        f(Self::builder()).build()
     }
 }
 
@@ -3421,6 +3604,13 @@ impl ChatCompletionMessage {
     pub fn builder() -> ChatCompletionMessageBuilder {
         ChatCompletionMessageBuilder::new()
     }
+
+    /// Creates a [`ChatCompletionMessage`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ChatCompletionMessageBuilder) -> ChatCompletionMessageBuilder,
+    ) -> ChatCompletionMessage {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ChatCompletionMessage`].
@@ -3588,6 +3778,15 @@ impl ChatCompletionPromptTokensDetails {
     pub fn builder() -> ChatCompletionPromptTokensDetailsBuilder {
         ChatCompletionPromptTokensDetailsBuilder::new()
     }
+
+    /// Creates a [`ChatCompletionPromptTokensDetails`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ChatCompletionPromptTokensDetailsBuilder,
+        ) -> ChatCompletionPromptTokensDetailsBuilder,
+    ) -> ChatCompletionPromptTokensDetails {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ChatCompletionPromptTokensDetails`].
@@ -3667,6 +3866,18 @@ impl ChatCompletionToolCall {
     /// Creates a builder for [`ChatCompletionToolCall`].
     pub fn builder() -> ChatCompletionToolCallBuilder {
         ChatCompletionToolCallBuilder::new()
+    }
+
+    /// Creates a [`ChatCompletionToolCall`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ChatCompletionToolCallBuilder,
+        ) -> ChatCompletionToolCallBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ChatCompletionToolCall {
+        f(Self::builder()).build()
     }
 }
 
@@ -3815,6 +4026,13 @@ impl ChatCompletionToolCallFunction {
     pub fn builder() -> ChatCompletionToolCallFunctionBuilder {
         ChatCompletionToolCallFunctionBuilder::new()
     }
+
+    /// Creates a [`ChatCompletionToolCallFunction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ChatCompletionToolCallFunctionBuilder) -> ChatCompletionToolCallFunctionBuilder,
+    ) -> ChatCompletionToolCallFunction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ChatCompletionToolCallFunction`].
@@ -3898,6 +4116,19 @@ impl ChatCompletionUsage {
     /// Creates a builder for [`ChatCompletionUsage`].
     pub fn builder() -> ChatCompletionUsageBuilder {
         ChatCompletionUsageBuilder::new()
+    }
+
+    /// Creates a [`ChatCompletionUsage`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ChatCompletionUsageBuilder,
+        ) -> ChatCompletionUsageBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ChatCompletionUsage {
+        f(Self::builder()).build()
     }
 }
 
@@ -4179,6 +4410,18 @@ impl CohereServiceSettings {
     pub fn builder() -> CohereServiceSettingsBuilder {
         CohereServiceSettingsBuilder::new()
     }
+
+    /// Creates a [`CohereServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CohereServiceSettingsBuilder,
+        ) -> CohereServiceSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CohereServiceSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CohereServiceSettings`].
@@ -4393,6 +4636,15 @@ impl CohereTaskSettings {
     pub fn builder() -> CohereTaskSettingsBuilder {
         CohereTaskSettingsBuilder::new()
     }
+
+    /// Creates a [`CohereTaskSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CohereTaskSettingsBuilder,
+        ) -> CohereTaskSettingsBuilder<(crate::typed::builder::Set,)>,
+    ) -> CohereTaskSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CohereTaskSettings`].
@@ -4547,6 +4799,15 @@ impl CompletionInferenceResult {
     pub fn builder() -> CompletionInferenceResultBuilder {
         CompletionInferenceResultBuilder::new()
     }
+
+    /// Creates a [`CompletionInferenceResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CompletionInferenceResultBuilder,
+        ) -> CompletionInferenceResultBuilder<(crate::typed::builder::Set,)>,
+    ) -> CompletionInferenceResult {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CompletionInferenceResult`].
@@ -4618,6 +4879,15 @@ impl CompletionResult {
     /// Creates a builder for [`CompletionResult`].
     pub fn builder() -> CompletionResultBuilder {
         CompletionResultBuilder::new()
+    }
+
+    /// Creates a [`CompletionResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CompletionResultBuilder,
+        ) -> CompletionResultBuilder<(crate::typed::builder::Set,)>,
+    ) -> CompletionResult {
+        f(Self::builder()).build()
     }
 }
 
@@ -4691,6 +4961,18 @@ impl CompletionTool {
     /// Creates a builder for [`CompletionTool`].
     pub fn builder() -> CompletionToolBuilder {
         CompletionToolBuilder::new()
+    }
+
+    /// Creates a [`CompletionTool`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CompletionToolBuilder,
+        ) -> CompletionToolBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CompletionTool {
+        f(Self::builder()).build()
     }
 }
 
@@ -4802,6 +5084,18 @@ impl CompletionToolChoice {
     /// Creates a builder for [`CompletionToolChoice`].
     pub fn builder() -> CompletionToolChoiceBuilder {
         CompletionToolChoiceBuilder::new()
+    }
+
+    /// Creates a [`CompletionToolChoice`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CompletionToolChoiceBuilder,
+        ) -> CompletionToolChoiceBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CompletionToolChoice {
+        f(Self::builder()).build()
     }
 }
 
@@ -4916,6 +5210,15 @@ impl CompletionToolChoiceFunction {
     pub fn builder() -> CompletionToolChoiceFunctionBuilder {
         CompletionToolChoiceFunctionBuilder::new()
     }
+
+    /// Creates a [`CompletionToolChoiceFunction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CompletionToolChoiceFunctionBuilder,
+        ) -> CompletionToolChoiceFunctionBuilder<(crate::typed::builder::Set,)>,
+    ) -> CompletionToolChoiceFunction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CompletionToolChoiceFunction`].
@@ -4999,6 +5302,15 @@ impl CompletionToolFunction {
     /// Creates a builder for [`CompletionToolFunction`].
     pub fn builder() -> CompletionToolFunctionBuilder {
         CompletionToolFunctionBuilder::new()
+    }
+
+    /// Creates a [`CompletionToolFunction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CompletionToolFunctionBuilder,
+        ) -> CompletionToolFunctionBuilder<(crate::typed::builder::Set,)>,
+    ) -> CompletionToolFunction {
+        f(Self::builder()).build()
     }
 }
 
@@ -5152,6 +5464,20 @@ impl ContentObject {
     /// Creates a builder for [`ContentObject`].
     pub fn builder() -> ContentObjectBuilder {
         ContentObjectBuilder::new()
+    }
+
+    /// Creates a [`ContentObject`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ContentObjectBuilder,
+        ) -> ContentObjectBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ContentObject {
+        f(Self::builder()).build()
     }
 }
 
@@ -5389,6 +5715,18 @@ impl ContextualAIServiceSettings {
     pub fn builder() -> ContextualAIServiceSettingsBuilder {
         ContextualAIServiceSettingsBuilder::new()
     }
+
+    /// Creates a [`ContextualAIServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ContextualAIServiceSettingsBuilder,
+        ) -> ContextualAIServiceSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ContextualAIServiceSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ContextualAIServiceSettings`].
@@ -5546,6 +5884,13 @@ impl ContextualAITaskSettings {
     pub fn builder() -> ContextualAITaskSettingsBuilder {
         ContextualAITaskSettingsBuilder::new()
     }
+
+    /// Creates a [`ContextualAITaskSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ContextualAITaskSettingsBuilder) -> ContextualAITaskSettingsBuilder,
+    ) -> ContextualAITaskSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ContextualAITaskSettings`].
@@ -5622,6 +5967,16 @@ impl CspRegion {
     /// Creates a builder for [`CspRegion`].
     pub fn builder() -> CspRegionBuilder {
         CspRegionBuilder::new()
+    }
+
+    /// Creates a [`CspRegion`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CspRegionBuilder,
+        )
+            -> CspRegionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> CspRegion {
+        f(Self::builder()).build()
     }
 }
 
@@ -5725,6 +6080,15 @@ impl CustomRequestParams {
     /// Creates a builder for [`CustomRequestParams`].
     pub fn builder() -> CustomRequestParamsBuilder {
         CustomRequestParamsBuilder::new()
+    }
+
+    /// Creates a [`CustomRequestParams`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CustomRequestParamsBuilder,
+        ) -> CustomRequestParamsBuilder<(crate::typed::builder::Set,)>,
+    ) -> CustomRequestParams {
+        f(Self::builder()).build()
     }
 }
 
@@ -5951,6 +6315,15 @@ impl CustomResponseParams {
     /// Creates a builder for [`CustomResponseParams`].
     pub fn builder() -> CustomResponseParamsBuilder {
         CustomResponseParamsBuilder::new()
+    }
+
+    /// Creates a [`CustomResponseParams`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CustomResponseParamsBuilder,
+        ) -> CustomResponseParamsBuilder<(crate::typed::builder::Set,)>,
+    ) -> CustomResponseParams {
+        f(Self::builder()).build()
     }
 }
 
@@ -6245,6 +6618,19 @@ impl CustomServiceSettings {
     /// Creates a builder for [`CustomServiceSettings`].
     pub fn builder() -> CustomServiceSettingsBuilder {
         CustomServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`CustomServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CustomServiceSettingsBuilder,
+        ) -> CustomServiceSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CustomServiceSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -6644,6 +7030,13 @@ impl CustomTaskSettings {
     pub fn builder() -> CustomTaskSettingsBuilder {
         CustomTaskSettingsBuilder::new()
     }
+
+    /// Creates a [`CustomTaskSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CustomTaskSettingsBuilder) -> CustomTaskSettingsBuilder,
+    ) -> CustomTaskSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CustomTaskSettings`].
@@ -6750,6 +7143,18 @@ impl DeepSeekServiceSettings {
     /// Creates a builder for [`DeepSeekServiceSettings`].
     pub fn builder() -> DeepSeekServiceSettingsBuilder {
         DeepSeekServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`DeepSeekServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DeepSeekServiceSettingsBuilder,
+        ) -> DeepSeekServiceSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DeepSeekServiceSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -6885,6 +7290,18 @@ impl DeleteInferenceEndpointResult {
     pub fn builder() -> DeleteInferenceEndpointResultBuilder {
         DeleteInferenceEndpointResultBuilder::new()
     }
+
+    /// Creates a [`DeleteInferenceEndpointResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DeleteInferenceEndpointResultBuilder,
+        ) -> DeleteInferenceEndpointResultBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DeleteInferenceEndpointResult {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DeleteInferenceEndpointResult`].
@@ -7007,6 +7424,15 @@ impl DenseEmbeddingByteResult {
     pub fn builder() -> DenseEmbeddingByteResultBuilder {
         DenseEmbeddingByteResultBuilder::new()
     }
+
+    /// Creates a [`DenseEmbeddingByteResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DenseEmbeddingByteResultBuilder,
+        ) -> DenseEmbeddingByteResultBuilder<(crate::typed::builder::Set,)>,
+    ) -> DenseEmbeddingByteResult {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DenseEmbeddingByteResult`].
@@ -7078,6 +7504,15 @@ impl DenseEmbeddingResult {
     /// Creates a builder for [`DenseEmbeddingResult`].
     pub fn builder() -> DenseEmbeddingResultBuilder {
         DenseEmbeddingResultBuilder::new()
+    }
+
+    /// Creates a [`DenseEmbeddingResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DenseEmbeddingResultBuilder,
+        ) -> DenseEmbeddingResultBuilder<(crate::typed::builder::Set,)>,
+    ) -> DenseEmbeddingResult {
+        f(Self::builder()).build()
     }
 }
 
@@ -7191,6 +7626,18 @@ impl ElasticsearchServiceSettings {
     /// Creates a builder for [`ElasticsearchServiceSettings`].
     pub fn builder() -> ElasticsearchServiceSettingsBuilder {
         ElasticsearchServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`ElasticsearchServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ElasticsearchServiceSettingsBuilder,
+        ) -> ElasticsearchServiceSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ElasticsearchServiceSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -7423,6 +7870,13 @@ impl ElasticsearchTaskSettings {
     pub fn builder() -> ElasticsearchTaskSettingsBuilder {
         ElasticsearchTaskSettingsBuilder::new()
     }
+
+    /// Creates a [`ElasticsearchTaskSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ElasticsearchTaskSettingsBuilder) -> ElasticsearchTaskSettingsBuilder,
+    ) -> ElasticsearchTaskSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ElasticsearchTaskSettings`].
@@ -7506,6 +7960,18 @@ impl ElserServiceSettings {
     /// Creates a builder for [`ElserServiceSettings`].
     pub fn builder() -> ElserServiceSettingsBuilder {
         ElserServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`ElserServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ElserServiceSettingsBuilder,
+        ) -> ElserServiceSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ElserServiceSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -7689,6 +8155,15 @@ impl EmbeddingContentObject {
     pub fn builder() -> EmbeddingContentObjectBuilder {
         EmbeddingContentObjectBuilder::new()
     }
+
+    /// Creates a [`EmbeddingContentObject`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            EmbeddingContentObjectBuilder,
+        ) -> EmbeddingContentObjectBuilder<(crate::typed::builder::Set,)>,
+    ) -> EmbeddingContentObject {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`EmbeddingContentObject`].
@@ -7791,6 +8266,18 @@ impl EmbeddingContentObjectItem {
     /// Creates a builder for [`EmbeddingContentObjectItem`].
     pub fn builder() -> EmbeddingContentObjectItemBuilder {
         EmbeddingContentObjectItemBuilder::new()
+    }
+
+    /// Creates a [`EmbeddingContentObjectItem`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            EmbeddingContentObjectItemBuilder,
+        ) -> EmbeddingContentObjectItemBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> EmbeddingContentObjectItem {
+        f(Self::builder()).build()
     }
 }
 
@@ -7943,6 +8430,15 @@ impl EmbeddingInferenceResult {
     pub fn builder() -> EmbeddingInferenceResultBuilder {
         EmbeddingInferenceResultBuilder::new()
     }
+
+    /// Creates a [`EmbeddingInferenceResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            EmbeddingInferenceResultBuilder,
+        ) -> EmbeddingInferenceResultBuilder<(crate::typed::builder::Set,)>,
+    ) -> EmbeddingInferenceResult {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`EmbeddingInferenceResult`].
@@ -8090,6 +8586,18 @@ impl EncryptedReasoningDetail {
     /// Creates a builder for [`EncryptedReasoningDetail`].
     pub fn builder() -> EncryptedReasoningDetailBuilder {
         EncryptedReasoningDetailBuilder::new()
+    }
+
+    /// Creates a [`EncryptedReasoningDetail`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            EncryptedReasoningDetailBuilder,
+        ) -> EncryptedReasoningDetailBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> EncryptedReasoningDetail {
+        f(Self::builder()).build()
     }
 }
 
@@ -8246,6 +8754,16 @@ impl FileContent {
     pub fn builder() -> FileContentBuilder {
         FileContentBuilder::new()
     }
+
+    /// Creates a [`FileContent`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FileContentBuilder,
+        )
+            -> FileContentBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> FileContent {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FileContent`].
@@ -8366,6 +8884,18 @@ impl FireworksAIServiceSettings {
     /// Creates a builder for [`FireworksAIServiceSettings`].
     pub fn builder() -> FireworksAIServiceSettingsBuilder {
         FireworksAIServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`FireworksAIServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FireworksAIServiceSettingsBuilder,
+        ) -> FireworksAIServiceSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FireworksAIServiceSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -8588,6 +9118,13 @@ impl FireworksAITaskSettings {
     pub fn builder() -> FireworksAITaskSettingsBuilder {
         FireworksAITaskSettingsBuilder::new()
     }
+
+    /// Creates a [`FireworksAITaskSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FireworksAITaskSettingsBuilder) -> FireworksAITaskSettingsBuilder,
+    ) -> FireworksAITaskSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FireworksAITaskSettings`].
@@ -8697,6 +9234,18 @@ impl GoogleAiStudioServiceSettings {
     /// Creates a builder for [`GoogleAiStudioServiceSettings`].
     pub fn builder() -> GoogleAiStudioServiceSettingsBuilder {
         GoogleAiStudioServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`GoogleAiStudioServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GoogleAiStudioServiceSettingsBuilder,
+        ) -> GoogleAiStudioServiceSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> GoogleAiStudioServiceSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -8935,6 +9484,15 @@ impl GoogleVertexAIServiceSettings {
     /// Creates a builder for [`GoogleVertexAIServiceSettings`].
     pub fn builder() -> GoogleVertexAIServiceSettingsBuilder {
         GoogleVertexAIServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`GoogleVertexAIServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GoogleVertexAIServiceSettingsBuilder,
+        ) -> GoogleVertexAIServiceSettingsBuilder<(crate::typed::builder::Set,)>,
+    ) -> GoogleVertexAIServiceSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -9223,6 +9781,13 @@ impl GoogleVertexAITaskSettings {
     pub fn builder() -> GoogleVertexAITaskSettingsBuilder {
         GoogleVertexAITaskSettingsBuilder::new()
     }
+
+    /// Creates a [`GoogleVertexAITaskSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(GoogleVertexAITaskSettingsBuilder) -> GoogleVertexAITaskSettingsBuilder,
+    ) -> GoogleVertexAITaskSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GoogleVertexAITaskSettings`].
@@ -9360,6 +9925,15 @@ impl GroqServiceSettings {
     /// Creates a builder for [`GroqServiceSettings`].
     pub fn builder() -> GroqServiceSettingsBuilder {
         GroqServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`GroqServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GroqServiceSettingsBuilder,
+        ) -> GroqServiceSettingsBuilder<(crate::typed::builder::Set,)>,
+    ) -> GroqServiceSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -9509,6 +10083,18 @@ impl HuggingFaceServiceSettings {
     /// Creates a builder for [`HuggingFaceServiceSettings`].
     pub fn builder() -> HuggingFaceServiceSettingsBuilder {
         HuggingFaceServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`HuggingFaceServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HuggingFaceServiceSettingsBuilder,
+        ) -> HuggingFaceServiceSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> HuggingFaceServiceSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -9683,6 +10269,13 @@ impl HuggingFaceTaskSettings {
     pub fn builder() -> HuggingFaceTaskSettingsBuilder {
         HuggingFaceTaskSettingsBuilder::new()
     }
+
+    /// Creates a [`HuggingFaceTaskSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(HuggingFaceTaskSettingsBuilder) -> HuggingFaceTaskSettingsBuilder,
+    ) -> HuggingFaceTaskSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HuggingFaceTaskSettings`].
@@ -9769,6 +10362,13 @@ impl ImageUrl {
     /// Creates a builder for [`ImageUrl`].
     pub fn builder() -> ImageUrlBuilder {
         ImageUrlBuilder::new()
+    }
+
+    /// Creates a [`ImageUrl`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ImageUrlBuilder) -> ImageUrlBuilder<(crate::typed::builder::Set,)>,
+    ) -> ImageUrl {
+        f(Self::builder()).build()
     }
 }
 
@@ -9906,6 +10506,13 @@ impl InferenceChunkingSettings {
     /// Creates a builder for [`InferenceChunkingSettings`].
     pub fn builder() -> InferenceChunkingSettingsBuilder {
         InferenceChunkingSettingsBuilder::new()
+    }
+
+    /// Creates a [`InferenceChunkingSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(InferenceChunkingSettingsBuilder) -> InferenceChunkingSettingsBuilder,
+    ) -> InferenceChunkingSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -10083,6 +10690,18 @@ impl InferenceEndpoint {
     pub fn builder() -> InferenceEndpointBuilder {
         InferenceEndpointBuilder::new()
     }
+
+    /// Creates a [`InferenceEndpoint`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointBuilder,
+        ) -> InferenceEndpointBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpoint {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InferenceEndpoint`].
@@ -10238,6 +10857,20 @@ impl InferenceEndpointInfo {
     /// Creates a builder for [`InferenceEndpointInfo`].
     pub fn builder() -> InferenceEndpointInfoBuilder {
         InferenceEndpointInfoBuilder::new()
+    }
+
+    /// Creates a [`InferenceEndpointInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoBuilder,
+        ) -> InferenceEndpointInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfo {
+        f(Self::builder()).build()
     }
 }
 
@@ -10490,6 +11123,20 @@ impl InferenceEndpointInfoAi21 {
     pub fn builder() -> InferenceEndpointInfoAi21Builder {
         InferenceEndpointInfoAi21Builder::new()
     }
+
+    /// Creates a [`InferenceEndpointInfoAi21`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoAi21Builder,
+        ) -> InferenceEndpointInfoAi21Builder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoAi21 {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InferenceEndpointInfoAi21`].
@@ -10740,6 +11387,20 @@ impl InferenceEndpointInfoAlibabaCloudAI {
     /// Creates a builder for [`InferenceEndpointInfoAlibabaCloudAI`].
     pub fn builder() -> InferenceEndpointInfoAlibabaCloudAIBuilder {
         InferenceEndpointInfoAlibabaCloudAIBuilder::new()
+    }
+
+    /// Creates a [`InferenceEndpointInfoAlibabaCloudAI`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoAlibabaCloudAIBuilder,
+        ) -> InferenceEndpointInfoAlibabaCloudAIBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoAlibabaCloudAI {
+        f(Self::builder()).build()
     }
 }
 
@@ -11002,6 +11663,20 @@ impl InferenceEndpointInfoAmazonBedrock {
     pub fn builder() -> InferenceEndpointInfoAmazonBedrockBuilder {
         InferenceEndpointInfoAmazonBedrockBuilder::new()
     }
+
+    /// Creates a [`InferenceEndpointInfoAmazonBedrock`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoAmazonBedrockBuilder,
+        ) -> InferenceEndpointInfoAmazonBedrockBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoAmazonBedrock {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InferenceEndpointInfoAmazonBedrock`].
@@ -11262,6 +11937,20 @@ impl InferenceEndpointInfoAmazonSageMaker {
     /// Creates a builder for [`InferenceEndpointInfoAmazonSageMaker`].
     pub fn builder() -> InferenceEndpointInfoAmazonSageMakerBuilder {
         InferenceEndpointInfoAmazonSageMakerBuilder::new()
+    }
+
+    /// Creates a [`InferenceEndpointInfoAmazonSageMaker`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoAmazonSageMakerBuilder,
+        ) -> InferenceEndpointInfoAmazonSageMakerBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoAmazonSageMaker {
+        f(Self::builder()).build()
     }
 }
 
@@ -11524,6 +12213,20 @@ impl InferenceEndpointInfoAnthropic {
     pub fn builder() -> InferenceEndpointInfoAnthropicBuilder {
         InferenceEndpointInfoAnthropicBuilder::new()
     }
+
+    /// Creates a [`InferenceEndpointInfoAnthropic`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoAnthropicBuilder,
+        ) -> InferenceEndpointInfoAnthropicBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoAnthropic {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InferenceEndpointInfoAnthropic`].
@@ -11784,6 +12487,20 @@ impl InferenceEndpointInfoAzureAIStudio {
     /// Creates a builder for [`InferenceEndpointInfoAzureAIStudio`].
     pub fn builder() -> InferenceEndpointInfoAzureAIStudioBuilder {
         InferenceEndpointInfoAzureAIStudioBuilder::new()
+    }
+
+    /// Creates a [`InferenceEndpointInfoAzureAIStudio`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoAzureAIStudioBuilder,
+        ) -> InferenceEndpointInfoAzureAIStudioBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoAzureAIStudio {
+        f(Self::builder()).build()
     }
 }
 
@@ -12046,6 +12763,20 @@ impl InferenceEndpointInfoAzureOpenAI {
     pub fn builder() -> InferenceEndpointInfoAzureOpenAIBuilder {
         InferenceEndpointInfoAzureOpenAIBuilder::new()
     }
+
+    /// Creates a [`InferenceEndpointInfoAzureOpenAI`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoAzureOpenAIBuilder,
+        ) -> InferenceEndpointInfoAzureOpenAIBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoAzureOpenAI {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InferenceEndpointInfoAzureOpenAI`].
@@ -12307,6 +13038,20 @@ impl InferenceEndpointInfoCohere {
     pub fn builder() -> InferenceEndpointInfoCohereBuilder {
         InferenceEndpointInfoCohereBuilder::new()
     }
+
+    /// Creates a [`InferenceEndpointInfoCohere`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoCohereBuilder,
+        ) -> InferenceEndpointInfoCohereBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoCohere {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InferenceEndpointInfoCohere`].
@@ -12557,6 +13302,20 @@ impl InferenceEndpointInfoContextualAi {
     /// Creates a builder for [`InferenceEndpointInfoContextualAi`].
     pub fn builder() -> InferenceEndpointInfoContextualAiBuilder {
         InferenceEndpointInfoContextualAiBuilder::new()
+    }
+
+    /// Creates a [`InferenceEndpointInfoContextualAi`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoContextualAiBuilder,
+        ) -> InferenceEndpointInfoContextualAiBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoContextualAi {
+        f(Self::builder()).build()
     }
 }
 
@@ -12819,6 +13578,20 @@ impl InferenceEndpointInfoCustom {
     pub fn builder() -> InferenceEndpointInfoCustomBuilder {
         InferenceEndpointInfoCustomBuilder::new()
     }
+
+    /// Creates a [`InferenceEndpointInfoCustom`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoCustomBuilder,
+        ) -> InferenceEndpointInfoCustomBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoCustom {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InferenceEndpointInfoCustom`].
@@ -13069,6 +13842,20 @@ impl InferenceEndpointInfoDeepSeek {
     /// Creates a builder for [`InferenceEndpointInfoDeepSeek`].
     pub fn builder() -> InferenceEndpointInfoDeepSeekBuilder {
         InferenceEndpointInfoDeepSeekBuilder::new()
+    }
+
+    /// Creates a [`InferenceEndpointInfoDeepSeek`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoDeepSeekBuilder,
+        ) -> InferenceEndpointInfoDeepSeekBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoDeepSeek {
+        f(Self::builder()).build()
     }
 }
 
@@ -13321,6 +14108,20 @@ impl InferenceEndpointInfoELSER {
     pub fn builder() -> InferenceEndpointInfoELSERBuilder {
         InferenceEndpointInfoELSERBuilder::new()
     }
+
+    /// Creates a [`InferenceEndpointInfoELSER`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoELSERBuilder,
+        ) -> InferenceEndpointInfoELSERBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoELSER {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InferenceEndpointInfoELSER`].
@@ -13571,6 +14372,20 @@ impl InferenceEndpointInfoElasticsearch {
     /// Creates a builder for [`InferenceEndpointInfoElasticsearch`].
     pub fn builder() -> InferenceEndpointInfoElasticsearchBuilder {
         InferenceEndpointInfoElasticsearchBuilder::new()
+    }
+
+    /// Creates a [`InferenceEndpointInfoElasticsearch`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoElasticsearchBuilder,
+        ) -> InferenceEndpointInfoElasticsearchBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoElasticsearch {
+        f(Self::builder()).build()
     }
 }
 
@@ -13833,6 +14648,20 @@ impl InferenceEndpointInfoFireworksAI {
     pub fn builder() -> InferenceEndpointInfoFireworksAIBuilder {
         InferenceEndpointInfoFireworksAIBuilder::new()
     }
+
+    /// Creates a [`InferenceEndpointInfoFireworksAI`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoFireworksAIBuilder,
+        ) -> InferenceEndpointInfoFireworksAIBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoFireworksAI {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InferenceEndpointInfoFireworksAI`].
@@ -14093,6 +14922,20 @@ impl InferenceEndpointInfoGoogleAIStudio {
     /// Creates a builder for [`InferenceEndpointInfoGoogleAIStudio`].
     pub fn builder() -> InferenceEndpointInfoGoogleAIStudioBuilder {
         InferenceEndpointInfoGoogleAIStudioBuilder::new()
+    }
+
+    /// Creates a [`InferenceEndpointInfoGoogleAIStudio`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoGoogleAIStudioBuilder,
+        ) -> InferenceEndpointInfoGoogleAIStudioBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoGoogleAIStudio {
+        f(Self::builder()).build()
     }
 }
 
@@ -14355,6 +15198,20 @@ impl InferenceEndpointInfoGoogleVertexAI {
     pub fn builder() -> InferenceEndpointInfoGoogleVertexAIBuilder {
         InferenceEndpointInfoGoogleVertexAIBuilder::new()
     }
+
+    /// Creates a [`InferenceEndpointInfoGoogleVertexAI`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoGoogleVertexAIBuilder,
+        ) -> InferenceEndpointInfoGoogleVertexAIBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoGoogleVertexAI {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InferenceEndpointInfoGoogleVertexAI`].
@@ -14616,6 +15473,20 @@ impl InferenceEndpointInfoGroq {
     pub fn builder() -> InferenceEndpointInfoGroqBuilder {
         InferenceEndpointInfoGroqBuilder::new()
     }
+
+    /// Creates a [`InferenceEndpointInfoGroq`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoGroqBuilder,
+        ) -> InferenceEndpointInfoGroqBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoGroq {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InferenceEndpointInfoGroq`].
@@ -14866,6 +15737,20 @@ impl InferenceEndpointInfoHuggingFace {
     /// Creates a builder for [`InferenceEndpointInfoHuggingFace`].
     pub fn builder() -> InferenceEndpointInfoHuggingFaceBuilder {
         InferenceEndpointInfoHuggingFaceBuilder::new()
+    }
+
+    /// Creates a [`InferenceEndpointInfoHuggingFace`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoHuggingFaceBuilder,
+        ) -> InferenceEndpointInfoHuggingFaceBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoHuggingFace {
+        f(Self::builder()).build()
     }
 }
 
@@ -15128,6 +16013,20 @@ impl InferenceEndpointInfoJinaAi {
     pub fn builder() -> InferenceEndpointInfoJinaAiBuilder {
         InferenceEndpointInfoJinaAiBuilder::new()
     }
+
+    /// Creates a [`InferenceEndpointInfoJinaAi`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoJinaAiBuilder,
+        ) -> InferenceEndpointInfoJinaAiBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoJinaAi {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InferenceEndpointInfoJinaAi`].
@@ -15378,6 +16277,20 @@ impl InferenceEndpointInfoLlama {
     /// Creates a builder for [`InferenceEndpointInfoLlama`].
     pub fn builder() -> InferenceEndpointInfoLlamaBuilder {
         InferenceEndpointInfoLlamaBuilder::new()
+    }
+
+    /// Creates a [`InferenceEndpointInfoLlama`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoLlamaBuilder,
+        ) -> InferenceEndpointInfoLlamaBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoLlama {
+        f(Self::builder()).build()
     }
 }
 
@@ -15630,6 +16543,20 @@ impl InferenceEndpointInfoMistral {
     pub fn builder() -> InferenceEndpointInfoMistralBuilder {
         InferenceEndpointInfoMistralBuilder::new()
     }
+
+    /// Creates a [`InferenceEndpointInfoMistral`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoMistralBuilder,
+        ) -> InferenceEndpointInfoMistralBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoMistral {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InferenceEndpointInfoMistral`].
@@ -15880,6 +16807,20 @@ impl InferenceEndpointInfoNvidia {
     /// Creates a builder for [`InferenceEndpointInfoNvidia`].
     pub fn builder() -> InferenceEndpointInfoNvidiaBuilder {
         InferenceEndpointInfoNvidiaBuilder::new()
+    }
+
+    /// Creates a [`InferenceEndpointInfoNvidia`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoNvidiaBuilder,
+        ) -> InferenceEndpointInfoNvidiaBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoNvidia {
+        f(Self::builder()).build()
     }
 }
 
@@ -16132,6 +17073,20 @@ impl InferenceEndpointInfoOpenAI {
     pub fn builder() -> InferenceEndpointInfoOpenAIBuilder {
         InferenceEndpointInfoOpenAIBuilder::new()
     }
+
+    /// Creates a [`InferenceEndpointInfoOpenAI`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoOpenAIBuilder,
+        ) -> InferenceEndpointInfoOpenAIBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoOpenAI {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InferenceEndpointInfoOpenAI`].
@@ -16382,6 +17337,20 @@ impl InferenceEndpointInfoOpenShiftAi {
     /// Creates a builder for [`InferenceEndpointInfoOpenShiftAi`].
     pub fn builder() -> InferenceEndpointInfoOpenShiftAiBuilder {
         InferenceEndpointInfoOpenShiftAiBuilder::new()
+    }
+
+    /// Creates a [`InferenceEndpointInfoOpenShiftAi`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoOpenShiftAiBuilder,
+        ) -> InferenceEndpointInfoOpenShiftAiBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoOpenShiftAi {
+        f(Self::builder()).build()
     }
 }
 
@@ -16644,6 +17613,20 @@ impl InferenceEndpointInfoVoyageAI {
     pub fn builder() -> InferenceEndpointInfoVoyageAIBuilder {
         InferenceEndpointInfoVoyageAIBuilder::new()
     }
+
+    /// Creates a [`InferenceEndpointInfoVoyageAI`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoVoyageAIBuilder,
+        ) -> InferenceEndpointInfoVoyageAIBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoVoyageAI {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InferenceEndpointInfoVoyageAI`].
@@ -16894,6 +17877,20 @@ impl InferenceEndpointInfoWatsonx {
     /// Creates a builder for [`InferenceEndpointInfoWatsonx`].
     pub fn builder() -> InferenceEndpointInfoWatsonxBuilder {
         InferenceEndpointInfoWatsonxBuilder::new()
+    }
+
+    /// Creates a [`InferenceEndpointInfoWatsonx`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceEndpointInfoWatsonxBuilder,
+        ) -> InferenceEndpointInfoWatsonxBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InferenceEndpointInfoWatsonx {
+        f(Self::builder()).build()
     }
 }
 
@@ -17149,6 +18146,13 @@ impl InferenceResult {
     pub fn builder() -> InferenceResultBuilder {
         InferenceResultBuilder::new()
     }
+
+    /// Creates a [`InferenceResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(InferenceResultBuilder) -> InferenceResultBuilder<(crate::typed::builder::Set,)>,
+    ) -> InferenceResult {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InferenceResult`].
@@ -17329,6 +18333,18 @@ impl JinaAIServiceSettings {
     /// Creates a builder for [`JinaAIServiceSettings`].
     pub fn builder() -> JinaAIServiceSettingsBuilder {
         JinaAIServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`JinaAIServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            JinaAIServiceSettingsBuilder,
+        ) -> JinaAIServiceSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> JinaAIServiceSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -17573,6 +18589,13 @@ impl JinaAITaskSettings {
     pub fn builder() -> JinaAITaskSettingsBuilder {
         JinaAITaskSettingsBuilder::new()
     }
+
+    /// Creates a [`JinaAITaskSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(JinaAITaskSettingsBuilder) -> JinaAITaskSettingsBuilder,
+    ) -> JinaAITaskSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`JinaAITaskSettings`].
@@ -17727,6 +18750,18 @@ impl LlamaServiceSettings {
     /// Creates a builder for [`LlamaServiceSettings`].
     pub fn builder() -> LlamaServiceSettingsBuilder {
         LlamaServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`LlamaServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LlamaServiceSettingsBuilder,
+        ) -> LlamaServiceSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> LlamaServiceSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -18000,6 +19035,13 @@ impl Message {
     /// Creates a builder for [`Message`].
     pub fn builder() -> MessageBuilder {
         MessageBuilder::new()
+    }
+
+    /// Creates a [`Message`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MessageBuilder) -> MessageBuilder<(crate::typed::builder::Set,)>,
+    ) -> Message {
+        f(Self::builder()).build()
     }
 }
 
@@ -18283,6 +19325,18 @@ impl MistralServiceSettings {
     pub fn builder() -> MistralServiceSettingsBuilder {
         MistralServiceSettingsBuilder::new()
     }
+
+    /// Creates a [`MistralServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MistralServiceSettingsBuilder,
+        ) -> MistralServiceSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MistralServiceSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MistralServiceSettings`].
@@ -18481,6 +19535,18 @@ impl NvidiaServiceSettings {
     /// Creates a builder for [`NvidiaServiceSettings`].
     pub fn builder() -> NvidiaServiceSettingsBuilder {
         NvidiaServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`NvidiaServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NvidiaServiceSettingsBuilder,
+        ) -> NvidiaServiceSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NvidiaServiceSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -18700,6 +19766,13 @@ impl NvidiaTaskSettings {
     pub fn builder() -> NvidiaTaskSettingsBuilder {
         NvidiaTaskSettingsBuilder::new()
     }
+
+    /// Creates a [`NvidiaTaskSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NvidiaTaskSettingsBuilder) -> NvidiaTaskSettingsBuilder,
+    ) -> NvidiaTaskSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NvidiaTaskSettings`].
@@ -18863,6 +19936,15 @@ impl OpenAIServiceSettings {
     /// Creates a builder for [`OpenAIServiceSettings`].
     pub fn builder() -> OpenAIServiceSettingsBuilder {
         OpenAIServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`OpenAIServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            OpenAIServiceSettingsBuilder,
+        ) -> OpenAIServiceSettingsBuilder<(crate::typed::builder::Set,)>,
+    ) -> OpenAIServiceSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -19179,6 +20261,13 @@ impl OpenAITaskSettings {
     pub fn builder() -> OpenAITaskSettingsBuilder {
         OpenAITaskSettingsBuilder::new()
     }
+
+    /// Creates a [`OpenAITaskSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(OpenAITaskSettingsBuilder) -> OpenAITaskSettingsBuilder,
+    ) -> OpenAITaskSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`OpenAITaskSettings`].
@@ -19299,6 +20388,18 @@ impl OpenShiftAiServiceSettings {
     /// Creates a builder for [`OpenShiftAiServiceSettings`].
     pub fn builder() -> OpenShiftAiServiceSettingsBuilder {
         OpenShiftAiServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`OpenShiftAiServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            OpenShiftAiServiceSettingsBuilder,
+        ) -> OpenShiftAiServiceSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> OpenShiftAiServiceSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -19511,6 +20612,13 @@ impl OpenShiftAiTaskSettings {
     pub fn builder() -> OpenShiftAiTaskSettingsBuilder {
         OpenShiftAiTaskSettingsBuilder::new()
     }
+
+    /// Creates a [`OpenShiftAiTaskSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(OpenShiftAiTaskSettingsBuilder) -> OpenShiftAiTaskSettingsBuilder,
+    ) -> OpenShiftAiTaskSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`OpenShiftAiTaskSettings`].
@@ -19599,6 +20707,18 @@ impl RankedDocument {
     /// Creates a builder for [`RankedDocument`].
     pub fn builder() -> RankedDocumentBuilder {
         RankedDocumentBuilder::new()
+    }
+
+    /// Creates a [`RankedDocument`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RankedDocumentBuilder,
+        ) -> RankedDocumentBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RankedDocument {
+        f(Self::builder()).build()
     }
 }
 
@@ -19733,6 +20853,13 @@ impl RateLimitSetting {
     pub fn builder() -> RateLimitSettingBuilder {
         RateLimitSettingBuilder::new()
     }
+
+    /// Creates a [`RateLimitSetting`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RateLimitSettingBuilder) -> RateLimitSettingBuilder,
+    ) -> RateLimitSetting {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RateLimitSetting`].
@@ -19832,6 +20959,11 @@ impl Reasoning {
     /// Creates a builder for [`Reasoning`].
     pub fn builder() -> ReasoningBuilder {
         ReasoningBuilder::new()
+    }
+
+    /// Creates a [`Reasoning`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(ReasoningBuilder) -> ReasoningBuilder) -> Reasoning {
+        f(Self::builder()).build()
     }
 }
 
@@ -19991,6 +21123,13 @@ impl RegionPolicy {
     pub fn builder() -> RegionPolicyBuilder {
         RegionPolicyBuilder::new()
     }
+
+    /// Creates a [`RegionPolicy`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RegionPolicyBuilder) -> RegionPolicyBuilder<(crate::typed::builder::Set,)>,
+    ) -> RegionPolicy {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RegionPolicy`].
@@ -20082,6 +21221,18 @@ impl RegionPolicyDoc {
     /// Creates a builder for [`RegionPolicyDoc`].
     pub fn builder() -> RegionPolicyDocBuilder {
         RegionPolicyDocBuilder::new()
+    }
+
+    /// Creates a [`RegionPolicyDoc`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RegionPolicyDocBuilder,
+        ) -> RegionPolicyDocBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RegionPolicyDoc {
+        f(Self::builder()).build()
     }
 }
 
@@ -20330,6 +21481,15 @@ impl RequestChatCompletion {
     /// Creates a builder for [`RequestChatCompletion`].
     pub fn builder() -> RequestChatCompletionBuilder {
         RequestChatCompletionBuilder::new()
+    }
+
+    /// Creates a [`RequestChatCompletion`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RequestChatCompletionBuilder,
+        ) -> RequestChatCompletionBuilder<(crate::typed::builder::Set,)>,
+    ) -> RequestChatCompletion {
+        f(Self::builder()).build()
     }
 }
 
@@ -20720,6 +21880,15 @@ impl RequestEmbedding {
     pub fn builder() -> RequestEmbeddingBuilder {
         RequestEmbeddingBuilder::new()
     }
+
+    /// Creates a [`RequestEmbedding`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RequestEmbeddingBuilder,
+        ) -> RequestEmbeddingBuilder<(crate::typed::builder::Set,)>,
+    ) -> RequestEmbedding {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RequestEmbedding`].
@@ -20903,6 +22072,15 @@ impl RerankedInferenceResult {
     pub fn builder() -> RerankedInferenceResultBuilder {
         RerankedInferenceResultBuilder::new()
     }
+
+    /// Creates a [`RerankedInferenceResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RerankedInferenceResultBuilder,
+        ) -> RerankedInferenceResultBuilder<(crate::typed::builder::Set,)>,
+    ) -> RerankedInferenceResult {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RerankedInferenceResult`].
@@ -20977,6 +22155,15 @@ impl SparseEmbeddingInferenceResult {
     pub fn builder() -> SparseEmbeddingInferenceResultBuilder {
         SparseEmbeddingInferenceResultBuilder::new()
     }
+
+    /// Creates a [`SparseEmbeddingInferenceResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SparseEmbeddingInferenceResultBuilder,
+        ) -> SparseEmbeddingInferenceResultBuilder<(crate::typed::builder::Set,)>,
+    ) -> SparseEmbeddingInferenceResult {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SparseEmbeddingInferenceResult`].
@@ -21049,6 +22236,18 @@ impl SparseEmbeddingResult {
     /// Creates a builder for [`SparseEmbeddingResult`].
     pub fn builder() -> SparseEmbeddingResultBuilder {
         SparseEmbeddingResultBuilder::new()
+    }
+
+    /// Creates a [`SparseEmbeddingResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SparseEmbeddingResultBuilder,
+        ) -> SparseEmbeddingResultBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SparseEmbeddingResult {
+        f(Self::builder()).build()
     }
 }
 
@@ -21167,6 +22366,18 @@ impl SummaryReasoningDetail {
     /// Creates a builder for [`SummaryReasoningDetail`].
     pub fn builder() -> SummaryReasoningDetailBuilder {
         SummaryReasoningDetailBuilder::new()
+    }
+
+    /// Creates a [`SummaryReasoningDetail`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SummaryReasoningDetailBuilder,
+        ) -> SummaryReasoningDetailBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SummaryReasoningDetail {
+        f(Self::builder()).build()
     }
 }
 
@@ -21598,6 +22809,15 @@ impl TextEmbeddingInferenceResult {
     pub fn builder() -> TextEmbeddingInferenceResultBuilder {
         TextEmbeddingInferenceResultBuilder::new()
     }
+
+    /// Creates a [`TextEmbeddingInferenceResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TextEmbeddingInferenceResultBuilder,
+        ) -> TextEmbeddingInferenceResultBuilder<(crate::typed::builder::Set,)>,
+    ) -> TextEmbeddingInferenceResult {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TextEmbeddingInferenceResult`].
@@ -21707,6 +22927,15 @@ impl TextReasoningDetail {
     /// Creates a builder for [`TextReasoningDetail`].
     pub fn builder() -> TextReasoningDetailBuilder {
         TextReasoningDetailBuilder::new()
+    }
+
+    /// Creates a [`TextReasoningDetail`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TextReasoningDetailBuilder,
+        ) -> TextReasoningDetailBuilder<(crate::typed::builder::Set,)>,
+    ) -> TextReasoningDetail {
+        f(Self::builder()).build()
     }
 }
 
@@ -21862,6 +23091,11 @@ impl ThinkingConfig {
     pub fn builder() -> ThinkingConfigBuilder {
         ThinkingConfigBuilder::new()
     }
+
+    /// Creates a [`ThinkingConfig`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(ThinkingConfigBuilder) -> ThinkingConfigBuilder) -> ThinkingConfig {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ThinkingConfig`].
@@ -21922,6 +23156,19 @@ impl ToolCall {
     /// Creates a builder for [`ToolCall`].
     pub fn builder() -> ToolCallBuilder {
         ToolCallBuilder::new()
+    }
+
+    /// Creates a [`ToolCall`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ToolCallBuilder,
+        ) -> ToolCallBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ToolCall {
+        f(Self::builder()).build()
     }
 }
 
@@ -22098,6 +23345,18 @@ impl ToolCallFunction {
     pub fn builder() -> ToolCallFunctionBuilder {
         ToolCallFunctionBuilder::new()
     }
+
+    /// Creates a [`ToolCallFunction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ToolCallFunctionBuilder,
+        ) -> ToolCallFunctionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ToolCallFunction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ToolCallFunction`].
@@ -22215,6 +23474,15 @@ impl VoyageAIServiceSettings {
     /// Creates a builder for [`VoyageAIServiceSettings`].
     pub fn builder() -> VoyageAIServiceSettingsBuilder {
         VoyageAIServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`VoyageAIServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            VoyageAIServiceSettingsBuilder,
+        ) -> VoyageAIServiceSettingsBuilder<(crate::typed::builder::Set,)>,
+    ) -> VoyageAIServiceSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -22376,6 +23644,13 @@ impl VoyageAITaskSettings {
     pub fn builder() -> VoyageAITaskSettingsBuilder {
         VoyageAITaskSettingsBuilder::new()
     }
+
+    /// Creates a [`VoyageAITaskSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(VoyageAITaskSettingsBuilder) -> VoyageAITaskSettingsBuilder,
+    ) -> VoyageAITaskSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`VoyageAITaskSettings`].
@@ -22508,6 +23783,21 @@ impl WatsonxServiceSettings {
     /// Creates a builder for [`WatsonxServiceSettings`].
     pub fn builder() -> WatsonxServiceSettingsBuilder {
         WatsonxServiceSettingsBuilder::new()
+    }
+
+    /// Creates a [`WatsonxServiceSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            WatsonxServiceSettingsBuilder,
+        ) -> WatsonxServiceSettingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> WatsonxServiceSettings {
+        f(Self::builder()).build()
     }
 }
 

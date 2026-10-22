@@ -24,6 +24,26 @@ impl AggregationBreakdown {
     pub fn builder() -> AggregationBreakdownBuilder {
         AggregationBreakdownBuilder::new()
     }
+
+    /// Creates a [`AggregationBreakdown`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AggregationBreakdownBuilder,
+        ) -> AggregationBreakdownBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AggregationBreakdown {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AggregationBreakdown`].
@@ -758,6 +778,20 @@ impl AggregationProfile {
     pub fn builder() -> AggregationProfileBuilder {
         AggregationProfileBuilder::new()
     }
+
+    /// Creates a [`AggregationProfile`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AggregationProfileBuilder,
+        ) -> AggregationProfileBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AggregationProfile {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AggregationProfile`].
@@ -1092,6 +1126,13 @@ impl AggregationProfileDebug {
     /// Creates a builder for [`AggregationProfileDebug`].
     pub fn builder() -> AggregationProfileDebugBuilder {
         AggregationProfileDebugBuilder::new()
+    }
+
+    /// Creates a [`AggregationProfileDebug`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(AggregationProfileDebugBuilder) -> AggregationProfileDebugBuilder,
+    ) -> AggregationProfileDebug {
+        f(Self::builder()).build()
     }
 }
 
@@ -1625,6 +1666,15 @@ impl AggregationProfileDelegateDebugFilter {
     pub fn builder() -> AggregationProfileDelegateDebugFilterBuilder {
         AggregationProfileDelegateDebugFilterBuilder::new()
     }
+
+    /// Creates a [`AggregationProfileDelegateDebugFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AggregationProfileDelegateDebugFilterBuilder,
+        ) -> AggregationProfileDelegateDebugFilterBuilder,
+    ) -> AggregationProfileDelegateDebugFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AggregationProfileDelegateDebugFilter`].
@@ -1743,6 +1793,19 @@ impl Collector {
     /// Creates a builder for [`Collector`].
     pub fn builder() -> CollectorBuilder {
         CollectorBuilder::new()
+    }
+
+    /// Creates a [`Collector`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CollectorBuilder,
+        ) -> CollectorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Collector {
+        f(Self::builder()).build()
     }
 }
 
@@ -1954,6 +2017,15 @@ impl CompletionContext {
     pub fn builder() -> CompletionContextBuilder {
         CompletionContextBuilder::new()
     }
+
+    /// Creates a [`CompletionContext`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CompletionContextBuilder,
+        ) -> CompletionContextBuilder<(crate::typed::builder::Set,)>,
+    ) -> CompletionContext {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CompletionContext`].
@@ -2134,6 +2206,20 @@ impl CompletionSuggest {
     /// Creates a builder for [`CompletionSuggest`].
     pub fn builder() -> CompletionSuggestBuilder {
         CompletionSuggestBuilder::new()
+    }
+
+    /// Creates a [`CompletionSuggest`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CompletionSuggestBuilder,
+        ) -> CompletionSuggestBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CompletionSuggest {
+        f(Self::builder()).build()
     }
 }
 
@@ -2342,6 +2428,15 @@ impl CompletionSuggestOption {
     /// Creates a builder for [`CompletionSuggestOption`].
     pub fn builder() -> CompletionSuggestOptionBuilder {
         CompletionSuggestOptionBuilder::new()
+    }
+
+    /// Creates a [`CompletionSuggestOption`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CompletionSuggestOptionBuilder,
+        ) -> CompletionSuggestOptionBuilder<(crate::typed::builder::Set,)>,
+    ) -> CompletionSuggestOption {
+        f(Self::builder()).build()
     }
 }
 
@@ -2619,6 +2714,15 @@ impl CompletionSuggester {
     pub fn builder() -> CompletionSuggesterBuilder {
         CompletionSuggesterBuilder::new()
     }
+
+    /// Creates a [`CompletionSuggester`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CompletionSuggesterBuilder,
+        ) -> CompletionSuggesterBuilder<(crate::typed::builder::Set,)>,
+    ) -> CompletionSuggester {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CompletionSuggester`].
@@ -2848,6 +2952,19 @@ impl DfsKnnProfile {
     pub fn builder() -> DfsKnnProfileBuilder {
         DfsKnnProfileBuilder::new()
     }
+
+    /// Creates a [`DfsKnnProfile`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DfsKnnProfileBuilder,
+        ) -> DfsKnnProfileBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DfsKnnProfile {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DfsKnnProfile`].
@@ -3021,6 +3138,11 @@ impl DfsProfile {
     pub fn builder() -> DfsProfileBuilder {
         DfsProfileBuilder::new()
     }
+
+    /// Creates a [`DfsProfile`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(DfsProfileBuilder) -> DfsProfileBuilder) -> DfsProfile {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DfsProfile`].
@@ -3132,6 +3254,24 @@ impl DfsStatisticsBreakdown {
     /// Creates a builder for [`DfsStatisticsBreakdown`].
     pub fn builder() -> DfsStatisticsBreakdownBuilder {
         DfsStatisticsBreakdownBuilder::new()
+    }
+
+    /// Creates a [`DfsStatisticsBreakdown`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DfsStatisticsBreakdownBuilder,
+        ) -> DfsStatisticsBreakdownBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DfsStatisticsBreakdown {
+        f(Self::builder()).build()
     }
 }
 
@@ -3520,6 +3660,20 @@ impl DfsStatisticsProfile {
     pub fn builder() -> DfsStatisticsProfileBuilder {
         DfsStatisticsProfileBuilder::new()
     }
+
+    /// Creates a [`DfsStatisticsProfile`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DfsStatisticsProfileBuilder,
+        ) -> DfsStatisticsProfileBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DfsStatisticsProfile {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DfsStatisticsProfile`].
@@ -3857,6 +4011,13 @@ impl DirectGenerator {
     pub fn builder() -> DirectGeneratorBuilder {
         DirectGeneratorBuilder::new()
     }
+
+    /// Creates a [`DirectGenerator`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DirectGeneratorBuilder) -> DirectGeneratorBuilder<(crate::typed::builder::Set,)>,
+    ) -> DirectGenerator {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DirectGenerator`].
@@ -4104,6 +4265,20 @@ impl FetchProfile {
     /// Creates a builder for [`FetchProfile`].
     pub fn builder() -> FetchProfileBuilder {
         FetchProfileBuilder::new()
+    }
+
+    /// Creates a [`FetchProfile`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FetchProfileBuilder,
+        ) -> FetchProfileBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FetchProfile {
+        f(Self::builder()).build()
     }
 }
 
@@ -4379,6 +4554,13 @@ impl FetchProfileBreakdown {
     pub fn builder() -> FetchProfileBreakdownBuilder {
         FetchProfileBreakdownBuilder::new()
     }
+
+    /// Creates a [`FetchProfileBreakdown`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FetchProfileBreakdownBuilder) -> FetchProfileBreakdownBuilder,
+    ) -> FetchProfileBreakdown {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FetchProfileBreakdown`].
@@ -4534,6 +4716,13 @@ impl FetchProfileDebug {
     pub fn builder() -> FetchProfileDebugBuilder {
         FetchProfileDebugBuilder::new()
     }
+
+    /// Creates a [`FetchProfileDebug`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FetchProfileDebugBuilder) -> FetchProfileDebugBuilder,
+    ) -> FetchProfileDebug {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FetchProfileDebug`].
@@ -4637,6 +4826,13 @@ impl FieldCollapse {
     /// Creates a builder for [`FieldCollapse`].
     pub fn builder() -> FieldCollapseBuilder {
         FieldCollapseBuilder::new()
+    }
+
+    /// Creates a [`FieldCollapse`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FieldCollapseBuilder) -> FieldCollapseBuilder<(crate::typed::builder::Set,)>,
+    ) -> FieldCollapse {
+        f(Self::builder()).build()
     }
 }
 
@@ -4856,6 +5052,13 @@ impl FieldSuggester {
     /// Creates a builder for [`FieldSuggester`].
     pub fn builder() -> FieldSuggesterBuilder {
         FieldSuggesterBuilder::new()
+    }
+
+    /// Creates a [`FieldSuggester`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FieldSuggesterBuilder) -> FieldSuggesterBuilder<(crate::typed::builder::Set,)>,
+    ) -> FieldSuggester {
+        f(Self::builder()).build()
     }
 }
 
@@ -5122,6 +5325,13 @@ impl Highlight {
     /// Creates a builder for [`Highlight`].
     pub fn builder() -> HighlightBuilder {
         HighlightBuilder::new()
+    }
+
+    /// Creates a [`Highlight`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(HighlightBuilder) -> HighlightBuilder<(crate::typed::builder::Set,)>,
+    ) -> Highlight {
+        f(Self::builder()).build()
     }
 }
 
@@ -5689,6 +5899,11 @@ impl HighlightBase {
     pub fn builder() -> HighlightBaseBuilder {
         HighlightBaseBuilder::new()
     }
+
+    /// Creates a [`HighlightBase`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(HighlightBaseBuilder) -> HighlightBaseBuilder) -> HighlightBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HighlightBase`].
@@ -6193,6 +6408,11 @@ impl HighlightField {
     /// Creates a builder for [`HighlightField`].
     pub fn builder() -> HighlightFieldBuilder {
         HighlightFieldBuilder::new()
+    }
+
+    /// Creates a [`HighlightField`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(HighlightFieldBuilder) -> HighlightFieldBuilder) -> HighlightField {
+        f(Self::builder()).build()
     }
 }
 
@@ -6772,6 +6992,11 @@ impl Hit {
     pub fn builder() -> HitBuilder {
         HitBuilder::new()
     }
+
+    /// Creates a [`Hit`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(HitBuilder) -> HitBuilder<(crate::typed::builder::Set,)>) -> Hit {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Hit`].
@@ -7292,6 +7517,13 @@ impl HitsMetadata {
     pub fn builder() -> HitsMetadataBuilder {
         HitsMetadataBuilder::new()
     }
+
+    /// Creates a [`HitsMetadata`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(HitsMetadataBuilder) -> HitsMetadataBuilder<(crate::typed::builder::Set,)>,
+    ) -> HitsMetadata {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HitsMetadata`].
@@ -7431,6 +7663,11 @@ impl InnerHits {
     /// Creates a builder for [`InnerHits`].
     pub fn builder() -> InnerHitsBuilder {
         InnerHitsBuilder::new()
+    }
+
+    /// Creates a [`InnerHits`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(InnerHitsBuilder) -> InnerHitsBuilder) -> InnerHits {
+        f(Self::builder()).build()
     }
 }
 
@@ -7838,6 +8075,13 @@ impl InnerHitsResult {
     pub fn builder() -> InnerHitsResultBuilder {
         InnerHitsResultBuilder::new()
     }
+
+    /// Creates a [`InnerHitsResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(InnerHitsResultBuilder) -> InnerHitsResultBuilder<(crate::typed::builder::Set,)>,
+    ) -> InnerHitsResult {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InnerHitsResult`].
@@ -7920,6 +8164,19 @@ impl KnnCollectorResult {
     /// Creates a builder for [`KnnCollectorResult`].
     pub fn builder() -> KnnCollectorResultBuilder {
         KnnCollectorResultBuilder::new()
+    }
+
+    /// Creates a [`KnnCollectorResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            KnnCollectorResultBuilder,
+        ) -> KnnCollectorResultBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> KnnCollectorResult {
+        f(Self::builder()).build()
     }
 }
 
@@ -8146,6 +8403,36 @@ impl KnnQueryProfileBreakdown {
     /// Creates a builder for [`KnnQueryProfileBreakdown`].
     pub fn builder() -> KnnQueryProfileBreakdownBuilder {
         KnnQueryProfileBreakdownBuilder::new()
+    }
+
+    /// Creates a [`KnnQueryProfileBreakdown`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            KnnQueryProfileBreakdownBuilder,
+        ) -> KnnQueryProfileBreakdownBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> KnnQueryProfileBreakdown {
+        f(Self::builder()).build()
     }
 }
 
@@ -10104,6 +10391,20 @@ impl KnnQueryProfileResult {
     pub fn builder() -> KnnQueryProfileResultBuilder {
         KnnQueryProfileResultBuilder::new()
     }
+
+    /// Creates a [`KnnQueryProfileResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            KnnQueryProfileResultBuilder,
+        ) -> KnnQueryProfileResultBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> KnnQueryProfileResult {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`KnnQueryProfileResult`].
@@ -10412,6 +10713,15 @@ impl LaplaceSmoothingModel {
     pub fn builder() -> LaplaceSmoothingModelBuilder {
         LaplaceSmoothingModelBuilder::new()
     }
+
+    /// Creates a [`LaplaceSmoothingModel`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LaplaceSmoothingModelBuilder,
+        ) -> LaplaceSmoothingModelBuilder<(crate::typed::builder::Set,)>,
+    ) -> LaplaceSmoothingModel {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`LaplaceSmoothingModel`].
@@ -10485,6 +10795,13 @@ impl LearningToRank {
     /// Creates a builder for [`LearningToRank`].
     pub fn builder() -> LearningToRankBuilder {
         LearningToRankBuilder::new()
+    }
+
+    /// Creates a [`LearningToRank`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(LearningToRankBuilder) -> LearningToRankBuilder<(crate::typed::builder::Set,)>,
+    ) -> LearningToRank {
+        f(Self::builder()).build()
     }
 }
 
@@ -10591,6 +10908,19 @@ impl LinearInterpolationSmoothingModel {
     /// Creates a builder for [`LinearInterpolationSmoothingModel`].
     pub fn builder() -> LinearInterpolationSmoothingModelBuilder {
         LinearInterpolationSmoothingModelBuilder::new()
+    }
+
+    /// Creates a [`LinearInterpolationSmoothingModel`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LinearInterpolationSmoothingModelBuilder,
+        ) -> LinearInterpolationSmoothingModelBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> LinearInterpolationSmoothingModel {
+        f(Self::builder()).build()
     }
 }
 
@@ -10750,6 +11080,18 @@ impl NestedIdentity {
     pub fn builder() -> NestedIdentityBuilder {
         NestedIdentityBuilder::new()
     }
+
+    /// Creates a [`NestedIdentity`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NestedIdentityBuilder,
+        ) -> NestedIdentityBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NestedIdentity {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NestedIdentity`].
@@ -10891,6 +11233,20 @@ impl PhraseSuggest {
     /// Creates a builder for [`PhraseSuggest`].
     pub fn builder() -> PhraseSuggestBuilder {
         PhraseSuggestBuilder::new()
+    }
+
+    /// Creates a [`PhraseSuggest`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PhraseSuggestBuilder,
+        ) -> PhraseSuggestBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> PhraseSuggest {
+        f(Self::builder()).build()
     }
 }
 
@@ -11089,6 +11445,15 @@ impl PhraseSuggestCollate {
     pub fn builder() -> PhraseSuggestCollateBuilder {
         PhraseSuggestCollateBuilder::new()
     }
+
+    /// Creates a [`PhraseSuggestCollate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PhraseSuggestCollateBuilder,
+        ) -> PhraseSuggestCollateBuilder<(crate::typed::builder::Set,)>,
+    ) -> PhraseSuggestCollate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PhraseSuggestCollate`].
@@ -11222,6 +11587,13 @@ impl PhraseSuggestCollateQuery {
     pub fn builder() -> PhraseSuggestCollateQueryBuilder {
         PhraseSuggestCollateQueryBuilder::new()
     }
+
+    /// Creates a [`PhraseSuggestCollateQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(PhraseSuggestCollateQueryBuilder) -> PhraseSuggestCollateQueryBuilder,
+    ) -> PhraseSuggestCollateQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PhraseSuggestCollateQuery`].
@@ -11294,6 +11666,18 @@ impl PhraseSuggestHighlight {
     /// Creates a builder for [`PhraseSuggestHighlight`].
     pub fn builder() -> PhraseSuggestHighlightBuilder {
         PhraseSuggestHighlightBuilder::new()
+    }
+
+    /// Creates a [`PhraseSuggestHighlight`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PhraseSuggestHighlightBuilder,
+        ) -> PhraseSuggestHighlightBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> PhraseSuggestHighlight {
+        f(Self::builder()).build()
     }
 }
 
@@ -11400,6 +11784,18 @@ impl PhraseSuggestOption {
     /// Creates a builder for [`PhraseSuggestOption`].
     pub fn builder() -> PhraseSuggestOptionBuilder {
         PhraseSuggestOptionBuilder::new()
+    }
+
+    /// Creates a [`PhraseSuggestOption`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PhraseSuggestOptionBuilder,
+        ) -> PhraseSuggestOptionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> PhraseSuggestOption {
+        f(Self::builder()).build()
     }
 }
 
@@ -11579,6 +11975,13 @@ impl PhraseSuggester {
     /// Creates a builder for [`PhraseSuggester`].
     pub fn builder() -> PhraseSuggesterBuilder {
         PhraseSuggesterBuilder::new()
+    }
+
+    /// Creates a [`PhraseSuggester`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(PhraseSuggesterBuilder) -> PhraseSuggesterBuilder<(crate::typed::builder::Set,)>,
+    ) -> PhraseSuggester {
+        f(Self::builder()).build()
     }
 }
 
@@ -11938,6 +12341,15 @@ impl PointInTimeReference {
     pub fn builder() -> PointInTimeReferenceBuilder {
         PointInTimeReferenceBuilder::new()
     }
+
+    /// Creates a [`PointInTimeReference`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PointInTimeReferenceBuilder,
+        ) -> PointInTimeReferenceBuilder<(crate::typed::builder::Set,)>,
+    ) -> PointInTimeReference {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PointInTimeReference`].
@@ -12024,6 +12436,13 @@ impl Profile {
     /// Creates a builder for [`Profile`].
     pub fn builder() -> ProfileBuilder {
         ProfileBuilder::new()
+    }
+
+    /// Creates a [`Profile`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ProfileBuilder) -> ProfileBuilder<(crate::typed::builder::Set,)>,
+    ) -> Profile {
+        f(Self::builder()).build()
     }
 }
 
@@ -12138,6 +12557,36 @@ impl QueryBreakdown {
     /// Creates a builder for [`QueryBreakdown`].
     pub fn builder() -> QueryBreakdownBuilder {
         QueryBreakdownBuilder::new()
+    }
+
+    /// Creates a [`QueryBreakdown`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            QueryBreakdownBuilder,
+        ) -> QueryBreakdownBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> QueryBreakdown {
+        f(Self::builder()).build()
     }
 }
 
@@ -14092,6 +14541,20 @@ impl QueryProfile {
     pub fn builder() -> QueryProfileBuilder {
         QueryProfileBuilder::new()
     }
+
+    /// Creates a [`QueryProfile`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            QueryProfileBuilder,
+        ) -> QueryProfileBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> QueryProfile {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`QueryProfile`].
@@ -14381,6 +14844,11 @@ impl RegexOptions {
     pub fn builder() -> RegexOptionsBuilder {
         RegexOptionsBuilder::new()
     }
+
+    /// Creates a [`RegexOptions`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RegexOptionsBuilder) -> RegexOptionsBuilder) -> RegexOptions {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RegexOptions`].
@@ -14528,6 +14996,13 @@ impl Rescore {
     pub fn builder() -> RescoreBuilder {
         RescoreBuilder::new()
     }
+
+    /// Creates a [`Rescore`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RescoreBuilder) -> RescoreBuilder<(crate::typed::builder::Set,)>,
+    ) -> Rescore {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Rescore`].
@@ -14665,6 +15140,13 @@ impl RescoreQuery {
     /// Creates a builder for [`RescoreQuery`].
     pub fn builder() -> RescoreQueryBuilder {
         RescoreQueryBuilder::new()
+    }
+
+    /// Creates a [`RescoreQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RescoreQueryBuilder) -> RescoreQueryBuilder<(crate::typed::builder::Set,)>,
+    ) -> RescoreQuery {
+        f(Self::builder()).build()
     }
 }
 
@@ -14823,6 +15305,13 @@ impl ScriptRescore {
     pub fn builder() -> ScriptRescoreBuilder {
         ScriptRescoreBuilder::new()
     }
+
+    /// Creates a [`ScriptRescore`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ScriptRescoreBuilder) -> ScriptRescoreBuilder<(crate::typed::builder::Set,)>,
+    ) -> ScriptRescore {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ScriptRescore`].
@@ -14901,6 +15390,19 @@ impl SearchProfile {
     /// Creates a builder for [`SearchProfile`].
     pub fn builder() -> SearchProfileBuilder {
         SearchProfileBuilder::new()
+    }
+
+    /// Creates a [`SearchProfile`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SearchProfileBuilder,
+        ) -> SearchProfileBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SearchProfile {
+        f(Self::builder()).build()
     }
 }
 
@@ -15236,6 +15738,13 @@ impl SearchRequestBody {
     /// Creates a builder for [`SearchRequestBody`].
     pub fn builder() -> SearchRequestBodyBuilder {
         SearchRequestBodyBuilder::new()
+    }
+
+    /// Creates a [`SearchRequestBody`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SearchRequestBodyBuilder) -> SearchRequestBodyBuilder,
+    ) -> SearchRequestBody {
+        f(Self::builder()).build()
     }
 }
 
@@ -16159,6 +16668,15 @@ impl SearchRequestCoordinatorMetadata {
     pub fn builder() -> SearchRequestCoordinatorMetadataBuilder {
         SearchRequestCoordinatorMetadataBuilder::new()
     }
+
+    /// Creates a [`SearchRequestCoordinatorMetadata`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SearchRequestCoordinatorMetadataBuilder,
+        ) -> SearchRequestCoordinatorMetadataBuilder,
+    ) -> SearchRequestCoordinatorMetadata {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SearchRequestCoordinatorMetadata`].
@@ -16254,6 +16772,23 @@ impl ShardProfile {
     /// Creates a builder for [`ShardProfile`].
     pub fn builder() -> ShardProfileBuilder {
         ShardProfileBuilder::new()
+    }
+
+    /// Creates a [`ShardProfile`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardProfileBuilder,
+        ) -> ShardProfileBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardProfile {
+        f(Self::builder()).build()
     }
 }
 
@@ -16688,6 +17223,15 @@ impl SmoothingModelContainer {
     pub fn builder() -> SmoothingModelContainerBuilder {
         SmoothingModelContainerBuilder::new()
     }
+
+    /// Creates a [`SmoothingModelContainer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SmoothingModelContainerBuilder,
+        ) -> SmoothingModelContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> SmoothingModelContainer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SmoothingModelContainer`].
@@ -16864,6 +17408,11 @@ impl SourceFilter {
     pub fn builder() -> SourceFilterBuilder {
         SourceFilterBuilder::new()
     }
+
+    /// Creates a [`SourceFilter`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(SourceFilterBuilder) -> SourceFilterBuilder) -> SourceFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SourceFilter`].
@@ -16972,6 +17521,15 @@ impl StupidBackoffSmoothingModel {
     pub fn builder() -> StupidBackoffSmoothingModelBuilder {
         StupidBackoffSmoothingModelBuilder::new()
     }
+
+    /// Creates a [`StupidBackoffSmoothingModel`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            StupidBackoffSmoothingModelBuilder,
+        ) -> StupidBackoffSmoothingModelBuilder<(crate::typed::builder::Set,)>,
+    ) -> StupidBackoffSmoothingModel {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`StupidBackoffSmoothingModel`].
@@ -17056,6 +17614,19 @@ impl SuggestBase {
     /// Creates a builder for [`SuggestBase`].
     pub fn builder() -> SuggestBaseBuilder {
         SuggestBaseBuilder::new()
+    }
+
+    /// Creates a [`SuggestBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SuggestBaseBuilder,
+        ) -> SuggestBaseBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SuggestBase {
+        f(Self::builder()).build()
     }
 }
 
@@ -17221,6 +17792,13 @@ impl SuggestFuzziness {
     pub fn builder() -> SuggestFuzzinessBuilder {
         SuggestFuzzinessBuilder::new()
     }
+
+    /// Creates a [`SuggestFuzziness`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SuggestFuzzinessBuilder) -> SuggestFuzzinessBuilder,
+    ) -> SuggestFuzziness {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SuggestFuzziness`].
@@ -17352,6 +17930,11 @@ impl Suggester {
     pub fn builder() -> SuggesterBuilder {
         SuggesterBuilder::new()
     }
+
+    /// Creates a [`Suggester`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(SuggesterBuilder) -> SuggesterBuilder) -> Suggester {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Suggester`].
@@ -17437,6 +18020,13 @@ impl SuggesterBase {
     /// Creates a builder for [`SuggesterBase`].
     pub fn builder() -> SuggesterBaseBuilder {
         SuggesterBaseBuilder::new()
+    }
+
+    /// Creates a [`SuggesterBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SuggesterBaseBuilder) -> SuggesterBaseBuilder<(crate::typed::builder::Set,)>,
+    ) -> SuggesterBase {
+        f(Self::builder()).build()
     }
 }
 
@@ -17563,6 +18153,20 @@ impl TermSuggest {
     /// Creates a builder for [`TermSuggest`].
     pub fn builder() -> TermSuggestBuilder {
         TermSuggestBuilder::new()
+    }
+
+    /// Creates a [`TermSuggest`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TermSuggestBuilder,
+        ) -> TermSuggestBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> TermSuggest {
+        f(Self::builder()).build()
     }
 }
 
@@ -17759,6 +18363,19 @@ impl TermSuggestOption {
     /// Creates a builder for [`TermSuggestOption`].
     pub fn builder() -> TermSuggestOptionBuilder {
         TermSuggestOptionBuilder::new()
+    }
+
+    /// Creates a [`TermSuggestOption`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TermSuggestOptionBuilder,
+        ) -> TermSuggestOptionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> TermSuggestOption {
+        f(Self::builder()).build()
     }
 }
 
@@ -17993,6 +18610,13 @@ impl TermSuggester {
     /// Creates a builder for [`TermSuggester`].
     pub fn builder() -> TermSuggesterBuilder {
         TermSuggesterBuilder::new()
+    }
+
+    /// Creates a [`TermSuggester`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TermSuggesterBuilder) -> TermSuggesterBuilder<(crate::typed::builder::Set,)>,
+    ) -> TermSuggester {
+        f(Self::builder()).build()
     }
 }
 
@@ -18281,6 +18905,16 @@ impl TotalHits {
     /// Creates a builder for [`TotalHits`].
     pub fn builder() -> TotalHitsBuilder {
         TotalHitsBuilder::new()
+    }
+
+    /// Creates a [`TotalHits`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TotalHitsBuilder,
+        )
+            -> TotalHitsBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> TotalHits {
+        f(Self::builder()).build()
     }
 }
 

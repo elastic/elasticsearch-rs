@@ -11,6 +11,15 @@ impl FailedNodeException {
     pub fn builder() -> FailedNodeExceptionBuilder {
         FailedNodeExceptionBuilder::new()
     }
+
+    /// Creates a [`FailedNodeException`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FailedNodeExceptionBuilder,
+        ) -> FailedNodeExceptionBuilder<(crate::typed::builder::Set,)>,
+    ) -> FailedNodeException {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FailedNodeException`].
@@ -111,6 +120,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

@@ -49,6 +49,11 @@ impl Actions {
     pub fn builder() -> ActionsBuilder {
         ActionsBuilder::new()
     }
+
+    /// Creates a [`Actions`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(ActionsBuilder) -> ActionsBuilder) -> Actions {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Actions`].
@@ -405,6 +410,11 @@ impl AllocateAction {
     pub fn builder() -> AllocateActionBuilder {
         AllocateActionBuilder::new()
     }
+
+    /// Creates a [`AllocateAction`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(AllocateActionBuilder) -> AllocateActionBuilder) -> AllocateAction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AllocateAction`].
@@ -540,6 +550,11 @@ impl DeleteAction {
     pub fn builder() -> DeleteActionBuilder {
         DeleteActionBuilder::new()
     }
+
+    /// Creates a [`DeleteAction`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(DeleteActionBuilder) -> DeleteActionBuilder) -> DeleteAction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DeleteAction`].
@@ -595,6 +610,15 @@ impl DownsampleAction {
     /// Creates a builder for [`DownsampleAction`].
     pub fn builder() -> DownsampleActionBuilder {
         DownsampleActionBuilder::new()
+    }
+
+    /// Creates a [`DownsampleAction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DownsampleActionBuilder,
+        ) -> DownsampleActionBuilder<(crate::typed::builder::Set,)>,
+    ) -> DownsampleAction {
+        f(Self::builder()).build()
     }
 }
 
@@ -682,6 +706,15 @@ impl ForceMergeAction {
     pub fn builder() -> ForceMergeActionBuilder {
         ForceMergeActionBuilder::new()
     }
+
+    /// Creates a [`ForceMergeAction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ForceMergeActionBuilder,
+        ) -> ForceMergeActionBuilder<(crate::typed::builder::Set,)>,
+    ) -> ForceMergeAction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ForceMergeAction`].
@@ -767,6 +800,11 @@ impl MigrateAction {
     pub fn builder() -> MigrateActionBuilder {
         MigrateActionBuilder::new()
     }
+
+    /// Creates a [`MigrateAction`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(MigrateActionBuilder) -> MigrateActionBuilder) -> MigrateAction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MigrateAction`].
@@ -821,6 +859,11 @@ impl Phase {
     /// Creates a builder for [`Phase`].
     pub fn builder() -> PhaseBuilder {
         PhaseBuilder::new()
+    }
+
+    /// Creates a [`Phase`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(PhaseBuilder) -> PhaseBuilder) -> Phase {
+        f(Self::builder()).build()
     }
 }
 
@@ -903,6 +946,11 @@ impl Phases {
     /// Creates a builder for [`Phases`].
     pub fn builder() -> PhasesBuilder {
         PhasesBuilder::new()
+    }
+
+    /// Creates a [`Phases`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(PhasesBuilder) -> PhasesBuilder) -> Phases {
+        f(Self::builder()).build()
     }
 }
 
@@ -1042,6 +1090,13 @@ impl Policy {
     pub fn builder() -> PolicyBuilder {
         PolicyBuilder::new()
     }
+
+    /// Creates a [`Policy`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(PolicyBuilder) -> PolicyBuilder<(crate::typed::builder::Set,)>,
+    ) -> Policy {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Policy`].
@@ -1159,6 +1214,11 @@ impl RolloverAction {
     /// Creates a builder for [`RolloverAction`].
     pub fn builder() -> RolloverActionBuilder {
         RolloverActionBuilder::new()
+    }
+
+    /// Creates a [`RolloverAction`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RolloverActionBuilder) -> RolloverActionBuilder) -> RolloverAction {
+        f(Self::builder()).build()
     }
 }
 
@@ -1355,6 +1415,15 @@ impl SearchableSnapshotAction {
     pub fn builder() -> SearchableSnapshotActionBuilder {
         SearchableSnapshotActionBuilder::new()
     }
+
+    /// Creates a [`SearchableSnapshotAction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SearchableSnapshotActionBuilder,
+        ) -> SearchableSnapshotActionBuilder<(crate::typed::builder::Set,)>,
+    ) -> SearchableSnapshotAction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SearchableSnapshotAction`].
@@ -1442,6 +1511,13 @@ impl SetPriorityAction {
     pub fn builder() -> SetPriorityActionBuilder {
         SetPriorityActionBuilder::new()
     }
+
+    /// Creates a [`SetPriorityAction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SetPriorityActionBuilder) -> SetPriorityActionBuilder,
+    ) -> SetPriorityAction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SetPriorityAction`].
@@ -1498,6 +1574,11 @@ impl ShrinkAction {
     /// Creates a builder for [`ShrinkAction`].
     pub fn builder() -> ShrinkActionBuilder {
         ShrinkActionBuilder::new()
+    }
+
+    /// Creates a [`ShrinkAction`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(ShrinkActionBuilder) -> ShrinkActionBuilder) -> ShrinkAction {
+        f(Self::builder()).build()
     }
 }
 
@@ -1586,6 +1667,15 @@ impl WaitForSnapshotAction {
     /// Creates a builder for [`WaitForSnapshotAction`].
     pub fn builder() -> WaitForSnapshotActionBuilder {
         WaitForSnapshotActionBuilder::new()
+    }
+
+    /// Creates a [`WaitForSnapshotAction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            WaitForSnapshotActionBuilder,
+        ) -> WaitForSnapshotActionBuilder<(crate::typed::builder::Set,)>,
+    ) -> WaitForSnapshotAction {
+        f(Self::builder()).build()
     }
 }
 

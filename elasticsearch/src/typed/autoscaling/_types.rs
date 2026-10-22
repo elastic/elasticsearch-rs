@@ -13,6 +13,18 @@ impl AutoscalingPolicy {
     pub fn builder() -> AutoscalingPolicyBuilder {
         AutoscalingPolicyBuilder::new()
     }
+
+    /// Creates a [`AutoscalingPolicy`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AutoscalingPolicyBuilder,
+        ) -> AutoscalingPolicyBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AutoscalingPolicy {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AutoscalingPolicy`].

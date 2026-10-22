@@ -27,6 +27,15 @@ impl ExecuteEnrichPolicyStatus {
     pub fn builder() -> ExecuteEnrichPolicyStatusBuilder {
         ExecuteEnrichPolicyStatusBuilder::new()
     }
+
+    /// Creates a [`ExecuteEnrichPolicyStatus`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ExecuteEnrichPolicyStatusBuilder,
+        ) -> ExecuteEnrichPolicyStatusBuilder<(crate::typed::builder::Set,)>,
+    ) -> ExecuteEnrichPolicyStatus {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ExecuteEnrichPolicyStatus`].
@@ -139,6 +148,13 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 

@@ -26,6 +26,24 @@ impl BlobDetails {
     pub fn builder() -> BlobDetailsBuilder {
         BlobDetailsBuilder::new()
     }
+
+    /// Creates a [`BlobDetails`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            BlobDetailsBuilder,
+        ) -> BlobDetailsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> BlobDetails {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`BlobDetails`].
@@ -435,6 +453,22 @@ impl DetailsInfo {
     pub fn builder() -> DetailsInfoBuilder {
         DetailsInfoBuilder::new()
     }
+
+    /// Creates a [`DetailsInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DetailsInfoBuilder,
+        ) -> DetailsInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DetailsInfo {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DetailsInfo`].
@@ -812,6 +846,19 @@ impl ReadBlobDetails {
     pub fn builder() -> ReadBlobDetailsBuilder {
         ReadBlobDetailsBuilder::new()
     }
+
+    /// Creates a [`ReadBlobDetails`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ReadBlobDetailsBuilder,
+        ) -> ReadBlobDetailsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ReadBlobDetails {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ReadBlobDetails`].
@@ -1118,6 +1165,27 @@ impl ReadSummaryInfo {
     /// Creates a builder for [`ReadSummaryInfo`].
     pub fn builder() -> ReadSummaryInfoBuilder {
         ReadSummaryInfoBuilder::new()
+    }
+
+    /// Creates a [`ReadSummaryInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ReadSummaryInfoBuilder,
+        ) -> ReadSummaryInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ReadSummaryInfo {
+        f(Self::builder()).build()
     }
 }
 
@@ -2095,6 +2163,13 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -2672,6 +2747,18 @@ impl SnapshotNodeInfo {
     pub fn builder() -> SnapshotNodeInfoBuilder {
         SnapshotNodeInfoBuilder::new()
     }
+
+    /// Creates a [`SnapshotNodeInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SnapshotNodeInfoBuilder,
+        ) -> SnapshotNodeInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SnapshotNodeInfo {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SnapshotNodeInfo`].
@@ -2770,6 +2857,16 @@ impl SummaryInfo {
     /// Creates a builder for [`SummaryInfo`].
     pub fn builder() -> SummaryInfoBuilder {
         SummaryInfoBuilder::new()
+    }
+
+    /// Creates a [`SummaryInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SummaryInfoBuilder,
+        )
+            -> SummaryInfoBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> SummaryInfo {
+        f(Self::builder()).build()
     }
 }
 
@@ -2919,6 +3016,23 @@ impl WriteSummaryInfo {
     /// Creates a builder for [`WriteSummaryInfo`].
     pub fn builder() -> WriteSummaryInfoBuilder {
         WriteSummaryInfoBuilder::new()
+    }
+
+    /// Creates a [`WriteSummaryInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            WriteSummaryInfoBuilder,
+        ) -> WriteSummaryInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> WriteSummaryInfo {
+        f(Self::builder()).build()
     }
 }
 

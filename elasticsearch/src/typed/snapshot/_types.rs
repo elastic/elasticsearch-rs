@@ -17,6 +17,13 @@ impl AzureRepository {
     pub fn builder() -> AzureRepositoryBuilder {
         AzureRepositoryBuilder::new()
     }
+
+    /// Creates a [`AzureRepository`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(AzureRepositoryBuilder) -> AzureRepositoryBuilder<(crate::typed::builder::Set,)>,
+    ) -> AzureRepository {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AzureRepository`].
@@ -182,6 +189,13 @@ impl AzureRepositorySettings {
     /// Creates a builder for [`AzureRepositorySettings`].
     pub fn builder() -> AzureRepositorySettingsBuilder {
         AzureRepositorySettingsBuilder::new()
+    }
+
+    /// Creates a [`AzureRepositorySettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(AzureRepositorySettingsBuilder) -> AzureRepositorySettingsBuilder,
+    ) -> AzureRepositorySettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -426,6 +440,18 @@ impl FileCountSnapshotStats {
     pub fn builder() -> FileCountSnapshotStatsBuilder {
         FileCountSnapshotStatsBuilder::new()
     }
+
+    /// Creates a [`FileCountSnapshotStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FileCountSnapshotStatsBuilder,
+        ) -> FileCountSnapshotStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FileCountSnapshotStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FileCountSnapshotStats`].
@@ -529,6 +555,16 @@ impl GcsRepository {
     /// Creates a builder for [`GcsRepository`].
     pub fn builder() -> GcsRepositoryBuilder {
         GcsRepositoryBuilder::new()
+    }
+
+    /// Creates a [`GcsRepository`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GcsRepositoryBuilder,
+        )
+            -> GcsRepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> GcsRepository {
+        f(Self::builder()).build()
     }
 }
 
@@ -698,6 +734,15 @@ impl GcsRepositorySettings {
     /// Creates a builder for [`GcsRepositorySettings`].
     pub fn builder() -> GcsRepositorySettingsBuilder {
         GcsRepositorySettingsBuilder::new()
+    }
+
+    /// Creates a [`GcsRepositorySettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GcsRepositorySettingsBuilder,
+        ) -> GcsRepositorySettingsBuilder<(crate::typed::builder::Set,)>,
+    ) -> GcsRepositorySettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -935,6 +980,19 @@ impl IndexDetails {
     pub fn builder() -> IndexDetailsBuilder {
         IndexDetailsBuilder::new()
     }
+
+    /// Creates a [`IndexDetails`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndexDetailsBuilder,
+        ) -> IndexDetailsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IndexDetails {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexDetails`].
@@ -1106,6 +1164,18 @@ impl InfoFeatureState {
     pub fn builder() -> InfoFeatureStateBuilder {
         InfoFeatureStateBuilder::new()
     }
+
+    /// Creates a [`InfoFeatureState`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InfoFeatureStateBuilder,
+        ) -> InfoFeatureStateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> InfoFeatureState {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InfoFeatureState`].
@@ -1206,6 +1276,18 @@ impl ReadOnlyUrlRepository {
     /// Creates a builder for [`ReadOnlyUrlRepository`].
     pub fn builder() -> ReadOnlyUrlRepositoryBuilder {
         ReadOnlyUrlRepositoryBuilder::new()
+    }
+
+    /// Creates a [`ReadOnlyUrlRepository`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ReadOnlyUrlRepositoryBuilder,
+        ) -> ReadOnlyUrlRepositoryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ReadOnlyUrlRepository {
+        f(Self::builder()).build()
     }
 }
 
@@ -1378,6 +1460,15 @@ impl ReadOnlyUrlRepositorySettings {
     /// Creates a builder for [`ReadOnlyUrlRepositorySettings`].
     pub fn builder() -> ReadOnlyUrlRepositorySettingsBuilder {
         ReadOnlyUrlRepositorySettingsBuilder::new()
+    }
+
+    /// Creates a [`ReadOnlyUrlRepositorySettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ReadOnlyUrlRepositorySettingsBuilder,
+        ) -> ReadOnlyUrlRepositorySettingsBuilder<(crate::typed::builder::Set,)>,
+    ) -> ReadOnlyUrlRepositorySettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -1614,6 +1705,11 @@ impl RepositoryBase {
     pub fn builder() -> RepositoryBaseBuilder {
         RepositoryBaseBuilder::new()
     }
+
+    /// Creates a [`RepositoryBase`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RepositoryBaseBuilder) -> RepositoryBaseBuilder) -> RepositoryBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RepositoryBase`].
@@ -1683,6 +1779,13 @@ impl RepositorySettingsBase {
     /// Creates a builder for [`RepositorySettingsBase`].
     pub fn builder() -> RepositorySettingsBaseBuilder {
         RepositorySettingsBaseBuilder::new()
+    }
+
+    /// Creates a [`RepositorySettingsBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RepositorySettingsBaseBuilder) -> RepositorySettingsBaseBuilder,
+    ) -> RepositorySettingsBase {
+        f(Self::builder()).build()
     }
 }
 
@@ -1813,6 +1916,16 @@ impl S3Repository {
     /// Creates a builder for [`S3Repository`].
     pub fn builder() -> S3RepositoryBuilder {
         S3RepositoryBuilder::new()
+    }
+
+    /// Creates a [`S3Repository`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            S3RepositoryBuilder,
+        )
+            -> S3RepositoryBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> S3Repository {
+        f(Self::builder()).build()
     }
 }
 
@@ -2046,6 +2159,15 @@ impl S3RepositorySettings {
     /// Creates a builder for [`S3RepositorySettings`].
     pub fn builder() -> S3RepositorySettingsBuilder {
         S3RepositorySettingsBuilder::new()
+    }
+
+    /// Creates a [`S3RepositorySettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            S3RepositorySettingsBuilder,
+        ) -> S3RepositorySettingsBuilder<(crate::typed::builder::Set,)>,
+    ) -> S3RepositorySettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -2492,6 +2614,22 @@ impl ShardsStats {
     pub fn builder() -> ShardsStatsBuilder {
         ShardsStatsBuilder::new()
     }
+
+    /// Creates a [`ShardsStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardsStatsBuilder,
+        ) -> ShardsStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardsStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ShardsStats`].
@@ -2788,6 +2926,20 @@ impl ShardsStatsSummary {
     pub fn builder() -> ShardsStatsSummaryBuilder {
         ShardsStatsSummaryBuilder::new()
     }
+
+    /// Creates a [`ShardsStatsSummary`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardsStatsSummaryBuilder,
+        ) -> ShardsStatsSummaryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardsStatsSummary {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ShardsStatsSummary`].
@@ -3020,6 +3172,18 @@ impl ShardsStatsSummaryItem {
     pub fn builder() -> ShardsStatsSummaryItemBuilder {
         ShardsStatsSummaryItemBuilder::new()
     }
+
+    /// Creates a [`ShardsStatsSummaryItem`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardsStatsSummaryItemBuilder,
+        ) -> ShardsStatsSummaryItemBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardsStatsSummaryItem {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ShardsStatsSummaryItem`].
@@ -3123,6 +3287,18 @@ impl SharedFileSystemRepository {
     /// Creates a builder for [`SharedFileSystemRepository`].
     pub fn builder() -> SharedFileSystemRepositoryBuilder {
         SharedFileSystemRepositoryBuilder::new()
+    }
+
+    /// Creates a [`SharedFileSystemRepository`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SharedFileSystemRepositoryBuilder,
+        ) -> SharedFileSystemRepositoryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SharedFileSystemRepository {
+        f(Self::builder()).build()
     }
 }
 
@@ -3299,6 +3475,16 @@ impl SharedFileSystemRepositorySettings {
     /// Creates a builder for [`SharedFileSystemRepositorySettings`].
     pub fn builder() -> SharedFileSystemRepositorySettingsBuilder {
         SharedFileSystemRepositorySettingsBuilder::new()
+    }
+
+    /// Creates a [`SharedFileSystemRepositorySettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SharedFileSystemRepositorySettingsBuilder,
+        )
+            -> SharedFileSystemRepositorySettingsBuilder<(crate::typed::builder::Set,)>,
+    ) -> SharedFileSystemRepositorySettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -3504,6 +3690,19 @@ impl SnapshotIndexStats {
     /// Creates a builder for [`SnapshotIndexStats`].
     pub fn builder() -> SnapshotIndexStatsBuilder {
         SnapshotIndexStatsBuilder::new()
+    }
+
+    /// Creates a [`SnapshotIndexStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SnapshotIndexStatsBuilder,
+        ) -> SnapshotIndexStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SnapshotIndexStats {
+        f(Self::builder()).build()
     }
 }
 
@@ -3729,6 +3928,19 @@ impl SnapshotInfo {
     /// Creates a builder for [`SnapshotInfo`].
     pub fn builder() -> SnapshotInfoBuilder {
         SnapshotInfoBuilder::new()
+    }
+
+    /// Creates a [`SnapshotInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SnapshotInfoBuilder,
+        ) -> SnapshotInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SnapshotInfo {
+        f(Self::builder()).build()
     }
 }
 
@@ -4291,6 +4503,21 @@ impl SnapshotShardFailure {
     pub fn builder() -> SnapshotShardFailureBuilder {
         SnapshotShardFailureBuilder::new()
     }
+
+    /// Creates a [`SnapshotShardFailure`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SnapshotShardFailureBuilder,
+        ) -> SnapshotShardFailureBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SnapshotShardFailure {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SnapshotShardFailure`].
@@ -4534,6 +4761,18 @@ impl SnapshotShardsStatus {
     pub fn builder() -> SnapshotShardsStatusBuilder {
         SnapshotShardsStatusBuilder::new()
     }
+
+    /// Creates a [`SnapshotShardsStatus`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SnapshotShardsStatusBuilder,
+        ) -> SnapshotShardsStatusBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SnapshotShardsStatus {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SnapshotShardsStatus`].
@@ -4694,6 +4933,20 @@ impl SnapshotStats {
     /// Creates a builder for [`SnapshotStats`].
     pub fn builder() -> SnapshotStatsBuilder {
         SnapshotStatsBuilder::new()
+    }
+
+    /// Creates a [`SnapshotStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SnapshotStatsBuilder,
+        ) -> SnapshotStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SnapshotStats {
+        f(Self::builder()).build()
     }
 }
 
@@ -4936,6 +5189,18 @@ impl SourceOnlyRepository {
     pub fn builder() -> SourceOnlyRepositoryBuilder {
         SourceOnlyRepositoryBuilder::new()
     }
+
+    /// Creates a [`SourceOnlyRepository`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SourceOnlyRepositoryBuilder,
+        ) -> SourceOnlyRepositoryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SourceOnlyRepository {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SourceOnlyRepository`].
@@ -5102,6 +5367,16 @@ impl SourceOnlyRepositorySettingsForAzure {
     /// Creates a builder for [`SourceOnlyRepositorySettingsForAzure`].
     pub fn builder() -> SourceOnlyRepositorySettingsForAzureBuilder {
         SourceOnlyRepositorySettingsForAzureBuilder::new()
+    }
+
+    /// Creates a [`SourceOnlyRepositorySettingsForAzure`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SourceOnlyRepositorySettingsForAzureBuilder,
+        )
+            -> SourceOnlyRepositorySettingsForAzureBuilder<(crate::typed::builder::Set,)>,
+    ) -> SourceOnlyRepositorySettingsForAzure {
+        f(Self::builder()).build()
     }
 }
 
@@ -5331,6 +5606,18 @@ impl SourceOnlyRepositorySettingsForGcs {
     pub fn builder() -> SourceOnlyRepositorySettingsForGcsBuilder {
         SourceOnlyRepositorySettingsForGcsBuilder::new()
     }
+
+    /// Creates a [`SourceOnlyRepositorySettingsForGcs`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SourceOnlyRepositorySettingsForGcsBuilder,
+        ) -> SourceOnlyRepositorySettingsForGcsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SourceOnlyRepositorySettingsForGcs {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SourceOnlyRepositorySettingsForGcs`].
@@ -5553,6 +5840,18 @@ impl SourceOnlyRepositorySettingsForReadOnlyUrl {
     /// Creates a builder for [`SourceOnlyRepositorySettingsForReadOnlyUrl`].
     pub fn builder() -> SourceOnlyRepositorySettingsForReadOnlyUrlBuilder {
         SourceOnlyRepositorySettingsForReadOnlyUrlBuilder::new()
+    }
+
+    /// Creates a [`SourceOnlyRepositorySettingsForReadOnlyUrl`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SourceOnlyRepositorySettingsForReadOnlyUrlBuilder,
+        ) -> SourceOnlyRepositorySettingsForReadOnlyUrlBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SourceOnlyRepositorySettingsForReadOnlyUrl {
+        f(Self::builder()).build()
     }
 }
 
@@ -5827,6 +6126,18 @@ impl SourceOnlyRepositorySettingsForS3 {
     /// Creates a builder for [`SourceOnlyRepositorySettingsForS3`].
     pub fn builder() -> SourceOnlyRepositorySettingsForS3Builder {
         SourceOnlyRepositorySettingsForS3Builder::new()
+    }
+
+    /// Creates a [`SourceOnlyRepositorySettingsForS3`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SourceOnlyRepositorySettingsForS3Builder,
+        ) -> SourceOnlyRepositorySettingsForS3Builder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SourceOnlyRepositorySettingsForS3 {
+        f(Self::builder()).build()
     }
 }
 
@@ -6247,6 +6558,18 @@ impl SourceOnlyRepositorySettingsForSharedFileSystem {
     pub fn builder() -> SourceOnlyRepositorySettingsForSharedFileSystemBuilder {
         SourceOnlyRepositorySettingsForSharedFileSystemBuilder::new()
     }
+
+    /// Creates a [`SourceOnlyRepositorySettingsForSharedFileSystem`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SourceOnlyRepositorySettingsForSharedFileSystemBuilder,
+        ) -> SourceOnlyRepositorySettingsForSharedFileSystemBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SourceOnlyRepositorySettingsForSharedFileSystem {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SourceOnlyRepositorySettingsForSharedFileSystem`].
@@ -6436,6 +6759,24 @@ impl Status {
     /// Creates a builder for [`Status`].
     pub fn builder() -> StatusBuilder {
         StatusBuilder::new()
+    }
+
+    /// Creates a [`Status`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            StatusBuilder,
+        ) -> StatusBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Status {
+        f(Self::builder()).build()
     }
 }
 

@@ -13,6 +13,19 @@ impl FieldStatistics {
     pub fn builder() -> FieldStatisticsBuilder {
         FieldStatisticsBuilder::new()
     }
+
+    /// Creates a [`FieldStatistics`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FieldStatisticsBuilder,
+        ) -> FieldStatisticsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FieldStatistics {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FieldStatistics`].
@@ -190,6 +203,11 @@ impl Filter {
     /// Creates a builder for [`Filter`].
     pub fn builder() -> FilterBuilder {
         FilterBuilder::new()
+    }
+
+    /// Creates a [`Filter`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(FilterBuilder) -> FilterBuilder) -> Filter {
+        f(Self::builder()).build()
     }
 }
 
@@ -478,6 +496,13 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of<TDocument>(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), (), TDocument>,
+    ) -> Request<TDocument> {
+        f(Self::builder()).build()
     }
 }
 
@@ -1370,6 +1395,11 @@ impl Term {
     pub fn builder() -> TermBuilder {
         TermBuilder::new()
     }
+
+    /// Creates a [`Term`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(TermBuilder) -> TermBuilder<(crate::typed::builder::Set,)>) -> Term {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Term`].
@@ -1514,6 +1544,13 @@ impl TermVector {
     pub fn builder() -> TermVectorBuilder {
         TermVectorBuilder::new()
     }
+
+    /// Creates a [`TermVector`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TermVectorBuilder) -> TermVectorBuilder<(crate::typed::builder::Set,)>,
+    ) -> TermVector {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TermVector`].
@@ -1617,6 +1654,13 @@ impl Token {
     /// Creates a builder for [`Token`].
     pub fn builder() -> TokenBuilder {
         TokenBuilder::new()
+    }
+
+    /// Creates a [`Token`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TokenBuilder) -> TokenBuilder<(crate::typed::builder::Set,)>,
+    ) -> Token {
+        f(Self::builder()).build()
     }
 }
 

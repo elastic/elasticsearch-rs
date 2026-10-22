@@ -57,6 +57,13 @@ impl Action {
     pub fn builder() -> ActionBuilder {
         ActionBuilder::new()
     }
+
+    /// Creates a [`Action`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ActionBuilder) -> ActionBuilder<(crate::typed::builder::Set,)>,
+    ) -> Action {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Action`].
@@ -233,6 +240,11 @@ impl AddAction {
     /// Creates a builder for [`AddAction`].
     pub fn builder() -> AddActionBuilder {
         AddActionBuilder::new()
+    }
+
+    /// Creates a [`AddAction`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(AddActionBuilder) -> AddActionBuilder) -> AddAction {
+        f(Self::builder()).build()
     }
 }
 
@@ -509,6 +521,11 @@ impl RemoveAction {
     pub fn builder() -> RemoveActionBuilder {
         RemoveActionBuilder::new()
     }
+
+    /// Creates a [`RemoveAction`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RemoveActionBuilder) -> RemoveActionBuilder) -> RemoveAction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RemoveAction`].
@@ -638,6 +655,13 @@ impl RemoveIndexAction {
     pub fn builder() -> RemoveIndexActionBuilder {
         RemoveIndexActionBuilder::new()
     }
+
+    /// Creates a [`RemoveIndexAction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RemoveIndexActionBuilder) -> RemoveIndexActionBuilder,
+    ) -> RemoveIndexAction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RemoveIndexAction`].
@@ -753,6 +777,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

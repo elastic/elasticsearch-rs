@@ -15,6 +15,19 @@ impl MultiGetError {
     pub fn builder() -> MultiGetErrorBuilder {
         MultiGetErrorBuilder::new()
     }
+
+    /// Creates a [`MultiGetError`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiGetErrorBuilder,
+        ) -> MultiGetErrorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MultiGetError {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MultiGetError`].
@@ -198,6 +211,13 @@ impl Operation {
     /// Creates a builder for [`Operation`].
     pub fn builder() -> OperationBuilder {
         OperationBuilder::new()
+    }
+
+    /// Creates a [`Operation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(OperationBuilder) -> OperationBuilder<(crate::typed::builder::Set,)>,
+    ) -> Operation {
+        f(Self::builder()).build()
     }
 }
 
@@ -437,6 +457,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

@@ -16,6 +16,13 @@ impl SynonymRule {
     pub fn builder() -> SynonymRuleBuilder {
         SynonymRuleBuilder::new()
     }
+
+    /// Creates a [`SynonymRule`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SynonymRuleBuilder) -> SynonymRuleBuilder<(crate::typed::builder::Set,)>,
+    ) -> SynonymRule {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SynonymRule`].
@@ -106,6 +113,18 @@ impl SynonymRuleRead {
     /// Creates a builder for [`SynonymRuleRead`].
     pub fn builder() -> SynonymRuleReadBuilder {
         SynonymRuleReadBuilder::new()
+    }
+
+    /// Creates a [`SynonymRuleRead`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SynonymRuleReadBuilder,
+        ) -> SynonymRuleReadBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SynonymRuleRead {
+        f(Self::builder()).build()
     }
 }
 
@@ -213,6 +232,15 @@ impl SynonymsUpdateResult {
     /// Creates a builder for [`SynonymsUpdateResult`].
     pub fn builder() -> SynonymsUpdateResultBuilder {
         SynonymsUpdateResultBuilder::new()
+    }
+
+    /// Creates a [`SynonymsUpdateResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SynonymsUpdateResultBuilder,
+        ) -> SynonymsUpdateResultBuilder<(crate::typed::builder::Set,)>,
+    ) -> SynonymsUpdateResult {
+        f(Self::builder()).build()
     }
 }
 

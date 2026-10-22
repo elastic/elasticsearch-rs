@@ -102,6 +102,24 @@ impl Connector {
     pub fn builder() -> ConnectorBuilder {
         ConnectorBuilder::new()
     }
+
+    /// Creates a [`Connector`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ConnectorBuilder,
+        ) -> ConnectorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Connector {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Connector`].
@@ -904,6 +922,24 @@ impl ConnectorConfigProperties {
     pub fn builder() -> ConnectorConfigPropertiesBuilder {
         ConnectorConfigPropertiesBuilder::new()
     }
+
+    /// Creates a [`ConnectorConfigProperties`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ConnectorConfigPropertiesBuilder,
+        ) -> ConnectorConfigPropertiesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ConnectorConfigProperties {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ConnectorConfigProperties`].
@@ -1417,6 +1453,13 @@ impl ConnectorFeatures {
     pub fn builder() -> ConnectorFeaturesBuilder {
         ConnectorFeaturesBuilder::new()
     }
+
+    /// Creates a [`ConnectorFeatures`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ConnectorFeaturesBuilder) -> ConnectorFeaturesBuilder,
+    ) -> ConnectorFeatures {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ConnectorFeatures`].
@@ -1562,6 +1605,18 @@ impl ConnectorScheduling {
     pub fn builder() -> ConnectorSchedulingBuilder {
         ConnectorSchedulingBuilder::new()
     }
+
+    /// Creates a [`ConnectorScheduling`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ConnectorSchedulingBuilder,
+        ) -> ConnectorSchedulingBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ConnectorScheduling {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ConnectorScheduling`].
@@ -1699,6 +1754,27 @@ impl ConnectorSyncJob {
     /// Creates a builder for [`ConnectorSyncJob`].
     pub fn builder() -> ConnectorSyncJobBuilder {
         ConnectorSyncJobBuilder::new()
+    }
+
+    /// Creates a [`ConnectorSyncJob`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ConnectorSyncJobBuilder,
+        ) -> ConnectorSyncJobBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ConnectorSyncJob {
+        f(Self::builder()).build()
     }
 }
 
@@ -2637,6 +2713,20 @@ impl CustomScheduling {
     pub fn builder() -> CustomSchedulingBuilder {
         CustomSchedulingBuilder::new()
     }
+
+    /// Creates a [`CustomScheduling`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CustomSchedulingBuilder,
+        ) -> CustomSchedulingBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CustomScheduling {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CustomScheduling`].
@@ -2863,6 +2953,15 @@ impl CustomSchedulingConfigurationOverrides {
     pub fn builder() -> CustomSchedulingConfigurationOverridesBuilder {
         CustomSchedulingConfigurationOverridesBuilder::new()
     }
+
+    /// Creates a [`CustomSchedulingConfigurationOverrides`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CustomSchedulingConfigurationOverridesBuilder,
+        ) -> CustomSchedulingConfigurationOverridesBuilder,
+    ) -> CustomSchedulingConfigurationOverrides {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CustomSchedulingConfigurationOverrides`].
@@ -3000,6 +3099,16 @@ impl Dependency {
     pub fn builder() -> DependencyBuilder {
         DependencyBuilder::new()
     }
+
+    /// Creates a [`Dependency`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DependencyBuilder,
+        )
+            -> DependencyBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Dependency {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Dependency`].
@@ -3108,6 +3217,13 @@ impl FeatureEnabled {
     pub fn builder() -> FeatureEnabledBuilder {
         FeatureEnabledBuilder::new()
     }
+
+    /// Creates a [`FeatureEnabled`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FeatureEnabledBuilder) -> FeatureEnabledBuilder<(crate::typed::builder::Set,)>,
+    ) -> FeatureEnabled {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FeatureEnabled`].
@@ -3177,6 +3293,15 @@ impl FilteringAdvancedSnippet {
     /// Creates a builder for [`FilteringAdvancedSnippet`].
     pub fn builder() -> FilteringAdvancedSnippetBuilder {
         FilteringAdvancedSnippetBuilder::new()
+    }
+
+    /// Creates a [`FilteringAdvancedSnippet`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FilteringAdvancedSnippetBuilder,
+        ) -> FilteringAdvancedSnippetBuilder<(crate::typed::builder::Set,)>,
+    ) -> FilteringAdvancedSnippet {
+        f(Self::builder()).build()
     }
 }
 
@@ -3281,6 +3406,18 @@ impl FilteringConfig {
     /// Creates a builder for [`FilteringConfig`].
     pub fn builder() -> FilteringConfigBuilder {
         FilteringConfigBuilder::new()
+    }
+
+    /// Creates a [`FilteringConfig`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FilteringConfigBuilder,
+        ) -> FilteringConfigBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FilteringConfig {
+        f(Self::builder()).build()
     }
 }
 
@@ -3437,6 +3574,22 @@ impl FilteringRule {
     /// Creates a builder for [`FilteringRule`].
     pub fn builder() -> FilteringRuleBuilder {
         FilteringRuleBuilder::new()
+    }
+
+    /// Creates a [`FilteringRule`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FilteringRuleBuilder,
+        ) -> FilteringRuleBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FilteringRule {
+        f(Self::builder()).build()
     }
 }
 
@@ -3754,6 +3907,19 @@ impl FilteringRules {
     pub fn builder() -> FilteringRulesBuilder {
         FilteringRulesBuilder::new()
     }
+
+    /// Creates a [`FilteringRules`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FilteringRulesBuilder,
+        ) -> FilteringRulesBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FilteringRules {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FilteringRules`].
@@ -3933,6 +4099,18 @@ impl FilteringRulesValidation {
     pub fn builder() -> FilteringRulesValidationBuilder {
         FilteringRulesValidationBuilder::new()
     }
+
+    /// Creates a [`FilteringRulesValidation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FilteringRulesValidationBuilder,
+        ) -> FilteringRulesValidationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FilteringRulesValidation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FilteringRulesValidation`].
@@ -4034,6 +4212,18 @@ impl FilteringValidation {
     /// Creates a builder for [`FilteringValidation`].
     pub fn builder() -> FilteringValidationBuilder {
         FilteringValidationBuilder::new()
+    }
+
+    /// Creates a [`FilteringValidation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FilteringValidationBuilder,
+        ) -> FilteringValidationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FilteringValidation {
+        f(Self::builder()).build()
     }
 }
 
@@ -4145,6 +4335,18 @@ impl GreaterThanValidation {
     pub fn builder() -> GreaterThanValidationBuilder {
         GreaterThanValidationBuilder::new()
     }
+
+    /// Creates a [`GreaterThanValidation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GreaterThanValidationBuilder,
+        ) -> GreaterThanValidationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> GreaterThanValidation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GreaterThanValidation`].
@@ -4244,6 +4446,18 @@ impl IncludedInValidation {
     /// Creates a builder for [`IncludedInValidation`].
     pub fn builder() -> IncludedInValidationBuilder {
         IncludedInValidationBuilder::new()
+    }
+
+    /// Creates a [`IncludedInValidation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IncludedInValidationBuilder,
+        ) -> IncludedInValidationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IncludedInValidation {
+        f(Self::builder()).build()
     }
 }
 
@@ -4346,6 +4560,20 @@ impl IngestPipelineParams {
     /// Creates a builder for [`IngestPipelineParams`].
     pub fn builder() -> IngestPipelineParamsBuilder {
         IngestPipelineParamsBuilder::new()
+    }
+
+    /// Creates a [`IngestPipelineParams`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IngestPipelineParamsBuilder,
+        ) -> IngestPipelineParamsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IngestPipelineParams {
+        f(Self::builder()).build()
     }
 }
 
@@ -4538,6 +4766,18 @@ impl LessThanValidation {
     pub fn builder() -> LessThanValidationBuilder {
         LessThanValidationBuilder::new()
     }
+
+    /// Creates a [`LessThanValidation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LessThanValidationBuilder,
+        ) -> LessThanValidationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> LessThanValidation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`LessThanValidation`].
@@ -4637,6 +4877,18 @@ impl ListTypeValidation {
     /// Creates a builder for [`ListTypeValidation`].
     pub fn builder() -> ListTypeValidationBuilder {
         ListTypeValidationBuilder::new()
+    }
+
+    /// Creates a [`ListTypeValidation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ListTypeValidationBuilder,
+        ) -> ListTypeValidationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ListTypeValidation {
+        f(Self::builder()).build()
     }
 }
 
@@ -4738,6 +4990,18 @@ impl RegexValidation {
     pub fn builder() -> RegexValidationBuilder {
         RegexValidationBuilder::new()
     }
+
+    /// Creates a [`RegexValidation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RegexValidationBuilder,
+        ) -> RegexValidationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RegexValidation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RegexValidation`].
@@ -4838,6 +5102,13 @@ impl SchedulingConfiguration {
     /// Creates a builder for [`SchedulingConfiguration`].
     pub fn builder() -> SchedulingConfigurationBuilder {
         SchedulingConfigurationBuilder::new()
+    }
+
+    /// Creates a [`SchedulingConfiguration`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SchedulingConfigurationBuilder) -> SchedulingConfigurationBuilder,
+    ) -> SchedulingConfiguration {
+        f(Self::builder()).build()
     }
 }
 
@@ -4961,6 +5232,16 @@ impl SelectOption {
     pub fn builder() -> SelectOptionBuilder {
         SelectOptionBuilder::new()
     }
+
+    /// Creates a [`SelectOption`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SelectOptionBuilder,
+        )
+            -> SelectOptionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> SelectOption {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SelectOption`].
@@ -5064,6 +5345,21 @@ impl SyncJobConnectorReference {
     /// Creates a builder for [`SyncJobConnectorReference`].
     pub fn builder() -> SyncJobConnectorReferenceBuilder {
         SyncJobConnectorReferenceBuilder::new()
+    }
+
+    /// Creates a [`SyncJobConnectorReference`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SyncJobConnectorReferenceBuilder,
+        ) -> SyncJobConnectorReferenceBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SyncJobConnectorReference {
+        f(Self::builder()).build()
     }
 }
 
@@ -5400,6 +5696,13 @@ impl SyncRulesFeature {
     /// Creates a builder for [`SyncRulesFeature`].
     pub fn builder() -> SyncRulesFeatureBuilder {
         SyncRulesFeatureBuilder::new()
+    }
+
+    /// Creates a [`SyncRulesFeature`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SyncRulesFeatureBuilder) -> SyncRulesFeatureBuilder,
+    ) -> SyncRulesFeature {
+        f(Self::builder()).build()
     }
 }
 

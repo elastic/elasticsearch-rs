@@ -61,6 +61,25 @@ impl Authentication {
     pub fn builder() -> AuthenticationBuilder {
         AuthenticationBuilder::new()
     }
+
+    /// Creates a [`Authentication`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AuthenticationBuilder,
+        ) -> AuthenticationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Authentication {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Authentication`].
@@ -653,6 +672,18 @@ impl AuthenticationRealm {
     pub fn builder() -> AuthenticationRealmBuilder {
         AuthenticationRealmBuilder::new()
     }
+
+    /// Creates a [`AuthenticationRealm`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AuthenticationRealmBuilder,
+        ) -> AuthenticationRealmBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AuthenticationRealm {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AuthenticationRealm`].
@@ -801,6 +832,13 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 

@@ -19,6 +19,11 @@ impl EqlHits {
     pub fn builder() -> EqlHitsBuilder {
         EqlHitsBuilder::new()
     }
+
+    /// Creates a [`EqlHits`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(EqlHitsBuilder) -> EqlHitsBuilder) -> EqlHits {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`EqlHits`].
@@ -179,6 +184,15 @@ impl EqlSearchResponseBase {
     /// Creates a builder for [`EqlSearchResponseBase`].
     pub fn builder() -> EqlSearchResponseBaseBuilder {
         EqlSearchResponseBaseBuilder::new()
+    }
+
+    /// Creates a [`EqlSearchResponseBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            EqlSearchResponseBaseBuilder,
+        ) -> EqlSearchResponseBaseBuilder<(crate::typed::builder::Set,)>,
+    ) -> EqlSearchResponseBase {
+        f(Self::builder()).build()
     }
 }
 
@@ -398,6 +412,19 @@ impl HitsEvent {
     pub fn builder() -> HitsEventBuilder {
         HitsEventBuilder::new()
     }
+
+    /// Creates a [`HitsEvent`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HitsEventBuilder,
+        ) -> HitsEventBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> HitsEvent {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HitsEvent`].
@@ -608,6 +635,13 @@ impl HitsSequence {
     /// Creates a builder for [`HitsSequence`].
     pub fn builder() -> HitsSequenceBuilder {
         HitsSequenceBuilder::new()
+    }
+
+    /// Creates a [`HitsSequence`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(HitsSequenceBuilder) -> HitsSequenceBuilder<(crate::typed::builder::Set,)>,
+    ) -> HitsSequence {
+        f(Self::builder()).build()
     }
 }
 

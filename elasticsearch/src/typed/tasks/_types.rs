@@ -36,6 +36,13 @@ impl NodeTasks {
     pub fn builder() -> NodeTasksBuilder {
         NodeTasksBuilder::new()
     }
+
+    /// Creates a [`NodeTasks`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NodeTasksBuilder) -> NodeTasksBuilder<(crate::typed::builder::Set,)>,
+    ) -> NodeTasks {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeTasks`].
@@ -253,6 +260,24 @@ impl ParentTaskInfo {
     /// Creates a builder for [`ParentTaskInfo`].
     pub fn builder() -> ParentTaskInfoBuilder {
         ParentTaskInfoBuilder::new()
+    }
+
+    /// Creates a [`ParentTaskInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ParentTaskInfoBuilder,
+        ) -> ParentTaskInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ParentTaskInfo {
+        f(Self::builder()).build()
     }
 }
 
@@ -837,6 +862,24 @@ impl TaskInfo {
     pub fn builder() -> TaskInfoBuilder {
         TaskInfoBuilder::new()
     }
+
+    /// Creates a [`TaskInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TaskInfoBuilder,
+        ) -> TaskInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> TaskInfo {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TaskInfo`].
@@ -1371,6 +1414,13 @@ impl TaskListResponseBase {
     /// Creates a builder for [`TaskListResponseBase`].
     pub fn builder() -> TaskListResponseBaseBuilder {
         TaskListResponseBaseBuilder::new()
+    }
+
+    /// Creates a [`TaskListResponseBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TaskListResponseBaseBuilder) -> TaskListResponseBaseBuilder,
+    ) -> TaskListResponseBase {
+        f(Self::builder()).build()
     }
 }
 

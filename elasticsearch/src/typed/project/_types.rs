@@ -13,6 +13,15 @@ impl ProjectRoutingExpression {
     pub fn builder() -> ProjectRoutingExpressionBuilder {
         ProjectRoutingExpressionBuilder::new()
     }
+
+    /// Creates a [`ProjectRoutingExpression`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ProjectRoutingExpressionBuilder,
+        ) -> ProjectRoutingExpressionBuilder<(crate::typed::builder::Set,)>,
+    ) -> ProjectRoutingExpression {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ProjectRoutingExpression`].

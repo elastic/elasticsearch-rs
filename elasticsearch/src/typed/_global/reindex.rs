@@ -35,6 +35,13 @@ impl Destination {
     pub fn builder() -> DestinationBuilder {
         DestinationBuilder::new()
     }
+
+    /// Creates a [`Destination`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DestinationBuilder) -> DestinationBuilder<(crate::typed::builder::Set,)>,
+    ) -> Destination {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Destination`].
@@ -213,6 +220,13 @@ impl RemoteSource {
     /// Creates a builder for [`RemoteSource`].
     pub fn builder() -> RemoteSourceBuilder {
         RemoteSourceBuilder::new()
+    }
+
+    /// Creates a [`RemoteSource`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RemoteSourceBuilder) -> RemoteSourceBuilder<(crate::typed::builder::Set,)>,
+    ) -> RemoteSource {
+        f(Self::builder()).build()
     }
 }
 
@@ -515,6 +529,16 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RequestBuilder,
+        )
+            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -1196,6 +1220,13 @@ impl Source {
     /// Creates a builder for [`Source`].
     pub fn builder() -> SourceBuilder {
         SourceBuilder::new()
+    }
+
+    /// Creates a [`Source`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SourceBuilder) -> SourceBuilder<(crate::typed::builder::Set,)>,
+    ) -> Source {
+        f(Self::builder()).build()
     }
 }
 

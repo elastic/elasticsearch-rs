@@ -21,6 +21,20 @@ impl FollowerIndex {
     pub fn builder() -> FollowerIndexBuilder {
         FollowerIndexBuilder::new()
     }
+
+    /// Creates a [`FollowerIndex`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FollowerIndexBuilder,
+        ) -> FollowerIndexBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FollowerIndex {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FollowerIndex`].
@@ -273,6 +287,13 @@ impl FollowerIndexParameters {
     pub fn builder() -> FollowerIndexParametersBuilder {
         FollowerIndexParametersBuilder::new()
     }
+
+    /// Creates a [`FollowerIndexParameters`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FollowerIndexParametersBuilder) -> FollowerIndexParametersBuilder,
+    ) -> FollowerIndexParameters {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FollowerIndexParameters`].
@@ -524,6 +545,13 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 

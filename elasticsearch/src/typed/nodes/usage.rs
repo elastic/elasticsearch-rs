@@ -19,6 +19,20 @@ impl NodeUsage {
     pub fn builder() -> NodeUsageBuilder {
         NodeUsageBuilder::new()
     }
+
+    /// Creates a [`NodeUsage`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeUsageBuilder,
+        ) -> NodeUsageBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NodeUsage {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeUsage`].
@@ -270,6 +284,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -548,6 +567,16 @@ impl ResponseBase {
     /// Creates a builder for [`ResponseBase`].
     pub fn builder() -> ResponseBaseBuilder {
         ResponseBaseBuilder::new()
+    }
+
+    /// Creates a [`ResponseBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ResponseBaseBuilder,
+        )
+            -> ResponseBaseBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> ResponseBase {
+        f(Self::builder()).build()
     }
 }
 

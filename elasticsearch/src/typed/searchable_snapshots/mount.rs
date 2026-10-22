@@ -13,6 +13,19 @@ impl MountedSnapshot {
     pub fn builder() -> MountedSnapshotBuilder {
         MountedSnapshotBuilder::new()
     }
+
+    /// Creates a [`MountedSnapshot`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MountedSnapshotBuilder,
+        ) -> MountedSnapshotBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MountedSnapshot {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MountedSnapshot`].
@@ -226,6 +239,22 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RequestBuilder,
+        ) -> RequestBuilder<
+            (
+                crate::typed::builder::Set,
+                crate::typed::builder::Set,
+                crate::typed::builder::Set,
+            ),
+            (),
+        >,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 

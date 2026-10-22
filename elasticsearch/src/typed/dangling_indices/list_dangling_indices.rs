@@ -14,6 +14,20 @@ impl DanglingIndex {
     pub fn builder() -> DanglingIndexBuilder {
         DanglingIndexBuilder::new()
     }
+
+    /// Creates a [`DanglingIndex`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DanglingIndexBuilder,
+        ) -> DanglingIndexBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DanglingIndex {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DanglingIndex`].
@@ -227,6 +241,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

@@ -11,6 +11,15 @@ impl IndexCapabilities {
     pub fn builder() -> IndexCapabilitiesBuilder {
         IndexCapabilitiesBuilder::new()
     }
+
+    /// Creates a [`IndexCapabilities`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndexCapabilitiesBuilder,
+        ) -> IndexCapabilitiesBuilder<(crate::typed::builder::Set,)>,
+    ) -> IndexCapabilities {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexCapabilities`].
@@ -107,6 +116,13 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -354,6 +370,20 @@ impl RollupJobSummary {
     pub fn builder() -> RollupJobSummaryBuilder {
         RollupJobSummaryBuilder::new()
     }
+
+    /// Creates a [`RollupJobSummary`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RollupJobSummaryBuilder,
+        ) -> RollupJobSummaryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RollupJobSummary {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RollupJobSummary`].
@@ -547,6 +577,15 @@ impl RollupJobSummaryField {
     /// Creates a builder for [`RollupJobSummaryField`].
     pub fn builder() -> RollupJobSummaryFieldBuilder {
         RollupJobSummaryFieldBuilder::new()
+    }
+
+    /// Creates a [`RollupJobSummaryField`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RollupJobSummaryFieldBuilder,
+        ) -> RollupJobSummaryFieldBuilder<(crate::typed::builder::Set,)>,
+    ) -> RollupJobSummaryField {
+        f(Self::builder()).build()
     }
 }
 

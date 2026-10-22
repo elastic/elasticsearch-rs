@@ -36,6 +36,23 @@ impl License {
     pub fn builder() -> LicenseBuilder {
         LicenseBuilder::new()
     }
+
+    /// Creates a [`License`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LicenseBuilder,
+        ) -> LicenseBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> License {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`License`].

@@ -19,6 +19,15 @@ impl IndicesValidationExplanation {
     pub fn builder() -> IndicesValidationExplanationBuilder {
         IndicesValidationExplanationBuilder::new()
     }
+
+    /// Creates a [`IndicesValidationExplanation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndicesValidationExplanationBuilder,
+        ) -> IndicesValidationExplanationBuilder<(crate::typed::builder::Set,)>,
+    ) -> IndicesValidationExplanation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndicesValidationExplanation`].
@@ -218,6 +227,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

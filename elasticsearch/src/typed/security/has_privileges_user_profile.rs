@@ -15,6 +15,18 @@ impl HasPrivilegesUserProfileErrors {
     pub fn builder() -> HasPrivilegesUserProfileErrorsBuilder {
         HasPrivilegesUserProfileErrorsBuilder::new()
     }
+
+    /// Creates a [`HasPrivilegesUserProfileErrors`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HasPrivilegesUserProfileErrorsBuilder,
+        ) -> HasPrivilegesUserProfileErrorsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> HasPrivilegesUserProfileErrors {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HasPrivilegesUserProfileErrors`].
@@ -147,6 +159,11 @@ impl PrivilegesCheck {
     /// Creates a builder for [`PrivilegesCheck`].
     pub fn builder() -> PrivilegesCheckBuilder {
         PrivilegesCheckBuilder::new()
+    }
+
+    /// Creates a [`PrivilegesCheck`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(PrivilegesCheckBuilder) -> PrivilegesCheckBuilder) -> PrivilegesCheck {
+        f(Self::builder()).build()
     }
 }
 
@@ -342,6 +359,16 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RequestBuilder,
+        )
+            -> RequestBuilder<(crate::typed::builder::Set, crate::typed::builder::Set), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 

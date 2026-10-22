@@ -14,6 +14,18 @@ impl FollowIndexStats {
     pub fn builder() -> FollowIndexStatsBuilder {
         FollowIndexStatsBuilder::new()
     }
+
+    /// Creates a [`FollowIndexStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FollowIndexStatsBuilder,
+        ) -> FollowIndexStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FollowIndexStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FollowIndexStats`].
@@ -116,6 +128,19 @@ impl ReadException {
     /// Creates a builder for [`ReadException`].
     pub fn builder() -> ReadExceptionBuilder {
         ReadExceptionBuilder::new()
+    }
+
+    /// Creates a [`ReadException`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ReadExceptionBuilder,
+        ) -> ReadExceptionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ReadException {
+        f(Self::builder()).build()
     }
 }
 
@@ -350,6 +375,44 @@ impl ShardStats {
     /// Creates a builder for [`ShardStats`].
     pub fn builder() -> ShardStatsBuilder {
         ShardStatsBuilder::new()
+    }
+
+    /// Creates a [`ShardStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardStatsBuilder,
+        ) -> ShardStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardStats {
+        f(Self::builder()).build()
     }
 }
 

@@ -60,6 +60,18 @@ impl PainlessContextSetup {
     pub fn builder() -> PainlessContextSetupBuilder {
         PainlessContextSetupBuilder::new()
     }
+
+    /// Creates a [`PainlessContextSetup`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PainlessContextSetupBuilder,
+        ) -> PainlessContextSetupBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> PainlessContextSetup {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PainlessContextSetup`].
@@ -235,6 +247,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

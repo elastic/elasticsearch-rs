@@ -30,6 +30,13 @@ impl IndexSegment {
     pub fn builder() -> IndexSegmentBuilder {
         IndexSegmentBuilder::new()
     }
+
+    /// Creates a [`IndexSegment`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IndexSegmentBuilder) -> IndexSegmentBuilder<(crate::typed::builder::Set,)>,
+    ) -> IndexSegment {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexSegment`].
@@ -139,6 +146,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -467,6 +479,25 @@ impl Segment {
     /// Creates a builder for [`Segment`].
     pub fn builder() -> SegmentBuilder {
         SegmentBuilder::new()
+    }
+
+    /// Creates a [`Segment`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SegmentBuilder,
+        ) -> SegmentBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Segment {
+        f(Self::builder()).build()
     }
 }
 
@@ -1004,6 +1035,19 @@ impl ShardSegmentRouting {
     pub fn builder() -> ShardSegmentRoutingBuilder {
         ShardSegmentRoutingBuilder::new()
     }
+
+    /// Creates a [`ShardSegmentRouting`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardSegmentRoutingBuilder,
+        ) -> ShardSegmentRoutingBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardSegmentRouting {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ShardSegmentRouting`].
@@ -1164,6 +1208,20 @@ impl ShardsSegment {
     /// Creates a builder for [`ShardsSegment`].
     pub fn builder() -> ShardsSegmentBuilder {
         ShardsSegmentBuilder::new()
+    }
+
+    /// Creates a [`ShardsSegment`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShardsSegmentBuilder,
+        ) -> ShardsSegmentBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ShardsSegment {
+        f(Self::builder()).build()
     }
 }
 

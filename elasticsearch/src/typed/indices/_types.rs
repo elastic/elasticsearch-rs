@@ -31,6 +31,11 @@ impl Alias {
     pub fn builder() -> AliasBuilder {
         AliasBuilder::new()
     }
+
+    /// Creates a [`Alias`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(AliasBuilder) -> AliasBuilder) -> Alias {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Alias`].
@@ -202,6 +207,11 @@ impl AliasDefinition {
     pub fn builder() -> AliasDefinitionBuilder {
         AliasDefinitionBuilder::new()
     }
+
+    /// Creates a [`AliasDefinition`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(AliasDefinitionBuilder) -> AliasDefinitionBuilder) -> AliasDefinition {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AliasDefinition`].
@@ -353,6 +363,13 @@ impl CacheQueries {
     pub fn builder() -> CacheQueriesBuilder {
         CacheQueriesBuilder::new()
     }
+
+    /// Creates a [`CacheQueries`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CacheQueriesBuilder) -> CacheQueriesBuilder<(crate::typed::builder::Set,)>,
+    ) -> CacheQueries {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CacheQueries`].
@@ -475,6 +492,27 @@ impl DataStream {
     /// Creates a builder for [`DataStream`].
     pub fn builder() -> DataStreamBuilder {
         DataStreamBuilder::new()
+    }
+
+    /// Creates a [`DataStream`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DataStreamBuilder,
+        ) -> DataStreamBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DataStream {
+        f(Self::builder()).build()
     }
 }
 
@@ -1529,6 +1567,13 @@ impl DataStreamFailureStore {
     pub fn builder() -> DataStreamFailureStoreBuilder {
         DataStreamFailureStoreBuilder::new()
     }
+
+    /// Creates a [`DataStreamFailureStore`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DataStreamFailureStoreBuilder) -> DataStreamFailureStoreBuilder,
+    ) -> DataStreamFailureStore {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DataStreamFailureStore`].
@@ -1643,6 +1688,13 @@ impl DataStreamFailureStoreTemplate {
     pub fn builder() -> DataStreamFailureStoreTemplateBuilder {
         DataStreamFailureStoreTemplateBuilder::new()
     }
+
+    /// Creates a [`DataStreamFailureStoreTemplate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DataStreamFailureStoreTemplateBuilder) -> DataStreamFailureStoreTemplateBuilder,
+    ) -> DataStreamFailureStoreTemplate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DataStreamFailureStoreTemplate`].
@@ -1732,6 +1784,18 @@ impl DataStreamIndex {
     /// Creates a builder for [`DataStreamIndex`].
     pub fn builder() -> DataStreamIndexBuilder {
         DataStreamIndexBuilder::new()
+    }
+
+    /// Creates a [`DataStreamIndex`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DataStreamIndexBuilder,
+        ) -> DataStreamIndexBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DataStreamIndex {
+        f(Self::builder()).build()
     }
 }
 
@@ -1920,6 +1984,13 @@ impl DataStreamLifecycle {
     /// Creates a builder for [`DataStreamLifecycle`].
     pub fn builder() -> DataStreamLifecycleBuilder {
         DataStreamLifecycleBuilder::new()
+    }
+
+    /// Creates a [`DataStreamLifecycle`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DataStreamLifecycleBuilder) -> DataStreamLifecycleBuilder,
+    ) -> DataStreamLifecycle {
+        f(Self::builder()).build()
     }
 }
 
@@ -2113,6 +2184,15 @@ impl DataStreamLifecycleRolloverConditions {
     /// Creates a builder for [`DataStreamLifecycleRolloverConditions`].
     pub fn builder() -> DataStreamLifecycleRolloverConditionsBuilder {
         DataStreamLifecycleRolloverConditionsBuilder::new()
+    }
+
+    /// Creates a [`DataStreamLifecycleRolloverConditions`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DataStreamLifecycleRolloverConditionsBuilder,
+        ) -> DataStreamLifecycleRolloverConditionsBuilder,
+    ) -> DataStreamLifecycleRolloverConditions {
+        f(Self::builder()).build()
     }
 }
 
@@ -2338,6 +2418,13 @@ impl DataStreamLifecycleWithRollover {
     pub fn builder() -> DataStreamLifecycleWithRolloverBuilder {
         DataStreamLifecycleWithRolloverBuilder::new()
     }
+
+    /// Creates a [`DataStreamLifecycleWithRollover`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DataStreamLifecycleWithRolloverBuilder) -> DataStreamLifecycleWithRolloverBuilder,
+    ) -> DataStreamLifecycleWithRollover {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DataStreamLifecycleWithRollover`].
@@ -2543,6 +2630,13 @@ impl DataStreamOptions {
     pub fn builder() -> DataStreamOptionsBuilder {
         DataStreamOptionsBuilder::new()
     }
+
+    /// Creates a [`DataStreamOptions`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DataStreamOptionsBuilder) -> DataStreamOptionsBuilder,
+    ) -> DataStreamOptions {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DataStreamOptions`].
@@ -2621,6 +2715,13 @@ impl DataStreamOptionsTemplate {
     pub fn builder() -> DataStreamOptionsTemplateBuilder {
         DataStreamOptionsTemplateBuilder::new()
     }
+
+    /// Creates a [`DataStreamOptionsTemplate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DataStreamOptionsTemplateBuilder) -> DataStreamOptionsTemplateBuilder,
+    ) -> DataStreamOptionsTemplate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DataStreamOptionsTemplate`].
@@ -2681,6 +2782,15 @@ impl DataStreamTimestampField {
     /// Creates a builder for [`DataStreamTimestampField`].
     pub fn builder() -> DataStreamTimestampFieldBuilder {
         DataStreamTimestampFieldBuilder::new()
+    }
+
+    /// Creates a [`DataStreamTimestampField`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DataStreamTimestampFieldBuilder,
+        ) -> DataStreamTimestampFieldBuilder<(crate::typed::builder::Set,)>,
+    ) -> DataStreamTimestampField {
+        f(Self::builder()).build()
     }
 }
 
@@ -2758,6 +2868,13 @@ impl DataStreamVisibility {
     /// Creates a builder for [`DataStreamVisibility`].
     pub fn builder() -> DataStreamVisibilityBuilder {
         DataStreamVisibilityBuilder::new()
+    }
+
+    /// Creates a [`DataStreamVisibility`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DataStreamVisibilityBuilder) -> DataStreamVisibilityBuilder,
+    ) -> DataStreamVisibility {
+        f(Self::builder()).build()
     }
 }
 
@@ -2844,6 +2961,15 @@ impl DownsampleConfig {
     /// Creates a builder for [`DownsampleConfig`].
     pub fn builder() -> DownsampleConfigBuilder {
         DownsampleConfigBuilder::new()
+    }
+
+    /// Creates a [`DownsampleConfig`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DownsampleConfigBuilder,
+        ) -> DownsampleConfigBuilder<(crate::typed::builder::Set,)>,
+    ) -> DownsampleConfig {
+        f(Self::builder()).build()
     }
 }
 
@@ -2933,6 +3059,18 @@ impl DownsamplingRound {
     /// Creates a builder for [`DownsamplingRound`].
     pub fn builder() -> DownsamplingRoundBuilder {
         DownsamplingRoundBuilder::new()
+    }
+
+    /// Creates a [`DownsamplingRound`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DownsamplingRoundBuilder,
+        ) -> DownsamplingRoundBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DownsamplingRound {
+        f(Self::builder()).build()
     }
 }
 
@@ -3033,6 +3171,19 @@ impl FailureStore {
     /// Creates a builder for [`FailureStore`].
     pub fn builder() -> FailureStoreBuilder {
         FailureStoreBuilder::new()
+    }
+
+    /// Creates a [`FailureStore`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FailureStoreBuilder,
+        ) -> FailureStoreBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FailureStore {
+        f(Self::builder()).build()
     }
 }
 
@@ -3195,6 +3346,13 @@ impl FailureStoreLifecycle {
     pub fn builder() -> FailureStoreLifecycleBuilder {
         FailureStoreLifecycleBuilder::new()
     }
+
+    /// Creates a [`FailureStoreLifecycle`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FailureStoreLifecycleBuilder) -> FailureStoreLifecycleBuilder,
+    ) -> FailureStoreLifecycle {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FailureStoreLifecycle`].
@@ -3290,6 +3448,13 @@ impl FailureStoreLifecycleTemplate {
     pub fn builder() -> FailureStoreLifecycleTemplateBuilder {
         FailureStoreLifecycleTemplateBuilder::new()
     }
+
+    /// Creates a [`FailureStoreLifecycleTemplate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FailureStoreLifecycleTemplateBuilder) -> FailureStoreLifecycleTemplateBuilder,
+    ) -> FailureStoreLifecycleTemplate {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FailureStoreLifecycleTemplate`].
@@ -3370,6 +3535,19 @@ impl FielddataFrequencyFilter {
     /// Creates a builder for [`FielddataFrequencyFilter`].
     pub fn builder() -> FielddataFrequencyFilterBuilder {
         FielddataFrequencyFilterBuilder::new()
+    }
+
+    /// Creates a [`FielddataFrequencyFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FielddataFrequencyFilterBuilder,
+        ) -> FielddataFrequencyFilterBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> FielddataFrequencyFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -3551,6 +3729,11 @@ impl IndexRouting {
     pub fn builder() -> IndexRoutingBuilder {
         IndexRoutingBuilder::new()
     }
+
+    /// Creates a [`IndexRouting`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(IndexRoutingBuilder) -> IndexRoutingBuilder) -> IndexRouting {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexRouting`].
@@ -3643,6 +3826,13 @@ impl IndexRoutingAllocation {
     /// Creates a builder for [`IndexRoutingAllocation`].
     pub fn builder() -> IndexRoutingAllocationBuilder {
         IndexRoutingAllocationBuilder::new()
+    }
+
+    /// Creates a [`IndexRoutingAllocation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IndexRoutingAllocationBuilder) -> IndexRoutingAllocationBuilder,
+    ) -> IndexRoutingAllocation {
+        f(Self::builder()).build()
     }
 }
 
@@ -3798,6 +3988,13 @@ impl IndexRoutingAllocationDisk {
     pub fn builder() -> IndexRoutingAllocationDiskBuilder {
         IndexRoutingAllocationDiskBuilder::new()
     }
+
+    /// Creates a [`IndexRoutingAllocationDisk`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IndexRoutingAllocationDiskBuilder) -> IndexRoutingAllocationDiskBuilder,
+    ) -> IndexRoutingAllocationDisk {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexRoutingAllocationDisk`].
@@ -3864,6 +4061,13 @@ impl IndexRoutingAllocationInclude {
     /// Creates a builder for [`IndexRoutingAllocationInclude`].
     pub fn builder() -> IndexRoutingAllocationIncludeBuilder {
         IndexRoutingAllocationIncludeBuilder::new()
+    }
+
+    /// Creates a [`IndexRoutingAllocationInclude`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IndexRoutingAllocationIncludeBuilder) -> IndexRoutingAllocationIncludeBuilder,
+    ) -> IndexRoutingAllocationInclude {
+        f(Self::builder()).build()
     }
 }
 
@@ -3934,6 +4138,15 @@ impl IndexRoutingAllocationInitialRecovery {
     pub fn builder() -> IndexRoutingAllocationInitialRecoveryBuilder {
         IndexRoutingAllocationInitialRecoveryBuilder::new()
     }
+
+    /// Creates a [`IndexRoutingAllocationInitialRecovery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndexRoutingAllocationInitialRecoveryBuilder,
+        ) -> IndexRoutingAllocationInitialRecoveryBuilder,
+    ) -> IndexRoutingAllocationInitialRecovery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexRoutingAllocationInitialRecovery`].
@@ -3995,6 +4208,15 @@ impl IndexRoutingRebalance {
     /// Creates a builder for [`IndexRoutingRebalance`].
     pub fn builder() -> IndexRoutingRebalanceBuilder {
         IndexRoutingRebalanceBuilder::new()
+    }
+
+    /// Creates a [`IndexRoutingRebalance`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndexRoutingRebalanceBuilder,
+        ) -> IndexRoutingRebalanceBuilder<(crate::typed::builder::Set,)>,
+    ) -> IndexRoutingRebalance {
+        f(Self::builder()).build()
     }
 }
 
@@ -4141,6 +4363,13 @@ impl IndexSegmentSort {
     pub fn builder() -> IndexSegmentSortBuilder {
         IndexSegmentSortBuilder::new()
     }
+
+    /// Creates a [`IndexSegmentSort`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IndexSegmentSortBuilder) -> IndexSegmentSortBuilder,
+    ) -> IndexSegmentSort {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexSegmentSort`].
@@ -4245,6 +4474,13 @@ impl IndexSettingBlocks {
     /// Creates a builder for [`IndexSettingBlocks`].
     pub fn builder() -> IndexSettingBlocksBuilder {
         IndexSettingBlocksBuilder::new()
+    }
+
+    /// Creates a [`IndexSettingBlocks`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IndexSettingBlocksBuilder) -> IndexSettingBlocksBuilder,
+    ) -> IndexSettingBlocks {
+        f(Self::builder()).build()
     }
 }
 
@@ -4702,6 +4938,11 @@ impl IndexSettings {
     /// Creates a builder for [`IndexSettings`].
     pub fn builder() -> IndexSettingsBuilder {
         IndexSettingsBuilder::new()
+    }
+
+    /// Creates a [`IndexSettings`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(IndexSettingsBuilder) -> IndexSettingsBuilder) -> IndexSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -5803,6 +6044,13 @@ impl IndexSettingsAnalysis {
     pub fn builder() -> IndexSettingsAnalysisBuilder {
         IndexSettingsAnalysisBuilder::new()
     }
+
+    /// Creates a [`IndexSettingsAnalysis`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IndexSettingsAnalysisBuilder) -> IndexSettingsAnalysisBuilder,
+    ) -> IndexSettingsAnalysis {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexSettingsAnalysis`].
@@ -6056,6 +6304,13 @@ impl IndexSettingsLifecycle {
     pub fn builder() -> IndexSettingsLifecycleBuilder {
         IndexSettingsLifecycleBuilder::new()
     }
+
+    /// Creates a [`IndexSettingsLifecycle`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IndexSettingsLifecycleBuilder) -> IndexSettingsLifecycleBuilder,
+    ) -> IndexSettingsLifecycle {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexSettingsLifecycle`].
@@ -6226,6 +6481,13 @@ impl IndexSettingsLifecycleStep {
     pub fn builder() -> IndexSettingsLifecycleStepBuilder {
         IndexSettingsLifecycleStepBuilder::new()
     }
+
+    /// Creates a [`IndexSettingsLifecycleStep`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IndexSettingsLifecycleStepBuilder) -> IndexSettingsLifecycleStepBuilder,
+    ) -> IndexSettingsLifecycleStep {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexSettingsLifecycleStep`].
@@ -6292,6 +6554,13 @@ impl IndexSettingsTimeSeries {
     /// Creates a builder for [`IndexSettingsTimeSeries`].
     pub fn builder() -> IndexSettingsTimeSeriesBuilder {
         IndexSettingsTimeSeriesBuilder::new()
+    }
+
+    /// Creates a [`IndexSettingsTimeSeries`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IndexSettingsTimeSeriesBuilder) -> IndexSettingsTimeSeriesBuilder,
+    ) -> IndexSettingsTimeSeries {
+        f(Self::builder()).build()
     }
 }
 
@@ -6379,6 +6648,13 @@ impl IndexSettingsUnassigned {
     pub fn builder() -> IndexSettingsUnassignedBuilder {
         IndexSettingsUnassignedBuilder::new()
     }
+
+    /// Creates a [`IndexSettingsUnassigned`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IndexSettingsUnassignedBuilder) -> IndexSettingsUnassignedBuilder,
+    ) -> IndexSettingsUnassigned {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexSettingsUnassigned`].
@@ -6441,6 +6717,13 @@ impl IndexSettingsUnassignedNodeLeft {
     /// Creates a builder for [`IndexSettingsUnassignedNodeLeft`].
     pub fn builder() -> IndexSettingsUnassignedNodeLeftBuilder {
         IndexSettingsUnassignedNodeLeftBuilder::new()
+    }
+
+    /// Creates a [`IndexSettingsUnassignedNodeLeft`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IndexSettingsUnassignedNodeLeftBuilder) -> IndexSettingsUnassignedNodeLeftBuilder,
+    ) -> IndexSettingsUnassignedNodeLeft {
+        f(Self::builder()).build()
     }
 }
 
@@ -6510,6 +6793,11 @@ impl IndexState {
     /// Creates a builder for [`IndexState`].
     pub fn builder() -> IndexStateBuilder {
         IndexStateBuilder::new()
+    }
+
+    /// Creates a [`IndexState`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(IndexStateBuilder) -> IndexStateBuilder) -> IndexState {
+        f(Self::builder()).build()
     }
 }
 
@@ -6755,6 +7043,16 @@ impl IndexTemplate {
     /// Creates a builder for [`IndexTemplate`].
     pub fn builder() -> IndexTemplateBuilder {
         IndexTemplateBuilder::new()
+    }
+
+    /// Creates a [`IndexTemplate`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndexTemplateBuilder,
+        )
+            -> IndexTemplateBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> IndexTemplate {
+        f(Self::builder()).build()
     }
 }
 
@@ -7107,6 +7405,15 @@ impl IndexTemplateDataStreamConfiguration {
     pub fn builder() -> IndexTemplateDataStreamConfigurationBuilder {
         IndexTemplateDataStreamConfigurationBuilder::new()
     }
+
+    /// Creates a [`IndexTemplateDataStreamConfiguration`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndexTemplateDataStreamConfigurationBuilder,
+        ) -> IndexTemplateDataStreamConfigurationBuilder,
+    ) -> IndexTemplateDataStreamConfiguration {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexTemplateDataStreamConfiguration`].
@@ -7192,6 +7499,13 @@ impl IndexTemplateSummary {
     /// Creates a builder for [`IndexTemplateSummary`].
     pub fn builder() -> IndexTemplateSummaryBuilder {
         IndexTemplateSummaryBuilder::new()
+    }
+
+    /// Creates a [`IndexTemplateSummary`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IndexTemplateSummaryBuilder) -> IndexTemplateSummaryBuilder,
+    ) -> IndexTemplateSummary {
+        f(Self::builder()).build()
     }
 }
 
@@ -7392,6 +7706,15 @@ impl IndexTemplateSummaryWithRollover {
     /// Creates a builder for [`IndexTemplateSummaryWithRollover`].
     pub fn builder() -> IndexTemplateSummaryWithRolloverBuilder {
         IndexTemplateSummaryWithRolloverBuilder::new()
+    }
+
+    /// Creates a [`IndexTemplateSummaryWithRollover`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndexTemplateSummaryWithRolloverBuilder,
+        ) -> IndexTemplateSummaryWithRolloverBuilder,
+    ) -> IndexTemplateSummaryWithRollover {
+        f(Self::builder()).build()
     }
 }
 
@@ -7625,6 +7948,18 @@ impl IndexTemplateWithRollover {
     /// Creates a builder for [`IndexTemplateWithRollover`].
     pub fn builder() -> IndexTemplateWithRolloverBuilder {
         IndexTemplateWithRolloverBuilder::new()
+    }
+
+    /// Creates a [`IndexTemplateWithRollover`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndexTemplateWithRolloverBuilder,
+        ) -> IndexTemplateWithRolloverBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IndexTemplateWithRollover {
+        f(Self::builder()).build()
     }
 }
 
@@ -7984,6 +8319,11 @@ impl IndexVersioning {
     pub fn builder() -> IndexVersioningBuilder {
         IndexVersioningBuilder::new()
     }
+
+    /// Creates a [`IndexVersioning`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(IndexVersioningBuilder) -> IndexVersioningBuilder) -> IndexVersioning {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexVersioning`].
@@ -8051,6 +8391,15 @@ impl IndexingPressure {
     /// Creates a builder for [`IndexingPressure`].
     pub fn builder() -> IndexingPressureBuilder {
         IndexingPressureBuilder::new()
+    }
+
+    /// Creates a [`IndexingPressure`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndexingPressureBuilder,
+        ) -> IndexingPressureBuilder<(crate::typed::builder::Set,)>,
+    ) -> IndexingPressure {
+        f(Self::builder()).build()
     }
 }
 
@@ -8133,6 +8482,13 @@ impl IndexingPressureMemory {
     pub fn builder() -> IndexingPressureMemoryBuilder {
         IndexingPressureMemoryBuilder::new()
     }
+
+    /// Creates a [`IndexingPressureMemory`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IndexingPressureMemoryBuilder) -> IndexingPressureMemoryBuilder,
+    ) -> IndexingPressureMemory {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexingPressureMemory`].
@@ -8192,6 +8548,13 @@ impl IndexingSlowlogSettings {
     /// Creates a builder for [`IndexingSlowlogSettings`].
     pub fn builder() -> IndexingSlowlogSettingsBuilder {
         IndexingSlowlogSettingsBuilder::new()
+    }
+
+    /// Creates a [`IndexingSlowlogSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IndexingSlowlogSettingsBuilder) -> IndexingSlowlogSettingsBuilder,
+    ) -> IndexingSlowlogSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -8299,6 +8662,13 @@ impl IndexingSlowlogTresholds {
     /// Creates a builder for [`IndexingSlowlogTresholds`].
     pub fn builder() -> IndexingSlowlogTresholdsBuilder {
         IndexingSlowlogTresholdsBuilder::new()
+    }
+
+    /// Creates a [`IndexingSlowlogTresholds`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IndexingSlowlogTresholdsBuilder) -> IndexingSlowlogTresholdsBuilder,
+    ) -> IndexingSlowlogTresholds {
+        f(Self::builder()).build()
     }
 }
 
@@ -8427,6 +8797,13 @@ impl MappingLimitSettings {
     /// Creates a builder for [`MappingLimitSettings`].
     pub fn builder() -> MappingLimitSettingsBuilder {
         MappingLimitSettingsBuilder::new()
+    }
+
+    /// Creates a [`MappingLimitSettings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MappingLimitSettingsBuilder) -> MappingLimitSettingsBuilder,
+    ) -> MappingLimitSettings {
+        f(Self::builder()).build()
     }
 }
 
@@ -8685,6 +9062,13 @@ impl MappingLimitSettingsDepth {
     pub fn builder() -> MappingLimitSettingsDepthBuilder {
         MappingLimitSettingsDepthBuilder::new()
     }
+
+    /// Creates a [`MappingLimitSettingsDepth`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MappingLimitSettingsDepthBuilder) -> MappingLimitSettingsDepthBuilder,
+    ) -> MappingLimitSettingsDepth {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MappingLimitSettingsDepth`].
@@ -8739,6 +9123,15 @@ impl MappingLimitSettingsDimensionFields {
     /// Creates a builder for [`MappingLimitSettingsDimensionFields`].
     pub fn builder() -> MappingLimitSettingsDimensionFieldsBuilder {
         MappingLimitSettingsDimensionFieldsBuilder::new()
+    }
+
+    /// Creates a [`MappingLimitSettingsDimensionFields`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MappingLimitSettingsDimensionFieldsBuilder,
+        ) -> MappingLimitSettingsDimensionFieldsBuilder,
+    ) -> MappingLimitSettingsDimensionFields {
+        f(Self::builder()).build()
     }
 }
 
@@ -8795,6 +9188,15 @@ impl MappingLimitSettingsFieldNameLength {
     /// Creates a builder for [`MappingLimitSettingsFieldNameLength`].
     pub fn builder() -> MappingLimitSettingsFieldNameLengthBuilder {
         MappingLimitSettingsFieldNameLengthBuilder::new()
+    }
+
+    /// Creates a [`MappingLimitSettingsFieldNameLength`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MappingLimitSettingsFieldNameLengthBuilder,
+        ) -> MappingLimitSettingsFieldNameLengthBuilder,
+    ) -> MappingLimitSettingsFieldNameLength {
+        f(Self::builder()).build()
     }
 }
 
@@ -8853,6 +9255,15 @@ impl MappingLimitSettingsNestedFields {
     pub fn builder() -> MappingLimitSettingsNestedFieldsBuilder {
         MappingLimitSettingsNestedFieldsBuilder::new()
     }
+
+    /// Creates a [`MappingLimitSettingsNestedFields`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MappingLimitSettingsNestedFieldsBuilder,
+        ) -> MappingLimitSettingsNestedFieldsBuilder,
+    ) -> MappingLimitSettingsNestedFields {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MappingLimitSettingsNestedFields`].
@@ -8909,6 +9320,15 @@ impl MappingLimitSettingsNestedObjects {
     pub fn builder() -> MappingLimitSettingsNestedObjectsBuilder {
         MappingLimitSettingsNestedObjectsBuilder::new()
     }
+
+    /// Creates a [`MappingLimitSettingsNestedObjects`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MappingLimitSettingsNestedObjectsBuilder,
+        ) -> MappingLimitSettingsNestedObjectsBuilder,
+    ) -> MappingLimitSettingsNestedObjects {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MappingLimitSettingsNestedObjects`].
@@ -8960,6 +9380,16 @@ impl MappingLimitSettingsSourceFields {
     /// Creates a builder for [`MappingLimitSettingsSourceFields`].
     pub fn builder() -> MappingLimitSettingsSourceFieldsBuilder {
         MappingLimitSettingsSourceFieldsBuilder::new()
+    }
+
+    /// Creates a [`MappingLimitSettingsSourceFields`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MappingLimitSettingsSourceFieldsBuilder,
+        )
+            -> MappingLimitSettingsSourceFieldsBuilder<(crate::typed::builder::Set,)>,
+    ) -> MappingLimitSettingsSourceFields {
+        f(Self::builder()).build()
     }
 }
 
@@ -9096,6 +9526,13 @@ impl MappingLimitSettingsTotalFields {
     pub fn builder() -> MappingLimitSettingsTotalFieldsBuilder {
         MappingLimitSettingsTotalFieldsBuilder::new()
     }
+
+    /// Creates a [`MappingLimitSettingsTotalFields`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MappingLimitSettingsTotalFieldsBuilder) -> MappingLimitSettingsTotalFieldsBuilder,
+    ) -> MappingLimitSettingsTotalFields {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MappingLimitSettingsTotalFields`].
@@ -9179,6 +9616,11 @@ impl Merge {
     pub fn builder() -> MergeBuilder {
         MergeBuilder::new()
     }
+
+    /// Creates a [`Merge`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(MergeBuilder) -> MergeBuilder) -> Merge {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Merge`].
@@ -9241,6 +9683,11 @@ impl MergeScheduler {
     /// Creates a builder for [`MergeScheduler`].
     pub fn builder() -> MergeSchedulerBuilder {
         MergeSchedulerBuilder::new()
+    }
+
+    /// Creates a [`MergeScheduler`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(MergeSchedulerBuilder) -> MergeSchedulerBuilder) -> MergeScheduler {
+        f(Self::builder()).build()
     }
 }
 
@@ -9322,6 +9769,15 @@ impl NumericFielddata {
     pub fn builder() -> NumericFielddataBuilder {
         NumericFielddataBuilder::new()
     }
+
+    /// Creates a [`NumericFielddata`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NumericFielddataBuilder,
+        ) -> NumericFielddataBuilder<(crate::typed::builder::Set,)>,
+    ) -> NumericFielddata {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NumericFielddata`].
@@ -9400,6 +9856,11 @@ impl Queries {
     pub fn builder() -> QueriesBuilder {
         QueriesBuilder::new()
     }
+
+    /// Creates a [`Queries`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(QueriesBuilder) -> QueriesBuilder) -> Queries {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Queries`].
@@ -9457,6 +9918,13 @@ impl RetentionLease {
     /// Creates a builder for [`RetentionLease`].
     pub fn builder() -> RetentionLeaseBuilder {
         RetentionLeaseBuilder::new()
+    }
+
+    /// Creates a [`RetentionLease`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RetentionLeaseBuilder) -> RetentionLeaseBuilder<(crate::typed::builder::Set,)>,
+    ) -> RetentionLease {
+        f(Self::builder()).build()
     }
 }
 
@@ -9548,6 +10016,11 @@ impl SearchIdle {
     pub fn builder() -> SearchIdleBuilder {
         SearchIdleBuilder::new()
     }
+
+    /// Creates a [`SearchIdle`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(SearchIdleBuilder) -> SearchIdleBuilder) -> SearchIdle {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SearchIdle`].
@@ -9623,6 +10096,11 @@ impl SettingsAnalyze {
     pub fn builder() -> SettingsAnalyzeBuilder {
         SettingsAnalyzeBuilder::new()
     }
+
+    /// Creates a [`SettingsAnalyze`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(SettingsAnalyzeBuilder) -> SettingsAnalyzeBuilder) -> SettingsAnalyze {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SettingsAnalyze`].
@@ -9684,6 +10162,13 @@ impl SettingsHighlight {
     pub fn builder() -> SettingsHighlightBuilder {
         SettingsHighlightBuilder::new()
     }
+
+    /// Creates a [`SettingsHighlight`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SettingsHighlightBuilder) -> SettingsHighlightBuilder,
+    ) -> SettingsHighlight {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SettingsHighlight`].
@@ -9737,6 +10222,15 @@ impl SettingsQueryString {
     /// Creates a builder for [`SettingsQueryString`].
     pub fn builder() -> SettingsQueryStringBuilder {
         SettingsQueryStringBuilder::new()
+    }
+
+    /// Creates a [`SettingsQueryString`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SettingsQueryStringBuilder,
+        ) -> SettingsQueryStringBuilder<(crate::typed::builder::Set,)>,
+    ) -> SettingsQueryString {
+        f(Self::builder()).build()
     }
 }
 
@@ -9809,6 +10303,11 @@ impl SettingsSearch {
     /// Creates a builder for [`SettingsSearch`].
     pub fn builder() -> SettingsSearchBuilder {
         SettingsSearchBuilder::new()
+    }
+
+    /// Creates a [`SettingsSearch`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(SettingsSearchBuilder) -> SettingsSearchBuilder) -> SettingsSearch {
+        f(Self::builder()).build()
     }
 }
 
@@ -9907,6 +10406,15 @@ impl SettingsSimilarityBm25 {
     /// Creates a builder for [`SettingsSimilarityBm25`].
     pub fn builder() -> SettingsSimilarityBm25Builder {
         SettingsSimilarityBm25Builder::new()
+    }
+
+    /// Creates a [`SettingsSimilarityBm25`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SettingsSimilarityBm25Builder,
+        ) -> SettingsSimilarityBm25Builder<(crate::typed::builder::Set,)>,
+    ) -> SettingsSimilarityBm25 {
+        f(Self::builder()).build()
     }
 }
 
@@ -10022,6 +10530,15 @@ impl SettingsSimilarityBoolean {
     pub fn builder() -> SettingsSimilarityBooleanBuilder {
         SettingsSimilarityBooleanBuilder::new()
     }
+
+    /// Creates a [`SettingsSimilarityBoolean`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SettingsSimilarityBooleanBuilder,
+        ) -> SettingsSimilarityBooleanBuilder<(crate::typed::builder::Set,)>,
+    ) -> SettingsSimilarityBoolean {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SettingsSimilarityBoolean`].
@@ -10093,6 +10610,18 @@ impl SettingsSimilarityDfi {
     /// Creates a builder for [`SettingsSimilarityDfi`].
     pub fn builder() -> SettingsSimilarityDfiBuilder {
         SettingsSimilarityDfiBuilder::new()
+    }
+
+    /// Creates a [`SettingsSimilarityDfi`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SettingsSimilarityDfiBuilder,
+        ) -> SettingsSimilarityDfiBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SettingsSimilarityDfi {
+        f(Self::builder()).build()
     }
 }
 
@@ -10195,6 +10724,20 @@ impl SettingsSimilarityDfr {
     /// Creates a builder for [`SettingsSimilarityDfr`].
     pub fn builder() -> SettingsSimilarityDfrBuilder {
         SettingsSimilarityDfrBuilder::new()
+    }
+
+    /// Creates a [`SettingsSimilarityDfr`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SettingsSimilarityDfrBuilder,
+        ) -> SettingsSimilarityDfrBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SettingsSimilarityDfr {
+        f(Self::builder()).build()
     }
 }
 
@@ -10389,6 +10932,20 @@ impl SettingsSimilarityIb {
     pub fn builder() -> SettingsSimilarityIbBuilder {
         SettingsSimilarityIbBuilder::new()
     }
+
+    /// Creates a [`SettingsSimilarityIb`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SettingsSimilarityIbBuilder,
+        ) -> SettingsSimilarityIbBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SettingsSimilarityIb {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SettingsSimilarityIb`].
@@ -10581,6 +11138,15 @@ impl SettingsSimilarityLmd {
     pub fn builder() -> SettingsSimilarityLmdBuilder {
         SettingsSimilarityLmdBuilder::new()
     }
+
+    /// Creates a [`SettingsSimilarityLmd`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SettingsSimilarityLmdBuilder,
+        ) -> SettingsSimilarityLmdBuilder<(crate::typed::builder::Set,)>,
+    ) -> SettingsSimilarityLmd {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SettingsSimilarityLmd`].
@@ -10666,6 +11232,15 @@ impl SettingsSimilarityLmj {
     /// Creates a builder for [`SettingsSimilarityLmj`].
     pub fn builder() -> SettingsSimilarityLmjBuilder {
         SettingsSimilarityLmjBuilder::new()
+    }
+
+    /// Creates a [`SettingsSimilarityLmj`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SettingsSimilarityLmjBuilder,
+        ) -> SettingsSimilarityLmjBuilder<(crate::typed::builder::Set,)>,
+    ) -> SettingsSimilarityLmj {
+        f(Self::builder()).build()
     }
 }
 
@@ -10753,6 +11328,18 @@ impl SettingsSimilarityScripted {
     /// Creates a builder for [`SettingsSimilarityScripted`].
     pub fn builder() -> SettingsSimilarityScriptedBuilder {
         SettingsSimilarityScriptedBuilder::new()
+    }
+
+    /// Creates a [`SettingsSimilarityScripted`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SettingsSimilarityScriptedBuilder,
+        ) -> SettingsSimilarityScriptedBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SettingsSimilarityScripted {
+        f(Self::builder()).build()
     }
 }
 
@@ -10900,6 +11487,11 @@ impl SlowlogSettings {
     pub fn builder() -> SlowlogSettingsBuilder {
         SlowlogSettingsBuilder::new()
     }
+
+    /// Creates a [`SlowlogSettings`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(SlowlogSettingsBuilder) -> SlowlogSettingsBuilder) -> SlowlogSettings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SlowlogSettings`].
@@ -11011,6 +11603,13 @@ impl SlowlogTresholdLevels {
     pub fn builder() -> SlowlogTresholdLevelsBuilder {
         SlowlogTresholdLevelsBuilder::new()
     }
+
+    /// Creates a [`SlowlogTresholdLevels`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SlowlogTresholdLevelsBuilder) -> SlowlogTresholdLevelsBuilder,
+    ) -> SlowlogTresholdLevels {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SlowlogTresholdLevels`].
@@ -11110,6 +11709,13 @@ impl SlowlogTresholds {
     pub fn builder() -> SlowlogTresholdsBuilder {
         SlowlogTresholdsBuilder::new()
     }
+
+    /// Creates a [`SlowlogTresholds`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SlowlogTresholdsBuilder) -> SlowlogTresholdsBuilder,
+    ) -> SlowlogTresholds {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SlowlogTresholds`].
@@ -11201,6 +11807,11 @@ impl SoftDeletes {
     /// Creates a builder for [`SoftDeletes`].
     pub fn builder() -> SoftDeletesBuilder {
         SoftDeletesBuilder::new()
+    }
+
+    /// Creates a [`SoftDeletes`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(SoftDeletesBuilder) -> SoftDeletesBuilder) -> SoftDeletes {
+        f(Self::builder()).build()
     }
 }
 
@@ -11301,6 +11912,13 @@ impl Storage {
     /// Creates a builder for [`Storage`].
     pub fn builder() -> StorageBuilder {
         StorageBuilder::new()
+    }
+
+    /// Creates a [`Storage`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(StorageBuilder) -> StorageBuilder<(crate::typed::builder::Set,)>,
+    ) -> Storage {
+        f(Self::builder()).build()
     }
 }
 
@@ -11441,6 +12059,21 @@ impl TemplateMapping {
     /// Creates a builder for [`TemplateMapping`].
     pub fn builder() -> TemplateMappingBuilder {
         TemplateMappingBuilder::new()
+    }
+
+    /// Creates a [`TemplateMapping`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TemplateMappingBuilder,
+        ) -> TemplateMappingBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> TemplateMapping {
+        f(Self::builder()).build()
     }
 }
 
@@ -11709,6 +12342,11 @@ impl Translog {
     pub fn builder() -> TranslogBuilder {
         TranslogBuilder::new()
     }
+
+    /// Creates a [`Translog`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(TranslogBuilder) -> TranslogBuilder) -> Translog {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Translog`].
@@ -11851,6 +12489,13 @@ impl TranslogRetention {
     /// Creates a builder for [`TranslogRetention`].
     pub fn builder() -> TranslogRetentionBuilder {
         TranslogRetentionBuilder::new()
+    }
+
+    /// Creates a [`TranslogRetention`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TranslogRetentionBuilder) -> TranslogRetentionBuilder,
+    ) -> TranslogRetention {
+        f(Self::builder()).build()
     }
 }
 

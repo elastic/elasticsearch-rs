@@ -12,6 +12,18 @@ impl AutoFollowPattern {
     pub fn builder() -> AutoFollowPatternBuilder {
         AutoFollowPatternBuilder::new()
     }
+
+    /// Creates a [`AutoFollowPattern`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AutoFollowPatternBuilder,
+        ) -> AutoFollowPatternBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AutoFollowPattern {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AutoFollowPattern`].
@@ -134,6 +146,21 @@ impl AutoFollowPatternSummary {
     /// Creates a builder for [`AutoFollowPatternSummary`].
     pub fn builder() -> AutoFollowPatternSummaryBuilder {
         AutoFollowPatternSummaryBuilder::new()
+    }
+
+    /// Creates a [`AutoFollowPatternSummary`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AutoFollowPatternSummaryBuilder,
+        ) -> AutoFollowPatternSummaryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AutoFollowPatternSummary {
+        f(Self::builder()).build()
     }
 }
 
@@ -427,6 +454,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

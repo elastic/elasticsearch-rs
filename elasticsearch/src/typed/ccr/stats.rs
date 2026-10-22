@@ -20,6 +20,21 @@ impl AutoFollowStats {
     pub fn builder() -> AutoFollowStatsBuilder {
         AutoFollowStatsBuilder::new()
     }
+
+    /// Creates a [`AutoFollowStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AutoFollowStatsBuilder,
+        ) -> AutoFollowStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AutoFollowStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AutoFollowStats`].
@@ -257,6 +272,19 @@ impl AutoFollowedCluster {
     pub fn builder() -> AutoFollowedClusterBuilder {
         AutoFollowedClusterBuilder::new()
     }
+
+    /// Creates a [`AutoFollowedCluster`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AutoFollowedClusterBuilder,
+        ) -> AutoFollowedClusterBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AutoFollowedCluster {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AutoFollowedCluster`].
@@ -412,6 +440,13 @@ impl FollowStats {
     pub fn builder() -> FollowStatsBuilder {
         FollowStatsBuilder::new()
     }
+
+    /// Creates a [`FollowStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FollowStatsBuilder) -> FollowStatsBuilder<(crate::typed::builder::Set,)>,
+    ) -> FollowStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FollowStats`].
@@ -507,6 +542,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

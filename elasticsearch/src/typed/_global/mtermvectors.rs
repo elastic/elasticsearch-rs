@@ -50,6 +50,11 @@ impl Operation {
     pub fn builder() -> OperationBuilder {
         OperationBuilder::new()
     }
+
+    /// Creates a [`Operation`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(OperationBuilder) -> OperationBuilder) -> Operation {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Operation`].
@@ -365,6 +370,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -923,6 +933,15 @@ impl TermVectorsResult {
     /// Creates a builder for [`TermVectorsResult`].
     pub fn builder() -> TermVectorsResultBuilder {
         TermVectorsResultBuilder::new()
+    }
+
+    /// Creates a [`TermVectorsResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TermVectorsResultBuilder,
+        ) -> TermVectorsResultBuilder<(crate::typed::builder::Set,)>,
+    ) -> TermVectorsResult {
+        f(Self::builder()).build()
     }
 }
 

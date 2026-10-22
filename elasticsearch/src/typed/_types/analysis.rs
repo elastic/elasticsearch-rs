@@ -24,6 +24,15 @@ impl ApostropheTokenFilter {
     pub fn builder() -> ApostropheTokenFilterBuilder {
         ApostropheTokenFilterBuilder::new()
     }
+
+    /// Creates a [`ApostropheTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ApostropheTokenFilterBuilder,
+        ) -> ApostropheTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> ApostropheTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ApostropheTokenFilter`].
@@ -113,6 +122,13 @@ impl ArabicAnalyzer {
     /// Creates a builder for [`ArabicAnalyzer`].
     pub fn builder() -> ArabicAnalyzerBuilder {
         ArabicAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`ArabicAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ArabicAnalyzerBuilder) -> ArabicAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> ArabicAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -238,6 +254,15 @@ impl ArabicNormalizationTokenFilter {
     pub fn builder() -> ArabicNormalizationTokenFilterBuilder {
         ArabicNormalizationTokenFilterBuilder::new()
     }
+
+    /// Creates a [`ArabicNormalizationTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ArabicNormalizationTokenFilterBuilder,
+        ) -> ArabicNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> ArabicNormalizationTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ArabicNormalizationTokenFilter`].
@@ -325,6 +350,15 @@ impl ArabicStemTokenFilter {
     /// Creates a builder for [`ArabicStemTokenFilter`].
     pub fn builder() -> ArabicStemTokenFilterBuilder {
         ArabicStemTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`ArabicStemTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ArabicStemTokenFilterBuilder,
+        ) -> ArabicStemTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> ArabicStemTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -415,6 +449,15 @@ impl ArmenianAnalyzer {
     /// Creates a builder for [`ArmenianAnalyzer`].
     pub fn builder() -> ArmenianAnalyzerBuilder {
         ArmenianAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`ArmenianAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ArmenianAnalyzerBuilder,
+        ) -> ArmenianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> ArmenianAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -543,6 +586,15 @@ impl AsciiFoldingTokenFilter {
     pub fn builder() -> AsciiFoldingTokenFilterBuilder {
         AsciiFoldingTokenFilterBuilder::new()
     }
+
+    /// Creates a [`AsciiFoldingTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AsciiFoldingTokenFilterBuilder,
+        ) -> AsciiFoldingTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> AsciiFoldingTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AsciiFoldingTokenFilter`].
@@ -656,6 +708,13 @@ impl BasqueAnalyzer {
     /// Creates a builder for [`BasqueAnalyzer`].
     pub fn builder() -> BasqueAnalyzerBuilder {
         BasqueAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`BasqueAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(BasqueAnalyzerBuilder) -> BasqueAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> BasqueAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -785,6 +844,13 @@ impl BengaliAnalyzer {
     pub fn builder() -> BengaliAnalyzerBuilder {
         BengaliAnalyzerBuilder::new()
     }
+
+    /// Creates a [`BengaliAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(BengaliAnalyzerBuilder) -> BengaliAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> BengaliAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`BengaliAnalyzer`].
@@ -909,6 +975,15 @@ impl BengaliNormalizationTokenFilter {
     pub fn builder() -> BengaliNormalizationTokenFilterBuilder {
         BengaliNormalizationTokenFilterBuilder::new()
     }
+
+    /// Creates a [`BengaliNormalizationTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            BengaliNormalizationTokenFilterBuilder,
+        ) -> BengaliNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> BengaliNormalizationTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`BengaliNormalizationTokenFilter`].
@@ -1000,6 +1075,15 @@ impl BrazilianAnalyzer {
     /// Creates a builder for [`BrazilianAnalyzer`].
     pub fn builder() -> BrazilianAnalyzerBuilder {
         BrazilianAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`BrazilianAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            BrazilianAnalyzerBuilder,
+        ) -> BrazilianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> BrazilianAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -1102,6 +1186,15 @@ impl BrazilianStemTokenFilter {
     pub fn builder() -> BrazilianStemTokenFilterBuilder {
         BrazilianStemTokenFilterBuilder::new()
     }
+
+    /// Creates a [`BrazilianStemTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            BrazilianStemTokenFilterBuilder,
+        ) -> BrazilianStemTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> BrazilianStemTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`BrazilianStemTokenFilter`].
@@ -1193,6 +1286,15 @@ impl BulgarianAnalyzer {
     /// Creates a builder for [`BulgarianAnalyzer`].
     pub fn builder() -> BulgarianAnalyzerBuilder {
         BulgarianAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`BulgarianAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            BulgarianAnalyzerBuilder,
+        ) -> BulgarianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> BulgarianAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -1321,6 +1423,13 @@ impl CatalanAnalyzer {
     /// Creates a builder for [`CatalanAnalyzer`].
     pub fn builder() -> CatalanAnalyzerBuilder {
         CatalanAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`CatalanAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CatalanAnalyzerBuilder) -> CatalanAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> CatalanAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -1470,6 +1579,11 @@ impl CharFilterBase {
     pub fn builder() -> CharFilterBaseBuilder {
         CharFilterBaseBuilder::new()
     }
+
+    /// Creates a [`CharFilterBase`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(CharFilterBaseBuilder) -> CharFilterBaseBuilder) -> CharFilterBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CharFilterBase`].
@@ -1537,6 +1651,18 @@ impl CharGroupTokenizer {
     /// Creates a builder for [`CharGroupTokenizer`].
     pub fn builder() -> CharGroupTokenizerBuilder {
         CharGroupTokenizerBuilder::new()
+    }
+
+    /// Creates a [`CharGroupTokenizer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CharGroupTokenizerBuilder,
+        ) -> CharGroupTokenizerBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CharGroupTokenizer {
+        f(Self::builder()).build()
     }
 }
 
@@ -1671,6 +1797,13 @@ impl ChineseAnalyzer {
     pub fn builder() -> ChineseAnalyzerBuilder {
         ChineseAnalyzerBuilder::new()
     }
+
+    /// Creates a [`ChineseAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ChineseAnalyzerBuilder) -> ChineseAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> ChineseAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ChineseAnalyzer`].
@@ -1773,6 +1906,13 @@ impl CjkAnalyzer {
     /// Creates a builder for [`CjkAnalyzer`].
     pub fn builder() -> CjkAnalyzerBuilder {
         CjkAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`CjkAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CjkAnalyzerBuilder) -> CjkAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> CjkAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -1892,6 +2032,15 @@ impl CjkBigramTokenFilter {
     /// Creates a builder for [`CjkBigramTokenFilter`].
     pub fn builder() -> CjkBigramTokenFilterBuilder {
         CjkBigramTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`CjkBigramTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CjkBigramTokenFilterBuilder,
+        ) -> CjkBigramTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> CjkBigramTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -2019,6 +2168,15 @@ impl CjkWidthTokenFilter {
     pub fn builder() -> CjkWidthTokenFilterBuilder {
         CjkWidthTokenFilterBuilder::new()
     }
+
+    /// Creates a [`CjkWidthTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CjkWidthTokenFilterBuilder,
+        ) -> CjkWidthTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> CjkWidthTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CjkWidthTokenFilter`].
@@ -2104,6 +2262,15 @@ impl ClassicTokenFilter {
     /// Creates a builder for [`ClassicTokenFilter`].
     pub fn builder() -> ClassicTokenFilterBuilder {
         ClassicTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`ClassicTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClassicTokenFilterBuilder,
+        ) -> ClassicTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> ClassicTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -2192,6 +2359,15 @@ impl ClassicTokenizer {
     /// Creates a builder for [`ClassicTokenizer`].
     pub fn builder() -> ClassicTokenizerBuilder {
         ClassicTokenizerBuilder::new()
+    }
+
+    /// Creates a [`ClassicTokenizer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClassicTokenizerBuilder,
+        ) -> ClassicTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ) -> ClassicTokenizer {
+        f(Self::builder()).build()
     }
 }
 
@@ -2311,6 +2487,15 @@ impl CommonGramsTokenFilter {
     /// Creates a builder for [`CommonGramsTokenFilter`].
     pub fn builder() -> CommonGramsTokenFilterBuilder {
         CommonGramsTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`CommonGramsTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CommonGramsTokenFilterBuilder,
+        ) -> CommonGramsTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> CommonGramsTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -2496,6 +2681,13 @@ impl CompoundWordTokenFilterBase {
     pub fn builder() -> CompoundWordTokenFilterBaseBuilder {
         CompoundWordTokenFilterBaseBuilder::new()
     }
+
+    /// Creates a [`CompoundWordTokenFilterBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CompoundWordTokenFilterBaseBuilder) -> CompoundWordTokenFilterBaseBuilder,
+    ) -> CompoundWordTokenFilterBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CompoundWordTokenFilterBase`].
@@ -2656,6 +2848,19 @@ impl ConditionTokenFilter {
     /// Creates a builder for [`ConditionTokenFilter`].
     pub fn builder() -> ConditionTokenFilterBuilder {
         ConditionTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`ConditionTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ConditionTokenFilterBuilder,
+        ) -> ConditionTokenFilterBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ConditionTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -2896,6 +3101,18 @@ impl CustomAnalyzer {
     pub fn builder() -> CustomAnalyzerBuilder {
         CustomAnalyzerBuilder::new()
     }
+
+    /// Creates a [`CustomAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CustomAnalyzerBuilder,
+        ) -> CustomAnalyzerBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CustomAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CustomAnalyzer`].
@@ -3055,6 +3272,15 @@ impl CustomNormalizer {
     pub fn builder() -> CustomNormalizerBuilder {
         CustomNormalizerBuilder::new()
     }
+
+    /// Creates a [`CustomNormalizer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CustomNormalizerBuilder,
+        ) -> CustomNormalizerBuilder<(crate::typed::builder::Set,)>,
+    ) -> CustomNormalizer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CustomNormalizer`].
@@ -3175,6 +3401,13 @@ impl CzechAnalyzer {
     /// Creates a builder for [`CzechAnalyzer`].
     pub fn builder() -> CzechAnalyzerBuilder {
         CzechAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`CzechAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CzechAnalyzerBuilder) -> CzechAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> CzechAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -3300,6 +3533,15 @@ impl CzechStemTokenFilter {
     pub fn builder() -> CzechStemTokenFilterBuilder {
         CzechStemTokenFilterBuilder::new()
     }
+
+    /// Creates a [`CzechStemTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CzechStemTokenFilterBuilder,
+        ) -> CzechStemTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> CzechStemTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CzechStemTokenFilter`].
@@ -3387,6 +3629,13 @@ impl DanishAnalyzer {
     /// Creates a builder for [`DanishAnalyzer`].
     pub fn builder() -> DanishAnalyzerBuilder {
         DanishAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`DanishAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DanishAnalyzerBuilder) -> DanishAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> DanishAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -3488,6 +3737,15 @@ impl DecimalDigitTokenFilter {
     /// Creates a builder for [`DecimalDigitTokenFilter`].
     pub fn builder() -> DecimalDigitTokenFilterBuilder {
         DecimalDigitTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`DecimalDigitTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DecimalDigitTokenFilterBuilder,
+        ) -> DecimalDigitTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> DecimalDigitTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -3592,6 +3850,15 @@ impl DelimitedPayloadTokenFilter {
     /// Creates a builder for [`DelimitedPayloadTokenFilter`].
     pub fn builder() -> DelimitedPayloadTokenFilterBuilder {
         DelimitedPayloadTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`DelimitedPayloadTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DelimitedPayloadTokenFilterBuilder,
+        ) -> DelimitedPayloadTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> DelimitedPayloadTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -3733,6 +4000,16 @@ impl DictionaryDecompounderTokenFilter {
     /// Creates a builder for [`DictionaryDecompounderTokenFilter`].
     pub fn builder() -> DictionaryDecompounderTokenFilterBuilder {
         DictionaryDecompounderTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`DictionaryDecompounderTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DictionaryDecompounderTokenFilterBuilder,
+        )
+            -> DictionaryDecompounderTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> DictionaryDecompounderTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -3935,6 +4212,13 @@ impl DutchAnalyzer {
     pub fn builder() -> DutchAnalyzerBuilder {
         DutchAnalyzerBuilder::new()
     }
+
+    /// Creates a [`DutchAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DutchAnalyzerBuilder) -> DutchAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> DutchAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DutchAnalyzer`].
@@ -4059,6 +4343,15 @@ impl DutchStemTokenFilter {
     pub fn builder() -> DutchStemTokenFilterBuilder {
         DutchStemTokenFilterBuilder::new()
     }
+
+    /// Creates a [`DutchStemTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DutchStemTokenFilterBuilder,
+        ) -> DutchStemTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> DutchStemTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DutchStemTokenFilter`].
@@ -4164,6 +4457,15 @@ impl EdgeNGramTokenFilter {
     /// Creates a builder for [`EdgeNGramTokenFilter`].
     pub fn builder() -> EdgeNGramTokenFilterBuilder {
         EdgeNGramTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`EdgeNGramTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            EdgeNGramTokenFilterBuilder,
+        ) -> EdgeNGramTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> EdgeNGramTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -4328,6 +4630,15 @@ impl EdgeNGramTokenizer {
     /// Creates a builder for [`EdgeNGramTokenizer`].
     pub fn builder() -> EdgeNGramTokenizerBuilder {
         EdgeNGramTokenizerBuilder::new()
+    }
+
+    /// Creates a [`EdgeNGramTokenizer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            EdgeNGramTokenizerBuilder,
+        ) -> EdgeNGramTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ) -> EdgeNGramTokenizer {
+        f(Self::builder()).build()
     }
 }
 
@@ -4497,6 +4808,15 @@ impl ElisionTokenFilter {
     pub fn builder() -> ElisionTokenFilterBuilder {
         ElisionTokenFilterBuilder::new()
     }
+
+    /// Creates a [`ElisionTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ElisionTokenFilterBuilder,
+        ) -> ElisionTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> ElisionTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ElisionTokenFilter`].
@@ -4654,6 +4974,13 @@ impl EnglishAnalyzer {
     pub fn builder() -> EnglishAnalyzerBuilder {
         EnglishAnalyzerBuilder::new()
     }
+
+    /// Creates a [`EnglishAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(EnglishAnalyzerBuilder) -> EnglishAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> EnglishAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`EnglishAnalyzer`].
@@ -4780,6 +5107,15 @@ impl EstonianAnalyzer {
     pub fn builder() -> EstonianAnalyzerBuilder {
         EstonianAnalyzerBuilder::new()
     }
+
+    /// Creates a [`EstonianAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            EstonianAnalyzerBuilder,
+        ) -> EstonianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> EstonianAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`EstonianAnalyzer`].
@@ -4895,6 +5231,15 @@ impl FingerprintAnalyzer {
     /// Creates a builder for [`FingerprintAnalyzer`].
     pub fn builder() -> FingerprintAnalyzerBuilder {
         FingerprintAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`FingerprintAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FingerprintAnalyzerBuilder,
+        ) -> FingerprintAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> FingerprintAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -5055,6 +5400,15 @@ impl FingerprintTokenFilter {
     pub fn builder() -> FingerprintTokenFilterBuilder {
         FingerprintTokenFilterBuilder::new()
     }
+
+    /// Creates a [`FingerprintTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FingerprintTokenFilterBuilder,
+        ) -> FingerprintTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> FingerprintTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FingerprintTokenFilter`].
@@ -5176,6 +5530,13 @@ impl FinnishAnalyzer {
     /// Creates a builder for [`FinnishAnalyzer`].
     pub fn builder() -> FinnishAnalyzerBuilder {
         FinnishAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`FinnishAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FinnishAnalyzerBuilder) -> FinnishAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> FinnishAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -5301,6 +5662,15 @@ impl FlattenGraphTokenFilter {
     pub fn builder() -> FlattenGraphTokenFilterBuilder {
         FlattenGraphTokenFilterBuilder::new()
     }
+
+    /// Creates a [`FlattenGraphTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FlattenGraphTokenFilterBuilder,
+        ) -> FlattenGraphTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> FlattenGraphTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FlattenGraphTokenFilter`].
@@ -5392,6 +5762,13 @@ impl FrenchAnalyzer {
     /// Creates a builder for [`FrenchAnalyzer`].
     pub fn builder() -> FrenchAnalyzerBuilder {
         FrenchAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`FrenchAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FrenchAnalyzerBuilder) -> FrenchAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> FrenchAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -5517,6 +5894,15 @@ impl FrenchStemTokenFilter {
     pub fn builder() -> FrenchStemTokenFilterBuilder {
         FrenchStemTokenFilterBuilder::new()
     }
+
+    /// Creates a [`FrenchStemTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FrenchStemTokenFilterBuilder,
+        ) -> FrenchStemTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> FrenchStemTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FrenchStemTokenFilter`].
@@ -5606,6 +5992,15 @@ impl GalicianAnalyzer {
     /// Creates a builder for [`GalicianAnalyzer`].
     pub fn builder() -> GalicianAnalyzerBuilder {
         GalicianAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`GalicianAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GalicianAnalyzerBuilder,
+        ) -> GalicianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> GalicianAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -5735,6 +6130,13 @@ impl GermanAnalyzer {
     pub fn builder() -> GermanAnalyzerBuilder {
         GermanAnalyzerBuilder::new()
     }
+
+    /// Creates a [`GermanAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(GermanAnalyzerBuilder) -> GermanAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> GermanAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GermanAnalyzer`].
@@ -5859,6 +6261,15 @@ impl GermanNormalizationTokenFilter {
     pub fn builder() -> GermanNormalizationTokenFilterBuilder {
         GermanNormalizationTokenFilterBuilder::new()
     }
+
+    /// Creates a [`GermanNormalizationTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GermanNormalizationTokenFilterBuilder,
+        ) -> GermanNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> GermanNormalizationTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GermanNormalizationTokenFilter`].
@@ -5947,6 +6358,15 @@ impl GermanStemTokenFilter {
     pub fn builder() -> GermanStemTokenFilterBuilder {
         GermanStemTokenFilterBuilder::new()
     }
+
+    /// Creates a [`GermanStemTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GermanStemTokenFilterBuilder,
+        ) -> GermanStemTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> GermanStemTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GermanStemTokenFilter`].
@@ -6034,6 +6454,13 @@ impl GreekAnalyzer {
     /// Creates a builder for [`GreekAnalyzer`].
     pub fn builder() -> GreekAnalyzerBuilder {
         GreekAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`GreekAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(GreekAnalyzerBuilder) -> GreekAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> GreekAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -6139,6 +6566,13 @@ impl HindiAnalyzer {
     /// Creates a builder for [`HindiAnalyzer`].
     pub fn builder() -> HindiAnalyzerBuilder {
         HindiAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`HindiAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(HindiAnalyzerBuilder) -> HindiAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> HindiAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -6264,6 +6698,15 @@ impl HindiNormalizationTokenFilter {
     pub fn builder() -> HindiNormalizationTokenFilterBuilder {
         HindiNormalizationTokenFilterBuilder::new()
     }
+
+    /// Creates a [`HindiNormalizationTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HindiNormalizationTokenFilterBuilder,
+        ) -> HindiNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> HindiNormalizationTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HindiNormalizationTokenFilter`].
@@ -6353,6 +6796,15 @@ impl HtmlStripCharFilter {
     /// Creates a builder for [`HtmlStripCharFilter`].
     pub fn builder() -> HtmlStripCharFilterBuilder {
         HtmlStripCharFilterBuilder::new()
+    }
+
+    /// Creates a [`HtmlStripCharFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HtmlStripCharFilterBuilder,
+        ) -> HtmlStripCharFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> HtmlStripCharFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -6466,6 +6918,15 @@ impl HungarianAnalyzer {
     /// Creates a builder for [`HungarianAnalyzer`].
     pub fn builder() -> HungarianAnalyzerBuilder {
         HungarianAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`HungarianAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HungarianAnalyzerBuilder,
+        ) -> HungarianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> HungarianAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -6603,6 +7064,18 @@ impl HunspellTokenFilter {
     /// Creates a builder for [`HunspellTokenFilter`].
     pub fn builder() -> HunspellTokenFilterBuilder {
         HunspellTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`HunspellTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HunspellTokenFilterBuilder,
+        ) -> HunspellTokenFilterBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> HunspellTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -6799,6 +7272,18 @@ impl HyphenationDecompounderTokenFilter {
     /// Creates a builder for [`HyphenationDecompounderTokenFilter`].
     pub fn builder() -> HyphenationDecompounderTokenFilterBuilder {
         HyphenationDecompounderTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`HyphenationDecompounderTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HyphenationDecompounderTokenFilterBuilder,
+        ) -> HyphenationDecompounderTokenFilterBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> HyphenationDecompounderTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -7077,6 +7562,19 @@ impl IcuAnalyzer {
     pub fn builder() -> IcuAnalyzerBuilder {
         IcuAnalyzerBuilder::new()
     }
+
+    /// Creates a [`IcuAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IcuAnalyzerBuilder,
+        ) -> IcuAnalyzerBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IcuAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IcuAnalyzer`].
@@ -7303,6 +7801,15 @@ impl IcuCollationTokenFilter {
     /// Creates a builder for [`IcuCollationTokenFilter`].
     pub fn builder() -> IcuCollationTokenFilterBuilder {
         IcuCollationTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`IcuCollationTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IcuCollationTokenFilterBuilder,
+        ) -> IcuCollationTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> IcuCollationTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -7573,6 +8080,18 @@ impl IcuFoldingTokenFilter {
     pub fn builder() -> IcuFoldingTokenFilterBuilder {
         IcuFoldingTokenFilterBuilder::new()
     }
+
+    /// Creates a [`IcuFoldingTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IcuFoldingTokenFilterBuilder,
+        ) -> IcuFoldingTokenFilterBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IcuFoldingTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IcuFoldingTokenFilter`].
@@ -7694,6 +8213,15 @@ impl IcuNormalizationCharFilter {
     /// Creates a builder for [`IcuNormalizationCharFilter`].
     pub fn builder() -> IcuNormalizationCharFilterBuilder {
         IcuNormalizationCharFilterBuilder::new()
+    }
+
+    /// Creates a [`IcuNormalizationCharFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IcuNormalizationCharFilterBuilder,
+        ) -> IcuNormalizationCharFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> IcuNormalizationCharFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -7837,6 +8365,18 @@ impl IcuNormalizationTokenFilter {
     pub fn builder() -> IcuNormalizationTokenFilterBuilder {
         IcuNormalizationTokenFilterBuilder::new()
     }
+
+    /// Creates a [`IcuNormalizationTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IcuNormalizationTokenFilterBuilder,
+        ) -> IcuNormalizationTokenFilterBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IcuNormalizationTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IcuNormalizationTokenFilter`].
@@ -7976,6 +8516,16 @@ impl IcuTokenizer {
     pub fn builder() -> IcuTokenizerBuilder {
         IcuTokenizerBuilder::new()
     }
+
+    /// Creates a [`IcuTokenizer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IcuTokenizerBuilder,
+        )
+            -> IcuTokenizerBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> IcuTokenizer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IcuTokenizer`].
@@ -8097,6 +8647,18 @@ impl IcuTransformTokenFilter {
     /// Creates a builder for [`IcuTransformTokenFilter`].
     pub fn builder() -> IcuTransformTokenFilterBuilder {
         IcuTransformTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`IcuTransformTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IcuTransformTokenFilterBuilder,
+        ) -> IcuTransformTokenFilterBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IcuTransformTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -8231,6 +8793,15 @@ impl IndicNormalizationTokenFilter {
     pub fn builder() -> IndicNormalizationTokenFilterBuilder {
         IndicNormalizationTokenFilterBuilder::new()
     }
+
+    /// Creates a [`IndicNormalizationTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndicNormalizationTokenFilterBuilder,
+        ) -> IndicNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> IndicNormalizationTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndicNormalizationTokenFilter`].
@@ -8322,6 +8893,15 @@ impl IndonesianAnalyzer {
     /// Creates a builder for [`IndonesianAnalyzer`].
     pub fn builder() -> IndonesianAnalyzerBuilder {
         IndonesianAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`IndonesianAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndonesianAnalyzerBuilder,
+        ) -> IndonesianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> IndonesianAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -8451,6 +9031,13 @@ impl IrishAnalyzer {
     pub fn builder() -> IrishAnalyzerBuilder {
         IrishAnalyzerBuilder::new()
     }
+
+    /// Creates a [`IrishAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IrishAnalyzerBuilder) -> IrishAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> IrishAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IrishAnalyzer`].
@@ -8579,6 +9166,13 @@ impl ItalianAnalyzer {
     pub fn builder() -> ItalianAnalyzerBuilder {
         ItalianAnalyzerBuilder::new()
     }
+
+    /// Creates a [`ItalianAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ItalianAnalyzerBuilder) -> ItalianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> ItalianAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ItalianAnalyzer`].
@@ -8705,6 +9299,15 @@ impl JaStopTokenFilter {
     pub fn builder() -> JaStopTokenFilterBuilder {
         JaStopTokenFilterBuilder::new()
     }
+
+    /// Creates a [`JaStopTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            JaStopTokenFilterBuilder,
+        ) -> JaStopTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> JaStopTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`JaStopTokenFilter`].
@@ -8806,6 +9409,15 @@ impl KStemTokenFilter {
     pub fn builder() -> KStemTokenFilterBuilder {
         KStemTokenFilterBuilder::new()
     }
+
+    /// Creates a [`KStemTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            KStemTokenFilterBuilder,
+        ) -> KStemTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> KStemTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`KStemTokenFilter`].
@@ -8904,6 +9516,18 @@ impl KeepTypesTokenFilter {
     /// Creates a builder for [`KeepTypesTokenFilter`].
     pub fn builder() -> KeepTypesTokenFilterBuilder {
         KeepTypesTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`KeepTypesTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            KeepTypesTokenFilterBuilder,
+        ) -> KeepTypesTokenFilterBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> KeepTypesTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -9050,6 +9674,15 @@ impl KeepWordsTokenFilter {
     pub fn builder() -> KeepWordsTokenFilterBuilder {
         KeepWordsTokenFilterBuilder::new()
     }
+
+    /// Creates a [`KeepWordsTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            KeepWordsTokenFilterBuilder,
+        ) -> KeepWordsTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> KeepWordsTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`KeepWordsTokenFilter`].
@@ -9195,6 +9828,13 @@ impl KeywordAnalyzer {
     pub fn builder() -> KeywordAnalyzerBuilder {
         KeywordAnalyzerBuilder::new()
     }
+
+    /// Creates a [`KeywordAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(KeywordAnalyzerBuilder) -> KeywordAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> KeywordAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`KeywordAnalyzer`].
@@ -9321,6 +9961,15 @@ impl KeywordMarkerTokenFilter {
     /// Creates a builder for [`KeywordMarkerTokenFilter`].
     pub fn builder() -> KeywordMarkerTokenFilterBuilder {
         KeywordMarkerTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`KeywordMarkerTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            KeywordMarkerTokenFilterBuilder,
+        ) -> KeywordMarkerTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> KeywordMarkerTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -9478,6 +10127,15 @@ impl KeywordRepeatTokenFilter {
     pub fn builder() -> KeywordRepeatTokenFilterBuilder {
         KeywordRepeatTokenFilterBuilder::new()
     }
+
+    /// Creates a [`KeywordRepeatTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            KeywordRepeatTokenFilterBuilder,
+        ) -> KeywordRepeatTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> KeywordRepeatTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`KeywordRepeatTokenFilter`].
@@ -9567,6 +10225,15 @@ impl KeywordTokenizer {
     /// Creates a builder for [`KeywordTokenizer`].
     pub fn builder() -> KeywordTokenizerBuilder {
         KeywordTokenizerBuilder::new()
+    }
+
+    /// Creates a [`KeywordTokenizer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            KeywordTokenizerBuilder,
+        ) -> KeywordTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ) -> KeywordTokenizer {
+        f(Self::builder()).build()
     }
 }
 
@@ -9671,6 +10338,15 @@ impl KuromojiAnalyzer {
     pub fn builder() -> KuromojiAnalyzerBuilder {
         KuromojiAnalyzerBuilder::new()
     }
+
+    /// Creates a [`KuromojiAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            KuromojiAnalyzerBuilder,
+        ) -> KuromojiAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> KuromojiAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`KuromojiAnalyzer`].
@@ -9773,6 +10449,19 @@ impl KuromojiIterationMarkCharFilter {
     /// Creates a builder for [`KuromojiIterationMarkCharFilter`].
     pub fn builder() -> KuromojiIterationMarkCharFilterBuilder {
         KuromojiIterationMarkCharFilterBuilder::new()
+    }
+
+    /// Creates a [`KuromojiIterationMarkCharFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            KuromojiIterationMarkCharFilterBuilder,
+        ) -> KuromojiIterationMarkCharFilterBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> KuromojiIterationMarkCharFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -9947,6 +10636,18 @@ impl KuromojiPartOfSpeechTokenFilter {
     pub fn builder() -> KuromojiPartOfSpeechTokenFilterBuilder {
         KuromojiPartOfSpeechTokenFilterBuilder::new()
     }
+
+    /// Creates a [`KuromojiPartOfSpeechTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            KuromojiPartOfSpeechTokenFilterBuilder,
+        ) -> KuromojiPartOfSpeechTokenFilterBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> KuromojiPartOfSpeechTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`KuromojiPartOfSpeechTokenFilter`].
@@ -10081,6 +10782,18 @@ impl KuromojiReadingFormTokenFilter {
     pub fn builder() -> KuromojiReadingFormTokenFilterBuilder {
         KuromojiReadingFormTokenFilterBuilder::new()
     }
+
+    /// Creates a [`KuromojiReadingFormTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            KuromojiReadingFormTokenFilterBuilder,
+        ) -> KuromojiReadingFormTokenFilterBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> KuromojiReadingFormTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`KuromojiReadingFormTokenFilter`].
@@ -10214,6 +10927,18 @@ impl KuromojiStemmerTokenFilter {
     /// Creates a builder for [`KuromojiStemmerTokenFilter`].
     pub fn builder() -> KuromojiStemmerTokenFilterBuilder {
         KuromojiStemmerTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`KuromojiStemmerTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            KuromojiStemmerTokenFilterBuilder,
+        ) -> KuromojiStemmerTokenFilterBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> KuromojiStemmerTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -10362,6 +11087,18 @@ impl KuromojiTokenizer {
     /// Creates a builder for [`KuromojiTokenizer`].
     pub fn builder() -> KuromojiTokenizerBuilder {
         KuromojiTokenizerBuilder::new()
+    }
+
+    /// Creates a [`KuromojiTokenizer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            KuromojiTokenizerBuilder,
+        ) -> KuromojiTokenizerBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> KuromojiTokenizer {
+        f(Self::builder()).build()
     }
 }
 
@@ -10578,6 +11315,13 @@ impl LatvianAnalyzer {
     pub fn builder() -> LatvianAnalyzerBuilder {
         LatvianAnalyzerBuilder::new()
     }
+
+    /// Creates a [`LatvianAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(LatvianAnalyzerBuilder) -> LatvianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> LatvianAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`LatvianAnalyzer`].
@@ -10708,6 +11452,15 @@ impl LengthTokenFilter {
     pub fn builder() -> LengthTokenFilterBuilder {
         LengthTokenFilterBuilder::new()
     }
+
+    /// Creates a [`LengthTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LengthTokenFilterBuilder,
+        ) -> LengthTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> LengthTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`LengthTokenFilter`].
@@ -10826,6 +11579,13 @@ impl LetterTokenizer {
     pub fn builder() -> LetterTokenizerBuilder {
         LetterTokenizerBuilder::new()
     }
+
+    /// Creates a [`LetterTokenizer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(LetterTokenizerBuilder) -> LetterTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ) -> LetterTokenizer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`LetterTokenizer`].
@@ -10917,6 +11677,15 @@ impl LimitTokenCountTokenFilter {
     /// Creates a builder for [`LimitTokenCountTokenFilter`].
     pub fn builder() -> LimitTokenCountTokenFilterBuilder {
         LimitTokenCountTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`LimitTokenCountTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LimitTokenCountTokenFilterBuilder,
+        ) -> LimitTokenCountTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> LimitTokenCountTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -11048,6 +11817,15 @@ impl LithuanianAnalyzer {
     pub fn builder() -> LithuanianAnalyzerBuilder {
         LithuanianAnalyzerBuilder::new()
     }
+
+    /// Creates a [`LithuanianAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LithuanianAnalyzerBuilder,
+        ) -> LithuanianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> LithuanianAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`LithuanianAnalyzer`].
@@ -11170,6 +11948,15 @@ impl LowercaseNormalizer {
     pub fn builder() -> LowercaseNormalizerBuilder {
         LowercaseNormalizerBuilder::new()
     }
+
+    /// Creates a [`LowercaseNormalizer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LowercaseNormalizerBuilder,
+        ) -> LowercaseNormalizerBuilder<(crate::typed::builder::Set,)>,
+    ) -> LowercaseNormalizer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`LowercaseNormalizer`].
@@ -11243,6 +12030,15 @@ impl LowercaseTokenFilter {
     /// Creates a builder for [`LowercaseTokenFilter`].
     pub fn builder() -> LowercaseTokenFilterBuilder {
         LowercaseTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`LowercaseTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LowercaseTokenFilterBuilder,
+        ) -> LowercaseTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> LowercaseTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -11356,6 +12152,15 @@ impl LowercaseTokenizer {
     pub fn builder() -> LowercaseTokenizerBuilder {
         LowercaseTokenizerBuilder::new()
     }
+
+    /// Creates a [`LowercaseTokenizer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LowercaseTokenizerBuilder,
+        ) -> LowercaseTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ) -> LowercaseTokenizer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`LowercaseTokenizer`].
@@ -11445,6 +12250,15 @@ impl MappingCharFilter {
     /// Creates a builder for [`MappingCharFilter`].
     pub fn builder() -> MappingCharFilterBuilder {
         MappingCharFilterBuilder::new()
+    }
+
+    /// Creates a [`MappingCharFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MappingCharFilterBuilder,
+        ) -> MappingCharFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> MappingCharFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -11582,6 +12396,15 @@ impl MinHashTokenFilter {
     /// Creates a builder for [`MinHashTokenFilter`].
     pub fn builder() -> MinHashTokenFilterBuilder {
         MinHashTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`MinHashTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MinHashTokenFilterBuilder,
+        ) -> MinHashTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> MinHashTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -11739,6 +12562,18 @@ impl MultiplexerTokenFilter {
     pub fn builder() -> MultiplexerTokenFilterBuilder {
         MultiplexerTokenFilterBuilder::new()
     }
+
+    /// Creates a [`MultiplexerTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MultiplexerTokenFilterBuilder,
+        ) -> MultiplexerTokenFilterBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MultiplexerTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MultiplexerTokenFilter`].
@@ -11887,6 +12722,15 @@ impl NGramTokenFilter {
     pub fn builder() -> NGramTokenFilterBuilder {
         NGramTokenFilterBuilder::new()
     }
+
+    /// Creates a [`NGramTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NGramTokenFilterBuilder,
+        ) -> NGramTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> NGramTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NGramTokenFilter`].
@@ -12034,6 +12878,13 @@ impl NGramTokenizer {
     /// Creates a builder for [`NGramTokenizer`].
     pub fn builder() -> NGramTokenizerBuilder {
         NGramTokenizerBuilder::new()
+    }
+
+    /// Creates a [`NGramTokenizer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NGramTokenizerBuilder) -> NGramTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ) -> NGramTokenizer {
+        f(Self::builder()).build()
     }
 }
 
@@ -12195,6 +13046,13 @@ impl NoriAnalyzer {
     pub fn builder() -> NoriAnalyzerBuilder {
         NoriAnalyzerBuilder::new()
     }
+
+    /// Creates a [`NoriAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NoriAnalyzerBuilder) -> NoriAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> NoriAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NoriAnalyzer`].
@@ -12347,6 +13205,15 @@ impl NoriPartOfSpeechTokenFilter {
     pub fn builder() -> NoriPartOfSpeechTokenFilterBuilder {
         NoriPartOfSpeechTokenFilterBuilder::new()
     }
+
+    /// Creates a [`NoriPartOfSpeechTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NoriPartOfSpeechTokenFilterBuilder,
+        ) -> NoriPartOfSpeechTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> NoriPartOfSpeechTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NoriPartOfSpeechTokenFilter`].
@@ -12466,6 +13333,13 @@ impl NoriTokenizer {
     /// Creates a builder for [`NoriTokenizer`].
     pub fn builder() -> NoriTokenizerBuilder {
         NoriTokenizerBuilder::new()
+    }
+
+    /// Creates a [`NoriTokenizer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NoriTokenizerBuilder) -> NoriTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ) -> NoriTokenizer {
+        f(Self::builder()).build()
     }
 }
 
@@ -12636,6 +13510,15 @@ impl NorwegianAnalyzer {
     pub fn builder() -> NorwegianAnalyzerBuilder {
         NorwegianAnalyzerBuilder::new()
     }
+
+    /// Creates a [`NorwegianAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NorwegianAnalyzerBuilder,
+        ) -> NorwegianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> NorwegianAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NorwegianAnalyzer`].
@@ -12769,6 +13652,15 @@ impl PathHierarchyTokenizer {
     /// Creates a builder for [`PathHierarchyTokenizer`].
     pub fn builder() -> PathHierarchyTokenizerBuilder {
         PathHierarchyTokenizerBuilder::new()
+    }
+
+    /// Creates a [`PathHierarchyTokenizer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PathHierarchyTokenizerBuilder,
+        ) -> PathHierarchyTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ) -> PathHierarchyTokenizer {
+        f(Self::builder()).build()
     }
 }
 
@@ -12964,6 +13856,13 @@ impl PatternAnalyzer {
     pub fn builder() -> PatternAnalyzerBuilder {
         PatternAnalyzerBuilder::new()
     }
+
+    /// Creates a [`PatternAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(PatternAnalyzerBuilder) -> PatternAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> PatternAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PatternAnalyzer`].
@@ -13138,6 +14037,18 @@ impl PatternCaptureTokenFilter {
     pub fn builder() -> PatternCaptureTokenFilterBuilder {
         PatternCaptureTokenFilterBuilder::new()
     }
+
+    /// Creates a [`PatternCaptureTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PatternCaptureTokenFilterBuilder,
+        ) -> PatternCaptureTokenFilterBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> PatternCaptureTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PatternCaptureTokenFilter`].
@@ -13284,6 +14195,18 @@ impl PatternReplaceCharFilter {
     /// Creates a builder for [`PatternReplaceCharFilter`].
     pub fn builder() -> PatternReplaceCharFilterBuilder {
         PatternReplaceCharFilterBuilder::new()
+    }
+
+    /// Creates a [`PatternReplaceCharFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PatternReplaceCharFilterBuilder,
+        ) -> PatternReplaceCharFilterBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> PatternReplaceCharFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -13442,6 +14365,18 @@ impl PatternReplaceTokenFilter {
     /// Creates a builder for [`PatternReplaceTokenFilter`].
     pub fn builder() -> PatternReplaceTokenFilterBuilder {
         PatternReplaceTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`PatternReplaceTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PatternReplaceTokenFilterBuilder,
+        ) -> PatternReplaceTokenFilterBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> PatternReplaceTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -13616,6 +14551,15 @@ impl PatternTokenizer {
     pub fn builder() -> PatternTokenizerBuilder {
         PatternTokenizerBuilder::new()
     }
+
+    /// Creates a [`PatternTokenizer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PatternTokenizerBuilder,
+        ) -> PatternTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ) -> PatternTokenizer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PatternTokenizer`].
@@ -13749,6 +14693,13 @@ impl PersianAnalyzer {
     pub fn builder() -> PersianAnalyzerBuilder {
         PersianAnalyzerBuilder::new()
     }
+
+    /// Creates a [`PersianAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(PersianAnalyzerBuilder) -> PersianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> PersianAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PersianAnalyzer`].
@@ -13850,6 +14801,15 @@ impl PersianNormalizationTokenFilter {
     pub fn builder() -> PersianNormalizationTokenFilterBuilder {
         PersianNormalizationTokenFilterBuilder::new()
     }
+
+    /// Creates a [`PersianNormalizationTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PersianNormalizationTokenFilterBuilder,
+        ) -> PersianNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> PersianNormalizationTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PersianNormalizationTokenFilter`].
@@ -13939,6 +14899,15 @@ impl PersianStemTokenFilter {
     /// Creates a builder for [`PersianStemTokenFilter`].
     pub fn builder() -> PersianStemTokenFilterBuilder {
         PersianStemTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`PersianStemTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PersianStemTokenFilterBuilder,
+        ) -> PersianStemTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> PersianStemTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -14129,6 +15098,18 @@ impl PhoneticTokenFilter {
     /// Creates a builder for [`PhoneticTokenFilter`].
     pub fn builder() -> PhoneticTokenFilterBuilder {
         PhoneticTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`PhoneticTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PhoneticTokenFilterBuilder,
+        ) -> PhoneticTokenFilterBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> PhoneticTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -14321,6 +15302,15 @@ impl PorterStemTokenFilter {
     pub fn builder() -> PorterStemTokenFilterBuilder {
         PorterStemTokenFilterBuilder::new()
     }
+
+    /// Creates a [`PorterStemTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PorterStemTokenFilterBuilder,
+        ) -> PorterStemTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> PorterStemTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PorterStemTokenFilter`].
@@ -14410,6 +15400,15 @@ impl PortugueseAnalyzer {
     /// Creates a builder for [`PortugueseAnalyzer`].
     pub fn builder() -> PortugueseAnalyzerBuilder {
         PortugueseAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`PortugueseAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PortugueseAnalyzerBuilder,
+        ) -> PortugueseAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> PortugueseAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -14537,6 +15536,18 @@ impl PredicateTokenFilter {
     pub fn builder() -> PredicateTokenFilterBuilder {
         PredicateTokenFilterBuilder::new()
     }
+
+    /// Creates a [`PredicateTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PredicateTokenFilterBuilder,
+        ) -> PredicateTokenFilterBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> PredicateTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PredicateTokenFilter`].
@@ -14662,6 +15673,15 @@ impl RemoveDuplicatesTokenFilter {
     pub fn builder() -> RemoveDuplicatesTokenFilterBuilder {
         RemoveDuplicatesTokenFilterBuilder::new()
     }
+
+    /// Creates a [`RemoveDuplicatesTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RemoveDuplicatesTokenFilterBuilder,
+        ) -> RemoveDuplicatesTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> RemoveDuplicatesTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RemoveDuplicatesTokenFilter`].
@@ -14749,6 +15769,15 @@ impl ReverseTokenFilter {
     /// Creates a builder for [`ReverseTokenFilter`].
     pub fn builder() -> ReverseTokenFilterBuilder {
         ReverseTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`ReverseTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ReverseTokenFilterBuilder,
+        ) -> ReverseTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> ReverseTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -14839,6 +15868,15 @@ impl RomanianAnalyzer {
     /// Creates a builder for [`RomanianAnalyzer`].
     pub fn builder() -> RomanianAnalyzerBuilder {
         RomanianAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`RomanianAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RomanianAnalyzerBuilder,
+        ) -> RomanianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> RomanianAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -14968,6 +16006,13 @@ impl RussianAnalyzer {
     pub fn builder() -> RussianAnalyzerBuilder {
         RussianAnalyzerBuilder::new()
     }
+
+    /// Creates a [`RussianAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RussianAnalyzerBuilder) -> RussianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> RussianAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RussianAnalyzer`].
@@ -15092,6 +16137,15 @@ impl RussianStemTokenFilter {
     pub fn builder() -> RussianStemTokenFilterBuilder {
         RussianStemTokenFilterBuilder::new()
     }
+
+    /// Creates a [`RussianStemTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RussianStemTokenFilterBuilder,
+        ) -> RussianStemTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> RussianStemTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RussianStemTokenFilter`].
@@ -15177,6 +16231,15 @@ impl ScandinavianFoldingTokenFilter {
     /// Creates a builder for [`ScandinavianFoldingTokenFilter`].
     pub fn builder() -> ScandinavianFoldingTokenFilterBuilder {
         ScandinavianFoldingTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`ScandinavianFoldingTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ScandinavianFoldingTokenFilterBuilder,
+        ) -> ScandinavianFoldingTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> ScandinavianFoldingTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -15265,6 +16328,16 @@ impl ScandinavianNormalizationTokenFilter {
     /// Creates a builder for [`ScandinavianNormalizationTokenFilter`].
     pub fn builder() -> ScandinavianNormalizationTokenFilterBuilder {
         ScandinavianNormalizationTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`ScandinavianNormalizationTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ScandinavianNormalizationTokenFilterBuilder,
+        )
+            -> ScandinavianNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> ScandinavianNormalizationTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -15359,6 +16432,13 @@ impl SerbianAnalyzer {
     /// Creates a builder for [`SerbianAnalyzer`].
     pub fn builder() -> SerbianAnalyzerBuilder {
         SerbianAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`SerbianAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SerbianAnalyzerBuilder) -> SerbianAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> SerbianAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -15484,6 +16564,15 @@ impl SerbianNormalizationTokenFilter {
     pub fn builder() -> SerbianNormalizationTokenFilterBuilder {
         SerbianNormalizationTokenFilterBuilder::new()
     }
+
+    /// Creates a [`SerbianNormalizationTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SerbianNormalizationTokenFilterBuilder,
+        ) -> SerbianNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> SerbianNormalizationTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SerbianNormalizationTokenFilter`].
@@ -15591,6 +16680,15 @@ impl ShingleTokenFilter {
     /// Creates a builder for [`ShingleTokenFilter`].
     pub fn builder() -> ShingleTokenFilterBuilder {
         ShingleTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`ShingleTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ShingleTokenFilterBuilder,
+        ) -> ShingleTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> ShingleTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -15786,6 +16884,13 @@ impl SimpleAnalyzer {
     pub fn builder() -> SimpleAnalyzerBuilder {
         SimpleAnalyzerBuilder::new()
     }
+
+    /// Creates a [`SimpleAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SimpleAnalyzerBuilder) -> SimpleAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> SimpleAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SimpleAnalyzer`].
@@ -15873,6 +16978,15 @@ impl SimplePatternSplitTokenizer {
     /// Creates a builder for [`SimplePatternSplitTokenizer`].
     pub fn builder() -> SimplePatternSplitTokenizerBuilder {
         SimplePatternSplitTokenizerBuilder::new()
+    }
+
+    /// Creates a [`SimplePatternSplitTokenizer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SimplePatternSplitTokenizerBuilder,
+        ) -> SimplePatternSplitTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ) -> SimplePatternSplitTokenizer {
+        f(Self::builder()).build()
     }
 }
 
@@ -15979,6 +17093,15 @@ impl SimplePatternTokenizer {
     pub fn builder() -> SimplePatternTokenizerBuilder {
         SimplePatternTokenizerBuilder::new()
     }
+
+    /// Creates a [`SimplePatternTokenizer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SimplePatternTokenizerBuilder,
+        ) -> SimplePatternTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ) -> SimplePatternTokenizer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SimplePatternTokenizer`].
@@ -16082,6 +17205,18 @@ impl SnowballAnalyzer {
     /// Creates a builder for [`SnowballAnalyzer`].
     pub fn builder() -> SnowballAnalyzerBuilder {
         SnowballAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`SnowballAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SnowballAnalyzerBuilder,
+        ) -> SnowballAnalyzerBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SnowballAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -16245,6 +17380,15 @@ impl SnowballTokenFilter {
     pub fn builder() -> SnowballTokenFilterBuilder {
         SnowballTokenFilterBuilder::new()
     }
+
+    /// Creates a [`SnowballTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SnowballTokenFilterBuilder,
+        ) -> SnowballTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> SnowballTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SnowballTokenFilter`].
@@ -16350,6 +17494,13 @@ impl SoraniAnalyzer {
     /// Creates a builder for [`SoraniAnalyzer`].
     pub fn builder() -> SoraniAnalyzerBuilder {
         SoraniAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`SoraniAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SoraniAnalyzerBuilder) -> SoraniAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> SoraniAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -16475,6 +17626,15 @@ impl SoraniNormalizationTokenFilter {
     pub fn builder() -> SoraniNormalizationTokenFilterBuilder {
         SoraniNormalizationTokenFilterBuilder::new()
     }
+
+    /// Creates a [`SoraniNormalizationTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SoraniNormalizationTokenFilterBuilder,
+        ) -> SoraniNormalizationTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> SoraniNormalizationTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SoraniNormalizationTokenFilter`].
@@ -16566,6 +17726,13 @@ impl SpanishAnalyzer {
     /// Creates a builder for [`SpanishAnalyzer`].
     pub fn builder() -> SpanishAnalyzerBuilder {
         SpanishAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`SpanishAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SpanishAnalyzerBuilder) -> SpanishAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> SpanishAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -16700,6 +17867,15 @@ impl StandardAnalyzer {
     pub fn builder() -> StandardAnalyzerBuilder {
         StandardAnalyzerBuilder::new()
     }
+
+    /// Creates a [`StandardAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            StandardAnalyzerBuilder,
+        ) -> StandardAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> StandardAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`StandardAnalyzer`].
@@ -16823,6 +17999,15 @@ impl StandardTokenizer {
     pub fn builder() -> StandardTokenizerBuilder {
         StandardTokenizerBuilder::new()
     }
+
+    /// Creates a [`StandardTokenizer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            StandardTokenizerBuilder,
+        ) -> StandardTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ) -> StandardTokenizer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`StandardTokenizer`].
@@ -16929,6 +18114,15 @@ impl StemmerOverrideTokenFilter {
     /// Creates a builder for [`StemmerOverrideTokenFilter`].
     pub fn builder() -> StemmerOverrideTokenFilterBuilder {
         StemmerOverrideTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`StemmerOverrideTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            StemmerOverrideTokenFilterBuilder,
+        ) -> StemmerOverrideTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> StemmerOverrideTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -17060,6 +18254,15 @@ impl StemmerTokenFilter {
     pub fn builder() -> StemmerTokenFilterBuilder {
         StemmerTokenFilterBuilder::new()
     }
+
+    /// Creates a [`StemmerTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            StemmerTokenFilterBuilder,
+        ) -> StemmerTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> StemmerTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`StemmerTokenFilter`].
@@ -17167,6 +18370,13 @@ impl StopAnalyzer {
     /// Creates a builder for [`StopAnalyzer`].
     pub fn builder() -> StopAnalyzerBuilder {
         StopAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`StopAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(StopAnalyzerBuilder) -> StopAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> StopAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -17299,6 +18509,13 @@ impl StopTokenFilter {
     /// Creates a builder for [`StopTokenFilter`].
     pub fn builder() -> StopTokenFilterBuilder {
         StopTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`StopTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(StopTokenFilterBuilder) -> StopTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> StopTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -17555,6 +18772,13 @@ impl SwedishAnalyzer {
     pub fn builder() -> SwedishAnalyzerBuilder {
         SwedishAnalyzerBuilder::new()
     }
+
+    /// Creates a [`SwedishAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SwedishAnalyzerBuilder) -> SwedishAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> SwedishAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SwedishAnalyzer`].
@@ -17735,6 +18959,15 @@ impl SynonymGraphTokenFilter {
     /// Creates a builder for [`SynonymGraphTokenFilter`].
     pub fn builder() -> SynonymGraphTokenFilterBuilder {
         SynonymGraphTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`SynonymGraphTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SynonymGraphTokenFilterBuilder,
+        ) -> SynonymGraphTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> SynonymGraphTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -18009,6 +19242,15 @@ impl SynonymTokenFilter {
     pub fn builder() -> SynonymTokenFilterBuilder {
         SynonymTokenFilterBuilder::new()
     }
+
+    /// Creates a [`SynonymTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SynonymTokenFilterBuilder,
+        ) -> SynonymTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> SynonymTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SynonymTokenFilter`].
@@ -18279,6 +19521,13 @@ impl SynonymTokenFilterBase {
     pub fn builder() -> SynonymTokenFilterBaseBuilder {
         SynonymTokenFilterBaseBuilder::new()
     }
+
+    /// Creates a [`SynonymTokenFilterBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SynonymTokenFilterBaseBuilder) -> SynonymTokenFilterBaseBuilder,
+    ) -> SynonymTokenFilterBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SynonymTokenFilterBase`].
@@ -18465,6 +19714,13 @@ impl ThaiAnalyzer {
     pub fn builder() -> ThaiAnalyzerBuilder {
         ThaiAnalyzerBuilder::new()
     }
+
+    /// Creates a [`ThaiAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ThaiAnalyzerBuilder) -> ThaiAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> ThaiAnalyzer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ThaiAnalyzer`].
@@ -18565,6 +19821,13 @@ impl ThaiTokenizer {
     /// Creates a builder for [`ThaiTokenizer`].
     pub fn builder() -> ThaiTokenizerBuilder {
         ThaiTokenizerBuilder::new()
+    }
+
+    /// Creates a [`ThaiTokenizer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ThaiTokenizerBuilder) -> ThaiTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ) -> ThaiTokenizer {
+        f(Self::builder()).build()
     }
 }
 
@@ -18692,6 +19955,11 @@ impl TokenFilterBase {
     pub fn builder() -> TokenFilterBaseBuilder {
         TokenFilterBaseBuilder::new()
     }
+
+    /// Creates a [`TokenFilterBase`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(TokenFilterBaseBuilder) -> TokenFilterBaseBuilder) -> TokenFilterBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TokenFilterBase`].
@@ -18781,6 +20049,11 @@ impl TokenizerBase {
     pub fn builder() -> TokenizerBaseBuilder {
         TokenizerBaseBuilder::new()
     }
+
+    /// Creates a [`TokenizerBase`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(TokenizerBaseBuilder) -> TokenizerBaseBuilder) -> TokenizerBase {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TokenizerBase`].
@@ -18845,6 +20118,13 @@ impl TrimTokenFilter {
     /// Creates a builder for [`TrimTokenFilter`].
     pub fn builder() -> TrimTokenFilterBuilder {
         TrimTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`TrimTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TrimTokenFilterBuilder) -> TrimTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> TrimTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -18934,6 +20214,15 @@ impl TruncateTokenFilter {
     /// Creates a builder for [`TruncateTokenFilter`].
     pub fn builder() -> TruncateTokenFilterBuilder {
         TruncateTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`TruncateTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TruncateTokenFilterBuilder,
+        ) -> TruncateTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> TruncateTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -19040,6 +20329,13 @@ impl TurkishAnalyzer {
     /// Creates a builder for [`TurkishAnalyzer`].
     pub fn builder() -> TurkishAnalyzerBuilder {
         TurkishAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`TurkishAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TurkishAnalyzerBuilder) -> TurkishAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> TurkishAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -19167,6 +20463,15 @@ impl UaxEmailUrlTokenizer {
     pub fn builder() -> UaxEmailUrlTokenizerBuilder {
         UaxEmailUrlTokenizerBuilder::new()
     }
+
+    /// Creates a [`UaxEmailUrlTokenizer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UaxEmailUrlTokenizerBuilder,
+        ) -> UaxEmailUrlTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ) -> UaxEmailUrlTokenizer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`UaxEmailUrlTokenizer`].
@@ -19271,6 +20576,15 @@ impl UniqueTokenFilter {
     pub fn builder() -> UniqueTokenFilterBuilder {
         UniqueTokenFilterBuilder::new()
     }
+
+    /// Creates a [`UniqueTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UniqueTokenFilterBuilder,
+        ) -> UniqueTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> UniqueTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`UniqueTokenFilter`].
@@ -19373,6 +20687,15 @@ impl UppercaseTokenFilter {
     pub fn builder() -> UppercaseTokenFilterBuilder {
         UppercaseTokenFilterBuilder::new()
     }
+
+    /// Creates a [`UppercaseTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UppercaseTokenFilterBuilder,
+        ) -> UppercaseTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> UppercaseTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`UppercaseTokenFilter`].
@@ -19458,6 +20781,15 @@ impl WhitespaceAnalyzer {
     /// Creates a builder for [`WhitespaceAnalyzer`].
     pub fn builder() -> WhitespaceAnalyzerBuilder {
         WhitespaceAnalyzerBuilder::new()
+    }
+
+    /// Creates a [`WhitespaceAnalyzer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            WhitespaceAnalyzerBuilder,
+        ) -> WhitespaceAnalyzerBuilder<(crate::typed::builder::Set,)>,
+    ) -> WhitespaceAnalyzer {
+        f(Self::builder()).build()
     }
 }
 
@@ -19546,6 +20878,15 @@ impl WhitespaceTokenizer {
     /// Creates a builder for [`WhitespaceTokenizer`].
     pub fn builder() -> WhitespaceTokenizerBuilder {
         WhitespaceTokenizerBuilder::new()
+    }
+
+    /// Creates a [`WhitespaceTokenizer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            WhitespaceTokenizerBuilder,
+        ) -> WhitespaceTokenizerBuilder<(crate::typed::builder::Set,)>,
+    ) -> WhitespaceTokenizer {
+        f(Self::builder()).build()
     }
 }
 
@@ -19693,6 +21034,15 @@ impl WordDelimiterGraphTokenFilter {
     /// Creates a builder for [`WordDelimiterGraphTokenFilter`].
     pub fn builder() -> WordDelimiterGraphTokenFilterBuilder {
         WordDelimiterGraphTokenFilterBuilder::new()
+    }
+
+    /// Creates a [`WordDelimiterGraphTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            WordDelimiterGraphTokenFilterBuilder,
+        ) -> WordDelimiterGraphTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> WordDelimiterGraphTokenFilter {
+        f(Self::builder()).build()
     }
 }
 
@@ -20085,6 +21435,15 @@ impl WordDelimiterTokenFilter {
     pub fn builder() -> WordDelimiterTokenFilterBuilder {
         WordDelimiterTokenFilterBuilder::new()
     }
+
+    /// Creates a [`WordDelimiterTokenFilter`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            WordDelimiterTokenFilterBuilder,
+        ) -> WordDelimiterTokenFilterBuilder<(crate::typed::builder::Set,)>,
+    ) -> WordDelimiterTokenFilter {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`WordDelimiterTokenFilter`].
@@ -20442,6 +21801,13 @@ impl WordDelimiterTokenFilterBase {
     /// Creates a builder for [`WordDelimiterTokenFilterBase`].
     pub fn builder() -> WordDelimiterTokenFilterBaseBuilder {
         WordDelimiterTokenFilterBaseBuilder::new()
+    }
+
+    /// Creates a [`WordDelimiterTokenFilterBase`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(WordDelimiterTokenFilterBaseBuilder) -> WordDelimiterTokenFilterBaseBuilder,
+    ) -> WordDelimiterTokenFilterBase {
+        f(Self::builder()).build()
     }
 }
 

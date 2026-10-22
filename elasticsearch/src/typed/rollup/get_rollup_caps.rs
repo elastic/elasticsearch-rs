@@ -42,6 +42,11 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -263,6 +268,15 @@ impl RollupCapabilities {
     pub fn builder() -> RollupCapabilitiesBuilder {
         RollupCapabilitiesBuilder::new()
     }
+
+    /// Creates a [`RollupCapabilities`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RollupCapabilitiesBuilder,
+        ) -> RollupCapabilitiesBuilder<(crate::typed::builder::Set,)>,
+    ) -> RollupCapabilities {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RollupCapabilities`].
@@ -335,6 +349,20 @@ impl RollupCapabilitySummary {
     /// Creates a builder for [`RollupCapabilitySummary`].
     pub fn builder() -> RollupCapabilitySummaryBuilder {
         RollupCapabilitySummaryBuilder::new()
+    }
+
+    /// Creates a [`RollupCapabilitySummary`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RollupCapabilitySummaryBuilder,
+        ) -> RollupCapabilitySummaryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RollupCapabilitySummary {
+        f(Self::builder()).build()
     }
 }
 
@@ -529,6 +557,15 @@ impl RollupFieldSummary {
     /// Creates a builder for [`RollupFieldSummary`].
     pub fn builder() -> RollupFieldSummaryBuilder {
         RollupFieldSummaryBuilder::new()
+    }
+
+    /// Creates a [`RollupFieldSummary`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RollupFieldSummaryBuilder,
+        ) -> RollupFieldSummaryBuilder<(crate::typed::builder::Set,)>,
+    ) -> RollupFieldSummary {
+        f(Self::builder()).build()
     }
 }
 

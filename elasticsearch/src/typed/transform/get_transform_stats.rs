@@ -21,6 +21,13 @@ impl CheckpointStats {
     pub fn builder() -> CheckpointStatsBuilder {
         CheckpointStatsBuilder::new()
     }
+
+    /// Creates a [`CheckpointStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CheckpointStatsBuilder) -> CheckpointStatsBuilder<(crate::typed::builder::Set,)>,
+    ) -> CheckpointStats {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CheckpointStats`].
@@ -198,6 +205,13 @@ impl Checkpointing {
     /// Creates a builder for [`Checkpointing`].
     pub fn builder() -> CheckpointingBuilder {
         CheckpointingBuilder::new()
+    }
+
+    /// Creates a [`Checkpointing`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CheckpointingBuilder) -> CheckpointingBuilder<(crate::typed::builder::Set,)>,
+    ) -> Checkpointing {
+        f(Self::builder()).build()
     }
 }
 
@@ -433,6 +447,13 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -803,6 +824,19 @@ impl TransformHealthIssue {
     pub fn builder() -> TransformHealthIssueBuilder {
         TransformHealthIssueBuilder::new()
     }
+
+    /// Creates a [`TransformHealthIssue`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TransformHealthIssueBuilder,
+        ) -> TransformHealthIssueBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> TransformHealthIssue {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TransformHealthIssue`].
@@ -1037,6 +1071,31 @@ impl TransformIndexerStats {
     /// Creates a builder for [`TransformIndexerStats`].
     pub fn builder() -> TransformIndexerStatsBuilder {
         TransformIndexerStatsBuilder::new()
+    }
+
+    /// Creates a [`TransformIndexerStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TransformIndexerStatsBuilder,
+        ) -> TransformIndexerStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> TransformIndexerStats {
+        f(Self::builder()).build()
     }
 }
 
@@ -2337,6 +2396,18 @@ impl TransformProgress {
     pub fn builder() -> TransformProgressBuilder {
         TransformProgressBuilder::new()
     }
+
+    /// Creates a [`TransformProgress`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TransformProgressBuilder,
+        ) -> TransformProgressBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> TransformProgress {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TransformProgress`].
@@ -2486,6 +2557,20 @@ impl TransformStats {
     /// Creates a builder for [`TransformStats`].
     pub fn builder() -> TransformStatsBuilder {
         TransformStatsBuilder::new()
+    }
+
+    /// Creates a [`TransformStats`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TransformStatsBuilder,
+        ) -> TransformStatsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> TransformStats {
+        f(Self::builder()).build()
     }
 }
 
@@ -2783,6 +2868,15 @@ impl TransformStatsHealth {
     /// Creates a builder for [`TransformStatsHealth`].
     pub fn builder() -> TransformStatsHealthBuilder {
         TransformStatsHealthBuilder::new()
+    }
+
+    /// Creates a [`TransformStatsHealth`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TransformStatsHealthBuilder,
+        ) -> TransformStatsHealthBuilder<(crate::typed::builder::Set,)>,
+    ) -> TransformStatsHealth {
+        f(Self::builder()).build()
     }
 }
 

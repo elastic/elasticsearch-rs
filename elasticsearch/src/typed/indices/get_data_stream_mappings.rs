@@ -17,6 +17,19 @@ impl DataStreamMappings {
     pub fn builder() -> DataStreamMappingsBuilder {
         DataStreamMappingsBuilder::new()
     }
+
+    /// Creates a [`DataStreamMappings`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DataStreamMappingsBuilder,
+        ) -> DataStreamMappingsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DataStreamMappings {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DataStreamMappings`].
@@ -222,6 +235,13 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 

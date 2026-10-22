@@ -18,6 +18,20 @@ impl KnnSearchQuery {
     pub fn builder() -> KnnSearchQueryBuilder {
         KnnSearchQueryBuilder::new()
     }
+
+    /// Creates a [`KnnSearchQuery`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            KnnSearchQueryBuilder,
+        ) -> KnnSearchQueryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> KnnSearchQuery {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`KnnSearchQuery`].

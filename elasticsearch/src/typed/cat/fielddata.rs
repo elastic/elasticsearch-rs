@@ -28,6 +28,11 @@ impl FielddataRecord {
     pub fn builder() -> FielddataRecordBuilder {
         FielddataRecordBuilder::new()
     }
+
+    /// Creates a [`FielddataRecord`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(FielddataRecordBuilder) -> FielddataRecordBuilder) -> FielddataRecord {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FielddataRecord`].
@@ -192,6 +197,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

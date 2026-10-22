@@ -13,6 +13,19 @@ impl AllocationDecision {
     pub fn builder() -> AllocationDecisionBuilder {
         AllocationDecisionBuilder::new()
     }
+
+    /// Creates a [`AllocationDecision`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AllocationDecisionBuilder,
+        ) -> AllocationDecisionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AllocationDecision {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AllocationDecision`].
@@ -184,6 +197,22 @@ impl AllocationStore {
     /// Creates a builder for [`AllocationStore`].
     pub fn builder() -> AllocationStoreBuilder {
         AllocationStoreBuilder::new()
+    }
+
+    /// Creates a [`AllocationStore`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AllocationStoreBuilder,
+        ) -> AllocationStoreBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AllocationStore {
+        f(Self::builder()).build()
     }
 }
 
@@ -470,6 +499,20 @@ impl ClusterInfo {
     pub fn builder() -> ClusterInfoBuilder {
         ClusterInfoBuilder::new()
     }
+
+    /// Creates a [`ClusterInfo`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ClusterInfoBuilder,
+        ) -> ClusterInfoBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ClusterInfo {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ClusterInfo`].
@@ -697,6 +740,22 @@ impl CurrentNode {
     /// Creates a builder for [`CurrentNode`].
     pub fn builder() -> CurrentNodeBuilder {
         CurrentNodeBuilder::new()
+    }
+
+    /// Creates a [`CurrentNode`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CurrentNodeBuilder,
+        ) -> CurrentNodeBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CurrentNode {
+        f(Self::builder()).build()
     }
 }
 
@@ -989,6 +1048,22 @@ impl DiskUsage {
     pub fn builder() -> DiskUsageBuilder {
         DiskUsageBuilder::new()
     }
+
+    /// Creates a [`DiskUsage`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DiskUsageBuilder,
+        ) -> DiskUsageBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DiskUsage {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DiskUsage`].
@@ -1265,6 +1340,22 @@ impl NodeAllocationExplanation {
     /// Creates a builder for [`NodeAllocationExplanation`].
     pub fn builder() -> NodeAllocationExplanationBuilder {
         NodeAllocationExplanationBuilder::new()
+    }
+
+    /// Creates a [`NodeAllocationExplanation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeAllocationExplanationBuilder,
+        ) -> NodeAllocationExplanationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NodeAllocationExplanation {
+        f(Self::builder()).build()
     }
 }
 
@@ -1632,6 +1723,19 @@ impl NodeDiskUsage {
     pub fn builder() -> NodeDiskUsageBuilder {
         NodeDiskUsageBuilder::new()
     }
+
+    /// Creates a [`NodeDiskUsage`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            NodeDiskUsageBuilder,
+        ) -> NodeDiskUsageBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> NodeDiskUsage {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NodeDiskUsage`].
@@ -1868,6 +1972,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -2285,6 +2394,20 @@ impl ReservedSize {
     pub fn builder() -> ReservedSizeBuilder {
         ReservedSizeBuilder::new()
     }
+
+    /// Creates a [`ReservedSize`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ReservedSizeBuilder,
+        ) -> ReservedSizeBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ReservedSize {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ReservedSize`].
@@ -2536,6 +2659,18 @@ impl UnassignedInformation {
     /// Creates a builder for [`UnassignedInformation`].
     pub fn builder() -> UnassignedInformationBuilder {
         UnassignedInformationBuilder::new()
+    }
+
+    /// Creates a [`UnassignedInformation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UnassignedInformationBuilder,
+        ) -> UnassignedInformationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> UnassignedInformation {
+        f(Self::builder()).build()
     }
 }
 

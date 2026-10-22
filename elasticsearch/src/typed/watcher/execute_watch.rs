@@ -66,6 +66,11 @@ impl Request {
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
     }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Request`].
@@ -573,6 +578,21 @@ impl WatchRecord {
     /// Creates a builder for [`WatchRecord`].
     pub fn builder() -> WatchRecordBuilder {
         WatchRecordBuilder::new()
+    }
+
+    /// Creates a [`WatchRecord`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            WatchRecordBuilder,
+        ) -> WatchRecordBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> WatchRecord {
+        f(Self::builder()).build()
     }
 }
 

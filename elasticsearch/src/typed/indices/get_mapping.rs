@@ -13,6 +13,15 @@ impl IndexMappingRecord {
     pub fn builder() -> IndexMappingRecordBuilder {
         IndexMappingRecordBuilder::new()
     }
+
+    /// Creates a [`IndexMappingRecord`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndexMappingRecordBuilder,
+        ) -> IndexMappingRecordBuilder<(crate::typed::builder::Set,)>,
+    ) -> IndexMappingRecord {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexMappingRecord`].
@@ -161,6 +170,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

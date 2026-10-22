@@ -17,6 +17,19 @@ impl ApplicationPrivilegesCheck {
     pub fn builder() -> ApplicationPrivilegesCheckBuilder {
         ApplicationPrivilegesCheckBuilder::new()
     }
+
+    /// Creates a [`ApplicationPrivilegesCheck`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ApplicationPrivilegesCheckBuilder,
+        ) -> ApplicationPrivilegesCheckBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ApplicationPrivilegesCheck {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ApplicationPrivilegesCheck`].
@@ -187,6 +200,18 @@ impl IndexPrivilegesCheck {
     pub fn builder() -> IndexPrivilegesCheckBuilder {
         IndexPrivilegesCheckBuilder::new()
     }
+
+    /// Creates a [`IndexPrivilegesCheck`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndexPrivilegesCheckBuilder,
+        ) -> IndexPrivilegesCheckBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IndexPrivilegesCheck {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexPrivilegesCheck`].
@@ -336,6 +361,11 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(RequestBuilder) -> RequestBuilder<(), ()>) -> Request {
+        f(Self::builder()).build()
     }
 }
 

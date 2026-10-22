@@ -12,6 +12,18 @@ impl AcknowledgeState {
     pub fn builder() -> AcknowledgeStateBuilder {
         AcknowledgeStateBuilder::new()
     }
+
+    /// Creates a [`AcknowledgeState`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AcknowledgeStateBuilder,
+        ) -> AcknowledgeStateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> AcknowledgeState {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AcknowledgeState`].
@@ -144,6 +156,11 @@ impl Action {
     /// Creates a builder for [`Action`].
     pub fn builder() -> ActionBuilder {
         ActionBuilder::new()
+    }
+
+    /// Creates a [`Action`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(ActionBuilder) -> ActionBuilder) -> Action {
+        f(Self::builder()).build()
     }
 }
 
@@ -490,6 +507,13 @@ impl ActionStatus {
     pub fn builder() -> ActionStatusBuilder {
         ActionStatusBuilder::new()
     }
+
+    /// Creates a [`ActionStatus`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ActionStatusBuilder) -> ActionStatusBuilder<(crate::typed::builder::Set,)>,
+    ) -> ActionStatus {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ActionStatus`].
@@ -691,6 +715,18 @@ impl ActivationState {
     pub fn builder() -> ActivationStateBuilder {
         ActivationStateBuilder::new()
     }
+
+    /// Creates a [`ActivationState`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ActivationStateBuilder,
+        ) -> ActivationStateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ActivationState {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ActivationState`].
@@ -785,6 +821,19 @@ impl ActivationStatus {
     /// Creates a builder for [`ActivationStatus`].
     pub fn builder() -> ActivationStatusBuilder {
         ActivationStatusBuilder::new()
+    }
+
+    /// Creates a [`ActivationStatus`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ActivationStatusBuilder,
+        ) -> ActivationStatusBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ActivationStatus {
+        f(Self::builder()).build()
     }
 }
 
@@ -952,6 +1001,11 @@ impl AlwaysCondition {
     pub fn builder() -> AlwaysConditionBuilder {
         AlwaysConditionBuilder::new()
     }
+
+    /// Creates a [`AlwaysCondition`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(AlwaysConditionBuilder) -> AlwaysConditionBuilder) -> AlwaysCondition {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AlwaysCondition`].
@@ -991,6 +1045,15 @@ impl ArrayCompareCondition {
     /// Creates a builder for [`ArrayCompareCondition`].
     pub fn builder() -> ArrayCompareConditionBuilder {
         ArrayCompareConditionBuilder::new()
+    }
+
+    /// Creates a [`ArrayCompareCondition`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ArrayCompareConditionBuilder,
+        ) -> ArrayCompareConditionBuilder<(crate::typed::builder::Set,)>,
+    ) -> ArrayCompareCondition {
+        f(Self::builder()).build()
     }
 }
 
@@ -1084,6 +1147,18 @@ impl ArrayCompareOpParams {
     /// Creates a builder for [`ArrayCompareOpParams`].
     pub fn builder() -> ArrayCompareOpParamsBuilder {
         ArrayCompareOpParamsBuilder::new()
+    }
+
+    /// Creates a [`ArrayCompareOpParams`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ArrayCompareOpParamsBuilder,
+        ) -> ArrayCompareOpParamsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ArrayCompareOpParams {
+        f(Self::builder()).build()
     }
 }
 
@@ -1183,6 +1258,13 @@ impl ChainInput {
     /// Creates a builder for [`ChainInput`].
     pub fn builder() -> ChainInputBuilder {
         ChainInputBuilder::new()
+    }
+
+    /// Creates a [`ChainInput`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ChainInputBuilder) -> ChainInputBuilder<(crate::typed::builder::Set,)>,
+    ) -> ChainInput {
+        f(Self::builder()).build()
     }
 }
 
@@ -1299,6 +1381,15 @@ impl ConditionContainer {
     /// Creates a builder for [`ConditionContainer`].
     pub fn builder() -> ConditionContainerBuilder {
         ConditionContainerBuilder::new()
+    }
+
+    /// Creates a [`ConditionContainer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ConditionContainerBuilder,
+        ) -> ConditionContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> ConditionContainer {
+        f(Self::builder()).build()
     }
 }
 
@@ -1485,6 +1576,13 @@ impl DailySchedule {
     pub fn builder() -> DailyScheduleBuilder {
         DailyScheduleBuilder::new()
     }
+
+    /// Creates a [`DailySchedule`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DailyScheduleBuilder) -> DailyScheduleBuilder<(crate::typed::builder::Set,)>,
+    ) -> DailySchedule {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DailySchedule`].
@@ -1562,6 +1660,13 @@ impl DataEmailAttachment {
     /// Creates a builder for [`DataEmailAttachment`].
     pub fn builder() -> DataEmailAttachmentBuilder {
         DataEmailAttachmentBuilder::new()
+    }
+
+    /// Creates a [`DataEmailAttachment`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DataEmailAttachmentBuilder) -> DataEmailAttachmentBuilder,
+    ) -> DataEmailAttachment {
+        f(Self::builder()).build()
     }
 }
 
@@ -1751,6 +1856,16 @@ impl Email {
     /// Creates a builder for [`Email`].
     pub fn builder() -> EmailBuilder {
         EmailBuilder::new()
+    }
+
+    /// Creates a [`Email`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            EmailBuilder,
+        )
+            -> EmailBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> Email {
+        f(Self::builder()).build()
     }
 }
 
@@ -2129,6 +2244,16 @@ impl EmailAction {
     pub fn builder() -> EmailActionBuilder {
         EmailActionBuilder::new()
     }
+
+    /// Creates a [`EmailAction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            EmailActionBuilder,
+        )
+            -> EmailActionBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> EmailAction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`EmailAction`].
@@ -2435,6 +2560,15 @@ impl EmailAttachmentContainer {
     pub fn builder() -> EmailAttachmentContainerBuilder {
         EmailAttachmentContainerBuilder::new()
     }
+
+    /// Creates a [`EmailAttachmentContainer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            EmailAttachmentContainerBuilder,
+        ) -> EmailAttachmentContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> EmailAttachmentContainer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`EmailAttachmentContainer`].
@@ -2551,6 +2685,11 @@ impl EmailBody {
     pub fn builder() -> EmailBodyBuilder {
         EmailBodyBuilder::new()
     }
+
+    /// Creates a [`EmailBody`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(EmailBodyBuilder) -> EmailBodyBuilder) -> EmailBody {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`EmailBody`].
@@ -2636,6 +2775,13 @@ impl EmailResult {
     /// Creates a builder for [`EmailResult`].
     pub fn builder() -> EmailResultBuilder {
         EmailResultBuilder::new()
+    }
+
+    /// Creates a [`EmailResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(EmailResultBuilder) -> EmailResultBuilder<(crate::typed::builder::Set,)>,
+    ) -> EmailResult {
+        f(Self::builder()).build()
     }
 }
 
@@ -2774,6 +2920,19 @@ impl ExecutionResult {
     /// Creates a builder for [`ExecutionResult`].
     pub fn builder() -> ExecutionResultBuilder {
         ExecutionResultBuilder::new()
+    }
+
+    /// Creates a [`ExecutionResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ExecutionResultBuilder,
+        ) -> ExecutionResultBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ExecutionResult {
+        f(Self::builder()).build()
     }
 }
 
@@ -3042,6 +3201,19 @@ impl ExecutionResultAction {
     /// Creates a builder for [`ExecutionResultAction`].
     pub fn builder() -> ExecutionResultActionBuilder {
         ExecutionResultActionBuilder::new()
+    }
+
+    /// Creates a [`ExecutionResultAction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ExecutionResultActionBuilder,
+        ) -> ExecutionResultActionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ExecutionResultAction {
+        f(Self::builder()).build()
     }
 }
 
@@ -3501,6 +3673,19 @@ impl ExecutionResultCondition {
     pub fn builder() -> ExecutionResultConditionBuilder {
         ExecutionResultConditionBuilder::new()
     }
+
+    /// Creates a [`ExecutionResultCondition`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ExecutionResultConditionBuilder,
+        ) -> ExecutionResultConditionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ExecutionResultCondition {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ExecutionResultCondition`].
@@ -3707,6 +3892,15 @@ impl ExecutionResultConditionResolved {
     pub fn builder() -> ExecutionResultConditionResolvedBuilder {
         ExecutionResultConditionResolvedBuilder::new()
     }
+
+    /// Creates a [`ExecutionResultConditionResolved`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ExecutionResultConditionResolvedBuilder,
+        ) -> ExecutionResultConditionResolvedBuilder,
+    ) -> ExecutionResultConditionResolved {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ExecutionResultConditionResolved`].
@@ -3794,6 +3988,13 @@ impl ExecutionResultForeachAction {
     /// Creates a builder for [`ExecutionResultForeachAction`].
     pub fn builder() -> ExecutionResultForeachActionBuilder {
         ExecutionResultForeachActionBuilder::new()
+    }
+
+    /// Creates a [`ExecutionResultForeachAction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ExecutionResultForeachActionBuilder) -> ExecutionResultForeachActionBuilder,
+    ) -> ExecutionResultForeachAction {
+        f(Self::builder()).build()
     }
 }
 
@@ -4010,6 +4211,15 @@ impl ExecutionResultHttpInput {
     pub fn builder() -> ExecutionResultHttpInputBuilder {
         ExecutionResultHttpInputBuilder::new()
     }
+
+    /// Creates a [`ExecutionResultHttpInput`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ExecutionResultHttpInputBuilder,
+        ) -> ExecutionResultHttpInputBuilder<(crate::typed::builder::Set,)>,
+    ) -> ExecutionResultHttpInput {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ExecutionResultHttpInput`].
@@ -4119,6 +4329,18 @@ impl ExecutionResultInput {
     /// Creates a builder for [`ExecutionResultInput`].
     pub fn builder() -> ExecutionResultInputBuilder {
         ExecutionResultInputBuilder::new()
+    }
+
+    /// Creates a [`ExecutionResultInput`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ExecutionResultInputBuilder,
+        ) -> ExecutionResultInputBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ExecutionResultInput {
+        f(Self::builder()).build()
     }
 }
 
@@ -4378,6 +4600,15 @@ impl ExecutionResultSearchInput {
     pub fn builder() -> ExecutionResultSearchInputBuilder {
         ExecutionResultSearchInputBuilder::new()
     }
+
+    /// Creates a [`ExecutionResultSearchInput`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ExecutionResultSearchInputBuilder,
+        ) -> ExecutionResultSearchInputBuilder<(crate::typed::builder::Set,)>,
+    ) -> ExecutionResultSearchInput {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ExecutionResultSearchInput`].
@@ -4473,6 +4704,18 @@ impl ExecutionResultTransform {
     /// Creates a builder for [`ExecutionResultTransform`].
     pub fn builder() -> ExecutionResultTransformBuilder {
         ExecutionResultTransformBuilder::new()
+    }
+
+    /// Creates a [`ExecutionResultTransform`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ExecutionResultTransformBuilder,
+        ) -> ExecutionResultTransformBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ExecutionResultTransform {
+        f(Self::builder()).build()
     }
 }
 
@@ -4687,6 +4930,18 @@ impl ExecutionState {
     pub fn builder() -> ExecutionStateBuilder {
         ExecutionStateBuilder::new()
     }
+
+    /// Creates a [`ExecutionState`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ExecutionStateBuilder,
+        ) -> ExecutionStateBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ExecutionState {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ExecutionState`].
@@ -4820,6 +5075,18 @@ impl ExecutionThreadPool {
     pub fn builder() -> ExecutionThreadPoolBuilder {
         ExecutionThreadPoolBuilder::new()
     }
+
+    /// Creates a [`ExecutionThreadPool`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ExecutionThreadPoolBuilder,
+        ) -> ExecutionThreadPoolBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ExecutionThreadPool {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ExecutionThreadPool`].
@@ -4922,6 +5189,16 @@ impl HourAndMinute {
     pub fn builder() -> HourAndMinuteBuilder {
         HourAndMinuteBuilder::new()
     }
+
+    /// Creates a [`HourAndMinute`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HourAndMinuteBuilder,
+        )
+            -> HourAndMinuteBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> HourAndMinute {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HourAndMinute`].
@@ -5017,6 +5294,13 @@ impl HourlySchedule {
     pub fn builder() -> HourlyScheduleBuilder {
         HourlyScheduleBuilder::new()
     }
+
+    /// Creates a [`HourlySchedule`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(HourlyScheduleBuilder) -> HourlyScheduleBuilder<(crate::typed::builder::Set,)>,
+    ) -> HourlySchedule {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HourlySchedule`].
@@ -5090,6 +5374,13 @@ impl HttpEmailAttachment {
     /// Creates a builder for [`HttpEmailAttachment`].
     pub fn builder() -> HttpEmailAttachmentBuilder {
         HttpEmailAttachmentBuilder::new()
+    }
+
+    /// Creates a [`HttpEmailAttachment`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(HttpEmailAttachmentBuilder) -> HttpEmailAttachmentBuilder,
+    ) -> HttpEmailAttachment {
+        f(Self::builder()).build()
     }
 }
 
@@ -5185,6 +5476,11 @@ impl HttpInput {
     /// Creates a builder for [`HttpInput`].
     pub fn builder() -> HttpInputBuilder {
         HttpInputBuilder::new()
+    }
+
+    /// Creates a [`HttpInput`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(HttpInputBuilder) -> HttpInputBuilder) -> HttpInput {
+        f(Self::builder()).build()
     }
 }
 
@@ -5284,6 +5580,15 @@ impl HttpInputAuthentication {
     pub fn builder() -> HttpInputAuthenticationBuilder {
         HttpInputAuthenticationBuilder::new()
     }
+
+    /// Creates a [`HttpInputAuthentication`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HttpInputAuthenticationBuilder,
+        ) -> HttpInputAuthenticationBuilder<(crate::typed::builder::Set,)>,
+    ) -> HttpInputAuthentication {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HttpInputAuthentication`].
@@ -5368,6 +5673,18 @@ impl HttpInputBasicAuthentication {
     /// Creates a builder for [`HttpInputBasicAuthentication`].
     pub fn builder() -> HttpInputBasicAuthenticationBuilder {
         HttpInputBasicAuthenticationBuilder::new()
+    }
+
+    /// Creates a [`HttpInputBasicAuthentication`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HttpInputBasicAuthenticationBuilder,
+        ) -> HttpInputBasicAuthenticationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> HttpInputBasicAuthentication {
+        f(Self::builder()).build()
     }
 }
 
@@ -5495,6 +5812,18 @@ impl HttpInputProxy {
     pub fn builder() -> HttpInputProxyBuilder {
         HttpInputProxyBuilder::new()
     }
+
+    /// Creates a [`HttpInputProxy`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HttpInputProxyBuilder,
+        ) -> HttpInputProxyBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> HttpInputProxy {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HttpInputProxy`].
@@ -5611,6 +5940,13 @@ impl HttpInputRequestDefinition {
     /// Creates a builder for [`HttpInputRequestDefinition`].
     pub fn builder() -> HttpInputRequestDefinitionBuilder {
         HttpInputRequestDefinitionBuilder::new()
+    }
+
+    /// Creates a [`HttpInputRequestDefinition`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(HttpInputRequestDefinitionBuilder) -> HttpInputRequestDefinitionBuilder,
+    ) -> HttpInputRequestDefinition {
+        f(Self::builder()).build()
     }
 }
 
@@ -5901,6 +6237,13 @@ impl HttpInputRequestResult {
     pub fn builder() -> HttpInputRequestResultBuilder {
         HttpInputRequestResultBuilder::new()
     }
+
+    /// Creates a [`HttpInputRequestResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(HttpInputRequestResultBuilder) -> HttpInputRequestResultBuilder,
+    ) -> HttpInputRequestResult {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HttpInputRequestResult`].
@@ -6167,6 +6510,19 @@ impl HttpInputResponseResult {
     pub fn builder() -> HttpInputResponseResultBuilder {
         HttpInputResponseResultBuilder::new()
     }
+
+    /// Creates a [`HttpInputResponseResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HttpInputResponseResultBuilder,
+        ) -> HttpInputResponseResultBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> HttpInputResponseResult {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HttpInputResponseResult`].
@@ -6333,6 +6689,11 @@ impl IndexAction {
     pub fn builder() -> IndexActionBuilder {
         IndexActionBuilder::new()
     }
+
+    /// Creates a [`IndexAction`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(IndexActionBuilder) -> IndexActionBuilder) -> IndexAction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexAction`].
@@ -6492,6 +6853,13 @@ impl IndexResult {
     pub fn builder() -> IndexResultBuilder {
         IndexResultBuilder::new()
     }
+
+    /// Creates a [`IndexResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IndexResultBuilder) -> IndexResultBuilder<(crate::typed::builder::Set,)>,
+    ) -> IndexResult {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`IndexResult`].
@@ -6610,6 +6978,18 @@ impl IndexResultRequestSummary {
     /// Creates a builder for [`IndexResultRequestSummary`].
     pub fn builder() -> IndexResultRequestSummaryBuilder {
         IndexResultRequestSummaryBuilder::new()
+    }
+
+    /// Creates a [`IndexResultRequestSummary`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndexResultRequestSummaryBuilder,
+        ) -> IndexResultRequestSummaryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IndexResultRequestSummary {
+        f(Self::builder()).build()
     }
 }
 
@@ -6759,6 +7139,18 @@ impl IndexResultSummary {
     /// Creates a builder for [`IndexResultSummary`].
     pub fn builder() -> IndexResultSummaryBuilder {
         IndexResultSummaryBuilder::new()
+    }
+
+    /// Creates a [`IndexResultSummary`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IndexResultSummaryBuilder,
+        ) -> IndexResultSummaryBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> IndexResultSummary {
+        f(Self::builder()).build()
     }
 }
 
@@ -6997,6 +7389,13 @@ impl InputContainer {
     pub fn builder() -> InputContainerBuilder {
         InputContainerBuilder::new()
     }
+
+    /// Creates a [`InputContainer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(InputContainerBuilder) -> InputContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> InputContainer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InputContainer`].
@@ -7155,6 +7554,13 @@ impl LoggingAction {
     pub fn builder() -> LoggingActionBuilder {
         LoggingActionBuilder::new()
     }
+
+    /// Creates a [`LoggingAction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(LoggingActionBuilder) -> LoggingActionBuilder<(crate::typed::builder::Set,)>,
+    ) -> LoggingAction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`LoggingAction`].
@@ -7254,6 +7660,13 @@ impl LoggingResult {
     pub fn builder() -> LoggingResultBuilder {
         LoggingResultBuilder::new()
     }
+
+    /// Creates a [`LoggingResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(LoggingResultBuilder) -> LoggingResultBuilder<(crate::typed::builder::Set,)>,
+    ) -> LoggingResult {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`LoggingResult`].
@@ -7349,6 +7762,11 @@ impl NeverCondition {
     pub fn builder() -> NeverConditionBuilder {
         NeverConditionBuilder::new()
     }
+
+    /// Creates a [`NeverCondition`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(NeverConditionBuilder) -> NeverConditionBuilder) -> NeverCondition {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`NeverCondition`].
@@ -7399,6 +7817,19 @@ impl PagerDutyAction {
     /// Creates a builder for [`PagerDutyAction`].
     pub fn builder() -> PagerDutyActionBuilder {
         PagerDutyActionBuilder::new()
+    }
+
+    /// Creates a [`PagerDutyAction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PagerDutyActionBuilder,
+        ) -> PagerDutyActionBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> PagerDutyAction {
+        f(Self::builder()).build()
     }
 }
 
@@ -7675,6 +8106,15 @@ impl PagerDutyContext {
     pub fn builder() -> PagerDutyContextBuilder {
         PagerDutyContextBuilder::new()
     }
+
+    /// Creates a [`PagerDutyContext`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PagerDutyContextBuilder,
+        ) -> PagerDutyContextBuilder<(crate::typed::builder::Set,)>,
+    ) -> PagerDutyContext {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PagerDutyContext`].
@@ -7795,6 +8235,19 @@ impl PagerDutyEvent {
     /// Creates a builder for [`PagerDutyEvent`].
     pub fn builder() -> PagerDutyEventBuilder {
         PagerDutyEventBuilder::new()
+    }
+
+    /// Creates a [`PagerDutyEvent`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PagerDutyEventBuilder,
+        ) -> PagerDutyEventBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> PagerDutyEvent {
+        f(Self::builder()).build()
     }
 }
 
@@ -8070,6 +8523,13 @@ impl PagerDutyEventProxy {
     pub fn builder() -> PagerDutyEventProxyBuilder {
         PagerDutyEventProxyBuilder::new()
     }
+
+    /// Creates a [`PagerDutyEventProxy`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(PagerDutyEventProxyBuilder) -> PagerDutyEventProxyBuilder,
+    ) -> PagerDutyEventProxy {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PagerDutyEventProxy`].
@@ -8153,6 +8613,13 @@ impl PagerDutyResult {
     /// Creates a builder for [`PagerDutyResult`].
     pub fn builder() -> PagerDutyResultBuilder {
         PagerDutyResultBuilder::new()
+    }
+
+    /// Creates a [`PagerDutyResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(PagerDutyResultBuilder) -> PagerDutyResultBuilder<(crate::typed::builder::Set,)>,
+    ) -> PagerDutyResult {
+        f(Self::builder()).build()
     }
 }
 
@@ -8325,6 +8792,13 @@ impl QueryWatch {
     pub fn builder() -> QueryWatchBuilder {
         QueryWatchBuilder::new()
     }
+
+    /// Creates a [`QueryWatch`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(QueryWatchBuilder) -> QueryWatchBuilder<(crate::typed::builder::Set,)>,
+    ) -> QueryWatch {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`QueryWatch`].
@@ -8489,6 +8963,15 @@ impl ReportingEmailAttachment {
     /// Creates a builder for [`ReportingEmailAttachment`].
     pub fn builder() -> ReportingEmailAttachmentBuilder {
         ReportingEmailAttachmentBuilder::new()
+    }
+
+    /// Creates a [`ReportingEmailAttachment`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ReportingEmailAttachmentBuilder,
+        ) -> ReportingEmailAttachmentBuilder<(crate::typed::builder::Set,)>,
+    ) -> ReportingEmailAttachment {
+        f(Self::builder()).build()
     }
 }
 
@@ -8683,6 +9166,15 @@ impl ScheduleContainer {
     /// Creates a builder for [`ScheduleContainer`].
     pub fn builder() -> ScheduleContainerBuilder {
         ScheduleContainerBuilder::new()
+    }
+
+    /// Creates a [`ScheduleContainer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ScheduleContainerBuilder,
+        ) -> ScheduleContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> ScheduleContainer {
+        f(Self::builder()).build()
     }
 }
 
@@ -8915,6 +9407,15 @@ impl ScheduleTriggerEvent {
     pub fn builder() -> ScheduleTriggerEventBuilder {
         ScheduleTriggerEventBuilder::new()
     }
+
+    /// Creates a [`ScheduleTriggerEvent`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ScheduleTriggerEventBuilder,
+        ) -> ScheduleTriggerEventBuilder<(crate::typed::builder::Set,)>,
+    ) -> ScheduleTriggerEvent {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ScheduleTriggerEvent`].
@@ -9005,6 +9506,11 @@ impl ScriptCondition {
     /// Creates a builder for [`ScriptCondition`].
     pub fn builder() -> ScriptConditionBuilder {
         ScriptConditionBuilder::new()
+    }
+
+    /// Creates a [`ScriptCondition`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(ScriptConditionBuilder) -> ScriptConditionBuilder) -> ScriptCondition {
+        f(Self::builder()).build()
     }
 }
 
@@ -9123,6 +9629,13 @@ impl SearchInput {
     /// Creates a builder for [`SearchInput`].
     pub fn builder() -> SearchInputBuilder {
         SearchInputBuilder::new()
+    }
+
+    /// Creates a [`SearchInput`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SearchInputBuilder) -> SearchInputBuilder<(crate::typed::builder::Set,)>,
+    ) -> SearchInput {
+        f(Self::builder()).build()
     }
 }
 
@@ -9249,6 +9762,13 @@ impl SearchInputRequestDefinition {
     /// Creates a builder for [`SearchInputRequestDefinition`].
     pub fn builder() -> SearchInputRequestDefinitionBuilder {
         SearchInputRequestDefinitionBuilder::new()
+    }
+
+    /// Creates a [`SearchInputRequestDefinition`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SearchInputRequestDefinitionBuilder) -> SearchInputRequestDefinitionBuilder,
+    ) -> SearchInputRequestDefinition {
+        f(Self::builder()).build()
     }
 }
 
@@ -9432,6 +9952,13 @@ impl SearchTemplateRequestBody {
     pub fn builder() -> SearchTemplateRequestBodyBuilder {
         SearchTemplateRequestBodyBuilder::new()
     }
+
+    /// Creates a [`SearchTemplateRequestBody`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SearchTemplateRequestBodyBuilder) -> SearchTemplateRequestBodyBuilder,
+    ) -> SearchTemplateRequestBody {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SearchTemplateRequestBody`].
@@ -9582,6 +10109,19 @@ impl SimulatedActions {
     /// Creates a builder for [`SimulatedActions`].
     pub fn builder() -> SimulatedActionsBuilder {
         SimulatedActionsBuilder::new()
+    }
+
+    /// Creates a [`SimulatedActions`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SimulatedActionsBuilder,
+        ) -> SimulatedActionsBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SimulatedActions {
+        f(Self::builder()).build()
     }
 }
 
@@ -9754,6 +10294,13 @@ impl SlackAction {
     pub fn builder() -> SlackActionBuilder {
         SlackActionBuilder::new()
     }
+
+    /// Creates a [`SlackAction`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SlackActionBuilder) -> SlackActionBuilder<(crate::typed::builder::Set,)>,
+    ) -> SlackAction {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SlackAction`].
@@ -9879,6 +10426,18 @@ impl SlackAttachment {
     /// Creates a builder for [`SlackAttachment`].
     pub fn builder() -> SlackAttachmentBuilder {
         SlackAttachmentBuilder::new()
+    }
+
+    /// Creates a [`SlackAttachment`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SlackAttachmentBuilder,
+        ) -> SlackAttachmentBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SlackAttachment {
+        f(Self::builder()).build()
     }
 }
 
@@ -10195,6 +10754,19 @@ impl SlackAttachmentField {
     pub fn builder() -> SlackAttachmentFieldBuilder {
         SlackAttachmentFieldBuilder::new()
     }
+
+    /// Creates a [`SlackAttachmentField`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SlackAttachmentFieldBuilder,
+        ) -> SlackAttachmentFieldBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SlackAttachmentField {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SlackAttachmentField`].
@@ -10351,6 +10923,18 @@ impl SlackDynamicAttachment {
     pub fn builder() -> SlackDynamicAttachmentBuilder {
         SlackDynamicAttachmentBuilder::new()
     }
+
+    /// Creates a [`SlackDynamicAttachment`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SlackDynamicAttachmentBuilder,
+        ) -> SlackDynamicAttachmentBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SlackDynamicAttachment {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SlackDynamicAttachment`].
@@ -10469,6 +11053,20 @@ impl SlackMessage {
     /// Creates a builder for [`SlackMessage`].
     pub fn builder() -> SlackMessageBuilder {
         SlackMessageBuilder::new()
+    }
+
+    /// Creates a [`SlackMessage`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SlackMessageBuilder,
+        ) -> SlackMessageBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SlackMessage {
+        f(Self::builder()).build()
     }
 }
 
@@ -10705,6 +11303,13 @@ impl SlackResult {
     pub fn builder() -> SlackResultBuilder {
         SlackResultBuilder::new()
     }
+
+    /// Creates a [`SlackResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SlackResultBuilder) -> SlackResultBuilder<(crate::typed::builder::Set,)>,
+    ) -> SlackResult {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SlackResult`].
@@ -10805,6 +11410,16 @@ impl ThrottleState {
     pub fn builder() -> ThrottleStateBuilder {
         ThrottleStateBuilder::new()
     }
+
+    /// Creates a [`ThrottleState`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ThrottleStateBuilder,
+        )
+            -> ThrottleStateBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> ThrottleState {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ThrottleState`].
@@ -10901,6 +11516,16 @@ impl TimeOfMonth {
     pub fn builder() -> TimeOfMonthBuilder {
         TimeOfMonthBuilder::new()
     }
+
+    /// Creates a [`TimeOfMonth`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TimeOfMonthBuilder,
+        )
+            -> TimeOfMonthBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> TimeOfMonth {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TimeOfMonth`].
@@ -10995,6 +11620,16 @@ impl TimeOfWeek {
     /// Creates a builder for [`TimeOfWeek`].
     pub fn builder() -> TimeOfWeekBuilder {
         TimeOfWeekBuilder::new()
+    }
+
+    /// Creates a [`TimeOfWeek`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TimeOfWeekBuilder,
+        )
+            -> TimeOfWeekBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> TimeOfWeek {
+        f(Self::builder()).build()
     }
 }
 
@@ -11091,6 +11726,19 @@ impl TimeOfYear {
     /// Creates a builder for [`TimeOfYear`].
     pub fn builder() -> TimeOfYearBuilder {
         TimeOfYearBuilder::new()
+    }
+
+    /// Creates a [`TimeOfYear`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TimeOfYearBuilder,
+        ) -> TimeOfYearBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> TimeOfYear {
+        f(Self::builder()).build()
     }
 }
 
@@ -11260,6 +11908,15 @@ impl TriggerContainer {
     pub fn builder() -> TriggerContainerBuilder {
         TriggerContainerBuilder::new()
     }
+
+    /// Creates a [`TriggerContainer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TriggerContainerBuilder,
+        ) -> TriggerContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> TriggerContainer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TriggerContainer`].
@@ -11350,6 +12007,15 @@ impl TriggerEventContainer {
     pub fn builder() -> TriggerEventContainerBuilder {
         TriggerEventContainerBuilder::new()
     }
+
+    /// Creates a [`TriggerEventContainer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TriggerEventContainerBuilder,
+        ) -> TriggerEventContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> TriggerEventContainer {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TriggerEventContainer`].
@@ -11428,6 +12094,19 @@ impl TriggerEventResult {
     /// Creates a builder for [`TriggerEventResult`].
     pub fn builder() -> TriggerEventResultBuilder {
         TriggerEventResultBuilder::new()
+    }
+
+    /// Creates a [`TriggerEventResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            TriggerEventResultBuilder,
+        ) -> TriggerEventResultBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> TriggerEventResult {
+        f(Self::builder()).build()
     }
 }
 
@@ -11607,6 +12286,19 @@ impl Watch {
     /// Creates a builder for [`Watch`].
     pub fn builder() -> WatchBuilder {
         WatchBuilder::new()
+    }
+
+    /// Creates a [`Watch`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            WatchBuilder,
+        ) -> WatchBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> Watch {
+        f(Self::builder()).build()
     }
 }
 
@@ -11935,6 +12627,19 @@ impl WatchStatus {
     pub fn builder() -> WatchStatusBuilder {
         WatchStatusBuilder::new()
     }
+
+    /// Creates a [`WatchStatus`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            WatchStatusBuilder,
+        ) -> WatchStatusBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> WatchStatus {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`WatchStatus`].
@@ -12175,6 +12880,11 @@ impl WebhookAction {
     /// Creates a builder for [`WebhookAction`].
     pub fn builder() -> WebhookActionBuilder {
         WebhookActionBuilder::new()
+    }
+
+    /// Creates a [`WebhookAction`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(WebhookActionBuilder) -> WebhookActionBuilder) -> WebhookAction {
+        f(Self::builder()).build()
     }
 }
 
@@ -12441,6 +13151,13 @@ impl WebhookResult {
     /// Creates a builder for [`WebhookResult`].
     pub fn builder() -> WebhookResultBuilder {
         WebhookResultBuilder::new()
+    }
+
+    /// Creates a [`WebhookResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(WebhookResultBuilder) -> WebhookResultBuilder<(crate::typed::builder::Set,)>,
+    ) -> WebhookResult {
+        f(Self::builder()).build()
     }
 }
 

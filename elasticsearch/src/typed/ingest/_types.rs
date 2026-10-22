@@ -67,6 +67,13 @@ impl AppendProcessor {
     pub fn builder() -> AppendProcessorBuilder {
         AppendProcessorBuilder::new()
     }
+
+    /// Creates a [`AppendProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(AppendProcessorBuilder) -> AppendProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> AppendProcessor {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`AppendProcessor`].
@@ -376,6 +383,15 @@ impl AttachmentProcessor {
     /// Creates a builder for [`AttachmentProcessor`].
     pub fn builder() -> AttachmentProcessorBuilder {
         AttachmentProcessorBuilder::new()
+    }
+
+    /// Creates a [`AttachmentProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            AttachmentProcessorBuilder,
+        ) -> AttachmentProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> AttachmentProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -722,6 +738,13 @@ impl BytesProcessor {
     pub fn builder() -> BytesProcessorBuilder {
         BytesProcessorBuilder::new()
     }
+
+    /// Creates a [`BytesProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(BytesProcessorBuilder) -> BytesProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> BytesProcessor {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`BytesProcessor`].
@@ -963,6 +986,13 @@ impl CefProcessor {
     /// Creates a builder for [`CefProcessor`].
     pub fn builder() -> CefProcessorBuilder {
         CefProcessorBuilder::new()
+    }
+
+    /// Creates a [`CefProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CefProcessorBuilder) -> CefProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> CefProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -1235,6 +1265,19 @@ impl CircleProcessor {
     /// Creates a builder for [`CircleProcessor`].
     pub fn builder() -> CircleProcessorBuilder {
         CircleProcessorBuilder::new()
+    }
+
+    /// Creates a [`CircleProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CircleProcessorBuilder,
+        ) -> CircleProcessorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> CircleProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -1589,6 +1632,13 @@ impl CommunityIDProcessor {
     pub fn builder() -> CommunityIDProcessorBuilder {
         CommunityIDProcessorBuilder::new()
     }
+
+    /// Creates a [`CommunityIDProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(CommunityIDProcessorBuilder) -> CommunityIDProcessorBuilder,
+    ) -> CommunityIDProcessor {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`CommunityIDProcessor`].
@@ -1929,6 +1979,18 @@ impl ConvertProcessor {
     pub fn builder() -> ConvertProcessorBuilder {
         ConvertProcessorBuilder::new()
     }
+
+    /// Creates a [`ConvertProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ConvertProcessorBuilder,
+        ) -> ConvertProcessorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ConvertProcessor {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ConvertProcessor`].
@@ -2224,6 +2286,16 @@ impl CsvProcessor {
     /// Creates a builder for [`CsvProcessor`].
     pub fn builder() -> CsvProcessorBuilder {
         CsvProcessorBuilder::new()
+    }
+
+    /// Creates a [`CsvProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            CsvProcessorBuilder,
+        )
+            -> CsvProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> CsvProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -2538,6 +2610,18 @@ impl DatabaseConfiguration {
     pub fn builder() -> DatabaseConfigurationBuilder {
         DatabaseConfigurationBuilder::new()
     }
+
+    /// Creates a [`DatabaseConfiguration`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DatabaseConfigurationBuilder,
+        ) -> DatabaseConfigurationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DatabaseConfiguration {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DatabaseConfiguration`].
@@ -2702,6 +2786,18 @@ impl DatabaseConfigurationFull {
     /// Creates a builder for [`DatabaseConfigurationFull`].
     pub fn builder() -> DatabaseConfigurationFullBuilder {
         DatabaseConfigurationFullBuilder::new()
+    }
+
+    /// Creates a [`DatabaseConfigurationFull`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DatabaseConfigurationFullBuilder,
+        ) -> DatabaseConfigurationFullBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DatabaseConfigurationFull {
+        f(Self::builder()).build()
     }
 }
 
@@ -2905,6 +3001,18 @@ impl DateIndexNameProcessor {
     /// Creates a builder for [`DateIndexNameProcessor`].
     pub fn builder() -> DateIndexNameProcessorBuilder {
         DateIndexNameProcessorBuilder::new()
+    }
+
+    /// Creates a [`DateIndexNameProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DateIndexNameProcessorBuilder,
+        ) -> DateIndexNameProcessorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DateIndexNameProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -3245,6 +3353,16 @@ impl DateProcessor {
     pub fn builder() -> DateProcessorBuilder {
         DateProcessorBuilder::new()
     }
+
+    /// Creates a [`DateProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DateProcessorBuilder,
+        )
+            -> DateProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> DateProcessor {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DateProcessor`].
@@ -3544,6 +3662,18 @@ impl DissectProcessor {
     pub fn builder() -> DissectProcessorBuilder {
         DissectProcessorBuilder::new()
     }
+
+    /// Creates a [`DissectProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DissectProcessorBuilder,
+        ) -> DissectProcessorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DissectProcessor {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DissectProcessor`].
@@ -3791,6 +3921,13 @@ impl Document {
     pub fn builder() -> DocumentBuilder {
         DocumentBuilder::new()
     }
+
+    /// Creates a [`Document`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(DocumentBuilder) -> DocumentBuilder<(crate::typed::builder::Set,)>,
+    ) -> Document {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Document`].
@@ -3918,6 +4055,20 @@ impl DocumentSimulation {
     /// Creates a builder for [`DocumentSimulation`].
     pub fn builder() -> DocumentSimulationBuilder {
         DocumentSimulationBuilder::new()
+    }
+
+    /// Creates a [`DocumentSimulation`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DocumentSimulationBuilder,
+        ) -> DocumentSimulationBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> DocumentSimulation {
+        f(Self::builder()).build()
     }
 }
 
@@ -4220,6 +4371,15 @@ impl DotExpanderProcessor {
     pub fn builder() -> DotExpanderProcessorBuilder {
         DotExpanderProcessorBuilder::new()
     }
+
+    /// Creates a [`DotExpanderProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            DotExpanderProcessorBuilder,
+        ) -> DotExpanderProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> DotExpanderProcessor {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DotExpanderProcessor`].
@@ -4450,6 +4610,11 @@ impl DropProcessor {
     pub fn builder() -> DropProcessorBuilder {
         DropProcessorBuilder::new()
     }
+
+    /// Creates a [`DropProcessor`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(DropProcessorBuilder) -> DropProcessorBuilder) -> DropProcessor {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`DropProcessor`].
@@ -4632,6 +4797,19 @@ impl EnrichProcessor {
     /// Creates a builder for [`EnrichProcessor`].
     pub fn builder() -> EnrichProcessorBuilder {
         EnrichProcessorBuilder::new()
+    }
+
+    /// Creates a [`EnrichProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            EnrichProcessorBuilder,
+        ) -> EnrichProcessorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> EnrichProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -4994,6 +5172,13 @@ impl FailProcessor {
     pub fn builder() -> FailProcessorBuilder {
         FailProcessorBuilder::new()
     }
+
+    /// Creates a [`FailProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(FailProcessorBuilder) -> FailProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> FailProcessor {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`FailProcessor`].
@@ -5227,6 +5412,15 @@ impl FingerprintProcessor {
     /// Creates a builder for [`FingerprintProcessor`].
     pub fn builder() -> FingerprintProcessorBuilder {
         FingerprintProcessorBuilder::new()
+    }
+
+    /// Creates a [`FingerprintProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            FingerprintProcessorBuilder,
+        ) -> FingerprintProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> FingerprintProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -5496,6 +5690,18 @@ impl ForeachProcessor {
     /// Creates a builder for [`ForeachProcessor`].
     pub fn builder() -> ForeachProcessorBuilder {
         ForeachProcessorBuilder::new()
+    }
+
+    /// Creates a [`ForeachProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ForeachProcessorBuilder,
+        ) -> ForeachProcessorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> ForeachProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -5770,6 +5976,18 @@ impl GeoGridProcessor {
     /// Creates a builder for [`GeoGridProcessor`].
     pub fn builder() -> GeoGridProcessorBuilder {
         GeoGridProcessorBuilder::new()
+    }
+
+    /// Creates a [`GeoGridProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GeoGridProcessorBuilder,
+        ) -> GeoGridProcessorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> GeoGridProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -6145,6 +6363,13 @@ impl GeoIpProcessor {
     pub fn builder() -> GeoIpProcessorBuilder {
         GeoIpProcessorBuilder::new()
     }
+
+    /// Creates a [`GeoIpProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(GeoIpProcessorBuilder) -> GeoIpProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> GeoIpProcessor {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GeoIpProcessor`].
@@ -6465,6 +6690,16 @@ impl GrokProcessor {
     /// Creates a builder for [`GrokProcessor`].
     pub fn builder() -> GrokProcessorBuilder {
         GrokProcessorBuilder::new()
+    }
+
+    /// Creates a [`GrokProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GrokProcessorBuilder,
+        )
+            -> GrokProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> GrokProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -6801,6 +7036,19 @@ impl GsubProcessor {
     pub fn builder() -> GsubProcessorBuilder {
         GsubProcessorBuilder::new()
     }
+
+    /// Creates a [`GsubProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            GsubProcessorBuilder,
+        ) -> GsubProcessorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> GsubProcessor {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`GsubProcessor`].
@@ -7125,6 +7373,15 @@ impl HtmlStripProcessor {
     pub fn builder() -> HtmlStripProcessorBuilder {
         HtmlStripProcessorBuilder::new()
     }
+
+    /// Creates a [`HtmlStripProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            HtmlStripProcessorBuilder,
+        ) -> HtmlStripProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> HtmlStripProcessor {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`HtmlStripProcessor`].
@@ -7365,6 +7622,13 @@ impl InferenceConfig {
     pub fn builder() -> InferenceConfigBuilder {
         InferenceConfigBuilder::new()
     }
+
+    /// Creates a [`InferenceConfig`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(InferenceConfigBuilder) -> InferenceConfigBuilder<(crate::typed::builder::Set,)>,
+    ) -> InferenceConfig {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InferenceConfig`].
@@ -7473,6 +7737,13 @@ impl InferenceConfigClassification {
     /// Creates a builder for [`InferenceConfigClassification`].
     pub fn builder() -> InferenceConfigClassificationBuilder {
         InferenceConfigClassificationBuilder::new()
+    }
+
+    /// Creates a [`InferenceConfigClassification`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(InferenceConfigClassificationBuilder) -> InferenceConfigClassificationBuilder,
+    ) -> InferenceConfigClassification {
+        f(Self::builder()).build()
     }
 }
 
@@ -7601,6 +7872,13 @@ impl InferenceConfigRegression {
     pub fn builder() -> InferenceConfigRegressionBuilder {
         InferenceConfigRegressionBuilder::new()
     }
+
+    /// Creates a [`InferenceConfigRegression`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(InferenceConfigRegressionBuilder) -> InferenceConfigRegressionBuilder,
+    ) -> InferenceConfigRegression {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`InferenceConfigRegression`].
@@ -7726,6 +8004,15 @@ impl InferenceProcessor {
     /// Creates a builder for [`InferenceProcessor`].
     pub fn builder() -> InferenceProcessorBuilder {
         InferenceProcessorBuilder::new()
+    }
+
+    /// Creates a [`InferenceProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InferenceProcessorBuilder,
+        ) -> InferenceProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> InferenceProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -8019,6 +8306,13 @@ impl Ingest {
     pub fn builder() -> IngestBuilder {
         IngestBuilder::new()
     }
+
+    /// Creates a [`Ingest`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(IngestBuilder) -> IngestBuilder<(crate::typed::builder::Set,)>,
+    ) -> Ingest {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Ingest`].
@@ -8126,6 +8420,16 @@ impl InputConfig {
     /// Creates a builder for [`InputConfig`].
     pub fn builder() -> InputConfigBuilder {
         InputConfigBuilder::new()
+    }
+
+    /// Creates a [`InputConfig`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            InputConfigBuilder,
+        )
+            -> InputConfigBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> InputConfig {
+        f(Self::builder()).build()
     }
 }
 
@@ -8257,6 +8561,15 @@ impl IpLocationProcessor {
     /// Creates a builder for [`IpLocationProcessor`].
     pub fn builder() -> IpLocationProcessorBuilder {
         IpLocationProcessorBuilder::new()
+    }
+
+    /// Creates a [`IpLocationProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            IpLocationProcessorBuilder,
+        ) -> IpLocationProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> IpLocationProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -8539,6 +8852,11 @@ impl Ipinfo {
     pub fn builder() -> IpinfoBuilder {
         IpinfoBuilder::new()
     }
+
+    /// Creates a [`Ipinfo`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(IpinfoBuilder) -> IpinfoBuilder) -> Ipinfo {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Ipinfo`].
@@ -8599,6 +8917,16 @@ impl JoinProcessor {
     /// Creates a builder for [`JoinProcessor`].
     pub fn builder() -> JoinProcessorBuilder {
         JoinProcessorBuilder::new()
+    }
+
+    /// Creates a [`JoinProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            JoinProcessorBuilder,
+        )
+            -> JoinProcessorBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> JoinProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -8856,6 +9184,13 @@ impl JsonProcessor {
     /// Creates a builder for [`JsonProcessor`].
     pub fn builder() -> JsonProcessorBuilder {
         JsonProcessorBuilder::new()
+    }
+
+    /// Creates a [`JsonProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(JsonProcessorBuilder) -> JsonProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> JsonProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -9169,6 +9504,19 @@ impl KeyValueProcessor {
     /// Creates a builder for [`KeyValueProcessor`].
     pub fn builder() -> KeyValueProcessorBuilder {
         KeyValueProcessorBuilder::new()
+    }
+
+    /// Creates a [`KeyValueProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            KeyValueProcessorBuilder,
+        ) -> KeyValueProcessorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> KeyValueProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -9584,6 +9932,13 @@ impl Local {
     pub fn builder() -> LocalBuilder {
         LocalBuilder::new()
     }
+
+    /// Creates a [`Local`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(LocalBuilder) -> LocalBuilder<(crate::typed::builder::Set,)>,
+    ) -> Local {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Local`].
@@ -9674,6 +10029,15 @@ impl LowercaseProcessor {
     /// Creates a builder for [`LowercaseProcessor`].
     pub fn builder() -> LowercaseProcessorBuilder {
         LowercaseProcessorBuilder::new()
+    }
+
+    /// Creates a [`LowercaseProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            LowercaseProcessorBuilder,
+        ) -> LowercaseProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> LowercaseProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -9886,6 +10250,13 @@ impl Maxmind {
     pub fn builder() -> MaxmindBuilder {
         MaxmindBuilder::new()
     }
+
+    /// Creates a [`Maxmind`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(MaxmindBuilder) -> MaxmindBuilder<(crate::typed::builder::Set,)>,
+    ) -> Maxmind {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Maxmind`].
@@ -9993,6 +10364,13 @@ impl NetworkDirectionProcessor {
     /// Creates a builder for [`NetworkDirectionProcessor`].
     pub fn builder() -> NetworkDirectionProcessorBuilder {
         NetworkDirectionProcessorBuilder::new()
+    }
+
+    /// Creates a [`NetworkDirectionProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(NetworkDirectionProcessorBuilder) -> NetworkDirectionProcessorBuilder,
+    ) -> NetworkDirectionProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -10280,6 +10658,11 @@ impl Pipeline {
     pub fn builder() -> PipelineBuilder {
         PipelineBuilder::new()
     }
+
+    /// Creates a [`Pipeline`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(PipelineBuilder) -> PipelineBuilder) -> Pipeline {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Pipeline`].
@@ -10551,6 +10934,13 @@ impl PipelineConfig {
     pub fn builder() -> PipelineConfigBuilder {
         PipelineConfigBuilder::new()
     }
+
+    /// Creates a [`PipelineConfig`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(PipelineConfigBuilder) -> PipelineConfigBuilder<(crate::typed::builder::Set,)>,
+    ) -> PipelineConfig {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PipelineConfig`].
@@ -10675,6 +11065,15 @@ impl PipelineProcessor {
     /// Creates a builder for [`PipelineProcessor`].
     pub fn builder() -> PipelineProcessorBuilder {
         PipelineProcessorBuilder::new()
+    }
+
+    /// Creates a [`PipelineProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            PipelineProcessorBuilder,
+        ) -> PipelineProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> PipelineProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -10884,6 +11283,13 @@ impl PipelineProcessorResult {
     pub fn builder() -> PipelineProcessorResultBuilder {
         PipelineProcessorResultBuilder::new()
     }
+
+    /// Creates a [`PipelineProcessorResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(PipelineProcessorResultBuilder) -> PipelineProcessorResultBuilder,
+    ) -> PipelineProcessorResult {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`PipelineProcessorResult`].
@@ -11088,6 +11494,11 @@ impl ProcessorBase {
     /// Creates a builder for [`ProcessorBase`].
     pub fn builder() -> ProcessorBaseBuilder {
         ProcessorBaseBuilder::new()
+    }
+
+    /// Creates a [`ProcessorBase`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(ProcessorBaseBuilder) -> ProcessorBaseBuilder) -> ProcessorBase {
+        f(Self::builder()).build()
     }
 }
 
@@ -12072,6 +12483,15 @@ impl ProcessorContainer {
     /// Creates a builder for [`ProcessorContainer`].
     pub fn builder() -> ProcessorContainerBuilder {
         ProcessorContainerBuilder::new()
+    }
+
+    /// Creates a [`ProcessorContainer`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            ProcessorContainerBuilder,
+        ) -> ProcessorContainerBuilder<(crate::typed::builder::Set,)>,
+    ) -> ProcessorContainer {
+        f(Self::builder()).build()
     }
 }
 
@@ -13110,6 +13530,13 @@ impl Redact {
     pub fn builder() -> RedactBuilder {
         RedactBuilder::new()
     }
+
+    /// Creates a [`Redact`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RedactBuilder) -> RedactBuilder<(crate::typed::builder::Set,)>,
+    ) -> Redact {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`Redact`].
@@ -13213,6 +13640,18 @@ impl RedactProcessor {
     /// Creates a builder for [`RedactProcessor`].
     pub fn builder() -> RedactProcessorBuilder {
         RedactProcessorBuilder::new()
+    }
+
+    /// Creates a [`RedactProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RedactProcessorBuilder,
+        ) -> RedactProcessorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RedactProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -13559,6 +13998,15 @@ impl RegisteredDomainProcessor {
     pub fn builder() -> RegisteredDomainProcessorBuilder {
         RegisteredDomainProcessorBuilder::new()
     }
+
+    /// Creates a [`RegisteredDomainProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RegisteredDomainProcessorBuilder,
+        ) -> RegisteredDomainProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> RegisteredDomainProcessor {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RegisteredDomainProcessor`].
@@ -13797,6 +14245,13 @@ impl RemoveProcessor {
     pub fn builder() -> RemoveProcessorBuilder {
         RemoveProcessorBuilder::new()
     }
+
+    /// Creates a [`RemoveProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RemoveProcessorBuilder) -> RemoveProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> RemoveProcessor {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RemoveProcessor`].
@@ -14031,6 +14486,18 @@ impl RenameProcessor {
     /// Creates a builder for [`RenameProcessor`].
     pub fn builder() -> RenameProcessorBuilder {
         RenameProcessorBuilder::new()
+    }
+
+    /// Creates a [`RenameProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            RenameProcessorBuilder,
+        ) -> RenameProcessorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> RenameProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -14346,6 +14813,13 @@ impl RerouteProcessor {
     pub fn builder() -> RerouteProcessorBuilder {
         RerouteProcessorBuilder::new()
     }
+
+    /// Creates a [`RerouteProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RerouteProcessorBuilder) -> RerouteProcessorBuilder,
+    ) -> RerouteProcessor {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`RerouteProcessor`].
@@ -14578,6 +15052,11 @@ impl ScriptProcessor {
     /// Creates a builder for [`ScriptProcessor`].
     pub fn builder() -> ScriptProcessorBuilder {
         ScriptProcessorBuilder::new()
+    }
+
+    /// Creates a [`ScriptProcessor`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(ScriptProcessorBuilder) -> ScriptProcessorBuilder) -> ScriptProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -14841,6 +15320,13 @@ impl SetProcessor {
     /// Creates a builder for [`SetProcessor`].
     pub fn builder() -> SetProcessorBuilder {
         SetProcessorBuilder::new()
+    }
+
+    /// Creates a [`SetProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SetProcessorBuilder) -> SetProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> SetProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -15128,6 +15614,15 @@ impl SetSecurityUserProcessor {
     pub fn builder() -> SetSecurityUserProcessorBuilder {
         SetSecurityUserProcessorBuilder::new()
     }
+
+    /// Creates a [`SetSecurityUserProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SetSecurityUserProcessorBuilder,
+        ) -> SetSecurityUserProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> SetSecurityUserProcessor {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SetSecurityUserProcessor`].
@@ -15345,6 +15840,13 @@ impl SimulateDocumentResult {
     pub fn builder() -> SimulateDocumentResultBuilder {
         SimulateDocumentResultBuilder::new()
     }
+
+    /// Creates a [`SimulateDocumentResult`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SimulateDocumentResultBuilder) -> SimulateDocumentResultBuilder,
+    ) -> SimulateDocumentResult {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`SimulateDocumentResult`].
@@ -15494,6 +15996,13 @@ impl SortProcessor {
     /// Creates a builder for [`SortProcessor`].
     pub fn builder() -> SortProcessorBuilder {
         SortProcessorBuilder::new()
+    }
+
+    /// Creates a [`SortProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SortProcessorBuilder) -> SortProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> SortProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -15736,6 +16245,18 @@ impl SplitProcessor {
     /// Creates a builder for [`SplitProcessor`].
     pub fn builder() -> SplitProcessorBuilder {
         SplitProcessorBuilder::new()
+    }
+
+    /// Creates a [`SplitProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            SplitProcessorBuilder,
+        ) -> SplitProcessorBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> SplitProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -16007,6 +16528,13 @@ impl TerminateProcessor {
     pub fn builder() -> TerminateProcessorBuilder {
         TerminateProcessorBuilder::new()
     }
+
+    /// Creates a [`TerminateProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TerminateProcessorBuilder) -> TerminateProcessorBuilder,
+    ) -> TerminateProcessor {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`TerminateProcessor`].
@@ -16174,6 +16702,13 @@ impl TrimProcessor {
     /// Creates a builder for [`TrimProcessor`].
     pub fn builder() -> TrimProcessorBuilder {
         TrimProcessorBuilder::new()
+    }
+
+    /// Creates a [`TrimProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(TrimProcessorBuilder) -> TrimProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> TrimProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -16410,6 +16945,15 @@ impl UppercaseProcessor {
     /// Creates a builder for [`UppercaseProcessor`].
     pub fn builder() -> UppercaseProcessorBuilder {
         UppercaseProcessorBuilder::new()
+    }
+
+    /// Creates a [`UppercaseProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UppercaseProcessorBuilder,
+        ) -> UppercaseProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> UppercaseProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -16652,6 +17196,15 @@ impl UriPartsProcessor {
     /// Creates a builder for [`UriPartsProcessor`].
     pub fn builder() -> UriPartsProcessorBuilder {
         UriPartsProcessorBuilder::new()
+    }
+
+    /// Creates a [`UriPartsProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UriPartsProcessorBuilder,
+        ) -> UriPartsProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> UriPartsProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -16921,6 +17474,15 @@ impl UrlDecodeProcessor {
     pub fn builder() -> UrlDecodeProcessorBuilder {
         UrlDecodeProcessorBuilder::new()
     }
+
+    /// Creates a [`UrlDecodeProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UrlDecodeProcessorBuilder,
+        ) -> UrlDecodeProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> UrlDecodeProcessor {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`UrlDecodeProcessor`].
@@ -17164,6 +17726,15 @@ impl UserAgentProcessor {
     /// Creates a builder for [`UserAgentProcessor`].
     pub fn builder() -> UserAgentProcessorBuilder {
         UserAgentProcessorBuilder::new()
+    }
+
+    /// Creates a [`UserAgentProcessor`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            UserAgentProcessorBuilder,
+        ) -> UserAgentProcessorBuilder<(crate::typed::builder::Set,)>,
+    ) -> UserAgentProcessor {
+        f(Self::builder()).build()
     }
 }
 
@@ -17442,6 +18013,11 @@ impl Web {
     /// Creates a builder for [`Web`].
     pub fn builder() -> WebBuilder {
         WebBuilder::new()
+    }
+
+    /// Creates a [`Web`] from a function that sets the members of its builder.
+    pub fn of(f: impl FnOnce(WebBuilder) -> WebBuilder) -> Web {
+        f(Self::builder()).build()
     }
 }
 

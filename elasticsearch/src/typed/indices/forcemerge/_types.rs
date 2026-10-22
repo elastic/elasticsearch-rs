@@ -16,6 +16,13 @@ impl ForceMergeResponseBody {
     pub fn builder() -> ForceMergeResponseBodyBuilder {
         ForceMergeResponseBodyBuilder::new()
     }
+
+    /// Creates a [`ForceMergeResponseBody`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(ForceMergeResponseBodyBuilder) -> ForceMergeResponseBodyBuilder,
+    ) -> ForceMergeResponseBody {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`ForceMergeResponseBody`].

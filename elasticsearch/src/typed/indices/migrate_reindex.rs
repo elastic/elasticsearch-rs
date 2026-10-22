@@ -14,6 +14,18 @@ impl MigrateReindex {
     pub fn builder() -> MigrateReindexBuilder {
         MigrateReindexBuilder::new()
     }
+
+    /// Creates a [`MigrateReindex`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            MigrateReindexBuilder,
+        ) -> MigrateReindexBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> MigrateReindex {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`MigrateReindex`].
@@ -149,6 +161,13 @@ impl Request {
     /// Creates a builder for [`Request`].
     pub fn builder() -> RequestBuilder {
         RequestBuilder::new(())
+    }
+
+    /// Creates a [`Request`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(RequestBuilder) -> RequestBuilder<(crate::typed::builder::Set,), ()>,
+    ) -> Request {
+        f(Self::builder()).build()
     }
 }
 
@@ -403,6 +422,13 @@ impl SourceIndex {
     /// Creates a builder for [`SourceIndex`].
     pub fn builder() -> SourceIndexBuilder {
         SourceIndexBuilder::new()
+    }
+
+    /// Creates a [`SourceIndex`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(SourceIndexBuilder) -> SourceIndexBuilder<(crate::typed::builder::Set,)>,
+    ) -> SourceIndex {
+        f(Self::builder()).build()
     }
 }
 

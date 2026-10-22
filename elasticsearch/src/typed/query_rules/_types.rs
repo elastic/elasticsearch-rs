@@ -43,6 +43,20 @@ impl QueryRule {
     pub fn builder() -> QueryRuleBuilder {
         QueryRuleBuilder::new()
     }
+
+    /// Creates a [`QueryRule`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            QueryRuleBuilder,
+        ) -> QueryRuleBuilder<(
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+            crate::typed::builder::Set,
+        )>,
+    ) -> QueryRule {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`QueryRule`].
@@ -276,6 +290,13 @@ impl QueryRuleActions {
     pub fn builder() -> QueryRuleActionsBuilder {
         QueryRuleActionsBuilder::new()
     }
+
+    /// Creates a [`QueryRuleActions`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(QueryRuleActionsBuilder) -> QueryRuleActionsBuilder,
+    ) -> QueryRuleActions {
+        f(Self::builder()).build()
+    }
 }
 
 /// Builder for [`QueryRuleActions`].
@@ -411,6 +432,15 @@ impl QueryRuleCriteria {
     /// Creates a builder for [`QueryRuleCriteria`].
     pub fn builder() -> QueryRuleCriteriaBuilder {
         QueryRuleCriteriaBuilder::new()
+    }
+
+    /// Creates a [`QueryRuleCriteria`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            QueryRuleCriteriaBuilder,
+        ) -> QueryRuleCriteriaBuilder<(crate::typed::builder::Set,)>,
+    ) -> QueryRuleCriteria {
+        f(Self::builder()).build()
     }
 }
 
@@ -573,6 +603,16 @@ impl QueryRuleset {
     /// Creates a builder for [`QueryRuleset`].
     pub fn builder() -> QueryRulesetBuilder {
         QueryRulesetBuilder::new()
+    }
+
+    /// Creates a [`QueryRuleset`] from a function that sets the members of its builder.
+    pub fn of(
+        f: impl FnOnce(
+            QueryRulesetBuilder,
+        )
+            -> QueryRulesetBuilder<(crate::typed::builder::Set, crate::typed::builder::Set)>,
+    ) -> QueryRuleset {
+        f(Self::builder()).build()
     }
 }
 
